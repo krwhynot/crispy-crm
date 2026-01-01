@@ -50,6 +50,45 @@ Manual E2E testing with Claude Chrome follows these principles:
 4. **Data-Driven** - Tests use seeded test data for consistency
 5. **Context-Aware** - Tests adapt based on observed application state
 
+## Environment Configuration
+
+Manual E2E tests can be executed against two environments:
+
+### Local Environment
+- **URL**: `http://127.0.0.1:5173` (or `http://localhost:5173`)
+- **Use for**: Full testing including destructive operations (create, update, delete)
+- **Data**: Seeded test data via `scripts/seed-e2e-dashboard-v3.sh`
+
+### Production Environment
+- **URL**: `https://crm.kjrcloud.com`
+- **Use for**: Smoke tests and read-only verification
+- **Data**: Live production data (handle with care)
+
+### Telling Claude Chrome Which Environment to Use
+
+When initiating a manual E2E test session, specify the target environment:
+
+**For Local Testing:**
+```
+Run the [test name] test against the local environment (http://127.0.0.1:5173)
+```
+
+**For Production Testing:**
+```
+Run the [test name] test against production (https://crm.kjrcloud.com) - read-only mode
+```
+
+### Production Testing Guidelines
+
+When testing against production:
+- **DO**: Run smoke tests, verify UI rendering, check navigation
+- **DO**: Test read-only workflows (viewing lists, filtering, searching)
+- **DO NOT**: Create, update, or delete any records
+- **DO NOT**: Run data seeding scripts
+- **DO NOT**: Test destructive operations (archive, delete, bulk operations)
+
+See [SETUP.md](./SETUP.md) for environment-specific setup instructions.
+
 ## Getting Started
 
 Before running manual E2E tests:

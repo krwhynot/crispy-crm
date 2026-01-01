@@ -7,8 +7,15 @@ Manual E2E testing checklist for Role-Based Access Control (RBAC) verification a
 **CRITICAL: Tests 1-2 of the RBAC suite must pass before running these tests.**
 
 ### Environment Setup
+
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | ${BASE_URL} | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
 - **Browser:** Chrome (recommended), Firefox, or Safari
-- **URL:** http://localhost:5173
+- **URL:** ${BASE_URL}
 - **DevTools:** Open Console tab (F12) for error monitoring throughout all tests
 
 ### Test Users
@@ -69,7 +76,7 @@ Throughout all tests, watch for these error patterns:
 - [ ] Console tab open and cleared
 
 **Steps:**
-1. Navigate to http://localhost:5173
+1. Navigate to ${BASE_URL}
 2. Clear browser console (right-click > Clear console)
 3. Enter email: `admin@test.com`
 4. Enter password: `password123`
@@ -209,7 +216,7 @@ Throughout all tests, watch for these error patterns:
 - [ ] Console tab open and cleared
 
 **Steps:**
-1. Navigate to http://localhost:5173
+1. Navigate to ${BASE_URL}
 2. Clear browser console
 3. Enter email: `manager@mfbroker.com`
 4. Enter password: `password123`
@@ -244,7 +251,7 @@ Throughout all tests, watch for these error patterns:
 - [ ] Console tab open and cleared
 
 **Steps:**
-1. Navigate to http://localhost:5173
+1. Navigate to ${BASE_URL}
 2. Clear browser console
 3. Enter email: `rep@mfbroker.com`
 4. Enter password: `password123`
@@ -1047,3 +1054,37 @@ When testing "Blocked" operations, verify by one of:
 2. **Button Disabled:** Delete button visible but not clickable
 3. **Error Response:** Clicking produces error message
 4. **RLS Error:** Console shows database permission error
+
+---
+
+## Production Safety
+
+**Tests Safe for Production (Read-Only):**
+| Test | Safe for Production | Notes |
+|------|---------------------|-------|
+| A1: Admin View All Contacts | Yes | Read-only list view |
+| B1: Admin View All Opportunities | Yes | Read-only list view |
+| B7: Rep Edit Own Opportunity | Partial | Only if reverting changes |
+| B8: Rep Edit Other's (Blocked) | Yes | Tests RLS blocking |
+| C5: Rep Edit Own Task | Partial | Only if reverting changes |
+| C6: Rep Edit Other's Task (Blocked) | Yes | Tests RLS blocking |
+| D1: Admin View All Organizations | Yes | Read-only list view |
+
+**Local-Only Tests (Create/Update/Delete Operations):**
+| Test | Reason |
+|------|--------|
+| A2: Admin Create Contact | Creates test data |
+| A3: Admin Edit Any Contact | Modifies production data |
+| A4: Admin Delete Contact | Deletes data |
+| A5-A6: Delete Contact (Blocked) | May attempt delete |
+| B2: Admin Create Opportunity | Creates test data |
+| B3: Admin Edit Any Opportunity | Modifies production data |
+| B4: Admin Delete Opportunity | Deletes data |
+| B5: Manager Edit Any Opportunity | Modifies production data |
+| B6: Manager Delete (Blocked) | May attempt delete |
+| C1-C4: Task Create/Edit/Delete | Modifies production data |
+| D2: Admin Create Organization | Creates test data |
+| D3: Admin Delete Organization | Deletes data |
+| D4-D6: Manager/Rep Operations | May modify data |
+
+**Recommendation:** Run full CRUD tests only on local environment. Production testing should be limited to read-only verification tests.

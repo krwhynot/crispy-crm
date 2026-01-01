@@ -2,6 +2,14 @@
 
 Manual E2E testing checklist for WCAG 2.1 Level AA accessibility compliance. Based on automated test specifications in `/tests/e2e/dashboard-v3/accessibility.spec.ts` and `/tests/e2e/specs/ui-ux-changes/accessibility.spec.ts`.
 
+## Test Environment Setup
+
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
 ## Overview
 
 This checklist covers WCAG 2.1 AA requirements across:

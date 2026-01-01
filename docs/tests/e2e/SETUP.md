@@ -203,6 +203,59 @@ npx supabase db reset
 2. Check that seed file exists: `tests/e2e/fixtures/dashboard-v3-seed.sql`
 3. Verify database connection: `npx supabase status`
 
+## Production Environment Setup
+
+For testing against the production environment at `https://crm.kjrcloud.com`.
+
+### Production URL
+
+- **Base URL**: `https://crm.kjrcloud.com`
+
+### Production Credentials
+
+Production credentials are managed separately and should never be committed to the repository.
+
+**To obtain production credentials:**
+1. Contact the system administrator
+2. Use credentials stored in your password manager
+3. Reference environment-specific secrets (not in source control)
+
+**Placeholder format for documentation:**
+- **Email**: `[your-production-email]`
+- **Password**: `[your-production-password]`
+
+### Test Safety Classification
+
+Tests are classified by their safety for production execution:
+
+#### Safe for Production (Read-Only)
+- **Smoke Tests** - Basic functionality verification
+- **Responsive Layout** - Multi-viewport rendering
+- **Accessibility** - A11y compliance checks
+- **Design System Smoke** - Core design system functionality
+- **Theme Switching** - Light/dark mode transitions
+- **Skip Link** - Keyboard navigation accessibility
+- **Spacing Tokens** - Layout consistency checks
+- **Reports Spacing** - Report layout verification
+
+#### Local Environment Only (Destructive Operations)
+- **Quick Logger** - Creates activity records
+- **Log Activity FAB** - Creates activity records
+- **Task Snooze** - Modifies task data
+- **Data Flow** - Modifies data across entities
+- **Pipeline Drilldown** - May modify opportunity stages
+- **Kanban Enhancements** - May modify deal positions
+- **Any test involving Create/Edit/Delete operations**
+
+### Production Testing Checklist
+
+Before testing against production:
+
+- [ ] Confirm you have valid production credentials
+- [ ] Verify the test is classified as "Safe for Production"
+- [ ] Notify team members if running extended test sessions
+- [ ] Document any unexpected findings without making changes
+
 ## Quick Start Checklist
 
 Use this checklist before starting manual E2E testing:

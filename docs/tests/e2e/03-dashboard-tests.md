@@ -4,9 +4,15 @@ Comprehensive manual testing checklist for Dashboard V3 functionality, converted
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
 - **Browser:** Chrome, Firefox, or Safari (test on all three)
-- **URL:** http://localhost:5173/#/dashboard-v3 (or http://localhost:5173/#/)
-- **Credentials:** admin@test.com / password123
+- **URL:** ${BASE_URL}/#/dashboard-v3 (or ${BASE_URL}/#/)
+- **Credentials:** See environment selection table above
 - **Prerequisites:** Database seeded with test data (principals, opportunities, contacts)
 
 ---

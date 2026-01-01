@@ -2,16 +2,24 @@
 
 Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progressive 6-test RBAC suite and must pass completely before any other RBAC tests can be executed. All authentication flows, session management, and protected route access patterns are validated here.
 
+## Test Environment Setup
+
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | ${BASE_URL} | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
 ## Prerequisites
 
-- [ ] Development server running at http://localhost:5173
-- [ ] Supabase local instance running (`npx supabase start`)
-- [ ] Test database seeded with E2E data (`just seed-e2e`)
+- [ ] Development server running at ${BASE_URL} (local) or production URL accessible
+- [ ] Supabase local instance running (`npx supabase start`) - local only
+- [ ] Test database seeded with E2E data (`just seed-e2e`) - local only
 - [ ] Browser DevTools accessible (F12)
 - [ ] Test user accounts exist in database:
-  - Admin: admin@test.com / password123
-  - Manager: manager@mfbroker.com / password123
-  - Rep: rep@mfbroker.com / password123
+  - Admin: admin@test.com / password123 (local) or [production credentials]
+  - Manager: manager@mfbroker.com / password123 (local) or [production credentials]
+  - Rep: rep@mfbroker.com / password123 (local) or [production credentials]
 - [ ] Incognito/private browser window available for clean session testing
 - [ ] Second browser tab or window available for multi-tab tests
 
@@ -29,7 +37,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 2. Press F12 to open browser DevTools
 3. Click on the "Console" tab in DevTools
 4. Click on the "Network" tab in DevTools and ensure "Preserve log" is checked
-5. Navigate to http://localhost:5173
+5. Navigate to ${BASE_URL}
 6. Wait for the login page to fully load (observe Network tab for requests completing)
 7. Verify the login form is displayed with Email and Password fields
 8. Click into the Email input field
@@ -68,7 +76,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 2. Press F12 to open browser DevTools
 3. Click on the "Console" tab in DevTools
 4. Clear the console (Ctrl+L or right-click > Clear console)
-5. Navigate to http://localhost:5173
+5. Navigate to ${BASE_URL}
 6. Wait for the login page to fully load
 7. Verify the URL contains `/#/login` or shows the login form
 8. Locate the Email input field on the login form
@@ -109,7 +117,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 3. Open browser DevTools (F12)
 4. Navigate to the Console tab and clear any existing messages
 5. Navigate to the Network tab and clear existing requests
-6. Type http://localhost:5173 in the address bar and press Enter
+6. Type ${BASE_URL} in the address bar and press Enter
 7. Wait for the page to load completely (watch Network tab for activity to stop)
 8. Confirm the login page is displayed
 9. Find the Email input field
@@ -149,7 +157,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 1. Open a new incognito/private browser window
 2. Open browser DevTools (F12)
 3. Navigate to the Console tab
-4. Navigate to http://localhost:5173
+4. Navigate to ${BASE_URL}
 5. Wait for the login page to fully load
 6. Click into the Email input field
 7. Type `admin@test.com` (a valid email that exists)
@@ -189,7 +197,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 2. Open browser DevTools (F12)
 3. Click on the Console tab
 4. Click on the Network tab
-5. Navigate to http://localhost:5173
+5. Navigate to ${BASE_URL}
 6. Wait for the login page to load completely
 7. Verify the Email input field is visible
 8. Click into the Email input field
@@ -226,7 +234,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 
 1. Open a new incognito/private browser window
 2. Open browser DevTools (F12)
-3. Navigate to http://localhost:5173
+3. Navigate to ${BASE_URL}
 4. Wait for the login page to load
 5. DO NOT enter anything in the Email field
 6. DO NOT enter anything in the Password field
@@ -266,14 +274,14 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 #### Steps
 
 1. Open a new incognito/private browser window
-2. Navigate to http://localhost:5173
+2. Navigate to ${BASE_URL}
 3. Log in with valid credentials (admin@test.com / password123)
 4. Wait for successful login and dashboard to load
 5. Verify you are on the dashboard page (`/#/`)
 6. Open browser DevTools (F12)
 7. Click on the Application tab
 8. Expand "Local Storage" in the left sidebar
-9. Click on http://localhost:5173
+9. Click on ${BASE_URL}
 10. Look for Supabase auth tokens (keys containing "supabase" or "sb-")
 11. Note the token values (or confirm they exist)
 12. Press F5 or Ctrl+R to refresh the page
@@ -304,17 +312,17 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 #### Steps
 
 1. Open a new browser window (not incognito for this test)
-2. Navigate to http://localhost:5173
+2. Navigate to ${BASE_URL}
 3. Log in with valid credentials (admin@test.com / password123)
 4. Wait for dashboard to load completely
 5. Open browser DevTools (F12)
 6. Navigate to Application tab > Local Storage
-7. Confirm auth tokens exist for http://localhost:5173
+7. Confirm auth tokens exist for ${BASE_URL}
 8. Note the access_token expiration time if visible
 9. Close the browser tab (Ctrl+W or click X)
 10. DO NOT close the entire browser window
 11. Open a new tab (Ctrl+T)
-12. Navigate to http://localhost:5173
+12. Navigate to ${BASE_URL}
 13. Wait for the page to load
 14. Observe which page appears
 
@@ -342,7 +350,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 #### Steps
 
 1. Open a browser window
-2. Navigate to http://localhost:5173
+2. Navigate to ${BASE_URL}
 3. Log in with valid credentials (admin@test.com / password123)
 4. Wait for dashboard to load
 5. Open browser DevTools (F12)
@@ -380,15 +388,15 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 #### Steps
 
 1. Open a browser window
-2. Navigate to http://localhost:5173
+2. Navigate to ${BASE_URL}
 3. Log in with valid credentials (admin@test.com / password123)
-4. Navigate to a protected route: http://localhost:5173/#/contacts
+4. Navigate to a protected route: ${BASE_URL}/#/contacts
 5. Verify the contacts list loads successfully
 6. Note the URL: `/#/contacts`
 7. Perform logout (find logout button, click it)
 8. Wait for redirect to login page
 9. Confirm you are on the login page
-10. Type http://localhost:5173/#/contacts directly in the address bar
+10. Type ${BASE_URL}/#/contacts directly in the address bar
 11. Press Enter to navigate
 12. Wait for the page to load
 13. Observe the result
@@ -418,14 +426,14 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 #### Steps
 
 1. Open a browser window
-2. Navigate to http://localhost:5173
+2. Navigate to ${BASE_URL}
 3. Log in with valid credentials (admin@test.com / password123)
 4. Wait for dashboard to load
 5. Open a new browser tab (Ctrl+T)
-6. In the new tab, navigate to http://localhost:5173/#/contacts
+6. In the new tab, navigate to ${BASE_URL}/#/contacts
 7. Verify the contacts list loads (user is authenticated)
 8. Open another new tab (Tab 3)
-9. Navigate to http://localhost:5173/#/opportunities
+9. Navigate to ${BASE_URL}/#/opportunities
 10. Verify opportunities list loads
 11. Now go back to Tab 1 (dashboard)
 12. Perform logout
@@ -461,16 +469,16 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 1. Open a new incognito/private browser window
 2. Open browser DevTools (F12)
 3. Navigate to the Application tab
-4. Expand Local Storage > http://localhost:5173
+4. Expand Local Storage > ${BASE_URL}
 5. Confirm NO auth tokens are present (should be empty or no Supabase keys)
-6. In the address bar, type: http://localhost:5173/#/contacts
+6. In the address bar, type: ${BASE_URL}/#/contacts
 7. Press Enter to navigate
 8. Wait for the page to load
 9. Observe the final URL in the address bar
 10. Observe the content displayed on the page
-11. Try another protected route: http://localhost:5173/#/opportunities
+11. Try another protected route: ${BASE_URL}/#/opportunities
 12. Wait and observe the result
-13. Try the dashboard: http://localhost:5173/#/
+13. Try the dashboard: ${BASE_URL}/#/
 14. Wait and observe the result
 
 #### Expected Results
@@ -498,7 +506,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 
 1. Open a new incognito/private browser window
 2. Ensure no authentication tokens exist (fresh incognito)
-3. Navigate directly to: http://localhost:5173/#/contacts/create
+3. Navigate directly to: ${BASE_URL}/#/contacts/create
 4. Wait for redirect to login page
 5. Confirm you are on the login page
 6. Note if the URL contains a return path or the original route is preserved somehow
@@ -538,9 +546,9 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 2. Open browser DevTools (F12)
 3. Navigate to Application tab
 4. Expand Local Storage in the left sidebar
-5. Click on http://localhost:5173 (may need to navigate first to create entry)
+5. Click on ${BASE_URL} (may need to navigate first to create entry)
 6. Confirm localStorage is empty or has no Supabase auth keys
-7. Navigate to http://localhost:5173
+7. Navigate to ${BASE_URL}
 8. Log in with valid credentials (admin@test.com / password123)
 9. Wait for dashboard to load
 10. Go back to DevTools Application tab > Local Storage
@@ -573,7 +581,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 #### Steps
 
 1. Open a browser window (not incognito - we need to manipulate storage)
-2. Navigate to http://localhost:5173
+2. Navigate to ${BASE_URL}
 3. Log in with valid credentials (admin@test.com / password123)
 4. Wait for dashboard to load
 5. Open browser DevTools (F12)
@@ -583,7 +591,7 @@ Comprehensive authentication testing for Crispy CRM. This is TEST 1 of the progr
 9. Copy the value to a text editor
 10. Modify the `expires_at` value to a past timestamp (e.g., `1000000000`)
 11. Paste the modified JSON back into localStorage (right-click > Edit Value)
-12. Navigate to http://localhost:5173/#/contacts
+12. Navigate to ${BASE_URL}/#/contacts
 13. Wait for the page to load
 14. Observe the result
 15. Check if app attempts token refresh or redirects to login
@@ -686,3 +694,21 @@ This test suite (06-auth-foundation) must pass before running:
 - 09-action-permissions.md - Action/button visibility tests
 - 10-navigation-security.md - Navigation and menu permission tests
 - 11-rbac-regression.md - Full RBAC regression suite
+
+---
+
+## Production Safety
+
+**Tests Safe for Production (Read-Only):**
+| Test | Safe for Production | Notes |
+|------|---------------------|-------|
+| A1-A3: Login Tests | Yes | Read-only authentication |
+| B1-B3: Session Tests | Yes | Read-only session verification |
+| C1-C3: Logout Tests | Yes | Read-only, just verifies logout |
+| D1-D3: Multi-tab Tests | Yes | Read-only session checks |
+| E1-E3: Protected Route Tests | Yes | Read-only navigation tests |
+| F1: Login Redirect | Yes | Read-only verification |
+| G1: Token Manipulation | NO - LOCAL ONLY | Modifies localStorage directly |
+
+**Local-Only Tests:**
+- G1: Token Expiration/Manipulation - This test requires modifying localStorage values directly, which could corrupt production sessions. Only run on local environment.

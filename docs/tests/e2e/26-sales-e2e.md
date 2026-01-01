@@ -4,9 +4,18 @@ Manual E2E testing checklist for the Sales/User Management module. This covers t
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run sales tests against localhost:5173"
+- Production: "Run sales tests against crm.kjrcloud.com"
+
 ### Prerequisites
 - **Browser:** Chrome (recommended), Firefox, or Safari
-- **URL:** http://localhost:5173
 - **DevTools:** Open Console tab (F12) for error monitoring throughout all tests
 
 ### Test Users
@@ -44,7 +53,7 @@ Use timestamps for uniqueness: `Test Sales Rep 2025-12-31-143022`
 - [ ] Console tab open and cleared
 
 **Steps:**
-1. Navigate to http://localhost:5173
+1. Navigate to ${BASE_URL}
 2. Clear browser console
 3. Login with `admin@test.com` / `password123`
 4. Wait for dashboard to load
@@ -1077,3 +1086,19 @@ Each view has error boundaries. If an error occurs, you may see a fallback UI in
 - Tests create data with "Test" prefix and timestamps
 - Clean up test data after completing the test suite
 - Use `just db-reset` to reset to known state if needed
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- [ ] Read/List operations
+- [ ] View operations (slide-over, details)
+- [ ] Navigation tests
+- [ ] Console monitoring
+
+**Local Only (Skip in Production):**
+- [ ] Create operations
+- [ ] Update operations
+- [ ] Delete operations
+- [ ] Bulk operations

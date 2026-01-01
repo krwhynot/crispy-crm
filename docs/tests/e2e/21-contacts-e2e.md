@@ -4,9 +4,17 @@ Comprehensive manual E2E testing checklist for the Contacts module using Claude 
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run contacts tests against localhost:5173"
+- Production: "Run contacts tests against crm.kjrcloud.com"
+
 - **Browser:** Chrome with DevTools open (F12)
-- **URL:** http://localhost:5173
-- **Credentials:** admin@test.com / password123
 - **Viewports:**
   - Desktop: 1440x900 (minimum)
   - iPad Landscape: 1024x768
@@ -908,3 +916,19 @@ If a test fails:
 3. Note exact URL and state
 4. Record viewport dimensions
 5. Document steps to reproduce
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- [ ] Read/List operations
+- [ ] View operations (slide-over, details)
+- [ ] Navigation tests
+- [ ] Console monitoring
+
+**Local Only (Skip in Production):**
+- [ ] Create operations
+- [ ] Update operations
+- [ ] Delete operations
+- [ ] Bulk operations
