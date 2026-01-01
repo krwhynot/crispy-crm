@@ -139,7 +139,7 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div className="flex flex-col p-4" data-tutorial="dashboard-pipeline-table">
+    <div className="flex h-full flex-col p-4" data-tutorial="dashboard-pipeline-table">
       {/* Header with title and filters */}
       <div className="border-b border-border pb-3">
         <div className="flex items-start justify-between">
@@ -178,13 +178,13 @@ export function PrincipalPipelineTable() {
         </div>
       </div>
 
-      {/* Table - parent TabsContent handles scroll */}
-      <div className="pt-2">
+      {/* Table - scroll container for sticky headers */}
+      <div className="flex-1 min-h-0 overflow-y-auto pt-2">
         {sortedData?.length === 0 ? (
           <EmptyState searchQuery={searchQuery} />
         ) : (
           <Table>
-            <TableHeader className="sticky top-0 bg-background">
+            <TableHeader className="sticky top-0 z-10 bg-background shadow-sm">
               <TableRow>
                 <SortableTableHead
                   field="name"

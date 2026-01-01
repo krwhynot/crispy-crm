@@ -211,26 +211,26 @@ const TaskListLayout = ({
             <SaleName />
           </ReferenceField>
 
-          {/* Column 7: Contact - Contact reference (non-sortable) - hidden on tablet/mobile */}
+          {/* Column 7: Contact - Contact reference (non-sortable) - hidden until large desktop */}
           <ReferenceField
             source="contact_id"
             reference="contacts_summary"
             label="Contact"
             link={false}
             sortable={false}
-            {...COLUMN_VISIBILITY.desktopOnly}
+            {...COLUMN_VISIBILITY.largeDesktopOnly}
           >
             <TextField source={contactOptionText} />
           </ReferenceField>
 
-          {/* Column 8: Opportunity - Opportunity reference (non-sortable) - hidden on tablet/mobile */}
+          {/* Column 8: Opportunity - Opportunity reference (non-sortable) - hidden until large desktop */}
           <ReferenceField
             source="opportunity_id"
             reference="opportunities"
             label="Opportunity"
             link={false}
             sortable={false}
-            {...COLUMN_VISIBILITY.desktopOnly}
+            {...COLUMN_VISIBILITY.largeDesktopOnly}
           >
             <TextField source="title" />
           </ReferenceField>

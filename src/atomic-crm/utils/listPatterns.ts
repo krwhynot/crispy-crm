@@ -13,11 +13,17 @@
  * <TextField source="email" {...COLUMN_VISIBILITY.desktopOnly} />
  * ```
  *
+ * @property largeDesktopOnly - Only visible on large desktop (1280px+), hidden on tablet/iPad
  * @property desktopOnly - Only visible on desktop (1024px+), hidden on tablet/mobile
  * @property tabletUp - Visible on tablet (768px+) and desktop, hidden on mobile only
  * @property alwaysVisible - Always visible on all screen sizes (use for critical columns)
  */
 export const COLUMN_VISIBILITY = {
+  /** Only visible on large desktop (1280px+). Use for tertiary information like relationships. */
+  largeDesktopOnly: {
+    cellClassName: "hidden xl:table-cell",
+    headerClassName: "hidden xl:table-cell",
+  },
   /** Only visible on desktop (1024px+). Use for secondary information. */
   desktopOnly: {
     cellClassName: "hidden lg:table-cell",
