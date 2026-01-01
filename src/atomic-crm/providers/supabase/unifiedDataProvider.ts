@@ -998,8 +998,10 @@ export const unifiedDataProvider: DataProvider = {
     resource: string,
     params: DeleteParams<RecordType>
   ): Promise<DeleteResult<RecordType>> {
+    console.log('🔴 [unifiedDataProvider.delete] ENTRY - resource:', resource, 'id:', params.id);
     return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
+      console.log('🔴 [unifiedDataProvider.delete] Inside wrapMethod - dbResource:', dbResource);
 
       // Handle product_distributors composite key (hard delete, no soft delete)
       if (resource === "product_distributors") {
@@ -1268,6 +1270,7 @@ export const unifiedDataProvider: DataProvider = {
    * @returns The data returned by the RPC function
    */
   async rpc<T = unknown>(functionName: string, params: Record<string, unknown> = {}): Promise<T> {
+    console.log('🔴 [unifiedDataProvider.rpc] ENTRY - function:', functionName, 'params:', JSON.stringify(params));
     let validatedParams = params;
     try {
       // Log the operation for debugging
@@ -1290,12 +1293,15 @@ export const unifiedDataProvider: DataProvider = {
       }
 
       const { data, error } = await supabase.rpc(functionName, validatedParams);
+      console.log('🔴 [unifiedDataProvider.rpc] supabase.rpc returned - error:', error, 'data:', data);
 
       if (error) {
+        console.log('🔴 [unifiedDataProvider.rpc] FAILED:', error.message);
         logError("rpc", functionName, { data: validatedParams }, error);
         throw new HttpError(`RPC ${functionName} failed: ${error.message}`, 500);
       }
 
+      console.log('🔴 [unifiedDataProvider.rpc] SUCCESS');
       devLog("DataProvider RPC", `${functionName} succeeded`, data);
       return data as T;
     } catch (error) {

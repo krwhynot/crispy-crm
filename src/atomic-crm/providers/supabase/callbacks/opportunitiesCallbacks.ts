@@ -10,15 +10,9 @@
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { DataProvider, RaRecord, GetListParams } from "ra-core";
+import type { RaRecord, GetListParams } from "ra-core";
 import type { ResourceCallbacks } from "./createResourceCallbacks";
-
-/**
- * Extended DataProvider type with RPC method
- */
-interface DataProviderWithRpc extends DataProvider {
-  rpc?: (functionName: string, params: Record<string, unknown>) => Promise<unknown>;
-}
+import { supabase } from "../supabase";
 
 /**
  * Computed fields that should be stripped before saving to database
@@ -206,26 +200,28 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
    * - tasks
    */
   beforeDelete: async (params, dataProvider) => {
+    console.log('🟡 [opportunitiesCallbacks.beforeDelete] ENTRY - id:', params.id, 'type:', typeof params.id);
     const dpWithRpc = dataProvider as DataProviderWithRpc;
 
     if (!dpWithRpc.rpc) {
+      console.log('🟡 [opportunitiesCallbacks.beforeDelete] ERROR: DataProvider does not support RPC');
       throw new Error("Archive opportunity failed: DataProvider does not support RPC");
     }
 
     try {
+      console.log('🟡 [opportunitiesCallbacks.beforeDelete] Calling dpWithRpc.rpc with opp_id:', Number(params.id));
       await dpWithRpc.rpc("archive_opportunity_with_relations", {
         opp_id: Number(params.id),
       });
+      console.log('🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS');
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error(`[opportunitiesCallbacks] Archive failed`, {
-        opportunityId: params.id,
-        error,
-      });
+      console.error('🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:', message, error);
       throw new Error(`Archive opportunity failed: ${message}`);
     }
 
     // Return params with meta flag to skip actual delete
+    console.log('🟡 [opportunitiesCallbacks.beforeDelete] Returning with skipDelete: true');
     return {
       ...params,
       meta: { ...params.meta, skipDelete: true },
