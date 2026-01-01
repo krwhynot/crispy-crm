@@ -186,11 +186,56 @@ const DataRow = React.forwardRef<HTMLTableRowElement, DataRowProps>(
 )
 ```
 
+**DataHeaderCell for sticky table headers:**
+
+```tsx
+// src/components/ui/data-cell.tsx
+export interface DataHeaderCellProps
+  extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  /** Sticky position at top of scroll container */
+  sticky?: boolean
+  /** Right-align for numeric columns */
+  align?: "left" | "right"
+}
+
+const DataHeaderCell = React.forwardRef<HTMLTableCellElement, DataHeaderCellProps>(
+  ({ className, sticky = false, align = "left", ...props }, ref) => (
+    <th
+      ref={ref}
+      data-slot="data-header-cell"
+      className={cn(
+        // Base styles
+        "px-2 py-2",
+        "text-xs font-semibold uppercase tracking-wide",
+        "text-muted-foreground",
+
+        // Alignment
+        align === "left" ? "text-left" : "text-right",
+
+        // Background (needed for sticky)
+        "bg-background",
+
+        // Border
+        "border-b border-border",
+
+        // Sticky positioning
+        sticky && "sticky top-0 z-10",
+
+        className
+      )}
+      {...props}
+    />
+  )
+)
+```
+
 **Key points:**
 - `tabular-nums` ensures consistent digit widths for column alignment
 - `slashed-zero` distinguishes 0 from O in financial data
 - `@media(hover:none)` targets touch devices without hover capability
 - Z-index management prevents clipped focus rings in overflow containers
+- `DataHeaderCell` uses `sticky` prop with `z-10` for scroll-locked headers
+- Header alignment via `align` prop matches `DataCell` type-based alignment
 
 ---
 
