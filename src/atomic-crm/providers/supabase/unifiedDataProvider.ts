@@ -1023,23 +1023,31 @@ export const unifiedDataProvider: DataProvider = {
       // - Related activities, opportunityNotes, opportunity_participants, tasks
       // Engineering Constitution: Fail-fast - if RPC fails, the whole delete fails
       if (resource === "opportunities") {
+        console.log('🔴 [delete] Starting delete for opportunity:', params.id, 'type:', typeof params.id);
+
         // Coerce ID to number - React Admin Identifier can be string | number
         // RPC requires BIGINT, so we must ensure it's a valid integer
         const numericId = Number(params.id);
+        console.log('🔴 [delete] Coerced numericId:', numericId, 'isInteger:', Number.isInteger(numericId));
+
         if (!Number.isInteger(numericId) || numericId <= 0) {
+          console.log('🔴 [delete] INVALID ID - throwing error');
           throw new Error(`Invalid opportunity ID: ${params.id}`);
         }
 
+        console.log('🔴 [delete] Calling supabase.rpc("archive_opportunity_with_relations", { opp_id:', numericId, '})');
         const { error: rpcError } = await supabase.rpc(
           'archive_opportunity_with_relations',
           { opp_id: numericId }
         );
+        console.log('🔴 [delete] RPC returned, error:', rpcError);
 
         if (rpcError) {
-          console.error('Failed to archive opportunity with relations:', rpcError);
+          console.error('🔴 [delete] RPC FAILED:', rpcError);
           throw new Error(`Failed to delete opportunity: ${rpcError.message}`);
         }
 
+        console.log('🔴 [delete] RPC SUCCESS - opportunity archived');
         // Return the previousData as the deleted record
         // React Admin expects the deleted record to be returned
         return { data: (params.previousData || { id: params.id }) as RecordType };
