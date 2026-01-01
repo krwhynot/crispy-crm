@@ -29,9 +29,12 @@ import {
   defaultTaskTypes,
   defaultTitle,
 } from "./defaultConfiguration";
-import { AppBrandingProvider, useAppBranding } from "../contexts/AppBrandingContext";
-import { PipelineConfigProvider, usePipelineConfig } from "../contexts/PipelineConfigContext";
-import { FormOptionsProvider, useFormOptions } from "../contexts/FormOptionsContext";
+import { AppBrandingProvider } from "../contexts/AppBrandingContext";
+import { useAppBranding } from "../contexts/useAppBranding";
+import { PipelineConfigProvider } from "../contexts/PipelineConfigContext";
+import { usePipelineConfig } from "../contexts/usePipelineConfig";
+import { FormOptionsProvider } from "../contexts/FormOptionsContext";
+import { useFormOptions } from "../contexts/useFormOptions";
 
 // Define types for the context value
 export interface ConfigurationContextValue {

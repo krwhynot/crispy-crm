@@ -70,11 +70,3 @@ export function OrganizationPriorityHeader() {
   );
 }
 
-/**
- * All organization column headers exported for use in OrganizationList
- */
-export const OrganizationColumnHeaders = {
-  Name: OrganizationNameHeader,
-  Type: OrganizationTypeHeader,
-  Priority: OrganizationPriorityHeader,
-};

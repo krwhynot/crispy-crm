@@ -14,7 +14,8 @@ interface FormWizardProps {
   className?: string;
 }
 
-const WizardContext = React.createContext<WizardContextValue | null>(null);
+// Export context for use by wizardUtils.ts hook
+export const WizardContext = React.createContext<WizardContextValue | null>(null);
 
 /**
  * Multi-step form wizard container.
@@ -119,19 +120,5 @@ function FormWizard({ steps, children, onSubmit, className }: FormWizardProps) {
   );
 }
 
-/**
- * Hook to access wizard context.
- * Must be used within a FormWizard component.
- *
- * @throws Error if used outside FormWizard
- */
-function useWizard(): WizardContextValue {
-  const context = React.useContext(WizardContext);
-  if (!context) {
-    throw new Error("useWizard must be used within FormWizard");
-  }
-  return context;
-}
-
-export { FormWizard, useWizard };
+export { FormWizard };
 export type { FormWizardProps };

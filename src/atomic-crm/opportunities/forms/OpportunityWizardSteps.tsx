@@ -13,11 +13,7 @@ import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-in
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import {
-  CompactFormRow,
-  CompactFormFieldWithButton,
-  FormFieldWrapper,
-} from "@/components/admin/form";
+import { CompactFormRow, CompactFormFieldWithButton, FormFieldWrapper } from "@/components/admin/form";
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetIdentity, useRefresh } from "ra-core";
@@ -38,7 +34,6 @@ import { DEFAULT_SEGMENT_ID } from "../../constants";
 import { organizationSchema } from "../../validation/organizations";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { useAutoGenerateName, useCustomerDistributors } from "../hooks";
-import type { WizardStepConfig } from "@/components/admin/form";
 
 const priorityChoices = [
   { id: "low", name: "Low" },
@@ -48,33 +43,6 @@ const priorityChoices = [
 ];
 
 const organizationDefaults = organizationSchema.partial().parse({});
-
-/**
- * Wizard step configuration for Opportunities
- * 4 steps following Miller's Law (7±2 items max per cognitive chunk)
- */
-export const OPPORTUNITY_WIZARD_STEPS: WizardStepConfig[] = [
-  {
-    id: "basic",
-    title: "Basic Information",
-    fields: ["name", "customer_organization_id"],
-  },
-  {
-    id: "pipeline",
-    title: "Pipeline & Team",
-    fields: ["stage", "priority", "estimated_close_date"],
-  },
-  {
-    id: "relationships",
-    title: "Contacts & Products",
-    fields: [], // Optional step - no required validation
-  },
-  {
-    id: "details",
-    title: "Additional Details",
-    fields: [], // Optional step - no required validation
-  },
-];
 
 /**
  * Step 1: Basic Information

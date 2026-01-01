@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- Test utilities intentionally mix wrapper components with render helpers. Fast Refresh doesn't apply to test files. */
 import * as React from "react";
 import { render } from "@testing-library/react";
 import type { RenderOptions } from "@testing-library/react";

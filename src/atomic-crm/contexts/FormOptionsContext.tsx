@@ -7,7 +7,7 @@
  *
  * Part of P2-1 fix: ConfigurationContext split into focused contexts
  */
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { createContext, useMemo, type ReactNode } from "react";
 import type { NoteStatus, ContactGender } from "../types";
 import {
   defaultNoteStatuses,
@@ -49,11 +49,3 @@ export const FormOptionsProvider = ({
 
   return <FormOptionsContext.Provider value={value}>{children}</FormOptionsContext.Provider>;
 };
-
-/**
- * Hook to access form options (note statuses, task types, contact gender)
- *
- * Use this when you need form field options - prevents re-renders
- * when branding or pipeline config changes.
- */
-export const useFormOptions = () => useContext(FormOptionsContext);

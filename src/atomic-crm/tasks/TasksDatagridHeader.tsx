@@ -86,11 +86,3 @@ export function TaskTypeHeader() {
   );
 }
 
-/**
- * All task column headers exported for use in TaskList
- */
-export const TaskColumnHeaders = {
-  Title: TaskTitleHeader,
-  Priority: TaskPriorityHeader,
-  Type: TaskTypeHeader,
-};

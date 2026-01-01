@@ -7,7 +7,7 @@
  *
  * Part of P2-1 fix: ConfigurationContext split into focused contexts
  */
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { createContext, useMemo, type ReactNode } from "react";
 import type { DealStage } from "../types";
 import {
   defaultDealStages,
@@ -65,11 +65,3 @@ export const PipelineConfigProvider = ({
 
   return <PipelineConfigContext.Provider value={value}>{children}</PipelineConfigContext.Provider>;
 };
-
-/**
- * Hook to access pipeline configuration (stages, categories)
- *
- * Use this when you need opportunity/deal stage info - prevents re-renders
- * when branding or form options change.
- */
-export const usePipelineConfig = () => useContext(PipelineConfigContext);
