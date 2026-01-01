@@ -6,11 +6,7 @@
  * lint rule (files with React components should only export components).
  */
 
-import {
-  TaskTitleHeader,
-  TaskPriorityHeader,
-  TaskTypeHeader,
-} from "./TasksDatagridHeader";
+import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 
 /**
  * All task column headers exported for use in TaskList

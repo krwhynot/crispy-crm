@@ -1,12 +1,6 @@
 import * as React from "react";
-import type {
-  FieldProgress,
-  FormProgressContextValue,
-  FormProgressProviderProps,
-} from "./formProgressTypes";
-
-// Export context for use by formProgressUtils.ts hook
-export const FormProgressContext = React.createContext<FormProgressContextValue | null>(null);
+import type { FieldProgress, FormProgressProviderProps } from "./formProgressTypes";
+import { FormProgressContext } from "./FormProgressContext";
 
 function FormProgressProvider({ children, initialProgress = 10 }: FormProgressProviderProps) {
   const [fields, setFields] = React.useState<Record<string, FieldProgress>>({});

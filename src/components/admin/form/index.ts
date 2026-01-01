@@ -16,13 +16,15 @@ export { CompactFormFieldWithButton } from "./CompactFormFieldWithButton";
 export { ButtonPlaceholder } from "./ButtonPlaceholder";
 
 // Form progress system
-export { FormProgressProvider, useFormProgress } from "./FormProgressProvider";
+export { FormProgressProvider } from "./FormProgressProvider";
+export { useFormProgress } from "./formProgressUtils";
 export { FormProgressBar } from "./FormProgressBar";
 export { FormFieldWrapper } from "./FormFieldWrapper";
 export { FormSectionWithProgress } from "./FormSectionWithProgress";
 
 // Multi-step wizard system
-export { FormWizard, useWizard } from "./FormWizard";
+export { FormWizard } from "./FormWizard";
+export { useWizard } from "./wizardUtils";
 export { WizardStep } from "./WizardStep";
 export { WizardNavigation } from "./WizardNavigation";
 export { StepIndicator } from "./StepIndicator";

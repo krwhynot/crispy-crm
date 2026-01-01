@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /**
  * FormOptionsContext - Form field options and defaults
  *

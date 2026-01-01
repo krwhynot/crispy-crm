@@ -29,8 +29,8 @@ import { opportunitySchema } from "../validation/opportunities";
 import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
 import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
 import { OpportunityCreateFormTutorial } from "../tutorial/OpportunityCreateFormTutorial";
+import { OPPORTUNITY_WIZARD_STEPS } from "./forms/opportunityWizardConfig";
 import {
-  OPPORTUNITY_WIZARD_STEPS,
   OpportunityWizardStep1,
   OpportunityWizardStep2,
   OpportunityWizardStep3,
