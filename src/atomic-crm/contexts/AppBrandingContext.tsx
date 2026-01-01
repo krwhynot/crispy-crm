@@ -8,7 +8,7 @@
  *
  * Part of P2-1 fix: ConfigurationContext split into focused contexts
  */
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { createContext, useMemo, type ReactNode } from "react";
 import {
   defaultTitle,
   defaultDarkModeLogo,
@@ -49,11 +49,3 @@ export const AppBrandingProvider = ({
 
   return <AppBrandingContext.Provider value={value}>{children}</AppBrandingContext.Provider>;
 };
-
-/**
- * Hook to access app branding (title, logos)
- *
- * Use this when you only need branding info - prevents re-renders
- * when pipeline or form configuration changes.
- */
-export const useAppBranding = () => useContext(AppBrandingContext);

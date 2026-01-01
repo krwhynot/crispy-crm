@@ -102,11 +102,3 @@ export function ProductStatusHeader() {
   );
 }
 
-/**
- * All product column headers exported for use in ProductList
- */
-export const ProductColumnHeaders = {
-  Name: ProductNameHeader,
-  Category: ProductCategoryHeader,
-  Status: ProductStatusHeader,
-};

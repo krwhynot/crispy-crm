@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Package } from "lucide-react";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 
 const ProductDistributorListLazy = React.lazy(() => import("./ProductDistributorList"));
@@ -24,15 +23,6 @@ export const ProductDistributorEditView = () => (
   </ResourceErrorBoundary>
 );
 
-const productDistributors = {
-  list: ProductDistributorListView,
-  edit: ProductDistributorEditView,
-  create: ProductDistributorCreateView,
-  icon: Package,
-  options: { label: "DOT Numbers" },
-};
-
-export default productDistributors;
 export {
   ProductDistributorListView as ProductDistributorList,
   ProductDistributorEditView as ProductDistributorEdit,

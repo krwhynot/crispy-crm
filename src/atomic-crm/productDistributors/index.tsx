@@ -1,5 +1,4 @@
-/* eslint-disable react-refresh/only-export-components -- React Admin resource config requires mixed exports */
-export { default } from "./resource";
+export { default } from "./productDistributorsConfig";
 export {
   ProductDistributorList,
   ProductDistributorEdit,

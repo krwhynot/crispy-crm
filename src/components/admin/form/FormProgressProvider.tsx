@@ -1,26 +1,12 @@
 import * as React from "react";
+import type {
+  FieldProgress,
+  FormProgressContextValue,
+  FormProgressProviderProps,
+} from "./formProgressTypes";
 
-interface FieldProgress {
-  name: string;
-  isValid: boolean;
-  isRequired: boolean;
-}
-
-interface FormProgressContextValue {
-  fields: Record<string, FieldProgress>;
-  totalRequired: number;
-  completedRequired: number;
-  percentage: number;
-  registerField: (name: string, isRequired: boolean) => void;
-  markFieldValid: (name: string, isValid: boolean) => void;
-}
-
-interface FormProgressProviderProps {
-  children: React.ReactNode;
-  initialProgress?: number;
-}
-
-const FormProgressContext = React.createContext<FormProgressContextValue | null>(null);
+// Export context for use by formProgressUtils.ts hook
+export const FormProgressContext = React.createContext<FormProgressContextValue | null>(null);
 
 function FormProgressProvider({ children, initialProgress = 10 }: FormProgressProviderProps) {
   const [fields, setFields] = React.useState<Record<string, FieldProgress>>({});
@@ -77,13 +63,6 @@ function FormProgressProvider({ children, initialProgress = 10 }: FormProgressPr
   );
 }
 
-function useFormProgress(): FormProgressContextValue {
-  const context = React.useContext(FormProgressContext);
-  if (!context) {
-    throw new Error("useFormProgress must be used within a FormProgressProvider");
-  }
-  return context;
-}
-
-export { FormProgressProvider, useFormProgress };
-export type { FormProgressContextValue, FormProgressProviderProps, FieldProgress };
+export { FormProgressProvider };
+// Types re-exported from formProgressTypes.ts for backward compatibility
+export type { FormProgressContextValue, FormProgressProviderProps, FieldProgress } from "./formProgressTypes";

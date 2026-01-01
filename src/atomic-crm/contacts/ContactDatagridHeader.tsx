@@ -54,10 +54,3 @@ export function ContactStatusHeader() {
   );
 }
 
-/**
- * All contact column headers exported for use in ContactList
- */
-export const ContactColumnHeaders = {
-  Name: ContactNameHeader,
-  Status: ContactStatusHeader,
-};
