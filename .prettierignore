@@ -25,3 +25,5 @@ cypress/screenshots
 !.yarn/sdks
 !.yarn/versions
 .github
+.claude/state/
+.claude/skills/
