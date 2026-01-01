@@ -88,9 +88,10 @@ describe("Opportunity Delete Cascade", () => {
         previousData,
       });
 
-      // Assert - RPC was called (ID can be string or number)
+      // Assert - RPC receives coerced number (BIGINT requires numeric type)
+      // The data provider correctly converts string "456" → number 456
       expect(mockRpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
-        opp_id: opportunityId,
+        opp_id: 456, // Coerced from string "456" to number
       });
     });
 
