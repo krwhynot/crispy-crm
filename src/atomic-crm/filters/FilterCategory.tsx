@@ -23,6 +23,7 @@ export const FilterCategory = ({
   return (
     <div className="flex flex-col">
       <button
+        type="button"
         onClick={() => setIsExpanded(!isExpanded)}
         className="flex flex-row items-center justify-between w-full text-left min-h-12 px-2 hover:bg-muted rounded-md transition-colors group"
         aria-expanded={isExpanded}
