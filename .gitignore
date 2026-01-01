@@ -109,7 +109,7 @@ screenshots/
 # Claude Code session caches (keep commands/ and skills/)
 .claude/tsc-cache/
 .claude/agents/
-.claude/hooks/state/
+.claude/hooks/
 .claude/troubleshooting/
 .claude/state/manifest.json
 
