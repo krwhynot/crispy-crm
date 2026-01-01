@@ -169,7 +169,7 @@ export class TransformService {
         // Type-safe destructuring with unknown record to handle dynamic fields
         // Also strip quickCreate flag - not a database column (used for validation bypass)
         const processedDataWithDynamicFields = processedData as Partial<Contact> & Record<string, unknown>;
-        const { organizations, quickCreate, ...cleanedData } = processedDataWithDynamicFields;
+        const { organizations, quickCreate: _quickCreate, ...cleanedData } = processedDataWithDynamicFields;
 
         // Combine first_name and last_name into name field (required by database)
         if (cleanedData.first_name || cleanedData.last_name) {

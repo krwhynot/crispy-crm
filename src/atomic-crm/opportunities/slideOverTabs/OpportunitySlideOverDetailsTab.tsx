@@ -10,7 +10,7 @@ import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { DirtyStateTracker, SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane";
+import { SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { LeadSourceInput } from "../LeadSourceInput";

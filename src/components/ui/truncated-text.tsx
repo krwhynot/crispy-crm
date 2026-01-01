@@ -69,6 +69,7 @@ function TruncatedText({ children, className, maxLines = 1 }: TruncatedTextProps
       <TooltipTrigger asChild>
         <span
           ref={textRef}
+          role="button"
           tabIndex={0}
           className={cn(
             textClasses,

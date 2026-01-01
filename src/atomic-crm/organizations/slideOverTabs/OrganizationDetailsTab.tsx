@@ -88,7 +88,7 @@ export function OrganizationDetailsTab({
       });
       notify("Organization updated successfully", { type: "success" });
       onModeToggle?.();
-    } catch (error) {
+    } catch (_error) {
       notify("Error updating organization", { type: "error" });
     }
   };
