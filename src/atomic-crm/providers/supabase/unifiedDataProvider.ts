@@ -704,7 +704,7 @@ export const unifiedDataProvider: DataProvider = {
       // Belt-and-suspenders: Explicitly strip quickCreate for contacts
       // TransformService should do this, but adding explicit stripping per React Admin patterns
       if (resource === "contacts") {
-        const { quickCreate, ...contactDataWithoutFlag } = processedData as Record<string, unknown>;
+        const { quickCreate: _quickCreate, ...contactDataWithoutFlag } = processedData as Record<string, unknown>;
         processedData = contactDataWithoutFlag as typeof processedData;
       }
 

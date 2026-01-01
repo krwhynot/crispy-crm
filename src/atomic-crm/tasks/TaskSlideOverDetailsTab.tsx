@@ -61,7 +61,7 @@ export function TaskSlideOverDetailsTab({
       });
       notify("Task updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
-    } catch (error) {
+    } catch (_error) {
       notify("Error updating task", { type: "error" });
     }
   };
