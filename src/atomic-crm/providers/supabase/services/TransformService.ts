@@ -73,6 +73,8 @@ const OPPORTUNITY_FIELDS_TO_STRIP = [
   "contact_count",
   "product_count",
   "version", // Managed by DB for optimistic locking
+  // Owner/assignment fields (set programmatically, not via edit form)
+  "opportunity_owner_id",
 ] as const;
 
 /**
