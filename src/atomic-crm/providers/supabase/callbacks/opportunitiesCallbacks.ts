@@ -214,7 +214,7 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
 
     try {
       await dpWithRpc.rpc("archive_opportunity_with_relations", {
-        opp_id: params.id,
+        opp_id: Number(params.id),
       });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
