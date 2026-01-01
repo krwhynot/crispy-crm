@@ -199,29 +199,32 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
    * - opportunity_participants
    * - tasks
    */
-  beforeDelete: async (params, dataProvider) => {
+  beforeDelete: async (params) => {
     console.log('🟡 [opportunitiesCallbacks.beforeDelete] ENTRY - id:', params.id, 'type:', typeof params.id);
-    const dpWithRpc = dataProvider as DataProviderWithRpc;
 
-    if (!dpWithRpc.rpc) {
-      console.log('🟡 [opportunitiesCallbacks.beforeDelete] ERROR: DataProvider does not support RPC');
-      throw new Error("Archive opportunity failed: DataProvider does not support RPC");
+    // Validate ID before RPC call (fail-fast)
+    const numericId = Number(params.id);
+    if (!Number.isInteger(numericId) || numericId <= 0) {
+      throw new Error(`Invalid opportunity ID: ${params.id}`);
     }
 
-    try {
-      console.log('🟡 [opportunitiesCallbacks.beforeDelete] Calling dpWithRpc.rpc with opp_id:', Number(params.id));
-      await dpWithRpc.rpc("archive_opportunity_with_relations", {
-        opp_id: Number(params.id),
-      });
-      console.log('🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS');
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.error('🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:', message, error);
-      throw new Error(`Archive opportunity failed: ${message}`);
+    console.log('🟡 [opportunitiesCallbacks.beforeDelete] Calling supabase.rpc with opp_id:', numericId);
+
+    // Use Supabase client directly - bypasses DataProvider abstraction
+    // This is the React Admin recommended pattern for lifecycle callbacks
+    const { error: rpcError } = await supabase.rpc(
+      'archive_opportunity_with_relations',
+      { opp_id: numericId }
+    );
+
+    if (rpcError) {
+      console.error('🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:', rpcError);
+      throw new Error(`Archive opportunity failed: ${rpcError.message}`);
     }
 
-    // Return params with meta flag to skip actual delete
-    console.log('🟡 [opportunitiesCallbacks.beforeDelete] Returning with skipDelete: true');
+    console.log('🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS - returning skipDelete');
+
+    // Return params with meta flag to skip actual delete (RPC already archived)
     return {
       ...params,
       meta: { ...params.meta, skipDelete: true },
