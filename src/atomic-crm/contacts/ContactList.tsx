@@ -11,6 +11,7 @@ import { TextField } from "@/components/admin/text-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
 import { FunctionField } from "react-admin";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
@@ -138,8 +139,11 @@ const ContactListLayout = ({
           <FunctionField
             label={<ContactNameHeader />}
             sortBy="first_name"
-            render={(record: Contact) => formatFullName(record.first_name, record.last_name)}
-            cellClassName="truncate max-w-[200px]"
+            render={(record: Contact) => (
+              <TruncatedText className="max-w-[200px]">
+                {formatFullName(record.first_name, record.last_name)}
+              </TruncatedText>
+            )}
           />
 
           {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}

@@ -19,6 +19,7 @@
  */
 
 import { memo, useMemo } from "react";
+import { pluralize } from "@/lib/utils/pluralize";
 // Card wrapper removed - parent DashboardTabPanel provides container
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -78,7 +79,7 @@ function formatRelativeTime(dateString: string): string {
 function getInitials(firstName: string | null, lastName: string | null): string {
   const first = firstName?.[0] || "";
   const last = lastName?.[0] || "";
-  return `${first}${last}`.toUpperCase() || "?";
+  return `${first}${last}`.toUpperCase() || "??";
 }
 
 /**
@@ -184,7 +185,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
         </div>
         {activityCount > 0 && (
           <p className="mt-2 text-xs text-muted-foreground">
-            Showing {activityCount} recent activities
+            Showing {pluralize(activityCount, "recent activity", "recent activities")}
           </p>
         )}
       </div>
