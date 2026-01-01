@@ -178,7 +178,7 @@ export const NotesIterator = ({
 NotesIterator requires `ReferenceManyField` wrapper to provide list context:
 
 ```tsx
-// src/atomic-crm/contacts/ContactShow.tsx (lines 91-99)
+// src/atomic-crm/contacts/ContactShow.tsx
 
 <TabsContent value="notes" className="pt-2">
   <ReferenceManyField

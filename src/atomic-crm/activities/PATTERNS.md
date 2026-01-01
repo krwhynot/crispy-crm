@@ -40,7 +40,7 @@ Dialog (reusable)   (task completion)    Entry (display)
 Controlled Sheet dialog for rapid activity entry from anywhere in the app with entity context pre-fill and draft persistence.
 
 ```tsx
-// QuickLogActivityDialog.tsx - Lines 34-41
+// QuickLogActivityDialog.tsx
 export interface ActivityEntityContext {
   /** Pre-fill and lock the contact field */
   contactId?: number;
@@ -50,7 +50,7 @@ export interface ActivityEntityContext {
   opportunityId?: number;
 }
 
-// Configuration system - Lines 61-94
+// Configuration system
 export interface QuickLogActivityDialogConfig {
   /** Pre-select activity type (e.g., from MobileQuickActionBar) */
   activityType?: ActivityTypePreset;
@@ -89,7 +89,7 @@ export interface QuickLogActivityDialogConfig {
 ### Lazy Loading Pattern
 
 ```tsx
-// Lines 17-22 - Saves ~15-20KB from initial chunk
+// Saves ~15-20KB from initial chunk via lazy loading
 const QuickLogForm = lazy(() =>
   import("../dashboard/v3/components/QuickLogForm").then((m) => ({
     default: m.QuickLogForm,
@@ -117,7 +117,7 @@ const QuickLogForm = lazy(() =>
 Sidebar filter panel using collapsible `FilterCategory` components with 13 interaction types, sample status, dates, and sentiment filtering.
 
 ```tsx
-// ActivityListFilter.tsx - Lines 73-84
+// ActivityListFilter.tsx
 <FilterCategory label="Activity Type" icon={<Tag className="h-4 w-4" />}>
   {INTERACTION_TYPE_OPTIONS.map((option) => (
     <ToggleFilterButton
@@ -134,7 +134,7 @@ Sidebar filter panel using collapsible `FilterCategory` components with 13 inter
 ### Quick Filters
 
 ```tsx
-// Lines 42-66 - Most commonly used filters with prominent placement
+// Most commonly used filters with prominent placement
 <div className="flex flex-col gap-2">
   <h3 className="font-semibold text-sm text-muted-foreground">Quick Filters</h3>
   <ToggleFilterButton
@@ -162,7 +162,7 @@ Sidebar filter panel using collapsible `FilterCategory` components with 13 inter
 ### Date Range Presets
 
 ```tsx
-// Lines 110-139 - Uses date-fns for date calculations
+// Uses date-fns for date calculations
 <FilterCategory label="Activity Date" icon={<Calendar className="h-4 w-4" />}>
   <ToggleFilterButton
     className="w-full justify-between"
@@ -210,7 +210,7 @@ Sidebar filter panel using collapsible `FilterCategory` components with 13 inter
 Multi-stage visual workflow component for sample activities with optional interactive progression and status updates.
 
 ```tsx
-// SampleStatusBadge.tsx - Lines 46-51
+// SampleStatusBadge.tsx
 export const SAMPLE_STATUS_WORKFLOW: readonly SampleStatus[] = [
   "sent",
   "received",
@@ -218,7 +218,7 @@ export const SAMPLE_STATUS_WORKFLOW: readonly SampleStatus[] = [
   "feedback_received",
 ] as const;
 
-// Lines 69-102 - Status configuration with P8 design colors
+// Status configuration with P8 design colors
 export const SAMPLE_STATUS_CONFIG: Record<SampleStatus, StatusConfig> = {
   sent: {
     label: "Sent",
@@ -258,7 +258,7 @@ export const SAMPLE_STATUS_CONFIG: Record<SampleStatus, StatusConfig> = {
 ### Workflow Helper Functions
 
 ```tsx
-// Lines 108-136
+// Workflow helper functions
 export function getNextStatus(currentStatus: SampleStatus): SampleStatus | undefined {
   const currentIndex = SAMPLE_STATUS_WORKFLOW.indexOf(currentStatus);
   if (currentIndex === -1 || currentIndex >= SAMPLE_STATUS_WORKFLOW.length - 1) {
@@ -278,10 +278,10 @@ export function isValidTransition(from: SampleStatus, to: SampleStatus): boolean
 ### Component Modes
 
 ```tsx
-// Read-only badge (Lines 279-286)
+// Read-only badge
 <SampleStatusBadge status="received" />
 
-// Interactive with stepper (Lines 292-449)
+// Interactive with stepper
 <SampleStatusBadge
   status="received"
   activityId={123}
@@ -294,7 +294,7 @@ export function isValidTransition(from: SampleStatus, to: SampleStatus): boolean
 ### PATCH Update Pattern
 
 ```tsx
-// Lines 205-235 - Uses React Admin useUpdate hook
+// Uses React Admin useUpdate hook
 const handleAdvanceStatus = useCallback(async () => {
   if (!activityId || !nextStatus) return;
 
@@ -332,7 +332,7 @@ const handleAdvanceStatus = useCallback(async () => {
 Standard list page with keyboard navigation, 8-column datagrid, and CSV export with relationship enrichment.
 
 ```tsx
-// ActivityList.tsx - Lines 163-182
+// ActivityList.tsx - Sentiment column
 <FunctionField
   label="Sentiment"
   sortable={false}
@@ -358,7 +358,7 @@ Standard list page with keyboard navigation, 8-column datagrid, and CSV export w
 ### Conditional Sample Status Column
 
 ```tsx
-// Lines 149-160 - Only renders for sample activities
+// Only renders for sample activities
 <FunctionField
   label="Sample Status"
   sortable={false}
@@ -422,7 +422,7 @@ export type ActivityDraft = z.infer<typeof activityDraftSchema>;
 ### Load/Save/Clear Functions
 
 ```tsx
-// QuickLogActivityDialog.tsx - Lines 172-224
+// QuickLogActivityDialog.tsx - Draft persistence
 const DRAFT_SAVE_DEBOUNCE_MS = 500;
 const DRAFT_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -476,7 +476,7 @@ function clearDraft(storageKey: string): void {
 ### Debounced Save Integration
 
 ```tsx
-// Lines 470-484
+// Debounced save handler
 const handleDraftChange = useCallback(
   (formData: Partial<ActivityLogInput>) => {
     if (!enableDraftPersistence) return;
@@ -610,7 +610,7 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
 Comprehensive form layout with 4 logical sections using FormSection and FormFieldWrapper components.
 
 ```tsx
-// ActivitySinglePage.tsx - Lines 15-70 (Activity Details section)
+// ActivitySinglePage.tsx - Activity Details section
 export default function ActivitySinglePage() {
   return (
     <div className="space-y-6">
@@ -701,7 +701,7 @@ export default function ActivitySinglePage() {
 CSV export functionality with parallel relationship fetching and name enrichment.
 
 ```tsx
-// ActivityList.tsx - Lines 237-305
+// ActivityList.tsx - CSV export with relationship enrichment
 const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) => {
   // Fetch related data in parallel
   const contacts = await fetchRelatedRecords<Contact>(records, "contact_id", "contacts");
@@ -890,8 +890,8 @@ When adding a new activity type:
 
 1. [ ] Add to `interactionTypeSchema` in `src/atomic-crm/validation/activities.ts`
 2. [ ] Add to `INTERACTION_TYPE_OPTIONS` with label and value
-3. [ ] Update `QuickLogActivity.tsx` keyword inference (Lines 70-93)
-4. [ ] Add icon mapping in `ActivityTimelineEntry.tsx` (Lines 15-28)
+3. [ ] Update `QuickLogActivity.tsx` keyword inference
+4. [ ] Add icon mapping in `ActivityTimelineEntry.tsx`
 5. [ ] Update `ActivityListFilter.tsx` if type needs special badge color
 6. [ ] Run TypeScript check: `npx tsc --noEmit`
 7. [ ] Test in browser: create activity with new type

@@ -45,7 +45,7 @@ Data Flow:
 Dropdown menu actions with date calculations for task management.
 
 ```tsx
-// Task.tsx:35-50
+// Task.tsx - Date calculations for postponement
 import {
   addDays,
   addWeeks,
@@ -90,7 +90,7 @@ const nextMondayFormatted = format(nextMonday, "EEE, MMM d");
 Checkbox toggle with ISO timestamps and activity logging workflow.
 
 ```tsx
-// Task.tsx:78-98
+// Task.tsx - Completion toggle handler
 const handleCheck = (checked: boolean) => {
   update(
     "tasks",
@@ -138,7 +138,7 @@ const handleCheck = (checked: boolean) => {
 
 Smart date calculations for postponement actions.
 
-### C.1: Dropdown Postponement (Task.tsx:169-202)
+### C.1: Dropdown Postponement
 
 ```tsx
 {canPostponeTomorrow && (
@@ -177,7 +177,7 @@ Smart date calculations for postponement actions.
 )}
 ```
 
-### C.2: Snooze Schema (validation/task.ts:52-55)
+### C.2: Snooze Schema
 
 ```tsx
 // Uses preprocess to handle empty string from forms → null
@@ -203,7 +203,7 @@ snooze_until: z.preprocess(
 Multi-criteria filter configuration for FilterChipBar.
 
 ```tsx
-// taskFilterConfig.ts:62-103
+// taskFilterConfig.ts
 export const TASK_FILTER_CONFIG = validateFilterConfig([
   // PRIMARY FILTERS: Due date ranges first
   {
@@ -248,7 +248,7 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
 ]);
 ```
 
-### D.1: Date Label Formatting (taskFilterConfig.ts:26-36)
+### D.1: Date Label Formatting
 
 ```tsx
 function formatDateLabel(value: unknown): string {
@@ -278,7 +278,7 @@ function formatDateLabel(value: unknown): string {
 
 Slide-over with view/edit mode switching.
 
-### E.1: View Mode (TaskSlideOverDetailsTab.tsx:138-236)
+### E.1: View Mode
 
 ```tsx
 // View mode - display all task fields
@@ -344,7 +344,7 @@ return (
 );
 ```
 
-### E.2: Edit Mode (TaskSlideOverDetailsTab.tsx:88-134)
+### E.2: Edit Mode
 
 ```tsx
 if (mode === "edit") {
@@ -380,7 +380,7 @@ if (mode === "edit") {
 }
 ```
 
-### E.3: Save Handler (TaskSlideOverDetailsTab.tsx:55-68)
+### E.3: Save Handler
 
 ```tsx
 const handleSave = async (data: Partial<Task>) => {
@@ -415,7 +415,7 @@ const handleSave = async (data: Partial<Task>) => {
 Read-only tab showing associated entities.
 
 ```tsx
-// TaskRelatedItemsTab.tsx:27-106
+// TaskRelatedItemsTab.tsx
 export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
   const hasRelationships =
     record.organization_id || record.contact_id || record.opportunity_id || record.sales_id;
@@ -499,7 +499,7 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
 Filters completed tasks for undo UX.
 
 ```tsx
-// TasksIterator.tsx:1-30
+// TasksIterator.tsx
 import { isAfter } from "date-fns";
 import { useListContext } from "ra-core";
 import { cn } from "@/lib/utils";
@@ -549,7 +549,7 @@ export const TasksIterator = ({
 Schema-derived defaults following Engineering Constitution.
 
 ```tsx
-// validation/task.ts:113-119
+// validation/task.ts
 /**
  * Generate default values for task forms
  * Per Constitution: Form state from schema via .partial().parse({})
@@ -563,7 +563,7 @@ export const getTaskDefaultValues = () =>
   });
 ```
 
-### H.1: Zod Schema with strictObject (validation/task.ts:35-62)
+### H.1: Zod Schema with strictObject
 
 ```tsx
 export const taskSchema = z.strictObject({
@@ -595,7 +595,7 @@ export const taskSchema = z.strictObject({
 });
 ```
 
-### H.2: Derived Schemas (validation/task.ts:75-93)
+### H.2: Derived Schemas
 
 ```tsx
 // For creates: Omit system fields (auto-populated by DB)
@@ -862,14 +862,14 @@ Add to this PATTERNS.md if new type has special handling.
 
 ## Quick Reference
 
-| Pattern | File | Line | Purpose |
-|---------|------|------|---------|
-| Date Calculations | `Task.tsx` | 35-50 | Postponement logic |
-| Completion Toggle | `Task.tsx` | 78-98 | Checkbox + activity dialog |
-| Postpone Menu | `Task.tsx` | 169-202 | Dropdown actions |
-| Filter Config | `taskFilterConfig.ts` | 62-103 | FilterChipBar setup |
-| View/Edit Mode | `TaskSlideOverDetailsTab.tsx` | 88-236 | Slide-over content |
-| Related Items | `TaskRelatedItemsTab.tsx` | 27-106 | Association display |
-| Iterator Filter | `TasksIterator.tsx` | 17-21 | 5-minute completion window |
-| Form Defaults | `validation/task.ts` | 113-119 | Schema-derived defaults |
-| Zod Schema | `validation/task.ts` | 35-62 | strictObject validation |
+| Pattern | File | Purpose |
+|---------|------|---------|
+| Date Calculations | `Task.tsx` | Postponement logic |
+| Completion Toggle | `Task.tsx` | Checkbox + activity dialog |
+| Postpone Menu | `Task.tsx` | Dropdown actions |
+| Filter Config | `taskFilterConfig.ts` | FilterChipBar setup |
+| View/Edit Mode | `TaskSlideOverDetailsTab.tsx` | Slide-over content |
+| Related Items | `TaskRelatedItemsTab.tsx` | Association display |
+| Iterator Filter | `TasksIterator.tsx` | 5-minute completion window |
+| Form Defaults | `validation/task.ts` | Schema-derived defaults |
+| Zod Schema | `validation/task.ts` | strictObject validation |
