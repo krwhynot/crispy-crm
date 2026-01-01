@@ -120,14 +120,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
   const [pendingComplete, setPendingComplete] = useState(false);
   const notify = useNotify();
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: String(task.id),
     disabled: isDragOverlay,
   });
@@ -282,11 +275,11 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         onComplete={async () => {
           try {
             await onComplete(task.id);
-            setPendingComplete(false);  // Reset pending (task is now actually complete)
+            setPendingComplete(false); // Reset pending (task is now actually complete)
             setShowCompletionDialog(false);
             notify("Task completed", { type: "success" });
           } catch {
-            setPendingComplete(false);  // Revert on error too
+            setPendingComplete(false); // Revert on error too
             notify("Failed to complete task", { type: "error" });
           }
         }}

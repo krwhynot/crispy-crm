@@ -34,9 +34,7 @@ export function CancelButton({ skipDirtyCheck = false, ...props }: CancelButtonP
 
   const handleCancel = useCallback(() => {
     if (!skipDirtyCheck && isDirty) {
-      const confirmed = window.confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
-      );
+      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
       if (!confirmed) return;
     }
     navigate(-1);

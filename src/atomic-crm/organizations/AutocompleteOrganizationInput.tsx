@@ -19,7 +19,10 @@ export const AutocompleteOrganizationInput = ({
       helperText={helperText}
       create={
         <QuickCreateOrganizationRA
-          organizationType={(organizationType as "customer" | "prospect" | "principal" | "distributor") || "customer"}
+          organizationType={
+            (organizationType as "customer" | "prospect" | "principal" | "distributor") ||
+            "customer"
+          }
         />
       }
       createItemLabel="Create %{item}"

@@ -26,7 +26,9 @@ interface OpportunityWithJunction extends Opportunity {
 export function OpportunitiesTab() {
   const { record: contact, isPending } = useShowContext<Contact>();
   const [showLinkModal, setShowLinkModal] = useState(false);
-  const [unlinkingOpportunity, setUnlinkingOpportunity] = useState<OpportunityWithJunction | null>(null);
+  const [unlinkingOpportunity, setUnlinkingOpportunity] = useState<OpportunityWithJunction | null>(
+    null
+  );
   const refresh = useRefresh();
   const [create] = useCreate();
   const notify = useNotify();
@@ -187,10 +189,13 @@ export function OpportunitiesTab() {
   const linkedOpportunityIds = linkedOpportunities.map((opp: OpportunityWithJunction) => opp.id);
 
   // Convert array to object keyed by ID for React Admin Datagrid
-  const linkedOpportunitiesData = linkedOpportunities.reduce((acc: Record<Identifier, OpportunityWithJunction>, opp: OpportunityWithJunction) => {
-    acc[opp.id] = opp;
-    return acc;
-  }, {} as Record<Identifier, OpportunityWithJunction>);
+  const linkedOpportunitiesData = linkedOpportunities.reduce(
+    (acc: Record<Identifier, OpportunityWithJunction>, opp: OpportunityWithJunction) => {
+      acc[opp.id] = opp;
+      return acc;
+    },
+    {} as Record<Identifier, OpportunityWithJunction>
+  );
 
   const listContext = {
     data: linkedOpportunitiesData,

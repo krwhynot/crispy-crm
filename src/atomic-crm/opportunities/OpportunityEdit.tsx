@@ -51,10 +51,7 @@ const OpportunityEdit = () => {
 const OpportunityEditForm = () => {
   const record = useRecordContext<Opportunity>();
 
-  const defaultValues = useMemo(
-    () => opportunitySchema.partial().parse(record),
-    [record]
-  );
+  const defaultValues = useMemo(() => opportunitySchema.partial().parse(record), [record]);
 
   // Wait for record to load before rendering form
   if (!record) return null;

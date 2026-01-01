@@ -49,8 +49,8 @@ let mutationVersion = 0;
 const mockGetList = vi.fn().mockImplementation((resource: string, _params: any) => {
   if (resource === "tasks") {
     // Filter out completed and deleted tasks to simulate server-side filtering
-    const filteredTasks = baseTasksData.filter((task: any) =>
-      !completedTaskIds.has(task.id) && !deletedTaskIds.has(task.id)
+    const filteredTasks = baseTasksData.filter(
+      (task: any) => !completedTaskIds.has(task.id) && !deletedTaskIds.has(task.id)
     );
     return Promise.resolve({
       data: filteredTasks,
@@ -123,7 +123,11 @@ vi.mock("react-admin", async (importOriginal) => {
     ...actual,
     useDataProvider: () => stableDataProvider,
     // Mock useGetList using React state to simulate async behavior
-    useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
+    useGetList: (
+      resource: string,
+      params: any,
+      options?: { enabled?: boolean; staleTime?: number }
+    ) => {
       // Support enabled option - if false, don't fetch
       const enabled = options?.enabled !== false;
 
@@ -438,7 +442,7 @@ describe("useMyTasks", () => {
       // Return updated task with tomorrow's date when update is called
       const tomorrowDate = addDays(dates.today, 1);
       mockUpdate.mockResolvedValueOnce({
-        data: { ...mockTask, due_date: tomorrowDate.toISOString() }
+        data: { ...mockTask, due_date: tomorrowDate.toISOString() },
       });
 
       const { result } = renderHook(() => useMyTasks(), { wrapper });
@@ -459,9 +463,12 @@ describe("useMyTasks", () => {
       });
 
       // Should have moved to tomorrow status via optimistic update
-      await waitFor(() => {
-        expect(result.current.tasks[0].status).toBe("tomorrow");
-      }, { timeout: 2000 });
+      await waitFor(
+        () => {
+          expect(result.current.tasks[0].status).toBe("tomorrow");
+        },
+        { timeout: 2000 }
+      );
     });
 
     it("should rollback on API failure", async () => {

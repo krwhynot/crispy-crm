@@ -27,15 +27,9 @@ const SalesShowContent = () => {
                 </h2>
                 <div className="text-sm text-muted-foreground mt-1">
                   {record.email && <div>{record.email}</div>}
-                  {record.role && (
-                    <div className="mt-1 capitalize">
-                      Role: {record.role}
-                    </div>
-                  )}
+                  {record.role && <div className="mt-1 capitalize">Role: {record.role}</div>}
                   {record.disabled !== undefined && (
-                    <div className="mt-1">
-                      Status: {record.disabled ? "Inactive" : "Active"}
-                    </div>
+                    <div className="mt-1">Status: {record.disabled ? "Inactive" : "Active"}</div>
                   )}
                 </div>
               </div>

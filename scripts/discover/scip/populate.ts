@@ -40,17 +40,13 @@ interface PopulateResult {
   };
 }
 
-export async function populateDatabase(
-  options: PopulateOptions = {}
-): Promise<PopulateResult> {
+export async function populateDatabase(options: PopulateOptions = {}): Promise<PopulateResult> {
   const { verbose = false, incremental = false } = options;
   const startTime = performance.now();
 
   // Verify SCIP index exists
   if (!fs.existsSync(SCIP_INDEX_PATH)) {
-    throw new Error(
-      `SCIP index not found at ${SCIP_INDEX_PATH}. Run 'just discover-scip' first.`
-    );
+    throw new Error(`SCIP index not found at ${SCIP_INDEX_PATH}. Run 'just discover-scip' first.`);
   }
 
   if (verbose) {
@@ -147,8 +143,7 @@ export async function populateDatabase(
         // Find definition occurrence for location
         const defOcc = document.occurrences.find(
           (occ) =>
-            occ.symbol === symbolInfo.symbol &&
-            (occ.symbol_roles & SymbolRoles.Definition) !== 0
+            occ.symbol === symbolInfo.symbol && (occ.symbol_roles & SymbolRoles.Definition) !== 0
         );
 
         if (defOcc) {
@@ -176,18 +171,11 @@ export async function populateDatabase(
         if (!symbolId) continue;
 
         const loc = parseRange(occurrence.range);
-        const isDefinition =
-          (occurrence.symbol_roles & SymbolRoles.Definition) !== 0;
+        const isDefinition = (occurrence.symbol_roles & SymbolRoles.Definition) !== 0;
         const isImport = (occurrence.symbol_roles & SymbolRoles.Import) !== 0;
         const isWrite = (occurrence.symbol_roles & SymbolRoles.WriteAccess) !== 0;
 
-        const role = isDefinition
-          ? "definition"
-          : isImport
-            ? "import"
-            : isWrite
-              ? "write"
-              : "read";
+        const role = isDefinition ? "definition" : isImport ? "import" : isWrite ? "write" : "read";
 
         insertRef.run(
           symbolId,

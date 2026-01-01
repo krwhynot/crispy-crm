@@ -55,15 +55,9 @@ function TestOpportunityWizard({
           <WizardStep step={1}>
             <div data-testid="step-1-content">
               <label htmlFor="name">Opportunity Name</label>
-              <input
-                id="name"
-                {...methods.register("name", { required: "Name is required" })}
-              />
+              <input id="name" {...methods.register("name", { required: "Name is required" })} />
               <label htmlFor="customer">Customer Organization</label>
-              <input
-                id="customer"
-                {...methods.register("customer_organization_id")}
-              />
+              <input id="customer" {...methods.register("customer_organization_id")} />
             </div>
           </WizardStep>
 
@@ -81,11 +75,7 @@ function TestOpportunityWizard({
                 <option value="high">High</option>
               </select>
               <label htmlFor="close-date">Est. Close Date</label>
-              <input
-                id="close-date"
-                type="date"
-                {...methods.register("estimated_close_date")}
-              />
+              <input id="close-date" type="date" {...methods.register("estimated_close_date")} />
             </div>
           </WizardStep>
 
@@ -101,11 +91,7 @@ function TestOpportunityWizard({
             </div>
           </WizardStep>
 
-          <WizardNavigation
-            submitLabel="Create Opportunity"
-            showCancel
-            onCancel={vi.fn()}
-          />
+          <WizardNavigation submitLabel="Create Opportunity" showCancel onCancel={vi.fn()} />
         </FormWizard>
       </FormProgressProvider>
     </FormProvider>
@@ -159,9 +145,7 @@ describe("OpportunityCreateWizard Integration", () => {
       expect(listItems[0]).toHaveAttribute("aria-current", "step");
 
       // Previous button should not be visible on step 1
-      expect(
-        screen.queryByRole("button", { name: /previous/i })
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /previous/i })).not.toBeInTheDocument();
 
       // Next button should be visible
       expect(screen.getByRole("button", { name: /next/i })).toBeInTheDocument();
@@ -188,9 +172,7 @@ describe("OpportunityCreateWizard Integration", () => {
       });
 
       // Previous button should now be visible
-      expect(
-        screen.getByRole("button", { name: /previous/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /previous/i })).toBeInTheDocument();
     });
 
     test("Previous button goes back to previous step", async () => {
@@ -208,9 +190,7 @@ describe("OpportunityCreateWizard Integration", () => {
       await user.click(screen.getByRole("button", { name: /next/i }));
 
       await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: /previous/i })
-        ).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /previous/i })).toBeInTheDocument();
       });
 
       // Go back to step 1
@@ -223,9 +203,7 @@ describe("OpportunityCreateWizard Integration", () => {
       });
 
       // Previous button should be hidden again
-      expect(
-        screen.queryByRole("button", { name: /previous/i })
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /previous/i })).not.toBeInTheDocument();
     });
 
     test("shows checkmark for completed steps", async () => {
@@ -270,12 +248,8 @@ describe("OpportunityCreateWizard Integration", () => {
 
       // Should show submit button instead of Next
       await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: "Create Opportunity" })
-        ).toBeInTheDocument();
-        expect(
-          screen.queryByRole("button", { name: /next/i })
-        ).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Create Opportunity" })).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: /next/i })).not.toBeInTheDocument();
       });
     });
 
@@ -284,22 +258,15 @@ describe("OpportunityCreateWizard Integration", () => {
       const onSubmit = vi.fn();
 
       // Use single-step wizard to test submission directly
-      const singleStep: WizardStepConfig[] = [
-        { id: "only", title: "Only Step", fields: [] },
-      ];
+      const singleStep: WizardStepConfig[] = [{ id: "only", title: "Only Step", fields: [] }];
 
-      renderWithWizard(
-        <WizardNavigation submitLabel="Create Opportunity" />,
-        {
-          steps: singleStep,
-          onSubmit,
-          defaultValues: { name: "Test Opportunity" },
-        }
-      );
+      renderWithWizard(<WizardNavigation submitLabel="Create Opportunity" />, {
+        steps: singleStep,
+        onSubmit,
+        defaultValues: { name: "Test Opportunity" },
+      });
 
-      await user.click(
-        screen.getByRole("button", { name: "Create Opportunity" })
-      );
+      await user.click(screen.getByRole("button", { name: "Create Opportunity" }));
 
       await waitFor(() => {
         expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -339,10 +306,9 @@ describe("OpportunityCreateWizard Integration", () => {
     });
 
     test("all buttons have 44px touch targets", () => {
-      renderWithWizard(
-        <WizardNavigation showCancel onCancel={vi.fn()} />,
-        { steps: OPPORTUNITY_WIZARD_STEPS }
-      );
+      renderWithWizard(<WizardNavigation showCancel onCancel={vi.fn()} />, {
+        steps: OPPORTUNITY_WIZARD_STEPS,
+      });
 
       const nextButton = screen.getByRole("button", { name: /next/i });
       const cancelButton = screen.getByRole("button", { name: /cancel/i });
@@ -362,10 +328,7 @@ describe("OpportunityCreateWizard Integration", () => {
         return (
           <FormProvider {...methods}>
             <FormProgressProvider>
-              <FormWizard
-                steps={OPPORTUNITY_WIZARD_STEPS}
-                onSubmit={vi.fn()}
-              >
+              <FormWizard steps={OPPORTUNITY_WIZARD_STEPS} onSubmit={vi.fn()}>
                 <WizardStep step={1}>
                   <div data-testid="step-1">Step 1 Content</div>
                 </WizardStep>
@@ -417,21 +380,15 @@ describe("OpportunityCreateWizard Integration", () => {
 
       await waitFor(() => {
         // Step 2 container should now be visible
-        expect(screen.getByTestId("step-2").parentElement).not.toHaveClass(
-          "hidden"
-        );
-        expect(
-          screen.getByTestId("step-2").parentElement
-        ).not.toHaveAttribute("aria-hidden", "true");
-
-        // Step 1 container should now be hidden
-        expect(screen.getByTestId("step-1").parentElement).toHaveClass(
-          "hidden"
-        );
-        expect(screen.getByTestId("step-1").parentElement).toHaveAttribute(
+        expect(screen.getByTestId("step-2").parentElement).not.toHaveClass("hidden");
+        expect(screen.getByTestId("step-2").parentElement).not.toHaveAttribute(
           "aria-hidden",
           "true"
         );
+
+        // Step 1 container should now be hidden
+        expect(screen.getByTestId("step-1").parentElement).toHaveClass("hidden");
+        expect(screen.getByTestId("step-1").parentElement).toHaveAttribute("aria-hidden", "true");
       });
     });
   });
@@ -439,25 +396,16 @@ describe("OpportunityCreateWizard Integration", () => {
   describe("Loading State", () => {
     test("shows loading state during submission", async () => {
       const user = userEvent.setup();
-      const onSubmit = vi.fn(
-        () => new Promise((resolve) => setTimeout(resolve, 500))
-      );
+      const onSubmit = vi.fn(() => new Promise((resolve) => setTimeout(resolve, 500)));
 
-      const singleStep: WizardStepConfig[] = [
-        { id: "only", title: "Only Step", fields: [] },
-      ];
+      const singleStep: WizardStepConfig[] = [{ id: "only", title: "Only Step", fields: [] }];
 
-      renderWithWizard(
-        <WizardNavigation submitLabel="Create Opportunity" />,
-        {
-          steps: singleStep,
-          onSubmit,
-        }
-      );
+      renderWithWizard(<WizardNavigation submitLabel="Create Opportunity" />, {
+        steps: singleStep,
+        onSubmit,
+      });
 
-      await user.click(
-        screen.getByRole("button", { name: "Create Opportunity" })
-      );
+      await user.click(screen.getByRole("button", { name: "Create Opportunity" }));
 
       // Should show loading state
       await waitFor(() => {
@@ -467,25 +415,16 @@ describe("OpportunityCreateWizard Integration", () => {
 
     test("disables buttons during submission", async () => {
       const user = userEvent.setup();
-      const onSubmit = vi.fn(
-        () => new Promise((resolve) => setTimeout(resolve, 500))
-      );
+      const onSubmit = vi.fn(() => new Promise((resolve) => setTimeout(resolve, 500)));
 
-      const singleStep: WizardStepConfig[] = [
-        { id: "only", title: "Only Step", fields: [] },
-      ];
+      const singleStep: WizardStepConfig[] = [{ id: "only", title: "Only Step", fields: [] }];
 
-      renderWithWizard(
-        <WizardNavigation submitLabel="Create Opportunity" />,
-        {
-          steps: singleStep,
-          onSubmit,
-        }
-      );
+      renderWithWizard(<WizardNavigation submitLabel="Create Opportunity" />, {
+        steps: singleStep,
+        onSubmit,
+      });
 
-      await user.click(
-        screen.getByRole("button", { name: "Create Opportunity" })
-      );
+      await user.click(screen.getByRole("button", { name: "Create Opportunity" }));
 
       // Button should be disabled
       await waitFor(() => {
@@ -498,24 +437,20 @@ describe("OpportunityCreateWizard Integration", () => {
     test("Cancel button is visible when showCancel is true", () => {
       const onCancel = vi.fn();
 
-      renderWithWizard(
-        <WizardNavigation showCancel onCancel={onCancel} />,
-        { steps: OPPORTUNITY_WIZARD_STEPS }
-      );
+      renderWithWizard(<WizardNavigation showCancel onCancel={onCancel} />, {
+        steps: OPPORTUNITY_WIZARD_STEPS,
+      });
 
-      expect(
-        screen.getByRole("button", { name: /cancel/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
     });
 
     test("Cancel button calls onCancel when clicked", async () => {
       const user = userEvent.setup();
       const onCancel = vi.fn();
 
-      renderWithWizard(
-        <WizardNavigation showCancel onCancel={onCancel} />,
-        { steps: OPPORTUNITY_WIZARD_STEPS }
-      );
+      renderWithWizard(<WizardNavigation showCancel onCancel={onCancel} />, {
+        steps: OPPORTUNITY_WIZARD_STEPS,
+      });
 
       await user.click(screen.getByRole("button", { name: /cancel/i }));
 

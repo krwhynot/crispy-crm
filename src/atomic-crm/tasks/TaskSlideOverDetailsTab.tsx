@@ -226,10 +226,7 @@ export function TaskSlideOverDetailsTab({
           )}
 
           {/* Metadata - replaces manual Timeline section */}
-          <SidepaneMetadata
-            createdAt={record.created_at}
-            updatedAt={record.updated_at}
-          />
+          <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
         </div>
       </ScrollArea>
     </RecordContextProvider>

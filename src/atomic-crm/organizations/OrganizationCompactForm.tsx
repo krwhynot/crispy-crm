@@ -20,11 +20,7 @@ export const OrganizationCompactForm = () => {
 
   return (
     <div className="space-y-6">
-      <FormSectionWithProgress
-        id="basic-info"
-        title="Basic Information"
-        requiredFields={["name"]}
-      >
+      <FormSectionWithProgress id="basic-info" title="Basic Information" requiredFields={["name"]}>
         <CompactFormRow>
           <div data-tutorial="org-name">
             <FormFieldWrapper name="name" isRequired>
@@ -56,11 +52,7 @@ export const OrganizationCompactForm = () => {
         </CompactFormRow>
       </FormSectionWithProgress>
 
-      <FormSectionWithProgress
-        id="account-segment"
-        title="Account & Segment"
-        requiredFields={[]}
-      >
+      <FormSectionWithProgress id="account-segment" title="Account & Segment" requiredFields={[]}>
         <CompactFormRow>
           <FormFieldWrapper name="sales_id">
             <ReferenceInput
@@ -69,7 +61,11 @@ export const OrganizationCompactForm = () => {
               sort={{ field: "last_name", order: "ASC" }}
               filter={{ "disabled@neq": true, "user_id@not.is": null }}
             >
-              <SelectInput helperText={false} label="Account Manager" optionText={saleOptionRenderer} />
+              <SelectInput
+                helperText={false}
+                label="Account Manager"
+                optionText={saleOptionRenderer}
+              />
             </ReferenceInput>
           </FormFieldWrapper>
           <FormFieldWrapper name="segment_id">
@@ -78,17 +74,23 @@ export const OrganizationCompactForm = () => {
         </CompactFormRow>
       </FormSectionWithProgress>
 
-      <FormSectionWithProgress
-        id="location"
-        title="Location"
-        requiredFields={[]}
-      >
+      <FormSectionWithProgress id="location" title="Location" requiredFields={[]}>
         <CompactFormRow>
           <FormFieldWrapper name="address">
-            <TextInput source="address" label="Street" helperText={false} autoComplete="address-line1" />
+            <TextInput
+              source="address"
+              label="Street"
+              helperText={false}
+              autoComplete="address-line1"
+            />
           </FormFieldWrapper>
           <FormFieldWrapper name="city">
-            <TextInput source="city" label="City" helperText={false} autoComplete="address-level2" />
+            <TextInput
+              source="city"
+              label="City"
+              helperText={false}
+              autoComplete="address-level2"
+            />
           </FormFieldWrapper>
         </CompactFormRow>
 
@@ -111,7 +113,11 @@ export const OrganizationCompactForm = () => {
         <div className="space-y-4">
           <div data-tutorial="org-website">
             <FormFieldWrapper name="website">
-              <TextInput source="website" label="Website" helperText="Format: https://example.com" />
+              <TextInput
+                source="website"
+                label="Website"
+                helperText="Format: https://example.com"
+              />
             </FormFieldWrapper>
           </div>
           <FormFieldWrapper name="phone">

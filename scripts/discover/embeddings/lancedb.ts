@@ -94,10 +94,7 @@ async function getConnection(): Promise<lancedb.Connection> {
     return db;
   } catch (error) {
     const cause = error instanceof Error ? error : new Error(String(error));
-    throw new LanceDBError(
-      `Failed to connect to LanceDB at "${DB_PATH}"`,
-      cause
-    );
+    throw new LanceDBError(`Failed to connect to LanceDB at "${DB_PATH}"`, cause);
   }
 }
 
@@ -132,10 +129,7 @@ export async function ensureCollection(): Promise<void> {
     // Table will be created on first upsert - LanceDB infers schema from data
   } catch (error) {
     const cause = error instanceof Error ? error : new Error(String(error));
-    throw new LanceDBError(
-      `Failed to ensure LanceDB collection at "${DB_PATH}"`,
-      cause
-    );
+    throw new LanceDBError(`Failed to ensure LanceDB collection at "${DB_PATH}"`, cause);
   }
 }
 
@@ -238,10 +232,7 @@ function distanceToScore(distance: number): number {
  *   console.log(`${r.payload.name}: ${r.score.toFixed(3)}`);
  * });
  */
-export async function search(
-  queryVector: number[],
-  limit: number = 10
-): Promise<SearchResult[]> {
+export async function search(queryVector: number[], limit: number = 10): Promise<SearchResult[]> {
   if (queryVector.length !== VECTOR_SIZE) {
     throw new LanceDBError(
       `Query vector has ${queryVector.length} dimensions, expected ${VECTOR_SIZE}`
@@ -277,10 +268,7 @@ export async function search(
     }));
   } catch (error) {
     const cause = error instanceof Error ? error : new Error(String(error));
-    throw new LanceDBError(
-      `Failed to search in LanceDB table "${TABLE_NAME}"`,
-      cause
-    );
+    throw new LanceDBError(`Failed to search in LanceDB table "${TABLE_NAME}"`, cause);
   }
 }
 
@@ -373,10 +361,7 @@ export async function clearCollection(): Promise<void> {
     // Table will be recreated on next upsert
   } catch (error) {
     const cause = error instanceof Error ? error : new Error(String(error));
-    throw new LanceDBError(
-      `Failed to clear LanceDB table "${TABLE_NAME}"`,
-      cause
-    );
+    throw new LanceDBError(`Failed to clear LanceDB table "${TABLE_NAME}"`, cause);
   }
 }
 
@@ -429,9 +414,7 @@ export async function getHealthDetails(): Promise<{
       serverReachable: true,
       collectionExists: exists,
       pointCount,
-      error: exists
-        ? undefined
-        : `Table "${TABLE_NAME}" not found. Run indexer to create it.`,
+      error: exists ? undefined : `Table "${TABLE_NAME}" not found. Run indexer to create it.`,
     };
   } catch (error) {
     return {
@@ -439,9 +422,7 @@ export async function getHealthDetails(): Promise<{
       collectionExists: false,
       pointCount: 0,
       error:
-        error instanceof Error
-          ? `LanceDB error: ${error.message}`
-          : "LanceDB connection failed",
+        error instanceof Error ? `LanceDB error: ${error.message}` : "LanceDB connection failed",
     };
   }
 }
@@ -460,9 +441,7 @@ export async function getCollectionInfo(): Promise<{
   try {
     const exists = await tableExists();
     if (!exists) {
-      throw new LanceDBError(
-        `Table "${TABLE_NAME}" does not exist. Run indexer first.`
-      );
+      throw new LanceDBError(`Table "${TABLE_NAME}" does not exist. Run indexer first.`);
     }
 
     const conn = await getConnection();
@@ -479,9 +458,6 @@ export async function getCollectionInfo(): Promise<{
       throw error;
     }
     const cause = error instanceof Error ? error : new Error(String(error));
-    throw new LanceDBError(
-      `Failed to get table info for "${TABLE_NAME}"`,
-      cause
-    );
+    throw new LanceDBError(`Failed to get table info for "${TABLE_NAME}"`, cause);
   }
 }

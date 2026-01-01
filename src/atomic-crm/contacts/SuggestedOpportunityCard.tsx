@@ -18,10 +18,7 @@ export function SuggestedOpportunityCard({ opportunity, onLink }: SuggestedOppor
       <div className="flex-1">
         <div className="font-medium">{opportunity.name}</div>
         <div className="flex items-center gap-2 mt-1">
-          <StageBadgeWithHealth
-            stage={opportunity.stage}
-            health={opportunity.health_status}
-          />
+          <StageBadgeWithHealth stage={opportunity.stage} health={opportunity.health_status} />
           {opportunity.amount && (
             <span className="text-sm text-muted-foreground">
               {new Intl.NumberFormat("en-US", {

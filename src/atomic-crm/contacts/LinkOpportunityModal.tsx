@@ -62,7 +62,8 @@ export function LinkOpportunityModal({
             onClose();
           },
           onError: (error: unknown) => {
-            const errorMessage = error instanceof Error ? error.message : "Failed to link opportunity";
+            const errorMessage =
+              error instanceof Error ? error.message : "Failed to link opportunity";
             notify(errorMessage, { type: "error" });
           },
         }

@@ -100,7 +100,7 @@ export function KPICard({
   value,
   loading = false,
   className,
-  "data-tutorial": dataTutorial
+  "data-tutorial": dataTutorial,
 }: KPICardProps) {
   const navigate = useNavigate();
   const config = KPI_CONFIG[type];

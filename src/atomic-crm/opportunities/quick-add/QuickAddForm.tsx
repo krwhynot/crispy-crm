@@ -36,21 +36,33 @@ interface AccessibleFieldProps {
   className?: string;
 }
 
-function AccessibleField({ name, label, error, required, children, className }: AccessibleFieldProps) {
+function AccessibleField({
+  name,
+  label,
+  error,
+  required,
+  children,
+  className,
+}: AccessibleFieldProps) {
   const errorId = `${name}-error`;
 
   return (
     <div className={cn("space-y-2", className)}>
       <Label htmlFor={name}>
         {label}
-        {required && <span className="text-destructive" aria-hidden="true"> *</span>}
+        {required && (
+          <span className="text-destructive" aria-hidden="true">
+            {" "}
+            *
+          </span>
+        )}
       </Label>
 
       {React.cloneElement(children, {
         id: name,
-        'aria-invalid': error ? 'true' : undefined,
-        'aria-describedby': error ? errorId : undefined,
-        'aria-required': required ? 'true' : undefined,
+        "aria-invalid": error ? "true" : undefined,
+        "aria-describedby": error ? errorId : undefined,
+        "aria-required": required ? "true" : undefined,
       })}
 
       {error && (
@@ -80,7 +92,8 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   // Use getStorageItem (which JSON-parses) since setStorageItem JSON-stringifies
   const defaultValues = {
     ...schemaDefaults,
-    campaign: getStorageItem<string>("last_campaign", { type: "local" }) ?? schemaDefaults.campaign ?? "",
+    campaign:
+      getStorageItem<string>("last_campaign", { type: "local" }) ?? schemaDefaults.campaign ?? "",
     principal_id:
       Number(getStorageItem<string>("last_principal", { type: "local" }) ?? "") || undefined,
   };
@@ -197,11 +210,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       <div className="rounded-lg bg-success/10 p-4 space-y-4">
         <h3 className="text-sm font-medium text-foreground">Pre-filled Information</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <AccessibleField
-            name="campaign"
-            label="Campaign"
-            error={errors.campaign?.message}
-          >
+          <AccessibleField name="campaign" label="Campaign" error={errors.campaign?.message}>
             <Input
               {...register("campaign")}
               placeholder="e.g., Q4 2025 Trade Show"
@@ -212,7 +221,10 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
           <div className="space-y-2">
             <Label htmlFor="principal_id">
               Principal
-              <span className="text-destructive" aria-hidden="true"> *</span>
+              <span className="text-destructive" aria-hidden="true">
+                {" "}
+                *
+              </span>
             </Label>
             <Select
               value={principalId?.toString()}
@@ -222,8 +234,8 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
               <SelectTrigger
                 id="principal_id"
                 className="bg-background"
-                aria-invalid={errors.principal_id ? 'true' : undefined}
-                aria-describedby={errors.principal_id ? 'principal_id-error' : undefined}
+                aria-invalid={errors.principal_id ? "true" : undefined}
+                aria-describedby={errors.principal_id ? "principal_id-error" : undefined}
                 aria-required="true"
               >
                 <SelectValue placeholder={principalsLoading ? "Loading..." : "Select principal"} />
@@ -280,11 +292,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             error={errors.first_name?.message}
             required
           >
-            <Input
-              ref={firstNameRef}
-              {...register("first_name")}
-              placeholder="John"
-            />
+            <Input ref={firstNameRef} {...register("first_name")} placeholder="John" />
           </AccessibleField>
 
           <AccessibleField
@@ -296,19 +304,11 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             <Input {...register("last_name")} placeholder="Doe" />
           </AccessibleField>
 
-          <AccessibleField
-            name="phone"
-            label="Phone"
-            error={errors.phone?.message}
-          >
+          <AccessibleField name="phone" label="Phone" error={errors.phone?.message}>
             <Input type="tel" {...register("phone")} placeholder="555-123-4567" />
           </AccessibleField>
 
-          <AccessibleField
-            name="email"
-            label="Email"
-            error={errors.email?.message}
-          >
+          <AccessibleField name="email" label="Email" error={errors.email?.message}>
             <Input type="email" {...register("email")} placeholder="john@example.com" />
           </AccessibleField>
         </div>
@@ -336,7 +336,10 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             <div className="space-y-2">
               <Label htmlFor="city">
                 City
-                <span className="text-destructive" aria-hidden="true"> *</span>
+                <span className="text-destructive" aria-hidden="true">
+                  {" "}
+                  *
+                </span>
               </Label>
               <Combobox
                 id="city"
@@ -355,12 +358,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
               )}
             </div>
 
-            <AccessibleField
-              name="state"
-              label="State"
-              error={errors.state?.message}
-              required
-            >
+            <AccessibleField name="state" label="State" error={errors.state?.message} required>
               <Input
                 {...register("state")}
                 placeholder="CA"

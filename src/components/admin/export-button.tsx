@@ -69,7 +69,13 @@ export const ExportButton = (props: ExportButtonProps) => {
   );
 
   return (
-    <Button variant="outline" onClick={handleClick} disabled={total === 0} className={className} data-tutorial={dataTutorial}>
+    <Button
+      variant="outline"
+      onClick={handleClick}
+      disabled={total === 0}
+      className={className}
+      data-tutorial={dataTutorial}
+    >
       {icon}
       <Translate i18nKey={label}>Export</Translate>
     </Button>

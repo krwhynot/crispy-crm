@@ -187,9 +187,7 @@ describe("FormWizard", () => {
         });
       });
 
-      const singleStepConfig: WizardStepConfig[] = [
-        { id: "step1", title: "Step 1", fields: [] },
-      ];
+      const singleStepConfig: WizardStepConfig[] = [{ id: "step1", title: "Step 1", fields: [] }];
       const wrapper = createWrapper(singleStepConfig, onSubmit);
       const { result } = renderHook(() => useWizard(), { wrapper });
 

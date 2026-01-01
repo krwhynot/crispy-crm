@@ -86,10 +86,13 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
     );
 
     // Fail-fast: surface any failures to the user
-    const failures = results.filter((r): r is PromiseRejectedResult => r.status === 'rejected');
+    const failures = results.filter((r): r is PromiseRejectedResult => r.status === "rejected");
     if (failures.length > 0) {
-      console.error('Notification updates failed:', failures.map(f => f.reason));
-      notify(`${failures.length} notification update(s) failed`, { type: 'error' });
+      console.error(
+        "Notification updates failed:",
+        failures.map((f) => f.reason)
+      );
+      notify(`${failures.length} notification update(s) failed`, { type: "error" });
     }
 
     refetch();

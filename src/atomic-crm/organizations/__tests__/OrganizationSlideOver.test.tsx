@@ -141,13 +141,7 @@ describe("OrganizationSlideOver", () => {
 
       // Verify tab order: Details, Authorizations, Contacts, Opportunities, Notes
       const tabKeys = tabs.map((tab) => tab.key);
-      expect(tabKeys).toEqual([
-        "details",
-        "authorizations",
-        "contacts",
-        "opportunities",
-        "notes",
-      ]);
+      expect(tabKeys).toEqual(["details", "authorizations", "contacts", "opportunities", "notes"]);
 
       // Verify authorizations tab is in correct position (second)
       const authTab = tabs[1];

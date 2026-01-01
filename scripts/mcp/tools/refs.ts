@@ -10,10 +10,7 @@ import { getDb } from "../db.js";
 
 const refsSchema = z.object({
   symbolName: z.string().describe("Symbol name to find references for"),
-  includeDefinition: z
-    .boolean()
-    .default(true)
-    .describe("Include the definition in results"),
+  includeDefinition: z.boolean().default(true).describe("Include the definition in results"),
 });
 
 type RefsInput = z.infer<typeof refsSchema>;

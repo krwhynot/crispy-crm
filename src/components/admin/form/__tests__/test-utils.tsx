@@ -21,9 +21,7 @@ export function TestFormWrapper({
 
   return (
     <FormProvider {...methods}>
-      <FormProgressProvider initialProgress={initialProgress}>
-        {children}
-      </FormProgressProvider>
+      <FormProgressProvider initialProgress={initialProgress}>{children}</FormProgressProvider>
     </FormProvider>
   );
 }
@@ -33,18 +31,12 @@ interface RenderWithFormOptions extends Omit<RenderOptions, "wrapper"> {
   initialProgress?: number;
 }
 
-export function renderWithForm(
-  ui: React.ReactElement,
-  options?: RenderWithFormOptions
-) {
+export function renderWithForm(ui: React.ReactElement, options?: RenderWithFormOptions) {
   const { defaultValues, initialProgress, ...renderOptions } = options ?? {};
 
   return render(ui, {
     wrapper: ({ children }) => (
-      <TestFormWrapper
-        defaultValues={defaultValues}
-        initialProgress={initialProgress}
-      >
+      <TestFormWrapper defaultValues={defaultValues} initialProgress={initialProgress}>
         {children}
       </TestFormWrapper>
     ),
@@ -91,19 +83,12 @@ interface RenderWithWizardOptions extends Omit<RenderOptions, "wrapper"> {
   onSubmit?: (data: unknown) => void | Promise<void>;
 }
 
-export function renderWithWizard(
-  ui: React.ReactElement,
-  options?: RenderWithWizardOptions
-) {
+export function renderWithWizard(ui: React.ReactElement, options?: RenderWithWizardOptions) {
   const { defaultValues, steps, onSubmit, ...renderOptions } = options ?? {};
 
   return render(ui, {
     wrapper: ({ children }) => (
-      <TestWizardWrapper
-        defaultValues={defaultValues}
-        steps={steps}
-        onSubmit={onSubmit}
-      >
+      <TestWizardWrapper defaultValues={defaultValues} steps={steps} onSubmit={onSubmit}>
         {children}
       </TestWizardWrapper>
     ),

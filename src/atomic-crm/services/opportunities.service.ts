@@ -162,7 +162,13 @@ export class OpportunitiesService {
       // Use RPC for updates with products OR when version checking is needed
       if (productsToSync.length === 0) {
         devLog("OpportunitiesService", "Updating opportunity via RPC for version check");
-        const opportunity = await this.rpcSyncOpportunity(opportunityData, [], [], [], previousVersion);
+        const opportunity = await this.rpcSyncOpportunity(
+          opportunityData,
+          [],
+          [],
+          [],
+          previousVersion
+        );
         return opportunity;
       }
 
@@ -177,7 +183,13 @@ export class OpportunitiesService {
       });
 
       // Call RPC function for atomic update with products
-      const opportunity = await this.rpcSyncOpportunity(opportunityData, creates, updates, deletes, previousVersion);
+      const opportunity = await this.rpcSyncOpportunity(
+        opportunityData,
+        creates,
+        updates,
+        deletes,
+        previousVersion
+      );
       devLog(
         "OpportunitiesService",
         "Opportunity updated successfully with product sync",
@@ -206,19 +218,24 @@ export class OpportunitiesService {
    * @throws Error if RPC call fails
    */
   private async rpcSyncOpportunity(
-    opportunityData: Partial<OpportunityCreateInput> | (Partial<OpportunityUpdateInput> & { id: Identifier }),
+    opportunityData:
+      | Partial<OpportunityCreateInput>
+      | (Partial<OpportunityUpdateInput> & { id: Identifier }),
     productsToCreate: Product[],
     productsToUpdate: Product[],
     productIdsToDelete: (string | number)[],
     expectedVersion?: number
   ): Promise<Opportunity> {
-    const rpcData = await this.dataProvider.rpc<Opportunity | { data: Opportunity }>("sync_opportunity_with_products", {
-      opportunity_data: opportunityData,
-      products_to_create: productsToCreate,
-      products_to_update: productsToUpdate,
-      product_ids_to_delete: productIdsToDelete,
-      expected_version: expectedVersion,
-    });
+    const rpcData = await this.dataProvider.rpc<Opportunity | { data: Opportunity }>(
+      "sync_opportunity_with_products",
+      {
+        opportunity_data: opportunityData,
+        products_to_create: productsToCreate,
+        products_to_update: productsToUpdate,
+        product_ids_to_delete: productIdsToDelete,
+        expected_version: expectedVersion,
+      }
+    );
 
     return this.unwrapRpcResponse(rpcData);
   }
@@ -254,10 +271,7 @@ export class OpportunitiesService {
    * @param id Opportunity ID
    * @param contactIds Array of contact IDs to associate
    */
-  async updateWithContacts(
-    id: Identifier,
-    contactIds: Identifier[]
-  ): Promise<void> {
+  async updateWithContacts(id: Identifier, contactIds: Identifier[]): Promise<void> {
     try {
       await this.dataProvider.rpc("sync_opportunity_with_contacts", {
         p_opportunity_id: id,
@@ -266,7 +280,7 @@ export class OpportunitiesService {
       devLog("OpportunitiesService", "Contacts synced successfully", { id, contactIds });
     } catch (error) {
       devError("OpportunitiesService", "Failed to sync contacts", { id, error });
-      throw error;  // Fail-fast
+      throw error; // Fail-fast
     }
   }
 }

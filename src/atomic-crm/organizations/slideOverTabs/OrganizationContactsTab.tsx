@@ -88,12 +88,7 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
   }
 
   if (contacts.length === 0) {
-    return (
-      <SidepaneEmptyState
-        icon={Users}
-        message="No contacts yet"
-      />
-    );
+    return <SidepaneEmptyState icon={Users} message="No contacts yet" />;
   }
 
   return (
@@ -130,13 +125,11 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
                 {contact.title && (
                   <p className="text-xs text-muted-foreground truncate">{contact.title}</p>
                 )}
-                {contact.email &&
-                  Array.isArray(contact.email) &&
-                  contact.email.length > 0 && (
-                    <p className="text-xs text-muted-foreground truncate">
-                      {contact.email[0]?.value || ""}
-                    </p>
-                  )}
+                {contact.email && Array.isArray(contact.email) && contact.email.length > 0 && (
+                  <p className="text-xs text-muted-foreground truncate">
+                    {contact.email[0]?.value || ""}
+                  </p>
+                )}
               </div>
             </div>
           ))}

@@ -10,7 +10,7 @@ interface Sale {
   email: string;
   first_name: string;
   last_name: string;
-  role: 'admin' | 'manager' | 'rep';
+  role: "admin" | "manager" | "rep";
   disabled: boolean;
   avatar_url?: string;
 }
@@ -33,7 +33,11 @@ const inviteUserSchema = z
   .strictObject({
     email: z.string().email("Invalid email format").max(254, "Email too long"),
     // Password optional - Supabase inviteUserByEmail handles password setup
-    password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long").optional(),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(128, "Password too long")
+      .optional(),
     first_name: z.string().min(1, "First name required").max(100, "First name too long"),
     last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
     disabled: z.coerce.boolean().optional().default(false),
@@ -60,7 +64,9 @@ const patchUserSchema = z
     deleted_at: z.string().datetime().nullish(), // Soft-delete timestamp (admin-only)
   })
   .transform((data) => {
-    const role = data.role ?? (data.administrator !== undefined ? (data.administrator ? "admin" : "rep") : undefined);
+    const role =
+      data.role ??
+      (data.administrator !== undefined ? (data.administrator ? "admin" : "rep") : undefined);
     const { administrator: _, ...rest } = data;
     return { ...rest, role };
   });
@@ -95,7 +101,7 @@ async function updateSaleViaRPC(
   supabaseClient: ReturnType<typeof createClient>,
   user_id: string,
   updates: {
-    role?: 'admin' | 'manager' | 'rep';
+    role?: "admin" | "manager" | "rep";
     disabled?: boolean;
     avatar_url?: string; // Renamed: matches DB column
     deleted_at?: string;
@@ -106,7 +112,7 @@ async function updateSaleViaRPC(
   }
 ): Promise<Sale> {
   const { data: updatedSale, error } = await supabaseClient
-    .rpc('admin_update_sale', {
+    .rpc("admin_update_sale", {
       target_user_id: user_id,
       new_role: updates.role ?? null,
       new_disabled: updates.disabled ?? null,
@@ -115,7 +121,7 @@ async function updateSaleViaRPC(
       new_first_name: updates.first_name ?? null,
       new_last_name: updates.last_name ?? null,
       new_email: updates.email ?? null,
-      new_phone: updates.phone ?? null
+      new_phone: updates.phone ?? null,
     })
     .single();
 
@@ -127,9 +133,14 @@ async function updateSaleViaRPC(
   return updatedSale as Sale;
 }
 
-async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Record<string, string>, supabaseClient: ReturnType<typeof createClient>) {
+async function inviteUser(
+  req: Request,
+  currentUserSale: Sale,
+  corsHeaders: Record<string, string>,
+  supabaseClient: ReturnType<typeof createClient>
+) {
   // Check admin authorization first (fast path)
-  if (currentUserSale.role !== 'admin') {
+  if (currentUserSale.role !== "admin") {
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
@@ -168,8 +179,9 @@ async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Reco
   }
 
   // Only send invitation email in production (SMTP not configured in local dev)
-  const isDevelopment = Deno.env.get("ENVIRONMENT") === "development" ||
-                        Deno.env.get("SUPABASE_URL")?.includes("localhost");
+  const isDevelopment =
+    Deno.env.get("ENVIRONMENT") === "development" ||
+    Deno.env.get("SUPABASE_URL")?.includes("localhost");
 
   if (!isDevelopment) {
     const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
@@ -184,7 +196,7 @@ async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Reco
   try {
     const sale = await updateSaleViaRPC(supabaseClient, data.user.id, {
       role,
-      disabled
+      disabled,
     });
 
     return new Response(
@@ -201,7 +213,12 @@ async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Reco
   }
 }
 
-async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Record<string, string>, supabaseClient: ReturnType<typeof createClient>) {
+async function patchUser(
+  req: Request,
+  currentUserSale: Sale,
+  corsHeaders: Record<string, string>,
+  supabaseClient: ReturnType<typeof createClient>
+) {
   // Validate request body with Zod schema
   let validatedData;
   try {
@@ -211,11 +228,12 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { sales_id, email, first_name, last_name, phone, avatar_url, role, disabled, deleted_at } = validatedData;
+  const { sales_id, email, first_name, last_name, phone, avatar_url, role, disabled, deleted_at } =
+    validatedData;
 
   // Use SECURITY DEFINER RPC function instead of direct table access
   const { data: saleToUpdate, error: saleError } = await supabaseClient
-    .rpc('get_sale_by_id', { target_sale_id: sales_id })
+    .rpc("get_sale_by_id", { target_sale_id: sales_id })
     .single();
 
   if (saleError || !saleToUpdate) {
@@ -224,15 +242,18 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
   }
 
   // Users can only update their own profile unless they are an administrator
-  if (currentUserSale.role !== 'admin' && currentUserSale.id !== saleToUpdate.id) {
+  if (currentUserSale.role !== "admin" && currentUserSale.id !== saleToUpdate.id) {
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
-  const { data, error: userError } = await supabaseAdmin.auth.admin.updateUserById(saleToUpdate.user_id, {
-    email,
-    ban_duration: disabled ? "87600h" : "none",
-    user_metadata: { first_name, last_name },
-  });
+  const { data, error: userError } = await supabaseAdmin.auth.admin.updateUserById(
+    saleToUpdate.user_id,
+    {
+      email,
+      ban_duration: disabled ? "87600h" : "none",
+      user_metadata: { first_name, last_name },
+    }
+  );
 
   if (!data?.user || userError) {
     console.error("Error patching user:", userError);
@@ -240,7 +261,7 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
   }
 
   // Only administrators can update the role and disabled status
-  if (currentUserSale.role !== 'admin') {
+  if (currentUserSale.role !== "admin") {
     try {
       // Non-admin self-edit: allow profile fields (RPC enforces self-edit restriction)
       const updatedSale = await updateSaleViaRPC(supabaseClient, saleToUpdate.user_id, {
@@ -279,7 +300,7 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
       role: role ?? undefined,
       disabled: disabled ?? undefined,
       avatar_url: avatar_url ?? undefined,
-      deleted_at: deleted_at ?? undefined
+      deleted_at: deleted_at ?? undefined,
     });
 
     return new Response(
@@ -313,7 +334,8 @@ Deno.serve(async (req: Request) => {
 
   // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
   const supabaseUrl = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
-  const supabaseAnonKey = Deno.env.get("LOCAL_SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_ANON_KEY");
+  const supabaseAnonKey =
+    Deno.env.get("LOCAL_SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_ANON_KEY");
 
   if (!supabaseUrl || !supabaseAnonKey) {
     console.error("Missing environment variables");
@@ -334,7 +356,7 @@ Deno.serve(async (req: Request) => {
   }
 
   const { data: saleData, error: saleError } = await supabaseClient
-    .rpc('get_sale_by_user_id', { target_user_id: data.user.id })
+    .rpc("get_sale_by_user_id", { target_user_id: data.user.id })
     .single();
 
   if (saleError || !saleData) {

@@ -77,10 +77,7 @@ function FormSectionWithProgress({
 
         {/* Complete badge - only shown when section is complete */}
         {sectionComplete && (
-          <span
-            className="text-xs font-medium text-primary"
-            data-testid="section-complete-badge"
-          >
+          <span className="text-xs font-medium text-primary" data-testid="section-complete-badge">
             Complete
           </span>
         )}
@@ -88,10 +85,7 @@ function FormSectionWithProgress({
 
       {/* Description */}
       {description && (
-        <p
-          data-slot="form-section-description"
-          className="text-sm text-muted-foreground"
-        >
+        <p data-slot="form-section-description" className="text-sm text-muted-foreground">
           {description}
         </p>
       )}

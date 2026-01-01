@@ -9,7 +9,10 @@ export function getSupabaseAdmin(): SupabaseClient {
     // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
     // (Supabase CLI blocks SUPABASE_* prefixed vars in .env files for security)
     const url = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
-    const serviceKey = Deno.env.get("LOCAL_SERVICE_ROLE_KEY") || Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const serviceKey =
+      Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
+      Deno.env.get("SERVICE_ROLE_KEY") ||
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
     if (!url || !serviceKey) {
       throw new Error("Missing required environment variables for Supabase admin client");

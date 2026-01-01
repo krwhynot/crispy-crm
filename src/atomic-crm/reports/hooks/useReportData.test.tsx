@@ -38,10 +38,7 @@ describe("useReportData", () => {
     renderHook(() => useReportData("opportunities"));
 
     await waitFor(() => {
-      expect(mockGetList).toHaveBeenCalledWith(
-        "opportunities",
-        expect.any(Object)
-      );
+      expect(mockGetList).toHaveBeenCalledWith("opportunities", expect.any(Object));
     });
   });
 

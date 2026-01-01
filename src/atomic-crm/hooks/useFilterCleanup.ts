@@ -22,16 +22,20 @@ const DEFAULT_SORT_FIELDS: Record<string, string> = {
  * Schema for React Admin list params stored in localStorage.
  * Defense-in-depth validation for cached URL parameters.
  */
-const listParamsSchema = z.object({
-  filter: z.record(z.string(), z.unknown()).optional(),
-  sort: z.object({
-    field: z.string().max(100),
-    order: z.enum(["ASC", "DESC"]),
-  }).optional(),
-  page: z.number().int().positive().optional(),
-  perPage: z.number().int().positive().max(1000).optional(),
-  displayedFilters: z.record(z.string(), z.boolean()).optional(),
-}).passthrough(); // React Admin may add fields
+const listParamsSchema = z
+  .object({
+    filter: z.record(z.string(), z.unknown()).optional(),
+    sort: z
+      .object({
+        field: z.string().max(100),
+        order: z.enum(["ASC", "DESC"]),
+      })
+      .optional(),
+    page: z.number().int().positive().optional(),
+    perPage: z.number().int().positive().max(1000).optional(),
+    displayedFilters: z.record(z.string(), z.boolean()).optional(),
+  })
+  .passthrough(); // React Admin may add fields
 
 /**
  * useFilterCleanup Hook - Client-side Filter & Sort Validation

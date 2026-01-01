@@ -44,9 +44,7 @@ describe("WizardNavigation", () => {
   });
 
   test("shows submitLabel on final step", () => {
-    const singleStepConfig: WizardStepConfig[] = [
-      { id: "step1", title: "Only Step", fields: [] },
-    ];
+    const singleStepConfig: WizardStepConfig[] = [{ id: "step1", title: "Only Step", fields: [] }];
 
     renderWithWizard(<WizardNavigation submitLabel="Create Opportunity" />, {
       steps: singleStepConfig,
@@ -59,12 +57,8 @@ describe("WizardNavigation", () => {
 
   test("shows loading state when isSubmitting", async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn(
-      () => new Promise((resolve) => setTimeout(resolve, 500))
-    );
-    const singleStepConfig: WizardStepConfig[] = [
-      { id: "step1", title: "Step 1", fields: [] },
-    ];
+    const onSubmit = vi.fn(() => new Promise((resolve) => setTimeout(resolve, 500)));
+    const singleStepConfig: WizardStepConfig[] = [{ id: "step1", title: "Step 1", fields: [] }];
 
     renderWithWizard(<WizardNavigation submitLabel="Submit" />, {
       steps: singleStepConfig,
@@ -84,12 +78,8 @@ describe("WizardNavigation", () => {
 
   test("disables buttons when isSubmitting", async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn(
-      () => new Promise((resolve) => setTimeout(resolve, 500))
-    );
-    const singleStepConfig: WizardStepConfig[] = [
-      { id: "step1", title: "Step 1", fields: [] },
-    ];
+    const onSubmit = vi.fn(() => new Promise((resolve) => setTimeout(resolve, 500)));
+    const singleStepConfig: WizardStepConfig[] = [{ id: "step1", title: "Step 1", fields: [] }];
 
     renderWithWizard(<WizardNavigation submitLabel="Submit" />, {
       steps: singleStepConfig,
@@ -137,9 +127,6 @@ describe("WizardNavigation", () => {
     renderWithWizard(<WizardNavigation />);
 
     expect(screen.getByRole("toolbar")).toBeInTheDocument();
-    expect(screen.getByRole("toolbar")).toHaveAttribute(
-      "aria-label",
-      "Form navigation"
-    );
+    expect(screen.getByRole("toolbar")).toHaveAttribute("aria-label", "Form navigation");
   });
 });

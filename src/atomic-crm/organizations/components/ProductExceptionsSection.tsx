@@ -7,10 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parseDateSafely } from "@/lib/date-utils";
 
-import type {
-  ProductExceptionsSectionProps,
-  ProductAuthorization,
-} from "./authorization-types";
+import type { ProductExceptionsSectionProps, ProductAuthorization } from "./authorization-types";
 import { AddProductExceptionDialog } from "./AddProductExceptionDialog";
 import { RemoveConfirmDialog } from "./RemoveConfirmDialog";
 
@@ -34,7 +31,8 @@ export function ProductExceptionsSection({
   const productsWithoutExceptions = products.filter((p) => !productAuthMap.has(Number(p.id)));
 
   const product = products.find((p) => Number(p.id) === removeException?.product_id);
-  const productName = product?.name || (removeException ? `Product #${removeException.product_id}` : "");
+  const productName =
+    product?.name || (removeException ? `Product #${removeException.product_id}` : "");
 
   const handleRemoveException = async () => {
     if (!removeException) return;

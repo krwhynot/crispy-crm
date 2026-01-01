@@ -69,12 +69,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
   }
 
   if (opportunities.length === 0) {
-    return (
-      <SidepaneEmptyState
-        icon={Target}
-        message="No opportunities yet"
-      />
-    );
+    return <SidepaneEmptyState icon={Target} message="No opportunities yet" />;
   }
 
   return (
@@ -104,9 +99,8 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
                 {opportunity.estimated_close_date && (
                   <span>
                     Close:{" "}
-                    {parseDateSafely(
-                      opportunity.estimated_close_date
-                    )?.toLocaleDateString() ?? "N/A"}
+                    {parseDateSafely(opportunity.estimated_close_date)?.toLocaleDateString() ??
+                      "N/A"}
                   </span>
                 )}
                 {opportunity.status && (

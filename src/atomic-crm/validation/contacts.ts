@@ -11,13 +11,13 @@ export const personalInfoTypeSchema = z.enum(["work", "home", "other"]);
 
 // Contact department enum - for distributor staff classification
 export const contactDepartmentSchema = z.enum([
-  'senior_management',
-  'sales_management',
-  'district_management',
-  'area_sales',
-  'sales_specialist',
-  'sales_support',
-  'procurement',
+  "senior_management",
+  "sales_management",
+  "district_management",
+  "area_sales",
+  "sales_specialist",
+  "sales_support",
+  "procurement",
 ]);
 export type ContactDepartment = z.infer<typeof contactDepartmentSchema>;
 
@@ -552,7 +552,11 @@ export const updateContactSchema = contactBaseSchema.partial().transform(transfo
 // Export validation functions for specific operations
 export async function validateCreateContact(data: unknown): Promise<void> {
   // Check if this is a quick create request (validation bypass for "Just use name" flow)
-  const isQuickCreate = typeof data === "object" && data !== null && "quickCreate" in data && (data as Record<string, unknown>).quickCreate === true;
+  const isQuickCreate =
+    typeof data === "object" &&
+    data !== null &&
+    "quickCreate" in data &&
+    (data as Record<string, unknown>).quickCreate === true;
 
   // Create a schema that includes the email requirement validation
   const createSchemaWithEmail = contactBaseSchema

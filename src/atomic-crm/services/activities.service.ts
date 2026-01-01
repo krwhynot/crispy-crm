@@ -17,7 +17,10 @@ export class ActivitiesService {
    * @param salesId Optional sales ID to filter activities
    * @returns Array of activity records sorted by date descending, limited to 250 items
    */
-  async getActivityLog(organizationId?: Identifier, salesId?: Identifier): Promise<Record<string, unknown>[]> {
+  async getActivityLog(
+    organizationId?: Identifier,
+    salesId?: Identifier
+  ): Promise<Record<string, unknown>[]> {
     try {
       return await getActivityLog(this.dataProvider, organizationId, salesId);
     } catch (error: unknown) {

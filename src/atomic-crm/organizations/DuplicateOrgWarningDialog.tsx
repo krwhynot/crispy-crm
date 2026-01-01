@@ -70,17 +70,16 @@ export function DuplicateOrgWarningDialog({
                 An organization named <strong>&quot;{duplicateName}&quot;</strong> already exists in
                 the system.
               </p>
-              <p>Would you like to view the existing organization, change the name, or proceed anyway?</p>
+              <p>
+                Would you like to view the existing organization, change the name, or proceed
+                anyway?
+              </p>
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col sm:flex-row gap-2">
           {onViewExisting && duplicateOrgId && (
-            <Button
-              variant="outline"
-              onClick={onViewExisting}
-              className="w-full sm:w-auto"
-            >
+            <Button variant="outline" onClick={onViewExisting} className="w-full sm:w-auto">
               View Existing
             </Button>
           )}

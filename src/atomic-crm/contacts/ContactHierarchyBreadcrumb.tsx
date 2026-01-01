@@ -30,7 +30,10 @@ export function ContactHierarchyBreadcrumb({ record }: ContactHierarchyBreadcrum
   const contactName = [record.first_name, record.last_name].filter(Boolean).join(" ");
 
   return (
-    <nav aria-label="Contact hierarchy" className="flex items-center gap-2 text-xs text-muted-foreground/70 -ml-2">
+    <nav
+      aria-label="Contact hierarchy"
+      className="flex items-center gap-2 text-xs text-muted-foreground/70 -ml-2"
+    >
       {/* Organization link with 44px touch target (WCAG AA) */}
       <Link
         to={`/organizations?view=${organization.id}`}

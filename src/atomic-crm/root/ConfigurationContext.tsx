@@ -29,18 +29,9 @@ import {
   defaultTaskTypes,
   defaultTitle,
 } from "./defaultConfiguration";
-import {
-  AppBrandingProvider,
-  useAppBranding,
-} from "../contexts/AppBrandingContext";
-import {
-  PipelineConfigProvider,
-  usePipelineConfig,
-} from "../contexts/PipelineConfigContext";
-import {
-  FormOptionsProvider,
-  useFormOptions,
-} from "../contexts/FormOptionsContext";
+import { AppBrandingProvider, useAppBranding } from "../contexts/AppBrandingContext";
+import { PipelineConfigProvider, usePipelineConfig } from "../contexts/PipelineConfigContext";
+import { FormOptionsProvider, useFormOptions } from "../contexts/FormOptionsContext";
 
 // Define types for the context value
 export interface ConfigurationContextValue {
@@ -133,11 +124,7 @@ export const ConfigurationProvider = ({
   );
 
   return (
-    <AppBrandingProvider
-      title={title}
-      darkModeLogo={darkModeLogo}
-      lightModeLogo={lightModeLogo}
-    >
+    <AppBrandingProvider title={title} darkModeLogo={darkModeLogo} lightModeLogo={lightModeLogo}>
       <PipelineConfigProvider
         dealStages={dealStages}
         dealPipelineStatuses={dealPipelineStatuses}

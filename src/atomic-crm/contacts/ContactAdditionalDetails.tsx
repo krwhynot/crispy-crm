@@ -1,10 +1,6 @@
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
-import {
-  FormSection,
-  CompactFormRow,
-  FormFieldWrapper,
-} from "@/components/admin/form";
+import { FormSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
 import { ContactManagerInput } from "./ContactManagerInput";
 import { DEPARTMENT_CHOICES } from "./constants";
 
@@ -45,11 +41,7 @@ export const ContactAdditionalDetails = () => {
           <ContactManagerInput />
           <CompactFormRow>
             <FormFieldWrapper name="district_code">
-              <TextInput
-                source="district_code"
-                label="District Code"
-                helperText="e.g., D1, D73"
-              />
+              <TextInput source="district_code" label="District Code" helperText="e.g., D1, D73" />
             </FormFieldWrapper>
             <FormFieldWrapper name="territory_name">
               <TextInput

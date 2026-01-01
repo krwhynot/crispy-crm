@@ -38,18 +38,14 @@ function WizardNavigation({
   onCancel,
   className,
 }: WizardNavigationProps) {
-  const { currentStep, totalSteps, goToNext, goToPrevious, isSubmitting } =
-    useWizard();
+  const { currentStep, totalSteps, goToNext, goToPrevious, isSubmitting } = useWizard();
 
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalSteps;
 
   return (
     <div
-      className={cn(
-        "flex items-center justify-end gap-3 pt-6 border-t border-border",
-        className
-      )}
+      className={cn("flex items-center justify-end gap-3 pt-6 border-t border-border", className)}
       role="toolbar"
       aria-label="Form navigation"
     >

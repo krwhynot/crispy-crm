@@ -221,11 +221,7 @@ export const AutocompleteArrayInput = (
                         return (
                           <CommandItem
                             key={getChoiceValue(choice)}
-                            value={
-                              isCreateItem
-                                ? `?${filterValue}?`
-                                : getChoiceValue(choice)
-                            }
+                            value={isCreateItem ? `?${filterValue}?` : getChoiceValue(choice)}
                             onMouseDown={(e) => {
                               e.preventDefault();
                               e.stopPropagation();

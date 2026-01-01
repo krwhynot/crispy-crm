@@ -62,7 +62,9 @@ async function main(): Promise<void> {
 
   // Read manifest
   const manifest: Manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
-  console.log(`  Found ${manifest.chunks.length} chunks with ${manifest.summary.total_nodes} nodes, ${manifest.summary.total_edges} edges`);
+  console.log(
+    `  Found ${manifest.chunks.length} chunks with ${manifest.summary.total_nodes} nodes, ${manifest.summary.total_edges} edges`
+  );
 
   // Collect all nodes and edges from chunks
   const allNodes: CallGraphNode[] = [];

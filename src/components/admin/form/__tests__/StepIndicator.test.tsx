@@ -84,9 +84,7 @@ describe("StepIndicator", () => {
     await waitFor(() => {
       const listItems = screen.getAllByRole("listitem");
       // First step's circle should have bg-primary class
-      const firstStepCircle = listItems[0].querySelector(
-        ".bg-primary"
-      );
+      const firstStepCircle = listItems[0].querySelector(".bg-primary");
       expect(firstStepCircle).toBeInTheDocument();
     });
   });
@@ -96,9 +94,7 @@ describe("StepIndicator", () => {
 
     const listItems = screen.getAllByRole("listitem");
     // Current step should have border-primary
-    const currentStepCircle = listItems[0].querySelector(
-      ".border-primary"
-    );
+    const currentStepCircle = listItems[0].querySelector(".border-primary");
     expect(currentStepCircle).toBeInTheDocument();
   });
 
@@ -107,9 +103,7 @@ describe("StepIndicator", () => {
 
     const listItems = screen.getAllByRole("listitem");
     // Future steps should have border-muted
-    const futureStepCircle = listItems[1].querySelector(
-      ".border-muted"
-    );
+    const futureStepCircle = listItems[1].querySelector(".border-muted");
     expect(futureStepCircle).toBeInTheDocument();
   });
 
@@ -117,8 +111,9 @@ describe("StepIndicator", () => {
     renderWithWizard(<StepIndicator />, { steps: fourSteps });
 
     // Get all connectors (divs with aria-hidden and w-12 class)
-    const connectors = Array.from(document.querySelectorAll("div[aria-hidden='true']"))
-      .filter((el) => el.classList.contains("w-12"));
+    const connectors = Array.from(document.querySelectorAll("div[aria-hidden='true']")).filter(
+      (el) => el.classList.contains("w-12")
+    );
 
     // Should have 3 connectors (between 4 steps)
     expect(connectors.length).toBe(3);
@@ -127,7 +122,8 @@ describe("StepIndicator", () => {
     connectors.forEach((conn) => {
       expect(conn).toHaveClass("mx-2"); // Common styling
       // Should have a background color class
-      const hasBgClass = conn.classList.contains("bg-muted") || conn.classList.contains("bg-primary");
+      const hasBgClass =
+        conn.classList.contains("bg-muted") || conn.classList.contains("bg-primary");
       expect(hasBgClass).toBe(true);
     });
   });

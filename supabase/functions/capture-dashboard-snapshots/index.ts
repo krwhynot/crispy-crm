@@ -206,12 +206,10 @@ async function captureUserSnapshot(
     };
 
     // Insert snapshot (using upsert to handle re-runs)
-    const { error } = await supabaseAdmin
-      .from("dashboard_snapshots")
-      .upsert(snapshot, {
-        onConflict: "sales_id,snapshot_date",
-        ignoreDuplicates: false, // Update if exists
-      });
+    const { error } = await supabaseAdmin.from("dashboard_snapshots").upsert(snapshot, {
+      onConflict: "sales_id,snapshot_date",
+      ignoreDuplicates: false, // Update if exists
+    });
 
     if (error) {
       throw error;
@@ -232,7 +230,10 @@ Deno.serve(async (req) => {
     // Verify authorization (internal cron job or service role)
     const authHeader = req.headers.get("Authorization");
     // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
-    const serviceKey = Deno.env.get("LOCAL_SERVICE_ROLE_KEY") || Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const serviceKey =
+      Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
+      Deno.env.get("SERVICE_ROLE_KEY") ||
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
     if (!authHeader?.includes(serviceKey || "")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -290,8 +291,8 @@ Deno.serve(async (req) => {
           result.status === "fulfilled"
             ? result.value.error
             : result.reason instanceof Error
-            ? result.reason.message
-            : String(result.reason);
+              ? result.reason.message
+              : String(result.reason);
         summary.errors.push({
           user_id: users[index].id,
           error: error || "Unknown error",
@@ -299,7 +300,9 @@ Deno.serve(async (req) => {
       }
     });
 
-    console.log(`Snapshot capture complete: ${summary.successful}/${summary.total_users} succeeded`);
+    console.log(
+      `Snapshot capture complete: ${summary.successful}/${summary.total_users} succeeded`
+    );
 
     // Return success even if some users failed (fail-fast per user)
     return new Response(JSON.stringify(summary), {

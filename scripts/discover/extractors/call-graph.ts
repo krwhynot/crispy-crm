@@ -1,31 +1,41 @@
 import { SyntaxKind } from "ts-morph";
-import type { Node, SourceFile, FunctionDeclaration, VariableDeclaration, ArrowFunction } from "ts-morph";
+import type {
+  Node,
+  SourceFile,
+  FunctionDeclaration,
+  VariableDeclaration,
+  ArrowFunction,
+} from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
+import {
+  writeChunkedDiscovery,
+  writeIncrementalChunkedDiscovery,
+  readExistingManifest,
+} from "../utils/output.js";
 
 // ─────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────
 
 export interface CallGraphNode {
-  id: string;           // "file:line:name"
-  name: string;         // Function/component name
-  file: string;         // Relative file path
-  line: number;         // Declaration line
-  nodeType: 'function' | 'component' | 'hook' | 'method' | 'arrow';
+  id: string; // "file:line:name"
+  name: string; // Function/component name
+  file: string; // Relative file path
+  line: number; // Declaration line
+  nodeType: "function" | "component" | "hook" | "method" | "arrow";
   exported: boolean;
   async: boolean;
 }
 
 export interface CallGraphEdge {
-  source: string;       // Node ID of caller
-  target: string;       // Node ID of callee (may be unresolved name)
-  targetName: string;   // Name of the callee for display
-  edgeType: 'call' | 'render' | 'hook' | 'callback';
-  line: number;         // Line where call occurs
+  source: string; // Node ID of caller
+  target: string; // Node ID of callee (may be unresolved name)
+  targetName: string; // Name of the callee for display
+  edgeType: "call" | "render" | "hook" | "callback";
+  line: number; // Line where call occurs
   conditional: boolean; // Inside if/ternary?
-  inLoop: boolean;      // Inside loop?
+  inLoop: boolean; // Inside loop?
 }
 
 interface CallGraphChunkData {
@@ -77,11 +87,11 @@ function isComponentName(name: string): boolean {
 /**
  * Classify a function's node type based on its name and characteristics
  */
-function classifyNodeType(name: string, isArrow: boolean): CallGraphNode['nodeType'] {
-  if (isHookName(name)) return 'hook';
-  if (isComponentName(name)) return 'component';
-  if (isArrow) return 'arrow';
-  return 'function';
+function classifyNodeType(name: string, isArrow: boolean): CallGraphNode["nodeType"] {
+  if (isHookName(name)) return "hook";
+  if (isComponentName(name)) return "component";
+  if (isArrow) return "arrow";
+  return "function";
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -151,10 +161,7 @@ function isInLoop(node: Node): boolean {
 /**
  * Extract edges from call expressions within a function body
  */
-function extractCallEdges(
-  sourceNodeId: string,
-  bodyNode: Node
-): CallGraphEdge[] {
+function extractCallEdges(sourceNodeId: string, bodyNode: Node): CallGraphEdge[] {
   const edges: CallGraphEdge[] = [];
 
   // Get all call expressions
@@ -178,9 +185,9 @@ function extractCallEdges(
     if (!targetName) continue;
 
     // Determine edge type
-    let edgeType: CallGraphEdge['edgeType'] = 'call';
+    let edgeType: CallGraphEdge["edgeType"] = "call";
     if (isHookName(targetName)) {
-      edgeType = 'hook';
+      edgeType = "hook";
     }
 
     edges.push({
@@ -200,10 +207,7 @@ function extractCallEdges(
 /**
  * Extract edges from JSX elements (component renders)
  */
-function extractJsxEdges(
-  sourceNodeId: string,
-  bodyNode: Node
-): CallGraphEdge[] {
+function extractJsxEdges(sourceNodeId: string, bodyNode: Node): CallGraphEdge[] {
   const edges: CallGraphEdge[] = [];
 
   // Get JSX elements: <Component>...</Component>
@@ -218,7 +222,7 @@ function extractJsxEdges(
         source: sourceNodeId,
         target: tagName,
         targetName: tagName,
-        edgeType: 'render',
+        edgeType: "render",
         line: jsx.getStartLineNumber(),
         conditional: isInConditional(jsx),
         inLoop: isInLoop(jsx),
@@ -242,7 +246,7 @@ function extractJsxEdges(
                 source: sourceNodeId,
                 target: handlerName,
                 targetName: handlerName,
-                edgeType: 'callback',
+                edgeType: "callback",
                 line: attr.getStartLineNumber(),
                 conditional: isInConditional(attr),
                 inLoop: isInLoop(attr),
@@ -264,7 +268,7 @@ function extractJsxEdges(
         source: sourceNodeId,
         target: tagName,
         targetName: tagName,
-        edgeType: 'render',
+        edgeType: "render",
         line: jsx.getStartLineNumber(),
         conditional: isInConditional(jsx),
         inLoop: isInLoop(jsx),
@@ -287,7 +291,7 @@ function extractJsxEdges(
                 source: sourceNodeId,
                 target: handlerName,
                 targetName: handlerName,
-                edgeType: 'callback',
+                edgeType: "callback",
                 line: attr.getStartLineNumber(),
                 conditional: isInConditional(attr),
                 inLoop: isInLoop(attr),
@@ -313,7 +317,7 @@ function extractJsxEdges(
 export function detectCycles(nodes: CallGraphNode[], edges: CallGraphEdge[]): string[][] {
   // Build adjacency list
   const adjList = new Map<string, string[]>();
-  const nodeIds = new Set(nodes.map(n => n.id));
+  const nodeIds = new Set(nodes.map((n) => n.id));
 
   for (const node of nodes) {
     adjList.set(node.id, []);
@@ -324,7 +328,7 @@ export function detectCycles(nodes: CallGraphNode[], edges: CallGraphEdge[]): st
     if (nodeIds.has(edge.source)) {
       const neighbors = adjList.get(edge.source) || [];
       // For target, we need to find matching node by name
-      const targetNode = nodes.find(n => n.name === edge.target);
+      const targetNode = nodes.find((n) => n.name === edge.target);
       if (targetNode) {
         neighbors.push(targetNode.id);
         adjList.set(edge.source, neighbors);
@@ -518,7 +522,9 @@ function processSourceFile(
 // ─────────────────────────────────────────────────────────────
 
 export async function extractCallGraph(onlyChunks?: Set<string>): Promise<void> {
-  console.log("📊 Extracting call graph from src/atomic-crm/**/*.{ts,tsx} and src/hooks/**/*.ts...");
+  console.log(
+    "📊 Extracting call graph from src/atomic-crm/**/*.{ts,tsx} and src/hooks/**/*.ts..."
+  );
 
   const sourceFiles = project.addSourceFilesAtPaths([
     "src/atomic-crm/**/*.ts",
@@ -527,23 +533,27 @@ export async function extractCallGraph(onlyChunks?: Set<string>): Promise<void> 
   ]);
 
   // Filter out test files and node_modules
-  const filteredFiles = sourceFiles.filter(sf => {
+  const filteredFiles = sourceFiles.filter((sf) => {
     const filePath = sf.getFilePath();
-    return !filePath.includes("node_modules") &&
-           !filePath.includes(".test.") &&
-           !filePath.includes(".spec.") &&
-           !filePath.includes("__tests__");
+    return (
+      !filePath.includes("node_modules") &&
+      !filePath.includes(".test.") &&
+      !filePath.includes(".spec.") &&
+      !filePath.includes("__tests__")
+    );
   });
 
   // Filter source files if incremental mode
   let filesToProcess = filteredFiles;
   if (onlyChunks) {
-    filesToProcess = filteredFiles.filter(sf => {
+    filesToProcess = filteredFiles.filter((sf) => {
       const relativePath = path.relative(process.cwd(), sf.getFilePath());
       const chunkName = extractFeatureName(relativePath);
       return onlyChunks.has(chunkName);
     });
-    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${filteredFiles.length} files`);
+    console.log(
+      `  📂 Incremental mode: processing ${filesToProcess.length} of ${filteredFiles.length} files`
+    );
   }
 
   // Collect all nodes and edges
@@ -595,7 +605,7 @@ export async function extractCallGraph(onlyChunks?: Set<string>): Promise<void> 
   const cyclesDetected = cycles.length;
 
   // Prepare file paths for staleness detection
-  const sourceFilePaths = filteredFiles.map(sf => sf.getFilePath());
+  const sourceFilePaths = filteredFiles.map((sf) => sf.getFilePath());
 
   // Build file-to-chunk mapping
   const fileToChunkMapping = new Map<string, string>();
@@ -660,7 +670,7 @@ export async function extractCallGraph(onlyChunks?: Set<string>): Promise<void> 
   if (cyclesDetected > 0) {
     console.log(`  ⚠️  Detected ${cyclesDetected} circular dependency cycle(s)`);
     for (const cycle of cycles) {
-      const names = cycle.map(id => id.split(":").pop()).join(" → ");
+      const names = cycle.map((id) => id.split(":").pop()).join(" → ");
       console.log(`      ${names}`);
     }
   }

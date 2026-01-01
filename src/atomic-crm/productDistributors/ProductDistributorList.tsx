@@ -1,11 +1,4 @@
-import {
-  List,
-  Datagrid,
-  TextField,
-  ReferenceField,
-  DateField,
-  SelectField,
-} from "react-admin";
+import { List, Datagrid, TextField, ReferenceField, DateField, SelectField } from "react-admin";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";

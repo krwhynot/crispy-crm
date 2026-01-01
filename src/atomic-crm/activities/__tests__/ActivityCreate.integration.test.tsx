@@ -36,7 +36,7 @@ describe("ActivityCreate with Progress Tracking", () => {
     await user.tab();
 
     await waitFor(() => {
-      const checkIcons = document.querySelectorAll('svg.lucide-check');
+      const checkIcons = document.querySelectorAll("svg.lucide-check");
       expect(checkIcons.length).toBeGreaterThan(0);
     });
   });

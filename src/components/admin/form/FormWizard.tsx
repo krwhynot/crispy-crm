@@ -43,8 +43,7 @@ function FormWizard({ steps, children, onSubmit, className }: FormWizardProps) {
   const goToNext = React.useCallback(async (): Promise<boolean> => {
     // Validate current step fields
     const fieldsToValidate = currentStepConfig.fields;
-    const isValid =
-      fieldsToValidate.length === 0 ? true : await trigger(fieldsToValidate);
+    const isValid = fieldsToValidate.length === 0 ? true : await trigger(fieldsToValidate);
 
     if (!isValid) return false;
 
@@ -67,11 +66,9 @@ function FormWizard({ steps, children, onSubmit, className }: FormWizardProps) {
     // Using setTimeout to wait for DOM update after step render
     setTimeout(() => {
       // Guard for test environment where document may not exist
-      if (typeof document === 'undefined') return;
+      if (typeof document === "undefined") return;
       const nextPanel = document.getElementById(`wizard-step-${nextStep}`);
-      const firstInput = nextPanel?.querySelector(
-        "input, select, textarea"
-      ) as HTMLElement;
+      const firstInput = nextPanel?.querySelector("input, select, textarea") as HTMLElement;
       firstInput?.focus();
     }, 100);
 
@@ -86,11 +83,9 @@ function FormWizard({ steps, children, onSubmit, className }: FormWizardProps) {
       // Focus first field in previous step
       setTimeout(() => {
         // Guard for test environment where document may not exist
-        if (typeof document === 'undefined') return;
+        if (typeof document === "undefined") return;
         const prevPanel = document.getElementById(`wizard-step-${prevStep}`);
-        const firstInput = prevPanel?.querySelector(
-          "input, select, textarea"
-        ) as HTMLElement;
+        const firstInput = prevPanel?.querySelector("input, select, textarea") as HTMLElement;
         firstInput?.focus();
       }, 100);
     }

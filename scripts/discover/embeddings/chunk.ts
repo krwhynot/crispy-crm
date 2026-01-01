@@ -240,8 +240,10 @@ function getFullDeclarationText(
         targetNode = current.parent;
         break;
       }
-      if (current.parent?.type === "lexical_declaration" &&
-          current.parent.parent?.type === "export_statement") {
+      if (
+        current.parent?.type === "lexical_declaration" &&
+        current.parent.parent?.type === "export_statement"
+      ) {
         targetNode = current.parent.parent;
         break;
       }
@@ -449,10 +451,7 @@ export interface DirectoryChunkOptions extends ChunkOptions {
  * });
  * ```
  */
-export function chunkDirectory(
-  dirPath: string,
-  options: DirectoryChunkOptions = {}
-): CodeChunk[] {
+export function chunkDirectory(dirPath: string, options: DirectoryChunkOptions = {}): CodeChunk[] {
   const { extensions = [".ts", ".tsx"], ...chunkOptions } = options;
   const allChunks: CodeChunk[] = [];
 
@@ -525,7 +524,9 @@ export class UserService {
   const tsChunks = chunkFile("test.ts", testCode);
 
   for (const chunk of tsChunks) {
-    console.log(`[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`);
+    console.log(
+      `[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`
+    );
     console.log(`  ID: ${chunk.id}`);
     console.log(`  Content preview: ${chunk.content.slice(0, 60).replace(/\n/g, "\\n")}...`);
     console.log();
@@ -535,7 +536,9 @@ export class UserService {
   const tsChunksAll = chunkFile("test.ts", testCode, { includePrivate: true });
 
   for (const chunk of tsChunksAll) {
-    console.log(`[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`);
+    console.log(
+      `[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`
+    );
     console.log(`  ID: ${chunk.id}`);
     console.log(`  Content preview: ${chunk.content.slice(0, 60).replace(/\n/g, "\\n")}...`);
     console.log();
@@ -574,7 +577,9 @@ export const formatName = (first: string, last: string): string => {
   const tsxChunks = chunkFile("test.tsx", tsxCode);
 
   for (const chunk of tsxChunks) {
-    console.log(`[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`);
+    console.log(
+      `[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`
+    );
     console.log(`  ID: ${chunk.id}`);
     console.log(`  Content preview: ${chunk.content.slice(0, 60).replace(/\n/g, "\\n")}...`);
     console.log();
@@ -584,7 +589,9 @@ export const formatName = (first: string, last: string): string => {
   const tsxChunksAll = chunkFile("test.tsx", tsxCode, { includePrivate: true });
 
   for (const chunk of tsxChunksAll) {
-    console.log(`[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`);
+    console.log(
+      `[${chunk.type}] ${chunk.name} (lines ${chunk.startLine}-${chunk.endLine}) exported=${chunk.exported}`
+    );
     console.log(`  ID: ${chunk.id}`);
   }
 }

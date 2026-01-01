@@ -120,179 +120,182 @@ export const OpportunityRowListView = ({
       <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
         <div className="space-y-2">
           {opportunities.map((opportunity, index) => {
-            const canEdit = isManagerOrAdmin || (
-              currentSalesId != null && (
-                Number(opportunity.opportunity_owner_id) === Number(currentSalesId) ||
-                Number(opportunity.account_manager_id) === Number(currentSalesId)
-              )
-            );
+            const canEdit =
+              isManagerOrAdmin ||
+              (currentSalesId != null &&
+                (Number(opportunity.opportunity_owner_id) === Number(currentSalesId) ||
+                  Number(opportunity.account_manager_id) === Number(currentSalesId)));
             return (
-            <RecordContextProvider key={opportunity.id} value={opportunity}>
-              <div
-                className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${getOpportunityRowClassName(opportunity)} ${
-                  focusedIndex === index
-                    ? "border-primary ring-2 ring-primary ring-offset-2"
-                    : "border-transparent"
-                }`}
-              >
-                {/* Left cluster: Checkbox + Main Info */}
-                <div className="flex items-center gap-3 min-w-0 flex-1 w-full sm:w-auto">
-                  <Checkbox
-                    checked={selectedIds.includes(opportunity.id)}
-                    onCheckedChange={() => onToggleItem(opportunity.id)}
-                    aria-label={`Select ${opportunity.name}`}
-                    className="relative z-10 shrink-0"
-                  />
+              <RecordContextProvider key={opportunity.id} value={opportunity}>
+                <div
+                  className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${getOpportunityRowClassName(opportunity)} ${
+                    focusedIndex === index
+                      ? "border-primary ring-2 ring-primary ring-offset-2"
+                      : "border-transparent"
+                  }`}
+                >
+                  {/* Left cluster: Checkbox + Main Info */}
+                  <div className="flex items-center gap-3 min-w-0 flex-1 w-full sm:w-auto">
+                    <Checkbox
+                      checked={selectedIds.includes(opportunity.id)}
+                      onCheckedChange={() => onToggleItem(opportunity.id)}
+                      aria-label={`Select ${opportunity.name}`}
+                      className="relative z-10 shrink-0"
+                    />
 
-                  <div className="flex-1 min-w-0">
-                    {/* Opportunity name as the semantic link - clicks open slide-over */}
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openSlideOver(opportunity.id as number, "view");
-                      }}
-                      className="font-medium text-sm text-primary hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 block truncate text-left w-full"
-                    >
-                      {opportunity.name}
-                      {/* Stretched link overlay: makes entire card clickable */}
-                      <span className="absolute inset-0" aria-hidden="true" />
-                    </button>
+                    <div className="flex-1 min-w-0">
+                      {/* Opportunity name as the semantic link - clicks open slide-over */}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          openSlideOver(opportunity.id as number, "view");
+                        }}
+                        className="font-medium text-sm text-primary hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 block truncate text-left w-full"
+                      >
+                        {opportunity.name}
+                        {/* Stretched link overlay: makes entire card clickable */}
+                        <span className="absolute inset-0" aria-hidden="true" />
+                      </button>
 
-                    {/* Second line: Customer → Principal relationship */}
-                    <div className="text-xs text-muted-foreground flex items-center gap-1 flex-wrap mt-0.5">
-                      {opportunity.customer_organization_id && (
-                        <>
+                      {/* Second line: Customer → Principal relationship */}
+                      <div className="text-xs text-muted-foreground flex items-center gap-1 flex-wrap mt-0.5">
+                        {opportunity.customer_organization_id && (
+                          <>
+                            <ReferenceField
+                              source="customer_organization_id"
+                              reference="organizations"
+                              link={false}
+                            >
+                              <TextField source="name" className="font-medium" />
+                            </ReferenceField>
+                            <span className="opacity-60">→</span>
+                          </>
+                        )}
+                        {opportunity.principal_organization_id && (
                           <ReferenceField
-                            source="customer_organization_id"
+                            source="principal_organization_id"
                             reference="organizations"
-                            link={false}
+                            link="show"
                           >
-                            <TextField source="name" className="font-medium" />
+                            <div className="flex items-center gap-1 relative z-10">
+                              <Building2 className="size-3 text-primary/80" />
+                              <TextField
+                                source="name"
+                                className="font-bold text-primary hover:underline cursor-pointer"
+                              />
+                            </div>
                           </ReferenceField>
-                          <span className="opacity-60">→</span>
-                        </>
-                      )}
-                      {opportunity.principal_organization_id && (
-                        <ReferenceField
-                          source="principal_organization_id"
-                          reference="organizations"
-                          link="show"
-                        >
-                          <div className="flex items-center gap-1 relative z-10">
-                            <Building2 className="size-3 text-primary/80" />
-                            <TextField
-                              source="name"
-                              className="font-bold text-primary hover:underline cursor-pointer"
-                            />
-                          </div>
-                        </ReferenceField>
-                      )}
+                        )}
 
-                      {/* Interaction metrics */}
-                      {opportunity.nb_interactions !== undefined &&
-                        opportunity.nb_interactions > 0 && (
-                          <>
-                            <span className="opacity-50 mx-0.5">·</span>
-                            <span className="font-medium">
-                              {opportunity.nb_interactions} interaction
-                              {opportunity.nb_interactions !== 1 ? "s" : ""}
-                            </span>
-                          </>
-                        )}
-                      {opportunity.last_interaction_date &&
-                        parseDateSafely(opportunity.last_interaction_date) && (
-                          <>
-                            <span className="opacity-50 mx-0.5">·</span>
-                            <span className="opacity-75">
-                              Last{" "}
-                              {formatDistance(
-                                parseDateSafely(opportunity.last_interaction_date)!,
-                                new Date(),
-                                { addSuffix: true }
-                              )}
-                            </span>
-                          </>
-                        )}
+                        {/* Interaction metrics */}
+                        {opportunity.nb_interactions !== undefined &&
+                          opportunity.nb_interactions > 0 && (
+                            <>
+                              <span className="opacity-50 mx-0.5">·</span>
+                              <span className="font-medium">
+                                {opportunity.nb_interactions} interaction
+                                {opportunity.nb_interactions !== 1 ? "s" : ""}
+                              </span>
+                            </>
+                          )}
+                        {opportunity.last_interaction_date &&
+                          parseDateSafely(opportunity.last_interaction_date) && (
+                            <>
+                              <span className="opacity-50 mx-0.5">·</span>
+                              <span className="opacity-75">
+                                Last{" "}
+                                {formatDistance(
+                                  parseDateSafely(opportunity.last_interaction_date)!,
+                                  new Date(),
+                                  { addSuffix: true }
+                                )}
+                              </span>
+                            </>
+                          )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Right cluster: Stage, Priority, Close Date, Owner, Edit */}
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 w-full sm:w-auto justify-start sm:justify-end">
-                  {/* Stage Badge */}
-                  <Badge
-                    className="border-0 text-xs relative z-10"
-                    style={{ backgroundColor: getOpportunityStageColor(opportunity.stage) }}
-                  >
-                    {getOpportunityStageLabel(opportunity.stage)}
-                  </Badge>
-
-                  {/* Next Task - Hidden on mobile, shown on lg+ */}
-                  <div className="hidden lg:flex relative z-10">
-                    <NextTaskBadge
-                      taskId={opportunity.next_task_id}
-                      title={opportunity.next_task_title}
-                      dueDate={opportunity.next_task_due_date}
-                      priority={opportunity.next_task_priority}
-                      onClick={() => {
-                        // TODO: Open task slide-over when task panel is implemented
-                      }}
-                    />
-                  </div>
-
-                  {/* Priority - Hidden on mobile, shown on md+ */}
-                  {opportunity.priority && (
+                  {/* Right cluster: Stage, Priority, Close Date, Owner, Edit */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 w-full sm:w-auto justify-start sm:justify-end">
+                    {/* Stage Badge */}
                     <Badge
-                      variant={
-                        opportunity.priority === "critical"
-                          ? "destructive"
-                          : opportunity.priority === "high"
-                            ? "default"
-                            : opportunity.priority === "medium"
-                              ? "secondary"
-                              : "outline"
-                      }
-                      className="hidden md:inline-flex text-xs relative z-10"
+                      className="border-0 text-xs relative z-10"
+                      style={{ backgroundColor: getOpportunityStageColor(opportunity.stage) }}
                     >
-                      {opportunity.priority}
+                      {getOpportunityStageLabel(opportunity.stage)}
                     </Badge>
-                  )}
 
-                  {/* Close Date - Hidden on mobile, shown on sm+ */}
-                  {opportunity.estimated_close_date &&
-                    parseDateSafely(opportunity.estimated_close_date) && (
-                      <div className="hidden sm:block text-xs text-muted-foreground relative z-10">
-                        <span className="opacity-75">Close:</span>{" "}
-                        <span className="font-medium">
-                          {format(
-                            parseDateSafely(opportunity.estimated_close_date)!,
-                            "MMM d, yyyy"
-                          )}
-                        </span>
+                    {/* Next Task - Hidden on mobile, shown on lg+ */}
+                    <div className="hidden lg:flex relative z-10">
+                      <NextTaskBadge
+                        taskId={opportunity.next_task_id}
+                        title={opportunity.next_task_title}
+                        dueDate={opportunity.next_task_due_date}
+                        priority={opportunity.next_task_priority}
+                        onClick={() => {
+                          // TODO: Open task slide-over when task panel is implemented
+                        }}
+                      />
+                    </div>
+
+                    {/* Priority - Hidden on mobile, shown on md+ */}
+                    {opportunity.priority && (
+                      <Badge
+                        variant={
+                          opportunity.priority === "critical"
+                            ? "destructive"
+                            : opportunity.priority === "high"
+                              ? "default"
+                              : opportunity.priority === "medium"
+                                ? "secondary"
+                                : "outline"
+                        }
+                        className="hidden md:inline-flex text-xs relative z-10"
+                      >
+                        {opportunity.priority}
+                      </Badge>
+                    )}
+
+                    {/* Close Date - Hidden on mobile, shown on sm+ */}
+                    {opportunity.estimated_close_date &&
+                      parseDateSafely(opportunity.estimated_close_date) && (
+                        <div className="hidden sm:block text-xs text-muted-foreground relative z-10">
+                          <span className="opacity-75">Close:</span>{" "}
+                          <span className="font-medium">
+                            {format(
+                              parseDateSafely(opportunity.estimated_close_date)!,
+                              "MMM d, yyyy"
+                            )}
+                          </span>
+                        </div>
+                      )}
+
+                    {/* Owner - Hidden on mobile, shown on md+ */}
+                    {opportunity.opportunity_owner_id && (
+                      <div className="hidden md:block text-xs text-muted-foreground relative z-10">
+                        <ReferenceField
+                          source="opportunity_owner_id"
+                          reference="sales"
+                          link={false}
+                        >
+                          <span>
+                            <TextField source="first_name" /> <TextField source="last_name" />
+                          </span>
+                        </ReferenceField>
                       </div>
                     )}
 
-                  {/* Owner - Hidden on mobile, shown on md+ */}
-                  {opportunity.opportunity_owner_id && (
-                    <div className="hidden md:block text-xs text-muted-foreground relative z-10">
-                      <ReferenceField source="opportunity_owner_id" reference="sales" link={false}>
-                        <span>
-                          <TextField source="first_name" /> <TextField source="last_name" />
-                        </span>
-                      </ReferenceField>
-                    </div>
-                  )}
-
-                  {/* Edit Button - positioned above stretched link overlay (hidden for non-owners) */}
-                  {canEdit && (
-                    <div className="relative z-10">
-                      <EditButton resource="opportunities" />
-                    </div>
-                  )}
+                    {/* Edit Button - positioned above stretched link overlay (hidden for non-owners) */}
+                    {canEdit && (
+                      <div className="relative z-10">
+                        <EditButton resource="opportunities" />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </RecordContextProvider>
+              </RecordContextProvider>
             );
           })}
         </div>

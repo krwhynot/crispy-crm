@@ -923,7 +923,9 @@ describe("CampaignActivityReport", () => {
       await user.click(last7DaysButton);
 
       await waitFor(() => {
-        expect(screen.getByText("Try adjusting your filters to see more results.")).toBeInTheDocument();
+        expect(
+          screen.getByText("Try adjusting your filters to see more results.")
+        ).toBeInTheDocument();
       });
     });
 

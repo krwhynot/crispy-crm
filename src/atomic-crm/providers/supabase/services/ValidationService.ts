@@ -17,7 +17,10 @@ import type { ProductDistributor } from "../../../validation/productDistributors
 
 // Import all validation schemas
 import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
-import { validateOrganizationForSubmission, validateUpdateOrganization } from "../../../validation/organizations";
+import {
+  validateOrganizationForSubmission,
+  validateUpdateOrganization,
+} from "../../../validation/organizations";
 import {
   validateCreateOpportunity,
   validateUpdateOpportunity,

@@ -13,7 +13,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 import { safeJsonParse } from "@/atomic-crm/utils/safeJsonParse";
-import { activityDraftSchema, type ActivityDraft } from "@/atomic-crm/activities/activityDraftSchema";
+import {
+  activityDraftSchema,
+  type ActivityDraft,
+} from "@/atomic-crm/activities/activityDraftSchema";
 
 // Lazy load QuickLogForm - saves ~15-20KB from main dashboard chunk
 const QuickLogForm = lazy(() =>

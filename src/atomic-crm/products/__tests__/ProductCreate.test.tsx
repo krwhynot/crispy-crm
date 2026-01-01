@@ -6,10 +6,7 @@
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
-import {
-  createServerError,
-  createValidationError,
-} from "@/tests/utils/mock-providers";
+import { createServerError, createValidationError } from "@/tests/utils/mock-providers";
 import { productSchema, PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../../validation/products";
 
 describe("ProductCreate", () => {
@@ -244,9 +241,7 @@ describe("ProductCreate", () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        const principalError = result.error.issues.find((i) =>
-          i.path.includes("principal_id")
-        );
+        const principalError = result.error.issues.find((i) => i.path.includes("principal_id"));
         expect(principalError).toBeDefined();
       }
     });

@@ -94,11 +94,7 @@ export function FilterableBadge({
         isActive && "ring-2 ring-primary ring-offset-1 shadow-sm",
         className
       )}
-      title={
-        isActive
-          ? `Clear filter: ${displayLabel}`
-          : `Filter by: ${displayLabel}`
-      }
+      title={isActive ? `Clear filter: ${displayLabel}` : `Filter by: ${displayLabel}`}
       aria-pressed={isActive}
       aria-label={
         isActive

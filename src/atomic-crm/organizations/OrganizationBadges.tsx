@@ -42,7 +42,9 @@ interface PriorityBadgeProps {
  * - principal: tag-purple (Eggplant - important/primary)
  * - distributor: tag-teal (Active/connected)
  */
-export const OrganizationTypeBadge = memo(function OrganizationTypeBadge({ type }: OrganizationTypeBadgeProps) {
+export const OrganizationTypeBadge = memo(function OrganizationTypeBadge({
+  type,
+}: OrganizationTypeBadgeProps) {
   const colorClass = ORG_TYPE_COLOR_MAP[type as OrganizationType] || "tag-gray";
 
   return (

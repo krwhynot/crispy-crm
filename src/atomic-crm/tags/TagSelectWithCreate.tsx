@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
-import { GenericSelectInput } from '@/components/admin/generic-select-input';
-import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
-import { TagDialog } from './TagDialog';
-import type { Tag } from '../types';
+import { useState } from "react";
+import { ReferenceInput, useCreate, useNotify, useRefresh } from "react-admin";
+import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "lucide-react";
+import { TagDialog } from "./TagDialog";
+import type { Tag } from "../types";
 
 interface TagSelectWithCreateProps {
   source: string;
@@ -17,23 +17,23 @@ interface TagSelectWithCreateProps {
  */
 export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [defaultName, setDefaultName] = useState('');
+  const [defaultName, setDefaultName] = useState("");
   const [create] = useCreate();
   const notify = useNotify();
   const refresh = useRefresh();
 
-  const handleCreateTag = async (data: Pick<Tag, 'name' | 'color'>) => {
+  const handleCreateTag = async (data: Pick<Tag, "name" | "color">) => {
     await create(
-      'tags',
+      "tags",
       { data },
       {
         onSuccess: () => {
-          notify('Tag created', { type: 'success' });
+          notify("Tag created", { type: "success" });
           setDialogOpen(false);
           refresh();
         },
         onError: (error) => {
-          notify(`Error: ${error.message}`, { type: 'error' });
+          notify(`Error: ${error.message}`, { type: "error" });
         },
       }
     );
@@ -66,7 +66,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
       <TagDialog
         open={dialogOpen}
         title="Create a new tag"
-        tag={{ name: defaultName, color: 'warm' }}
+        tag={{ name: defaultName, color: "warm" }}
         onSubmit={handleCreateTag}
         onClose={() => setDialogOpen(false)}
       />

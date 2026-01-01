@@ -6,38 +6,19 @@ import { NextTaskBadge } from "../NextTaskBadge";
 describe("NextTaskBadge", () => {
   describe("empty states", () => {
     it("renders 'No tasks' when taskId is null", () => {
-      render(
-        <NextTaskBadge
-          taskId={null}
-          title={null}
-          dueDate={null}
-          priority={null}
-        />
-      );
+      render(<NextTaskBadge taskId={null} title={null} dueDate={null} priority={null} />);
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
 
     it("renders 'No tasks' when taskId is undefined", () => {
       render(
-        <NextTaskBadge
-          taskId={undefined}
-          title="Some title"
-          dueDate="2025-12-20"
-          priority="high"
-        />
+        <NextTaskBadge taskId={undefined} title="Some title" dueDate="2025-12-20" priority="high" />
       );
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
 
     it("renders 'No tasks' when title is missing", () => {
-      render(
-        <NextTaskBadge
-          taskId={123}
-          title={null}
-          dueDate="2025-12-20"
-          priority="high"
-        />
-      );
+      render(<NextTaskBadge taskId={123} title={null} dueDate="2025-12-20" priority="high" />);
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
   });
@@ -57,25 +38,13 @@ describe("NextTaskBadge", () => {
 
     it("renders as a button element for accessibility", () => {
       render(
-        <NextTaskBadge
-          taskId={123}
-          title="Follow up call"
-          dueDate="2025-12-25"
-          priority="medium"
-        />
+        <NextTaskBadge taskId={123} title="Follow up call" dueDate="2025-12-25" priority="medium" />
       );
       expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
     it("includes task title in aria-label", () => {
-      render(
-        <NextTaskBadge
-          taskId={123}
-          title="Send proposal"
-          dueDate={null}
-          priority="medium"
-        />
-      );
+      render(<NextTaskBadge taskId={123} title="Send proposal" dueDate={null} priority="medium" />);
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("aria-label", "Task: Send proposal");
     });
@@ -88,12 +57,7 @@ describe("NextTaskBadge", () => {
       const dateStr = twoDaysAgo.toISOString().split("T")[0];
 
       render(
-        <NextTaskBadge
-          taskId={123}
-          title="Past due task"
-          dueDate={dateStr}
-          priority="medium"
-        />
+        <NextTaskBadge taskId={123} title="Past due task" dueDate={dateStr} priority="medium" />
       );
       // Should show "Xd overdue" text - find by pattern
       expect(screen.getByText(/\d+d overdue/)).toBeInTheDocument();
@@ -104,14 +68,7 @@ describe("NextTaskBadge", () => {
       const now = new Date();
       const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-      render(
-        <NextTaskBadge
-          taskId={123}
-          title="Today's task"
-          dueDate={today}
-          priority="medium"
-        />
-      );
+      render(<NextTaskBadge taskId={123} title="Today's task" dueDate={today} priority="medium" />);
       // Either "Due today" or may show as "0d overdue" depending on timezone
       const dueText = screen.queryByText("Due today") || screen.queryByText(/0d overdue/i);
       expect(dueText).toBeInTheDocument();
@@ -122,19 +79,10 @@ describe("NextTaskBadge", () => {
       tomorrow.setDate(tomorrow.getDate() + 2);
       const dateStr = tomorrow.toISOString().split("T")[0];
 
-      render(
-        <NextTaskBadge
-          taskId={123}
-          title="Soon task"
-          dueDate={dateStr}
-          priority="medium"
-        />
-      );
+      render(<NextTaskBadge taskId={123} title="Soon task" dueDate={dateStr} priority="medium" />);
       // Should show a day abbreviation like "Mon", "Tue", etc.
       const dayAbbreviations = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      const hasDayAbbr = dayAbbreviations.some((day) =>
-        screen.queryByText(day)
-      );
+      const hasDayAbbr = dayAbbreviations.some((day) => screen.queryByText(day));
       expect(hasDayAbbr).toBe(true);
     });
 
@@ -144,26 +92,14 @@ describe("NextTaskBadge", () => {
       const dateStr = futureDate.toISOString().split("T")[0];
 
       render(
-        <NextTaskBadge
-          taskId={123}
-          title="Future task"
-          dueDate={dateStr}
-          priority="medium"
-        />
+        <NextTaskBadge taskId={123} title="Future task" dueDate={dateStr} priority="medium" />
       );
       // Should show something like "Dec 26"
       expect(screen.getByText(/[A-Z][a-z]{2} \d{1,2}/)).toBeInTheDocument();
     });
 
     it("handles null due date gracefully", () => {
-      render(
-        <NextTaskBadge
-          taskId={123}
-          title="No date task"
-          dueDate={null}
-          priority="high"
-        />
-      );
+      render(<NextTaskBadge taskId={123} title="No date task" dueDate={null} priority="high" />);
       expect(screen.getByText("No date task")).toBeInTheDocument();
       // Should not crash, just not show a date
     });
@@ -172,12 +108,7 @@ describe("NextTaskBadge", () => {
   describe("priority badge", () => {
     it("shows priority badge for high priority", () => {
       render(
-        <NextTaskBadge
-          taskId={123}
-          title="Important task"
-          dueDate="2025-12-25"
-          priority="high"
-        />
+        <NextTaskBadge taskId={123} title="Important task" dueDate="2025-12-25" priority="high" />
       );
       // Find the badge specifically (it has data-slot="badge")
       const badge = document.querySelector('[data-slot="badge"]');
@@ -187,12 +118,7 @@ describe("NextTaskBadge", () => {
 
     it("shows priority badge for critical priority", () => {
       render(
-        <NextTaskBadge
-          taskId={123}
-          title="Urgent task"
-          dueDate="2025-12-25"
-          priority="critical"
-        />
+        <NextTaskBadge taskId={123} title="Urgent task" dueDate="2025-12-25" priority="critical" />
       );
       // Find the badge specifically (it has data-slot="badge")
       const badge = document.querySelector('[data-slot="badge"]');
@@ -202,12 +128,7 @@ describe("NextTaskBadge", () => {
 
     it("shows priority badge for medium priority", () => {
       render(
-        <NextTaskBadge
-          taskId={123}
-          title="Regular task"
-          dueDate="2025-12-25"
-          priority="medium"
-        />
+        <NextTaskBadge taskId={123} title="Regular task" dueDate="2025-12-25" priority="medium" />
       );
       // Medium priority shows a badge
       const badge = document.querySelector('[data-slot="badge"]');
@@ -234,12 +155,7 @@ describe("NextTaskBadge", () => {
 
     it("handles null priority gracefully", () => {
       render(
-        <NextTaskBadge
-          taskId={123}
-          title="No priority task"
-          dueDate="2025-12-25"
-          priority={null}
-        />
+        <NextTaskBadge taskId={123} title="No priority task" dueDate="2025-12-25" priority={null} />
       );
       expect(screen.getByText("No priority task")).toBeInTheDocument();
     });
@@ -301,14 +217,7 @@ describe("NextTaskBadge", () => {
       futureDate.setDate(futureDate.getDate() + 7);
       const dateStr = futureDate.toISOString().split("T")[0];
 
-      render(
-        <NextTaskBadge
-          taskId={123}
-          title="Future task"
-          dueDate={dateStr}
-          priority="high"
-        />
-      );
+      render(<NextTaskBadge taskId={123} title="Future task" dueDate={dateStr} priority="high" />);
       const button = screen.getByRole("button");
       // Should include date info in aria-label
       expect(button.getAttribute("aria-label")).toContain("Future task");

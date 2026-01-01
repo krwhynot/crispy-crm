@@ -47,11 +47,7 @@ export const AppBrandingProvider = ({
     [title, darkModeLogo, lightModeLogo]
   );
 
-  return (
-    <AppBrandingContext.Provider value={value}>
-      {children}
-    </AppBrandingContext.Provider>
-  );
+  return <AppBrandingContext.Provider value={value}>{children}</AppBrandingContext.Provider>;
 };
 
 /**

@@ -20,12 +20,7 @@ import { generateEmbedding } from "../../discover/embeddings/ollama.js";
 
 const searchSchema = z.object({
   query: z.string().describe("Search query (code or natural language)"),
-  limit: z
-    .number()
-    .min(1)
-    .max(50)
-    .default(20)
-    .describe("Max results"),
+  limit: z.number().min(1).max(50).default(20).describe("Max results"),
   type: z
     .enum(["all", "function", "class", "interface", "type", "component", "hook"])
     .default("all")
@@ -174,29 +169,25 @@ async function executeSearch(args: SearchInput): Promise<SearchResponse> {
     const embedding = await generateEmbedding(query);
     vectorResults = await runVectorSearch(embedding, type, limit);
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("[search_code] Ollama unavailable:", errorMessage);
-    warning =
-      "Vector search unavailable (Ollama not running). Returning FTS-only results.";
+    warning = "Vector search unavailable (Ollama not running). Returning FTS-only results.";
   }
 
   // Combine results using RRF ranking
   const rankedResults = rrfRank(ftsResults, vectorResults);
 
   // Convert to output format
-  const outputResults: SearchResultOutput[] = rankedResults
-    .slice(0, limit)
-    .map((r) => ({
-      file: r.file,
-      lines: {
-        start: r.line,
-        end: r.line, // FTS doesn't have end line, could be enhanced with vector results
-      },
-      preview: r.content,
-      score: r.score,
-      sources: r.sources,
-    }));
+  const outputResults: SearchResultOutput[] = rankedResults.slice(0, limit).map((r) => ({
+    file: r.file,
+    lines: {
+      start: r.line,
+      end: r.line, // FTS doesn't have end line, could be enhanced with vector results
+    },
+    preview: r.content,
+    score: r.score,
+    sources: r.sources,
+  }));
 
   return {
     results: outputResults,

@@ -114,16 +114,11 @@ async function runSearch(options: SearchOptions): Promise<void> {
     const { payload, score } = result;
     const similarity = (score * 100).toFixed(1);
 
-    console.log(
-      `\n${index + 1}. [${similarity}%] ${payload.type}: ${payload.name}`
-    );
+    console.log(`\n${index + 1}. [${similarity}%] ${payload.type}: ${payload.name}`);
     console.log(`   📁 ${payload.filePath}:${payload.startLine}-${payload.endLine}`);
 
     if (options.showPreview && payload.content) {
-      const preview = payload.content
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 120);
+      const preview = payload.content.replace(/\s+/g, " ").trim().slice(0, 120);
       console.log(`   📄 ${preview}...`);
     }
   });

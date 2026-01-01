@@ -43,9 +43,18 @@ export const salesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
-  email: z.string().trim().email("Must be a valid email address").max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long"),
+  email: z
+    .string()
+    .trim()
+    .email("Must be a valid email address")
+    .max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long"),
   phone: z.string().trim().max(VALIDATION_LIMITS.PHONE_MAX, "Phone number too long").nullish(),
-  avatar_url: z.string().url("Must be a valid URL").max(VALIDATION_LIMITS.AVATAR_URL_MAX, "Avatar URL too long").optional().nullable(),
+  avatar_url: z
+    .string()
+    .url("Must be a valid URL")
+    .max(VALIDATION_LIMITS.AVATAR_URL_MAX, "Avatar URL too long")
+    .optional()
+    .nullable(),
   user_id: z.string().uuid("Must be a valid UUID").optional(),
 
   // Permission fields (role is primary, others are computed/deprecated)
@@ -68,7 +77,11 @@ export const salesSchema = z.strictObject({
   // System fields
   created_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
   updated_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
-  deleted_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional().nullable(),
+  deleted_at: z
+    .string()
+    .max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long")
+    .optional()
+    .nullable(),
 });
 
 // Type inference
@@ -118,7 +131,11 @@ export const createSalesSchema = salesSchema
   })
   .extend({
     // Password optional - Edge Function uses Supabase inviteUserByEmail for password setup
-    password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long").optional(),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(128, "Password too long")
+      .optional(),
   })
   .required({
     first_name: true,
@@ -186,7 +203,11 @@ export async function validateUpdateSales(data: unknown): Promise<void> {
 export const userInviteSchema = z.strictObject({
   email: z.string().email("Invalid email format").max(254, "Email too long"),
   // Password optional - Supabase inviteUserByEmail handles password setup
-  password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long").optional(),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(128, "Password too long")
+    .optional(),
   first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
   role: UserRoleEnum.default("rep"),
@@ -200,8 +221,18 @@ export type UserInvite = z.infer<typeof userInviteSchema>;
  */
 export const userUpdateSchema = z.strictObject({
   sales_id: z.coerce.number().int().positive("Invalid sales ID"),
-  first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long").optional(),
-  last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long").optional(),
+  first_name: z
+    .string()
+    .trim()
+    .min(1, "First name is required")
+    .max(100, "First name too long")
+    .optional(),
+  last_name: z
+    .string()
+    .trim()
+    .min(1, "Last name is required")
+    .max(100, "Last name too long")
+    .optional(),
   role: UserRoleEnum.optional(),
   disabled: z.coerce.boolean().optional(),
 });
@@ -219,11 +250,31 @@ export type UserUpdate = z.infer<typeof userUpdateSchema>;
  * This is the single source of truth for profile form defaults
  */
 export const salesProfileSchema = z.strictObject({
-  first_name: z.string().max(100).nullish().transform(v => v ?? ''),
-  last_name: z.string().max(100).nullish().transform(v => v ?? ''),
-  email: z.string().max(254).nullish().transform(v => v ?? ''),
-  phone: z.string().max(50).nullish().transform(v => v ?? ''),
-  avatar_url: z.string().max(VALIDATION_LIMITS.AVATAR_URL_MAX).nullish().transform(v => v ?? ''),
+  first_name: z
+    .string()
+    .max(100)
+    .nullish()
+    .transform((v) => v ?? ""),
+  last_name: z
+    .string()
+    .max(100)
+    .nullish()
+    .transform((v) => v ?? ""),
+  email: z
+    .string()
+    .max(254)
+    .nullish()
+    .transform((v) => v ?? ""),
+  phone: z
+    .string()
+    .max(50)
+    .nullish()
+    .transform((v) => v ?? ""),
+  avatar_url: z
+    .string()
+    .max(VALIDATION_LIMITS.AVATAR_URL_MAX)
+    .nullish()
+    .transform((v) => v ?? ""),
 });
 
 export type SalesProfileFormData = z.infer<typeof salesProfileSchema>;
@@ -234,7 +285,7 @@ export type SalesProfileFormData = z.infer<typeof salesProfileSchema>;
  * This is the single source of truth for permissions form defaults
  */
 export const salesPermissionsSchema = z.strictObject({
-  role: UserRoleEnum.default('rep'),
+  role: UserRoleEnum.default("rep"),
   disabled: z.coerce.boolean().default(false),
 });
 

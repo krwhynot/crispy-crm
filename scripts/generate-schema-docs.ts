@@ -106,9 +106,7 @@ async function connectToDatabase(): Promise<pg.Client> {
 
   const client = new Client({
     connectionString,
-    ssl: connectionString.includes("supabase.com")
-      ? { rejectUnauthorized: false }
-      : undefined,
+    ssl: connectionString.includes("supabase.com") ? { rejectUnauthorized: false } : undefined,
   });
 
   try {
@@ -122,9 +120,7 @@ async function connectToDatabase(): Promise<pg.Client> {
     console.error("\n💡 Make sure either:");
     console.error("   1. Local Supabase is running: npm run db:local:start");
     console.error("   2. DATABASE_URL is set in .env");
-    console.error(
-      "   3. VITE_SUPABASE_URL and SUPABASE_DB_PASSWORD are set for cloud\n"
-    );
+    console.error("   3. VITE_SUPABASE_URL and SUPABASE_DB_PASSWORD are set for cloud\n");
     process.exit(1);
   }
 }
@@ -228,10 +224,7 @@ function formatType(col: ColumnInfo): string {
   // Add length/precision info
   if (col.character_maximum_length) {
     type += `(${col.character_maximum_length})`;
-  } else if (
-    col.numeric_precision &&
-    !["integer", "bigint", "smallint"].includes(col.data_type)
-  ) {
+  } else if (col.numeric_precision && !["integer", "bigint", "smallint"].includes(col.data_type)) {
     type += `(${col.numeric_precision})`;
   }
 
@@ -429,9 +422,7 @@ async function main() {
     // List tables
     console.log("📋 Tables included:");
     for (const table of tables) {
-      const colCount = columns.filter(
-        (c) => c.table_name === table.table_name
-      ).length;
+      const colCount = columns.filter((c) => c.table_name === table.table_name).length;
       console.log(`   - ${table.table_name} (${colCount} columns)`);
     }
     console.log("");

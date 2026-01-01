@@ -150,9 +150,15 @@ describe("Opportunity Delete Cascade", () => {
 
       // Assert - RPC was called for each opportunity
       expect(mockRpc).toHaveBeenCalledTimes(3);
-      expect(mockRpc).toHaveBeenNthCalledWith(1, "archive_opportunity_with_relations", { opp_id: 101 });
-      expect(mockRpc).toHaveBeenNthCalledWith(2, "archive_opportunity_with_relations", { opp_id: 102 });
-      expect(mockRpc).toHaveBeenNthCalledWith(3, "archive_opportunity_with_relations", { opp_id: 103 });
+      expect(mockRpc).toHaveBeenNthCalledWith(1, "archive_opportunity_with_relations", {
+        opp_id: 101,
+      });
+      expect(mockRpc).toHaveBeenNthCalledWith(2, "archive_opportunity_with_relations", {
+        opp_id: 102,
+      });
+      expect(mockRpc).toHaveBeenNthCalledWith(3, "archive_opportunity_with_relations", {
+        opp_id: 103,
+      });
 
       // Assert - returns the IDs that were deleted
       expect(result.data).toEqual(opportunityIds);
@@ -195,7 +201,7 @@ describe("Opportunity Delete Cascade", () => {
       const nonCascadeResources = ["contacts", "organizations", "activities", "tasks", "notes"];
 
       expect(cascadeResources).toContain("opportunities");
-      nonCascadeResources.forEach(resource => {
+      nonCascadeResources.forEach((resource) => {
         expect(cascadeResources).not.toContain(resource);
       });
     });
@@ -207,13 +213,13 @@ describe("Opportunity Delete Cascade", () => {
       // as defined in archive_opportunity_with_relations function
       // Updated 2025-12-21: Added opportunity_contacts and opportunity_products
       const expectedCascadeTargets = [
-        "opportunities",           // The opportunity itself
-        "activities",              // Related activities
-        "opportunityNotes",        // Related notes
-        "opportunity_participants",// Related participants
-        "tasks",                   // Related tasks
-        "opportunity_contacts",    // Junction: opportunities ↔ contacts (P0 fix)
-        "opportunity_products",    // Junction: opportunities ↔ products (P0 fix)
+        "opportunities", // The opportunity itself
+        "activities", // Related activities
+        "opportunityNotes", // Related notes
+        "opportunity_participants", // Related participants
+        "tasks", // Related tasks
+        "opportunity_contacts", // Junction: opportunities ↔ contacts (P0 fix)
+        "opportunity_products", // Junction: opportunities ↔ products (P0 fix)
       ];
 
       // This is a documentation test - just verifying the expected targets

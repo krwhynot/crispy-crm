@@ -31,16 +31,17 @@ export default function WeeklyActivitySummary() {
   }));
 
   // Fetch activities for date range
-  const { data: activities, isLoading: activitiesLoading, error: activitiesError } = useReportData<ActivityRecord>(
-    "activities",
-    {
-      dateRange: {
-        start: new Date(dateRange.start),
-        end: new Date(dateRange.end),
-      },
-      dateField: "activity_date",
-    }
-  );
+  const {
+    data: activities,
+    isLoading: activitiesLoading,
+    error: activitiesError,
+  } = useReportData<ActivityRecord>("activities", {
+    dateRange: {
+      start: new Date(dateRange.start),
+      end: new Date(dateRange.end),
+    },
+    dateField: "activity_date",
+  });
 
   // Fetch sales reps
   const createdByIds = useMemo(

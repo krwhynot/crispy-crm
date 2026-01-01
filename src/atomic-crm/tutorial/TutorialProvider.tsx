@@ -266,11 +266,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
     [isActive, progress]
   );
 
-  return (
-    <TutorialContext.Provider value={contextValue}>
-      {children}
-    </TutorialContext.Provider>
-  );
+  return <TutorialContext.Provider value={contextValue}>{children}</TutorialContext.Provider>;
 }
 
 export function useTutorial(): TutorialContextType {

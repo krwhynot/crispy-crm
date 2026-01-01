@@ -117,10 +117,7 @@ export function findSymbolsByPattern(
  * @param symbol - The symbol string to search for (exact match)
  * @returns Array of occurrences with their location information
  */
-export function getReferences(
-  index: Index,
-  symbol: string
-): OccurrenceLocation[] {
+export function getReferences(index: Index, symbol: string): OccurrenceLocation[] {
   const results: OccurrenceLocation[] = [];
 
   for (const document of index.documents) {
@@ -156,10 +153,7 @@ export function getReferences(
  * @param symbol - The symbol string to search for
  * @returns The definition occurrence with location, or null if not found
  */
-export function getDefinition(
-  index: Index,
-  symbol: string
-): OccurrenceLocation | null {
+export function getDefinition(index: Index, symbol: string): OccurrenceLocation | null {
   for (const document of index.documents) {
     for (const occurrence of document.occurrences) {
       if (occurrence.symbol === symbol) {
@@ -211,13 +205,8 @@ export function findHooks(
  * @param relativePath - Relative path to the file (e.g., "src/hooks/use-mobile.ts")
  * @returns Array of SymbolInformation for that file, or empty array if not found
  */
-export function getSymbolsInFile(
-  index: Index,
-  relativePath: string
-): SymbolInformation[] {
-  const document = index.documents.find(
-    (doc) => doc.relative_path === relativePath
-  );
+export function getSymbolsInFile(index: Index, relativePath: string): SymbolInformation[] {
+  const document = index.documents.find((doc) => doc.relative_path === relativePath);
   return document ? [...document.symbols] : [];
 }
 

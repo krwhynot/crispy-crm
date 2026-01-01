@@ -4,11 +4,7 @@ import * as React from "react";
 import { Check, ChevronsUpDown, PlusCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -163,11 +159,7 @@ export function SelectUI({
           // TODO: Add aria-controls={popoverId} linking to PopoverContent id for screen readers
           aria-invalid={hasError || undefined}
           disabled={isDisabled}
-          className={cn(
-            "h-11 w-full justify-between",
-            hasError && "border-destructive",
-            className
-          )}
+          className={cn("h-11 w-full justify-between", hasError && "border-destructive", className)}
         >
           <span className={cn("truncate", !displayText && "text-muted-foreground")}>
             {displayText ?? placeholder}
@@ -236,9 +228,7 @@ export function SelectUI({
                   <Check
                     className={cn(
                       "mr-2 size-4",
-                      selectedValues.includes(option.id)
-                        ? "opacity-100"
-                        : "opacity-0"
+                      selectedValues.includes(option.id) ? "opacity-100" : "opacity-0"
                     )}
                   />
                   {itemRenderer ? itemRenderer(option) : option.label}

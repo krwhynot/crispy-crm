@@ -89,7 +89,11 @@ export function securityHeadersMiddleware(config?: Partial<SecurityHeadersConfig
 
   const headers = getSecurityHeaders(fullConfig);
 
-  return (_req: unknown, res: { setHeader: (name: string, value: string) => void }, next: () => void) => {
+  return (
+    _req: unknown,
+    res: { setHeader: (name: string, value: string) => void },
+    next: () => void
+  ) => {
     // Set all security headers
     Object.entries(headers).forEach(([name, value]) => {
       res.setHeader(name, value);

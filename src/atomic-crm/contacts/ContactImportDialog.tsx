@@ -294,7 +294,10 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
           batchSize: batch.length,
         });
       } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : "A critical error occurred during batch processing.";
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "A critical error occurred during batch processing.";
         const batchStartRow = wizardState.rowOffset + 1;
 
         // Add an error entry for each contact in the failed batch

@@ -15,11 +15,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 import type {
   AuthorizationCardProps,
@@ -29,7 +25,11 @@ import type {
 } from "./authorization-types";
 import { ProductExceptionsSection } from "./ProductExceptionsSection";
 
-export function AuthorizationCard({ authorization, distributorId, onRemove }: AuthorizationCardProps) {
+export function AuthorizationCard({
+  authorization,
+  distributorId,
+  onRemove,
+}: AuthorizationCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const { data: principal } = useGetList<PrincipalOrganization>("organizations", {

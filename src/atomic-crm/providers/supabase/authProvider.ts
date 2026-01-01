@@ -54,13 +54,12 @@ export const authProvider: AuthProvider = {
 
     // Detect stale JWT (user deleted but token still valid - e.g., after db reset)
     // Industry standard: auto-logout on auth errors for self-healing UX
-    if (error?.message?.includes('does not exist') ||
-        error?.message?.includes('JWT')) {
+    if (error?.message?.includes("does not exist") || error?.message?.includes("JWT")) {
       // Clear stale session and cache
       await supabase.auth.signOut();
       cachedSale = undefined;
       cacheTimestamp = 0;
-      throw new Error('Session expired. Please log in again.');
+      throw new Error("Session expired. Please log in again.");
     }
 
     // If no valid session, only allow public paths
@@ -123,7 +122,7 @@ const getSaleFromCache = async () => {
   const { data: dataSession, error: errorSession } = await supabase.auth.getSession();
 
   // Check for stale JWT error (user deleted but token valid - e.g., after db reset)
-  if (errorSession?.message?.includes('does not exist')) {
+  if (errorSession?.message?.includes("does not exist")) {
     await supabase.auth.signOut();
     cachedSale = undefined;
     cacheTimestamp = 0;
@@ -158,5 +157,5 @@ const getSaleFromCache = async () => {
 export const invalidateIdentityCache = () => {
   cachedSale = undefined;
   cacheTimestamp = 0;
-  console.log('[authProvider] Identity cache cleared - next getIdentity will fetch fresh data');
+  console.log("[authProvider] Identity cache cleared - next getIdentity will fetch fresh data");
 };

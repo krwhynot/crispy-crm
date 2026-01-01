@@ -38,10 +38,7 @@ const getDueStatus = (dueDate: string | null | undefined): DueStatus => {
   return "normal";
 };
 
-const getDueLabel = (
-  dueDate: string | null | undefined,
-  status: DueStatus
-): string => {
+const getDueLabel = (dueDate: string | null | undefined, status: DueStatus): string => {
   if (!dueDate) return "";
 
   const date = new Date(dueDate);
@@ -85,11 +82,7 @@ export const NextTaskBadge = memo(function NextTaskBadge({
 }: NextTaskBadgeProps) {
   // No task state
   if (!taskId || !title) {
-    return (
-      <span className={cn("text-sm text-muted-foreground italic", className)}>
-        No tasks
-      </span>
-    );
+    return <span className={cn("text-sm text-muted-foreground italic", className)}>No tasks</span>;
   }
 
   const dueStatus = getDueStatus(dueDate);
@@ -116,15 +109,11 @@ export const NextTaskBadge = memo(function NextTaskBadge({
       <div className="flex flex-col min-w-0 flex-1">
         <span className="text-sm truncate max-w-[180px]">{title}</span>
         {dueLabel && (
-          <span className={cn("text-xs", DUE_STATUS_STYLES[dueStatus])}>
-            {dueLabel}
-          </span>
+          <span className={cn("text-xs", DUE_STATUS_STYLES[dueStatus])}>{dueLabel}</span>
         )}
       </div>
 
-      {priority && priority !== "low" && (
-        <PriorityBadge priority={priority} className="text-xs" />
-      )}
+      {priority && priority !== "low" && <PriorityBadge priority={priority} className="text-xs" />}
     </button>
   );
 });

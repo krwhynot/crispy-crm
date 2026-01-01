@@ -48,9 +48,7 @@ const ActivityEditForm = () => {
       <Card>
         <CardContent className="space-y-6 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground">
-              Edit Activity
-            </h2>
+            <h2 className="text-lg font-semibold text-foreground">Edit Activity</h2>
             <span className="text-sm text-muted-foreground">
               {record.type && `${record.type.charAt(0).toUpperCase()}${record.type.slice(1)}`}
               {record.activity_date && ` - ${new Date(record.activity_date).toLocaleDateString()}`}

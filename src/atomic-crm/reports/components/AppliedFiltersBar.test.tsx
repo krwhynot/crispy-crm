@@ -11,11 +11,7 @@ describe("AppliedFiltersBar", () => {
 
   it("renders nothing when hasActiveFilters is false", () => {
     const { container } = render(
-      <AppliedFiltersBar
-        filters={createFilters()}
-        onResetAll={vi.fn()}
-        hasActiveFilters={false}
-      />
+      <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={false} />
     );
 
     expect(container.firstChild).toBeNull();
@@ -23,11 +19,7 @@ describe("AppliedFiltersBar", () => {
 
   it("renders nothing when filters array is empty", () => {
     const { container } = render(
-      <AppliedFiltersBar
-        filters={[]}
-        onResetAll={vi.fn()}
-        hasActiveFilters={true}
-      />
+      <AppliedFiltersBar filters={[]} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
     expect(container.firstChild).toBeNull();
@@ -35,11 +27,7 @@ describe("AppliedFiltersBar", () => {
 
   it("renders all filter chips when hasActiveFilters is true", () => {
     render(
-      <AppliedFiltersBar
-        filters={createFilters()}
-        onResetAll={vi.fn()}
-        hasActiveFilters={true}
-      />
+      <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
     expect(screen.getByText("Date Range:")).toBeInTheDocument();
@@ -50,16 +38,10 @@ describe("AppliedFiltersBar", () => {
 
   it("renders Reset All button", () => {
     render(
-      <AppliedFiltersBar
-        filters={createFilters()}
-        onResetAll={vi.fn()}
-        hasActiveFilters={true}
-      />
+      <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
-    expect(
-      screen.getByRole("button", { name: /reset all/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /reset all/i })).toBeInTheDocument();
   });
 
   it("calls onResetAll when Reset All button is clicked", async () => {
@@ -88,13 +70,7 @@ describe("AppliedFiltersBar", () => {
     ];
     const user = userEvent.setup();
 
-    render(
-      <AppliedFiltersBar
-        filters={filters}
-        onResetAll={vi.fn()}
-        hasActiveFilters={true}
-      />
-    );
+    render(<AppliedFiltersBar filters={filters} onResetAll={vi.fn()} hasActiveFilters={true} />);
 
     // Click remove on first filter
     const removeButtons = screen.getAllByRole("button", {
@@ -108,11 +84,7 @@ describe("AppliedFiltersBar", () => {
 
   it("has role=list on filters container", () => {
     render(
-      <AppliedFiltersBar
-        filters={createFilters()}
-        onResetAll={vi.fn()}
-        hasActiveFilters={true}
-      />
+      <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
     expect(screen.getByRole("list")).toBeInTheDocument();

@@ -47,11 +47,7 @@ export const FormOptionsProvider = ({
     [noteStatuses, taskTypes, contactGender]
   );
 
-  return (
-    <FormOptionsContext.Provider value={value}>
-      {children}
-    </FormOptionsContext.Provider>
-  );
+  return <FormOptionsContext.Provider value={value}>{children}</FormOptionsContext.Provider>;
 };
 
 /**

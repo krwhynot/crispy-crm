@@ -90,7 +90,11 @@ const opportunityBaseSchema = z.strictObject({
   deleted_at: z.string().max(50).optional().nullable(),
 
   // OpportunityInfoInputs fields
-  name: z.string().trim().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
+  name: z
+    .string()
+    .trim()
+    .min(1, "Opportunity name is required")
+    .max(255, "Opportunity name too long"),
   description: z
     .string()
     .max(2000, "Description must be 2000 characters or less")
@@ -122,10 +126,7 @@ const opportunityBaseSchema = z.strictObject({
   // OpportunityContactsInput fields
   // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
   // This provides defense-in-depth against UI bugs that might add invalid IDs
-  contact_ids: z
-    .array(z.coerce.number().int().positive())
-    .optional()
-    .default([]),
+  contact_ids: z.array(z.coerce.number().int().positive()).optional().default([]),
 
   // Campaign & Workflow Tracking fields (added 2025-11-03)
   campaign: z
@@ -239,10 +240,7 @@ export const createOpportunitySchema = opportunityBaseSchema
   .extend({
     // Contact_ids optional for quick-add (can be enriched later via slide-over)
     // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
-    contact_ids: z
-      .array(z.coerce.number().int().positive())
-      .optional()
-      .default([]),
+    contact_ids: z.array(z.coerce.number().int().positive()).optional().default([]),
 
     // Auto-default: 30 days from now (industry standard placeholder)
     estimated_close_date: z.coerce
@@ -292,7 +290,11 @@ export const createOpportunitySchema = opportunityBaseSchema
  */
 export const quickCreateOpportunitySchema = z.strictObject({
   // Required fields (Salesforce standard)
-  name: z.string().trim().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
+  name: z
+    .string()
+    .trim()
+    .min(1, "Opportunity name is required")
+    .max(255, "Opportunity name too long"),
   stage: opportunityStageSchema,
   customer_organization_id: z.union([z.string(), z.number()]), // Business rule Q12
 
@@ -352,8 +354,17 @@ export const updateOpportunitySchema = opportunityBaseSchema
 
       // Skip contact validation for stage-only updates (e.g., Kanban drag-drop)
       // These updates only change stage/win_reason/loss_reason, not contacts
-      const stageOnlyFields = new Set(["id", "stage", "win_reason", "loss_reason", "close_reason_notes", "contact_ids"]);
-      const providedFields = Object.keys(data).filter((key) => data[key as keyof typeof data] !== undefined);
+      const stageOnlyFields = new Set([
+        "id",
+        "stage",
+        "win_reason",
+        "loss_reason",
+        "close_reason_notes",
+        "contact_ids",
+      ]);
+      const providedFields = Object.keys(data).filter(
+        (key) => data[key as keyof typeof data] !== undefined
+      );
       const isStageOnlyUpdate = providedFields.every((field) => stageOnlyFields.has(field));
       if (isStageOnlyUpdate) {
         return true;

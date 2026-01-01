@@ -80,7 +80,10 @@ function transformHeaders(headers: string[]): string[] {
  * @param dataRows - Raw data rows (arrays of values)
  * @returns Array of Contact objects ready for validation and import
  */
-export function processCsvData(headers: string[], dataRows: Array<Array<unknown>>): ContactImportSchema[] {
+export function processCsvData(
+  headers: string[],
+  dataRows: Array<Array<unknown>>
+): ContactImportSchema[] {
   const transformedHeaders = transformHeaders(headers);
 
   return dataRows.map((row) => {

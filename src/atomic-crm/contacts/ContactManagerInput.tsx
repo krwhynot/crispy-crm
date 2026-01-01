@@ -27,7 +27,9 @@ export const ContactManagerInput = () => {
         emptyText="No manager"
         helperText="Direct manager / supervisor"
         optionText={(contact: Contact) =>
-          contact ? `${contact.first_name || ""} ${contact.last_name || ""}`.trim() || "Unknown" : ""
+          contact
+            ? `${contact.first_name || ""} ${contact.last_name || ""}`.trim() || "Unknown"
+            : ""
         }
         filterToQuery={(searchText) => ({
           "first_name,last_name@ilike": `%${searchText}%`,

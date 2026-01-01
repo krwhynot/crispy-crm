@@ -83,7 +83,8 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
               <div>
                 <h3 className="font-semibold text-base">{label}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {pluralize(group.totalCount, "activity", "activities")} • {group.uniqueOrgs} unique orgs • {percentage}%
+                  {pluralize(group.totalCount, "activity", "activities")} • {group.uniqueOrgs}{" "}
+                  unique orgs • {percentage}%
                 </p>
               </div>
             </div>

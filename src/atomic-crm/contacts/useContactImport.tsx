@@ -249,7 +249,8 @@ export function useContactImport() {
             } else {
               finalErrors.push({
                 field: "general",
-                message: error instanceof Error ? error.message : "Unknown error during record creation",
+                message:
+                  error instanceof Error ? error.message : "Unknown error during record creation",
               });
             }
             return { rowNumber, success: false, errors: finalErrors, data: contactData };

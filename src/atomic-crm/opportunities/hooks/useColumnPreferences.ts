@@ -24,17 +24,21 @@ export function useColumnPreferences() {
   const allStages = OPPORTUNITY_STAGES.map((s) => s.value);
 
   const [collapsedStages, setCollapsedStages] = useState<OpportunityStageValue[]>(() => {
-    return getStorageItem<OpportunityStageValue[]>(COLLAPSED_KEY, {
-      type: "local",
-      schema: opportunityStageArraySchema,
-    }) ?? [];
+    return (
+      getStorageItem<OpportunityStageValue[]>(COLLAPSED_KEY, {
+        type: "local",
+        schema: opportunityStageArraySchema,
+      }) ?? []
+    );
   });
 
   const [visibleStages, setVisibleStages] = useState<OpportunityStageValue[]>(() => {
-    return getStorageItem<OpportunityStageValue[]>(VISIBLE_KEY, {
-      type: "local",
-      schema: opportunityStageArraySchema,
-    }) ?? allStages;
+    return (
+      getStorageItem<OpportunityStageValue[]>(VISIBLE_KEY, {
+        type: "local",
+        schema: opportunityStageArraySchema,
+      }) ?? allStages
+    );
   });
 
   useEffect(() => {

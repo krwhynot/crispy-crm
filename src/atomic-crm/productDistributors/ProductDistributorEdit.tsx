@@ -7,7 +7,9 @@ export const ProductDistributorEdit = () => (
   <Edit redirect="list">
     <SimpleForm>
       <div className="space-y-4 mb-6 p-4 bg-muted/50 rounded-lg">
-        <h3 className="text-sm font-medium text-muted-foreground">Product-Distributor Relationship</h3>
+        <h3 className="text-sm font-medium text-muted-foreground">
+          Product-Distributor Relationship
+        </h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <span className="text-xs text-muted-foreground">Product</span>
@@ -40,16 +42,14 @@ export const ProductDistributorEdit = () => (
 
       <TextInput source="valid_from" label="Valid From" type="date" helperText={false} />
 
-      <TextInput source="valid_to" label="Valid To" type="date" helperText="Leave empty if ongoing" />
-
       <TextInput
-        source="notes"
-        label="Notes"
-        multiline
-        rows={3}
-        fullWidth
-        helperText={false}
+        source="valid_to"
+        label="Valid To"
+        type="date"
+        helperText="Leave empty if ongoing"
       />
+
+      <TextInput source="notes" label="Notes" multiline rows={3} fullWidth helperText={false} />
     </SimpleForm>
   </Edit>
 );

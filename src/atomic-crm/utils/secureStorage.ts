@@ -51,7 +51,10 @@ export interface StorageOptions<T = unknown> {
  * const stages = getStorageItem<string[]>('filter.opportunity_stages');
  * // Returns: ['new_lead', 'initial_outreach'] or null
  */
-export function getStorageItem<T = unknown>(key: string, options: StorageOptions<T> = {}): T | null {
+export function getStorageItem<T = unknown>(
+  key: string,
+  options: StorageOptions<T> = {}
+): T | null {
   const storageType = options.type || "session";
 
   try {

@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { useGetList, Form, useNotify, useGetIdentity, ReferenceArrayInput, useDataProvider } from "react-admin";
+import {
+  useGetList,
+  Form,
+  useNotify,
+  useGetIdentity,
+  ReferenceArrayInput,
+  useDataProvider,
+} from "react-admin";
 import type { Identifier } from "ra-core";
 import { OpportunitiesService } from "@/atomic-crm/services/opportunities.service";
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
@@ -9,7 +16,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserIcon, Star } from "lucide-react";
-import { DirtyStateTracker, SidepaneEmptyState, SidepaneSection } from "@/components/layouts/sidepane";
+import {
+  DirtyStateTracker,
+  SidepaneEmptyState,
+  SidepaneSection,
+} from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
 import { QuickCreateContactRA } from "../../contacts/QuickCreateContactPopover";
 import { contactOptionText } from "../../contacts/ContactOption";
@@ -167,10 +178,7 @@ export function OpportunityContactsTab({
 
   if (!junctionRecords || junctionRecords.length === 0) {
     return (
-      <SidepaneEmptyState
-        icon={UserIcon}
-        message="No contacts associated with this opportunity"
-      />
+      <SidepaneEmptyState icon={UserIcon} message="No contacts associated with this opportunity" />
     );
   }
 

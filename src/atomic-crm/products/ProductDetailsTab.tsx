@@ -60,9 +60,7 @@ interface ProductDetailsTabProps {
 }
 
 function hasDistributorCodes(record: Record<string, unknown>): boolean {
-  return Object.keys(DISTRIBUTOR_CODE_LABELS).some(
-    (key) => record[key as keyof typeof record]
-  );
+  return Object.keys(DISTRIBUTOR_CODE_LABELS).some((key) => record[key as keyof typeof record]);
 }
 
 /**
@@ -77,7 +75,12 @@ function hasDistributorCodes(record: Record<string, unknown>): boolean {
  *
  * **Edit Mode**: Full form with save/cancel buttons
  */
-export function ProductDetailsTab({ record, mode, onModeToggle, onDirtyChange }: ProductDetailsTabProps) {
+export function ProductDetailsTab({
+  record,
+  mode,
+  onModeToggle,
+  onDirtyChange,
+}: ProductDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
 
@@ -213,10 +216,7 @@ export function ProductDetailsTab({ record, mode, onModeToggle, onDirtyChange }:
           )}
 
           {/* Metadata - created/updated timestamps */}
-          <SidepaneMetadata
-            createdAt={record.created_at}
-            updatedAt={record.updated_at}
-          />
+          <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
         </div>
       </ScrollArea>
     </RecordContextProvider>

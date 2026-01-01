@@ -90,8 +90,7 @@ export const DASHBOARD_TUTORIAL_STEPS: DriveStep[] = [
     element: '[data-tutorial="dashboard-tab-pipeline"]',
     popover: {
       title: "Pipeline Tab",
-      description:
-        "Your default view. See opportunity momentum across all principals at a glance.",
+      description: "Your default view. See opportunity momentum across all principals at a glance.",
       side: "bottom",
       align: "start",
     },
@@ -134,8 +133,7 @@ export const DASHBOARD_TUTORIAL_STEPS: DriveStep[] = [
     element: '[data-tutorial="dashboard-tab-performance"]',
     popover: {
       title: "Performance Tab",
-      description:
-        "Track your personal performance metrics and compare week-over-week progress.",
+      description: "Track your personal performance metrics and compare week-over-week progress.",
       side: "bottom",
       align: "center",
     },

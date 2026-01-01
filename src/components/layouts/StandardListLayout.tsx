@@ -76,7 +76,9 @@ export function StandardListLayout({
   }, []);
 
   return (
-    <div className={`flex h-full min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[auto_1fr] ${isCollapsed ? "gap-2" : "gap-6"}`}>
+    <div
+      className={`flex h-full min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[auto_1fr] ${isCollapsed ? "gap-2" : "gap-6"}`}
+    >
       {/* Collapse toggle button */}
       <div className="flex items-center gap-2 lg:hidden mb-2 shrink-0">
         <Tooltip>
@@ -105,7 +107,9 @@ export function StandardListLayout({
       </div>
 
       {/* Sidebar column - collapsed: w-11 (button width) + h-[50vh] (consistent centering across pages) */}
-      <div className={`hidden lg:block lg:sticky lg:top-0 lg:self-start relative ${isCollapsed ? "w-11 h-[50vh]" : "h-fit"}`}>
+      <div
+        className={`hidden lg:block lg:sticky lg:top-0 lg:self-start relative ${isCollapsed ? "w-11 h-[50vh]" : "h-fit"}`}
+      >
         {/* Filter sidebar with collapse animation */}
         <aside
           id="filter-sidebar"
@@ -170,9 +174,7 @@ export function StandardListLayout({
         `}
         aria-hidden={isCollapsed}
       >
-        <div className="card-container p-2">
-          {filterComponent}
-        </div>
+        <div className="card-container p-2">{filterComponent}</div>
       </aside>
 
       <main

@@ -14,7 +14,12 @@
  * Engineering Constitution: Composition over inheritance
  */
 
-import { withLifecycleCallbacks, type DataProvider, type CreateParams, type RaRecord } from "react-admin";
+import {
+  withLifecycleCallbacks,
+  type DataProvider,
+  type CreateParams,
+  type RaRecord,
+} from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
 import { productsCallbacks } from "../callbacks";
 import {

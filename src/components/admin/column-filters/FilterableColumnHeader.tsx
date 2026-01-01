@@ -106,9 +106,7 @@ export function FilterableColumnHeader({
   // For checkbox filter, use the CheckboxColumnFilter directly (it has its own popover)
   if (filterType === "checkbox") {
     if (!choices || choices.length === 0) {
-      console.warn(
-        `FilterableColumnHeader: choices required for checkbox filter on "${source}"`
-      );
+      console.warn(`FilterableColumnHeader: choices required for checkbox filter on "${source}"`);
       return (
         <div className={cn("flex items-center gap-1", className)}>
           <span className="font-medium">{label}</span>
@@ -119,11 +117,7 @@ export function FilterableColumnHeader({
     return (
       <div className={cn("flex items-center gap-1", className)}>
         <span className="font-medium">{label}</span>
-        <CheckboxColumnFilter
-          source={source}
-          label={label}
-          choices={choices}
-        />
+        <CheckboxColumnFilter source={source} label={label} choices={choices} />
       </div>
     );
   }

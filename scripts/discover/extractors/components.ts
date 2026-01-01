@@ -1,7 +1,12 @@
-import { SyntaxKind, SourceFile, Node } from "ts-morph";
+import type { SourceFile, Node } from "ts-morph";
+import { SyntaxKind } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
+import {
+  writeChunkedDiscovery,
+  writeIncrementalChunkedDiscovery,
+  readExistingManifest,
+} from "../utils/output.js";
 
 interface ComponentInfo {
   name: string;
@@ -13,7 +18,7 @@ interface ComponentInfo {
   isDefaultExport: boolean;
   childComponents: string[];
   contextDependencies: string[];
-  componentRole: 'entry' | 'wrapper' | 'leaf';
+  componentRole: "entry" | "wrapper" | "leaf";
 }
 
 /**
@@ -43,7 +48,7 @@ function extractLocalComponentImports(sourceFile: SourceFile): string[] {
     const moduleSpecifier = importDecl.getModuleSpecifierValue();
 
     // Skip node_modules imports (don't start with . or ..)
-    if (!moduleSpecifier.startsWith('.')) continue;
+    if (!moduleSpecifier.startsWith(".")) continue;
 
     // Get named imports
     const namedImports = importDecl.getNamedImports();
@@ -73,18 +78,18 @@ function extractLocalComponentImports(sourceFile: SourceFile): string[] {
  */
 function extractContextDependencies(hooks: string[]): string[] {
   const contextHooks = [
-    'useFormContext',
-    'useFormState',
-    'useWatch',
-    'useFieldArray',
-    'useListContext',
-    'useRecordContext',
-    'useEditContext',
-    'useCreateContext',
-    'useDataProvider',
+    "useFormContext",
+    "useFormState",
+    "useWatch",
+    "useFieldArray",
+    "useListContext",
+    "useRecordContext",
+    "useEditContext",
+    "useCreateContext",
+    "useDataProvider",
   ];
 
-  return hooks.filter(hook => contextHooks.includes(hook));
+  return hooks.filter((hook) => contextHooks.includes(hook));
 }
 
 /**
@@ -94,24 +99,24 @@ function classifyComponentRole(
   childComponents: string[],
   contextDependencies: string[],
   filePath: string
-): 'entry' | 'wrapper' | 'leaf' {
+): "entry" | "wrapper" | "leaf" {
   // Entry = exported from feature index.tsx
-  if (filePath.endsWith('index.tsx')) {
-    return 'entry';
+  if (filePath.endsWith("index.tsx")) {
+    return "entry";
   }
 
   // Wrapper = has children AND uses context hooks
   if (childComponents.length > 0 && contextDependencies.length > 0) {
-    return 'wrapper';
+    return "wrapper";
   }
 
   // Leaf = no children components
   if (childComponents.length === 0) {
-    return 'leaf';
+    return "leaf";
   }
 
   // Default to wrapper if has children but no context
-  return 'wrapper';
+  return "wrapper";
 }
 
 export async function extractComponents(onlyChunks?: Set<string>): Promise<void> {
@@ -123,12 +128,14 @@ export async function extractComponents(onlyChunks?: Set<string>): Promise<void>
   // Filter source files if incremental mode
   let filesToProcess = sourceFiles;
   if (onlyChunks) {
-    filesToProcess = sourceFiles.filter(sf => {
+    filesToProcess = sourceFiles.filter((sf) => {
       const relativePath = path.relative(process.cwd(), sf.getFilePath());
       const chunkName = extractFeatureName(relativePath);
       return onlyChunks.has(chunkName);
     });
-    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`);
+    console.log(
+      `  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`
+    );
   }
 
   for (const sourceFile of filesToProcess) {
@@ -167,7 +174,11 @@ export async function extractComponents(onlyChunks?: Set<string>): Promise<void>
         const type = determineComponentType(hooks);
         const childComponents = extractLocalComponentImports(sourceFile);
         const contextDependencies = extractContextDependencies(hooks);
-        const componentRole = classifyComponentRole(childComponents, contextDependencies, relativePath);
+        const componentRole = classifyComponentRole(
+          childComponents,
+          contextDependencies,
+          relativePath
+        );
 
         components.push({
           name: componentName,
@@ -195,10 +206,10 @@ export async function extractComponents(onlyChunks?: Set<string>): Promise<void>
     chunks.get(feature)!.push(component);
   }
 
-  const formControllers = components.filter(c => c.type === "form_controller").length;
-  const presentational = components.filter(c => c.type === "presentational").length;
+  const formControllers = components.filter((c) => c.type === "form_controller").length;
+  const presentational = components.filter((c) => c.type === "presentational").length;
 
-  const sourceFilePaths = sourceFiles.map(sf => sf.getFilePath());
+  const sourceFilePaths = sourceFiles.map((sf) => sf.getFilePath());
 
   // Build file-to-chunk mapping for incremental updates
   const fileToChunkMapping = new Map<string, string>();

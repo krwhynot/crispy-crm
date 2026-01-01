@@ -49,7 +49,10 @@ export const CreateFormFooter = ({
           data-tutorial={tutorialAttribute}
           mutationOptions={{
             onSuccess: () => {
-              notify(`${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`, { type: "success" });
+              notify(
+                `${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`,
+                { type: "success" }
+              );
               redirect(redirectPath);
             },
             onError: handleError,
@@ -61,7 +64,10 @@ export const CreateFormFooter = ({
           alwaysEnable
           mutationOptions={{
             onSuccess: () => {
-              notify(`${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`, { type: "success" });
+              notify(
+                `${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`,
+                { type: "success" }
+              );
               reset();
             },
             onError: handleError,

@@ -76,9 +76,10 @@ export function PremiumDatagrid({
       const isFocused = focusedIndex !== undefined && focusedIndex >= 0 && index === focusedIndex;
 
       // Compute external className if it's a function
-      const externalClassName = typeof externalRowClassName === 'function'
-        ? externalRowClassName(record, index)
-        : externalRowClassName;
+      const externalClassName =
+        typeof externalRowClassName === "function"
+          ? externalRowClassName(record, index)
+          : externalRowClassName;
 
       return cn(
         "table-row-premium",

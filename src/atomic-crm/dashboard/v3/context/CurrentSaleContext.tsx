@@ -70,9 +70,5 @@ export function CurrentSaleProvider({ children }: CurrentSaleProviderProps) {
     [salesId, isLoading, error, refetch]
   );
 
-  return (
-    <CurrentSaleContext.Provider value={contextValue}>
-      {children}
-    </CurrentSaleContext.Provider>
-  );
+  return <CurrentSaleContext.Provider value={contextValue}>{children}</CurrentSaleContext.Provider>;
 }

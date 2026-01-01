@@ -8,38 +8,44 @@ import { sanitizeHtml } from "@/lib/sanitization";
 
 // Organization type enum - must match database enum and constants.ts
 // Valid types: customer, prospect, principal, distributor, operator
-export const organizationTypeSchema = z.enum(["customer", "prospect", "principal", "distributor", "operator"]);
+export const organizationTypeSchema = z.enum([
+  "customer",
+  "prospect",
+  "principal",
+  "distributor",
+  "operator",
+]);
 
 // Organization priority enum
 export const organizationPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
 // Organization scope enum
-export const orgScopeSchema = z.enum(['national', 'regional', 'local']);
+export const orgScopeSchema = z.enum(["national", "regional", "local"]);
 export type OrgScope = z.infer<typeof orgScopeSchema>;
 
 // Organization status enum
-export const orgStatusSchema = z.enum(['active', 'inactive']);
+export const orgStatusSchema = z.enum(["active", "inactive"]);
 export type OrgStatus = z.infer<typeof orgStatusSchema>;
 
 // Status reason enum
 export const orgStatusReasonSchema = z.enum([
-  'active_customer',
-  'prospect',
-  'authorized_distributor',
-  'account_closed',
-  'out_of_business',
-  'disqualified',
+  "active_customer",
+  "prospect",
+  "authorized_distributor",
+  "account_closed",
+  "out_of_business",
+  "disqualified",
 ]);
 export type OrgStatusReason = z.infer<typeof orgStatusReasonSchema>;
 
 // Payment terms enum
 export const paymentTermsSchema = z.enum([
-  'net_30',
-  'net_60',
-  'net_90',
-  'cod',
-  'prepaid',
-  '2_10_net_30',
+  "net_30",
+  "net_60",
+  "net_90",
+  "cod",
+  "prepaid",
+  "2_10_net_30",
 ]);
 export type PaymentTerms = z.infer<typeof paymentTermsSchema>;
 
@@ -51,22 +57,24 @@ export type PaymentTerms = z.infer<typeof paymentTermsSchema>;
  * Example: "linkedin.com/company/test" → "https://linkedin.com/company/test"
  */
 const urlAutoPrefix = (val: string | null | undefined): string => {
-  if (!val) return val ?? '';
+  if (!val) return val ?? "";
   const trimmed = val.trim();
-  if (!trimmed) return '';
+  if (!trimmed) return "";
   // Only add protocol if the value doesn't already have one
-  if (trimmed && !trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+  if (trimmed && !trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
     return `https://${trimmed}`;
   }
   return trimmed;
 };
 
 // Custom validators with auto-prefix transform
-const isValidUrl = z.string()
+const isValidUrl = z
+  .string()
   .transform(urlAutoPrefix)
   .pipe(z.string().url({ message: "Must be a valid URL" }).max(2048).or(z.literal("")));
 
-const isLinkedinUrl = z.string()
+const isLinkedinUrl = z
+  .string()
   .transform(urlAutoPrefix)
   .pipe(
     z.string().refine(
@@ -88,7 +96,11 @@ const isLinkedinUrl = z.string()
 // per Engineering Constitution - all validation happens at API boundary only
 export const organizationSchema = z.strictObject({
   id: z.coerce.number().optional(),
-  name: z.string().trim().min(1, "Organization name is required").max(255, "Organization name too long"),
+  name: z
+    .string()
+    .trim()
+    .min(1, "Organization name is required")
+    .max(255, "Organization name too long"),
   logo: z.any().optional().nullable(), // RAFile type
   parent_organization_id: z.coerce.number().optional().nullable(), // Parent organization reference
   // Updated field names to match database schema
@@ -138,7 +150,7 @@ export const organizationSchema = z.strictObject({
   is_operating_entity: z.coerce.boolean().default(true),
 
   // Status fields (Task 13)
-  status: orgStatusSchema.default('active'),
+  status: orgStatusSchema.default("active"),
   status_reason: orgStatusReasonSchema.nullable().optional(),
 
   // Billing Address fields (Task 14)
@@ -146,14 +158,14 @@ export const organizationSchema = z.strictObject({
   billing_city: z.string().max(100).nullable().optional(),
   billing_state: z.string().max(2).nullable().optional(),
   billing_postal_code: z.string().max(20).nullable().optional(),
-  billing_country: z.string().max(2).default('US'),
+  billing_country: z.string().max(2).default("US"),
 
   // Shipping Address fields (Task 14)
   shipping_street: z.string().max(255).nullable().optional(),
   shipping_city: z.string().max(100).nullable().optional(),
   shipping_state: z.string().max(2).nullable().optional(),
   shipping_postal_code: z.string().max(20).nullable().optional(),
-  shipping_country: z.string().max(2).default('US'),
+  shipping_country: z.string().max(2).default("US"),
 
   // Payment fields (Task 14)
   payment_terms: paymentTermsSchema.nullable().optional(),

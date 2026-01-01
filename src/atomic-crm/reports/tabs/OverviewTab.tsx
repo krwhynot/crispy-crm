@@ -388,9 +388,7 @@ export default function OverviewTab() {
       {(opportunitiesError || activitiesError) && (
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
           <p className="font-medium">Failed to load report data</p>
-          <p className="text-sm">
-            {opportunitiesError?.message || activitiesError?.message}
-          </p>
+          <p className="text-sm">{opportunitiesError?.message || activitiesError?.message}</p>
         </div>
       )}
 

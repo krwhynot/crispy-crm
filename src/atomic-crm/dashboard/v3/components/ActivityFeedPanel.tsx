@@ -76,22 +76,26 @@ function formatRelativeTime(dateString: string): string {
 /**
  * Get initials from first and last name, with fallback to email or "TM"
  */
-function getInitials(firstName: string | null, lastName: string | null, email: string | null): string {
+function getInitials(
+  firstName: string | null,
+  lastName: string | null,
+  email: string | null
+): string {
   // Use actual names if available
   if (firstName || lastName) {
-    const first = firstName?.charAt(0)?.toUpperCase() || '';
-    const last = lastName?.charAt(0)?.toUpperCase() || '';
-    return first + last || '?';
+    const first = firstName?.charAt(0)?.toUpperCase() || "";
+    const last = lastName?.charAt(0)?.toUpperCase() || "";
+    return first + last || "?";
   }
 
   // Fallback to email username initial
   if (email) {
     const username = email.split("@")[0];
-    return username.charAt(0).toUpperCase() || '?';
+    return username.charAt(0).toUpperCase() || "?";
   }
 
   // Last resort: "Team Member" → "TM"
-  return 'TM';
+  return "TM";
 }
 
 /**
@@ -251,7 +255,11 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
     sales?.last_name || null,
     sales?.email || null
   );
-  const initials = getInitials(sales?.first_name || null, sales?.last_name || null, sales?.email || null);
+  const initials = getInitials(
+    sales?.first_name || null,
+    sales?.last_name || null,
+    sales?.email || null
+  );
   const relativeTime = formatRelativeTime(activity.activity_date);
   const formattedType = formatActivityType(activity.type);
 

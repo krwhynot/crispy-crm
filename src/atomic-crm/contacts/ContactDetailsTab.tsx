@@ -39,7 +39,12 @@ interface ContactDetailsTabProps {
  *
  * **Edit Mode**: Renders existing ContactInputs component inline with save/cancel.
  */
-export function ContactDetailsTab({ record, mode, onModeToggle, onDirtyChange }: ContactDetailsTabProps) {
+export function ContactDetailsTab({
+  record,
+  mode,
+  onModeToggle,
+  onDirtyChange,
+}: ContactDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
 
@@ -206,17 +211,12 @@ export function ContactDetailsTab({ record, mode, onModeToggle, onDirtyChange }:
           {/* Notes Section - no Card wrapper */}
           {record.notes && (
             <SidepaneSection label="Notes" showSeparator>
-              <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">
-                {record.notes}
-              </p>
+              <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">{record.notes}</p>
             </SidepaneSection>
           )}
 
           {/* Metadata - created/updated timestamps */}
-          <SidepaneMetadata
-            createdAt={record.created_at}
-            updatedAt={record.updated_at}
-          />
+          <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
         </div>
       </ScrollArea>
     </RecordContextProvider>

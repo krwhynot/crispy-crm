@@ -28,12 +28,8 @@ export function SidepaneContactRow({
       </Avatar>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{fullName}</p>
-        {role && (
-          <p className="text-xs text-muted-foreground truncate">{role}</p>
-        )}
-        {email && (
-          <p className="text-xs text-muted-foreground truncate">{email}</p>
-        )}
+        {role && <p className="text-xs text-muted-foreground truncate">{role}</p>}
+        {email && <p className="text-xs text-muted-foreground truncate">{email}</p>}
       </div>
     </button>
   );

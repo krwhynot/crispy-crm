@@ -22,7 +22,6 @@ export const ContactListFilter = () => {
     sort: { field: "name", order: "ASC" },
   });
 
-
   return (
     <div className="flex flex-col gap-4" data-tutorial="contact-filters">
       {/* Collapsible Filter Sections */}

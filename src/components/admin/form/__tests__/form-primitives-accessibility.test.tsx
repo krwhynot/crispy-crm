@@ -54,13 +54,7 @@ const TestForm = ({
 };
 
 // Helper component that wraps input with form primitives
-const TestField = ({
-  name,
-  label,
-}: {
-  name: keyof TestFormData;
-  label: string;
-}) => {
+const TestField = ({ name, label }: { name: keyof TestFormData; label: string }) => {
   const id = `test-${name}`;
 
   return (
@@ -335,9 +329,7 @@ describe("Form Primitives Accessibility", () => {
 
 describe("Input Component Accessibility", () => {
   it("Input component supports aria-invalid styling", () => {
-    render(
-      <Input aria-invalid={true} data-testid="invalid-input" />
-    );
+    render(<Input aria-invalid={true} data-testid="invalid-input" />);
 
     const input = screen.getByTestId("invalid-input");
     expect(input).toHaveAttribute("aria-invalid", "true");

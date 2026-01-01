@@ -31,9 +31,7 @@ export function calculateStageMetrics(opportunities: Opportunity[]): StageMetric
 
   // Count opportunities that are "rotting" or "expired" based on per-stage thresholds
   const stuck = opportunities.filter((opp) => {
-    const closeDate = opp.estimated_close_date
-      ? parseDateSafely(opp.estimated_close_date)
-      : null;
+    const closeDate = opp.estimated_close_date ? parseDateSafely(opp.estimated_close_date) : null;
     const status = getStageStatus(opp.stage, opp.days_in_stage || 0, closeDate);
     return status === "rotting" || status === "expired";
   }).length;

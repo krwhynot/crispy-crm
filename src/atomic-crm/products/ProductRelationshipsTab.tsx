@@ -76,25 +76,31 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
 
               {!isLoadingOpportunities && opportunityProducts && opportunityProducts.length > 0 && (
                 <div className="space-y-2">
-                  {opportunityProducts.map((oppProduct: { id: number | string; opportunity_id: number; notes?: string }) => (
-                    <div
-                      key={oppProduct.id}
-                      className="border-b border-border pb-2 last:border-0 last:pb-0"
-                    >
-                      <RecordContextProvider value={oppProduct}>
-                        <ReferenceField
-                          source="opportunity_id"
-                          reference="opportunities"
-                          link="show"
-                        >
-                          <TextField source="title" className="text-sm font-medium" />
-                        </ReferenceField>
-                        {oppProduct.notes && (
-                          <p className="text-xs text-muted-foreground mt-1">{oppProduct.notes}</p>
-                        )}
-                      </RecordContextProvider>
-                    </div>
-                  ))}
+                  {opportunityProducts.map(
+                    (oppProduct: {
+                      id: number | string;
+                      opportunity_id: number;
+                      notes?: string;
+                    }) => (
+                      <div
+                        key={oppProduct.id}
+                        className="border-b border-border pb-2 last:border-0 last:pb-0"
+                      >
+                        <RecordContextProvider value={oppProduct}>
+                          <ReferenceField
+                            source="opportunity_id"
+                            reference="opportunities"
+                            link="show"
+                          >
+                            <TextField source="title" className="text-sm font-medium" />
+                          </ReferenceField>
+                          {oppProduct.notes && (
+                            <p className="text-xs text-muted-foreground mt-1">{oppProduct.notes}</p>
+                          )}
+                        </RecordContextProvider>
+                      </div>
+                    )
+                  )}
                   {opportunityProducts.length > 5 && (
                     <div className="text-xs text-muted-foreground pt-2">
                       Showing {opportunityProducts.length} opportunit

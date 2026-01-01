@@ -49,7 +49,10 @@ export function DashboardTabPanel() {
     <Card className="flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
       <Tabs defaultValue="pipeline" className="flex min-h-0 flex-1 flex-col gap-0">
         <div className="shrink-0 border-b border-border px-4 py-3">
-          <TabsList className="h-11 w-full justify-start gap-2 bg-transparent p-0" data-tutorial="dashboard-tabs">
+          <TabsList
+            className="h-11 w-full justify-start gap-2 bg-transparent p-0"
+            data-tutorial="dashboard-tabs"
+          >
             {/* Pipeline Tab - 44px touch target */}
             <TabsTrigger
               value="pipeline"

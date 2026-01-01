@@ -161,12 +161,7 @@ describe("AutocompleteInput", () => {
 
       renderWithAdminContext(
         <FormWrapper defaultValues={{ stage: "new_lead" }} onSubmit={onSubmit}>
-          <AutocompleteInput
-            source="stage"
-            label="Stage"
-            choices={mockChoices}
-            isRequired={true}
-          />
+          <AutocompleteInput source="stage" label="Stage" choices={mockChoices} isRequired={true} />
         </FormWrapper>,
         { resource: "opportunities" }
       );

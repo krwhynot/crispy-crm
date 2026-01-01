@@ -223,7 +223,12 @@ export function useOrganizationImport() {
       // 5. Tally results
       results.forEach((result, index) => {
         if (result.status === "fulfilled") {
-          const value = result.value as { success: boolean; rowNumber: number; errors?: FieldError[]; data?: OrganizationImportSchema };
+          const value = result.value as {
+            success: boolean;
+            rowNumber: number;
+            errors?: FieldError[];
+            data?: OrganizationImportSchema;
+          };
           if (value.success) {
             successCount++;
           } else {

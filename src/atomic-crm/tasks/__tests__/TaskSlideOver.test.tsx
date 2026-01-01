@@ -303,11 +303,7 @@ describe("TaskSlideOver", () => {
     it("displays fallback 'Task #id' when title is empty", async () => {
       // Override the mock to return empty title
       vi.doMock("@/components/layouts/ResourceSlideOver", () => ({
-        ResourceSlideOver: ({
-          recordId,
-          isOpen,
-          recordRepresentation,
-        }: any) => {
+        ResourceSlideOver: ({ recordId, isOpen, recordRepresentation }: any) => {
           const mockRecordNoTitle = {
             id: recordId,
             title: "",

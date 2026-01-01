@@ -25,10 +25,7 @@ describe("FormProgressBar", () => {
     expect(progressBar).toHaveAttribute("aria-valuemin", "0");
     expect(progressBar).toHaveAttribute("aria-valuemax", "100");
     expect(progressBar).toHaveAttribute("aria-label", "Form completion progress");
-    expect(progressBar).toHaveAttribute(
-      "aria-valuetext",
-      "2 of 4 required fields complete"
-    );
+    expect(progressBar).toHaveAttribute("aria-valuetext", "2 of 4 required fields complete");
   });
 
   test("shows field count in simple mode", () => {
@@ -39,9 +36,7 @@ describe("FormProgressBar", () => {
   });
 
   test("shows step info in wizard mode", () => {
-    render(
-      <FormProgressBar currentStep={2} totalSteps={5} stepName="Contact Information" />
-    );
+    render(<FormProgressBar currentStep={2} totalSteps={5} stepName="Contact Information" />);
 
     expect(screen.getByText("Step 2 of 5: Contact Information")).toBeInTheDocument();
     expect(screen.getByText("50%")).toBeInTheDocument();
@@ -121,15 +116,10 @@ describe("FormProgressBar", () => {
   });
 
   test("aria-valuetext in wizard mode includes step name", () => {
-    render(
-      <FormProgressBar currentStep={1} totalSteps={3} stepName="Account Details" />
-    );
+    render(<FormProgressBar currentStep={1} totalSteps={3} stepName="Account Details" />);
 
     const progressBar = screen.getByRole("progressbar");
-    expect(progressBar).toHaveAttribute(
-      "aria-valuetext",
-      "Step 1 of 3: Account Details"
-    );
+    expect(progressBar).toHaveAttribute("aria-valuetext", "Step 1 of 3: Account Details");
   });
 
   test("aria-valuetext in wizard mode without step name", () => {

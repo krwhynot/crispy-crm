@@ -34,13 +34,10 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
   const { opportunityStages } = usePipelineConfig();
 
   // Pattern H: Cascading contact selection filtered by opportunity's organization
-  const { data: contacts, isPending: contactsLoading } = useGetList<Contact>(
-    "contacts_summary",
-    {
-      filter: { organization_id: opportunity.customer_organization_id },
-      pagination: { page: 1, perPage: 100 },
-    }
-  );
+  const { data: contacts, isPending: contactsLoading } = useGetList<Contact>("contacts_summary", {
+    filter: { organization_id: opportunity.customer_organization_id },
+    pagination: { page: 1, perPage: 100 },
+  });
 
   // Transform contacts for SelectUI
   const contactOptions = (contacts || []).map((contact) => ({
@@ -80,8 +77,8 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       setValue("stage", newStage);
       notify("Stage updated successfully", { type: "success" });
     } catch (error) {
-      console.error('Stage update failed:', error);
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      console.error("Stage update failed:", error);
+      const message = error instanceof Error ? error.message : "Unknown error";
       if (message.includes("CONFLICT")) {
         notify("This opportunity was modified by another user. Refreshing.", { type: "warning" });
         refresh();
@@ -109,8 +106,8 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       reset();
       onSuccess?.();
     } catch (error) {
-      console.error('Activity creation failed:', error);
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      console.error("Activity creation failed:", error);
+      const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Error creating activity: ${message}`, { type: "error" });
     }
   };
@@ -182,9 +179,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
               <SelectUI
                 options={contactOptions}
                 value={field.value ? String(field.value) : undefined}
-                onChange={(value) =>
-                  field.onChange(value ? Number(value) : null)
-                }
+                onChange={(value) => field.onChange(value ? Number(value) : null)}
                 placeholder="Select contact (optional)"
                 isLoading={contactsLoading}
                 isDisabled={!opportunity.customer_organization_id}

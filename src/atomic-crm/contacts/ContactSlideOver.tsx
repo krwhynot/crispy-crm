@@ -74,9 +74,7 @@ export function ContactSlideOver({
       recordRepresentation={getContactName}
       breadcrumbComponent={ContactHierarchyBreadcrumb}
       loadingSkeleton={ContactDetailSkeleton}
-      headerActions={(record) => (
-        <QuickAddTaskButton contactId={record.id} />
-      )}
+      headerActions={(record) => <QuickAddTaskButton contactId={record.id} />}
     />
   );
 }

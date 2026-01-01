@@ -148,7 +148,7 @@ export function getResourceName(resource: string): string {
  */
 export function supportsSoftDelete(resource: string): boolean {
   const actualResource = getResourceName(resource);
-  return SOFT_DELETE_RESOURCES.includes(actualResource as typeof SOFT_DELETE_RESOURCES[number]);
+  return SOFT_DELETE_RESOURCES.includes(actualResource as (typeof SOFT_DELETE_RESOURCES)[number]);
 }
 
 /**

@@ -522,7 +522,11 @@ export function OpportunitySlideOverDetailsTab({
         </SidepaneSection>
 
         {/* Workflow Section - only show if there's workflow data */}
-        {(record.campaign || record.notes || record.next_action || record.next_action_date || record.decision_criteria) && (
+        {(record.campaign ||
+          record.notes ||
+          record.next_action ||
+          record.next_action_date ||
+          record.decision_criteria) && (
           <SidepaneSection label="Workflow" showSeparator>
             <div className="space-y-3">
               {/* Campaign */}
@@ -537,7 +541,9 @@ export function OpportunitySlideOverDetailsTab({
               {record.notes && (
                 <div>
                   <span className="text-xs text-muted-foreground">Notes</span>
-                  <p className="text-sm mt-1 whitespace-pre-wrap max-h-96 overflow-y-auto">{record.notes}</p>
+                  <p className="text-sm mt-1 whitespace-pre-wrap max-h-96 overflow-y-auto">
+                    {record.notes}
+                  </p>
                 </div>
               )}
 
@@ -559,7 +565,9 @@ export function OpportunitySlideOverDetailsTab({
               {record.decision_criteria && (
                 <div>
                   <span className="text-xs text-muted-foreground">Decision Criteria</span>
-                  <p className="text-sm mt-1 whitespace-pre-wrap max-h-96 overflow-y-auto">{record.decision_criteria}</p>
+                  <p className="text-sm mt-1 whitespace-pre-wrap max-h-96 overflow-y-auto">
+                    {record.decision_criteria}
+                  </p>
                 </div>
               )}
             </div>
@@ -590,10 +598,7 @@ export function OpportunitySlideOverDetailsTab({
         </SidepaneSection>
 
         {/* Metadata - replaces manual timestamps */}
-        <SidepaneMetadata
-          createdAt={record.created_at}
-          updatedAt={record.updated_at}
-        />
+        <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
       </div>
     </ScrollArea>
   );

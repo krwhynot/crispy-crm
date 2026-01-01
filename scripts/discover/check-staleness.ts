@@ -34,12 +34,7 @@ import fg from "fast-glob";
 
 const MANIFEST_PATH = ".claude/state/manifest.json";
 const SOURCE_GLOBS = ["src/**/*.ts", "src/**/*.tsx"];
-const IGNORE_PATTERNS = [
-  "node_modules/**",
-  "**/*.d.ts",
-  "**/*.test.ts",
-  "**/*.test.tsx",
-];
+const IGNORE_PATTERNS = ["node_modules/**", "**/*.d.ts", "**/*.test.ts", "**/*.test.tsx"];
 
 interface Manifest {
   sourceHashes: Record<string, string>;
@@ -108,9 +103,7 @@ async function checkStaleness(): Promise<boolean> {
 
   // If manifest doesn't exist, discovery is stale
   if (!manifest) {
-    console.log(
-      "\x1b[33mNo manifest found. Run 'just discover' to generate.\x1b[0m"
-    );
+    console.log("\x1b[33mNo manifest found. Run 'just discover' to generate.\x1b[0m");
     return true;
   }
 
@@ -160,21 +153,14 @@ async function checkStaleness(): Promise<boolean> {
   }
 
   // Discovery is stale
-  console.log(
-    `\x1b[31m\u2717 Discovery is stale. ${changes.length} file(s) changed:\x1b[0m`
-  );
+  console.log(`\x1b[31m\u2717 Discovery is stale. ${changes.length} file(s) changed:\x1b[0m`);
 
   // Show first 10 changes
   const displayChanges = changes.slice(0, 10);
   for (const change of displayChanges) {
-    const prefix =
-      change.type === "new" ? "+" : change.type === "modified" ? "~" : "-";
+    const prefix = change.type === "new" ? "+" : change.type === "modified" ? "~" : "-";
     const color =
-      change.type === "new"
-        ? "\x1b[32m"
-        : change.type === "modified"
-          ? "\x1b[33m"
-          : "\x1b[31m";
+      change.type === "new" ? "\x1b[32m" : change.type === "modified" ? "\x1b[33m" : "\x1b[31m";
     console.log(`${color}  ${prefix} ${change.file}\x1b[0m`);
   }
 
@@ -228,9 +214,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error(
-    "\x1b[31mError:\x1b[0m",
-    error instanceof Error ? error.message : error
-  );
+  console.error("\x1b[31mError:\x1b[0m", error instanceof Error ? error.message : error);
   process.exit(1);
 });

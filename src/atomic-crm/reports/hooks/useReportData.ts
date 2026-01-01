@@ -59,12 +59,7 @@ export function useReportData<T extends RaRecord>(
   const [error, setError] = useState<Error | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
 
-  const {
-    dateRange,
-    salesRepId,
-    additionalFilters,
-    dateField = "created_at",
-  } = options;
+  const { dateRange, salesRepId, additionalFilters, dateField = "created_at" } = options;
 
   // Memoize filter object to prevent infinite re-render loops
   // This is critical - without memoization, a new filter object is created

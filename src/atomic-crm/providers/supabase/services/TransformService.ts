@@ -105,7 +105,7 @@ export class TransformService {
           try {
             await Promise.all(uploadPromises);
           } catch (error) {
-            console.error('Contact note attachment upload failed:', error);
+            console.error("Contact note attachment upload failed:", error);
             throw error; // Fail-fast: re-throw for caller to handle
           }
         }
@@ -124,7 +124,7 @@ export class TransformService {
           try {
             await Promise.all(uploadPromises);
           } catch (error) {
-            console.error('Opportunity note attachment upload failed:', error);
+            console.error("Opportunity note attachment upload failed:", error);
             throw error; // Fail-fast: re-throw for caller to handle
           }
         }
@@ -143,7 +143,7 @@ export class TransformService {
           try {
             await Promise.all(uploadPromises);
           } catch (error) {
-            console.error('Organization note attachment upload failed:', error);
+            console.error("Organization note attachment upload failed:", error);
             throw error; // Fail-fast: re-throw for caller to handle
           }
         }
@@ -168,8 +168,13 @@ export class TransformService {
         // Extract organizations for junction table sync (similar to opportunities/products pattern)
         // Type-safe destructuring with unknown record to handle dynamic fields
         // Also strip quickCreate flag - not a database column (used for validation bypass)
-        const processedDataWithDynamicFields = processedData as Partial<Contact> & Record<string, unknown>;
-        const { organizations, quickCreate: _quickCreate, ...cleanedData } = processedDataWithDynamicFields;
+        const processedDataWithDynamicFields = processedData as Partial<Contact> &
+          Record<string, unknown>;
+        const {
+          organizations,
+          quickCreate: _quickCreate,
+          ...cleanedData
+        } = processedDataWithDynamicFields;
 
         // Combine first_name and last_name into name field (required by database)
         if (cleanedData.first_name || cleanedData.last_name) {
@@ -200,7 +205,8 @@ export class TransformService {
         // - 'products_to_sync' is sent directly by current OpportunityCreate form (ArrayInput source)
         // Destructuring both removes them from cleanedData, preventing PostgREST column errors
         // Type-safe destructuring with unknown record to handle dynamic fields
-        const opportunityDataWithDynamicFields = opportunityData as Partial<Opportunity> & Record<string, unknown>;
+        const opportunityDataWithDynamicFields = opportunityData as Partial<Opportunity> &
+          Record<string, unknown>;
         const { products, products_to_sync, ...cleanedData } = opportunityDataWithDynamicFields;
 
         // Determine which products array to use (prefer products_to_sync if present)
@@ -306,7 +312,9 @@ export class TransformService {
    * @param data Opportunity data from form submission
    * @returns Cleaned data ready for Zod validation
    */
-  private transformOpportunityForValidation(data: Record<string, unknown>): Record<string, unknown> {
+  private transformOpportunityForValidation(
+    data: Record<string, unknown>
+  ): Record<string, unknown> {
     const cleaned = { ...data };
 
     // 1. Strip view/system fields by explicit denylist

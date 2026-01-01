@@ -243,11 +243,7 @@ export function OpportunityWizardStep2() {
     // - No primary distributor exists
     // - We already processed this customer (prevents infinite loops)
     // - Customer hasn't changed
-    if (
-      isLoading ||
-      !primaryDistributorId ||
-      lastProcessedCustomerRef.current === customerId
-    ) {
+    if (isLoading || !primaryDistributorId || lastProcessedCustomerRef.current === customerId) {
       return;
     }
 
@@ -599,13 +595,7 @@ export function OpportunityWizardStep4() {
           />
         </FormFieldWrapper>
         <FormFieldWrapper name="notes">
-          <TextInputWithCounter
-            source="notes"
-            label="Notes"
-            multiline
-            rows={4}
-            maxLength={2000}
-          />
+          <TextInputWithCounter source="notes" label="Notes" multiline rows={4} maxLength={2000} />
         </FormFieldWrapper>
       </div>
     </div>

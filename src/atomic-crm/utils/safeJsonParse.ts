@@ -19,10 +19,7 @@ import type { ZodSchema } from "zod";
  * const data = safeJsonParse(localStorage.getItem('key'), schema);
  * // Returns: string[] or null
  */
-export function safeJsonParse<T>(
-  json: string | null,
-  schema: ZodSchema<T>
-): T | null {
+export function safeJsonParse<T>(json: string | null, schema: ZodSchema<T>): T | null {
   if (!json) return null;
 
   try {

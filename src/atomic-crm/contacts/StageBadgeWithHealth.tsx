@@ -7,7 +7,10 @@ interface StageBadgeWithHealthProps {
   health?: "active" | "cooling" | "at_risk";
 }
 
-export const StageBadgeWithHealth = memo(function StageBadgeWithHealth({ stage, health }: StageBadgeWithHealthProps) {
+export const StageBadgeWithHealth = memo(function StageBadgeWithHealth({
+  stage,
+  health,
+}: StageBadgeWithHealthProps) {
   return (
     <Badge
       variant="outline"

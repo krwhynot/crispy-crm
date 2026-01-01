@@ -106,7 +106,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
   const config = columnConfig[columnId];
 
   const { setNodeRef, isOver } = useDroppable({ id: columnId });
-  const taskIds = useMemo(() => tasks.map(t => String(t.id)), [tasks]);
+  const taskIds = useMemo(() => tasks.map((t) => String(t.id)), [tasks]);
 
   return (
     <div

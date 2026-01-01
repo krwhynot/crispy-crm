@@ -158,12 +158,8 @@ const OpportunityWizardContent = ({
   const redirect = useRedirect();
   const [create] = useCreate();
 
-  const {
-    showWarning,
-    confirmDiscard,
-    cancelDiscard,
-    handlePotentialDiscard,
-  } = useInAppUnsavedChanges();
+  const { showWarning, confirmDiscard, cancelDiscard, handlePotentialDiscard } =
+    useInAppUnsavedChanges();
 
   const handleSubmit = async (data: unknown) => {
     // Check for similar opportunities before creating
@@ -237,11 +233,7 @@ const OpportunityWizardContent = ({
         </WizardStep>
 
         {/* Navigation */}
-        <WizardNavigation
-          submitLabel="Create Opportunity"
-          showCancel
-          onCancel={handleCancel}
-        />
+        <WizardNavigation submitLabel="Create Opportunity" showCancel onCancel={handleCancel} />
       </FormWizard>
 
       {/* Unsaved Changes Warning Dialog */}

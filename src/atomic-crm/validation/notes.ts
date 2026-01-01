@@ -14,7 +14,11 @@ import { sanitizeHtml } from "@/lib/sanitization";
  */
 const attachmentSchema = z.strictObject({
   src: z.string().url("Invalid attachment URL").max(2048),
-  title: z.string().trim().min(1, "Attachment title is required").max(255, "Attachment title too long"),
+  title: z
+    .string()
+    .trim()
+    .min(1, "Attachment title is required")
+    .max(255, "Attachment title too long"),
   type: z.string().max(100, "MIME type too long").optional(),
   size: z.number().positive().optional(),
 });

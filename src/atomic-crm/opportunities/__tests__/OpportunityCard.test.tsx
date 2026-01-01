@@ -52,10 +52,7 @@ const renderCard = (
 
   return renderWithAdminContext(
     <DndWrapper itemId={String(defaultRecord.id)}>
-      <OpportunityCard
-        openSlideOver={props.openSlideOver ?? vi.fn()}
-        onDelete={props.onDelete}
-      />
+      <OpportunityCard openSlideOver={props.openSlideOver ?? vi.fn()} onDelete={props.onDelete} />
     </DndWrapper>,
     {
       record: defaultRecord,

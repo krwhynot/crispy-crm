@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
-import { GenericSelectInput } from '@/components/admin/generic-select-input';
+import { useState } from "react";
+import { ReferenceInput, useCreate, useNotify, useRefresh } from "react-admin";
+import { GenericSelectInput } from "@/components/admin/generic-select-input";
 
 interface TagQuickInputProps {
   source: string;
@@ -12,7 +12,7 @@ interface TagQuickInputProps {
  * Creates tags with just a name (uses default color 'warm')
  */
 export function TagQuickInput({ source, label }: TagQuickInputProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [create, { isLoading: isCreating }] = useCreate();
   const notify = useNotify();
   const refresh = useRefresh();
@@ -21,15 +21,15 @@ export function TagQuickInput({ source, label }: TagQuickInputProps) {
     if (!name.trim()) return;
 
     await create(
-      'tags',
-      { data: { name: name.trim(), color: 'warm' } },
+      "tags",
+      { data: { name: name.trim(), color: "warm" } },
       {
         onSuccess: () => {
-          notify('Tag created', { type: 'success' });
+          notify("Tag created", { type: "success" });
           refresh();
         },
         onError: (error) => {
-          notify(`Error: ${error.message}`, { type: 'error' });
+          notify(`Error: ${error.message}`, { type: "error" });
         },
       }
     );

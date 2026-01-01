@@ -110,11 +110,7 @@ export function OrganizationDetailsTab({
 
               <SelectInput source="priority" label="Priority" choices={PRIORITY_CHOICES} />
 
-              <SelectInput
-                source="status"
-                label="Status"
-                choices={STATUS_CHOICES}
-              />
+              <SelectInput source="status" label="Status" choices={STATUS_CHOICES} />
 
               <SegmentComboboxInput source="segment_id" label="Segment" />
 
@@ -150,12 +146,7 @@ export function OrganizationDetailsTab({
               <TextInput source="state" label="State" />
               <TextInput source="postal_code" label="ZIP Code" />
 
-              <TextInput
-                source="description"
-                label="Description"
-                multiline
-                rows={3}
-              />
+              <TextInput source="description" label="Description" multiline rows={3} />
 
               <ReferenceArrayInput source="tags" reference="tags" label="Tags">
                 <AutocompleteArrayInput optionText="name" />
@@ -274,12 +265,12 @@ export function OrganizationDetailsTab({
                   {record.context_links.map((link: ContextLink | string, index: number) => (
                     <div key={index}>
                       <a
-                        href={typeof link === 'string' ? link : link.url}
+                        href={typeof link === "string" ? link : link.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm text-primary hover:underline"
                       >
-                        {typeof link === 'string' ? link : (link.label || link.url)}
+                        {typeof link === "string" ? link : link.label || link.url}
                       </a>
                     </div>
                   ))}
@@ -288,10 +279,7 @@ export function OrganizationDetailsTab({
             )}
 
           {/* Metadata - created/updated timestamps */}
-          <SidepaneMetadata
-            createdAt={record.created_at}
-            updatedAt={record.updated_at}
-          />
+          <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
         </div>
       </ScrollArea>
     </RecordContextProvider>
