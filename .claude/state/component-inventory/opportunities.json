@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2025-12-31T21:26:11.791Z",
+  "generated_at": "2026-01-01T19:49:01.668Z",
   "item_count": 79,
   "items": [
     {
@@ -633,11 +633,13 @@
     {
       "name": "OpportunityList",
       "file": "src/atomic-crm/opportunities/OpportunityList.tsx",
-      "line": 42,
+      "line": 43,
       "type": "presentational",
       "hooks": [
+        "useEffect",
         "useFilterCleanup",
         "useGetIdentity",
+        "useSearchParams",
         "useSlideOverState",
         "useState"
       ],
@@ -665,7 +667,8 @@
         "@/components/ui/list-skeleton",
         "@/hooks/useSlideOverState",
         "ra-core",
-        "react"
+        "react",
+        "react-router-dom"
       ],
       "isDefaultExport": true,
       "childComponents": [
@@ -2372,7 +2375,7 @@
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 95,
+      "line": 263,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2388,6 +2391,7 @@
         "../constants/stageConstants",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/opportunities",
+        "@/components/admin/FormErrorSummary",
         "@/components/admin/select-input",
         "@/components/admin/text-input",
         "@/components/layouts/sidepane",
@@ -2399,6 +2403,7 @@
         "lucide-react",
         "react",
         "react-admin",
+        "react-hook-form",
         "react-router-dom"
       ],
       "isDefaultExport": false,

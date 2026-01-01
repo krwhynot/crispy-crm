@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2025-12-31T21:26:23.191Z",
+  "generated_at": "2026-01-01T19:49:10.911Z",
   "items": {
     "nodes": [
       {
@@ -463,37 +463,37 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:182:validateOrganizationForSubmission",
+        "id": "src/atomic-crm/validation/organizations.ts:179:validateOrganizationForSubmission",
         "name": "validateOrganizationForSubmission",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 182,
+        "line": 179,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:229:validateCreateOrganization",
+        "id": "src/atomic-crm/validation/organizations.ts:226:validateCreateOrganization",
         "name": "validateCreateOrganization",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 229,
+        "line": 226,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:248:validateUpdateOrganization",
+        "id": "src/atomic-crm/validation/organizations.ts:245:validateUpdateOrganization",
         "name": "validateUpdateOrganization",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 248,
+        "line": 245,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:56:urlAutoPrefix",
+        "id": "src/atomic-crm/validation/organizations.ts:53:urlAutoPrefix",
         "name": "urlAutoPrefix",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 56,
+        "line": 53,
         "nodeType": "arrow",
         "exported": false,
         "async": false
@@ -1878,110 +1878,110 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:182:validateOrganizationForSubmission",
+        "source": "src/atomic-crm/validation/organizations.ts:179:validateOrganizationForSubmission",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 185,
+        "line": 182,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:182:validateOrganizationForSubmission",
+        "source": "src/atomic-crm/validation/organizations.ts:179:validateOrganizationForSubmission",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 190,
+        "line": 187,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:182:validateOrganizationForSubmission",
+        "source": "src/atomic-crm/validation/organizations.ts:179:validateOrganizationForSubmission",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 191,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:229:validateCreateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:226:validateCreateOrganization",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 231,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:229:validateCreateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:226:validateCreateOrganization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 235,
+        "line": 232,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:229:validateCreateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:226:validateCreateOrganization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 236,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:248:validateUpdateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:245:validateUpdateOrganization",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 250,
+        "line": 247,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:248:validateUpdateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:245:validateUpdateOrganization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 254,
+        "line": 251,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:248:validateUpdateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:245:validateUpdateOrganization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 255,
+        "line": 252,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:56:urlAutoPrefix",
+        "source": "src/atomic-crm/validation/organizations.ts:53:urlAutoPrefix",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 58,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:56:urlAutoPrefix",
+        "source": "src/atomic-crm/validation/organizations.ts:53:urlAutoPrefix",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 61,
+        "line": 58,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:56:urlAutoPrefix",
+        "source": "src/atomic-crm/validation/organizations.ts:53:urlAutoPrefix",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 61,
+        "line": 58,
         "conditional": true,
         "inLoop": false
       },

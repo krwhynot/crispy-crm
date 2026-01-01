@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2025-12-31T21:26:11.787Z",
+  "generated_at": "2026-01-01T19:49:01.661Z",
   "item_count": 30,
   "items": [
     {
@@ -63,7 +63,7 @@
     {
       "name": "ActivityFeedPanel",
       "file": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
-      "line": 114,
+      "line": 127,
       "type": "presentational",
       "hooks": [
         "useMemo",
@@ -76,6 +76,7 @@
         "@/components/ui/button",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
+        "@/lib/utils/pluralize",
         "lucide-react",
         "react"
       ],
@@ -89,7 +90,7 @@
     {
       "name": "ActivityFeedPanel",
       "file": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
-      "line": 114,
+      "line": 127,
       "type": "presentational",
       "hooks": [
         "useMemo",
@@ -102,6 +103,7 @@
         "@/components/ui/button",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
+        "@/lib/utils/pluralize",
         "lucide-react",
         "react"
       ],

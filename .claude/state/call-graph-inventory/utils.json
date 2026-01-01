@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2025-12-31T21:26:23.187Z",
+  "generated_at": "2026-01-01T19:49:10.908Z",
   "items": {
     "nodes": [
       {
@@ -364,10 +364,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/listPatterns.ts:63:getColumnVisibility",
+        "id": "src/atomic-crm/utils/listPatterns.ts:69:getColumnVisibility",
         "name": "getColumnVisibility",
         "file": "src/atomic-crm/utils/listPatterns.ts",
-        "line": 63,
+        "line": 69,
         "nodeType": "function",
         "exported": true,
         "async": false
