@@ -20,6 +20,13 @@
 .DS_Store
 .eslintcache
 
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.lnk
+$RECYCLE.BIN/
+
 # Environment files - Phase 1 Security Remediation
 # Keep these files (committed):
 # .env.example - Template showing structure
