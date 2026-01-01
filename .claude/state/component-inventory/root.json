@@ -1,12 +1,12 @@
 {
   "chunk_name": "root",
-  "generated_at": "2025-12-31T21:26:11.802Z",
+  "generated_at": "2026-01-01T19:49:01.686Z",
   "item_count": 8,
   "items": [
     {
       "name": "CRM",
       "file": "src/atomic-crm/root/CRM.tsx",
-      "line": 138,
+      "line": 144,
       "type": "presentational",
       "hooks": [
         "useEffect"

@@ -57,7 +57,10 @@ const COMPUTED_FIELDS = [
   "stage_manual",
   "status_manual",
   "competition",
-  // NOTE: opportunity_owner_id is NOT computed - it's user-provided and required by DB constraint
+  // Owner/assignment fields (set programmatically, not via edit form)
+  // NOTE: Stripped from UPDATE payloads to pass Zod strictObject validation
+  // Database has this field but updateOpportunitySchema does not include it
+  "opportunity_owner_id",
   // Legacy fields (kept for backward compatibility)
   "total_value",
   "participant_count",

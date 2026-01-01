@@ -1,18 +1,19 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2025-12-31T21:26:11.801Z",
+  "generated_at": "2026-01-01T19:49:01.684Z",
   "item_count": 23,
   "items": [
     {
       "name": "ActivityTypeCard",
       "file": "src/atomic-crm/reports/CampaignActivity/ActivityTypeCard.tsx",
-      "line": 36,
+      "line": 37,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ui/card",
         "@/lib/date-utils",
+        "@/lib/utils/pluralize",
         "lucide-react",
         "react"
       ],
@@ -182,7 +183,7 @@
     {
       "name": "WeeklyActivitySummary",
       "file": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
-      "line": 24,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -200,6 +201,7 @@
         "@/atomic-crm/utils/csvUploadValidator",
         "@/components/ui/badge",
         "@/components/ui/card",
+        "@/lib/utils/pluralize",
         "date-fns",
         "jsonexport/dist",
         "lucide-react",

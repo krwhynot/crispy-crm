@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2025-12-31T21:26:11.805Z",
+  "generated_at": "2026-01-01T19:49:01.697Z",
   "item_count": 29,
   "items": [
     {
@@ -233,7 +233,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 63,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -261,12 +261,14 @@
         "@/components/admin/bulk-actions-toolbar",
         "@/components/admin/date-field",
         "@/components/admin/list",
+        "@/components/admin/list-pagination",
         "@/components/admin/reference-field",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/badge",
         "@/components/ui/list-skeleton",
         "@/components/ui/priority-badge",
+        "@/components/ui/truncated-text",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
