@@ -1,10 +1,12 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Form, useUpdate, useNotify, ReferenceInput, useGetOne } from "react-admin";
+import { useFormContext, useFormState } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { Building2, Trophy, XCircle } from "lucide-react";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -83,6 +85,172 @@ const OrganizationCard = ({
   );
 };
 
+/**
+ * Server validation error with field-level errors from the data provider
+ */
+interface ServerValidationError extends Error {
+  body?: {
+    errors?: Record<string, string>;
+  };
+}
+
+/**
+ * FormContent - Inner component that handles server error propagation to form fields
+ * Must be inside Form to access useFormContext
+ */
+interface FormContentProps {
+  record: Opportunity;
+  onDirtyChange?: (isDirty: boolean) => void;
+  serverError: ServerValidationError | null;
+  showCloseModal: boolean;
+  closeTargetStage: "closed_won" | "closed_lost";
+  handleCloseModalOpenChange: (open: boolean) => void;
+  handleCloseConfirm: (data: CloseOpportunityInput) => Promise<void>;
+  isSaving: boolean;
+}
+
+function FormContent({
+  record,
+  onDirtyChange,
+  serverError,
+  showCloseModal,
+  closeTargetStage,
+  handleCloseModalOpenChange,
+  handleCloseConfirm,
+  isSaving,
+}: FormContentProps) {
+  const { setError, clearErrors } = useFormContext();
+  const { errors, isDirty } = useFormState();
+
+  // Sync dirty state to parent
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+
+  // Apply server validation errors to form fields
+  useEffect(() => {
+    if (serverError?.body?.errors) {
+      // Clear previous server errors first
+      clearErrors();
+      // Set each field error from server response
+      Object.entries(serverError.body.errors).forEach(([field, message]) => {
+        setError(field, { type: "server", message: String(message) });
+      });
+    }
+  }, [serverError, setError, clearErrors]);
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <TextInput source="name" label="Opportunity Name" helperText={false} fullWidth />
+      <TextInput
+        source="description"
+        label="Description"
+        helperText={false}
+        multiline
+        rows={3}
+        fullWidth
+      />
+      <SelectInput
+        source="stage"
+        label="Stage"
+        choices={OPPORTUNITY_STAGE_CHOICES}
+        helperText={false}
+        fullWidth
+      />
+      <SelectInput
+        source="priority"
+        label="Priority"
+        choices={[
+          { id: "low", name: "Low" },
+          { id: "medium", name: "Medium" },
+          { id: "high", name: "High" },
+          { id: "critical", name: "Critical" },
+        ]}
+        helperText={false}
+        fullWidth
+      />
+      <LeadSourceInput />
+      <TextInput
+        source="estimated_close_date"
+        label="Estimated Close Date"
+        type="date"
+        helperText={false}
+        fullWidth
+      />
+
+      {/* Campaign and workflow fields */}
+      <TextInput source="campaign" label="Campaign" helperText={false} fullWidth />
+      <TextInput source="notes" label="Notes" multiline rows={2} helperText={false} fullWidth />
+      <TextInput source="next_action" label="Next Action" helperText={false} fullWidth />
+      <TextInput
+        source="next_action_date"
+        label="Next Action Date"
+        type="date"
+        helperText={false}
+        fullWidth
+      />
+      <TextInput
+        source="decision_criteria"
+        label="Decision Criteria"
+        multiline
+        rows={2}
+        helperText={false}
+        fullWidth
+      />
+
+      {/* Organizations section - with inline creation via AutocompleteOrganizationInput */}
+      <SidepaneSection label="Organizations" showSeparator>
+        <div className="space-y-2">
+          <ReferenceInput
+            source="customer_organization_id"
+            reference="organizations"
+            filter={{ "organization_type@in": "(prospect,customer)" }}
+          >
+            <AutocompleteOrganizationInput
+              label="Customer Organization *"
+              organizationType="customer"
+            />
+          </ReferenceInput>
+
+          <ReferenceInput
+            source="principal_organization_id"
+            reference="organizations"
+            filter={{ organization_type: "principal" }}
+          >
+            <AutocompleteOrganizationInput
+              label="Principal Organization *"
+              organizationType="principal"
+            />
+          </ReferenceInput>
+
+          <ReferenceInput
+            source="distributor_organization_id"
+            reference="organizations"
+            filter={{ organization_type: "distributor" }}
+          >
+            <AutocompleteOrganizationInput
+              label="Distributor Organization"
+              organizationType="distributor"
+            />
+          </ReferenceInput>
+        </div>
+      </SidepaneSection>
+
+      {/* CloseOpportunityModal - shown when changing stage to closed_won/closed_lost */}
+      <CloseOpportunityModal
+        open={showCloseModal}
+        onOpenChange={handleCloseModalOpenChange}
+        opportunityId={record.id}
+        opportunityName={record.name || "Opportunity"}
+        targetStage={closeTargetStage}
+        onConfirm={handleCloseConfirm}
+        isSubmitting={isSaving}
+      />
+    </>
+  );
+}
+
 interface OpportunitySlideOverDetailsTabProps {
   record: Opportunity;
   mode: "view" | "edit";
@@ -102,6 +270,7 @@ export function OpportunitySlideOverDetailsTab({
   const [update] = useUpdate();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
+  const [serverError, setServerError] = useState<ServerValidationError | null>(null);
 
   // State for CloseOpportunityModal
   const [showCloseModal, setShowCloseModal] = useState(false);
@@ -126,13 +295,16 @@ export function OpportunitySlideOverDetailsTab({
           },
           {
             onSuccess: () => {
+              setServerError(null); // Clear server errors on success
               notify("Opportunity updated successfully", { type: "success" });
               if (onModeToggle) {
                 onModeToggle(); // Switch back to view mode
               }
             },
-            onError: (error: Error) => {
+            onError: (error: Error & { body?: { errors?: Record<string, string> } }) => {
               notify(error?.message || "Failed to update opportunity", { type: "error" });
+              // Store full error for field-level display
+              setServerError(error as ServerValidationError);
             },
           }
         );
@@ -202,111 +374,15 @@ export function OpportunitySlideOverDetailsTab({
         onSubmit={handleSave}
         className="space-y-2"
       >
-        <DirtyStateTracker onDirtyChange={onDirtyChange} />
-        <TextInput source="name" label="Opportunity Name" helperText={false} fullWidth />
-        <TextInput
-          source="description"
-          label="Description"
-          helperText={false}
-          multiline
-          rows={3}
-          fullWidth
-        />
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={OPPORTUNITY_STAGE_CHOICES}
-          helperText={false}
-          fullWidth
-        />
-        <SelectInput
-          source="priority"
-          label="Priority"
-          choices={[
-            { id: "low", name: "Low" },
-            { id: "medium", name: "Medium" },
-            { id: "high", name: "High" },
-            { id: "critical", name: "Critical" },
-          ]}
-          helperText={false}
-          fullWidth
-        />
-        <LeadSourceInput />
-        <TextInput
-          source="estimated_close_date"
-          label="Estimated Close Date"
-          type="date"
-          helperText={false}
-          fullWidth
-        />
-
-        {/* Campaign and workflow fields */}
-        <TextInput source="campaign" label="Campaign" helperText={false} fullWidth />
-        <TextInput source="notes" label="Notes" multiline rows={2} helperText={false} fullWidth />
-        <TextInput source="next_action" label="Next Action" helperText={false} fullWidth />
-        <TextInput
-          source="next_action_date"
-          label="Next Action Date"
-          type="date"
-          helperText={false}
-          fullWidth
-        />
-        <TextInput
-          source="decision_criteria"
-          label="Decision Criteria"
-          multiline
-          rows={2}
-          helperText={false}
-          fullWidth
-        />
-
-        {/* Organizations section - with inline creation via AutocompleteOrganizationInput */}
-        <SidepaneSection label="Organizations" showSeparator>
-          <div className="space-y-2">
-            <ReferenceInput
-              source="customer_organization_id"
-              reference="organizations"
-              filter={{ "organization_type@in": "(prospect,customer)" }}
-            >
-              <AutocompleteOrganizationInput
-                label="Customer Organization *"
-                organizationType="customer"
-              />
-            </ReferenceInput>
-
-            <ReferenceInput
-              source="principal_organization_id"
-              reference="organizations"
-              filter={{ organization_type: "principal" }}
-            >
-              <AutocompleteOrganizationInput
-                label="Principal Organization *"
-                organizationType="principal"
-              />
-            </ReferenceInput>
-
-            <ReferenceInput
-              source="distributor_organization_id"
-              reference="organizations"
-              filter={{ organization_type: "distributor" }}
-            >
-              <AutocompleteOrganizationInput
-                label="Distributor Organization"
-                organizationType="distributor"
-              />
-            </ReferenceInput>
-          </div>
-        </SidepaneSection>
-
-        {/* CloseOpportunityModal - shown when changing stage to closed_won/closed_lost */}
-        <CloseOpportunityModal
-          open={showCloseModal}
-          onOpenChange={handleCloseModalOpenChange}
-          opportunityId={record.id}
-          opportunityName={record.name || "Opportunity"}
-          targetStage={closeTargetStage}
-          onConfirm={handleCloseConfirm}
-          isSubmitting={isSaving}
+        <FormContent
+          record={record}
+          onDirtyChange={onDirtyChange}
+          serverError={serverError}
+          showCloseModal={showCloseModal}
+          closeTargetStage={closeTargetStage}
+          handleCloseModalOpenChange={handleCloseModalOpenChange}
+          handleCloseConfirm={handleCloseConfirm}
+          isSaving={isSaving}
         />
       </Form>
     );
