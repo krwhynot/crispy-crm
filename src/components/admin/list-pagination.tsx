@@ -108,7 +108,7 @@ export const ListPagination = ({
               <SelectValue placeholder={perPage} />
             </SelectTrigger>
             <SelectContent side="top">
-              {rowsPerPageOptions.map((pageSize) => (
+              {effectiveOptions.map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>

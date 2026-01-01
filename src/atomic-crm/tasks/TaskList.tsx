@@ -12,6 +12,7 @@ import jsonExport from "jsonexport/dist";
 import { FunctionField } from "react-admin";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { List } from "@/components/admin/list";
+import { ListPagination } from "@/components/admin/list-pagination";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
@@ -85,6 +86,7 @@ export default function TaskList() {
           perPage={100}
           sort={{ field: "due_date", order: "ASC" }}
           exporter={exporter}
+          pagination={<ListPagination rowsPerPageOptions={[25, 50, 100]} />}
         >
           <TaskListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
           <FloatingCreateButton />
