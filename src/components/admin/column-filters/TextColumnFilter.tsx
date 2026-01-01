@@ -42,6 +42,13 @@ export function TextColumnFilter({
   const { filterValues, setFilters } = useListContext();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Use @ilike operator for case-insensitive contains matching (not exact match)
+  // This matches the pattern used throughout the codebase (e.g., ParentOrganizationInput.tsx:23)
+  const filterKey = `${source}@ilike`;
+
+  // Strip wildcards from filter value for display in input
+  const stripWildcards = (value: string) => value.replace(/^%|%$/g, "");
+
   // Local state for immediate input responsiveness
   const [localValue, setLocalValue] = useState<string>("");
   // Track if component has initialized from filterValues
@@ -52,13 +59,14 @@ export function TextColumnFilter({
   // Initialize local state from filterValues on mount
   useEffect(() => {
     if (!isInitialized && filterValues) {
-      const currentFilter = filterValues[source];
+      const currentFilter = filterValues[filterKey];
       if (typeof currentFilter === "string") {
-        setLocalValue(currentFilter);
+        // Strip wildcards for display
+        setLocalValue(stripWildcards(currentFilter));
       }
       setIsInitialized(true);
     }
-  }, [filterValues, source, isInitialized]);
+  }, [filterValues, filterKey, isInitialized]);
 
   // Debounce effect: sync local value to filterValues after delay
   useEffect(() => {
@@ -69,23 +77,27 @@ export function TextColumnFilter({
       isTypingRef.current = false;
 
       const currentFilters = filterValues || {};
-      const currentFilterValue = currentFilters[source];
+      const currentFilterValue = currentFilters[filterKey];
+      // Strip wildcards for comparison
+      const currentDisplayValue = typeof currentFilterValue === "string"
+        ? stripWildcards(currentFilterValue)
+        : "";
 
       // Only update if value actually changed
-      if (localValue !== (currentFilterValue || "")) {
+      if (localValue !== currentDisplayValue) {
         if (localValue.trim() === "") {
           // Remove filter if empty
-          const { [source]: _, ...rest } = currentFilters;
+          const { [filterKey]: _, ...rest } = currentFilters;
           setFilters(rest);
         } else {
-          // Update filter
-          setFilters({ ...currentFilters, [source]: localValue.trim() });
+          // Update filter with wildcards for ILIKE contains matching
+          setFilters({ ...currentFilters, [filterKey]: `%${localValue.trim()}%` });
         }
       }
     }, debounceMs);
 
     return () => clearTimeout(handler);
-  }, [localValue, debounceMs, source, filterValues, setFilters, isInitialized]);
+  }, [localValue, debounceMs, filterKey, filterValues, setFilters, isInitialized]);
 
   // Sync external filter changes (e.g., from FilterChipBar removal)
   // Skip sync while user is actively typing to prevent clearing mid-input
@@ -93,16 +105,19 @@ export function TextColumnFilter({
     if (isTypingRef.current) return;
 
     if (isInitialized) {
-      const externalValue = filterValues?.[source];
-      if (typeof externalValue === "string" && externalValue !== localValue) {
-        setLocalValue(externalValue);
+      const externalValue = filterValues?.[filterKey];
+      if (typeof externalValue === "string") {
+        const displayValue = stripWildcards(externalValue);
+        if (displayValue !== localValue) {
+          setLocalValue(displayValue);
+        }
       } else if (externalValue === undefined && localValue !== "") {
         // Filter was cleared externally
         setLocalValue("");
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps -- Removed localValue intentionally: only sync on external changes
-  }, [filterValues, source, isInitialized]);
+  }, [filterValues, filterKey, isInitialized]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     isTypingRef.current = true; // Mark as typing to prevent external sync
@@ -113,10 +128,10 @@ export function TextColumnFilter({
     setLocalValue("");
     // Immediate clear (no debounce)
     const currentFilters = filterValues || {};
-    const { [source]: _, ...rest } = currentFilters;
+    const { [filterKey]: _, ...rest } = currentFilters;
     setFilters(rest);
     inputRef.current?.focus();
-  }, [filterValues, setFilters, source]);
+  }, [filterValues, setFilters, filterKey]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
