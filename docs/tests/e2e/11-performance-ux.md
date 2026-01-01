@@ -4,16 +4,24 @@
 
 Manual E2E testing checklist for Performance and User Experience validation. This is the final test in the 6-test RBAC suite and validates that the application meets response time requirements, provides appropriate UI feedback, and supports keyboard accessibility.
 
+## Test Environment Setup
+
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | ${BASE_URL} | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
 ## Prerequisites
 
 **CRITICAL:** Tests 1-5 of the RBAC suite must pass before running these tests.
 
 - **Browser:** Chrome (required for DevTools Network Throttling and Performance tab)
-- **URL:** http://localhost:5173
+- **URL:** ${BASE_URL}
 - **Test Users:**
-  - Admin: admin@test.com / password123
-  - Manager: manager@mfbroker.com / password123
-  - Rep: rep@mfbroker.com / password123
+  - Admin: admin@test.com / password123 (local) or [production credentials]
+  - Manager: manager@mfbroker.com / password123 (local) or [production credentials]
+  - Rep: rep@mfbroker.com / password123 (local) or [production credentials]
 - **Tools Required:**
   - Browser DevTools (F12)
   - Stopwatch/timer (browser extension or physical)
@@ -38,7 +46,7 @@ Manual E2E testing checklist for Performance and User Experience validation. Thi
 2. Navigate to the **Network** tab in DevTools
 3. Check the "Disable cache" checkbox at the top of the Network panel
 4. Ensure no network throttling is applied (dropdown should show "No throttling")
-5. Navigate to http://localhost:5173 in the address bar
+5. Navigate to ${BASE_URL} in the address bar
 6. Log in with admin credentials:
    - Email: admin@test.com
    - Password: password123
@@ -230,7 +238,7 @@ Role displayed on re-open: _____
 3. Check the "Disable cache" checkbox
 4. Click the "Network conditions" icon (or "No throttling" dropdown)
 5. Select "Slow 3G" to simulate a slow network connection
-6. Navigate to http://localhost:5173
+6. Navigate to ${BASE_URL}
 7. Log in with admin credentials:
    - Email: admin@test.com
    - Password: password123
@@ -625,3 +633,32 @@ List any failed tests and notes here
 ```
 List any bugs discovered during testing
 ```
+
+---
+
+## Production Safety
+
+**Tests Safe for Production (Read-Only):**
+| Test | Safe for Production | Notes |
+|------|---------------------|-------|
+| A1: Team List Load Time | Yes | Read-only list view |
+| A2: Create Form Opens | Partial | Open form but do not save |
+| A4: Role Change Reflects | NO - LOCAL ONLY | Modifies user roles |
+| B1: Loading Spinner | Yes | Read-only observation |
+| C1: Keyboard Navigation | Yes | Read-only navigation |
+| C2: Focus Management | Partial | Open/close forms without saving |
+
+**Local-Only Tests (Create/Update Operations):**
+| Test | Reason |
+|------|--------|
+| A3: Save Operation Time | Creates test records |
+| A4: Role Change Reflects | Modifies user roles |
+| B2: Success Toast on Save | Creates test records |
+| B3: Error Message on Failure | Attempts to create duplicate records |
+| B4: Confirmation Dialog | Creates and deletes test records |
+
+**Production Testing Guidance:**
+- Performance timing tests (A1, A2 without save) are safe
+- Loading indicator and accessibility tests are safe
+- Avoid any tests that require saving data
+- Do not run save/create/delete tests on production

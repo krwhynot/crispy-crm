@@ -895,3 +895,29 @@ Screenshot: [attached]
 Affected CSS: .task-description { color: #7E8A9D; }
 Fix: Use text-foreground token instead of hardcoded color
 ```
+
+---
+
+## Production Safety
+
+**All accessibility tests are safe for production environments** - they are read-only inspections and do not modify any data.
+
+**Tests Safe for Production (Read-Only):**
+| Test Category | Safe for Production | Notes |
+|--------------|---------------------|-------|
+| 1. Automated axe-core Scans | Yes | Read-only DOM analysis |
+| 2. Keyboard Navigation | Yes | Read-only navigation (do not save forms) |
+| 3. Semantic HTML | Yes | Read-only inspection |
+| 4. Dynamic Content | Yes | Read-only observation |
+| 5. Color Accessibility | Yes | Read-only inspection |
+| 6. Form Accessibility | Partial | View forms but do not submit |
+| 7. Touch Target Size | Yes | Read-only measurement |
+| 8. Advanced ARIA | Yes | Read-only inspection |
+| 9. Screen Reader | Yes | Read-only with screen reader |
+| 10. Recommended Tools | Yes | Read-only scanning |
+
+**Caution for Production:**
+- Test 6.2 (Error Message Association) requires triggering validation errors - click Cancel after testing to avoid saving
+- Test 8.5-8.6 (Combobox Navigation) - only navigate, do not select and save values
+
+**Recommendation:** All accessibility tests can be run on production safely as they only observe and inspect the UI without modifying data.
