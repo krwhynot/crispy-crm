@@ -100,9 +100,10 @@ function useCurrentSaleDirect() {
         // Query sales table using data provider (single entry point)
         // This is the ONLY correct way to get sales.id
         // Handle legacy users with NULL user_id by falling back to email match
+        // Uses PostgREST "or@" syntax (same pattern as applyFullTextSearch)
         const { data: salesRecords } = await dataProvider.getList("sales", {
           filter: {
-            or: [`user_id.eq.${user.id}`, `email.eq.${user.email}`],
+            "or@": `(user_id.eq.${user.id},email.eq.${user.email})`,
           },
           sort: { field: "id", order: "ASC" },
           pagination: { page: 1, perPage: 1 },
