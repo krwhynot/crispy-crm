@@ -359,8 +359,15 @@ export const updateOpportunitySchema = opportunityBaseSchema
         return true;
       }
 
-      // If contact_ids IS provided in a non-stage-only update, it must not be empty
-      // (user is explicitly removing all contacts, which we don't allow)
+      // Skip validation for full form submissions (React Admin v5 sends ALL fields on every update)
+      // Heuristic: If 5+ fields are present, this is a form submission, not a contacts-only edit.
+      // We only enforce "at least one contact" when user is explicitly on a contacts edit screen
+      // (which would send only a few fields like {id, contact_ids, version}).
+      if (providedFields.length >= 5) {
+        return true;
+      }
+
+      // If user is specifically editing contacts (few fields, including contact_ids), enforce minimum
       return Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
     },
     {
