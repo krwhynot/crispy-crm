@@ -18,7 +18,7 @@ import {
   WizardNavigation,
   StepIndicator,
 } from "@/components/admin/form";
-import { OPPORTUNITY_WIZARD_STEPS } from "../forms/OpportunityWizardSteps";
+import { OPPORTUNITY_WIZARD_STEPS } from "../forms/opportunityWizardConfig";
 import { renderWithWizard } from "@/components/admin/form/__tests__/test-utils";
 import type { WizardStepConfig } from "@/components/admin/form";
 
