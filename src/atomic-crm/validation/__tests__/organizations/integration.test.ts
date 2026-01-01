@@ -48,7 +48,7 @@ describe("Organization Validation Functions", () => {
         await validateOrganizationForm(invalidLinkedIn);
         expect.fail("Should have thrown validation error");
       } catch (error: any) {
-        expect(error.body.errors.linkedin_url).toBe("Must be a valid LinkedIn organization URL");
+        expect(error.body.errors.linkedin_url).toBe("Must be a LinkedIn URL (linkedin.com)");
       }
     });
 
