@@ -4,9 +4,17 @@ Comprehensive manual E2E test checklist for the Tasks module. This module has li
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run tasks tests against localhost:5173"
+- Production: "Run tasks tests against crm.kjrcloud.com"
+
 - **Browser:** Chrome (recommended for Claude Chrome testing)
-- **URL:** http://localhost:5173
-- **Credentials:** admin@test.com / password123
 - **Seed Data Required:** Run `just seed-e2e` before testing
 - **Test Data Naming:** Use timestamps like `Test Task 2025-12-31-143022`
 
@@ -35,7 +43,7 @@ Comprehensive manual E2E test checklist for the Tasks module. This module has li
 
 **Steps:**
 
-1. Navigate to `http://localhost:5173/#/tasks/create`
+1. Navigate to `${BASE_URL}/#/tasks/create`
 2. Wait for form to load completely
 3. Fill in:
    - **Title:** `Test Task 2025-12-31-143022`
@@ -1121,3 +1129,19 @@ Monitor browser DevTools Console during all tests for these error patterns:
 - Task Types: Call, Email, Meeting, Follow-up, Demo, Proposal, Other
 - Priority Levels: low, medium, high, critical
 - Form Mode: `onBlur` validation (not onChange)
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- [ ] Read/List operations
+- [ ] View operations (slide-over, details)
+- [ ] Navigation tests
+- [ ] Console monitoring
+
+**Local Only (Skip in Production):**
+- [ ] Create operations
+- [ ] Update operations
+- [ ] Delete operations
+- [ ] Bulk operations

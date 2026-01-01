@@ -4,8 +4,15 @@ Comprehensive manual testing checklist for the Opportunities module using Claude
 
 ## Test Environment Setup
 
-**Application URL:** http://localhost:5173
-**Test Credentials:** admin@test.com / password123
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run opportunities tests against localhost:5173"
+- Production: "Run opportunities tests against crm.kjrcloud.com"
 
 ### Viewports
 
@@ -36,7 +43,7 @@ Example: `Test Opportunity 2025-12-31-143022`
 
 **Objective:** Verify the 4-step wizard creates an opportunity successfully.
 
-**URL:** `http://localhost:5173/#/opportunities/create`
+**URL:** `${BASE_URL}/#/opportunities/create`
 
 **Steps:**
 
@@ -111,7 +118,7 @@ Example: `Test Opportunity 2025-12-31-143022`
 
 **Objective:** Verify all 4 display modes render correctly.
 
-**URL:** `http://localhost:5173/#/opportunities`
+**URL:** `${BASE_URL}/#/opportunities`
 
 **Steps:**
 
@@ -908,3 +915,19 @@ The Speed Dial FAB supports:
 - **Escape key:** Closes the menu
 - **Tab:** Navigates between action buttons
 - **Enter/Space:** Activates selected action
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- [ ] Read/List operations
+- [ ] View operations (slide-over, details)
+- [ ] Navigation tests
+- [ ] Console monitoring
+
+**Local Only (Skip in Production):**
+- [ ] Create operations
+- [ ] Update operations
+- [ ] Delete operations
+- [ ] Bulk operations

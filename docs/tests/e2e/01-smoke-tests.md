@@ -4,9 +4,15 @@ Quick verification tests to ensure core functionality is working before running 
 
 ## Test Environment Setup
 
-- **Browser:** Chrome, Firefox, or Safari
-- **URL:** http://localhost:5173
-- **Credentials:** admin@test.com / password123
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run smoke tests against localhost:5173"
+- Production: "Run smoke tests against crm.kjrcloud.com"
 
 ---
 
@@ -18,7 +24,7 @@ Quick verification tests to ensure core functionality is working before running 
 
 1. Open browser DevTools (F12)
 2. Navigate to Console tab
-3. Navigate to http://localhost:5173
+3. Navigate to `${BASE_URL}`
 4. Wait for page to load completely
 
 ### Expected Results
@@ -54,7 +60,7 @@ Watch for:
 ### Expected Results
 
 - ✓ Authentication request to `/auth/v1/token` completes successfully (200 status)
-- ✓ Page redirects to `http://localhost:5173/#/` within 15 seconds
+- ✓ Page redirects to `${BASE_URL}/#/` within 15 seconds
 - ✓ Login form is no longer visible
 - ✓ Dashboard content loads
 - ✓ No authentication errors in console
@@ -69,7 +75,7 @@ Watch for:
 ### Steps
 
 1. After successful login, navigate to `/dashboard-v3`
-   - URL: http://localhost:5173/#/dashboard-v3
+   - URL: `${BASE_URL}/#/dashboard-v3`
 2. Wait for page to load
 
 ### Expected Results
@@ -143,6 +149,19 @@ If any test fails:
 3. Take screenshot
 4. Report to development team
 5. **DO NOT proceed with comprehensive E2E tests** until smoke tests pass
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- ✓ Test 1: Application Loads
+- ✓ Test 2: Authentication
+- ✓ Test 3: Dashboard Route
+- ✓ Test 4: Basic Navigation
+- ✓ Test 5: Console Monitoring
+
+**All smoke tests are safe for production** - they are read-only and non-destructive.
 
 ---
 

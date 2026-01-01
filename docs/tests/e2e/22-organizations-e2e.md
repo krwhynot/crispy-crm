@@ -4,9 +4,17 @@ Comprehensive manual E2E testing checklist for the Organizations module. Designe
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run organizations tests against localhost:5173"
+- Production: "Run organizations tests against crm.kjrcloud.com"
+
 - **Browser:** Chrome (with Claude for Chrome extension)
-- **URL:** http://localhost:5173
-- **Credentials:** admin@test.com / password123
 - **Seed Data:** Run `just seed-e2e` before testing
 - **Reference Organization:** MFB Consulting (from seed data)
 
@@ -1015,3 +1023,19 @@ If any test fails:
 | Date | Version | Changes |
 |------|---------|---------|
 | 2025-12-31 | 1.0 | Initial creation |
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- [ ] Read/List operations
+- [ ] View operations (slide-over, details)
+- [ ] Navigation tests
+- [ ] Console monitoring
+
+**Local Only (Skip in Production):**
+- [ ] Create operations
+- [ ] Update operations
+- [ ] Delete operations
+- [ ] Bulk operations

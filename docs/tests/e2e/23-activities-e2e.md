@@ -6,9 +6,17 @@ Comprehensive manual E2E test checklist for the Activities module in Crispy CRM.
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run activities tests against localhost:5173"
+- Production: "Run activities tests against crm.kjrcloud.com"
+
 - **Browser:** Chrome with DevTools open (F12)
-- **URL:** http://localhost:5173
-- **Credentials:** admin@test.com / password123
 - **Timestamp Format:** `2025-12-31-143022` (for unique test data)
 - **Seed Data Required:**
   - Ryan Wabeke (opportunity)
@@ -891,3 +899,19 @@ All entity selection uses shadcn/ui Command component:
 2. Type in search input to filter
 3. Click option to select
 4. Use keyboard (Arrow keys, Enter) for navigation
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- [ ] Read/List operations
+- [ ] View operations (slide-over, details)
+- [ ] Navigation tests
+- [ ] Console monitoring
+
+**Local Only (Skip in Production):**
+- [ ] Create operations
+- [ ] Update operations
+- [ ] Delete operations
+- [ ] Bulk operations

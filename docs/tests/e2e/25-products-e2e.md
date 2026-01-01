@@ -4,9 +4,17 @@ Manual E2E testing checklist for the Products module. Tests cover CRUD operation
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
+**Claude Chrome Commands:**
+- Local: "Run products tests against localhost:5173"
+- Production: "Run products tests against crm.kjrcloud.com"
+
 - **Browser:** Chrome (with DevTools open)
-- **URL:** http://localhost:5173
-- **Credentials:** admin@test.com / password123
 - **Prerequisite:** Seed data loaded (`just seed-e2e`)
 - **Required Seed Data:** At least one Principal-type organization
 
@@ -661,3 +669,19 @@ Estimated time: 45-60 minutes for complete checklist
 ### Related Tests
 - See `04-form-tests.md` for general form testing patterns
 - See `01-smoke-tests.md` for application-level smoke tests
+
+---
+
+## Production Safety
+
+**Safe for Production:**
+- [ ] Read/List operations
+- [ ] View operations (slide-over, details)
+- [ ] Navigation tests
+- [ ] Console monitoring
+
+**Local Only (Skip in Production):**
+- [ ] Create operations
+- [ ] Update operations
+- [ ] Delete operations
+- [ ] Bulk operations

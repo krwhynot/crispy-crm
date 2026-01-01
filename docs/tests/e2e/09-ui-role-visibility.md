@@ -16,8 +16,14 @@ If any prerequisite test fails, **DO NOT proceed** with UI Role Visibility tests
 
 ## Test Environment Setup
 
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | ${BASE_URL} | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
 - **Browser:** Chrome, Firefox, or Safari
-- **URL:** http://localhost:5173
+- **URL:** ${BASE_URL}
 - **DevTools:** Console tab open to monitor for errors
 
 ### Test Users
@@ -53,7 +59,7 @@ If any prerequisite test fails, **DO NOT proceed** with UI Role Visibility tests
 
 **Steps:**
 
-1. Navigate to `http://localhost:5173`
+1. Navigate to `${BASE_URL}`
 2. Wait for the login page to load completely
 3. Verify email input field is visible and empty
 4. Verify password input field is visible and empty
@@ -98,7 +104,7 @@ Watch for errors containing:
 
 **Steps:**
 
-1. If not already logged in, navigate to `http://localhost:5173`
+1. If not already logged in, navigate to `${BASE_URL}`
 2. Clear any existing session (optional: open incognito window)
 3. Enter email: `admin@test.com`
 4. Enter password: `password123`
@@ -138,7 +144,7 @@ Watch for errors containing:
 
 **Steps:**
 
-1. Navigate to `http://localhost:5173`
+1. Navigate to `${BASE_URL}`
 2. Wait for login page to load
 3. Verify login form is displayed (not auto-logged in)
 4. Enter email: `manager@mfbroker.com`
@@ -189,7 +195,7 @@ Watch for errors containing:
 
 **Steps:**
 
-1. Navigate to `http://localhost:5173`
+1. Navigate to `${BASE_URL}`
 2. Wait for login page to load completely
 3. Verify login form is displayed
 4. Enter email: `rep@mfbroker.com`
@@ -240,7 +246,7 @@ Watch for errors containing:
 
 **Steps:**
 
-1. If not logged in, navigate to `http://localhost:5173`
+1. If not logged in, navigate to `${BASE_URL}`
 2. Enter email: `admin@test.com`
 3. Enter password: `password123`
 4. Click "Sign In" and wait for dashboard
@@ -285,7 +291,7 @@ Look for:
 
 **Steps:**
 
-1. Navigate to `http://localhost:5173`
+1. Navigate to `${BASE_URL}`
 2. Wait for login page to load
 3. Enter email: `manager@mfbroker.com`
 4. Enter password: `password123`
@@ -331,7 +337,7 @@ Document which alternative applies if Delete button is visible but non-functiona
 
 **Steps:**
 
-1. Navigate to `http://localhost:5173`
+1. Navigate to `${BASE_URL}`
 2. Wait for login page to load
 3. Enter email: `rep@mfbroker.com`
 4. Enter password: `password123`
@@ -473,7 +479,7 @@ Document which alternative applies if Delete button is visible but non-functiona
 
 **Steps:**
 
-1. Navigate to `http://localhost:5173`
+1. Navigate to `${BASE_URL}`
 2. Login as Manager: `manager@mfbroker.com` / `password123`
 3. Wait for dashboard to load
 4. Attempt to access Team page directly by navigating to `/#/sales`
@@ -707,3 +713,27 @@ Route: /#/contacts/123
 SEVERITY: HIGH - Security violation
 ACTION: Investigate permission checking in ContactShow component
 ```
+
+---
+
+## Production Safety
+
+**Tests Safe for Production (Read-Only):**
+| Test | Safe for Production | Notes |
+|------|---------------------|-------|
+| A1: Admin Sees Settings > Team | Yes | Read-only navigation check |
+| A2: Admin Sees Settings > Audit Log | Yes | Read-only navigation check |
+| A3: Manager Does NOT See Team/Audit | Yes | Read-only visibility check |
+| A4: Rep Does NOT See Team/Audit | Yes | Read-only visibility check |
+| B1: Admin Sees Delete Buttons | Yes | Read-only visibility check (do not click) |
+| B2: Manager Does NOT See Delete | Yes | Read-only visibility check |
+| B3: Rep Does NOT See Delete | Yes | Read-only visibility check |
+| B4: Admin Sees Bulk Action Options | Yes | Read-only visibility check (do not execute) |
+| C1: Admin Sees Editable Role Dropdown | Partial | View only, do not modify |
+| C2: Non-Admin Role Field Disabled | Yes | Read-only check |
+| C3: Account Manager Dropdown Active Users | Yes | Read-only dropdown check |
+
+**All tests in this file are safe for production** as they only verify UI visibility without modifying data. However:
+- **Do NOT execute** bulk actions in B4
+- **Do NOT save changes** when viewing role dropdowns in C1
+- Use caution with any test that involves clicking Delete buttons

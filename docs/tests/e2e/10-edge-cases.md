@@ -2,21 +2,29 @@
 
 Manual E2E testing checklist for edge cases and error handling scenarios. This is TEST 5 of a progressive 6-test RBAC suite.
 
+## Test Environment Setup
+
+**Environment Selection:**
+| Environment | Base URL | Credentials |
+|-------------|----------|-------------|
+| Local | http://localhost:5173 | admin@test.com / password123 |
+| Production | https://crm.kjrcloud.com | [production credentials] |
+
 ## Prerequisites
 
 Before running these tests, ensure:
 
 1. **Tests 1-4 have passed** - This test depends on previous RBAC test suites
-2. **Local Development Server Running** - `http://127.0.0.1:5173`
-3. **Supabase Local Instance Running** - `npx supabase status`
-4. **Test Data Seeded** - `./scripts/seed-e2e-dashboard-v3.sh`
+2. **Local Development Server Running** - ${BASE_URL} (local) or production URL accessible
+3. **Supabase Local Instance Running** - `npx supabase status` (local only)
+4. **Test Data Seeded** - `./scripts/seed-e2e-dashboard-v3.sh` (local only)
 5. **Multiple Browsers Available** - Tests require simultaneous sessions
 
 ## Test Environment
 
 - **Browser 1:** Chrome (primary session)
 - **Browser 2:** Chrome Incognito or Firefox (secondary session)
-- **URL:** http://127.0.0.1:5173
+- **URL:** ${BASE_URL}
 
 ## Test Users
 
@@ -41,7 +49,7 @@ These tests verify the system handles simultaneous edits gracefully when multipl
 #### Steps
 
 1. **Open Browser 1 (Chrome primary window)**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Open DevTools (F12) and switch to Console tab
    - Clear console to start fresh
 
@@ -61,7 +69,7 @@ These tests verify the system handles simultaneous edits gracefully when multipl
 
 4. **Open Browser 2 (Chrome Incognito or Firefox)**
    - Open a new incognito window (Ctrl+Shift+N) or Firefox
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Open DevTools (F12) and switch to Console tab
 
 5. **Login as Manager in Browser 2**
@@ -146,7 +154,7 @@ _Record any unexpected behavior, error messages, or observations:_
    - Note the new contact's ID from the URL
 
 2. **Open Browser 2 (Chrome Incognito or Firefox)**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
 
@@ -236,14 +244,14 @@ These tests verify that permission changes take effect appropriately when a user
 #### Steps
 
 1. **Open Browser 1 (Admin session)**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Open DevTools Console tab
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
 
 2. **Open Browser 2 (Manager session)**
    - Open incognito or different browser
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Open DevTools Console tab
    - Login as Manager: `manager@mfbroker.com` / `password123`
    - Wait for dashboard to load
@@ -338,14 +346,14 @@ _Document when permissions took effect and any lag observed:_
 #### Steps
 
 1. **Open Browser 1 (Admin session)**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
    - Keep DevTools Console open
 
 2. **Open Browser 2 (Rep session)**
    - Open incognito or different browser
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Rep: `rep@mfbroker.com` / `password123`
    - Wait for dashboard to load
 
@@ -440,7 +448,7 @@ These tests verify that users cannot perform dangerous operations on their own a
 #### Steps
 
 1. **Login as Admin**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Open DevTools Console tab
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load completely
@@ -524,7 +532,7 @@ _Document the prevention mechanism used:_
 #### Steps
 
 1. **Login as Admin**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
 
@@ -615,7 +623,7 @@ _Document the warning dialog text and behavior:_
 #### Steps
 
 1. **Login as the only Admin**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
 
@@ -711,7 +719,7 @@ These tests verify that user deletion and status changes are handled correctly r
 #### Steps
 
 1. **Login as Admin**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
 
@@ -813,7 +821,7 @@ _Document how the system handled the assigned contacts:_
 #### Steps
 
 1. **Login as Admin**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
 
@@ -908,7 +916,7 @@ _Document how opportunities were handled:_
 #### Steps
 
 1. **Login as Admin**
-   - Navigate to `http://127.0.0.1:5173`
+   - Navigate to `${BASE_URL}`
    - Login as Admin: `admin@test.com` / `password123`
    - Wait for dashboard to load
 
@@ -1080,3 +1088,32 @@ After completing tests:
 2. Restore any demoted/promoted users to original roles
 3. Clear test data if needed
 4. Document which test data remains for future reference
+
+---
+
+## Production Safety
+
+**WARNING: Most tests in this file are LOCAL-ONLY due to data modification.**
+
+**Tests Safe for Production (Read-Only):**
+| Test | Safe for Production | Notes |
+|------|---------------------|-------|
+| None | - | All tests modify data |
+
+**Local-Only Tests (Create/Update/Delete Operations):**
+| Test | Reason |
+|------|--------|
+| A1: Edit Conflict Detection | Modifies contact records |
+| A2: Delete While Editing | Creates and deletes records |
+| B1: User Demoted Mid-Session | Modifies user roles |
+| B2: User Promoted Mid-Session | Modifies user roles |
+| C1: Admin Cannot Disable Self | Tests account modification |
+| C2: Admin Self-Demotion Warning | Tests role modification |
+| C3: Last Admin Protection | Tests role modification |
+| D1: Delete User with Contacts | Creates and deletes users |
+| D2: Delete User with Opportunities | Creates and deletes users |
+| D3: Disabled User Dropdown | Creates and disables users |
+
+**CRITICAL: DO NOT run any tests from this file on production.**
+
+All edge case tests require creating, modifying, or deleting data to verify system behavior. Run exclusively on local development environment.
