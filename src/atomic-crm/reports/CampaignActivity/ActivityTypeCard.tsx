@@ -3,6 +3,7 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { ActivityGroup } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
+import { pluralize } from "@/lib/utils/pluralize";
 
 interface ActivityTypeCardProps {
   group: ActivityGroup;
@@ -72,7 +73,7 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
           onClick={onToggle}
           className="w-full text-left cursor-pointer hover:opacity-80 transition-opacity"
           aria-expanded={isExpanded}
-          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${label} section with ${group.totalCount} activities`}
+          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${label} section with ${pluralize(group.totalCount, "activity", "activities")}`}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -82,7 +83,7 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
               <div>
                 <h3 className="font-semibold text-base">{label}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {group.totalCount} activities • {group.uniqueOrgs} unique orgs • {percentage}%
+                  {pluralize(group.totalCount, "activity", "activities")} • {group.uniqueOrgs} unique orgs • {percentage}%
                 </p>
               </div>
             </div>

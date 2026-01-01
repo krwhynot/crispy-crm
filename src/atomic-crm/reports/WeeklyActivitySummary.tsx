@@ -6,6 +6,7 @@ import { Activity } from "lucide-react";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { pluralize } from "@/lib/utils/pluralize";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { AppliedFiltersBar, EmptyState } from "./components";
 import { useReportData } from "./hooks";
@@ -327,7 +328,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
           <span>
             {repGroup.rep.first_name} {repGroup.rep.last_name}
           </span>
-          <Badge>{totalActivities} activities</Badge>
+          <Badge>{pluralize(totalActivities, "activity", "activities")}</Badge>
         </CardTitle>
       </CardHeader>
       <CardContent>

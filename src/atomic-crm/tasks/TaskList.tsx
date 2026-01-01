@@ -10,6 +10,7 @@ import {
 import jsonExport from "jsonexport/dist";
 
 import { FunctionField } from "react-admin";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { List } from "@/components/admin/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
@@ -156,10 +157,14 @@ const TaskListLayout = ({
           />
 
           {/* Column 2: Title - Primary identifier (sortable) - always visible */}
-          <TextField
-            source="title"
+          <FunctionField
             label={<TaskTitleHeader />}
-            sortable
+            sortBy="title"
+            render={(record: Task) => (
+              <TruncatedText className="max-w-[250px]">
+                {record.title}
+              </TruncatedText>
+            )}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
