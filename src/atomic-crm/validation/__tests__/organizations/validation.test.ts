@@ -148,6 +148,14 @@ describe("Organization Validation Schemas", () => {
         })
       ).not.toThrow();
 
+      // Country subdomain support (ca.linkedin.com, uk.linkedin.com, etc.)
+      expect(() =>
+        organizationSchema.parse({
+          ...validOrganization,
+          linkedin_url: "https://ca.linkedin.com/company/example",
+        })
+      ).not.toThrow();
+
       // Invalid LinkedIn URLs (wrong domain - even with auto-prefix)
       expect(() =>
         organizationSchema.parse({

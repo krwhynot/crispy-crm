@@ -43,9 +43,6 @@ export const paymentTermsSchema = z.enum([
 ]);
 export type PaymentTerms = z.infer<typeof paymentTermsSchema>;
 
-// LinkedIn URL validation - domain-specific regex required
-const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
-
 /**
  * URL auto-prefix transform
  * Automatically adds https:// to URLs that don't have a protocol.
@@ -76,13 +73,13 @@ const isLinkedinUrl = z.string()
       (url) => {
         if (!url) return true;
         try {
-          const parsedUrl = new URL(url);
-          return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
+          const hostname = new URL(url).hostname;
+          return hostname === "linkedin.com" || hostname.endsWith(".linkedin.com");
         } catch {
           return false;
         }
       },
-      { message: "Must be a valid LinkedIn organization URL" }
+      { message: "Must be a LinkedIn URL (linkedin.com)" }
     )
   );
 
