@@ -659,7 +659,8 @@ describe("Product Validation Schemas (products.ts)", () => {
       });
 
       it("should accept undefined product_category", () => {
-        const { product_category: _product_category, ...dataWithoutCategory } = validOpportunityProduct;
+        const { product_category: _product_category, ...dataWithoutCategory } =
+          validOpportunityProduct;
         const result = opportunityProductSchema.safeParse(dataWithoutCategory);
         expect(result.success).toBe(true);
       });
@@ -696,9 +697,9 @@ describe("Product Validation Schemas (products.ts)", () => {
         expect((error as { body: { errors: Record<string, string> } }).body).toHaveProperty(
           "errors"
         );
-        expect(
-          (error as { body: { errors: Record<string, string> } }).body.errors
-        ).toHaveProperty("name");
+        expect((error as { body: { errors: Record<string, string> } }).body.errors).toHaveProperty(
+          "name"
+        );
       }
     });
 

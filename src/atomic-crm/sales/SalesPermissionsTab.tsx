@@ -50,7 +50,12 @@ interface SalesPermissionsTabProps {
  * View mode: Read-only display with badges
  * Edit mode: Inline form with dropdowns and switches
  */
-export function SalesPermissionsTab({ record, mode, onModeToggle, onDirtyChange }: SalesPermissionsTabProps) {
+export function SalesPermissionsTab({
+  record,
+  mode,
+  onModeToggle,
+  onDirtyChange,
+}: SalesPermissionsTabProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
   const redirect = useRedirect();
@@ -76,9 +81,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle, onDirtyChange 
   useEffect(() => {
     if (mode !== "edit" || !onDirtyChange) return;
 
-    const isDirty =
-      formData.role !== record.role ||
-      formData.disabled !== record.disabled;
+    const isDirty = formData.role !== record.role || formData.disabled !== record.disabled;
 
     onDirtyChange(isDirty);
   }, [formData, record, mode, onDirtyChange]);

@@ -264,8 +264,8 @@ describe("SalesService", () => {
     test("should exclude falsy/undefined fields from update body", async () => {
       const updateData = {
         first_name: "John",
-        last_name: undefined,  // undefined - excluded
-        email: "",             // empty string - excluded (truthy check)
+        last_name: undefined, // undefined - excluded
+        email: "", // empty string - excluded (truthy check)
       };
 
       mockDataProvider.invoke = vi.fn().mockResolvedValue({ id: 1 } as Sale);

@@ -39,20 +39,13 @@ interface HookInfo {
   isReact19Action: boolean;
 }
 
-const REACT_19_ACTION_HOOKS = new Set([
-  "useActionState",
-  "useFormStatus",
-  "useOptimistic",
-]);
+const REACT_19_ACTION_HOOKS = new Set(["useActionState", "useFormStatus", "useOptimistic"]);
 
 function isHookName(name: string): boolean {
   return name.startsWith("use") && name.length > 3;
 }
 
-function extractHookDependencies(
-  functionBody: string,
-  hookName: string
-): string[] {
+function extractHookDependencies(functionBody: string, hookName: string): string[] {
   const dependencies = new Set<string>();
 
   const hookCallPattern = /\b(use[A-Z][a-zA-Z0-9]*)\s*\(/g;
@@ -80,8 +73,8 @@ function extractFromFunctionDeclaration(
   const functionBody = decl.getBodyText() || "";
 
   const dependencies = extractHookDependencies(functionBody, name);
-  const isReact19Action = REACT_19_ACTION_HOOKS.has(name) ||
-    dependencies.some(dep => REACT_19_ACTION_HOOKS.has(dep));
+  const isReact19Action =
+    REACT_19_ACTION_HOOKS.has(name) || dependencies.some((dep) => REACT_19_ACTION_HOOKS.has(dep));
 
   return {
     name,
@@ -123,8 +116,8 @@ function extractFromVariableDeclaration(
   }
 
   const dependencies = extractHookDependencies(functionBody, name);
-  const isReact19Action = REACT_19_ACTION_HOOKS.has(name) ||
-    dependencies.some(dep => REACT_19_ACTION_HOOKS.has(dep));
+  const isReact19Action =
+    REACT_19_ACTION_HOOKS.has(name) || dependencies.some((dep) => REACT_19_ACTION_HOOKS.has(dep));
 
   return {
     name,
@@ -147,7 +140,7 @@ export async function extractHooks(onlyChunks?: Set<string>): Promise<void> {
 
   // Filter to only process files from stale chunks (incremental mode)
   const sourceFiles = onlyChunks
-    ? allSourceFiles.filter(sf => {
+    ? allSourceFiles.filter((sf) => {
         const chunkName = getChunkName(sf.getFilePath());
         return onlyChunks.has(chunkName);
       })
@@ -159,7 +152,11 @@ export async function extractHooks(onlyChunks?: Set<string>): Promise<void> {
   for (const sourceFile of sourceFiles) {
     const filePath = sourceFile.getFilePath();
 
-    if (filePath.includes("node_modules") || filePath.includes(".test.") || filePath.includes(".spec.")) {
+    if (
+      filePath.includes("node_modules") ||
+      filePath.includes(".test.") ||
+      filePath.includes(".spec.")
+    ) {
       continue;
     }
 

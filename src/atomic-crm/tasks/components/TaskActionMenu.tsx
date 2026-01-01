@@ -9,15 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  MoreHorizontal,
-  Loader2,
-  Eye,
-  Pencil,
-  Trash2,
-  Calendar,
-  CalendarDays,
-} from "lucide-react";
+import { MoreHorizontal, Loader2, Eye, Pencil, Trash2, Calendar, CalendarDays } from "lucide-react";
 
 /**
  * Task record shape for the action menu
@@ -194,25 +186,16 @@ export function TaskActionMenu({
           <Pencil className="mr-2 h-4 w-4" />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={(e) => handlePostpone(e, 1)}
-          className="min-h-11"
-        >
+        <DropdownMenuItem onClick={(e) => handlePostpone(e, 1)} className="min-h-11">
           <Calendar className="mr-2 h-4 w-4" />
           Postpone to Tomorrow
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={(e) => handlePostpone(e, 7)}
-          className="min-h-11"
-        >
+        <DropdownMenuItem onClick={(e) => handlePostpone(e, 7)} className="min-h-11">
           <CalendarDays className="mr-2 h-4 w-4" />
           Postpone to Next Week
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={handleDelete}
-          className="text-destructive min-h-11"
-        >
+        <DropdownMenuItem onClick={handleDelete} className="text-destructive min-h-11">
           <Trash2 className="mr-2 h-4 w-4" />
           Delete
         </DropdownMenuItem>

@@ -3,11 +3,7 @@ import { HelpCircle } from "lucide-react";
 import { driver, type Driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DASHBOARD_TUTORIAL_STEPS } from "./dashboardTutorialSteps";
 
 /**

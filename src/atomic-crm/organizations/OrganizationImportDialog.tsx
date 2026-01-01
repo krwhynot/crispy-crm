@@ -298,7 +298,11 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
         });
 
-        devLog("OrgImport", "Final sales cache state:", Array.from(salesLookupCache.current.entries()));
+        devLog(
+          "OrgImport",
+          "Final sales cache state:",
+          Array.from(salesLookupCache.current.entries())
+        );
       } catch (error) {
         devWarn("OrgImport", "Unexpected error resolving account managers:", error);
       }
@@ -417,7 +421,11 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           segmentsLookupCache.current.set(segment.name.toLowerCase(), segment.id);
         });
 
-        devLog("OrgImport", "Final segments cache state:", Array.from(segmentsLookupCache.current.entries()));
+        devLog(
+          "OrgImport",
+          "Final segments cache state:",
+          Array.from(segmentsLookupCache.current.entries())
+        );
       } catch (error) {
         devWarn("OrgImport", "Unexpected error resolving segments:", error);
       }
@@ -585,7 +593,10 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         accumulatedResultRef.current.failedCount += result.failedCount;
         accumulatedResultRef.current.errors.push(...result.errors);
       } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : "A critical error occurred during batch processing.";
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "A critical error occurred during batch processing.";
         const batchStartRow = rowOffsetRef.current + 2;
 
         // Add an error entry for each organization in the failed batch
@@ -667,7 +678,9 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         setImportResult(finalResult);
         refresh();
       } catch (error: unknown) {
-        notify(`Import failed: ${error instanceof Error ? error.message : "Import failed"}`, { type: "error" });
+        notify(`Import failed: ${error instanceof Error ? error.message : "Import failed"}`, {
+          type: "error",
+        });
         setImportState("error");
       }
     },

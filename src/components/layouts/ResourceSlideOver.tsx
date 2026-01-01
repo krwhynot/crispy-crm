@@ -260,7 +260,9 @@ export function ResourceSlideOver({
                           variant="ghost"
                           onClick={onModeToggle}
                           className="h-11 px-3 text-sm"
-                          aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
+                          aria-label={
+                            mode === "view" ? "Switch to edit mode" : "Switch to view mode"
+                          }
                         >
                           {mode === "view" ? (
                             <>
@@ -308,10 +310,7 @@ export function ResourceSlideOver({
                       {tab.icon && <tab.icon className="h-4 w-4" />}
                       <span className="text-sm font-medium">{tab.label}</span>
                       {showBadge && (
-                        <Badge
-                          variant="secondary"
-                          className="ml-1 h-5 min-w-[20px] px-1.5 text-xs"
-                        >
+                        <Badge variant="secondary" className="ml-1 h-5 min-w-[20px] px-1.5 text-xs">
                           {count > 99 ? "99+" : count}
                         </Badge>
                       )}

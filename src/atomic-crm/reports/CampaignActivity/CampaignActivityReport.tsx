@@ -466,7 +466,14 @@ export default function CampaignActivityReport() {
     }
 
     return result;
-  }, [selectedCampaign, dateRange, selectedActivityTypes, selectedSalesRep, showStaleLeads, salesMap]);
+  }, [
+    selectedCampaign,
+    dateRange,
+    selectedActivityTypes,
+    selectedSalesRep,
+    showStaleLeads,
+    salesMap,
+  ]);
 
   // Check if data is loading
   const isLoadingCampaigns = opportunitiesPending;

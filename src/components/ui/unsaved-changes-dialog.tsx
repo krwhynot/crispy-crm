@@ -15,11 +15,7 @@ interface UnsavedChangesDialogProps {
   onCancel: () => void;
 }
 
-export function UnsavedChangesDialog({
-  open,
-  onConfirm,
-  onCancel,
-}: UnsavedChangesDialogProps) {
+export function UnsavedChangesDialog({ open, onConfirm, onCancel }: UnsavedChangesDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
       <AlertDialogContent>

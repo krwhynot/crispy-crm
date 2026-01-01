@@ -15,10 +15,7 @@ const DEVELOPMENT_ORIGINS = [
 
 // Allowed origins for production environments
 // IMPORTANT: Add all production domains here
-const PRODUCTION_ORIGINS = [
-  "https://crispy-crm.vercel.app",
-  "https://www.crispy-crm.vercel.app",
-];
+const PRODUCTION_ORIGINS = ["https://crispy-crm.vercel.app", "https://www.crispy-crm.vercel.app"];
 
 /**
  * Get all allowed origins (both dev and prod, plus any from env var)

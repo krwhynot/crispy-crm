@@ -200,12 +200,13 @@ export default function OpportunitiesByPrincipalReport() {
   }, [filters]);
 
   // Fetch opportunities
-  const { data: opportunities, isLoading: opportunitiesLoading, error: opportunitiesError } = useReportData<Opportunity>(
-    "opportunities_summary",
-    {
-      additionalFilters: apiFilter,
-    }
-  );
+  const {
+    data: opportunities,
+    isLoading: opportunitiesLoading,
+    error: opportunitiesError,
+  } = useReportData<Opportunity>("opportunities_summary", {
+    additionalFilters: apiFilter,
+  });
 
   // Fetch sales reps for filter and display
   const ownerIds = useMemo(
@@ -379,7 +380,8 @@ export default function OpportunitiesByPrincipalReport() {
     return result;
   }, [filters]);
 
-  const hasActiveFilters = filters.principal_organization_id ||
+  const hasActiveFilters =
+    filters.principal_organization_id ||
     filters.stage.length > 0 ||
     filters.opportunity_owner_id ||
     filters.startDate ||

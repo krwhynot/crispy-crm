@@ -1,4 +1,5 @@
-import { Project, ProjectOptions } from "ts-morph";
+import type { ProjectOptions } from "ts-morph";
+import { Project } from "ts-morph";
 import * as path from "path";
 
 /**
@@ -23,9 +24,7 @@ class DiscoveryProject {
 
       // Resolve path aliases (@/* -> src/*) by manually confirming root dirs
       const compilerOptions = DiscoveryProject.instance.getCompilerOptions();
-      console.log(
-        `📂 Project Root: ${compilerOptions.baseUrl || process.cwd()}`
-      );
+      console.log(`📂 Project Root: ${compilerOptions.baseUrl || process.cwd()}`);
     }
 
     return DiscoveryProject.instance;

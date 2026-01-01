@@ -47,9 +47,7 @@ export function ProductDistributorInput() {
 
       {selectedIds.length > 0 && distributors && (
         <div className="space-y-3 pl-4 border-l-2 border-muted">
-          <p className="text-sm text-muted-foreground">
-            Enter DOT numbers for each distributor:
-          </p>
+          <p className="text-sm text-muted-foreground">Enter DOT numbers for each distributor:</p>
           {distributors
             .filter((d) => selectedIds.includes(d.id))
             .map((distributor) => (

@@ -221,9 +221,7 @@ describe("ProductShow", () => {
 
       await waitFor(() => {
         expect(screen.getByText("Marketing Description")).toBeInTheDocument();
-        expect(
-          screen.getByText("The best pizza you will ever taste!")
-        ).toBeInTheDocument();
+        expect(screen.getByText("The best pizza you will ever taste!")).toBeInTheDocument();
       });
     });
 

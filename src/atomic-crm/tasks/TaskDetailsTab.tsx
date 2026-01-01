@@ -48,10 +48,7 @@ export const TaskDetailsTab = () => {
         />
       </ReferenceInput>
       <ReferenceInput source="sales_id" reference="sales">
-        <AutocompleteInput
-          label="Assigned To"
-          helperText="Who owns this task (defaults to you)"
-        />
+        <AutocompleteInput label="Assigned To" helperText="Who owns this task (defaults to you)" />
       </ReferenceInput>
     </div>
   );

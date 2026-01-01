@@ -59,7 +59,13 @@ const SortButtonComponent = (props: SortButtonProps) => {
           <Tooltip>
             <DropdownMenuTrigger asChild>
               <TooltipTrigger asChild>
-                <Button variant="outline" size="icon" aria-label={buttonLabel} data-tutorial={dataTutorial} {...rest}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label={buttonLabel}
+                  data-tutorial={dataTutorial}
+                  {...rest}
+                >
                   {icon}
                 </Button>
               </TooltipTrigger>

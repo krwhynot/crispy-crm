@@ -215,9 +215,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       }
 
       console.log("=".repeat(50));
-      console.log(
-        `Summary: ${result.summary.passed}/${result.summary.total} tests passed`
-      );
+      console.log(`Summary: ${result.summary.passed}/${result.summary.total} tests passed`);
 
       if (!result.success) {
         process.exit(1);

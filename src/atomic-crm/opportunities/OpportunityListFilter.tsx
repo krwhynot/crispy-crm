@@ -111,10 +111,7 @@ export const OpportunityListFilter = () => {
     }
   );
 
-  const campaigns = React.useMemo(
-    () => campaignsData?.map((c) => c.name) ?? [],
-    [campaignsData]
-  );
+  const campaigns = React.useMemo(() => campaignsData?.map((c) => c.name) ?? [], [campaignsData]);
 
   // Quick filter presets
   const today = new Date();

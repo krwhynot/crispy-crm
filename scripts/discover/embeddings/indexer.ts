@@ -30,10 +30,7 @@ import {
   type UpsertPoint,
 } from "./lancedb.js";
 
-const SOURCE_PATTERNS = [
-  "src/**/*.ts",
-  "src/**/*.tsx",
-];
+const SOURCE_PATTERNS = ["src/**/*.ts", "src/**/*.tsx"];
 
 const IGNORE_PATTERNS = [
   "**/*.test.ts",
@@ -61,7 +58,9 @@ async function verifyServices(): Promise<boolean> {
 
   const ollamaOk = await checkOllamaHealth();
   if (!ollamaOk) {
-    console.error("❌ Ollama not available. Run: just discover-services && just discover-pull-model");
+    console.error(
+      "❌ Ollama not available. Run: just discover-services && just discover-pull-model"
+    );
     return false;
   }
   console.log("   ✅ Ollama ready");
@@ -152,7 +151,7 @@ async function indexCodebase(rootDir: string, freshIndex: boolean = true): Promi
             await upsertPoints(pendingPoints);
             console.log(
               `📤 Indexed ${stats.embeddingsCreated} chunks ` +
-              `(${stats.filesProcessed}/${files.length} files)`
+                `(${stats.filesProcessed}/${files.length} files)`
             );
             pendingPoints.length = 0;
           }
@@ -184,7 +183,7 @@ async function indexCodebase(rootDir: string, freshIndex: boolean = true): Promi
   console.log(`   Errors:             ${stats.errors}`);
   console.log(`   Duration:           ${duration}s`);
   console.log(`   Points in LanceDB:  ${info.pointCount}`);
-  console.log("\n   Next: just discover-search \"your query here\"");
+  console.log('\n   Next: just discover-search "your query here"');
 }
 
 // CLI entry point

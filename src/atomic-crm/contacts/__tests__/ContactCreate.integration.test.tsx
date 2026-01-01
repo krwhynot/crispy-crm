@@ -60,10 +60,10 @@ describe("ContactCreate with Progress Tracking", () => {
 
       await waitFor(() => {
         const nameHeadings = screen.getAllByText("Name");
-        expect(nameHeadings.some(el => el.tagName === "H3")).toBe(true);
+        expect(nameHeadings.some((el) => el.tagName === "H3")).toBe(true);
 
         const orgHeadings = screen.getAllByText("Organization");
-        expect(orgHeadings.some(el => el.tagName === "H3")).toBe(true);
+        expect(orgHeadings.some((el) => el.tagName === "H3")).toBe(true);
 
         expect(screen.getByText("Contact Info")).toBeInTheDocument();
       });
@@ -82,7 +82,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
       await waitFor(() => {
         const orgHeadings = screen.getAllByText("Organization");
-        expect(orgHeadings.some(el => el.tagName === "H3")).toBe(true);
+        expect(orgHeadings.some((el) => el.tagName === "H3")).toBe(true);
 
         const incompleteIcons = screen.getAllByTestId("section-incomplete-icon");
         expect(incompleteIcons.length).toBeGreaterThan(0);
@@ -124,7 +124,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
       await waitFor(() => {
         // Look for check icons using lucide-check class
-        const checkIcons = document.querySelectorAll('svg.lucide-check');
+        const checkIcons = document.querySelectorAll("svg.lucide-check");
         expect(checkIcons.length).toBeGreaterThan(0);
       });
     });

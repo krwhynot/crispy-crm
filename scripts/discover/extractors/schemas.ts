@@ -1,5 +1,4 @@
-import {
-  SyntaxKind,
+import type {
   VariableDeclaration,
   CallExpression,
   PropertyAccessExpression,
@@ -7,15 +6,21 @@ import {
   Node,
   SourceFile,
 } from "ts-morph";
+import { SyntaxKind } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
+import {
+  writeChunkedDiscovery,
+  writeIncrementalChunkedDiscovery,
+  readExistingManifest,
+} from "../utils/output.js";
 
 /**
  * Centralized security function detection pattern.
  * Expanded to catch more security-related transforms.
  */
-const SECURITY_PATTERN = /sanitize|escape|encode|clean|strip|purify|xss|html|script|sql|inject|validate.*url|normalize|filter|whitelist|blacklist/i;
+const SECURITY_PATTERN =
+  /sanitize|escape|encode|clean|strip|purify|xss|html|script|sql|inject|validate.*url|normalize|filter|whitelist|blacklist/i;
 
 /**
  * Check if a function name indicates a security-related transform.
@@ -29,7 +34,7 @@ function isSecurityFunction(funcName: string): boolean {
  * Pattern: src/atomic-crm/validation/{feature}.ts → "feature"
  */
 function extractFeatureName(filePath: string): string {
-  return path.basename(filePath, '.ts');
+  return path.basename(filePath, ".ts");
 }
 
 /**
@@ -84,9 +89,7 @@ interface SchemaInfo {
 /**
  * Detect the Zod schema type from the initializer expression
  */
-function detectSchemaType(
-  callExpr: CallExpression
-): SchemaInfo["schemaType"] {
+function detectSchemaType(callExpr: CallExpression): SchemaInfo["schemaType"] {
   const expression = callExpr.getExpression();
   const exprText = expression.getText();
 
@@ -145,7 +148,8 @@ function extractConstraints(node: Node): string[] {
   const text = node.getText();
 
   // Match constraint patterns like .max(255), .min(1), .email(), .trim()
-  const constraintPattern = /\.(max|min|email|url|uuid|regex|length|trim|toLowerCase|toUpperCase)\(([^)]*)\)/g;
+  const constraintPattern =
+    /\.(max|min|email|url|uuid|regex|length|trim|toLowerCase|toUpperCase)\(([^)]*)\)/g;
   let match;
 
   while ((match = constraintPattern.exec(text)) !== null) {
@@ -207,7 +211,7 @@ function hasTransformInNode(node: Node): boolean {
     const expr = (callExpr as CallExpression).getExpression();
     if (expr.getKind() === SyntaxKind.PropertyAccessExpression) {
       const propAccess = expr.asKindOrThrow(SyntaxKind.PropertyAccessExpression);
-      if (propAccess.getName() === 'transform') {
+      if (propAccess.getName() === "transform") {
         return true;
       }
     }
@@ -235,14 +239,16 @@ function hasTransformInNode(node: Node): boolean {
  * More reliable than regex for nested structures like z.union([...]).
  * Returns the first transform found with its function name and security status.
  */
-function extractTransformDetailsFromNode(node: Node): { functionName: string; isSecurity: boolean } | undefined {
+function extractTransformDetailsFromNode(
+  node: Node
+): { functionName: string; isSecurity: boolean } | undefined {
   // Helper to check if a CallExpression is a .transform() call
   const isTransformCall = (callExpr: Node): boolean => {
     if (callExpr.getKind() !== SyntaxKind.CallExpression) return false;
     const expr = (callExpr as CallExpression).getExpression();
     if (expr.getKind() === SyntaxKind.PropertyAccessExpression) {
       const propAccess = expr.asKindOrThrow(SyntaxKind.PropertyAccessExpression);
-      return propAccess.getName() === 'transform';
+      return propAccess.getName() === "transform";
     }
     return false;
   };
@@ -267,7 +273,7 @@ function extractTransformDetailsFromNode(node: Node): { functionName: string; is
   const transformCall = transformCalls[0];
   const args = transformCall.getArguments();
   if (args.length === 0) {
-    return { functionName: 'unknown', isSecurity: false };
+    return { functionName: "unknown", isSecurity: false };
   }
 
   const firstArg = args[0];
@@ -278,7 +284,7 @@ function extractTransformDetailsFromNode(node: Node): { functionName: string; is
     functionName = firstArg.getText();
   }
   // Case 2: Built-in constructor - transform(String), transform(Number), transform(Boolean)
-  else if (['String', 'Number', 'Boolean'].includes(firstArg.getText())) {
+  else if (["String", "Number", "Boolean"].includes(firstArg.getText())) {
     functionName = firstArg.getText();
   }
   // Case 3: Arrow function - transform((x) => x.toLowerCase())
@@ -294,17 +300,17 @@ function extractTransformDetailsFromNode(node: Node): { functionName: string; is
       if (ternaryFuncMatch) {
         functionName = ternaryFuncMatch[1];
       } else {
-        functionName = 'anonymous';
+        functionName = "anonymous";
       }
     }
   }
   // Case 4: Function expression
   else if (firstArg.getKind() === SyntaxKind.FunctionExpression) {
-    functionName = 'inline';
+    functionName = "inline";
   }
   // Default
   else {
-    functionName = 'unknown';
+    functionName = "unknown";
   }
 
   return {
@@ -325,7 +331,7 @@ function extractPipeContent(node: Node): string | undefined {
     const expr = (callExpr as CallExpression).getExpression();
     if (expr.getKind() === SyntaxKind.PropertyAccessExpression) {
       const propAccess = expr.asKindOrThrow(SyntaxKind.PropertyAccessExpression);
-      return propAccess.getName() === 'pipe';
+      return propAccess.getName() === "pipe";
     }
     return false;
   };
@@ -360,14 +366,14 @@ function extractPipeContent(node: Node): string | undefined {
 function buildSchemaSymbolTable(sourceFile: SourceFile): Map<string, SchemaSymbol> {
   const symbols = new Map<string, SchemaSymbol>();
 
-  sourceFile.getVariableDeclarations().forEach(decl => {
+  sourceFile.getVariableDeclarations().forEach((decl) => {
     const name = decl.getName();
     const init = decl.getInitializer();
     if (!init) return;
 
     const text = init.getText();
     // Only track Zod-related variables
-    if (text.includes('z.') || name.includes('Schema') || name.includes('schema')) {
+    if (text.includes("z.") || name.includes("Schema") || name.includes("schema")) {
       // Use AST-based detection for more accurate results
       const hasTransformResult = hasTransformInNode(init);
 
@@ -386,7 +392,9 @@ function buildSchemaSymbolTable(sourceFile: SourceFile): Map<string, SchemaSymbo
  * Extract transform function details from a Zod chain
  * Pattern: .transform((val) => functionName(val)) or .transform(functionName)
  */
-function extractTransformDetails(text: string): { functionName: string; isSecurity: boolean } | undefined {
+function extractTransformDetails(
+  text: string
+): { functionName: string; isSecurity: boolean } | undefined {
   if (!hasTransform(text)) return undefined;
 
   // Pattern 1: .transform((val) => functionName(val)) or .transform((val) => (condition ? functionName(val) : val))
@@ -395,7 +403,7 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
   if (arrowMatch) {
     const funcName = arrowMatch[1];
     // Skip common condition keywords
-    if (funcName === 'val' || funcName === 'value') {
+    if (funcName === "val" || funcName === "value") {
       // Try to find function call after ternary operator
       const ternaryMatch = text.match(/\.transform\s*\(\s*\([^)]*\)\s*=>\s*\([^?]+\?\s*(\w+)\s*\(/);
       if (ternaryMatch) {
@@ -435,7 +443,7 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
   // Pattern 4: .transform(v => v ?? 'default') - nullish coalescing
   if (text.match(/\.transform\s*\(\s*\w+\s*=>\s*\w+\s*\?\?\s*/)) {
     return {
-      functionName: 'nullishCoalescing',
+      functionName: "nullishCoalescing",
       isSecurity: false,
     };
   }
@@ -443,14 +451,14 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
   // Pattern 5: .transform(v => v || 'default') - logical OR fallback
   if (text.match(/\.transform\s*\(\s*\w+\s*=>\s*\w+\s*\|\|\s*/)) {
     return {
-      functionName: 'logicalOrFallback',
+      functionName: "logicalOrFallback",
       isSecurity: false,
     };
   }
 
   // Has transform but couldn't parse details
   return {
-    functionName: 'unknown',
+    functionName: "unknown",
     isSecurity: false,
   };
 }
@@ -459,10 +467,7 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
  * Extract the base Zod type from a property value.
  * Uses symbol table to detect references to schema variables (with or without Schema suffix).
  */
-function extractZodType(
-  valueText: string,
-  symbolTable?: Map<string, SchemaSymbol>
-): string {
+function extractZodType(valueText: string, symbolTable?: Map<string, SchemaSymbol>): string {
   // Match z.xxx or z.coerce.xxx patterns
   const coerceMatch = valueText.match(/z\.coerce\.(string|number|boolean|date)/);
   if (coerceMatch) {
@@ -984,18 +989,24 @@ export async function extractSchemas(onlyChunks?: Set<string>): Promise<void> {
   // Filter source files if incremental mode
   let filesToProcess = sourceFiles;
   if (onlyChunks) {
-    filesToProcess = sourceFiles.filter(sf => {
+    filesToProcess = sourceFiles.filter((sf) => {
       const chunkName = extractFeatureName(sf.getFilePath());
       return onlyChunks.has(chunkName);
     });
-    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`);
+    console.log(
+      `  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`
+    );
   }
 
   for (const sourceFile of filesToProcess) {
     const filePath = sourceFile.getFilePath();
 
     // Skip test files
-    if (filePath.includes("__tests__") || filePath.includes(".test.") || filePath.includes(".spec.")) {
+    if (
+      filePath.includes("__tests__") ||
+      filePath.includes(".test.") ||
+      filePath.includes(".spec.")
+    ) {
       continue;
     }
 
@@ -1072,7 +1083,7 @@ export async function extractSchemas(onlyChunks?: Set<string>): Promise<void> {
   }
 
   // Write output - incremental or full
-  const allSourceFilePaths = sourceFiles.map(sf => sf.getFilePath());
+  const allSourceFilePaths = sourceFiles.map((sf) => sf.getFilePath());
 
   if (onlyChunks) {
     // Incremental mode: merge with existing manifest

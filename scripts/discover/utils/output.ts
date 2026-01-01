@@ -87,10 +87,7 @@ export function createEnvelope<T>(
  * Atomic write: write to temp file, then rename.
  * Prevents partial writes on crash.
  */
-export function writeDiscoveryFile(
-  filename: string,
-  data: DiscoveryEnvelope<unknown>
-): void {
+export function writeDiscoveryFile(filename: string, data: DiscoveryEnvelope<unknown>): void {
   const outputDir = path.resolve(process.cwd(), ".claude/state");
   const finalPath = path.join(outputDir, filename);
   const tempPath = `${finalPath}.tmp`;
@@ -309,7 +306,9 @@ export function writeChunkedDiscovery<T>(
   fs.writeFileSync(tempManifestPath, JSON.stringify(manifest, null, 2), "utf-8");
   fs.renameSync(tempManifestPath, manifestPath);
 
-  console.log(`✅ Written: ${dirName}/ (${chunkInfos.length} chunks, ${summary.total_items || 0} items)`);
+  console.log(
+    `✅ Written: ${dirName}/ (${chunkInfos.length} chunks, ${summary.total_items || 0} items)`
+  );
 }
 
 /**
@@ -434,7 +433,7 @@ export function getStaleChunks(
   }
 
   // Check if manifest has the new incremental fields
-  if (!manifest.file_to_chunks || manifest.chunks.some(c => !c.source_hashes)) {
+  if (!manifest.file_to_chunks || manifest.chunks.some((c) => !c.source_hashes)) {
     return {
       hasStaleChunks: true,
       staleChunks: [],
@@ -450,7 +449,7 @@ export function getStaleChunks(
   const staleChunks = new Set<string>();
   const staleReasons = new Map<string, string>();
   const unmappedChanges: string[] = [];
-  const allChunkNames = new Set(manifest.chunks.map(c => c.name));
+  const allChunkNames = new Set(manifest.chunks.map((c) => c.name));
 
   // Check each current source file for changes
   for (const [relativePath, currentHash] of Object.entries(currentHashes)) {
@@ -497,7 +496,7 @@ export function getStaleChunks(
   }
 
   // If there are unmapped changes (new chunks needed), require full regen
-  if (unmappedChanges.length > 0 && unmappedChanges.some(c => c.includes("new chunk"))) {
+  if (unmappedChanges.length > 0 && unmappedChanges.some((c) => c.includes("new chunk"))) {
     return {
       hasStaleChunks: true,
       staleChunks: Array.from(staleChunks),
@@ -509,9 +508,7 @@ export function getStaleChunks(
     };
   }
 
-  const freshChunks = manifest.chunks
-    .map(c => c.name)
-    .filter(name => !staleChunks.has(name));
+  const freshChunks = manifest.chunks.map((c) => c.name).filter((name) => !staleChunks.has(name));
 
   return {
     hasStaleChunks: staleChunks.size > 0,
@@ -550,7 +547,10 @@ export function readExistingManifest(dirName: string): ChunkedManifest | null {
 
     return manifest;
   } catch (error) {
-    console.warn(`⚠️  Error reading manifest ${dirName}:`, error instanceof Error ? error.message : "Unknown");
+    console.warn(
+      `⚠️  Error reading manifest ${dirName}:`,
+      error instanceof Error ? error.message : "Unknown"
+    );
     return null;
   }
 }
@@ -689,9 +689,7 @@ export function writeIncrementalChunkedDiscovery<T>(
   }
 
   // Convert to sorted array
-  const chunkInfos = Array.from(chunkInfoMap.values()).sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
+  const chunkInfos = Array.from(chunkInfoMap.values()).sort((a, b) => a.name.localeCompare(b.name));
 
   // Create updated manifest
   const manifest: ChunkedManifest = {
@@ -718,5 +716,7 @@ export function writeIncrementalChunkedDiscovery<T>(
   fs.writeFileSync(tempManifestPath, JSON.stringify(manifest, null, 2), "utf-8");
   fs.renameSync(tempManifestPath, manifestPath);
 
-  console.log(`✅ Incremental update: ${dirName}/ (${updatedChunks.size} chunks updated, ${chunkInfos.length} total)`);
+  console.log(
+    `✅ Incremental update: ${dirName}/ (${updatedChunks.size} chunks updated, ${chunkInfos.length} total)`
+  );
 }

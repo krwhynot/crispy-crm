@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { productCategorySchema, productStatusSchema } from './products';
-import { productDistributorStatusSchema } from './productDistributors';
+import { z } from "zod";
+import { productCategorySchema, productStatusSchema } from "./products";
+import { productDistributorStatusSchema } from "./productDistributors";
 
 /**
  * Product with Distributors validation schema
@@ -12,7 +12,7 @@ import { productDistributorStatusSchema } from './productDistributors';
 export const distributorAssociationSchema = z.strictObject({
   distributor_id: z.coerce.number().int().positive("Distributor is required"),
   vendor_item_number: z.string().max(50, "Vendor item number too long").nullable().optional(),
-  status: productDistributorStatusSchema.default('pending'),
+  status: productDistributorStatusSchema.default("pending"),
   notes: z.string().max(1000, "Notes too long").nullable().optional(),
 });
 
@@ -43,8 +43,8 @@ export type ProductWithDistributorsInput = z.input<typeof productWithDistributor
 
 // Form defaults (Engineering Constitution: form state from schema)
 export const productWithDistributorsDefaults = productWithDistributorsSchema.partial().parse({
-  status: 'active',
-  category: 'beverages',
+  status: "active",
+  category: "beverages",
   distributors: [],
 });
 
@@ -58,11 +58,11 @@ export async function validateCreateProductWithDistributors(data: unknown): Prom
   if (!result.success) {
     const formattedErrors: Record<string, string> = {};
     result.error.issues.forEach((err) => {
-      const path = err.path.join('.');
+      const path = err.path.join(".");
       formattedErrors[path] = err.message;
     });
     throw {
-      message: 'Validation failed',
+      message: "Validation failed",
       body: { errors: formattedErrors },
     };
   }

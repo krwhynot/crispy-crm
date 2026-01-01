@@ -37,7 +37,11 @@ export const organizationDistributorSchema = z
     created_by: z.coerce.number().int().optional().nullable(),
     created_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
     updated_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
-    deleted_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional().nullable(),
+    deleted_at: z
+      .string()
+      .max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long")
+      .optional()
+      .nullable(),
   })
   .refine((data) => data.organization_id !== data.distributor_id, {
     message: "Organization cannot be its own distributor",

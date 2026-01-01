@@ -26,10 +26,7 @@ const FIELD_LABELS: Record<string, string> = {
 
 export const ProductDistributorCreate = () => {
   // Constitution Rule #4: Form state from schema
-  const defaultValues = useMemo(
-    () => productDistributorSchema.partial().parse({}),
-    []
-  );
+  const defaultValues = useMemo(() => productDistributorSchema.partial().parse({}), []);
 
   return (
     <CreateBase redirect="list">
@@ -90,23 +87,16 @@ const ProductDistributorFormContent = () => {
         helperText={false}
       />
 
+      <TextInput source="valid_from" label="Valid From" type="date" helperText={false} />
+
       <TextInput
-        source="valid_from"
-        label="Valid From"
+        source="valid_to"
+        label="Valid To"
         type="date"
-        helperText={false}
+        helperText="Leave empty if ongoing"
       />
 
-      <TextInput source="valid_to" label="Valid To" type="date" helperText="Leave empty if ongoing" />
-
-      <TextInput
-        source="notes"
-        label="Notes"
-        multiline
-        rows={3}
-        fullWidth
-        helperText={false}
-      />
+      <TextInput source="notes" label="Notes" multiline rows={3} fullWidth helperText={false} />
 
       <FormToolbar>
         <div className="flex flex-row gap-2 justify-end">

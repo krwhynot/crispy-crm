@@ -75,30 +75,22 @@ async function runTests() {
 
   // Test 6: Find references to a specific hook
   if (hooks.length > 0) {
-    const hookToFind = hooks.find((h) =>
-      h.symbol.symbol.includes("useIsMobile")
-    );
+    const hookToFind = hooks.find((h) => h.symbol.symbol.includes("useIsMobile"));
     if (hookToFind) {
       console.log("6. Finding references to useIsMobile:");
       const refs = getReferences(index, hookToFind.symbol.symbol);
       console.log(`   Found ${refs.length} references`);
 
       // Group by role
-      const definitions = refs.filter(
-        (r) => r.occurrence.symbol_roles & SymbolRole.Definition
-      );
-      const usages = refs.filter(
-        (r) => !(r.occurrence.symbol_roles & SymbolRole.Definition)
-      );
+      const definitions = refs.filter((r) => r.occurrence.symbol_roles & SymbolRole.Definition);
+      const usages = refs.filter((r) => !(r.occurrence.symbol_roles & SymbolRole.Definition));
 
       console.log(`   Definitions: ${definitions.length}`);
       console.log(`   Usages: ${usages.length}`);
 
       if (definitions.length > 0) {
         const def = definitions[0];
-        console.log(
-          `   Definition location: ${def.relativePath}:${def.startLine + 1}`
-        );
+        console.log(`   Definition location: ${def.relativePath}:${def.startLine + 1}`);
       }
 
       // Show some usage locations
@@ -112,14 +104,14 @@ async function runTests() {
 
   // Test 7: Get definition
   if (hooks.length > 0) {
-    const hookToFind = hooks.find((h) =>
-      h.symbol.symbol.includes("useIsMobile")
-    );
+    const hookToFind = hooks.find((h) => h.symbol.symbol.includes("useIsMobile"));
     if (hookToFind) {
       console.log("7. Getting definition of useIsMobile:");
       const definition = getDefinition(index, hookToFind.symbol.symbol);
       if (definition) {
-        console.log(`   Found at: ${definition.relativePath}:${definition.startLine + 1}:${definition.startColumn + 1}`);
+        console.log(
+          `   Found at: ${definition.relativePath}:${definition.startLine + 1}:${definition.startColumn + 1}`
+        );
       } else {
         console.log("   Definition not found (may be in external package)");
       }

@@ -5,11 +5,7 @@ import { Check, ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -135,12 +131,7 @@ export function FilterSelectUI({
 
   if (isLoading) {
     return (
-      <Button
-        variant="outline"
-        size="sm"
-        disabled
-        className={cn("h-9 gap-1", className)}
-      >
+      <Button variant="outline" size="sm" disabled className={cn("h-9 gap-1", className)}>
         <span className="text-sm font-medium">{label}</span>
         <span className="h-4 w-4 animate-pulse rounded-full bg-muted" />
       </Button>
@@ -159,11 +150,7 @@ export function FilterSelectUI({
             aria-expanded={open}
             // TODO: Add aria-controls={popoverId} linking to PopoverContent id for screen readers
             aria-label={`Filter by ${label}`}
-            className={cn(
-              "h-9 justify-between gap-1",
-              hasSelection && "border-primary",
-              className
-            )}
+            className={cn("h-9 justify-between gap-1", hasSelection && "border-primary", className)}
             disabled={isDisabled}
           >
             <span className="text-sm font-medium">{label}</span>
@@ -187,9 +174,7 @@ export function FilterSelectUI({
         >
           <Command>
             {showSearch && (
-              <CommandInput
-                placeholder={placeholder ?? `Search ${label.toLowerCase()}...`}
-              />
+              <CommandInput placeholder={placeholder ?? `Search ${label.toLowerCase()}...`} />
             )}
             <CommandList className="max-h-60">
               <CommandEmpty>No options found</CommandEmpty>
@@ -206,9 +191,7 @@ export function FilterSelectUI({
                       <div
                         className={cn(
                           "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                          isSelected
-                            ? "bg-primary text-primary-foreground"
-                            : "opacity-50"
+                          isSelected ? "bg-primary text-primary-foreground" : "opacity-50"
                         )}
                       >
                         {isSelected && <Check className="h-3 w-3" />}

@@ -35,7 +35,12 @@ interface SalesProfileTabProps {
  * View mode: Read-only display with labels
  * Edit mode: Inline form with Save/Cancel buttons
  */
-export function SalesProfileTab({ record, mode, onModeToggle, onDirtyChange }: SalesProfileTabProps) {
+export function SalesProfileTab({
+  record,
+  mode,
+  onModeToggle,
+  onDirtyChange,
+}: SalesProfileTabProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
 

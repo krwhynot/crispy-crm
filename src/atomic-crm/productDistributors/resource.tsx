@@ -33,4 +33,8 @@ const productDistributors = {
 };
 
 export default productDistributors;
-export { ProductDistributorListView as ProductDistributorList, ProductDistributorEditView as ProductDistributorEdit, ProductDistributorCreateView as ProductDistributorCreate };
+export {
+  ProductDistributorListView as ProductDistributorList,
+  ProductDistributorEditView as ProductDistributorEdit,
+  ProductDistributorCreateView as ProductDistributorCreate,
+};

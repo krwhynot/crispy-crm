@@ -140,8 +140,7 @@ export function extractAllSymbols(index: ScipIndex): ParsedSymbol[] {
       // Find the definition occurrence for this symbol
       const defOccurrence = document.occurrences.find(
         (occ) =>
-          occ.symbol === symbolInfo.symbol &&
-          (occ.symbol_roles & SymbolRoles.Definition) !== 0
+          occ.symbol === symbolInfo.symbol && (occ.symbol_roles & SymbolRoles.Definition) !== 0
       );
 
       if (defOccurrence) {
@@ -168,18 +167,14 @@ export function extractAllSymbols(index: ScipIndex): ParsedSymbol[] {
 /**
  * Extract all references (usages) of a specific symbol.
  */
-export function extractReferences(
-  index: ScipIndex,
-  targetSymbol: string
-): ParsedSymbol[] {
+export function extractReferences(index: ScipIndex, targetSymbol: string): ParsedSymbol[] {
   const references: ParsedSymbol[] = [];
 
   for (const document of index.documents) {
     for (const occurrence of document.occurrences) {
       if (occurrence.symbol === targetSymbol) {
         const loc = parseRange(occurrence.range);
-        const isDefinition =
-          (occurrence.symbol_roles & SymbolRoles.Definition) !== 0;
+        const isDefinition = (occurrence.symbol_roles & SymbolRoles.Definition) !== 0;
 
         references.push({
           name: extractSymbolName(targetSymbol),

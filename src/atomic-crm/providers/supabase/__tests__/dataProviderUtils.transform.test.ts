@@ -385,7 +385,9 @@ describe("transformStaleFilter", () => {
       expect(result["stage@not.in"]).toBe("(closed_won,closed_lost)");
 
       // Should add OR condition for last_activity_date
-      expect(result["or@"]).toMatch(/\(last_activity_date\.lt\.\d{4}-\d{2}-\d{2},last_activity_date\.is\.null\)/);
+      expect(result["or@"]).toMatch(
+        /\(last_activity_date\.lt\.\d{4}-\d{2}-\d{2},last_activity_date\.is\.null\)/
+      );
     });
 
     it("should transform stale: true for opportunities_summary", () => {
@@ -449,7 +451,9 @@ describe("transformStaleFilter", () => {
       if (dateMatch) {
         const thresholdDate = new Date(dateMatch[1]);
         const today = new Date();
-        const daysDiff = Math.floor((today.getTime() - thresholdDate.getTime()) / (1000 * 60 * 60 * 24));
+        const daysDiff = Math.floor(
+          (today.getTime() - thresholdDate.getTime()) / (1000 * 60 * 60 * 24)
+        );
         // Should be approximately 7 days (minimum threshold)
         expect(daysDiff).toBeGreaterThanOrEqual(6);
         expect(daysDiff).toBeLessThanOrEqual(8);

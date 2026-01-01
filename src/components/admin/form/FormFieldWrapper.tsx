@@ -31,7 +31,9 @@ function FormFieldWrapper({
 
   const hasError = !!errors[name];
   // Trim string values to prevent whitespace-only inputs showing as valid
-  const hasValue = value !== undefined && value !== null &&
+  const hasValue =
+    value !== undefined &&
+    value !== null &&
     (typeof value === "string" ? value.trim() !== "" : value !== "");
 
   // For progress tracking: field is "filled" only if user has modified it
@@ -58,9 +60,9 @@ function FormFieldWrapper({
   const enhancedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(
-        child as React.ReactElement<{ 'aria-required'?: 'true' | undefined }>,
+        child as React.ReactElement<{ "aria-required"?: "true" | undefined }>,
         {
-          'aria-required': isRequired ? 'true' : undefined,
+          "aria-required": isRequired ? "true" : undefined,
         }
       );
     }

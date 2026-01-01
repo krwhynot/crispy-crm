@@ -85,7 +85,10 @@ export const OwnerFilterDropdown = ({ source, label = "Owner" }: OwnerFilterDrop
     <div className="flex items-center space-x-2">
       <Label htmlFor={`${source}-owner-select`}>{label}:</Label>
       <Select value={getSelectValue()} onValueChange={handleManagerSelectChange}>
-        <SelectTrigger id={`${source}-owner-select`} aria-label={`Filter by ${label.toLowerCase()}`}>
+        <SelectTrigger
+          id={`${source}-owner-select`}
+          aria-label={`Filter by ${label.toLowerCase()}`}
+        >
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

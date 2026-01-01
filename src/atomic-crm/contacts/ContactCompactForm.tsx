@@ -3,11 +3,7 @@ import { ReferenceInput } from "@/components/admin/reference-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import {
-  CompactFormRow,
-  FormFieldWrapper,
-  FormSectionWithProgress,
-} from "@/components/admin/form";
+import { CompactFormRow, FormFieldWrapper, FormSectionWithProgress } from "@/components/admin/form";
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
@@ -124,7 +120,11 @@ export const ContactCompactForm = () => {
         {/* Email - full width row */}
         <div data-tutorial="contact-email">
           <FormFieldWrapper name="email" isRequired>
-            <ArrayInput source="email" label="Email addresses *" helperText="At least one email required">
+            <ArrayInput
+              source="email"
+              label="Email addresses *"
+              helperText="At least one email required"
+            >
               <SimpleFormIterator
                 inline
                 disableReordering

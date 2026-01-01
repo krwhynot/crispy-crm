@@ -95,10 +95,7 @@ export const ActivityListFilter = () => {
               key={option.value}
               className="w-full justify-between"
               label={
-                <Badge
-                  variant={sampleStatusColors[option.value]}
-                  className="text-xs px-1 py-0"
-                >
+                <Badge variant={sampleStatusColors[option.value]} className="text-xs px-1 py-0">
                   {option.label}
                 </Badge>
               }

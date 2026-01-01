@@ -200,7 +200,12 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
    * - tasks
    */
   beforeDelete: async (params) => {
-    console.log('🟡 [opportunitiesCallbacks.beforeDelete] ENTRY - id:', params.id, 'type:', typeof params.id);
+    console.log(
+      "🟡 [opportunitiesCallbacks.beforeDelete] ENTRY - id:",
+      params.id,
+      "type:",
+      typeof params.id
+    );
 
     // Validate ID before RPC call (fail-fast)
     const numericId = Number(params.id);
@@ -208,21 +213,23 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
       throw new Error(`Invalid opportunity ID: ${params.id}`);
     }
 
-    console.log('🟡 [opportunitiesCallbacks.beforeDelete] Calling supabase.rpc with opp_id:', numericId);
+    console.log(
+      "🟡 [opportunitiesCallbacks.beforeDelete] Calling supabase.rpc with opp_id:",
+      numericId
+    );
 
     // Use Supabase client directly - bypasses DataProvider abstraction
     // This is the React Admin recommended pattern for lifecycle callbacks
-    const { error: rpcError } = await supabase.rpc(
-      'archive_opportunity_with_relations',
-      { opp_id: numericId }
-    );
+    const { error: rpcError } = await supabase.rpc("archive_opportunity_with_relations", {
+      opp_id: numericId,
+    });
 
     if (rpcError) {
-      console.error('🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:', rpcError);
+      console.error("🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:", rpcError);
       throw new Error(`Archive opportunity failed: ${rpcError.message}`);
     }
 
-    console.log('🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS - returning skipDelete');
+    console.log("🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS - returning skipDelete");
 
     // Return params with meta flag to skip actual delete (RPC already archived)
     return {
@@ -281,7 +288,7 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
     const hasEmptyContactIds = Array.isArray(data.contact_ids) && data.contact_ids.length === 0;
 
     // Debug logging - remove after verification
-    console.log('[beforeSave] Processing opportunity:', {
+    console.log("[beforeSave] Processing opportunity:", {
       incomingData: { stage: data.stage, name: data.name, contact_ids: data.contact_ids },
       isStageOnlyUpdate,
       hasEmptyContactIds,
@@ -302,7 +309,10 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
       }
     }
 
-    console.log('[beforeSave] Final processed data:', { stage: processed.stage, keys: Object.keys(processed) });
+    console.log("[beforeSave] Final processed data:", {
+      stage: processed.stage,
+      keys: Object.keys(processed),
+    });
 
     return processed;
   },

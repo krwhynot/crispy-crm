@@ -34,8 +34,8 @@ export function DeleteConfirmDialog({
             Delete {count} {resourceName}?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. {itemText.charAt(0).toUpperCase() + itemText.slice(1)} will be permanently
-            deleted.
+            This action cannot be undone. {itemText.charAt(0).toUpperCase() + itemText.slice(1)}{" "}
+            will be permanently deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

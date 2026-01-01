@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 // =============================================================================
 // INPUT COMPONENT
@@ -10,14 +10,13 @@ import { cn } from "@/lib/utils"
 // All styles inline - no external CSS utility dependencies
 // =============================================================================
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
    * Size variant:
    * - "default": 32px compact (high-density, new default)
    * - "lg": 48px legacy (backward compatibility)
    */
-  size?: "default" | "lg"
+  size?: "default" | "lg";
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -126,9 +125,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
+Input.displayName = "Input";
 
-export { Input }
+export { Input };

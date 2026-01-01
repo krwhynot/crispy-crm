@@ -102,10 +102,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
 
   const { setNodeRef, isOver } = useDroppable({ id: stage });
 
-  const opportunityIds = useMemo(
-    () => opportunities.map(o => String(o.id)),
-    [opportunities]
-  );
+  const opportunityIds = useMemo(() => opportunities.map((o) => String(o.id)), [opportunities]);
 
   // Map elevation levels to semantic shadow utilities (design system compliant)
   // Uses shadow-elevation-* utilities defined in index.css, which map to --elevation-* tokens
@@ -190,10 +187,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <span title="Average days in this stage">~{metrics.avgDaysInStage}d</span>
             {metrics.stuckCount > 0 && (
-              <span
-                className="text-warning"
-                title="Opportunities needing attention"
-              >
+              <span className="text-warning" title="Opportunities needing attention">
                 ⚠ {metrics.stuckCount}
               </span>
             )}
@@ -205,16 +199,11 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
           <div className="mb-2 px-1">
             <QuickAddOpportunity stage={stage} onOpportunityCreated={onOpportunityCreated} />
           </div>
-          <div
-            className="flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] px-1"
-          >
+          <div className="flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] px-1">
             <SortableContext items={opportunityIds} strategy={verticalListSortingStrategy}>
               {opportunities.map((opportunity) => (
                 <RecordContextProvider key={opportunity.id} value={opportunity}>
-                  <OpportunityCard
-                    openSlideOver={openSlideOver}
-                    onDelete={onDeleteOpportunity}
-                  />
+                  <OpportunityCard openSlideOver={openSlideOver} onDelete={onDeleteOpportunity} />
                 </RecordContextProvider>
               ))}
             </SortableContext>

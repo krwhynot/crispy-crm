@@ -88,13 +88,7 @@ function GenericSelectInputControlled({
   }));
 
   return (
-    <SelectUI
-      options={options}
-      value={value}
-      onChange={onChange}
-      hasError={hasError}
-      {...rest}
-    />
+    <SelectUI options={options} value={value} onChange={onChange} hasError={hasError} {...rest} />
   );
 }
 
@@ -105,7 +99,7 @@ export function GenericSelectInput(props: GenericSelectInputProps) {
   if ("source" in props && props.source !== undefined) {
     return <GenericSelectInputForm {...props} />;
   }
-  return <GenericSelectInputControlled {...props as GenericSelectInputControlledProps} />;
+  return <GenericSelectInputControlled {...(props as GenericSelectInputControlledProps)} />;
 }
 
 export type { GenericSelectInputFormProps, GenericSelectInputControlledProps };

@@ -164,7 +164,8 @@ const OrganizationCreate = () => {
   const unknownSegmentId = segments?.[0]?.id;
 
   // Read parent_organization_id from router state (set by "Add Branch" button)
-  const parentOrgId = (location.state as { record?: { parent_organization_id?: string | number } })?.record?.parent_organization_id;
+  const parentOrgId = (location.state as { record?: { parent_organization_id?: string | number } })
+    ?.record?.parent_organization_id;
 
   // Transform function for URL prefixing
   // NOTE: All useCallback hooks must be declared before any early returns (React rules-of-hooks)
@@ -176,9 +177,12 @@ const OrganizationCreate = () => {
   }, []);
 
   // Handle when duplicate is found - store values and show dialog
-  const handleDuplicateFound = useCallback((_duplicateName: string, values: OrganizationFormValues) => {
-    pendingValuesRef.current = values;
-  }, []);
+  const handleDuplicateFound = useCallback(
+    (_duplicateName: string, values: OrganizationFormValues) => {
+      pendingValuesRef.current = values;
+    },
+    []
+  );
 
   // Handle user confirming to create despite duplicate
   const handleProceedAnyway = useCallback(async () => {
@@ -198,7 +202,9 @@ const OrganizationCreate = () => {
             redirect("show", "organizations", data.id);
           },
           onError: (error: unknown) => {
-            notify(error instanceof Error ? error.message : "Failed to create organization", { type: "error" });
+            notify(error instanceof Error ? error.message : "Failed to create organization", {
+              type: "error",
+            });
           },
         }
       );

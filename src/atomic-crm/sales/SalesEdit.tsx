@@ -38,10 +38,7 @@ export default function SalesEdit() {
   // Create service instance using the base data provider
   const salesService = new SalesService(dataProvider);
 
-  const defaultValues = useMemo(
-    () => updateSalesSchema.partial().parse(record),
-    [record]
-  );
+  const defaultValues = useMemo(() => updateSalesSchema.partial().parse(record), [record]);
 
   const { mutate } = useMutation({
     mutationKey: ["signup"],

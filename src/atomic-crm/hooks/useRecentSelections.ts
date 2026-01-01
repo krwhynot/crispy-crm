@@ -25,10 +25,12 @@ export const useRecentSelections = (fieldType: string): UseRecentSelectionsRetur
   const storageKey = `crm_recent_${fieldType}`;
 
   const loadFromStorage = (): RecentItem[] => {
-    return getStorageItem<RecentItem[]>(storageKey, {
-      type: "local",
-      schema: recentItemsSchema,
-    }) ?? [];
+    return (
+      getStorageItem<RecentItem[]>(storageKey, {
+        type: "local",
+        schema: recentItemsSchema,
+      }) ?? []
+    );
   };
 
   const [recentItems, setRecentItems] = useState<RecentItem[]>(loadFromStorage);

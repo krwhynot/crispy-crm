@@ -323,7 +323,7 @@
     position: relative;
   }
   .touch-target-44::before {
-    content: '';
+    content: "";
     position: absolute;
     /* Expand to 44px regardless of element height */
     top: calc((44px - 100%) / -2);
@@ -355,7 +355,7 @@
     position: relative;
   }
   .data-cell::before {
-    content: '';
+    content: "";
     position: absolute;
     top: calc((44px - 100%) / -2);
     bottom: calc((44px - 100%) / -2);
@@ -800,7 +800,7 @@
   --principal-mccrum: oklch(45% 0.12 142);
 
   /* SWAP - Clay/terracotta (accent family) */
-  --principal-swap: oklch(55% 0.10 72);
+  --principal-swap: oklch(55% 0.1 72);
 
   /* Rapid Rasoi - Blue-violet (distinct) */
   --principal-rapid-rasoi: oklch(50% 0.11 280);
@@ -818,7 +818,7 @@
   --principal-rich-products: oklch(45% 0.08 60);
 
   /* Simplot - Blue */
-  --principal-simplot: oklch(50% 0.10 250);
+  --principal-simplot: oklch(50% 0.1 250);
 
   /* Tyson - Red-orange */
   --principal-tyson: oklch(55% 0.14 30);

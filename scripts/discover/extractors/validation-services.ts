@@ -1,6 +1,10 @@
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
+import {
+  writeChunkedDiscovery,
+  writeIncrementalChunkedDiscovery,
+  readExistingManifest,
+} from "../utils/output.js";
 
 /**
  * Validation service information
@@ -9,7 +13,7 @@ interface ValidationServiceInfo {
   name: string;
   file: string;
   line: number;
-  type: 'validator' | 'formatter' | 'custom';
+  type: "validator" | "formatter" | "custom";
   schemaReference?: string;
   errorFormatting: boolean;
   isAsync: boolean;
@@ -37,7 +41,7 @@ function detectsErrorFormatting(funcText: string): boolean {
     /formattedErrors/,
     /body:\s*\{\s*errors/,
   ];
-  return patterns.some(p => p.test(funcText));
+  return patterns.some((p) => p.test(funcText));
 }
 
 /**
@@ -52,15 +56,11 @@ function extractSchemaReference(funcText: string): string | undefined {
  * Detect custom validator functions (non-Zod helpers)
  */
 function isCustomValidator(name: string, funcText: string): boolean {
-  const validatorPatterns = [
-    /^is[A-Z]/,
-    /^validate[A-Z]/,
-    /^check[A-Z]/,
-  ];
+  const validatorPatterns = [/^is[A-Z]/, /^validate[A-Z]/, /^check[A-Z]/];
 
   const usesZod = /z\.\w+/.test(funcText);
 
-  return validatorPatterns.some(p => p.test(name)) && !usesZod;
+  return validatorPatterns.some((p) => p.test(name)) && !usesZod;
 }
 
 /**
@@ -68,19 +68,19 @@ function isCustomValidator(name: string, funcText: string): boolean {
  */
 function detectValidatorPattern(name: string, _funcText: string): string {
   const lowerName = name.toLowerCase();
-  if (lowerName.includes('url')) return 'url';
-  if (lowerName.includes('email')) return 'email';
-  if (lowerName.includes('phone')) return 'phone';
-  if (lowerName.includes('date')) return 'date';
-  if (lowerName.includes('linkedin')) return 'linkedin-url';
-  return 'unknown';
+  if (lowerName.includes("url")) return "url";
+  if (lowerName.includes("email")) return "email";
+  if (lowerName.includes("phone")) return "phone";
+  if (lowerName.includes("date")) return "date";
+  if (lowerName.includes("linkedin")) return "linkedin-url";
+  return "unknown";
 }
 
 /**
  * Extract feature name from file path for chunking
  */
 function extractFeatureName(filePath: string): string {
-  return path.basename(filePath, '.ts');
+  return path.basename(filePath, ".ts");
 }
 
 /**
@@ -95,11 +95,13 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
   // Filter source files if incremental mode
   let filesToProcess = sourceFiles;
   if (onlyChunks) {
-    filesToProcess = sourceFiles.filter(sf => {
+    filesToProcess = sourceFiles.filter((sf) => {
       const chunkName = extractFeatureName(sf.getFilePath());
       return onlyChunks.has(chunkName);
     });
-    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`);
+    console.log(
+      `  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`
+    );
   }
 
   const services: ValidationServiceInfo[] = [];
@@ -110,7 +112,11 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
   for (const sourceFile of filesToProcess) {
     const filePath = sourceFile.getFilePath();
 
-    if (filePath.includes("__tests__") || filePath.includes(".test.") || filePath.endsWith("index.ts")) {
+    if (
+      filePath.includes("__tests__") ||
+      filePath.includes(".test.") ||
+      filePath.endsWith("index.ts")
+    ) {
       continue;
     }
 
@@ -147,12 +153,12 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
         continue;
       }
 
-      if (funcText.includes('.parse(') || funcText.includes('.safeParse(')) {
+      if (funcText.includes(".parse(") || funcText.includes(".safeParse(")) {
         const service: ValidationServiceInfo = {
           name,
           file: relativePath,
           line: func.getStartLineNumber(),
-          type: detectsErrorFormatting(funcText) ? 'formatter' : 'validator',
+          type: detectsErrorFormatting(funcText) ? "formatter" : "validator",
           schemaReference: extractSchemaReference(funcText),
           errorFormatting: detectsErrorFormatting(funcText),
           isAsync,
@@ -196,7 +202,11 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
   for (const sourceFile of sourceFiles) {
     const filePath = sourceFile.getFilePath();
     // Skip test files and index.ts (same filters as processing loop)
-    if (filePath.includes("__tests__") || filePath.includes(".test.") || filePath.endsWith("index.ts")) {
+    if (
+      filePath.includes("__tests__") ||
+      filePath.includes(".test.") ||
+      filePath.endsWith("index.ts")
+    ) {
       continue;
     }
     const chunkName = extractFeatureName(filePath);
@@ -229,7 +239,7 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
           total_chunks: chunks.size,
           services: services.length,
           custom_validators: customValidators.length,
-          with_error_formatting: services.filter(s => s.errorFormatting).length,
+          with_error_formatting: services.filter((s) => s.errorFormatting).length,
         },
         chunks as Map<string, unknown[]>,
         fileToChunkMapping
@@ -247,7 +257,7 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
         total_chunks: chunks.size,
         services: services.length,
         custom_validators: customValidators.length,
-        with_error_formatting: services.filter(s => s.errorFormatting).length,
+        with_error_formatting: services.filter((s) => s.errorFormatting).length,
       },
       chunks as Map<string, unknown[]>,
       fileToChunkMapping
@@ -256,7 +266,7 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
 
   console.log(`  ✓ Found ${services.length} validation services`);
   console.log(`    - ${customValidators.length} custom validators`);
-  console.log(`    - ${services.filter(s => s.errorFormatting).length} with error formatting`);
+  console.log(`    - ${services.filter((s) => s.errorFormatting).length} with error formatting`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

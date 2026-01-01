@@ -80,9 +80,7 @@ describe("Task date filter values", () => {
       const end = addDays(startOfToday(), 6);
 
       // Count days: 22, 23, 24, 25, 26, 27, 28 = 7 days
-      const daysDiff = Math.round(
-        (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
-      );
+      const daysDiff = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
       expect(daysDiff + 1).toBe(7); // +1 because both ends are inclusive
     });
   });

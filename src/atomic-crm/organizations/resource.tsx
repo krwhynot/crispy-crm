@@ -49,8 +49,7 @@ export const OrganizationShowView = () => (
   </ResourceErrorBoundary>
 );
 
-const organizationRecordRepresentation = (record: Organization) =>
-  record?.name || "Organization";
+const organizationRecordRepresentation = (record: Organization) => record?.name || "Organization";
 
 // React Admin resource configuration
 export default {

@@ -17,7 +17,9 @@ function getStatusBackgroundClass(status: string): string {
 export const Status = ({ status, className }: { status: string; className?: string }) => {
   const { noteStatuses } = useFormOptions();
   if (!status || !noteStatuses) return null;
-  const statusObject = noteStatuses.find((s: { value: string; label: string }) => s.value === status);
+  const statusObject = noteStatuses.find(
+    (s: { value: string; label: string }) => s.value === status
+  );
 
   if (!statusObject) return null;
   return (

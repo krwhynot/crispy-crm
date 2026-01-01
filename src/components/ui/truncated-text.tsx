@@ -48,11 +48,7 @@ function TruncatedText({ children, className, maxLines = 1 }: TruncatedTextProps
     return () => window.removeEventListener("resize", checkTruncation);
   }, [children, checkTruncation]);
 
-  const textClasses = cn(
-    maxLines === 1 ? "truncate" : "line-clamp-2",
-    "block",
-    className
-  );
+  const textClasses = cn(maxLines === 1 ? "truncate" : "line-clamp-2", "block", className);
 
   // When not truncated, render plain span without tooltip overhead
   if (!isTruncated) {

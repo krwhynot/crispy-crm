@@ -31,7 +31,10 @@ export interface BulkDeleteButtonProps<
   };
 }
 
-export const BulkDeleteButton = <RecordType extends RaRecord = RaRecord, MutationOptionsError = unknown>(
+export const BulkDeleteButton = <
+  RecordType extends RaRecord = RaRecord,
+  MutationOptionsError = unknown,
+>(
   props: BulkDeleteButtonProps<RecordType, MutationOptionsError>
 ) => {
   const {

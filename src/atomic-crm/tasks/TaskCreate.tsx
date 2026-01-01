@@ -1,10 +1,7 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FormProgressProvider,
-  FormProgressBar,
-} from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { TaskInputs } from "./TaskInputs";
 import { getTaskDefaultValues, taskCreateSchema } from "../validation/task";
@@ -61,7 +58,11 @@ export default function TaskCreate() {
         <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar className="mb-6" />
-            <Form defaultValues={defaultValues} mode="onBlur" resolver={zodResolver(taskCreateSchema)}>
+            <Form
+              defaultValues={defaultValues}
+              mode="onBlur"
+              resolver={zodResolver(taskCreateSchema)}
+            >
               <TaskInputs />
               <CreateFormFooter
                 resourceName="task"
@@ -75,4 +76,3 @@ export default function TaskCreate() {
     </CreateBase>
   );
 }
-

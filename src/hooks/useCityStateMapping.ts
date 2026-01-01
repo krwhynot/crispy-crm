@@ -27,9 +27,7 @@ export function useCityStateMapping({
     }
 
     const normalizedCity = city.trim().toLowerCase();
-    const match = US_CITIES.find(
-      (c) => c.city.toLowerCase() === normalizedCity
-    );
+    const match = US_CITIES.find((c) => c.city.toLowerCase() === normalizedCity);
 
     if (match) {
       setValue(stateField, match.state, { shouldValidate: true });

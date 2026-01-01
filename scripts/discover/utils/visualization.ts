@@ -11,7 +11,7 @@ import type { CallGraphNode, CallGraphEdge } from "../extractors/call-graph.js";
 
 interface MermaidOptions {
   title?: string;
-  direction?: 'LR' | 'TB' | 'RL' | 'BT';
+  direction?: "LR" | "TB" | "RL" | "BT";
   maxNodes?: number;
   includeEdgeLabels?: boolean;
 }
@@ -26,14 +26,14 @@ interface MermaidOptions {
 function getMermaidNodeShape(node: CallGraphNode): string {
   const safeName = sanitizeMermaidId(node.name);
   switch (node.nodeType) {
-    case 'component':
+    case "component":
       return `${safeName}([${node.name}])`;
-    case 'hook':
+    case "hook":
       return `${safeName}((${node.name}))`;
-    case 'method':
+    case "method":
       return `${safeName}[[${node.name}]]`;
-    case 'arrow':
-    case 'function':
+    case "arrow":
+    case "function":
     default:
       return `${safeName}[${node.name}]`;
   }
@@ -45,14 +45,14 @@ function getMermaidNodeShape(node: CallGraphNode): string {
  * - -.-> = dashed arrow (hook, callback)
  */
 function getMermaidEdgeStyle(edge: CallGraphEdge, includeLabel: boolean): string {
-  const label = includeLabel ? `|${edge.edgeType}|` : '';
+  const label = includeLabel ? `|${edge.edgeType}|` : "";
 
   switch (edge.edgeType) {
-    case 'hook':
-    case 'callback':
+    case "hook":
+    case "callback":
       return `-.->${label}`;
-    case 'render':
-    case 'call':
+    case "render":
+    case "call":
     default:
       return `-->${label}`;
   }
@@ -63,7 +63,7 @@ function getMermaidEdgeStyle(edge: CallGraphEdge, includeLabel: boolean): string
  * Mermaid has restrictions on special characters.
  */
 function sanitizeMermaidId(name: string): string {
-  return name.replace(/[^a-zA-Z0-9_]/g, '_');
+  return name.replace(/[^a-zA-Z0-9_]/g, "_");
 }
 
 /**
@@ -74,12 +74,7 @@ export function generateMermaidGraph(
   edges: CallGraphEdge[],
   options: MermaidOptions = {}
 ): string {
-  const {
-    title,
-    direction = 'LR',
-    maxNodes = 100,
-    includeEdgeLabels = true,
-  } = options;
+  const { title, direction = "LR", maxNodes = 100, includeEdgeLabels = true } = options;
 
   const lines: string[] = [];
 
@@ -90,46 +85,48 @@ export function generateMermaidGraph(
     lines.push(`---`);
   }
   lines.push(`flowchart ${direction}`);
-  lines.push('');
+  lines.push("");
 
   // Limit nodes if needed
   const displayNodes = nodes.slice(0, maxNodes);
-  const nodeNames = new Set(displayNodes.map(n => n.name));
+  const nodeNames = new Set(displayNodes.map((n) => n.name));
 
   // Node definitions (grouped by type for clarity)
-  const components = displayNodes.filter(n => n.nodeType === 'component');
-  const hooks = displayNodes.filter(n => n.nodeType === 'hook');
-  const functions = displayNodes.filter(n => n.nodeType === 'function' || n.nodeType === 'arrow');
+  const components = displayNodes.filter((n) => n.nodeType === "component");
+  const hooks = displayNodes.filter((n) => n.nodeType === "hook");
+  const functions = displayNodes.filter((n) => n.nodeType === "function" || n.nodeType === "arrow");
 
   if (components.length > 0) {
-    lines.push('  %% Components');
+    lines.push("  %% Components");
     for (const node of components) {
       lines.push(`  ${getMermaidNodeShape(node)}`);
     }
-    lines.push('');
+    lines.push("");
   }
 
   if (hooks.length > 0) {
-    lines.push('  %% Hooks');
+    lines.push("  %% Hooks");
     for (const node of hooks) {
       lines.push(`  ${getMermaidNodeShape(node)}`);
     }
-    lines.push('');
+    lines.push("");
   }
 
   if (functions.length > 0) {
-    lines.push('  %% Functions');
+    lines.push("  %% Functions");
     for (const node of functions) {
       lines.push(`  ${getMermaidNodeShape(node)}`);
     }
-    lines.push('');
+    lines.push("");
   }
 
   // Edge definitions (grouped by type)
-  const renderEdges = edges.filter(e => e.edgeType === 'render' && nodeNames.has(e.targetName));
-  const hookEdges = edges.filter(e => e.edgeType === 'hook' && nodeNames.has(e.targetName));
-  const callEdges = edges.filter(e => e.edgeType === 'call' && nodeNames.has(e.targetName));
-  const callbackEdges = edges.filter(e => e.edgeType === 'callback' && nodeNames.has(e.targetName));
+  const renderEdges = edges.filter((e) => e.edgeType === "render" && nodeNames.has(e.targetName));
+  const hookEdges = edges.filter((e) => e.edgeType === "hook" && nodeNames.has(e.targetName));
+  const callEdges = edges.filter((e) => e.edgeType === "call" && nodeNames.has(e.targetName));
+  const callbackEdges = edges.filter(
+    (e) => e.edgeType === "callback" && nodeNames.has(e.targetName)
+  );
 
   // Get source name from node ID
   const nodeIdToName = new Map<string, string>();
@@ -147,41 +144,41 @@ export function generateMermaidGraph(
   };
 
   if (renderEdges.length > 0) {
-    lines.push('  %% Render relationships');
+    lines.push("  %% Render relationships");
     for (const edge of renderEdges) {
       const formatted = formatEdge(edge);
       if (formatted) lines.push(formatted);
     }
-    lines.push('');
+    lines.push("");
   }
 
   if (hookEdges.length > 0) {
-    lines.push('  %% Hook dependencies');
+    lines.push("  %% Hook dependencies");
     for (const edge of hookEdges) {
       const formatted = formatEdge(edge);
       if (formatted) lines.push(formatted);
     }
-    lines.push('');
+    lines.push("");
   }
 
   if (callEdges.length > 0) {
-    lines.push('  %% Function calls');
+    lines.push("  %% Function calls");
     for (const edge of callEdges) {
       const formatted = formatEdge(edge);
       if (formatted) lines.push(formatted);
     }
-    lines.push('');
+    lines.push("");
   }
 
   if (callbackEdges.length > 0) {
-    lines.push('  %% Callback references');
+    lines.push("  %% Callback references");
     for (const edge of callbackEdges) {
       const formatted = formatEdge(edge);
       if (formatted) lines.push(formatted);
     }
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -190,7 +187,7 @@ export function generateMermaidGraph(
 
 interface DotOptions {
   title?: string;
-  rankdir?: 'LR' | 'TB' | 'RL' | 'BT';
+  rankdir?: "LR" | "TB" | "RL" | "BT";
   maxNodes?: number;
   includeEdgeLabels?: boolean;
 }
@@ -202,27 +199,27 @@ function getDotNodeAttrs(node: CallGraphNode): string {
   const attrs: string[] = [];
 
   switch (node.nodeType) {
-    case 'component':
-      attrs.push('shape=box', 'style="rounded,filled"', 'fillcolor="#e1f5fe"');
+    case "component":
+      attrs.push("shape=box", 'style="rounded,filled"', 'fillcolor="#e1f5fe"');
       break;
-    case 'hook':
-      attrs.push('shape=ellipse', 'style=filled', 'fillcolor="#fff3e0"');
+    case "hook":
+      attrs.push("shape=ellipse", "style=filled", 'fillcolor="#fff3e0"');
       break;
-    case 'method':
-      attrs.push('shape=box', 'style=filled', 'fillcolor="#f3e5f5"');
+    case "method":
+      attrs.push("shape=box", "style=filled", 'fillcolor="#f3e5f5"');
       break;
-    case 'arrow':
-    case 'function':
+    case "arrow":
+    case "function":
     default:
-      attrs.push('shape=box', 'style=filled', 'fillcolor="#e8f5e9"');
+      attrs.push("shape=box", "style=filled", 'fillcolor="#e8f5e9"');
       break;
   }
 
   if (node.async) {
-    attrs.push('peripheries=2'); // Double border for async
+    attrs.push("peripheries=2"); // Double border for async
   }
 
-  return attrs.join(', ');
+  return attrs.join(", ");
 }
 
 /**
@@ -236,30 +233,30 @@ function getDotEdgeAttrs(edge: CallGraphEdge, includeLabel: boolean): string {
   }
 
   switch (edge.edgeType) {
-    case 'hook':
-      attrs.push('style=dashed', 'color="#ff9800"');
+    case "hook":
+      attrs.push("style=dashed", 'color="#ff9800"');
       break;
-    case 'callback':
-      attrs.push('style=dashed', 'color="#9c27b0"');
+    case "callback":
+      attrs.push("style=dashed", 'color="#9c27b0"');
       break;
-    case 'render':
+    case "render":
       attrs.push('color="#2196f3"');
       break;
-    case 'call':
+    case "call":
     default:
       attrs.push('color="#4caf50"');
       break;
   }
 
   if (edge.conditional) {
-    attrs.push('arrowhead=odiamond');
+    attrs.push("arrowhead=odiamond");
   }
 
   if (edge.inLoop) {
-    attrs.push('penwidth=2');
+    attrs.push("penwidth=2");
   }
 
-  return attrs.join(', ');
+  return attrs.join(", ");
 }
 
 /**
@@ -267,7 +264,7 @@ function getDotEdgeAttrs(edge: CallGraphEdge, includeLabel: boolean): string {
  */
 function sanitizeDotId(name: string): string {
   // DOT allows most characters if quoted, but we'll keep it simple
-  return name.replace(/[^a-zA-Z0-9_]/g, '_');
+  return name.replace(/[^a-zA-Z0-9_]/g, "_");
 }
 
 /**
@@ -278,12 +275,7 @@ export function generateDotGraph(
   edges: CallGraphEdge[],
   options: DotOptions = {}
 ): string {
-  const {
-    title = 'CallGraph',
-    rankdir = 'LR',
-    maxNodes = 200,
-    includeEdgeLabels = true,
-  } = options;
+  const { title = "CallGraph", rankdir = "LR", maxNodes = 200, includeEdgeLabels = true } = options;
 
   const lines: string[] = [];
 
@@ -292,34 +284,36 @@ export function generateDotGraph(
   lines.push(`  rankdir=${rankdir};`);
   lines.push('  node [fontname="Arial", fontsize=10];');
   lines.push('  edge [fontname="Arial", fontsize=8];');
-  lines.push('');
+  lines.push("");
 
   // Limit nodes if needed
   const displayNodes = nodes.slice(0, maxNodes);
-  const nodeNames = new Set(displayNodes.map(n => n.name));
+  const nodeNames = new Set(displayNodes.map((n) => n.name));
 
   // Legend subgraph
-  lines.push('  subgraph cluster_legend {');
+  lines.push("  subgraph cluster_legend {");
   lines.push('    label="Legend";');
-  lines.push('    fontsize=10;');
-  lines.push('    style=dashed;');
-  lines.push('    legend_component [label="Component" shape=box style="rounded,filled" fillcolor="#e1f5fe"];');
+  lines.push("    fontsize=10;");
+  lines.push("    style=dashed;");
+  lines.push(
+    '    legend_component [label="Component" shape=box style="rounded,filled" fillcolor="#e1f5fe"];'
+  );
   lines.push('    legend_hook [label="Hook" shape=ellipse style=filled fillcolor="#fff3e0"];');
   lines.push('    legend_function [label="Function" shape=box style=filled fillcolor="#e8f5e9"];');
-  lines.push('  }');
-  lines.push('');
+  lines.push("  }");
+  lines.push("");
 
   // Node definitions
-  lines.push('  // Nodes');
+  lines.push("  // Nodes");
   for (const node of displayNodes) {
     const id = sanitizeDotId(node.name);
     const attrs = getDotNodeAttrs(node);
     lines.push(`  ${id} [label="${node.name}", ${attrs}];`);
   }
-  lines.push('');
+  lines.push("");
 
   // Edge definitions
-  lines.push('  // Edges');
+  lines.push("  // Edges");
 
   // Build node ID to name mapping
   const nodeIdToName = new Map<string, string>();
@@ -337,9 +331,9 @@ export function generateDotGraph(
     lines.push(`  ${sourceId} -> ${targetId} [${attrs}];`);
   }
 
-  lines.push('}');
+  lines.push("}");
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -359,8 +353,8 @@ export function generateCyclesMermaid(
   }
 
   const lines: string[] = [];
-  lines.push('flowchart LR');
-  lines.push('');
+  lines.push("flowchart LR");
+  lines.push("");
 
   // Collect all nodes involved in cycles
   const cycleNodeIds = new Set<string>();
@@ -377,7 +371,7 @@ export function generateCyclesMermaid(
   }
 
   // Define nodes in cycles
-  lines.push('  %% Nodes in circular dependencies');
+  lines.push("  %% Nodes in circular dependencies");
   for (const nodeId of cycleNodeIds) {
     const node = nodeIdToNode.get(nodeId);
     if (node) {
@@ -385,10 +379,10 @@ export function generateCyclesMermaid(
       lines.push(`  ${safeName}([${node.name}]):::cycle`);
     }
   }
-  lines.push('');
+  lines.push("");
 
   // Define edges within cycles
-  lines.push('  %% Cycle edges');
+  lines.push("  %% Cycle edges");
   for (let i = 0; i < cycles.length; i++) {
     const cycle = cycles[i];
     lines.push(`  %% Cycle ${i + 1}`);
@@ -404,10 +398,10 @@ export function generateCyclesMermaid(
       }
     }
   }
-  lines.push('');
+  lines.push("");
 
   // Style for cycle nodes
-  lines.push('  classDef cycle fill:#ffcdd2,stroke:#c62828,stroke-width:2px');
+  lines.push("  classDef cycle fill:#ffcdd2,stroke:#c62828,stroke-width:2px");
 
-  return lines.join('\n');
+  return lines.join("\n");
 }

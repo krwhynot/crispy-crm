@@ -99,10 +99,7 @@ export async function generateEmbedding(
       );
     }
 
-    throw new OllamaError(
-      `Ollama API error (${response.status}): ${errorText}`,
-      response.status
-    );
+    throw new OllamaError(`Ollama API error (${response.status}): ${errorText}`, response.status);
   }
 
   let data: OllamaEmbeddingResponse;
@@ -254,10 +251,7 @@ export async function getHealthDetails(): Promise<{
       serverReachable: false,
       modelAvailable: false,
       availableModels: [],
-      error:
-        error instanceof Error
-          ? `Connection failed: ${error.message}`
-          : "Connection failed",
+      error: error instanceof Error ? `Connection failed: ${error.message}` : "Connection failed",
     };
   }
 }

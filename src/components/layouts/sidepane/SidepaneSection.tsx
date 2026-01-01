@@ -33,9 +33,7 @@ export function SidepaneSection({
         </h4>
         {variant === "list" ? (
           <Card className="bg-muted/30 border-0">
-            <CardContent className="p-1">
-              {children}
-            </CardContent>
+            <CardContent className="p-1">{children}</CardContent>
           </Card>
         ) : (
           children

@@ -267,7 +267,11 @@ const PrincipalColumn = ({
           </div>
         ) : (
           opportunities.map((opp) => (
-            <PrincipalOpportunityCard key={opp.id} opportunity={opp} openSlideOver={openSlideOver} />
+            <PrincipalOpportunityCard
+              key={opp.id}
+              opportunity={opp}
+              openSlideOver={openSlideOver}
+            />
           ))
         )}
       </div>
@@ -286,7 +290,10 @@ interface PrincipalOpportunityCardProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }
 
-const PrincipalOpportunityCard = ({ opportunity, openSlideOver }: PrincipalOpportunityCardProps) => {
+const PrincipalOpportunityCard = ({
+  opportunity,
+  openSlideOver,
+}: PrincipalOpportunityCardProps) => {
   const expectedCloseDate = opportunity.estimated_close_date
     ? parseDateSafely(opportunity.estimated_close_date)
     : null;
@@ -345,9 +352,7 @@ const PrincipalOpportunityCard = ({ opportunity, openSlideOver }: PrincipalOppor
         </div>
         {/* Days since last activity */}
         <span className="text-xs text-muted-foreground">
-          {daysSinceLastActivity !== null
-            ? `${daysSinceLastActivity}d`
-            : "—"}
+          {daysSinceLastActivity !== null ? `${daysSinceLastActivity}d` : "—"}
         </span>
       </div>
 

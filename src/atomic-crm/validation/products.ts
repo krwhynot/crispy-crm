@@ -122,7 +122,11 @@ export type ProductFormData = z.infer<typeof productSchema>;
 export const opportunityProductSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   product_id_reference: z.coerce.number().int().positive("Product is required"),
-  product_name: z.string().trim().min(1, "Product name is required").max(255, "Product name too long"),
+  product_name: z
+    .string()
+    .trim()
+    .min(1, "Product name is required")
+    .max(255, "Product name too long"),
   product_category: z.string().max(100).optional(),
   notes: z.string().max(500).optional(),
 });

@@ -165,9 +165,12 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
           );
         }
         if (failureCount > 0) {
-          notify(`Failed to reassign ${failureCount} organization${failureCount === 1 ? "" : "s"}`, {
-            type: "error",
-          });
+          notify(
+            `Failed to reassign ${failureCount} organization${failureCount === 1 ? "" : "s"}`,
+            {
+              type: "error",
+            }
+          );
         }
       }
 

@@ -44,10 +44,7 @@ import type { Task, Opportunity, Organization } from "../types";
 /**
  * TaskListActions - TopToolbar actions for Tasks list
  */
-const TaskListActions = () => (
-  <TopToolbar>
-  </TopToolbar>
-);
+const TaskListActions = () => <TopToolbar></TopToolbar>;
 
 /**
  * TaskList - Standard list page for Task records
@@ -142,10 +139,7 @@ const TaskListLayout = ({
   return (
     <>
       <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-        <ListSearchBar
-          placeholder="Search tasks..."
-          filterConfig={TASK_FILTER_CONFIG}
-        />
+        <ListSearchBar placeholder="Search tasks..." filterConfig={TASK_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
@@ -163,9 +157,7 @@ const TaskListLayout = ({
             label={<TaskTitleHeader />}
             sortBy="title"
             render={(record: Task) => (
-              <TruncatedText className="max-w-[250px]">
-                {record.title}
-              </TruncatedText>
+              <TruncatedText className="max-w-[250px]">{record.title}</TruncatedText>
             )}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />

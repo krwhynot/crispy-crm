@@ -94,7 +94,9 @@ interface InfluenceBadgeProps {
  * WCAG AA Contrast: All tag colors use oklch(20% 0.02 85) foreground
  * against light backgrounds (85%+ lightness) = ~10:1 contrast ratio
  */
-export const ContactStatusBadge = memo(function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
+export const ContactStatusBadge = memo(function ContactStatusBadge({
+  status,
+}: ContactStatusBadgeProps) {
   // Handle null/undefined status gracefully - return placeholder
   if (!status) {
     return <Badge className="text-xs px-2 py-1 tag-gray">--</Badge>;

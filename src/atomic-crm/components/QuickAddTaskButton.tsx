@@ -13,7 +13,7 @@ export function QuickAddTaskButton({
   contactId,
   opportunityId,
   organizationId,
-  variant = "chip"
+  variant = "chip",
 }: QuickAddTaskButtonProps) {
   const navigate = useNavigate();
 
@@ -43,13 +43,7 @@ export function QuickAddTaskButton({
   }
 
   return (
-    <Button
-      type="button"
-      onClick={handleClick}
-      variant="outline"
-      size="sm"
-      className="h-11"
-    >
+    <Button type="button" onClick={handleClick} variant="outline" size="sm" className="h-11">
       <Plus className="h-4 w-4 mr-2" />
       Add Task
     </Button>

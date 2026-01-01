@@ -58,23 +58,13 @@ const REACT_HOOK_FORM_HOOKS = new Set([
 ]);
 
 // Tab-related components
-const TAB_COMPONENTS = new Set([
-  "TabbedForm",
-  "TabbedFormInputs",
-  "FormTab",
-  "Tab",
-  "Tabs",
-]);
+const TAB_COMPONENTS = new Set(["TabbedForm", "TabbedFormInputs", "FormTab", "Tab", "Tabs"]);
 
 // Wizard components
 const WIZARD_COMPONENTS = new Set(["FormWizard", "WizardForm", "Wizard"]);
 
 // Progress components
-const PROGRESS_COMPONENTS = new Set([
-  "FormProgressProvider",
-  "FormProgressBar",
-  "Progress",
-]);
+const PROGRESS_COMPONENTS = new Set(["FormProgressProvider", "FormProgressBar", "Progress"]);
 
 /**
  * Extract all JSX element names from a node tree.
@@ -164,13 +154,17 @@ function extractInputComponentsDeep(sourceFile: SourceFile): string[] {
   const inputs = new Set<string>();
 
   // Input component patterns
-  const inputPatterns = /^(Text|Number|Boolean|Date|Reference|Select|AutoComplete|Checkbox|Radio|File|Image|Rich|Autocomplete|State|Segment|Country|Currency).*Input$/;
-  const otherInputs = /^(SelectInput|SelectArrayInput|CheckboxGroupInput|RadioButtonGroupInput|FileInput|ImageInput|RichTextInput|Input)$/;
+  const inputPatterns =
+    /^(Text|Number|Boolean|Date|Reference|Select|AutoComplete|Checkbox|Radio|File|Image|Rich|Autocomplete|State|Segment|Country|Currency).*Input$/;
+  const otherInputs =
+    /^(SelectInput|SelectArrayInput|CheckboxGroupInput|RadioButtonGroupInput|FileInput|ImageInput|RichTextInput|Input)$/;
 
   // Scan all JSX elements
   sourceFile.forEachDescendant((node) => {
-    if (node.getKind() === SyntaxKind.JsxOpeningElement ||
-        node.getKind() === SyntaxKind.JsxSelfClosingElement) {
+    if (
+      node.getKind() === SyntaxKind.JsxOpeningElement ||
+      node.getKind() === SyntaxKind.JsxSelfClosingElement
+    ) {
       const tagNameNode = node.getChildAtIndex(1);
       if (tagNameNode) {
         const tagName = tagNameNode.getText();
@@ -178,7 +172,7 @@ function extractInputComponentsDeep(sourceFile: SourceFile): string[] {
           inputs.add(tagName);
         }
         // Also catch custom combobox inputs
-        if (tagName && tagName.endsWith('ComboboxInput')) {
+        if (tagName && tagName.endsWith("ComboboxInput")) {
           inputs.add(tagName);
         }
       }
@@ -198,14 +192,14 @@ function buildComponentChain(sourceFile: SourceFile, componentName: string): str
   // Get local component imports
   for (const importDecl of sourceFile.getImportDeclarations()) {
     const moduleSpecifier = importDecl.getModuleSpecifierValue();
-    if (!moduleSpecifier.startsWith('.')) continue;
+    if (!moduleSpecifier.startsWith(".")) continue;
 
     // Look for form-related component imports
     const namedImports = importDecl.getNamedImports();
     for (const namedImport of namedImports) {
       const name = namedImport.getName();
       // Form component patterns
-      if (name.includes('Inputs') || name.includes('Form') || name.includes('Compact')) {
+      if (name.includes("Inputs") || name.includes("Form") || name.includes("Compact")) {
         chain.push(name);
       }
     }
@@ -219,7 +213,7 @@ function buildComponentChain(sourceFile: SourceFile, componentName: string): str
  */
 function extractFormContextWrappers(sourceFile: SourceFile): string[] {
   const wrappers: string[] = [];
-  const contextHooks = ['useFormContext', 'useFormState', 'useWatch', 'useFieldArray'];
+  const contextHooks = ["useFormContext", "useFormState", "useWatch", "useFieldArray"];
 
   // Check if file uses any form context hooks
   const fileText = sourceFile.getText();
@@ -254,10 +248,7 @@ function extractFormContextWrappers(sourceFile: SourceFile): string[] {
 /**
  * Determine the primary form type based on detected patterns.
  */
-function determineFormType(
-  jsxElements: Set<string>,
-  hooks: Set<string>
-): FormInfo["formType"] {
+function determineFormType(jsxElements: Set<string>, hooks: Set<string>): FormInfo["formType"] {
   // Check for React 19 action patterns first (most specific)
   if (hooks.has("useActionState") || hooks.has("useFormStatus")) {
     return "react19-action";
@@ -462,7 +453,11 @@ export async function extractForms(): Promise<void> {
     const filePath = sourceFile.getFilePath();
 
     // Skip test files
-    if (filePath.includes("__tests__") || filePath.includes(".test.") || filePath.includes(".spec.")) {
+    if (
+      filePath.includes("__tests__") ||
+      filePath.includes(".test.") ||
+      filePath.includes(".spec.")
+    ) {
       continue;
     }
 

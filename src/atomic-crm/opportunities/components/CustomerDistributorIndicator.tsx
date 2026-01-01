@@ -20,13 +20,8 @@ export function CustomerDistributorIndicator() {
   const customerId = useWatch({ name: "customer_organization_id" });
   const distributorId = useWatch({ name: "distributor_organization_id" });
 
-  const {
-    distributorIds,
-    primaryDistributorId,
-    hasCustomerSelected,
-    hasRelationships,
-    isLoading,
-  } = useCustomerDistributors(customerId);
+  const { distributorIds, primaryDistributorId, hasCustomerSelected, hasRelationships, isLoading } =
+    useCustomerDistributors(customerId);
 
   // Don't show anything if no customer selected
   if (!hasCustomerSelected) {

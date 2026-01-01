@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 // =============================================================================
 // DATA ROW
@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils"
 
 export interface DataRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   /** Make row interactive with hover/focus states */
-  interactive?: boolean
+  interactive?: boolean;
 }
 
 const DataRow = React.forwardRef<HTMLTableRowElement, DataRowProps>(
@@ -56,8 +56,8 @@ const DataRow = React.forwardRef<HTMLTableRowElement, DataRowProps>(
       {...props}
     />
   )
-)
-DataRow.displayName = "DataRow"
+);
+DataRow.displayName = "DataRow";
 
 // =============================================================================
 // DATA CELL
@@ -76,20 +76,17 @@ export interface DataCellProps extends React.TdHTMLAttributes<HTMLTableCellEleme
    * - currency: tabular-nums + auto-formats numbers as USD
    * - date: tabular-nums for consistent digit width
    */
-  type?: "text" | "numeric" | "currency" | "date"
+  type?: "text" | "numeric" | "currency" | "date";
 
   /** Truncate with ellipsis */
-  truncate?: boolean
+  truncate?: boolean;
 
   /** Max width for truncation (default: 200px) */
-  maxWidth?: number
+  maxWidth?: number;
 }
 
 const DataCell = React.forwardRef<HTMLTableCellElement, DataCellProps>(
-  (
-    { className, type = "text", truncate = false, maxWidth = 200, children, ...props },
-    ref
-  ) => {
+  ({ className, type = "text", truncate = false, maxWidth = 200, children, ...props }, ref) => {
     // Currency formatting via Intl API (Engineering Constitution P13)
     const formattedChildren = React.useMemo(() => {
       if (type === "currency" && typeof children === "number") {
@@ -98,10 +95,10 @@ const DataCell = React.forwardRef<HTMLTableCellElement, DataCellProps>(
           currency: "USD",
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
-        }).format(children)
+        }).format(children);
       }
-      return children
-    }, [type, children])
+      return children;
+    }, [type, children]);
 
     return (
       <td
@@ -152,22 +149,21 @@ const DataCell = React.forwardRef<HTMLTableCellElement, DataCellProps>(
       >
         {formattedChildren}
       </td>
-    )
+    );
   }
-)
-DataCell.displayName = "DataCell"
+);
+DataCell.displayName = "DataCell";
 
 // =============================================================================
 // DATA HEADER CELL
 // =============================================================================
 
-export interface DataHeaderCellProps
-  extends React.ThHTMLAttributes<HTMLTableCellElement> {
+export interface DataHeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
   /** Sticky position at top of scroll container */
-  sticky?: boolean
+  sticky?: boolean;
 
   /** Right-align for numeric columns */
-  align?: "left" | "right"
+  align?: "left" | "right";
 }
 
 const DataHeaderCell = React.forwardRef<HTMLTableCellElement, DataHeaderCellProps>(
@@ -198,11 +194,11 @@ const DataHeaderCell = React.forwardRef<HTMLTableCellElement, DataHeaderCellProp
       {...props}
     />
   )
-)
-DataHeaderCell.displayName = "DataHeaderCell"
+);
+DataHeaderCell.displayName = "DataHeaderCell";
 
 // =============================================================================
 // EXPORTS
 // =============================================================================
 
-export { DataRow, DataCell, DataHeaderCell }
+export { DataRow, DataCell, DataHeaderCell };

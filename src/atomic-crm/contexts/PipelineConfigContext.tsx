@@ -63,11 +63,7 @@ export const PipelineConfigProvider = ({
     [dealStages, dealPipelineStatuses, dealCategories, opportunityStages, opportunityCategories]
   );
 
-  return (
-    <PipelineConfigContext.Provider value={value}>
-      {children}
-    </PipelineConfigContext.Provider>
-  );
+  return <PipelineConfigContext.Provider value={value}>{children}</PipelineConfigContext.Provider>;
 };
 
 /**

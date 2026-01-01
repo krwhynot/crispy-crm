@@ -10,9 +10,9 @@
  */
 
 // Standard feature exports (raw components for testing/embedding)
-export { default as ActivityList } from './ActivityList';
-export { default as ActivityCreate } from './ActivityCreate';
-export { ActivityEdit } from './ActivityEdit';
+export { default as ActivityList } from "./ActivityList";
+export { default as ActivityCreate } from "./ActivityCreate";
+export { ActivityEdit } from "./ActivityEdit";
 
 // Export shared form inputs
 export { ActivityInputs } from "./ActivityInputs";
@@ -36,11 +36,7 @@ export { ActivityTimelineEntry } from "./components/ActivityTimelineEntry";
 export { ACTIVITY_PAGE_SIZE } from "./constants";
 
 // Export wrapped views (with error boundaries)
-export {
-  ActivityListView,
-  ActivityCreateView,
-  ActivityEditView,
-} from "./resource";
+export { ActivityListView, ActivityCreateView, ActivityEditView } from "./resource";
 
 // React Admin resource configuration (with error boundaries)
 export { default } from "./resource";

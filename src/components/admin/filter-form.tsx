@@ -130,7 +130,9 @@ const isEmptyValue = (filterValue: unknown): boolean => {
   // If one of the value leaf is not empty
   // the value is considered not empty
   if (typeof filterValue === "object") {
-    return Object.keys(filterValue as Record<string, unknown>).every((key) => isEmptyValue((filterValue as Record<string, unknown>)[key]));
+    return Object.keys(filterValue as Record<string, unknown>).every((key) =>
+      isEmptyValue((filterValue as Record<string, unknown>)[key])
+    );
   }
 
   return false;

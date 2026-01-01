@@ -65,10 +65,7 @@ export const useSegmentNames = (segmentIds: string[] | undefined) => {
   );
 
   // Merge static names with dynamically fetched ones
-  const segmentMap = useMemo(
-    () => ({ ...PLAYBOOK_CATEGORY_NAMES_BY_ID, ...namesMap }),
-    [namesMap]
-  );
+  const segmentMap = useMemo(() => ({ ...PLAYBOOK_CATEGORY_NAMES_BY_ID, ...namesMap }), [namesMap]);
 
   return {
     segmentMap,

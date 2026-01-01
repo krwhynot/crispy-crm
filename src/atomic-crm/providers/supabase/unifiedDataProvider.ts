@@ -41,10 +41,7 @@ import { quickAddSchema } from "../../validation/quickAdd";
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
 import { getDatabaseResource, applySearchParams, normalizeResponseData } from "./dataProviderUtils";
-import {
-  parseCompositeId,
-  createCompositeId,
-} from "../../validation/productDistributors";
+import { parseCompositeId, createCompositeId } from "../../validation/productDistributors";
 
 // Import decomposed services
 import { ValidationService, TransformService, StorageService } from "./services";
@@ -579,10 +576,10 @@ export const unifiedDataProvider: DataProvider = {
         const { product_id, distributor_id } = parseCompositeId(String(params.id));
 
         const { data, error } = await supabase
-          .from('product_distributors')
-          .select('*, product:products(id, name), distributor:organizations(id, name)')
-          .eq('product_id', product_id)
-          .eq('distributor_id', distributor_id)
+          .from("product_distributors")
+          .select("*, product:products(id, name), distributor:organizations(id, name)")
+          .eq("product_id", product_id)
+          .eq("distributor_id", distributor_id)
           .single();
 
         if (error) throw error;
@@ -598,19 +595,24 @@ export const unifiedDataProvider: DataProvider = {
       // Handle products - include distributors
       if (resource === "products") {
         const { data: product, error } = await supabase
-          .from('products')
-          .select('*, product_distributors(distributor_id, vendor_item_number)')
-          .eq('id', params.id)
+          .from("products")
+          .select("*, product_distributors(distributor_id, vendor_item_number)")
+          .eq("id", params.id)
           .single();
 
         if (error) throw error;
 
         // Transform for form consumption
-        const distributor_ids = product.product_distributors?.map((pd: { distributor_id: number }) => pd.distributor_id) || [];
+        const distributor_ids =
+          product.product_distributors?.map(
+            (pd: { distributor_id: number }) => pd.distributor_id
+          ) || [];
         const product_distributors: Record<number, { vendor_item_number: string | null }> = {};
-        product.product_distributors?.forEach((pd: { distributor_id: number; vendor_item_number: string | null }) => {
-          product_distributors[pd.distributor_id] = { vendor_item_number: pd.vendor_item_number };
-        });
+        product.product_distributors?.forEach(
+          (pd: { distributor_id: number; vendor_item_number: string | null }) => {
+            product_distributors[pd.distributor_id] = { vendor_item_number: pd.vendor_item_number };
+          }
+        );
 
         return {
           data: {
@@ -704,7 +706,10 @@ export const unifiedDataProvider: DataProvider = {
       // Belt-and-suspenders: Explicitly strip quickCreate for contacts
       // TransformService should do this, but adding explicit stripping per React Admin patterns
       if (resource === "contacts") {
-        const { quickCreate: _quickCreate, ...contactDataWithoutFlag } = processedData as Record<string, unknown>;
+        const { quickCreate: _quickCreate, ...contactDataWithoutFlag } = processedData as Record<
+          string,
+          unknown
+        >;
         processedData = contactDataWithoutFlag as typeof processedData;
       }
 
@@ -730,7 +735,9 @@ export const unifiedDataProvider: DataProvider = {
 
       // Delegate opportunity creation to service (handles products sync)
       if (resource === "opportunities") {
-        const result = await opportunitiesService.createWithProducts(processedData as Partial<OpportunityCreateInput>);
+        const result = await opportunitiesService.createWithProducts(
+          processedData as Partial<OpportunityCreateInput>
+        );
         // LIBRARY-BOUNDARY: Service returns Opportunity, but DataProvider generic expects RecordType.
         // Type-safe because caller uses dataProvider.create<Opportunity>("opportunities", {...})
         return { data: result as unknown as RecordType };
@@ -738,11 +745,14 @@ export const unifiedDataProvider: DataProvider = {
 
       // Handle product creation with distributors
       if (resource === "products") {
-        const { distributor_ids, product_distributors, ...productData } = processedData as Record<string, unknown>;
+        const { distributor_ids, product_distributors, ...productData } = processedData as Record<
+          string,
+          unknown
+        >;
 
         // Create the product first
         const { data: product, error: productError } = await supabase
-          .from('products')
+          .from("products")
           .insert(productData)
           .select()
           .single();
@@ -754,13 +764,15 @@ export const unifiedDataProvider: DataProvider = {
           const distributorRecords = distributor_ids.map((distId: number) => ({
             product_id: product.id,
             distributor_id: distId,
-            vendor_item_number: (product_distributors as Record<string, { vendor_item_number?: string }>)?.[distId]?.vendor_item_number || null,
-            status: 'active',
+            vendor_item_number:
+              (product_distributors as Record<string, { vendor_item_number?: string }>)?.[distId]
+                ?.vendor_item_number || null,
+            status: "active",
             valid_from: new Date().toISOString(),
           }));
 
           const { error: junctionError } = await supabase
-            .from('product_distributors')
+            .from("product_distributors")
             .insert(distributorRecords);
 
           if (junctionError) throw junctionError;
@@ -829,20 +841,26 @@ export const unifiedDataProvider: DataProvider = {
       // Delegate sales update to Edge Function (RLS prevents direct PostgREST updates)
       // The sales table is protected - updates must go through /functions/v1/users
       if (resource === "sales") {
-        const result = await salesService.salesUpdate(params.id, processedData as Partial<Omit<SalesFormData, "password">> & { deleted_at?: string });
+        const result = await salesService.salesUpdate(
+          params.id,
+          processedData as Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }
+        );
         return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
       }
 
       // Handle product update with distributors
       if (resource === "products") {
         const { id } = params;
-        const { distributor_ids, product_distributors, ...productData } = processedData as Record<string, unknown>;
+        const { distributor_ids, product_distributors, ...productData } = processedData as Record<
+          string,
+          unknown
+        >;
 
         // Update the product
         const { data: product, error: productError } = await supabase
-          .from('products')
+          .from("products")
           .update(productData)
-          .eq('id', id)
+          .eq("id", id)
           .select()
           .single();
 
@@ -851,24 +869,21 @@ export const unifiedDataProvider: DataProvider = {
         // Sync distributors if provided
         if (distributor_ids !== undefined) {
           // Delete existing junction records
-          await supabase
-            .from('product_distributors')
-            .delete()
-            .eq('product_id', id);
+          await supabase.from("product_distributors").delete().eq("product_id", id);
 
           // Insert new junction records
           if (Array.isArray(distributor_ids) && distributor_ids.length > 0) {
             const distributorRecords = distributor_ids.map((distId: number) => ({
               product_id: id,
               distributor_id: distId,
-              vendor_item_number: (product_distributors as Record<string, { vendor_item_number?: string }>)?.[distId]?.vendor_item_number || null,
-              status: 'active',
+              vendor_item_number:
+                (product_distributors as Record<string, { vendor_item_number?: string }>)?.[distId]
+                  ?.vendor_item_number || null,
+              status: "active",
               valid_from: new Date().toISOString(),
             }));
 
-            await supabase
-              .from('product_distributors')
-              .insert(distributorRecords);
+            await supabase.from("product_distributors").insert(distributorRecords);
           }
         }
 
@@ -884,8 +899,8 @@ export const unifiedDataProvider: DataProvider = {
         const { data, error } = await supabase
           .from(dbResource)
           .update({ ...processedData, updated_at: new Date().toISOString() })
-          .eq('product_id', product_id)
-          .eq('distributor_id', distributor_id)
+          .eq("product_id", product_id)
+          .eq("distributor_id", distributor_id)
           .select()
           .single();
 
@@ -998,20 +1013,20 @@ export const unifiedDataProvider: DataProvider = {
     resource: string,
     params: DeleteParams<RecordType>
   ): Promise<DeleteResult<RecordType>> {
-    console.log('🔴 [unifiedDataProvider.delete] ENTRY - resource:', resource, 'id:', params.id);
+    console.log("🔴 [unifiedDataProvider.delete] ENTRY - resource:", resource, "id:", params.id);
     return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
-      console.log('🔴 [unifiedDataProvider.delete] Inside wrapMethod - dbResource:', dbResource);
+      console.log("🔴 [unifiedDataProvider.delete] Inside wrapMethod - dbResource:", dbResource);
 
       // Handle product_distributors composite key (hard delete, no soft delete)
       if (resource === "product_distributors") {
         const { product_id, distributor_id } = parseCompositeId(String(params.id));
 
         const { data, error } = await supabase
-          .from('product_distributors')
+          .from("product_distributors")
           .delete()
-          .eq('product_id', product_id)
-          .eq('distributor_id', distributor_id)
+          .eq("product_id", product_id)
+          .eq("distributor_id", distributor_id)
           .select()
           .single();
 
@@ -1025,31 +1040,44 @@ export const unifiedDataProvider: DataProvider = {
       // - Related activities, opportunityNotes, opportunity_participants, tasks
       // Engineering Constitution: Fail-fast - if RPC fails, the whole delete fails
       if (resource === "opportunities") {
-        console.log('🔴 [delete] Starting delete for opportunity:', params.id, 'type:', typeof params.id);
+        console.log(
+          "🔴 [delete] Starting delete for opportunity:",
+          params.id,
+          "type:",
+          typeof params.id
+        );
 
         // Coerce ID to number - React Admin Identifier can be string | number
         // RPC requires BIGINT, so we must ensure it's a valid integer
         const numericId = Number(params.id);
-        console.log('🔴 [delete] Coerced numericId:', numericId, 'isInteger:', Number.isInteger(numericId));
+        console.log(
+          "🔴 [delete] Coerced numericId:",
+          numericId,
+          "isInteger:",
+          Number.isInteger(numericId)
+        );
 
         if (!Number.isInteger(numericId) || numericId <= 0) {
-          console.log('🔴 [delete] INVALID ID - throwing error');
+          console.log("🔴 [delete] INVALID ID - throwing error");
           throw new Error(`Invalid opportunity ID: ${params.id}`);
         }
 
-        console.log('🔴 [delete] Calling supabase.rpc("archive_opportunity_with_relations", { opp_id:', numericId, '})');
-        const { error: rpcError } = await supabase.rpc(
-          'archive_opportunity_with_relations',
-          { opp_id: numericId }
+        console.log(
+          '🔴 [delete] Calling supabase.rpc("archive_opportunity_with_relations", { opp_id:',
+          numericId,
+          "})"
         );
-        console.log('🔴 [delete] RPC returned, error:', rpcError);
+        const { error: rpcError } = await supabase.rpc("archive_opportunity_with_relations", {
+          opp_id: numericId,
+        });
+        console.log("🔴 [delete] RPC returned, error:", rpcError);
 
         if (rpcError) {
-          console.error('🔴 [delete] RPC FAILED:', rpcError);
+          console.error("🔴 [delete] RPC FAILED:", rpcError);
           throw new Error(`Failed to delete opportunity: ${rpcError.message}`);
         }
 
-        console.log('🔴 [delete] RPC SUCCESS - opportunity archived');
+        console.log("🔴 [delete] RPC SUCCESS - opportunity archived");
         // Return the previousData as the deleted record
         // React Admin expects the deleted record to be returned
         return { data: (params.previousData || { id: params.id }) as RecordType };
@@ -1089,10 +1117,9 @@ export const unifiedDataProvider: DataProvider = {
             throw new Error(`Invalid opportunity ID: ${id}`);
           }
 
-          const { error: rpcError } = await supabase.rpc(
-            'archive_opportunity_with_relations',
-            { opp_id: numericId }
-          );
+          const { error: rpcError } = await supabase.rpc("archive_opportunity_with_relations", {
+            opp_id: numericId,
+          });
 
           if (rpcError) {
             console.error(`Failed to archive opportunity ${id} with relations:`, rpcError);
@@ -1270,7 +1297,12 @@ export const unifiedDataProvider: DataProvider = {
    * @returns The data returned by the RPC function
    */
   async rpc<T = unknown>(functionName: string, params: Record<string, unknown> = {}): Promise<T> {
-    console.log('🔴 [unifiedDataProvider.rpc] ENTRY - function:', functionName, 'params:', JSON.stringify(params));
+    console.log(
+      "🔴 [unifiedDataProvider.rpc] ENTRY - function:",
+      functionName,
+      "params:",
+      JSON.stringify(params)
+    );
     let validatedParams = params;
     try {
       // Log the operation for debugging
@@ -1293,15 +1325,20 @@ export const unifiedDataProvider: DataProvider = {
       }
 
       const { data, error } = await supabase.rpc(functionName, validatedParams);
-      console.log('🔴 [unifiedDataProvider.rpc] supabase.rpc returned - error:', error, 'data:', data);
+      console.log(
+        "🔴 [unifiedDataProvider.rpc] supabase.rpc returned - error:",
+        error,
+        "data:",
+        data
+      );
 
       if (error) {
-        console.log('🔴 [unifiedDataProvider.rpc] FAILED:', error.message);
+        console.log("🔴 [unifiedDataProvider.rpc] FAILED:", error.message);
         logError("rpc", functionName, { data: validatedParams }, error);
         throw new HttpError(`RPC ${functionName} failed: ${error.message}`, 500);
       }
 
-      console.log('🔴 [unifiedDataProvider.rpc] SUCCESS');
+      console.log("🔴 [unifiedDataProvider.rpc] SUCCESS");
       devLog("DataProvider RPC", `${functionName} succeeded`, data);
       return data as T;
     } catch (error) {

@@ -3,7 +3,11 @@ import { useRecordContext, useGetList } from "ra-core";
 import { useFormContext, useWatch } from "react-hook-form";
 import { SelectInput } from "@/components/admin/select-input";
 import { PrincipalChangeWarning } from "./PrincipalChangeWarning";
-import { ORGANIZATION_TYPE_CHOICES, ORGANIZATION_TYPE_DESCRIPTIONS, type OrganizationType } from "./constants";
+import {
+  ORGANIZATION_TYPE_CHOICES,
+  ORGANIZATION_TYPE_DESCRIPTIONS,
+  type OrganizationType,
+} from "./constants";
 import type { Organization } from "../types";
 
 interface Product {
@@ -99,9 +103,7 @@ export const PrincipalAwareTypeInput = () => {
     return (
       <div className="flex flex-col gap-0.5">
         <span className="font-medium">{choice.name}</span>
-        {description && (
-          <span className="text-xs text-muted-foreground">{description}</span>
-        )}
+        {description && <span className="text-xs text-muted-foreground">{description}</span>}
       </div>
     );
   };

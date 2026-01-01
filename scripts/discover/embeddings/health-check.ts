@@ -7,14 +7,8 @@
  * Usage: npx tsx scripts/discover/embeddings/health-check.ts
  */
 
-import {
-  checkOllamaHealth,
-  getHealthDetails as getOllamaHealthDetails,
-} from "./ollama.js";
-import {
-  checkLanceDBHealth,
-  getHealthDetails as getLanceDBHealthDetails,
-} from "./lancedb.js";
+import { checkOllamaHealth, getHealthDetails as getOllamaHealthDetails } from "./ollama.js";
+import { checkLanceDBHealth, getHealthDetails as getLanceDBHealthDetails } from "./lancedb.js";
 
 interface HealthStatus {
   service: string;
@@ -88,7 +82,7 @@ async function checkAllServices(): Promise<void> {
     console.log("✅ All services healthy - ready for semantic search\n");
     console.log("Next steps:");
     console.log("  1. Index codebase: just discover-embeddings");
-    console.log("  2. Search: just discover-search \"form validation\"");
+    console.log('  2. Search: just discover-search "form validation"');
   } else {
     console.log("❌ Some services need attention\n");
     console.log("Quick fix:");

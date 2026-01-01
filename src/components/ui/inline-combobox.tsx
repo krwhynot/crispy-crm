@@ -1,51 +1,51 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover"
+import * as React from "react";
+import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
 import {
   Command,
   CommandList,
   CommandItem,
   CommandEmpty,
   CommandGroup,
-} from "@/components/ui/command"
-import { cn } from "@/lib/utils"
-import { Check } from "lucide-react"
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 
 // =============================================================================
 // TYPES
 // =============================================================================
 
 export interface ComboboxOption {
-  value: string
-  label: string
-  disabled?: boolean
+  value: string;
+  label: string;
+  disabled?: boolean;
 }
 
 export interface InlineComboboxProps {
   /** Current value */
-  value: string
+  value: string;
 
   /** Available options */
-  options: ComboboxOption[]
+  options: ComboboxOption[];
 
   /** Called when value is committed (blur, Enter, Tab, or option select) */
-  onCommit: (value: string) => void
+  onCommit: (value: string) => void;
 
   /** Placeholder when empty */
-  placeholder?: string
+  placeholder?: string;
 
   /** Additional className for the input */
-  className?: string
+  className?: string;
 
   /** Disable the combobox */
-  disabled?: boolean
+  disabled?: boolean;
 
   /** Allow free-form text (not just options) */
-  allowCustomValue?: boolean
+  allowCustomValue?: boolean;
 
   /** Auto-select first match while typing */
-  autoHighlight?: boolean
+  autoHighlight?: boolean;
 }
 
 // =============================================================================
@@ -65,45 +65,40 @@ export function InlineCombobox({
   // ===========================================
   // STATE
   // ===========================================
-  const [open, setOpen] = React.useState(false)
-  const [inputValue, setInputValue] = React.useState(externalValue)
-  const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
+  const [open, setOpen] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState(externalValue);
+  const [highlightedIndex, setHighlightedIndex] = React.useState(-1);
 
-  const inputRef = React.useRef<HTMLInputElement>(null)
-  const originalValueRef = React.useRef(externalValue)
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const originalValueRef = React.useRef(externalValue);
 
   // ===========================================
   // FILTERED OPTIONS
   // Case-insensitive filtering using Intl.Collator (P13)
   // ===========================================
-  const collator = React.useMemo(
-    () => new Intl.Collator("en", { sensitivity: "base" }),
-    []
-  )
+  const collator = React.useMemo(() => new Intl.Collator("en", { sensitivity: "base" }), []);
 
   const filteredOptions = React.useMemo(() => {
-    if (!inputValue.trim()) return options
+    if (!inputValue.trim()) return options;
 
-    const inputLower = inputValue.toLowerCase()
-    return options.filter((opt) =>
-      opt.label.toLowerCase().includes(inputLower)
-    )
-  }, [options, inputValue])
+    const inputLower = inputValue.toLowerCase();
+    return options.filter((opt) => opt.label.toLowerCase().includes(inputLower));
+  }, [options, inputValue]);
 
   // Reset highlight when filtered options change
   React.useEffect(() => {
     if (autoHighlight && filteredOptions.length > 0 && open) {
-      setHighlightedIndex(0)
+      setHighlightedIndex(0);
     } else if (filteredOptions.length === 0) {
-      setHighlightedIndex(-1)
+      setHighlightedIndex(-1);
     }
-  }, [filteredOptions.length, autoHighlight, open])
+  }, [filteredOptions.length, autoHighlight, open]);
 
   // Sync with external value changes
   React.useEffect(() => {
-    setInputValue(externalValue)
-    originalValueRef.current = externalValue
-  }, [externalValue])
+    setInputValue(externalValue);
+    originalValueRef.current = externalValue;
+  }, [externalValue]);
 
   // ===========================================
   // HANDLERS
@@ -113,44 +108,40 @@ export function InlineCombobox({
     (val: string) => {
       // If not allowing custom values, validate against options
       if (!allowCustomValue) {
-        const matchedOption = options.find(
-          (opt) => collator.compare(opt.label, val) === 0
-        )
+        const matchedOption = options.find((opt) => collator.compare(opt.label, val) === 0);
         if (matchedOption) {
-          onCommit(matchedOption.value)
-          originalValueRef.current = matchedOption.label
+          onCommit(matchedOption.value);
+          originalValueRef.current = matchedOption.label;
         }
         // Invalid value - don't commit, restore original
-        return
+        return;
       }
 
       // Check if typed value matches an option label (case-insensitive)
-      const matchedOption = options.find(
-        (opt) => collator.compare(opt.label, val) === 0
-      )
+      const matchedOption = options.find((opt) => collator.compare(opt.label, val) === 0);
 
       if (matchedOption) {
-        onCommit(matchedOption.value)
-        originalValueRef.current = matchedOption.label
+        onCommit(matchedOption.value);
+        originalValueRef.current = matchedOption.label;
       } else {
-        onCommit(val)
-        originalValueRef.current = val
+        onCommit(val);
+        originalValueRef.current = val;
       }
     },
     [options, onCommit, allowCustomValue, collator]
-  )
+  );
 
   const selectOption = React.useCallback(
     (option: ComboboxOption) => {
-      setInputValue(option.label)
-      onCommit(option.value)
-      originalValueRef.current = option.label
-      setOpen(false)
+      setInputValue(option.label);
+      onCommit(option.value);
+      originalValueRef.current = option.label;
+      setOpen(false);
       // Keep focus on input after selection
-      inputRef.current?.focus()
+      inputRef.current?.focus();
     },
     [onCommit]
-  )
+  );
 
   // ===========================================
   // KEYBOARD TRAP HANDLING
@@ -159,87 +150,85 @@ export function InlineCombobox({
     switch (e.key) {
       case "ArrowDown":
         // TRAP: Prevent cursor moving to end of input
-        e.preventDefault()
+        e.preventDefault();
         if (!open) {
-          setOpen(true)
-          setHighlightedIndex(0)
+          setOpen(true);
+          setHighlightedIndex(0);
         } else {
-          setHighlightedIndex((prev) =>
-            prev < filteredOptions.length - 1 ? prev + 1 : prev
-          )
+          setHighlightedIndex((prev) => (prev < filteredOptions.length - 1 ? prev + 1 : prev));
         }
-        break
+        break;
 
       case "ArrowUp":
         // TRAP: Prevent cursor moving to start of input
-        e.preventDefault()
+        e.preventDefault();
         if (open) {
-          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : 0))
+          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : 0));
         }
-        break
+        break;
 
       case "Enter":
         // TRAP: Prevent form submission
-        e.preventDefault()
+        e.preventDefault();
         if (open && highlightedIndex >= 0 && filteredOptions[highlightedIndex]) {
           // Select highlighted option
-          selectOption(filteredOptions[highlightedIndex])
+          selectOption(filteredOptions[highlightedIndex]);
         } else {
           // Commit typed value
-          commitValue(inputValue)
-          setOpen(false)
+          commitValue(inputValue);
+          setOpen(false);
         }
-        break
+        break;
 
       case "Escape":
-        e.preventDefault()
+        e.preventDefault();
         // Restore original value (cancel edit)
-        setInputValue(originalValueRef.current)
-        setOpen(false)
-        break
+        setInputValue(originalValueRef.current);
+        setOpen(false);
+        break;
 
       case "Tab":
         // Allow natural tab behavior, but commit first
-        commitValue(inputValue)
-        setOpen(false)
+        commitValue(inputValue);
+        setOpen(false);
         // Don't preventDefault - let focus move naturally
-        break
+        break;
 
       case "Home":
       case "End":
         // Allow cursor navigation within input
         // Don't interfere with these keys
-        break
+        break;
     }
-  }
+  };
 
   const handleFocus = () => {
     // Excel-like: select all text on focus
-    inputRef.current?.select()
+    inputRef.current?.select();
     // Store original for Escape cancellation
-    originalValueRef.current = inputValue
-  }
+    originalValueRef.current = inputValue;
+  };
 
   const handleBlur = (e: React.FocusEvent) => {
     // Don't commit if clicking inside dropdown
-    const relatedTarget = e.relatedTarget as HTMLElement | null
+    const relatedTarget = e.relatedTarget as HTMLElement | null;
     if (relatedTarget?.closest('[data-slot="combobox-content"]')) {
-      return
+      return;
     }
 
-    commitValue(inputValue)
-    setOpen(false)
-  }
+    commitValue(inputValue);
+    setOpen(false);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    setInputValue(newValue)
+    const newValue = e.target.value;
+    setInputValue(newValue);
 
     // Open dropdown on type
     if (!open) {
-      setOpen(true)
+      setOpen(true);
     }
-  }
+  };
 
   // ===========================================
   // DISABLED STATE
@@ -256,7 +245,7 @@ export function InlineCombobox({
       >
         {externalValue || placeholder}
       </span>
-    )
+    );
   }
 
   // ===========================================
@@ -352,8 +341,8 @@ export function InlineCombobox({
                     data-highlighted={index === highlightedIndex}
                     // CRITICAL: Prevent blur when clicking option
                     onMouseDown={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
+                      e.preventDefault();
+                      e.stopPropagation();
                     }}
                     onSelect={() => selectOption(option)}
                     className={cn(
@@ -365,9 +354,7 @@ export function InlineCombobox({
                     )}
                   >
                     <span className="flex-1">{option.label}</span>
-                    {option.value === externalValue && (
-                      <Check className="h-4 w-4 text-primary" />
-                    )}
+                    {option.value === externalValue && <Check className="h-4 w-4 text-primary" />}
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -376,5 +363,5 @@ export function InlineCombobox({
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Package } from "lucide-react";
-import { DirtyStateTracker, SidepaneEmptyState, SidepaneSection } from "@/components/layouts/sidepane";
+import {
+  DirtyStateTracker,
+  SidepaneEmptyState,
+  SidepaneSection,
+} from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
 import type { Opportunity } from "@/atomic-crm/types";
 
@@ -207,7 +211,9 @@ export function OpportunityProductsTab({
                       )}
 
                       {junctionData?.notes && (
-                        <p className="text-sm text-muted-foreground mt-2 italic">{junctionData.notes}</p>
+                        <p className="text-sm text-muted-foreground mt-2 italic">
+                          {junctionData.notes}
+                        </p>
                       )}
                     </div>
                   </div>

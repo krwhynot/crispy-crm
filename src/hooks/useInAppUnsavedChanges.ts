@@ -15,14 +15,17 @@ export function useInAppUnsavedChanges() {
   const [showWarning, setShowWarning] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
 
-  const handlePotentialDiscard = useCallback((action: () => void) => {
-    if (isDirty) {
-      setPendingAction(() => action);
-      setShowWarning(true);
-    } else {
-      action();
-    }
-  }, [isDirty]);
+  const handlePotentialDiscard = useCallback(
+    (action: () => void) => {
+      if (isDirty) {
+        setPendingAction(() => action);
+        setShowWarning(true);
+      } else {
+        action();
+      }
+    },
+    [isDirty]
+  );
 
   const confirmDiscard = useCallback(() => {
     setShowWarning(false);

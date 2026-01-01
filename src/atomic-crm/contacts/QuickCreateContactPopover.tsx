@@ -3,12 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  PopoverAnchor,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -106,8 +101,8 @@ export function QuickCreateContactPopover({
       onCreated(result.data as { id: number; first_name: string; last_name: string });
       setOpen(false);
     } catch (error) {
-      console.error('[QuickCreateContact] Failed:', error);
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      console.error("[QuickCreateContact] Failed:", error);
+      const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Failed to create contact: ${message}`, { type: "error" });
     } finally {
       setIsPending(false);
@@ -127,7 +122,9 @@ export function QuickCreateContactPopover({
               id="contact-first-name"
               {...methods.register("first_name")}
               aria-invalid={!!methods.formState.errors.first_name}
-              aria-describedby={methods.formState.errors.first_name ? "first-name-error" : undefined}
+              aria-describedby={
+                methods.formState.errors.first_name ? "first-name-error" : undefined
+              }
             />
             {methods.formState.errors.first_name && (
               <p id="first-name-error" className="text-xs text-destructive" role="alert">
@@ -245,10 +242,10 @@ export function QuickCreateContactRA({
           },
         });
         notify("Contact created", { type: "success" });
-        onCreate(result.data);  // KEY FIX: Pass real record back to RA
+        onCreate(result.data); // KEY FIX: Pass real record back to RA
       } catch (error) {
         notify("Failed to create contact", { type: "error" });
-        throw error;  // Fail-fast
+        throw error; // Fail-fast
       } finally {
         setIsPending(false);
       }
@@ -278,10 +275,10 @@ export function QuickCreateContactRA({
         },
       });
       notify("Contact created", { type: "success" });
-      onCreate(result.data);  // KEY FIX: Pass real record back to RA
+      onCreate(result.data); // KEY FIX: Pass real record back to RA
     } catch (error) {
-      console.error('[QuickCreateContact] Failed:', error);
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      console.error("[QuickCreateContact] Failed:", error);
+      const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Failed to create contact: ${message}`, { type: "error" });
       // Don't re-throw in event handlers - toast is the error handling
     } finally {
@@ -302,7 +299,9 @@ export function QuickCreateContactRA({
               id="contact-ra-first-name"
               {...methods.register("first_name")}
               aria-invalid={!!methods.formState.errors.first_name}
-              aria-describedby={methods.formState.errors.first_name ? "ra-first-name-error" : undefined}
+              aria-describedby={
+                methods.formState.errors.first_name ? "ra-first-name-error" : undefined
+              }
             />
             {methods.formState.errors.first_name && (
               <p id="ra-first-name-error" className="text-xs text-destructive" role="alert">
@@ -317,7 +316,9 @@ export function QuickCreateContactRA({
               id="contact-ra-last-name"
               {...methods.register("last_name")}
               aria-invalid={!!methods.formState.errors.last_name}
-              aria-describedby={methods.formState.errors.last_name ? "ra-last-name-error" : undefined}
+              aria-describedby={
+                methods.formState.errors.last_name ? "ra-last-name-error" : undefined
+              }
             />
             {methods.formState.errors.last_name && (
               <p id="ra-last-name-error" className="text-xs text-destructive" role="alert">

@@ -2,7 +2,9 @@ import * as React from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const WeeklyActivitySummaryLazy = React.lazy(() => import("./WeeklyActivitySummary"));
-const OpportunitiesByPrincipalReportLazy = React.lazy(() => import("./OpportunitiesByPrincipalReport"));
+const OpportunitiesByPrincipalReportLazy = React.lazy(
+  () => import("./OpportunitiesByPrincipalReport")
+);
 const CampaignActivityReportLazy = React.lazy(
   () => import("./CampaignActivity/CampaignActivityReport")
 );

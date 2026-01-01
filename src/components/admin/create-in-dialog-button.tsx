@@ -52,10 +52,13 @@ function parseCreateError(error: unknown, resource: string): string {
 interface CreateInDialogButtonProps<RecordType extends RaRecord = RaRecord> {
   resource: string;
   children: React.ReactElement; // The Create component (e.g., OrganizationCreate content)
-  defaultValues?: Partial<Omit<RecordType, 'id'>>;
+  defaultValues?: Partial<Omit<RecordType, "id">>;
   label?: string;
   onSave?: (record: RecordType) => void;
-  transform?: (data: Partial<Omit<RecordType, 'id'>>, options?: { previousData?: Partial<Omit<RecordType, 'id'>> }) => Partial<Omit<RecordType, 'id'>> | Promise<Partial<Omit<RecordType, 'id'>>>;
+  transform?: (
+    data: Partial<Omit<RecordType, "id">>,
+    options?: { previousData?: Partial<Omit<RecordType, "id">> }
+  ) => Partial<Omit<RecordType, "id">> | Promise<Partial<Omit<RecordType, "id">>>;
   title?: string;
   description?: string;
   variant?: "default" | "outline" | "ghost";

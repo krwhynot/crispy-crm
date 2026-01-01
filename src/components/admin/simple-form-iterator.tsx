@@ -67,7 +67,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
   const removeField = useCallback(
     (index: number) => {
       remove(index);
-      const isScalarArray = getValues(finalSource).every((value: unknown) => typeof value !== "object");
+      const isScalarArray = getValues(finalSource).every(
+        (value: unknown) => typeof value !== "object"
+      );
       if (isScalarArray) {
         // Trigger validation on the Array to avoid ghost errors.
         // Otherwise, validation errors on removed fields might still be displayed

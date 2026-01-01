@@ -33,17 +33,19 @@ export const ContactEdit = () => {
 const ContactEditContent = () => {
   const { isPending, record } = useEditContext<Contact>();
 
-  const defaultValues = useMemo(
-    () => contactBaseSchema.partial().parse(record),
-    [record]
-  );
+  const defaultValues = useMemo(() => contactBaseSchema.partial().parse(record), [record]);
 
   if (isPending || !record) return null;
 
   return (
     <ResponsiveGrid variant="dashboard" className="mt-2">
       <main role="main" aria-label="Edit contact">
-        <Form className="flex flex-col gap-4" defaultValues={defaultValues} key={record.id} mode="onBlur">
+        <Form
+          className="flex flex-col gap-4"
+          defaultValues={defaultValues}
+          key={record.id}
+          mode="onBlur"
+        >
           <Card>
             <CardContent>
               <ContactInputs />

@@ -128,7 +128,9 @@ export const OpportunityListContent = ({
 
   // Find active opportunity for DragOverlay (must be after opportunitiesByStage declaration)
   const activeOpportunity = activeId
-    ? Object.values(opportunitiesByStage).flat().find(o => String(o.id) === activeId)
+    ? Object.values(opportunitiesByStage)
+        .flat()
+        .find((o) => String(o.id) === activeId)
     : null;
 
   useEffect(() => {
@@ -268,26 +270,23 @@ export const OpportunityListContent = ({
    * The refresh() call in QuickAddOpportunity will eventually sync with
    * server data (including computed fields like principal_organization_name).
    */
-  const handleOpportunityCreated = useCallback(
-    (opportunity: Opportunity) => {
-      setOpportunitiesByStage((prevState) => {
-        const stage = opportunity.stage;
-        if (!stage || !prevState[stage]) {
-          // If stage is invalid or not in our stages, don't add
-          // (will be picked up on refresh)
-          console.warn(`[Kanban] New opportunity has invalid stage: ${stage}`);
-          return prevState;
-        }
+  const handleOpportunityCreated = useCallback((opportunity: Opportunity) => {
+    setOpportunitiesByStage((prevState) => {
+      const stage = opportunity.stage;
+      if (!stage || !prevState[stage]) {
+        // If stage is invalid or not in our stages, don't add
+        // (will be picked up on refresh)
+        console.warn(`[Kanban] New opportunity has invalid stage: ${stage}`);
+        return prevState;
+      }
 
-        const newState = { ...prevState };
-        // Add new opportunity at the START of the stage array (newest first)
-        // The refresh will later apply proper sorting
-        newState[stage] = [opportunity, ...prevState[stage]];
-        return newState;
-      });
-    },
-    []
-  );
+      const newState = { ...prevState };
+      // Add new opportunity at the START of the stage array (newest first)
+      // The refresh will later apply proper sorting
+      newState[stage] = [opportunity, ...prevState[stage]];
+      return newState;
+    });
+  }, []);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(String(event.active.id));
@@ -299,115 +298,119 @@ export const OpportunityListContent = ({
     setActiveId(null);
   }, []);
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
 
-    setActiveId(null);
+      setActiveId(null);
 
-    // Dropped outside a valid droppable
-    if (!over) {
-      return;
-    }
-
-    const draggableId = String(active.id);
-
-    // Find source stage by searching opportunitiesByStage
-    let sourceColId: string | null = null;
-    let sourceIndex = -1;
-    for (const [stageId, opportunities] of Object.entries(opportunitiesByStage)) {
-      const index = opportunities.findIndex((opp) => String(opp.id) === draggableId);
-      if (index !== -1) {
-        sourceColId = stageId;
-        sourceIndex = index;
-        break;
+      // Dropped outside a valid droppable
+      if (!over) {
+        return;
       }
-    }
 
-    if (!sourceColId || sourceIndex === -1) {
-      return;
-    }
+      const draggableId = String(active.id);
 
-    // Determine destination from over.id (could be stage ID or opportunity ID)
-    let destColId: string | null = null;
-    let destIndex = 0;
-
-    // Check if over.id is a stage ID
-    if (opportunitiesByStage[String(over.id)]) {
-      destColId = String(over.id);
-      destIndex = opportunitiesByStage[destColId].length; // Add to end
-    } else {
-      // over.id is an opportunity ID - find which stage it's in
+      // Find source stage by searching opportunitiesByStage
+      let sourceColId: string | null = null;
+      let sourceIndex = -1;
       for (const [stageId, opportunities] of Object.entries(opportunitiesByStage)) {
-        const index = opportunities.findIndex((opp) => String(opp.id) === String(over.id));
+        const index = opportunities.findIndex((opp) => String(opp.id) === draggableId);
         if (index !== -1) {
-          destColId = stageId;
-          destIndex = index;
+          sourceColId = stageId;
+          sourceIndex = index;
           break;
         }
       }
-    }
 
-    if (!destColId) {
-      return;
-    }
+      if (!sourceColId || sourceIndex === -1) {
+        return;
+      }
 
-    // Dropped in the same position
-    if (destColId === sourceColId && destIndex === sourceIndex) {
-      return;
-    }
+      // Determine destination from over.id (could be stage ID or opportunity ID)
+      let destColId: string | null = null;
+      let destIndex = 0;
 
-    // Store previous state for rollback on API error
-    const previousState = opportunitiesByStage;
+      // Check if over.id is a stage ID
+      if (opportunitiesByStage[String(over.id)]) {
+        destColId = String(over.id);
+        destIndex = opportunitiesByStage[destColId].length; // Add to end
+      } else {
+        // over.id is an opportunity ID - find which stage it's in
+        for (const [stageId, opportunities] of Object.entries(opportunitiesByStage)) {
+          const index = opportunities.findIndex((opp) => String(opp.id) === String(over.id));
+          if (index !== -1) {
+            destColId = stageId;
+            destIndex = index;
+            break;
+          }
+        }
+      }
 
-    const sourceCol = previousState[sourceColId];
-    const destCol = previousState[destColId];
-    const draggedItem = sourceCol.find((opp) => String(opp.id) === draggableId);
+      if (!destColId) {
+        return;
+      }
 
-    if (!draggedItem) {
-      return;
-    }
+      // Dropped in the same position
+      if (destColId === sourceColId && destIndex === sourceIndex) {
+        return;
+      }
 
-    // --- Optimistic UI Update ---
-    const newOpportunitiesByStage = { ...previousState };
+      // Store previous state for rollback on API error
+      const previousState = opportunitiesByStage;
 
-    // Remove item from the source column
-    const newSourceCol = Array.from(sourceCol);
-    newSourceCol.splice(sourceIndex, 1);
-    newOpportunitiesByStage[sourceColId] = newSourceCol;
+      const sourceCol = previousState[sourceColId];
+      const destCol = previousState[destColId];
+      const draggedItem = sourceCol.find((opp) => String(opp.id) === draggableId);
 
-    // Add item to the destination column
-    // Note: If moving in the same column, newSourceCol already has the item removed.
-    const newDestCol = sourceColId === destColId ? newSourceCol : Array.from(destCol);
-    newDestCol.splice(destIndex, 0, { ...draggedItem, stage: destColId });
-    newOpportunitiesByStage[destColId] = newDestCol;
+      if (!draggedItem) {
+        return;
+      }
 
-    setOpportunitiesByStage(newOpportunitiesByStage);
-    // --- End Optimistic UI Update ---
+      // --- Optimistic UI Update ---
+      const newOpportunitiesByStage = { ...previousState };
 
-    // Check if dropping into a closed stage - show modal to collect reason
-    if (destColId === "closed_won" || destColId === "closed_lost") {
-      setPendingCloseData({
-        opportunityId: draggableId,
-        opportunityName: draggedItem.name,
-        targetStage: destColId,
-        sourceStage: sourceColId,
-        previousState,
-        draggedItem,
-      });
-      setShowCloseModal(true);
-      return; // Don't call update yet - wait for modal confirmation
-    }
+      // Remove item from the source column
+      const newSourceCol = Array.from(sourceCol);
+      newSourceCol.splice(sourceIndex, 1);
+      newOpportunitiesByStage[sourceColId] = newSourceCol;
 
-    // --- API Call for non-close stages ---
-    performStageUpdate(draggableId, destColId, previousState, draggedItem);
-  }, [opportunitiesByStage, performStageUpdate]);
+      // Add item to the destination column
+      // Note: If moving in the same column, newSourceCol already has the item removed.
+      const newDestCol = sourceColId === destColId ? newSourceCol : Array.from(destCol);
+      newDestCol.splice(destIndex, 0, { ...draggedItem, stage: destColId });
+      newOpportunitiesByStage[destColId] = newDestCol;
+
+      setOpportunitiesByStage(newOpportunitiesByStage);
+      // --- End Optimistic UI Update ---
+
+      // Check if dropping into a closed stage - show modal to collect reason
+      if (destColId === "closed_won" || destColId === "closed_lost") {
+        setPendingCloseData({
+          opportunityId: draggableId,
+          opportunityName: draggedItem.name,
+          targetStage: destColId,
+          sourceStage: sourceColId,
+          previousState,
+          draggedItem,
+        });
+        setShowCloseModal(true);
+        return; // Don't call update yet - wait for modal confirmation
+      }
+
+      // --- API Call for non-close stages ---
+      performStageUpdate(draggableId, destColId, previousState, draggedItem);
+    },
+    [opportunitiesByStage, performStageUpdate]
+  );
 
   const announcements = {
     onDragStart: ({ active }: { active: { id: string | number } }) => {
-      const opp = Object.values(opportunitiesByStage).flat()
-        .find(o => String(o.id) === String(active.id));
-      const stageName = getOpportunityStageLabel(opp?.stage || '');
-      return `Picked up ${opp?.name || 'opportunity'}. Currently in ${stageName} stage.`;
+      const opp = Object.values(opportunitiesByStage)
+        .flat()
+        .find((o) => String(o.id) === String(active.id));
+      const stageName = getOpportunityStageLabel(opp?.stage || "");
+      return `Picked up ${opp?.name || "opportunity"}. Currently in ${stageName} stage.`;
     },
     onDragOver: ({ over }: { over: { id: string | number } | null }) => {
       if (over) {

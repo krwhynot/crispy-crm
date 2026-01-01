@@ -42,7 +42,7 @@ export const ListPagination = ({
 
   // Handle empty results: show "0 of 0" instead of "1-0 of 0"
   const pageStart = safeTotal === 0 ? 0 : (safePage - 1) * safePerPage + 1;
-  const pageEnd = safeTotal === 0 ? 0 : (hasNextPage ? safePage * safePerPage : safeTotal);
+  const pageEnd = safeTotal === 0 ? 0 : hasNextPage ? safePage * safePerPage : safeTotal;
 
   const boundaryCount = 1;
   const siblingCount = 1;
@@ -89,9 +89,7 @@ export const ListPagination = ({
 
   return (
     <div className={`flex items-center justify-between w-full ${className}`}>
-      <div className="hidden md:flex items-center">
-        {showExport && <ExportButton />}
-      </div>
+      <div className="hidden md:flex items-center">{showExport && <ExportButton />}</div>
 
       <div className="flex items-center space-x-2 gap-4">
         <div className="hidden md:flex items-center space-x-2">

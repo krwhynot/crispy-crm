@@ -74,13 +74,7 @@ export function ProductCategoryHeader() {
 
   // Show a basic header if no categories loaded yet
   if (categoryChoices.length === 0) {
-    return (
-      <FilterableColumnHeader
-        source="category"
-        label="Category"
-        filterType="none"
-      />
-    );
+    return <FilterableColumnHeader source="category" label="Category" filterType="none" />;
   }
 
   return (

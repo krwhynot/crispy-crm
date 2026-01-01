@@ -38,15 +38,8 @@ export const OpportunityCard = React.memo(function OpportunityCard({
   const contextRecord = useRecordContext<Opportunity>();
   const record = opportunity ?? contextRecord;
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: String(record?.id ?? 'placeholder'),
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: String(record?.id ?? "placeholder"),
     disabled: isDragOverlay || !record,
   });
 
@@ -94,7 +87,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
       style={{
         borderLeftColor: principalSlug
           ? `var(--principal-${principalSlug}, var(--muted))`
-          : 'var(--muted)',
+          : "var(--muted)",
         ...style,
       }}
       role="button"

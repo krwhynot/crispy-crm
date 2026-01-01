@@ -192,9 +192,7 @@ export function CheckboxColumnFilter({
                 <Checkbox
                   id={checkboxId}
                   checked={isChecked}
-                  onCheckedChange={(checked) =>
-                    handleToggle(choice.id, checked === true)
-                  }
+                  onCheckedChange={(checked) => handleToggle(choice.id, checked === true)}
                 />
                 <span className="text-sm">{choice.name}</span>
               </label>

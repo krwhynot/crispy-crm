@@ -6,16 +6,9 @@ import { EmptyState } from "./EmptyState";
 
 describe("EmptyState", () => {
   it("renders title and description", () => {
-    render(
-      <EmptyState
-        title="No Data Found"
-        description="Try adjusting your filters."
-      />
-    );
+    render(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
 
-    expect(
-      screen.getByRole("heading", { name: "No Data Found" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "No Data Found" })).toBeInTheDocument();
     expect(screen.getByText("Try adjusting your filters.")).toBeInTheDocument();
   });
 
@@ -35,12 +28,7 @@ describe("EmptyState", () => {
   });
 
   it("does not render icon when not provided", () => {
-    render(
-      <EmptyState
-        title="No Data Found"
-        description="Try adjusting your filters."
-      />
-    );
+    render(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
 
     const svg = document.querySelector("svg");
     expect(svg).not.toBeInTheDocument();
@@ -58,18 +46,11 @@ describe("EmptyState", () => {
       />
     );
 
-    expect(
-      screen.getByRole("button", { name: "Create New" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Create New" })).toBeInTheDocument();
   });
 
   it("does not render action button when not provided", () => {
-    render(
-      <EmptyState
-        title="No Data Found"
-        description="Try adjusting your filters."
-      />
-    );
+    render(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
 
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });

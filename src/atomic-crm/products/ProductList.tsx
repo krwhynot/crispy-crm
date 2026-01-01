@@ -28,7 +28,6 @@ import {
 } from "./ProductsDatagridHeader";
 import type { Product } from "../types";
 
-
 /**
  * ProductList - Standard list page for Product records
  *
@@ -115,10 +114,7 @@ const ProductListLayout = ({
   return (
     <>
       <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
-        <ListSearchBar
-          placeholder="Search products..."
-          filterConfig={PRODUCT_FILTER_CONFIG}
-        />
+        <ListSearchBar placeholder="Search products..." filterConfig={PRODUCT_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
@@ -171,7 +167,9 @@ const ProductListLayout = ({
           <FunctionField
             label="Certifications"
             sortable={false}
-            render={(record: Product) => <CertificationBadges certifications={record.certifications} />}
+            render={(record: Product) => (
+              <CertificationBadges certifications={record.certifications} />
+            )}
             {...COLUMN_VISIBILITY.desktopOnly}
           />
         </PremiumDatagrid>
@@ -184,10 +182,7 @@ const ProductListLayout = ({
 /**
  * ProductListActions - TopToolbar with create action
  */
-const ProductListActions = () => (
-  <TopToolbar>
-  </TopToolbar>
-);
+const ProductListActions = () => <TopToolbar></TopToolbar>;
 
 /**
  * CategoryBadge - Display product category with proper formatting

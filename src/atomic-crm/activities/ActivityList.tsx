@@ -114,10 +114,7 @@ const ActivityListLayout = () => {
   return (
     <>
       <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
-        <ListSearchBar
-          placeholder="Search activities..."
-          filterConfig={ACTIVITY_FILTER_CONFIG}
-        />
+        <ListSearchBar placeholder="Search activities..." filterConfig={ACTIVITY_FILTER_CONFIG} />
         <PremiumDatagrid focusedIndex={focusedIndex}>
           {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}
           <FunctionField
@@ -226,10 +223,7 @@ const ActivityListLayout = () => {
 /**
  * ActivityListActions - TopToolbar with export and create actions
  */
-const ActivityListActions = () => (
-  <TopToolbar>
-  </TopToolbar>
-);
+const ActivityListActions = () => <TopToolbar></TopToolbar>;
 
 /**
  * CSV exporter for Activity records

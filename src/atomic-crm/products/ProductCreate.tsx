@@ -1,9 +1,6 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  FormProgressProvider,
-  FormProgressBar,
-} from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { CreateFormFooter } from "../components/CreateFormFooter";
 
 import { ProductInputs } from "./ProductInputs";

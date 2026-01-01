@@ -86,7 +86,9 @@ describe("DuplicateOrgWarningDialog", () => {
     render(<DuplicateOrgWarningDialog {...defaultProps} />);
 
     expect(
-      screen.getByText(/Would you like to view the existing organization, change the name, or proceed anyway/i)
+      screen.getByText(
+        /Would you like to view the existing organization, change the name, or proceed anyway/i
+      )
     ).toBeInTheDocument();
   });
 

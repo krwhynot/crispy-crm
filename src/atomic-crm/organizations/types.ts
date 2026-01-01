@@ -28,7 +28,11 @@ export type {
 } from "./organizationImport.logic";
 
 // Import for use in this file
-import type { Organization, OrganizationType, OrganizationPriority } from "../validation/organizations";
+import type {
+  Organization,
+  OrganizationType,
+  OrganizationPriority,
+} from "../validation/organizations";
 import type { OrganizationImportSchema } from "./organizationImport.logic";
 
 // =====================================================================

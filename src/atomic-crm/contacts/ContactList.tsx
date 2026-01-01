@@ -118,10 +118,7 @@ const ContactListLayout = ({
   return (
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <ListSearchBar
-          placeholder="Search contacts..."
-          filterConfig={CONTACT_FILTER_CONFIG}
-        />
+        <ListSearchBar placeholder="Search contacts..." filterConfig={CONTACT_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
@@ -205,10 +202,7 @@ const ContactListLayout = ({
 
 const ContactListActions = () => (
   <TopToolbar>
-    <SortButton
-      fields={["first_name", "title", "last_seen"]}
-      dataTutorial="contact-sort-btn"
-    />
+    <SortButton fields={["first_name", "title", "last_seen"]} dataTutorial="contact-sort-btn" />
     <ExportButton dataTutorial="contact-export-btn" />
   </TopToolbar>
 );

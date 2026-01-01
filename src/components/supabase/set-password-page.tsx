@@ -62,11 +62,7 @@ export const SetPasswordPage = () => {
             : "ra.auth.sign_in_error";
 
       const errorDetails =
-        typeof error === "string"
-          ? error
-          : error instanceof Error
-            ? error.message
-            : undefined;
+        typeof error === "string" ? error : error instanceof Error ? error.message : undefined;
 
       notify(errorMessage, {
         type: "warning",

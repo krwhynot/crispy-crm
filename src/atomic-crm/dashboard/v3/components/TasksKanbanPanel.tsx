@@ -131,8 +131,9 @@ function TasksKanbanPanel() {
   }, [tasks]);
 
   const activeTask = activeId
-    ? [...tasksByColumn.overdue, ...tasksByColumn.today, ...tasksByColumn.thisWeek]
-        .find(t => String(t.id) === activeId)
+    ? [...tasksByColumn.overdue, ...tasksByColumn.today, ...tasksByColumn.thisWeek].find(
+        (t) => String(t.id) === activeId
+      )
     : null;
 
   /**
@@ -163,12 +164,9 @@ function TasksKanbanPanel() {
     }
   }, []);
 
-  const handleDragStart = useCallback(
-    (event: DragStartEvent) => {
-      setActiveId(String(event.active.id));
-    },
-    []
-  );
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(String(event.active.id));
+  }, []);
 
   /**
    * Handle drag end - update task due_date based on destination column

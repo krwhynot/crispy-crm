@@ -72,7 +72,9 @@ function FormProgressProvider({ children, initialProgress = 10 }: FormProgressPr
     };
   }, [fields, initialProgress, registerField, markFieldValid]);
 
-  return <FormProgressContext.Provider value={contextValue}>{children}</FormProgressContext.Provider>;
+  return (
+    <FormProgressContext.Provider value={contextValue}>{children}</FormProgressContext.Provider>
+  );
 }
 
 function useFormProgress(): FormProgressContextValue {

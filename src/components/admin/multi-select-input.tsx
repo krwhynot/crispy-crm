@@ -45,11 +45,7 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
     source: sourceProp,
   });
 
-  const {
-    id,
-    field,
-    isRequired,
-  } = useInput({
+  const { id, field, isRequired } = useInput({
     defaultValue,
     resource: resourceProp,
     source,
@@ -83,7 +79,12 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
     <FormField id={id} name={field.name} className={props.className}>
       {label !== false && (
         <FormLabel>
-          <FieldTitle label={label} source={source} resource={resourceProp} isRequired={isRequired} />
+          <FieldTitle
+            label={label}
+            source={source}
+            resource={resourceProp}
+            isRequired={isRequired}
+          />
         </FormLabel>
       )}
       <DropdownMenu>

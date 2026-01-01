@@ -226,10 +226,7 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
  */
 export function escapeForIlike(str: string): string {
   // Escape backslash first (it's the escape character), then % and _
-  return str
-    .replace(/\\/g, "\\\\")
-    .replace(/%/g, "\\%")
-    .replace(/_/g, "\\_");
+  return str.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
 }
 
 /**
@@ -272,9 +269,7 @@ export function applyFullTextSearch(
     const needsQuoting = /[,."':() ]/.test(escaped);
     const wildcardValue = needsQuoting ? `"*${escaped}*"` : `*${escaped}*`;
 
-    const orConditions = columns
-      .map((column) => `${column}.ilike.${wildcardValue}`)
-      .join(",");
+    const orConditions = columns.map((column) => `${column}.ilike.${wildcardValue}`).join(",");
 
     // Use "or@" key to pass raw PostgREST syntax through unchanged
     // The empty operator (@) makes ra-data-postgrest return the value as-is

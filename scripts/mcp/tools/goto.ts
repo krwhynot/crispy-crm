@@ -2,19 +2,9 @@ import { z } from "zod";
 import { getDb } from "../db";
 
 const gotoSchema = z.object({
-  symbolName: z
-    .string()
-    .describe("Symbol name (e.g., 'useForm', 'ContactList')"),
+  symbolName: z.string().describe("Symbol name (e.g., 'useForm', 'ContactList')"),
   kind: z
-    .enum([
-      "any",
-      "function",
-      "class",
-      "interface",
-      "type",
-      "method",
-      "property",
-    ])
+    .enum(["any", "function", "class", "interface", "type", "method", "property"])
     .default("any")
     .describe("Filter by symbol kind"),
 });

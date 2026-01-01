@@ -11,11 +11,11 @@ export type OpportunitiesByStage = Record<Opportunity["stage"], Opportunity[]>;
  * PRD Reference: Pipeline PRD "Card Sorting Within Columns"
  */
 const STATUS_PRIORITY: Record<StageStatus, number> = {
-  expired: 0,   // Most urgent - past close date
-  rotting: 1,   // Over threshold
-  warning: 2,   // Approaching threshold
-  healthy: 3,   // On track
-  closed: 4,    // Completed
+  expired: 0, // Most urgent - past close date
+  rotting: 1, // Over threshold
+  warning: 2, // Approaching threshold
+  healthy: 3, // On track
+  closed: 4, // Completed
 };
 
 /**
@@ -32,12 +32,8 @@ const STATUS_PRIORITY: Record<StageStatus, number> = {
  */
 export function sortOpportunitiesByStatus(opportunities: Opportunity[]): Opportunity[] {
   return [...opportunities].sort((a, b) => {
-    const aCloseDate = a.estimated_close_date
-      ? parseDateSafely(a.estimated_close_date)
-      : null;
-    const bCloseDate = b.estimated_close_date
-      ? parseDateSafely(b.estimated_close_date)
-      : null;
+    const aCloseDate = a.estimated_close_date ? parseDateSafely(a.estimated_close_date) : null;
+    const bCloseDate = b.estimated_close_date ? parseDateSafely(b.estimated_close_date) : null;
 
     const aStatus = getStageStatus(a.stage, a.days_in_stage || 0, aCloseDate);
     const bStatus = getStageStatus(b.stage, b.days_in_stage || 0, bCloseDate);
@@ -83,14 +79,14 @@ export const getOpportunitiesByStage = (
         } else {
           // Fallback: Add to new_lead if stage is invalid/null/undefined
           // Log warning to help debug stage mismatch issues
-          console.warn('[Stage Grouping] Invalid stage detected:', {
+          console.warn("[Stage Grouping] Invalid stage detected:", {
             opportunityId: opportunity.id,
             stage: opportunity.stage,
             expectedStages: Object.keys(acc),
           });
           // Push to new_lead as fallback so cards aren't lost
-          if (acc['new_lead']) {
-            acc['new_lead'].push({ ...opportunity, stage: 'new_lead' as Opportunity['stage'] });
+          if (acc["new_lead"]) {
+            acc["new_lead"].push({ ...opportunity, stage: "new_lead" as Opportunity["stage"] });
           }
         }
         return acc;

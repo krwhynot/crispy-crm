@@ -85,9 +85,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
   const handleClose = () => {
     // Check for unsaved changes before closing
     if (isDirty) {
-      const confirmed = window.confirm(
-        'You have unsaved changes. Are you sure you want to close?'
-      );
+      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to close?");
       if (!confirmed) return;
     }
     reset(defaultValues);

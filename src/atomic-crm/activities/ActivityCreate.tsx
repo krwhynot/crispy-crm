@@ -7,10 +7,7 @@ import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import { activitiesSchema } from "../validation/activities";
 import ActivitySinglePage from "./ActivitySinglePage";
-import {
-  FormProgressProvider,
-  FormProgressBar,
-} from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 const HiddenActivityTypeField = () => {

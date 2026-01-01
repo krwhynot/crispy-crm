@@ -15,8 +15,8 @@ import { project } from "./utils/project.js";
 interface ExtractorConfig {
   name: string;
   label: string;
-  outputPath: string;        // File name for single file, directory name for chunked
-  isChunked: boolean;        // Whether output is chunked (directory with manifest)
+  outputPath: string; // File name for single file, directory name for chunked
+  isChunked: boolean; // Whether output is chunked (directory with manifest)
   extractFn: (onlyChunks?: Set<string>) => Promise<void>;
   getSourceFiles: () => string[];
 }
@@ -25,26 +25,29 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
   components: {
     name: "components",
     label: "Components",
-    outputPath: "component-inventory",  // Directory for chunked output
+    outputPath: "component-inventory", // Directory for chunked output
     isChunked: true,
     extractFn: extractComponents,
     getSourceFiles: () => {
       const files = project.addSourceFilesAtPaths("src/atomic-crm/**/*.tsx");
-      return files.map(f => f.getFilePath());
+      return files.map((f) => f.getFilePath());
     },
   },
   hooks: {
     name: "hooks",
     label: "Hooks",
-    outputPath: "hooks-inventory",  // Chunked directory output
+    outputPath: "hooks-inventory", // Chunked directory output
     isChunked: true,
     extractFn: extractHooks,
     getSourceFiles: () => {
       const globs = ["src/**/use*.ts", "src/**/use*.tsx", "src/**/*.ts", "src/**/*.tsx"];
       const files = project.addSourceFilesAtPaths(globs);
-      return files.map(f => f.getFilePath()).filter(
-        path => !path.includes("node_modules") && !path.includes(".test.") && !path.includes(".spec.")
-      );
+      return files
+        .map((f) => f.getFilePath())
+        .filter(
+          (path) =>
+            !path.includes("node_modules") && !path.includes(".test.") && !path.includes(".spec.")
+        );
     },
   },
   schemas: {
@@ -55,7 +58,7 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
     extractFn: extractSchemas,
     getSourceFiles: () => {
       const files = project.addSourceFilesAtPaths("src/atomic-crm/validation/**/*.ts");
-      return files.map(f => f.getFilePath()).filter(p => !p.includes("__tests__"));
+      return files.map((f) => f.getFilePath()).filter((p) => !p.includes("__tests__"));
     },
   },
   types: {
@@ -67,7 +70,7 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
     getSourceFiles: () => {
       const globs = ["src/atomic-crm/types.ts", "src/atomic-crm/**/types.ts", "src/types/**/*.ts"];
       const files = project.addSourceFilesAtPaths(globs);
-      return files.map(f => f.getFilePath()).filter(p => !p.includes("database.generated.ts"));
+      return files.map((f) => f.getFilePath()).filter((p) => !p.includes("database.generated.ts"));
     },
   },
   forms: {
@@ -81,12 +84,12 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
         "src/atomic-crm/**/*Create*.tsx",
         "src/atomic-crm/**/*Edit*.tsx",
         "src/atomic-crm/**/*Form*.tsx",
-        "src/atomic-crm/**/*Inputs*.tsx"
+        "src/atomic-crm/**/*Inputs*.tsx",
       ];
       const files = project.addSourceFilesAtPaths(globs);
-      return files.map(f => f.getFilePath()).filter(
-        p => !p.includes("__tests__") && !p.includes(".test.") && !p.includes(".spec.")
-      );
+      return files
+        .map((f) => f.getFilePath())
+        .filter((p) => !p.includes("__tests__") && !p.includes(".test.") && !p.includes(".spec."));
     },
   },
   validationServices: {
@@ -97,7 +100,9 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
     extractFn: extractValidationServices,
     getSourceFiles: () => {
       const files = project.addSourceFilesAtPaths("src/atomic-crm/validation/**/*.ts");
-      return files.map(f => f.getFilePath()).filter(p => !p.includes("__tests__") && !p.endsWith("index.ts"));
+      return files
+        .map((f) => f.getFilePath())
+        .filter((p) => !p.includes("__tests__") && !p.endsWith("index.ts"));
     },
   },
   callGraph: {
@@ -107,18 +112,17 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
     isChunked: true,
     extractFn: extractCallGraph,
     getSourceFiles: () => {
-      const globs = [
-        "src/atomic-crm/**/*.ts",
-        "src/atomic-crm/**/*.tsx",
-        "src/hooks/**/*.ts",
-      ];
+      const globs = ["src/atomic-crm/**/*.ts", "src/atomic-crm/**/*.tsx", "src/hooks/**/*.ts"];
       const files = project.addSourceFilesAtPaths(globs);
-      return files.map(f => f.getFilePath()).filter(
-        p => !p.includes("node_modules") &&
-             !p.includes(".test.") &&
-             !p.includes(".spec.") &&
-             !p.includes("__tests__")
-      );
+      return files
+        .map((f) => f.getFilePath())
+        .filter(
+          (p) =>
+            !p.includes("node_modules") &&
+            !p.includes(".test.") &&
+            !p.includes(".spec.") &&
+            !p.includes("__tests__")
+        );
     },
   },
 };
@@ -133,11 +137,11 @@ function parseCliArgs(): CliArgs {
   const args = process.argv.slice(2);
   const checkOnly = args.includes("--check");
   const incremental = args.includes("--incremental");
-  const onlyFlag = args.find(a => a.startsWith("--only="));
+  const onlyFlag = args.find((a) => a.startsWith("--only="));
   const onlyExtractors = onlyFlag ? onlyFlag.split("=")[1].split(",") : null;
 
   if (onlyExtractors) {
-    const invalid = onlyExtractors.filter(e => !EXTRACTORS[e]);
+    const invalid = onlyExtractors.filter((e) => !EXTRACTORS[e]);
     if (invalid.length > 0) {
       console.error(chalk.red(`Invalid extractors: ${invalid.join(", ")}`));
       console.error(chalk.yellow(`Valid options: ${Object.keys(EXTRACTORS).join(", ")}`));
@@ -234,7 +238,7 @@ async function checkStaleness(extractorsToCheck: ExtractorConfig[]): Promise<num
       }
       if (result.changedFiles && result.changedFiles.length > 0) {
         const displayFiles = result.changedFiles.slice(0, 5);
-        displayFiles.forEach(file => console.log(chalk.gray(`    ${file}`)));
+        displayFiles.forEach((file) => console.log(chalk.gray(`    ${file}`)));
         if (result.changedFiles.length > 5) {
           console.log(chalk.gray(`    ... and ${result.changedFiles.length - 5} more`));
         }
@@ -271,7 +275,7 @@ async function runExtractors(extractorsToRun: ExtractorConfig[]): Promise<void> 
     })
   );
 
-  const failed = results.filter(r => r.status === "rejected");
+  const failed = results.filter((r) => r.status === "rejected");
   if (failed.length > 0) {
     console.log();
     failed.forEach((result, idx) => {
@@ -294,9 +298,7 @@ function printSummary(extractorsRun: ExtractorConfig[]): void {
       ? path.join(process.cwd(), ".claude/state", extractor.outputPath, "manifest.json")
       : path.join(process.cwd(), ".claude/state", extractor.outputPath);
 
-    const displayName = extractor.isChunked
-      ? `${extractor.outputPath}/`
-      : extractor.outputPath;
+    const displayName = extractor.isChunked ? `${extractor.outputPath}/` : extractor.outputPath;
 
     try {
       const data = JSON.parse(fs.readFileSync(outputPath, "utf-8"));
@@ -305,12 +307,24 @@ function printSummary(extractorsRun: ExtractorConfig[]): void {
 
       if (extractor.isChunked) {
         const chunkCount = data.chunks?.length || data.summary?.total_chunks || 0;
-        console.log(chalk.gray("├──"), chalk.white(displayName.padEnd(30)), chalk.green(`✓ ${itemCount} items (${chunkCount} chunks)`));
+        console.log(
+          chalk.gray("├──"),
+          chalk.white(displayName.padEnd(30)),
+          chalk.green(`✓ ${itemCount} items (${chunkCount} chunks)`)
+        );
       } else {
-        console.log(chalk.gray("├──"), chalk.white(displayName.padEnd(30)), chalk.green(`✓ ${itemCount} items`));
+        console.log(
+          chalk.gray("├──"),
+          chalk.white(displayName.padEnd(30)),
+          chalk.green(`✓ ${itemCount} items`)
+        );
       }
     } catch {
-      console.log(chalk.gray("├──"), chalk.white(displayName.padEnd(30)), chalk.red("✗ Error reading file"));
+      console.log(
+        chalk.gray("├──"),
+        chalk.white(displayName.padEnd(30)),
+        chalk.red("✗ Error reading file")
+      );
     }
   });
 
@@ -321,7 +335,7 @@ async function main() {
   const { checkOnly, onlyExtractors, incremental } = parseCliArgs();
 
   const extractorsToUse = onlyExtractors
-    ? onlyExtractors.map(name => EXTRACTORS[name])
+    ? onlyExtractors.map((name) => EXTRACTORS[name])
     : Object.values(EXTRACTORS);
 
   if (checkOnly) {
@@ -348,10 +362,8 @@ async function main() {
       }
 
       const sourceFiles = extractor.getSourceFiles();
-      const staleResult = getStaleChunks(
-        extractor.outputPath,
-        sourceFiles,
-        (filePath) => getChunkNameForFile(extractor, filePath)
+      const staleResult = getStaleChunks(extractor.outputPath, sourceFiles, (filePath) =>
+        getChunkNameForFile(extractor, filePath)
       );
 
       if (staleResult.requiresFullRegen) {
@@ -362,13 +374,19 @@ async function main() {
       }
 
       if (!staleResult.hasStaleChunks) {
-        console.log(chalk.green(`✓  ${extractor.label}: All ${staleResult.freshChunks.length} chunks fresh`));
+        console.log(
+          chalk.green(`✓  ${extractor.label}: All ${staleResult.freshChunks.length} chunks fresh`)
+        );
         continue;
       }
 
       // Perform incremental extraction
       const staleChunkSet = new Set(staleResult.staleChunks);
-      console.log(chalk.blue(`📝 ${extractor.label}: Updating ${staleResult.staleChunks.length} of ${staleResult.staleChunks.length + staleResult.freshChunks.length} chunks`));
+      console.log(
+        chalk.blue(
+          `📝 ${extractor.label}: Updating ${staleResult.staleChunks.length} of ${staleResult.staleChunks.length + staleResult.freshChunks.length} chunks`
+        )
+      );
 
       for (const [chunk, reason] of staleResult.staleReasons) {
         console.log(chalk.gray(`     ${chunk}: ${reason}`));
@@ -386,7 +404,7 @@ async function main() {
   printSummary(extractorsToUse);
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error(chalk.red("\n❌ Discovery failed:"), err);
   process.exit(1);
 });

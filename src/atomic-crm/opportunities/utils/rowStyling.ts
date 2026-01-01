@@ -18,9 +18,7 @@ interface OpportunityRowData {
  * Determine close date status for styling
  * Reuses logic from OpportunityCard.tsx
  */
-export const getCloseDateStatus = (
-  closeDate: string | null | undefined
-): CloseDateStatus => {
+export const getCloseDateStatus = (closeDate: string | null | undefined): CloseDateStatus => {
   if (!closeDate) return "no-date";
 
   const date = new Date(closeDate);
@@ -70,9 +68,7 @@ const ROW_STYLE_CLASSES = {
  * @param record - Opportunity record with stage and estimated_close_date
  * @returns Tailwind class string for row styling
  */
-export const getOpportunityRowClassName = (
-  record: OpportunityRowData
-): string => {
+export const getOpportunityRowClassName = (record: OpportunityRowData): string => {
   const { estimated_close_date, stage } = record;
 
   const closeDateStatus = getCloseDateStatus(estimated_close_date);
@@ -95,10 +91,7 @@ export const getOpportunityRowClassName = (
 /**
  * Type-safe wrapper for use with PremiumDatagrid rowClassName prop
  */
-export const opportunityRowClassName = (
-  record: unknown,
-  _index: number
-): string => {
+export const opportunityRowClassName = (record: unknown, _index: number): string => {
   // Type guard - ensure record has expected shape
   if (!record || typeof record !== "object") return "";
 

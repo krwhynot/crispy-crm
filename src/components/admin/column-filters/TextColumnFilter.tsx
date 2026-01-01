@@ -79,9 +79,8 @@ export function TextColumnFilter({
       const currentFilters = filterValues || {};
       const currentFilterValue = currentFilters[filterKey];
       // Strip wildcards for comparison
-      const currentDisplayValue = typeof currentFilterValue === "string"
-        ? stripWildcards(currentFilterValue)
-        : "";
+      const currentDisplayValue =
+        typeof currentFilterValue === "string" ? stripWildcards(currentFilterValue) : "";
 
       // Only update if value actually changed
       if (localValue !== currentDisplayValue) {
@@ -116,7 +115,7 @@ export function TextColumnFilter({
         setLocalValue("");
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- Removed localValue intentionally: only sync on external changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Removed localValue intentionally: only sync on external changes
   }, [filterValues, filterKey, isInitialized]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
