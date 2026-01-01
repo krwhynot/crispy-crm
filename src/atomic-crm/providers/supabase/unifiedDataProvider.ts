@@ -1023,9 +1023,16 @@ export const unifiedDataProvider: DataProvider = {
       // - Related activities, opportunityNotes, opportunity_participants, tasks
       // Engineering Constitution: Fail-fast - if RPC fails, the whole delete fails
       if (resource === "opportunities") {
+        // Coerce ID to number - React Admin Identifier can be string | number
+        // RPC requires BIGINT, so we must ensure it's a valid integer
+        const numericId = Number(params.id);
+        if (!Number.isInteger(numericId) || numericId <= 0) {
+          throw new Error(`Invalid opportunity ID: ${params.id}`);
+        }
+
         const { error: rpcError } = await supabase.rpc(
           'archive_opportunity_with_relations',
-          { opp_id: params.id }
+          { opp_id: numericId }
         );
 
         if (rpcError) {
@@ -1065,9 +1072,16 @@ export const unifiedDataProvider: DataProvider = {
       if (resource === "opportunities") {
         // Call cascade RPC for each opportunity (fail-fast: stop on first error)
         for (const id of params.ids) {
+          // Coerce ID to number - React Admin Identifier can be string | number
+          // RPC requires BIGINT, so we must ensure it's a valid integer
+          const numericId = Number(id);
+          if (!Number.isInteger(numericId) || numericId <= 0) {
+            throw new Error(`Invalid opportunity ID: ${id}`);
+          }
+
           const { error: rpcError } = await supabase.rpc(
             'archive_opportunity_with_relations',
-            { opp_id: id }
+            { opp_id: numericId }
           );
 
           if (rpcError) {
