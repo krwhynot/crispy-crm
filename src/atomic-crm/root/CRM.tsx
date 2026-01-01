@@ -79,6 +79,12 @@ const OpportunityShowRedirect = () => {
   return <Navigate to={`/opportunities?view=${id}`} replace />;
 };
 
+// Redirect component for /opportunities/kanban URL
+// Intercepts before :id wildcard catches "kanban" as an ID
+const OpportunityKanbanRedirect = () => {
+  return <Navigate to="/opportunities?view=kanban" replace />;
+};
+
 // Configure QueryClient with appropriate stale times for CRM data
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -203,6 +209,8 @@ export const CRM = ({
           {/* CONSOLIDATED: /admin/users now redirects to /sales */}
           <Route path="/admin/users" element={<Navigate to="/sales" replace />} />
           <Route path="/admin/users/:id" element={<AdminUserRedirect />} />
+          {/* View-specific routes (must come before :id wildcards) */}
+          <Route path="/opportunities/kanban" element={<OpportunityKanbanRedirect />} />
           {/* Legacy redirects */}
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
           <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />

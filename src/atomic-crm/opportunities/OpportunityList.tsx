@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/admin/list";
 import { ListPagination } from "@/components/admin/list-pagination";
@@ -41,7 +42,28 @@ const saveViewPreference = (view: OpportunityView) => {
 
 const OpportunityList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
-  const [view, setView] = useState<OpportunityView>(getViewPreference);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Check for URL param (from /opportunities/kanban redirect or direct link)
+  const urlView = searchParams.get("view") as OpportunityView | null;
+  const validViews: OpportunityView[] = ["kanban", "list", "campaign", "principal"];
+
+  const [view, setView] = useState<OpportunityView>(() => {
+    // URL param takes precedence over localStorage
+    if (urlView && validViews.includes(urlView)) {
+      return urlView;
+    }
+    return getViewPreference();
+  });
+
+  // Clear URL param after reading (prevents stale state on refresh)
+  useEffect(() => {
+    if (urlView && validViews.includes(urlView)) {
+      searchParams.delete("view");
+      setSearchParams(searchParams, { replace: true });
+      saveViewPreference(urlView);
+    }
+  }, [urlView, searchParams, setSearchParams]);
 
   // Clean up stale cached filters from localStorage
   useFilterCleanup("opportunities");

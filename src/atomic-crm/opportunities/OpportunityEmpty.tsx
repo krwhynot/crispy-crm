@@ -17,12 +17,17 @@ export const OpportunityEmpty = ({ children }: { children?: React.ReactNode }) =
 
   return (
     <div
-      className="flex flex-col justify-center items-center gap-12"
+      className="flex flex-col justify-center items-center gap-6 lg:gap-12 overflow-y-auto"
       style={{
         height: `calc(100dvh - ${appbarHeight}px)`,
+        maxHeight: `calc(100dvh - ${appbarHeight}px)`,
       }}
     >
-      <img src="./img/empty.svg" alt="No opportunities found" />
+      <img
+        src="./img/empty.svg"
+        alt="No opportunities found"
+        className="max-h-40 lg:max-h-52"
+      />
       {contacts && contacts.length > 0 ? (
         <>
           <div className="flex flex-col items-center gap-0">
