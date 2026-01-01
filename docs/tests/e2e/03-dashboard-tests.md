@@ -1155,3 +1155,43 @@ When reporting failures, include:
 5. Screenshots of UI state
 6. Browser and version
 7. Database state (if relevant)
+
+---
+
+## Production Safety
+
+**Tests Safe for Production (Read-Only):**
+| Test | Safe for Production | Notes |
+|------|---------------------|-------|
+| A1: Opening Drill-Down Sheet | Yes | Read-only view |
+| A2: Loading State | Yes | Read-only observation |
+| A3: Opportunity Display | Yes | Read-only view |
+| A4: Empty State | Yes | Read-only view |
+| A6: Navigation from Drill-Down | Yes | Read-only navigation |
+| A7: Keyboard Navigation | Yes | Read-only navigation |
+| A8: Closing Drill-Down Sheet | Yes | Read-only interaction |
+| A9: Accessibility - ARIA | Yes | Read-only inspection |
+| A10: Reopen After Close | Yes | Read-only interaction |
+| B1: Panel Visibility | Yes | Read-only view |
+| B2: Form Opens | Yes | Read-only view |
+| B3: Cancel Button | Yes | Read-only (no save) |
+| B4: Activity Type Selection | Yes | Read-only selection |
+| B12-B14: Accessibility Tests | Yes | Read-only inspection |
+| C1-C9: FAB Visibility/ARIA | Yes | Read-only inspection |
+| C10: Draft Indicator - No Draft | Yes | Read-only check |
+| C18-C21: Focus/Visual Design | Yes | Read-only inspection |
+
+**Local-Only Tests (Create/Update Operations):**
+| Test | Reason |
+|------|--------|
+| A5: Error State | Requires API manipulation |
+| B5: Contact Auto-fills Org | May involve saving |
+| B6: Org Filters Contacts | May involve saving |
+| B7: Activity Submission - Follow-up | Creates activity records |
+| B8: Follow-up Task Creation | Creates task records |
+| B9: Save & New Flow | Creates activity records |
+| B10-B11: Validation Tests | May attempt to save |
+| C11-C17: Draft Persistence | Modifies localStorage |
+| C22: Successful Submission Clears Draft | Creates activity records |
+
+**Recommendation:** Run Section A read-only tests on production. Run Sections B and C activity creation tests only on local environment.
