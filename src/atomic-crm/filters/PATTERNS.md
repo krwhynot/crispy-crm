@@ -383,6 +383,20 @@ export const getInitialStageFilter = (): string[] | undefined => {
 
 Declarative configuration for each resource's filter needs.
 
+### Filter Config Locations
+
+All filter configs live in their respective feature directories:
+
+| Resource | Config File |
+|----------|-------------|
+| Activities | `src/atomic-crm/activities/activityFilterConfig.ts` |
+| Contacts | `src/atomic-crm/contacts/contactFilterConfig.ts` |
+| Opportunities | `src/atomic-crm/opportunities/opportunityFilterConfig.ts` |
+| Organizations | `src/atomic-crm/organizations/organizationFilterConfig.ts` |
+| Products | `src/atomic-crm/products/productFilterConfig.ts` |
+| Sales | `src/atomic-crm/sales/salesFilterConfig.ts` |
+| Tasks | `src/atomic-crm/tasks/taskFilterConfig.ts` |
+
 ```tsx
 // src/atomic-crm/opportunities/opportunityFilterConfig.ts
 import { validateFilterConfig } from "../filters/filterConfigSchema";
@@ -430,7 +444,7 @@ export const CONTACT_FILTER_CONFIG = validateFilterConfig([
 ]);
 ```
 
-**When to use**: Every resource with filterable lists. Place in the feature directory (e.g., `opportunities/opportunityFilterConfig.ts`).
+**When to use**: Every resource with filterable lists. Place in the feature directory (see Filter Config Locations table above).
 
 ---
 
@@ -448,14 +462,14 @@ export const CONTACT_FILTER_CONFIG = validateFilterConfig([
 
 ### Date Range Operators
 
-| Suffix | Meaning | Example |
-|--------|---------|---------|
-| `@gte` | Greater than or equal | `last_seen@gte` (Contacts) |
-| `@lte` | Less than or equal | `last_seen@lte` (Contacts) |
-| `_gte` | Greater than or equal | `estimated_close_date_gte` (Opportunities) |
-| `_lte` | Less than or equal | `estimated_close_date_lte` (Opportunities) |
+**Rule**: Use `@` prefix for React Admin standard operators. The `_` suffix is legacy (Opportunities only).
 
-**Note**: Contacts use `@` format, Opportunities use `_` format. Always check existing patterns in the resource.
+| Format | When to Use | Example Resources |
+|--------|-------------|-------------------|
+| `field@gte` / `field@lte` | **Standard** - new filters | Activities, Contacts, Tasks |
+| `field_gte` / `field_lte` | **Legacy** - existing only | Opportunities (do not add new) |
+
+When adding date filters to a resource, check its existing config file for the format already in use.
 
 ---
 

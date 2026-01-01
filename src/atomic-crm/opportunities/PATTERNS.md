@@ -169,6 +169,15 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: Props) => (
 - `touch-manipulation` prevents double-tap zoom on iOS
 - Tooltips provide context for icon-only buttons
 
+**Enhanced implementation notes:**
+- `OpportunityListLayout` handles multiple states: loading skeleton, empty (no data/no filters), filtered-empty (filters applied but no results), and data display
+- Slide-over state managed via `useSlideOverState` hook (URL-synced `?view=123` params)
+- Tutorial integration: `data-tutorial` attributes and `OpportunityListTutorial` component for onboarding
+- `useFilterCleanup("opportunities")` cleans stale cached filters from localStorage
+- Stage filter changes synced to localStorage via `saveStagePreferences()` for persistence
+
+**See also:** `OpportunityList.tsx` for the complete implementation with all state handling branches.
+
 ---
 
 ## Pattern C: Multi-Step Wizard (Miller's Law)
@@ -356,6 +365,17 @@ export const QuickAddForm = ({ onSuccess }: Props) => {
 - "Save & Add Another" resets form but preserves campaign/principal context
 - Focus management: auto-focus first name field after reset
 - Visual grouping: pre-filled fields in `bg-success/10` background
+
+**Enhanced implementation notes:**
+- **useFilteredProducts hook:** Products are filtered by selected principal, with `isReady` flag to show placeholder until principal selected
+- **WCAG accessibility patterns:**
+  - Local `AccessibleField` wrapper component provides WCAG 4.1.2/4.1.3 compliance (aria-invalid, aria-describedby, aria-required)
+  - Error messages use `role="alert"` for screen reader announcements
+  - `onValidationError` callback focuses first error field on validation failure (WCAG 3.3.1)
+  - Conditional hint text with `aria-live="polite"` for phone/email requirement
+- **Dependent field clearing:** `useEffect` clears phone validation error when either phone or email is populated
+
+**See also:** `quick-add/QuickAddForm.tsx` for the complete implementation with all accessibility patterns.
 
 ---
 

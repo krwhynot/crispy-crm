@@ -604,7 +604,9 @@ export function QuickCreatePopover({ name, organizationType, onCreated, onCancel
 
 ## Pattern H: Status & Address Sections
 
-Reusable form sections with consistent layout.
+Reusable form sections with consistent layout. Each section is in its own well-named file for maintainability:
+- `OrganizationStatusSection.tsx` - Status and payment fields
+- `OrganizationAddressSection.tsx` - Shipping address fields
 
 ```tsx
 // src/atomic-crm/organizations/OrganizationStatusSection.tsx

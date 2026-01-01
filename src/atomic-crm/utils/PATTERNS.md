@@ -456,15 +456,33 @@ export function getSecurePapaParseConfig() {
     dynamicTyping: false, // CRITICAL: Prevent automatic type conversion
     preview: CSV_UPLOAD_LIMITS.MAX_ROWS,
     transform: (value: string) => {
-      // Formula injection prevention
+      // Formula injection prevention - prepend single quote
       if (/^[=+\-@\t\r]/.test(trimmed)) {
-        return "'" + trimmed;
+        return "'" + trimmed;  // Prefix neutralizes formula execution
       }
       // ... length limits, sanitization
     },
   };
 }
 ```
+
+### Formula Injection Prevention (Security Detail)
+
+Spreadsheet applications (Excel, Google Sheets) interpret cells starting with `=`, `+`, `-`, `@`, `\t`, or `\r` as formulas. Malicious actors exploit this via:
+
+```csv
+first_name,email
+=cmd|'/c calc'!A0,hacker@example.com
++1+cmd|'/c calc'!A0,innocent@example.com
+```
+
+**Mitigation**: Prefix dangerous values with single quote (`'`):
+- `=cmd|'/c calc'!A0` becomes `'=cmd|'/c calc'!A0`
+- The single quote is a standard Excel escape that displays the value as literal text
+
+This protection is applied in TWO locations:
+1. `getSecurePapaParseConfig().transform` - During PapaParse parsing
+2. `sanitizeCsvValue()` - Additional sanitization layer for manual processing
 
 ### Duplicate Detection (Third Layer)
 
@@ -662,17 +680,36 @@ Need a utility?
 **Problem**: `formatFullName` exists in TWO files with different signatures:
 
 ```typescript
-// formatters.ts:8 - Takes (firstName, lastName)
+// formatters.ts:8 - Takes (firstName, lastName) - COMBINES name parts
 export function formatFullName(firstName?: string | null, lastName?: string | null): string
+// Returns: "John Doe", "John", "Doe", or "--"
 
-// formatName.ts:22 - Takes single (name)
+// formatName.ts:22 - Takes single (name) - TRIMS existing full name
 export function formatFullName(name?: string | null): string
+// Returns: trimmed name or "--"
 ```
 
+**When to Use Each**:
+
+| Scenario | Use | Import From |
+|----------|-----|-------------|
+| Contact/Sale with `first_name` + `last_name` fields | `formatters.ts` version | `@/atomic-crm/utils/formatters` |
+| Organization/Entity with single `name` field | `formatName.ts` version | `@/atomic-crm/utils/formatName` |
+| Barrel import via `@/atomic-crm/utils` | Gets `formatters.ts` version (shadows other) | N/A |
+
 **Resolution**:
-- Use `formatters.ts` when you have separate first/last name fields
-- Use `formatName.ts` version when you have a pre-combined full name string
-- Import explicitly: `import { formatFullName } from "@/atomic-crm/utils/formatters"`
+- **Default**: Use `formatters.ts` for separate first/last name fields (most common)
+- **Single name string**: Use `formatName.ts` for pre-combined names (import directly)
+- **Always import explicitly** to avoid confusion:
+  ```typescript
+  // For contacts/sales with separate name fields
+  import { formatFullName } from "@/atomic-crm/utils/formatters";
+
+  // For single name strings (organizations, etc.)
+  import { formatFullName } from "@/atomic-crm/utils/formatName";
+  ```
+
+**Consider Renaming**: The `formatName.ts:formatFullName` should arguably be renamed to `formatSingleName` or `trimName` to eliminate confusion.
 
 ### 2. Barrel Export Shadowing
 
