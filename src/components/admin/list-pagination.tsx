@@ -30,6 +30,11 @@ export const ListPagination = ({
   const { hasPreviousPage, hasNextPage, page, perPage, setPerPage, total, setPage } =
     useListPaginationContext();
 
+  // Ensure current perPage is always in options (prevents empty dropdown when perPage isn't in default options)
+  const effectiveOptions = rowsPerPageOptions.includes(perPage)
+    ? rowsPerPageOptions
+    : [...rowsPerPageOptions, perPage].sort((a, b) => a - b);
+
   // Defensive defaults to prevent undefined values causing template placeholder issues
   const safeTotal = total ?? 0;
   const safePage = page ?? 1;
