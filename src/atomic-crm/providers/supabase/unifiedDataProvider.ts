@@ -279,14 +279,17 @@ async function validateData(
   data: Record<string, unknown>,
   operation: "create" | "update" = "create"
 ): Promise<void> {
+  // Strip non-schema fields BEFORE validation (view fields, React Admin internal IDs)
+  // This handles: view JOIN fields, computed aggregations, SimpleFormIterator tracking IDs
+  let dataToValidate = transformService.transformForValidation(resource, data);
+
   // For opportunities, merge defaults for fields that React Hook Form might not include
   // when they haven't been touched (even though defaultValues were set)
-  let dataToValidate = data;
   if (resource === "opportunities" && operation === "create") {
     // Merge with defaults - ensures validation receives proper types even for untouched fields
     dataToValidate = {
       contact_ids: [], // Default to empty array (will fail min(1) validation with proper message)
-      ...data, // User's data overwrites defaults
+      ...dataToValidate, // User's data overwrites defaults
     };
   }
 
@@ -324,11 +327,9 @@ async function validateData(
 
     // If already in React Admin format (has errors nested in body)
     // This handles errors thrown by validation functions like validateContactForm()
+    // Pass through unchanged - React Admin expects { message, body: { errors } }
     if (extendedError?.body?.errors && typeof extendedError.body.errors === "object") {
-      throw {
-        message: extendedError.message || "Validation failed",
-        errors: extendedError.body.errors,
-      } satisfies ValidationError;
+      throw error;
     }
 
     // For other Error types, wrap with generic error
