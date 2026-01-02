@@ -1,7 +1,7 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-01T22:47:08.046Z",
-  "item_count": 79,
+  "generated_at": "2026-01-02T02:25:39.886Z",
+  "item_count": 78,
   "items": [
     {
       "name": "ActivitiesList",
@@ -419,6 +419,7 @@
         "../validation/opportunities",
         "./components/SimilarOpportunitiesDialog",
         "./forms/OpportunityWizardSteps",
+        "./forms/opportunityWizardConfig",
         "./hooks/useSimilarOpportunityCheck",
         "@/components/admin/FormErrorSummary",
         "@/components/admin/form",
@@ -457,6 +458,7 @@
         "../validation/opportunities",
         "./components/SimilarOpportunitiesDialog",
         "./forms/OpportunityWizardSteps",
+        "./forms/opportunityWizardConfig",
         "./hooks/useSimilarOpportunityCheck",
         "@/components/admin/FormErrorSummary",
         "@/components/admin/form",
@@ -633,7 +635,7 @@
     {
       "name": "OpportunityList",
       "file": "src/atomic-crm/opportunities/OpportunityList.tsx",
-      "line": 43,
+      "line": 46,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -1359,7 +1361,7 @@
     {
       "name": "NextTaskBadge",
       "file": "src/atomic-crm/opportunities/components/NextTaskBadge.tsx",
-      "line": 78,
+      "line": 75,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -1377,7 +1379,7 @@
     {
       "name": "NextTaskBadge",
       "file": "src/atomic-crm/opportunities/components/NextTaskBadge.tsx",
-      "line": 78,
+      "line": 75,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -1579,7 +1581,7 @@
     {
       "name": "OpportunityWizardStep1",
       "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 83,
+      "line": 55,
       "type": "presentational",
       "hooks": [
         "useAutoGenerateName",
@@ -1638,7 +1640,7 @@
     {
       "name": "OpportunityWizardStep2",
       "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 226,
+      "line": 198,
       "type": "presentational",
       "hooks": [
         "useCustomerDistributors",
@@ -1701,7 +1703,7 @@
     {
       "name": "OpportunityWizardStep3",
       "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 380,
+      "line": 348,
       "type": "presentational",
       "hooks": [
         "useFormContext",
@@ -1764,60 +1766,7 @@
     {
       "name": "OpportunityWizardStep4",
       "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 525,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "../../constants",
-        "../../contacts/ContactOption",
-        "../../contacts/QuickCreateContactPopover",
-        "../../organizations/AutocompleteOrganizationInput",
-        "../../organizations/OrganizationInputs",
-        "../../utils/saleOptionRenderer",
-        "../../validation/organizations",
-        "../components/ContactOrgMismatchWarning",
-        "../components/CustomerDistributorIndicator",
-        "../components/DistributorAuthorizationWarning",
-        "../constants/stageConstants",
-        "../hooks",
-        "./NamingConventionHelp",
-        "@/components/admin/array-input",
-        "@/components/admin/autocomplete-array-input",
-        "@/components/admin/create-in-dialog-button",
-        "@/components/admin/form",
-        "@/components/admin/reference-array-input",
-        "@/components/admin/reference-input",
-        "@/components/admin/select-input",
-        "@/components/admin/simple-form-iterator",
-        "@/components/admin/text-input",
-        "@/components/admin/text-input/",
-        "@/components/ui/button",
-        "@/components/ui/tooltip",
-        "@/lib/utils",
-        "lucide-react",
-        "ra-core",
-        "react",
-        "react-hook-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AutocompleteOrganizationInput",
-        "OrganizationInputs",
-        "QuickCreateContactPopover",
-        "ContactOrgMismatchWarning",
-        "DistributorAuthorizationWarning",
-        "CustomerDistributorIndicator",
-        "NamingConventionHelp",
-        "OPPORTUNITY_STAGE_CHOICES",
-        "DEFAULT_SEGMENT_ID"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OPPORTUNITY_WIZARD_STEPS",
-      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 56,
+      "line": 493,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -2188,7 +2137,7 @@
     {
       "name": "QuickAddForm",
       "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
-      "line": 65,
+      "line": 77,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -2282,7 +2231,7 @@
     {
       "name": "OpportunityContactsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
-      "line": 82,
+      "line": 93,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -2346,7 +2295,7 @@
     {
       "name": "OpportunityProductsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-      "line": 40,
+      "line": 44,
       "type": "presentational",
       "hooks": [
         "useGetList",

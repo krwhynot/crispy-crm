@@ -1,12 +1,12 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-01T22:47:08.037Z",
+  "generated_at": "2026-01-02T02:25:39.882Z",
   "item_count": 30,
   "items": [
     {
       "name": "DashboardTutorial",
       "file": "src/atomic-crm/dashboard/v3/DashboardTutorial.tsx",
-      "line": 25,
+      "line": 21,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -63,7 +63,7 @@
     {
       "name": "ActivityFeedPanel",
       "file": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
-      "line": 127,
+      "line": 131,
       "type": "presentational",
       "hooks": [
         "useMemo",
@@ -90,7 +90,7 @@
     {
       "name": "ActivityFeedPanel",
       "file": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
-      "line": 127,
+      "line": 131,
       "type": "presentational",
       "hooks": [
         "useMemo",
@@ -264,7 +264,7 @@
     {
       "name": "LogActivityFAB",
       "file": "src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx",
-      "line": 153,
+      "line": 156,
       "type": "presentational",
       "hooks": [
         "useCallback",

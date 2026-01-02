@@ -1,54 +1,54 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-01T22:47:15.806Z",
+  "generated_at": "2026-01-02T02:25:45.696Z",
   "item_count": 13,
   "items": [
     {
       "name": "validateCreateContactNote",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 133,
+      "line": 137,
       "pattern": "date"
     },
     {
       "name": "validateUpdateContactNote",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 143,
+      "line": 147,
       "pattern": "date"
     },
     {
       "name": "validateCreateOpportunityNote",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 153,
+      "line": 157,
       "pattern": "date"
     },
     {
       "name": "validateUpdateOpportunityNote",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 163,
+      "line": 167,
       "pattern": "date"
     },
     {
       "name": "validateCreateOrganizationNote",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 173,
+      "line": 177,
       "pattern": "date"
     },
     {
       "name": "validateUpdateOrganizationNote",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 183,
+      "line": 187,
       "pattern": "date"
     },
     {
       "name": "validateAttachment",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 193,
+      "line": 197,
       "pattern": "date"
     },
     {
       "name": "validateAttachments",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 203,
+      "line": 207,
       "type": "validator",
       "errorFormatting": false,
       "isAsync": false,
@@ -70,31 +70,31 @@
     {
       "name": "validateContactNoteForSubmission",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 212,
+      "line": 216,
       "pattern": "date"
     },
     {
       "name": "validateOpportunityNoteForSubmission",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 228,
+      "line": 232,
       "pattern": "date"
     },
     {
       "name": "validateOrganizationNoteForSubmission",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 244,
+      "line": 248,
       "pattern": "date"
     },
     {
       "name": "validateAttachmentSize",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 272,
+      "line": 276,
       "pattern": "date"
     },
     {
       "name": "validateAttachmentType",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 291,
+      "line": 295,
       "pattern": "date"
     }
   ]

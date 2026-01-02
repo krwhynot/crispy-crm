@@ -1,7 +1,7 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-01T22:47:08.060Z",
-  "item_count": 29,
+  "generated_at": "2026-01-02T02:25:39.896Z",
+  "item_count": 28,
   "items": [
     {
       "name": "AddTask",
@@ -84,7 +84,7 @@
     {
       "name": "TaskCreate",
       "file": "src/atomic-crm/tasks/TaskCreate.tsx",
-      "line": 35,
+      "line": 32,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -233,7 +233,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 65,
+      "line": 62,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -473,21 +473,6 @@
       "componentRole": "leaf"
     },
     {
-      "name": "TaskColumnHeaders",
-      "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
-      "line": 92,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "../root/ConfigurationContext",
-        "@/components/admin/column-filters"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
       "name": "TasksIterator",
       "file": "src/atomic-crm/tasks/TasksIterator.tsx",
       "line": 7,
@@ -514,7 +499,7 @@
     {
       "name": "TaskActionMenu",
       "file": "src/atomic-crm/tasks/components/TaskActionMenu.tsx",
-      "line": 60,
+      "line": 52,
       "type": "presentational",
       "hooks": [
         "useDelete",

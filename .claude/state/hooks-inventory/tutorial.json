@@ -1,12 +1,12 @@
 {
   "chunk_name": "tutorial",
-  "generated_at": "2026-01-01T22:47:14.958Z",
+  "generated_at": "2026-01-02T02:25:45.071Z",
   "item_count": 2,
   "items": [
     {
       "name": "useTutorial",
       "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
-      "line": 276,
+      "line": 272,
       "parameters": [],
       "returnType": "TutorialContextType",
       "dependencies": [

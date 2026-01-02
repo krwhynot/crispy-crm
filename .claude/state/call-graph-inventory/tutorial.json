@@ -1,6 +1,6 @@
 {
   "chunk_name": "tutorial",
-  "generated_at": "2026-01-01T22:47:19.979Z",
+  "generated_at": "2026-01-02T02:25:47.360Z",
   "items": {
     "nodes": [
       {
@@ -40,10 +40,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tutorial/TutorialProvider.tsx:276:useTutorial",
+        "id": "src/atomic-crm/tutorial/TutorialProvider.tsx:272:useTutorial",
         "name": "useTutorial",
         "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
-        "line": 276,
+        "line": 272,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -964,16 +964,16 @@
         "target": "TutorialContext.Provider",
         "targetName": "TutorialContext.Provider",
         "edgeType": "render",
-        "line": 270,
+        "line": 269,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:276:useTutorial",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:272:useTutorial",
         "target": "useContext",
         "targetName": "useContext",
         "edgeType": "hook",
-        "line": 277,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },

@@ -1,12 +1,12 @@
 {
   "chunk_name": "contexts",
-  "generated_at": "2026-01-01T22:47:08.036Z",
-  "item_count": 9,
+  "generated_at": "2026-01-02T02:25:39.882Z",
+  "item_count": 6,
   "items": [
     {
       "name": "AppBrandingContext",
       "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -21,7 +21,7 @@
     {
       "name": "AppBrandingProvider",
       "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
-      "line": 39,
+      "line": 40,
       "type": "presentational",
       "hooks": [
         "useMemo"
@@ -36,26 +36,9 @@
       "componentRole": "leaf"
     },
     {
-      "name": "useAppBranding",
-      "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
-      "line": 63,
-      "type": "presentational",
-      "hooks": [
-        "useContext"
-      ],
-      "imports": [
-        "../root/defaultConfiguration",
-        "react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
       "name": "FormOptionsContext",
       "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -74,31 +57,10 @@
     {
       "name": "FormOptionsProvider",
       "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
-      "line": 39,
+      "line": 40,
       "type": "presentational",
       "hooks": [
         "useMemo"
-      ],
-      "imports": [
-        "../root/defaultConfiguration",
-        "../types",
-        "react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "NoteStatus",
-        "ContactGender"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "useFormOptions",
-      "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
-      "line": 63,
-      "type": "presentational",
-      "hooks": [
-        "useContext"
       ],
       "imports": [
         "../root/defaultConfiguration",
@@ -116,7 +78,7 @@
     {
       "name": "PipelineConfigContext",
       "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
-      "line": 41,
+      "line": 42,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -134,30 +96,10 @@
     {
       "name": "PipelineConfigProvider",
       "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
-      "line": 47,
+      "line": 48,
       "type": "presentational",
       "hooks": [
         "useMemo"
-      ],
-      "imports": [
-        "../root/defaultConfiguration",
-        "../types",
-        "react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "DealStage"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "usePipelineConfig",
-      "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
-      "line": 79,
-      "type": "presentational",
-      "hooks": [
-        "useContext"
       ],
       "imports": [
         "../root/defaultConfiguration",

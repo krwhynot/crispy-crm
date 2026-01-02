@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-01T22:47:08.050Z",
-  "item_count": 74,
+  "generated_at": "2026-01-02T02:25:39.888Z",
+  "item_count": 73,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -368,7 +368,7 @@
     {
       "name": "PriorityBadge",
       "file": "src/atomic-crm/organizations/OrganizationBadges.tsx",
-      "line": 66,
+      "line": 68,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -589,24 +589,6 @@
       "name": "OrganizationPriorityHeader",
       "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
       "line": 62,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "./constants",
-        "@/components/admin/column-filters"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "ORGANIZATION_TYPE_CHOICES",
-        "PRIORITY_CHOICES"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OrganizationColumnHeaders",
-      "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
-      "line": 76,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -1249,7 +1231,7 @@
     {
       "name": "PrincipalAwareTypeInput",
       "file": "src/atomic-crm/organizations/PrincipalAwareTypeInput.tsx",
-      "line": 26,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -1313,7 +1295,7 @@
     {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 43,
+      "line": 38,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1345,7 +1327,7 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 253,
+      "line": 248,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1436,7 +1418,7 @@
     {
       "name": "AuthorizationCard",
       "file": "src/atomic-crm/organizations/components/AuthorizationCard.tsx",
-      "line": 32,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1483,7 +1465,7 @@
     {
       "name": "ProductExceptionsSection",
       "file": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx",
-      "line": 17,
+      "line": 14,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -1666,7 +1648,7 @@
     {
       "name": "PriorityBadge",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 66,
+      "line": 68,
       "type": "presentational",
       "hooks": [],
       "imports": [],

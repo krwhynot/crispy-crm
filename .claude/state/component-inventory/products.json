@@ -1,7 +1,7 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-01T22:47:08.054Z",
-  "item_count": 31,
+  "generated_at": "2026-01-02T02:25:39.891Z",
+  "item_count": 30,
   "items": [
     {
       "name": "ProductCard",
@@ -39,7 +39,7 @@
     {
       "name": "ProductCreate",
       "file": "src/atomic-crm/products/ProductCreate.tsx",
-      "line": 13,
+      "line": 10,
       "type": "presentational",
       "hooks": [
         "useGetIdentity"
@@ -65,7 +65,7 @@
     {
       "name": "ProductCreate",
       "file": "src/atomic-crm/products/ProductCreate.tsx",
-      "line": 13,
+      "line": 10,
       "type": "presentational",
       "hooks": [
         "useGetIdentity"
@@ -113,7 +113,7 @@
     {
       "name": "ProductDetailsTab",
       "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-      "line": 80,
+      "line": 78,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -299,7 +299,7 @@
     {
       "name": "ProductList",
       "file": "src/atomic-crm/products/ProductList.tsx",
-      "line": 41,
+      "line": 40,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -353,7 +353,7 @@
     {
       "name": "ProductList",
       "file": "src/atomic-crm/products/ProductList.tsx",
-      "line": 41,
+      "line": 40,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -575,22 +575,7 @@
     {
       "name": "ProductStatusHeader",
       "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 100,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "@/components/admin/column-filters",
-        "ra-core"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "ProductColumnHeaders",
-      "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 114,
+      "line": 94,
       "type": "presentational",
       "hooks": [],
       "imports": [

@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-01T22:47:15.232Z",
+  "generated_at": "2026-01-02T02:25:45.291Z",
   "item_count": 3,
   "items": [
     {
@@ -193,7 +193,7 @@
         },
         {
           "name": "product_name",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "trim()",
             "min(1, \"Product name is required\")",

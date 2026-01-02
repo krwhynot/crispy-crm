@@ -1,6 +1,6 @@
 {
   "chunk_name": "tutorial",
-  "generated_at": "2026-01-01T22:47:08.061Z",
+  "generated_at": "2026-01-02T02:25:39.897Z",
   "item_count": 10,
   "items": [
     {
@@ -113,7 +113,7 @@
     {
       "name": "useTutorial",
       "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
-      "line": 276,
+      "line": 272,
       "type": "presentational",
       "hooks": [
         "useContext"
@@ -160,7 +160,7 @@
     {
       "name": "useTutorial",
       "file": "src/atomic-crm/tutorial/index.tsx",
-      "line": 276,
+      "line": 272,
       "type": "presentational",
       "hooks": [
         "useContext"

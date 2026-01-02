@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-01T22:47:14.956Z",
+  "generated_at": "2026-01-02T02:25:45.068Z",
   "item_count": 4,
   "items": [
     {
@@ -17,7 +17,7 @@
     {
       "name": "useFilterCleanup",
       "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
-      "line": 60,
+      "line": 64,
       "parameters": [
         "resource"
       ],

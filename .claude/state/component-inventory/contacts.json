@@ -1,7 +1,7 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-01T22:47:08.035Z",
-  "item_count": 54,
+  "generated_at": "2026-01-02T02:25:39.881Z",
+  "item_count": 53,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -108,7 +108,7 @@
     {
       "name": "ContactAdditionalDetails",
       "file": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx",
-      "line": 11,
+      "line": 7,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -170,7 +170,7 @@
     {
       "name": "ContactBadgeGroup",
       "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-      "line": 244,
+      "line": 246,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -200,7 +200,7 @@
     {
       "name": "RoleBadge",
       "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-      "line": 135,
+      "line": 137,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -215,7 +215,7 @@
     {
       "name": "InfluenceBadge",
       "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-      "line": 177,
+      "line": 179,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -230,7 +230,7 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 21,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useFormContext"
@@ -308,23 +308,6 @@
       "name": "ContactStatusHeader",
       "file": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
       "line": 46,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "./constants",
-        "@/components/admin/column-filters"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "CONTACT_STATUS_CHOICES"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "ContactColumnHeaders",
-      "file": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
-      "line": 60,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -1057,7 +1040,7 @@
     {
       "name": "QuickCreateContactPopover",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 34,
+      "line": 29,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1087,7 +1070,7 @@
     {
       "name": "QuickCreateContactRA",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 210,
+      "line": 207,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",

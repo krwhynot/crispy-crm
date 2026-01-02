@@ -1,25 +1,14 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-01T22:47:14.959Z",
+  "generated_at": "2026-01-02T02:25:45.072Z",
   "item_count": 4,
   "items": [
     {
       "name": "useFormProgress",
-      "file": "src/components/admin/form/FormProgressProvider.tsx",
-      "line": 78,
+      "file": "src/components/admin/form/formProgressUtils.ts",
+      "line": 17,
       "parameters": [],
       "returnType": "FormProgressContextValue",
-      "dependencies": [
-        "useContext"
-      ],
-      "isReact19Action": false
-    },
-    {
-      "name": "useWizard",
-      "file": "src/components/admin/form/FormWizard.tsx",
-      "line": 133,
-      "parameters": [],
-      "returnType": "WizardContextValue",
       "dependencies": [
         "useContext"
       ],
@@ -35,6 +24,17 @@
       "returnType": "UseFormShortcutsReturn",
       "dependencies": [
         "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useWizard",
+      "file": "src/components/admin/form/wizardUtils.ts",
+      "line": 17,
+      "parameters": [],
+      "returnType": "WizardContextValue",
+      "dependencies": [
+        "useContext"
       ],
       "isReact19Action": false
     },

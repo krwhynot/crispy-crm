@@ -1,7 +1,7 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-01T22:47:15.234Z",
-  "item_count": 6,
+  "generated_at": "2026-01-02T02:25:45.293Z",
+  "item_count": 5,
   "items": [
     {
       "name": "salesSchema",
@@ -46,7 +46,7 @@
         },
         {
           "name": "email",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "trim()",
             "email(\"Must be a valid email address\")",
@@ -71,7 +71,7 @@
         },
         {
           "name": "avatar_url",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "url(\"Must be a valid URL\")",
             "max(VALIDATION_LIMITS.AVATAR_URL_MAX, \"Avatar URL too long\")"
@@ -178,7 +178,7 @@
         },
         {
           "name": "deleted_at",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "max(VALIDATION_LIMITS.TIMESTAMP_MAX, \"Timestamp too long\")"
           ],
@@ -189,7 +189,6 @@
         }
       ],
       "relatedSchemas": [
-        "createSalesSchema",
         "salesProfileSchema",
         "salesPermissionsSchema"
       ],
@@ -200,26 +199,9 @@
       "hasSuperRefine": false
     },
     {
-      "name": "createSalesSchema",
-      "file": "src/atomic-crm/validation/sales.ts",
-      "line": 111,
-      "schemaType": "other",
-      "fields": [],
-      "relatedSchemas": [
-        "salesSchema",
-        "salesProfileSchema",
-        "salesPermissionsSchema"
-      ],
-      "validationFunctions": [
-        "validateCreateSales"
-      ],
-      "hasTransforms": false,
-      "hasSuperRefine": false
-    },
-    {
       "name": "userInviteSchema",
       "file": "src/atomic-crm/validation/sales.ts",
-      "line": 186,
+      "line": 203,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -236,7 +218,7 @@
         },
         {
           "name": "password",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "min(8, \"Password must be at least 8 characters\")",
             "max(128, \"Password too long\")"
@@ -290,7 +272,7 @@
     {
       "name": "userUpdateSchema",
       "file": "src/atomic-crm/validation/sales.ts",
-      "line": 201,
+      "line": 222,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -304,7 +286,7 @@
         },
         {
           "name": "first_name",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "trim()",
             "min(1, \"First name is required\")",
@@ -317,7 +299,7 @@
         },
         {
           "name": "last_name",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "trim()",
             "min(1, \"Last name is required\")",
@@ -355,12 +337,12 @@
     {
       "name": "salesProfileSchema",
       "file": "src/atomic-crm/validation/sales.ts",
-      "line": 221,
+      "line": 252,
       "schemaType": "strictObject",
       "fields": [
         {
           "name": "first_name",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "max(100)"
           ],
@@ -375,7 +357,7 @@
         },
         {
           "name": "last_name",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "max(100)"
           ],
@@ -390,7 +372,7 @@
         },
         {
           "name": "email",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "max(254)"
           ],
@@ -405,7 +387,7 @@
         },
         {
           "name": "phone",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "max(50)"
           ],
@@ -420,7 +402,7 @@
         },
         {
           "name": "avatar_url",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "max(VALIDATION_LIMITS.AVATAR_URL_MAX)"
           ],
@@ -435,8 +417,7 @@
         }
       ],
       "relatedSchemas": [
-        "salesSchema",
-        "createSalesSchema"
+        "salesSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": true,
@@ -445,7 +426,7 @@
     {
       "name": "salesPermissionsSchema",
       "file": "src/atomic-crm/validation/sales.ts",
-      "line": 236,
+      "line": 287,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -468,8 +449,7 @@
         }
       ],
       "relatedSchemas": [
-        "salesSchema",
-        "createSalesSchema"
+        "salesSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,

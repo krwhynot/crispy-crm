@@ -1,6 +1,6 @@
 {
   "chunk_name": "root",
-  "generated_at": "2026-01-01T22:47:19.963Z",
+  "generated_at": "2026-01-02T02:25:47.350Z",
   "items": {
     "nodes": [
       {
@@ -76,19 +76,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/ConfigurationContext.tsx:91:ConfigurationProvider",
+        "id": "src/atomic-crm/root/ConfigurationContext.tsx:85:ConfigurationProvider",
         "name": "ConfigurationProvider",
         "file": "src/atomic-crm/root/ConfigurationContext.tsx",
-        "line": 91,
+        "line": 85,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/ConfigurationContext.tsx:170:useConfigurationContext",
+        "id": "src/atomic-crm/root/ConfigurationContext.tsx:160:useConfigurationContext",
         "name": "useConfigurationContext",
         "file": "src/atomic-crm/root/ConfigurationContext.tsx",
-        "line": 170,
+        "line": 160,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -645,56 +645,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/ConfigurationContext.tsx:91:ConfigurationProvider",
+        "source": "src/atomic-crm/root/ConfigurationContext.tsx:85:ConfigurationProvider",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 106,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/ConfigurationContext.tsx:91:ConfigurationProvider",
+        "source": "src/atomic-crm/root/ConfigurationContext.tsx:85:ConfigurationProvider",
         "target": "AppBrandingProvider",
         "targetName": "AppBrandingProvider",
         "edgeType": "render",
-        "line": 136,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/ConfigurationContext.tsx:91:ConfigurationProvider",
+        "source": "src/atomic-crm/root/ConfigurationContext.tsx:85:ConfigurationProvider",
         "target": "PipelineConfigProvider",
         "targetName": "PipelineConfigProvider",
         "edgeType": "render",
-        "line": 141,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/ConfigurationContext.tsx:91:ConfigurationProvider",
+        "source": "src/atomic-crm/root/ConfigurationContext.tsx:85:ConfigurationProvider",
         "target": "FormOptionsProvider",
         "targetName": "FormOptionsProvider",
         "edgeType": "render",
-        "line": 148,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/ConfigurationContext.tsx:91:ConfigurationProvider",
+        "source": "src/atomic-crm/root/ConfigurationContext.tsx:85:ConfigurationProvider",
         "target": "ConfigurationContext.Provider",
         "targetName": "ConfigurationContext.Provider",
         "edgeType": "render",
-        "line": 153,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/ConfigurationContext.tsx:170:useConfigurationContext",
+        "source": "src/atomic-crm/root/ConfigurationContext.tsx:160:useConfigurationContext",
         "target": "useContext",
         "targetName": "useContext",
         "edgeType": "hook",
-        "line": 170,
+        "line": 160,
         "conditional": false,
         "inLoop": false
       }
