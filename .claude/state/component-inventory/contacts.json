@@ -1,7 +1,7 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-02T06:44:57.162Z",
-  "item_count": 53,
+  "generated_at": "2026-01-02T08:18:46.807Z",
+  "item_count": 57,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -228,6 +228,116 @@
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
+    },
+    {
+      "name": "ContactBulkActionsToolbar",
+      "file": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ContactBulkReassignButton",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/bulk-delete-button",
+        "@/components/admin/bulk-export-button"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactBulkReassignButton"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ContactBulkActionsToolbar",
+      "file": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ContactBulkReassignButton",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/bulk-delete-button",
+        "@/components/admin/bulk-export-button"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "ContactBulkReassignButton"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ContactBulkReassignButton",
+      "file": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetList",
+        "useListContext",
+        "useNotify",
+        "useRef",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/select",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact",
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useDataProvider",
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ContactBulkReassignButton",
+      "file": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetList",
+        "useListContext",
+        "useNotify",
+        "useRef",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/select",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "Contact",
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useDataProvider",
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactCompactForm",
@@ -703,6 +813,7 @@
         "../types",
         "./Avatar",
         "./ContactBadges",
+        "./ContactBulkActionsToolbar",
         "./ContactDatagridHeader",
         "./ContactEmpty",
         "./ContactListFilter",
@@ -715,7 +826,6 @@
         "@/components/admin/ListNoResults",
         "@/components/admin/ListSearchBar",
         "@/components/admin/PremiumDatagrid",
-        "@/components/admin/bulk-actions-toolbar",
         "@/components/admin/date-field",
         "@/components/admin/export-button",
         "@/components/admin/list",
@@ -732,6 +842,7 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
+        "ContactBulkActionsToolbar",
         "Contact",
         "ContactEmpty",
         "ContactListFilter",
@@ -764,6 +875,7 @@
         "../types",
         "./Avatar",
         "./ContactBadges",
+        "./ContactBulkActionsToolbar",
         "./ContactDatagridHeader",
         "./ContactEmpty",
         "./ContactListFilter",
@@ -776,7 +888,6 @@
         "@/components/admin/ListNoResults",
         "@/components/admin/ListSearchBar",
         "@/components/admin/PremiumDatagrid",
-        "@/components/admin/bulk-actions-toolbar",
         "@/components/admin/date-field",
         "@/components/admin/export-button",
         "@/components/admin/list",
@@ -793,6 +904,7 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
+        "ContactBulkActionsToolbar",
         "Contact",
         "ContactEmpty",
         "ContactListFilter",

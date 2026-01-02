@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-02T06:45:07.767Z",
+  "generated_at": "2026-01-02T08:19:16.823Z",
   "items": {
     "nodes": [
       {
@@ -80,6 +80,24 @@
         "name": "ContactBadgeGroup",
         "file": "src/atomic-crm/contacts/ContactBadges.tsx",
         "line": 246,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx:16:ContactBulkActionsToolbar",
+        "name": "ContactBulkActionsToolbar",
+        "file": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx",
+        "line": 16,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "name": "ContactBulkReassignButton",
+        "file": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx",
+        "line": 42,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1739,6 +1757,627 @@
         "targetName": "InfluenceBadge",
         "edgeType": "render",
         "line": 258,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx:16:ContactBulkActionsToolbar",
+        "target": "BulkActionsToolbar",
+        "targetName": "BulkActionsToolbar",
+        "edgeType": "render",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx:16:ContactBulkActionsToolbar",
+        "target": "ContactBulkReassignButton",
+        "targetName": "ContactBulkReassignButton",
+        "edgeType": "render",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx:16:ContactBulkActionsToolbar",
+        "target": "BulkExportButton",
+        "targetName": "BulkExportButton",
+        "edgeType": "render",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx:16:ContactBulkActionsToolbar",
+        "target": "BulkDeleteButton",
+        "targetName": "BulkDeleteButton",
+        "edgeType": "render",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "abort",
+        "targetName": "abort",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
+        "edgeType": "hook",
+        "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "setIsDialogOpen",
+        "targetName": "setIsDialogOpen",
+        "edgeType": "call",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "setSelectedSalesId",
+        "targetName": "setSelectedSalesId",
+        "edgeType": "call",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "setIsDialogOpen",
+        "targetName": "setIsDialogOpen",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "setSelectedSalesId",
+        "targetName": "setSelectedSalesId",
+        "edgeType": "call",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "abort",
+        "targetName": "abort",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "setIsProcessing",
+        "targetName": "setIsProcessing",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "parseInt",
+        "targetName": "parseInt",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "formatName",
+        "targetName": "formatName",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 168,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
+        "edgeType": "call",
+        "line": 180,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "onUnselectItems",
+        "targetName": "onUnselectItems",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "handleCloseDialog",
+        "targetName": "handleCloseDialog",
+        "edgeType": "call",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "setIsProcessing",
+        "targetName": "setIsProcessing",
+        "edgeType": "call",
+        "line": 193,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "handleCloseDialog",
+        "targetName": "handleCloseDialog",
+        "edgeType": "call",
+        "line": 213,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 230,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "formatName",
+        "targetName": "formatName",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 257,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 258,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "formatName",
+        "targetName": "formatName",
+        "edgeType": "call",
+        "line": 259,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "handleOpenDialog",
+        "targetName": "handleOpenDialog",
+        "edgeType": "callback",
+        "line": 205,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Dialog",
+        "targetName": "Dialog",
+        "edgeType": "render",
+        "line": 213,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "DialogContent",
+        "targetName": "DialogContent",
+        "edgeType": "render",
+        "line": 214,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "DialogHeader",
+        "targetName": "DialogHeader",
+        "edgeType": "render",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "DialogTitle",
+        "targetName": "DialogTitle",
+        "edgeType": "render",
+        "line": 216,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "DialogDescription",
+        "targetName": "DialogDescription",
+        "edgeType": "render",
+        "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 248,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 253,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 256,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 258,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "DialogFooter",
+        "targetName": "DialogFooter",
+        "edgeType": "render",
+        "line": 267,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 270,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "handleCancelOperation",
+        "targetName": "handleCancelOperation",
+        "edgeType": "callback",
+        "line": 270,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 273,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 277,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "handleCloseDialog",
+        "targetName": "handleCloseDialog",
+        "edgeType": "callback",
+        "line": 277,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 280,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "handleExecuteReassign",
+        "targetName": "handleExecuteReassign",
+        "edgeType": "callback",
+        "line": 280,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "UserPlus",
+        "targetName": "UserPlus",
+        "edgeType": "render",
+        "line": 209,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 254,
         "conditional": false,
         "inLoop": false
       },
@@ -7621,10 +8260,19 @@
       },
       {
         "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "BulkActionsToolbar",
-        "targetName": "BulkActionsToolbar",
+        "target": "ContactBulkActionsToolbar",
+        "targetName": "ContactBulkActionsToolbar",
         "edgeType": "render",
         "line": 198,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:203:ContactListActions",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 204,
         "conditional": false,
         "inLoop": false
       },
@@ -7633,7 +8281,7 @@
         "target": "TopToolbar",
         "targetName": "TopToolbar",
         "edgeType": "render",
-        "line": 204,
+        "line": 206,
         "conditional": false,
         "inLoop": false
       },
@@ -7642,7 +8290,7 @@
         "target": "SortButton",
         "targetName": "SortButton",
         "edgeType": "render",
-        "line": 205,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
@@ -7651,7 +8299,7 @@
         "target": "ExportButton",
         "targetName": "ExportButton",
         "edgeType": "render",
-        "line": 206,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },

@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-02T06:45:07.813Z",
+  "generated_at": "2026-01-02T08:19:16.898Z",
   "items": {
     "nodes": [
       {
@@ -20869,10 +20869,10 @@
       },
       {
         "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx:94:OpportunityContactsTab",
-        "target": "map",
-        "targetName": "map",
+        "target": "onModeToggle",
+        "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 190,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
@@ -20881,7 +20881,16 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 197,
+        "line": 194,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx:94:OpportunityContactsTab",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
@@ -20890,7 +20899,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 198,
+        "line": 202,
         "conditional": false,
         "inLoop": false
       },
@@ -20917,7 +20926,7 @@
         "target": "ScrollArea",
         "targetName": "ScrollArea",
         "edgeType": "render",
-        "line": 193,
+        "line": 197,
         "conditional": false,
         "inLoop": false
       },
@@ -20926,7 +20935,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 195,
+        "line": 199,
         "conditional": false,
         "inLoop": false
       },
@@ -20935,7 +20944,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 201,
+        "line": 205,
         "conditional": false,
         "inLoop": false
       },
@@ -20944,7 +20953,7 @@
         "target": "Link",
         "targetName": "Link",
         "edgeType": "render",
-        "line": 214,
+        "line": 218,
         "conditional": false,
         "inLoop": false
       },
@@ -20953,7 +20962,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 227,
+        "line": 231,
         "conditional": false,
         "inLoop": false
       },
@@ -20962,7 +20971,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 243,
+        "line": 247,
         "conditional": false,
         "inLoop": false
       },
@@ -21007,7 +21016,7 @@
         "target": "UserIcon",
         "targetName": "UserIcon",
         "edgeType": "render",
-        "line": 209,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
@@ -21016,7 +21025,7 @@
         "target": "Star",
         "targetName": "Star",
         "edgeType": "render",
-        "line": 244,
+        "line": 248,
         "conditional": false,
         "inLoop": false
       },
@@ -21247,10 +21256,10 @@
       },
       {
         "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx:45:OpportunityProductsTab",
-        "target": "map",
-        "targetName": "map",
+        "target": "onModeToggle",
+        "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 176,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
@@ -21259,7 +21268,16 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 183,
+        "line": 180,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx:45:OpportunityProductsTab",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
@@ -21268,7 +21286,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 184,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
@@ -21349,7 +21367,7 @@
         "target": "ScrollArea",
         "targetName": "ScrollArea",
         "edgeType": "render",
-        "line": 179,
+        "line": 183,
         "conditional": false,
         "inLoop": false
       },
@@ -21358,7 +21376,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 181,
+        "line": 185,
         "conditional": false,
         "inLoop": false
       },
@@ -21367,7 +21385,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 187,
+        "line": 191,
         "conditional": false,
         "inLoop": false
       },
@@ -21376,7 +21394,7 @@
         "target": "Link",
         "targetName": "Link",
         "edgeType": "render",
-        "line": 199,
+        "line": 203,
         "conditional": false,
         "inLoop": false
       },
@@ -21385,7 +21403,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 208,
+        "line": 212,
         "conditional": false,
         "inLoop": false
       },
@@ -21430,7 +21448,7 @@
         "target": "Package",
         "targetName": "Package",
         "edgeType": "render",
-        "line": 194,
+        "line": 198,
         "conditional": false,
         "inLoop": false
       },

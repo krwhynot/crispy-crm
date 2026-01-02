@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-02T06:45:07.832Z",
+  "generated_at": "2026-01-02T08:19:16.955Z",
   "items": {
     "nodes": [
       {
@@ -688,10 +688,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:124:StageBadge",
+        "id": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:128:StageBadge",
         "name": "StageBadge",
         "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx",
-        "line": 124,
+        "line": 128,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -14074,10 +14074,19 @@
       },
       {
         "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx:50:OrganizationContactsTab",
+        "target": "navigate",
+        "targetName": "navigate",
+        "edgeType": "call",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx:50:OrganizationContactsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 102,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
@@ -14086,7 +14095,7 @@
         "target": "getContactDisplayName",
         "targetName": "getContactDisplayName",
         "edgeType": "call",
-        "line": 110,
+        "line": 114,
         "conditional": true,
         "inLoop": false
       },
@@ -14095,7 +14104,7 @@
         "target": "getContactInitials",
         "targetName": "getContactInitials",
         "edgeType": "call",
-        "line": 116,
+        "line": 120,
         "conditional": true,
         "inLoop": false
       },
@@ -14104,7 +14113,7 @@
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 124,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
@@ -14113,7 +14122,7 @@
         "target": "getContactDisplayName",
         "targetName": "getContactDisplayName",
         "edgeType": "call",
-        "line": 127,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
@@ -14122,7 +14131,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 132,
+        "line": 136,
         "conditional": false,
         "inLoop": false
       },
@@ -14131,7 +14140,7 @@
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
         "edgeType": "render",
-        "line": 99,
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
@@ -14140,7 +14149,7 @@
         "target": "ScrollArea",
         "targetName": "ScrollArea",
         "edgeType": "render",
-        "line": 100,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
@@ -14248,7 +14257,25 @@
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 84,
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
+        "target": "onModeToggle",
+        "targetName": "onModeToggle",
+        "edgeType": "call",
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
@@ -14263,28 +14290,10 @@
       },
       {
         "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
-        "target": "onModeToggle",
-        "targetName": "onModeToggle",
-        "edgeType": "call",
-        "line": 90,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 92,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 224,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
@@ -14293,7 +14302,7 @@
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 239,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
@@ -14302,7 +14311,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 239,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
@@ -14311,7 +14320,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 250,
+        "line": 247,
         "conditional": false,
         "inLoop": false
       },
@@ -14320,7 +14329,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 261,
+        "line": 258,
         "conditional": false,
         "inLoop": false
       },
@@ -14329,7 +14338,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 265,
+        "line": 262,
         "conditional": false,
         "inLoop": false
       },
@@ -14338,7 +14347,7 @@
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
         "edgeType": "render",
-        "line": 98,
+        "line": 95,
         "conditional": true,
         "inLoop": false
       },
@@ -14347,7 +14356,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 99,
+        "line": 96,
         "conditional": true,
         "inLoop": false
       },
@@ -14356,7 +14365,7 @@
         "target": "handleSave",
         "targetName": "handleSave",
         "edgeType": "callback",
-        "line": 99,
+        "line": 96,
         "conditional": true,
         "inLoop": false
       },
@@ -14365,7 +14374,7 @@
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 117,
+        "line": 114,
         "conditional": true,
         "inLoop": false
       },
@@ -14374,7 +14383,7 @@
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 126,
+        "line": 123,
         "conditional": true,
         "inLoop": false
       },
@@ -14383,7 +14392,7 @@
         "target": "ReferenceArrayInput",
         "targetName": "ReferenceArrayInput",
         "edgeType": "render",
-        "line": 151,
+        "line": 148,
         "conditional": true,
         "inLoop": false
       },
@@ -14392,7 +14401,7 @@
         "target": "ArrayInput",
         "targetName": "ArrayInput",
         "edgeType": "render",
-        "line": 155,
+        "line": 152,
         "conditional": true,
         "inLoop": false
       },
@@ -14401,7 +14410,7 @@
         "target": "SimpleFormIterator",
         "targetName": "SimpleFormIterator",
         "edgeType": "render",
-        "line": 156,
+        "line": 153,
         "conditional": true,
         "inLoop": false
       },
@@ -14410,7 +14419,7 @@
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
         "edgeType": "render",
-        "line": 169,
+        "line": 166,
         "conditional": false,
         "inLoop": false
       },
@@ -14418,6 +14427,15 @@
         "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
         "target": "ScrollArea",
         "targetName": "ScrollArea",
+        "edgeType": "render",
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
         "edgeType": "render",
         "line": 170,
         "conditional": false,
@@ -14428,7 +14446,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 173,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
@@ -14437,7 +14455,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 191,
+        "line": 231,
         "conditional": false,
         "inLoop": false
       },
@@ -14446,16 +14464,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 234,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 248,
+        "line": 245,
         "conditional": false,
         "inLoop": false
       },
@@ -14464,7 +14473,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 251,
+        "line": 248,
         "conditional": false,
         "inLoop": false
       },
@@ -14473,7 +14482,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 263,
+        "line": 260,
         "conditional": false,
         "inLoop": false
       },
@@ -14482,7 +14491,7 @@
         "target": "FormValuesProvider",
         "targetName": "FormValuesProvider",
         "edgeType": "render",
-        "line": 100,
+        "line": 97,
         "conditional": true,
         "inLoop": false
       },
@@ -14491,7 +14500,7 @@
         "target": "onDirtyChange",
         "targetName": "onDirtyChange",
         "edgeType": "callback",
-        "line": 100,
+        "line": 97,
         "conditional": true,
         "inLoop": false
       },
@@ -14500,7 +14509,7 @@
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 103,
+        "line": 100,
         "conditional": true,
         "inLoop": false
       },
@@ -14509,7 +14518,7 @@
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 105,
+        "line": 102,
         "conditional": true,
         "inLoop": false
       },
@@ -14518,7 +14527,7 @@
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 111,
+        "line": 108,
         "conditional": true,
         "inLoop": false
       },
@@ -14527,7 +14536,7 @@
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 113,
+        "line": 110,
         "conditional": true,
         "inLoop": false
       },
@@ -14536,7 +14545,7 @@
         "target": "SegmentComboboxInput",
         "targetName": "SegmentComboboxInput",
         "edgeType": "render",
-        "line": 115,
+        "line": 112,
         "conditional": true,
         "inLoop": false
       },
@@ -14545,7 +14554,7 @@
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 123,
+        "line": 120,
         "conditional": true,
         "inLoop": false
       },
@@ -14554,7 +14563,25 @@
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 131,
+        "line": 128,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 136,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 138,
         "conditional": true,
         "inLoop": false
       },
@@ -14564,6 +14591,15 @@
         "targetName": "TextInput",
         "edgeType": "render",
         "line": 139,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 140,
         "conditional": true,
         "inLoop": false
       },
@@ -14608,34 +14644,7 @@
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 145,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
         "line": 146,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 147,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:58:OrganizationDetailsTab",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 149,
         "conditional": true,
         "inLoop": false
       },
@@ -14644,7 +14653,7 @@
         "target": "AutocompleteArrayInput",
         "targetName": "AutocompleteArrayInput",
         "edgeType": "render",
-        "line": 152,
+        "line": 149,
         "conditional": true,
         "inLoop": false
       },
@@ -14653,7 +14662,7 @@
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 157,
+        "line": 154,
         "conditional": true,
         "inLoop": false
       },
@@ -14662,7 +14671,7 @@
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 158,
+        "line": 155,
         "conditional": true,
         "inLoop": false
       },
@@ -14671,7 +14680,7 @@
         "target": "OrganizationTypeBadge",
         "targetName": "OrganizationTypeBadge",
         "edgeType": "render",
-        "line": 179,
+        "line": 176,
         "conditional": false,
         "inLoop": false
       },
@@ -14680,7 +14689,7 @@
         "target": "PriorityBadge",
         "targetName": "PriorityBadge",
         "edgeType": "render",
-        "line": 184,
+        "line": 181,
         "conditional": false,
         "inLoop": false
       },
@@ -14689,7 +14698,7 @@
         "target": "SidepaneMetadata",
         "targetName": "SidepaneMetadata",
         "edgeType": "render",
-        "line": 282,
+        "line": 279,
         "conditional": false,
         "inLoop": false
       },
@@ -14758,10 +14767,19 @@
       },
       {
         "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:26:OrganizationOpportunitiesTab",
+        "target": "navigate",
+        "targetName": "navigate",
+        "edgeType": "call",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:26:OrganizationOpportunitiesTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 83,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
@@ -14770,7 +14788,7 @@
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 91,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
@@ -14779,7 +14797,7 @@
         "target": "toLocaleString",
         "targetName": "toLocaleString",
         "edgeType": "call",
-        "line": 101,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
@@ -14788,7 +14806,7 @@
         "target": "toLocaleDateString",
         "targetName": "toLocaleDateString",
         "edgeType": "call",
-        "line": 106,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
@@ -14797,7 +14815,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 106,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
@@ -14806,7 +14824,7 @@
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
         "edgeType": "render",
-        "line": 80,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
@@ -14815,7 +14833,7 @@
         "target": "ScrollArea",
         "targetName": "ScrollArea",
         "edgeType": "render",
-        "line": 81,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
@@ -14824,7 +14842,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 111,
+        "line": 115,
         "conditional": false,
         "inLoop": false
       },
@@ -14869,25 +14887,25 @@
         "target": "StageBadge",
         "targetName": "StageBadge",
         "edgeType": "render",
-        "line": 96,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:124:StageBadge",
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:128:StageBadge",
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 140,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:124:StageBadge",
+        "source": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx:128:StageBadge",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 139,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },

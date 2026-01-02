@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-02T06:45:07.854Z",
+  "generated_at": "2026-01-02T08:19:16.982Z",
   "items": {
     "nodes": [
       {
@@ -40,28 +40,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/products/ProductDetailsTab.tsx:62:hasDistributorCodes",
+        "id": "src/atomic-crm/products/ProductDetailsTab.tsx:68:FormValuesProvider",
+        "name": "FormValuesProvider",
+        "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
+        "line": 68,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/products/ProductDetailsTab.tsx:80:hasDistributorCodes",
         "name": "hasDistributorCodes",
         "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-        "line": 62,
+        "line": 80,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "id": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "name": "ProductDetailsTab",
         "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-        "line": 78,
+        "line": 96,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "id": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "name": "StatusBadge",
         "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-        "line": 229,
+        "line": 253,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -825,551 +834,596 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:62:hasDistributorCodes",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:68:FormValuesProvider",
+        "target": "useFormContext",
+        "targetName": "useFormContext",
+        "edgeType": "hook",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:68:FormValuesProvider",
+        "target": "DirtyStateTracker",
+        "targetName": "DirtyStateTracker",
+        "edgeType": "render",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:68:FormValuesProvider",
+        "target": "onDirtyChange",
+        "targetName": "onDirtyChange",
+        "edgeType": "callback",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:80:hasDistributorCodes",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 63,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:62:hasDistributorCodes",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:80:hasDistributorCodes",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 63,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "useUpdate",
         "targetName": "useUpdate",
         "edgeType": "hook",
-        "line": 84,
+        "line": 102,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 85,
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "current",
+        "targetName": "current",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 90,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 95,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 96,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 98,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 99,
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 105,
+        "line": 129,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 107,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 107,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 107,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 109,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 109,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 109,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 113,
+        "line": 137,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 115,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 115,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 115,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 117,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 117,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 117,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "join",
         "targetName": "join",
-        "edgeType": "call",
-        "line": 177,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 177,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "split",
-        "targetName": "split",
-        "edgeType": "call",
-        "line": 177,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
-        "edgeType": "call",
-        "line": 179,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "charAt",
-        "targetName": "charAt",
-        "edgeType": "call",
-        "line": 179,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "slice",
-        "targetName": "slice",
-        "edgeType": "call",
-        "line": 179,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "hasDistributorCodes",
-        "targetName": "hasDistributorCodes",
         "edgeType": "call",
         "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 204,
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 201,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "charAt",
+        "targetName": "charAt",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "hasDistributorCodes",
+        "targetName": "hasDistributorCodes",
+        "edgeType": "call",
+        "line": 225,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 228,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 204,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
-        "edgeType": "render",
-        "line": 127,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "Form",
-        "targetName": "Form",
-        "edgeType": "render",
-        "line": 128,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "handleSave",
-        "targetName": "handleSave",
-        "edgeType": "callback",
-        "line": 128,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 145,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "RecordContextProvider",
-        "targetName": "RecordContextProvider",
-        "edgeType": "render",
-        "line": 162,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "ScrollArea",
-        "targetName": "ScrollArea",
-        "edgeType": "render",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 166,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 176,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 192,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 194,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 202,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "DirtyStateTracker",
-        "targetName": "DirtyStateTracker",
-        "edgeType": "render",
-        "line": 129,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "onDirtyChange",
-        "targetName": "onDirtyChange",
-        "edgeType": "callback",
-        "line": 129,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 132,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 133,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "AutocompleteInput",
-        "targetName": "AutocompleteInput",
-        "edgeType": "render",
-        "line": 135,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "handleCreateCategory",
-        "targetName": "handleCreateCategory",
-        "edgeType": "callback",
-        "line": 139,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "SelectInput",
-        "targetName": "SelectInput",
-        "edgeType": "render",
-        "line": 143,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "AutocompleteInput",
-        "targetName": "AutocompleteInput",
         "edgeType": "render",
         "line": 151,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "StatusBadge",
-        "targetName": "StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "Form",
+        "targetName": "Form",
+        "edgeType": "render",
+        "line": 152,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "handleSave",
+        "targetName": "handleSave",
+        "edgeType": "callback",
+        "line": 152,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 169,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "RecordContextProvider",
+        "targetName": "RecordContextProvider",
         "edgeType": "render",
         "line": 186,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "TextField",
-        "targetName": "TextField",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "ScrollArea",
+        "targetName": "ScrollArea",
         "edgeType": "render",
-        "line": 195,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:78:ProductDetailsTab",
-        "target": "SidepaneMetadata",
-        "targetName": "SidepaneMetadata",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 190,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 216,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 218,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 226,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "FormValuesProvider",
+        "targetName": "FormValuesProvider",
+        "edgeType": "render",
+        "line": 153,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "onDirtyChange",
+        "targetName": "onDirtyChange",
+        "edgeType": "callback",
+        "line": 153,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 156,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 157,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "AutocompleteInput",
+        "targetName": "AutocompleteInput",
+        "edgeType": "render",
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "handleCreateCategory",
+        "targetName": "handleCreateCategory",
+        "edgeType": "callback",
+        "line": 163,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "SelectInput",
+        "targetName": "SelectInput",
+        "edgeType": "render",
+        "line": 167,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "AutocompleteInput",
+        "targetName": "AutocompleteInput",
+        "edgeType": "render",
+        "line": 175,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "StatusBadge",
+        "targetName": "StatusBadge",
+        "edgeType": "render",
+        "line": 210,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "TextField",
+        "targetName": "TextField",
         "edgeType": "render",
         "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:96:ProductDetailsTab",
+        "target": "SidepaneMetadata",
+        "targetName": "SidepaneMetadata",
+        "edgeType": "render",
+        "line": 243,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 248,
+        "line": 272,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 248,
+        "line": 272,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 248,
+        "line": 272,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 250,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 250,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 250,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:229:StatusBadge",
+        "source": "src/atomic-crm/products/ProductDetailsTab.tsx:253:StatusBadge",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 247,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
