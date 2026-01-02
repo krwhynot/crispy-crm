@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-02T06:44:57.183Z",
+  "generated_at": "2026-01-02T08:18:46.837Z",
   "item_count": 30,
   "items": [
     {
@@ -113,10 +113,11 @@
     {
       "name": "ProductDetailsTab",
       "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-      "line": 78,
+      "line": 96,
       "type": "presentational",
       "hooks": [
         "useNotify",
+        "useRef",
         "useUpdate"
       ],
       "imports": [
@@ -131,7 +132,9 @@
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
         "ra-core",
-        "react-admin"
+        "react",
+        "react-admin",
+        "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [

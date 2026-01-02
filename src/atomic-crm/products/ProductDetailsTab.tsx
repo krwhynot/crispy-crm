@@ -150,7 +150,7 @@ export function ProductDetailsTab({
     return (
       <RecordContextProvider value={record}>
         <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
-          <DirtyStateTracker onDirtyChange={onDirtyChange} />
+          <FormValuesProvider getValuesRef={getValuesRef} onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
               <TextInput source="name" label="Product Name" />
