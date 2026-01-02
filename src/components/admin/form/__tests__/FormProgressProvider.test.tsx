@@ -1,7 +1,8 @@
 import { describe, test, expect } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import * as React from "react";
-import { FormProgressProvider, useFormProgress } from "../FormProgressProvider";
+import { FormProgressProvider } from "../FormProgressProvider";
+import { useFormProgress } from "../formProgressUtils";
 
 describe("FormProgressProvider", () => {
   test("throws error when useFormProgress called outside provider", () => {

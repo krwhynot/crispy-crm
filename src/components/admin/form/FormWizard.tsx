@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { WizardContext } from "./WizardContext";
 import type { WizardStepConfig, WizardContextValue } from "./wizard-types";
 
 interface FormWizardProps {
@@ -13,9 +14,6 @@ interface FormWizardProps {
   /** Additional CSS classes */
   className?: string;
 }
-
-// Export context for use by wizardUtils.ts hook
-export const WizardContext = React.createContext<WizardContextValue | null>(null);
 
 /**
  * Multi-step form wizard container.

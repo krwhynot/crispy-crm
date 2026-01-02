@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useWizard } from "./FormWizard";
+import { useWizard } from "./wizardUtils";
 
 interface WizardNavigationProps {
   /** Label for submit button on final step (default: "Submit") */

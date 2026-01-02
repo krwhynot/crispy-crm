@@ -2,7 +2,8 @@ import { describe, test, expect, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import * as React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { FormWizard, useWizard } from "../FormWizard";
+import { FormWizard } from "../FormWizard";
+import { useWizard } from "../wizardUtils";
 import { FormProgressProvider } from "../FormProgressProvider";
 import type { WizardStepConfig } from "../wizard-types";
 

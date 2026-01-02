@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useWizard } from "./FormWizard";
+import { useWizard } from "./wizardUtils";
 
 interface StepIndicatorProps {
   /** Additional CSS classes */

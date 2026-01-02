@@ -5,7 +5,7 @@
  * Extracted to separate file to satisfy react-refresh/only-export-components.
  */
 import * as React from "react";
-import { FormProgressContext } from "./FormProgressProvider";
+import { FormProgressContext } from "./FormProgressContext";
 import type { FormProgressContextValue } from "./formProgressTypes";
 
 /**

@@ -5,7 +5,7 @@
  * Extracted to separate file to satisfy react-refresh/only-export-components.
  */
 import * as React from "react";
-import { WizardContext } from "./FormWizard";
+import { WizardContext } from "./WizardContext";
 import type { WizardContextValue } from "./wizard-types";
 
 /**
