@@ -200,12 +200,15 @@ const ContactListLayout = ({
   );
 };
 
-const ContactListActions = () => (
-  <TopToolbar>
-    <SortButton fields={["first_name", "title", "last_seen"]} dataTutorial="contact-sort-btn" />
-    <ExportButton dataTutorial="contact-export-btn" />
-  </TopToolbar>
-);
+const ContactListActions = () => {
+  const { selectedIds } = useListContext();
+  return (
+    <TopToolbar>
+      <SortButton fields={["first_name", "title", "last_seen"]} dataTutorial="contact-sort-btn" />
+      {!selectedIds?.length && <ExportButton dataTutorial="contact-export-btn" />}
+    </TopToolbar>
+  );
+};
 
 export default ContactList;
 // test
