@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-02T02:25:47.287Z",
+  "generated_at": "2026-01-02T03:54:00.438Z",
   "items": {
     "nodes": [
       {
@@ -349,10 +349,19 @@
       },
       {
         "source": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
+        "target": "stopPropagation",
+        "targetName": "stopPropagation",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
         "target": "setIsExpanded",
         "targetName": "setIsExpanded",
         "edgeType": "call",
-        "line": 27,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
@@ -361,7 +370,7 @@
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 41,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
@@ -370,7 +379,7 @@
         "target": "Translate",
         "targetName": "Translate",
         "edgeType": "render",
-        "line": 36,
+        "line": 39,
         "conditional": false,
         "inLoop": false
       },
@@ -379,7 +388,7 @@
         "target": "ChevronDown",
         "targetName": "ChevronDown",
         "edgeType": "render",
-        "line": 40,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },

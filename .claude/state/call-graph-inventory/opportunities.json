@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-02T02:25:47.295Z",
+  "generated_at": "2026-01-02T03:54:00.447Z",
   "items": {
     "nodes": [
       {
@@ -1120,28 +1120,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "id": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "name": "FormContent",
         "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-        "line": 112,
+        "line": 115,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "id": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "name": "OpportunitySlideOverDetailsTab",
         "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-        "line": 263,
+        "line": 296,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:34:OrganizationCard",
+        "id": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:37:OrganizationCard",
         "name": "OrganizationCard",
         "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-        "line": 34,
+        "line": 37,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -21435,893 +21435,1028 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "useFormContext",
         "targetName": "useFormContext",
         "edgeType": "hook",
-        "line": 122,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "useFormState",
         "targetName": "useFormState",
-        "edgeType": "hook",
-        "line": 123,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "useEffect",
-        "targetName": "useEffect",
         "edgeType": "hook",
         "line": 126,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "onDirtyChange",
-        "targetName": "onDirtyChange",
-        "edgeType": "call",
-        "line": 127,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 131,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "onDirtyChange",
+        "targetName": "onDirtyChange",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 134,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "clearErrors",
         "targetName": "clearErrors",
         "edgeType": "call",
-        "line": 134,
+        "line": 137,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 136,
+        "line": 139,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 136,
+        "line": 139,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 137,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 137,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 176,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 203,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 205,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 216,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
         "edgeType": "render",
         "line": 227,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "ArrayInput",
+        "targetName": "ArrayInput",
+        "edgeType": "render",
+        "line": 228,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "SimpleFormIterator",
+        "targetName": "SimpleFormIterator",
+        "edgeType": "render",
+        "line": 229,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 236,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 238,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 249,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "FormErrorSummary",
         "targetName": "FormErrorSummary",
         "edgeType": "render",
-        "line": 144,
+        "line": 147,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 145,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 146,
+        "line": 149,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 154,
+        "line": 157,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 161,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "SelectInput",
+        "targetName": "SelectInput",
+        "edgeType": "render",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "LeadSourceInput",
         "targetName": "LeadSourceInput",
         "edgeType": "render",
-        "line": 173,
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 174,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 183,
+        "line": 197,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 184,
+        "line": 206,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 185,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 186,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 193,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 216,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 224,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 230,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
         "target": "AutocompleteOrganizationInput",
         "targetName": "AutocompleteOrganizationInput",
         "edgeType": "render",
-        "line": 210,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "AutocompleteOrganizationInput",
-        "targetName": "AutocompleteOrganizationInput",
-        "edgeType": "render",
-        "line": 221,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "AutocompleteOrganizationInput",
-        "targetName": "AutocompleteOrganizationInput",
-        "edgeType": "render",
-        "line": 232,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "CloseOpportunityModal",
-        "targetName": "CloseOpportunityModal",
-        "edgeType": "render",
-        "line": 241,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "handleCloseModalOpenChange",
-        "targetName": "handleCloseModalOpenChange",
-        "edgeType": "callback",
         "line": 243,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:112:FormContent",
-        "target": "handleCloseConfirm",
-        "targetName": "handleCloseConfirm",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "AutocompleteOrganizationInput",
+        "targetName": "AutocompleteOrganizationInput",
+        "edgeType": "render",
+        "line": 254,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "AutocompleteOrganizationInput",
+        "targetName": "AutocompleteOrganizationInput",
+        "edgeType": "render",
+        "line": 265,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "CloseOpportunityModal",
+        "targetName": "CloseOpportunityModal",
+        "edgeType": "render",
+        "line": 274,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "handleCloseModalOpenChange",
+        "targetName": "handleCloseModalOpenChange",
         "edgeType": "callback",
-        "line": 247,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useUpdate",
-        "targetName": "useUpdate",
-        "edgeType": "hook",
-        "line": 270,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 271,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 272,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 273,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
         "line": 276,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 277,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useRef",
-        "targetName": "useRef",
-        "edgeType": "hook",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:115:FormContent",
+        "target": "handleCloseConfirm",
+        "targetName": "handleCloseConfirm",
+        "edgeType": "callback",
         "line": 280,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useCallback",
-        "targetName": "useCallback",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
         "edgeType": "hook",
-        "line": 285,
+        "line": 303,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "setIsSaving",
-        "targetName": "setIsSaving",
-        "edgeType": "call",
-        "line": 287,
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 304,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "update",
-        "targetName": "update",
-        "edgeType": "call",
-        "line": 289,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "setServerError",
-        "targetName": "setServerError",
-        "edgeType": "call",
-        "line": 298,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 299,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "onModeToggle",
-        "targetName": "onModeToggle",
-        "edgeType": "call",
-        "line": 301,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
         "line": 305,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "setServerError",
-        "targetName": "setServerError",
-        "edgeType": "call",
-        "line": 307,
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 306,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 309,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 310,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 313,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 318,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "setIsSaving",
         "targetName": "setIsSaving",
         "edgeType": "call",
-        "line": 312,
+        "line": 320,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 322,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "setServerError",
+        "targetName": "setServerError",
+        "edgeType": "call",
+        "line": 331,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 332,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "onModeToggle",
+        "targetName": "onModeToggle",
+        "edgeType": "call",
+        "line": 334,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 338,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "setServerError",
+        "targetName": "setServerError",
+        "edgeType": "call",
+        "line": 340,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "setIsSaving",
+        "targetName": "setIsSaving",
+        "edgeType": "call",
+        "line": 345,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 321,
+        "line": 354,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "setCloseTargetStage",
         "targetName": "setCloseTargetStage",
         "edgeType": "call",
-        "line": 330,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "setShowCloseModal",
-        "targetName": "setShowCloseModal",
-        "edgeType": "call",
-        "line": 331,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "performSave",
-        "targetName": "performSave",
-        "edgeType": "call",
-        "line": 336,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 344,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "setShowCloseModal",
-        "targetName": "setShowCloseModal",
-        "edgeType": "call",
-        "line": 346,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "performSave",
-        "targetName": "performSave",
-        "edgeType": "call",
-        "line": 348,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 362,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "setShowCloseModal",
-        "targetName": "setShowCloseModal",
-        "edgeType": "call",
         "line": 363,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "setShowCloseModal",
+        "targetName": "setShowCloseModal",
+        "edgeType": "call",
+        "line": 364,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "performSave",
+        "targetName": "performSave",
+        "edgeType": "call",
+        "line": 369,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 377,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "setShowCloseModal",
+        "targetName": "setShowCloseModal",
+        "edgeType": "call",
+        "line": 379,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "performSave",
+        "targetName": "performSave",
+        "edgeType": "call",
+        "line": 381,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 395,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "setShowCloseModal",
+        "targetName": "setShowCloseModal",
+        "edgeType": "call",
+        "line": 396,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 394,
+        "line": 427,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 395,
+        "line": 428,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 412,
+        "line": 445,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 423,
+        "line": 456,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "getReasonDisplayName",
         "targetName": "getReasonDisplayName",
         "edgeType": "call",
-        "line": 430,
+        "line": 463,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "getReasonDisplayName",
         "targetName": "getReasonDisplayName",
         "edgeType": "call",
-        "line": 432,
+        "line": 465,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "getStageBadgeVariant",
         "targetName": "getStageBadgeVariant",
         "edgeType": "call",
-        "line": 458,
+        "line": 491,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "getPriorityBadgeVariant",
         "targetName": "getPriorityBadgeVariant",
         "edgeType": "call",
-        "line": 464,
+        "line": 497,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 466,
+        "line": 499,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 466,
+        "line": 499,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 466,
+        "line": 499,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 511,
+        "line": 556,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 511,
+        "line": 556,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
+        "line": 558,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "formatDate",
+        "targetName": "formatDate",
+        "edgeType": "call",
+        "line": 564,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "formatDate",
+        "targetName": "formatDate",
+        "edgeType": "call",
+        "line": 569,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "formatDate",
+        "targetName": "formatDate",
+        "edgeType": "call",
+        "line": 611,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 641,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "formatDate",
+        "targetName": "formatDate",
+        "edgeType": "call",
+        "line": 677,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "Form",
+        "targetName": "Form",
+        "edgeType": "render",
+        "line": 404,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "handleSave",
+        "targetName": "handleSave",
+        "edgeType": "callback",
+        "line": 407,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "ScrollArea",
+        "targetName": "ScrollArea",
+        "edgeType": "render",
+        "line": 469,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 472,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 486,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 491,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 497,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 509,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 550,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 582,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 639,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 642,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 651,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "FormContent",
+        "targetName": "FormContent",
+        "edgeType": "render",
+        "line": 410,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "onDirtyChange",
+        "targetName": "onDirtyChange",
+        "edgeType": "callback",
+        "line": 412,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "handleCloseModalOpenChange",
+        "targetName": "handleCloseModalOpenChange",
+        "edgeType": "callback",
+        "line": 416,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "handleCloseConfirm",
+        "targetName": "handleCloseConfirm",
+        "edgeType": "callback",
+        "line": 417,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
         "line": 513,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "formatDate",
-        "targetName": "formatDate",
-        "edgeType": "call",
-        "line": 519,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "formatDate",
-        "targetName": "formatDate",
-        "edgeType": "call",
-        "line": 559,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "Form",
-        "targetName": "Form",
-        "edgeType": "render",
-        "line": 371,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "handleSave",
-        "targetName": "handleSave",
-        "edgeType": "callback",
-        "line": 374,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "ScrollArea",
-        "targetName": "ScrollArea",
-        "edgeType": "render",
-        "line": 436,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 439,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 453,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 458,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 464,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 505,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 530,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 578,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "FormContent",
-        "targetName": "FormContent",
-        "edgeType": "render",
-        "line": 377,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "onDirtyChange",
-        "targetName": "onDirtyChange",
-        "edgeType": "callback",
-        "line": 379,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "handleCloseModalOpenChange",
-        "targetName": "handleCloseModalOpenChange",
-        "edgeType": "callback",
-        "line": 383,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
-        "target": "handleCloseConfirm",
-        "targetName": "handleCloseConfirm",
-        "edgeType": "callback",
-        "line": 384,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "Trophy",
         "targetName": "Trophy",
         "edgeType": "render",
-        "line": 485,
+        "line": 530,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "XCircle",
         "targetName": "XCircle",
         "edgeType": "render",
-        "line": 487,
+        "line": 532,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "OrganizationCard",
         "targetName": "OrganizationCard",
         "edgeType": "render",
-        "line": 580,
+        "line": 653,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "OrganizationCard",
         "targetName": "OrganizationCard",
         "edgeType": "render",
-        "line": 586,
+        "line": 659,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "OrganizationCard",
         "targetName": "OrganizationCard",
         "edgeType": "render",
-        "line": 592,
+        "line": 665,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:263:OpportunitySlideOverDetailsTab",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:296:OpportunitySlideOverDetailsTab",
         "target": "SidepaneMetadata",
         "targetName": "SidepaneMetadata",
         "edgeType": "render",
-        "line": 601,
+        "line": 682,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:34:OrganizationCard",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:37:OrganizationCard",
         "target": "useGetOne",
         "targetName": "useGetOne",
         "edgeType": "hook",
-        "line": 40,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:34:OrganizationCard",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:37:OrganizationCard",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 52,
+        "line": 55,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:34:OrganizationCard",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:37:OrganizationCard",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 61,
+        "line": 64,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:34:OrganizationCard",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:37:OrganizationCard",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 69,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:34:OrganizationCard",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:37:OrganizationCard",
         "target": "Link",
         "targetName": "Link",
         "edgeType": "render",
-        "line": 76,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:34:OrganizationCard",
+        "source": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:37:OrganizationCard",
         "target": "Building2",
         "targetName": "Building2",
         "edgeType": "render",
-        "line": 73,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },

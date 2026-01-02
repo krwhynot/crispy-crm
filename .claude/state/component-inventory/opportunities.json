@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-02T02:25:39.886Z",
+  "generated_at": "2026-01-02T03:53:52.890Z",
   "item_count": 78,
   "items": [
     {
@@ -2324,7 +2324,7 @@
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 263,
+      "line": 296,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2339,9 +2339,12 @@
         "../components/CloseOpportunityModal",
         "../constants/stageConstants",
         "@/atomic-crm/types",
+        "@/atomic-crm/utils/saleOptionRenderer",
         "@/atomic-crm/validation/opportunities",
         "@/components/admin/FormErrorSummary",
+        "@/components/admin/array-input",
         "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
         "@/components/admin/text-input",
         "@/components/layouts/sidepane",
         "@/components/ui/badge",
