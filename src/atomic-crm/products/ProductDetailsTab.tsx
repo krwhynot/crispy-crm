@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { useFormContext } from "react-hook-form";
 import { Form } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
@@ -59,6 +61,22 @@ interface ProductDetailsTabProps {
   onDirtyChange?: (isDirty: boolean) => void;
 }
 
+/**
+ * Helper component that must be rendered INSIDE a Form to access form context.
+ * Uses a ref to expose getValues() to the parent component's handleSave.
+ */
+function FormValuesProvider({
+  getValuesRef,
+  onDirtyChange,
+}: {
+  getValuesRef: React.MutableRefObject<(() => Record<string, unknown>) | null>;
+  onDirtyChange?: (isDirty: boolean) => void;
+}) {
+  const { getValues } = useFormContext();
+  getValuesRef.current = getValues;
+  return <DirtyStateTracker onDirtyChange={onDirtyChange} />;
+}
+
 function hasDistributorCodes(record: Record<string, unknown>): boolean {
   return Object.keys(DISTRIBUTOR_CODE_LABELS).some((key) => record[key as keyof typeof record]);
 }
@@ -83,17 +101,23 @@ export function ProductDetailsTab({
 }: ProductDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  // Ref to access form's getValues() from outside the Form context
+  const getValuesRef = useRef<(() => Record<string, unknown>) | null>(null);
 
   // Handle save in edit mode
-  const handleSave = async (data: Partial<Product>) => {
+  const handleSave = async (formData: Partial<Product>) => {
     try {
+      // Get ALL current form values using the ref (not just dirty fields)
+      const allFormValues = getValuesRef.current?.() ?? formData;
+      const completeData = { ...formData, ...allFormValues };
+
       await update("products", {
         id: record.id,
-        data,
+        data: completeData,
         previousData: record,
       });
       notify("Product updated successfully", { type: "success" });
-      onModeToggle?.(); // Return to view mode after successful save
+      onModeToggle?.();
     } catch (error) {
       notify("Error updating product", { type: "error" });
       console.error("Save error:", error);

@@ -1,6 +1,6 @@
 import { useGetIdentity, useListContext } from "ra-core";
 
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
+import { ContactBulkActionsToolbar } from "./ContactBulkActionsToolbar";
 import { List } from "@/components/admin/list";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -195,7 +195,7 @@ const ContactListLayout = ({
           />
         </PremiumDatagrid>
       </StandardListLayout>
-      <BulkActionsToolbar />
+      <ContactBulkActionsToolbar />
     </>
   );
 };
