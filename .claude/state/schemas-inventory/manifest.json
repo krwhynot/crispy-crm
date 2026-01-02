@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-02T02:25:45.296Z",
+  "generated_at": "2026-01-02T03:53:58.412Z",
   "generator": "scripts/discover/extractors/schemas.ts",
   "source_globs": [
     "src/atomic-crm/validation/**/*.ts"
   ],
-  "checksum": "sha256:c7dcc4bdb9e38218",
+  "checksum": "sha256:cd5537b027d10a32",
   "source_hashes": {
     "src/atomic-crm/validation/__tests__/contacts/integration.test.ts": "cb8deb5637c6",
     "src/atomic-crm/validation/__tests__/contacts/validation.test.ts": "675b5c97d663",
@@ -64,7 +64,7 @@
       "name": "activities",
       "file": "activities.json",
       "item_count": 11,
-      "checksum": "sha256:0cb5ff5711b56668",
+      "checksum": "sha256:a0f9d54de990b957",
       "source_files": [
         "src/atomic-crm/validation/activities.ts"
       ],
@@ -76,7 +76,7 @@
       "name": "categories",
       "file": "categories.json",
       "item_count": 1,
-      "checksum": "sha256:d28719b1529540a3",
+      "checksum": "sha256:174eb1391403acb2",
       "source_files": [
         "src/atomic-crm/validation/categories.ts"
       ],
@@ -88,7 +88,7 @@
       "name": "contacts",
       "file": "contacts.json",
       "item_count": 10,
-      "checksum": "sha256:08bebb96e872678d",
+      "checksum": "sha256:19da3e4e1dd787bb",
       "source_files": [
         "src/atomic-crm/validation/contacts.ts"
       ],
@@ -100,7 +100,7 @@
       "name": "distributorAuthorizations",
       "file": "distributorAuthorizations.json",
       "item_count": 3,
-      "checksum": "sha256:db6bb05f364086a5",
+      "checksum": "sha256:42b021484515f9a8",
       "source_files": [
         "src/atomic-crm/validation/distributorAuthorizations.ts"
       ],
@@ -112,7 +112,7 @@
       "name": "notes",
       "file": "notes.json",
       "item_count": 4,
-      "checksum": "sha256:56f012abb38e22ec",
+      "checksum": "sha256:d6e34464712b5e33",
       "source_files": [
         "src/atomic-crm/validation/notes.ts"
       ],
@@ -124,7 +124,7 @@
       "name": "operatorSegments",
       "file": "operatorSegments.json",
       "item_count": 4,
-      "checksum": "sha256:777c96b4a5360b2b",
+      "checksum": "sha256:82aacbdc6367c306",
       "source_files": [
         "src/atomic-crm/validation/operatorSegments.ts"
       ],
@@ -136,7 +136,7 @@
       "name": "opportunities",
       "file": "opportunities.json",
       "item_count": 9,
-      "checksum": "sha256:31b3825291bcfc47",
+      "checksum": "sha256:94244addde2701bd",
       "source_files": [
         "src/atomic-crm/validation/opportunities.ts"
       ],
@@ -148,7 +148,7 @@
       "name": "organizationDistributors",
       "file": "organizationDistributors.json",
       "item_count": 1,
-      "checksum": "sha256:55db8ac1653477b2",
+      "checksum": "sha256:5f889ff4422663f5",
       "source_files": [
         "src/atomic-crm/validation/organizationDistributors.ts"
       ],
@@ -160,7 +160,7 @@
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 7,
-      "checksum": "sha256:481ae4dd19bbc83d",
+      "checksum": "sha256:8c5d1c92d3b25fa1",
       "source_files": [
         "src/atomic-crm/validation/organizations.ts"
       ],
@@ -172,7 +172,7 @@
       "name": "productDistributors",
       "file": "productDistributors.json",
       "item_count": 2,
-      "checksum": "sha256:a634755e95b1bb8a",
+      "checksum": "sha256:70d1b5d0aa300698",
       "source_files": [
         "src/atomic-crm/validation/productDistributors.ts"
       ],
@@ -184,7 +184,7 @@
       "name": "products",
       "file": "products.json",
       "item_count": 3,
-      "checksum": "sha256:34f19cf590c514f6",
+      "checksum": "sha256:b9b3b7897074f827",
       "source_files": [
         "src/atomic-crm/validation/products.ts"
       ],
@@ -196,7 +196,7 @@
       "name": "productWithDistributors",
       "file": "productWithDistributors.json",
       "item_count": 2,
-      "checksum": "sha256:318ec59d39beb169",
+      "checksum": "sha256:3e61019c7137e430",
       "source_files": [
         "src/atomic-crm/validation/productWithDistributors.ts"
       ],
@@ -208,7 +208,7 @@
       "name": "quickAdd",
       "file": "quickAdd.json",
       "item_count": 1,
-      "checksum": "sha256:fbd5e4a079c4ff53",
+      "checksum": "sha256:46bb48e2d9dc9ff6",
       "source_files": [
         "src/atomic-crm/validation/quickAdd.ts"
       ],
@@ -220,7 +220,7 @@
       "name": "rpc",
       "file": "rpc.json",
       "item_count": 10,
-      "checksum": "sha256:8810ec5b57495719",
+      "checksum": "sha256:ddbde530df9f4446",
       "source_files": [
         "src/atomic-crm/validation/rpc.ts"
       ],
@@ -232,7 +232,7 @@
       "name": "sales",
       "file": "sales.json",
       "item_count": 5,
-      "checksum": "sha256:836d5013d175cbb1",
+      "checksum": "sha256:ca227752b0803f78",
       "source_files": [
         "src/atomic-crm/validation/sales.ts"
       ],
@@ -244,7 +244,7 @@
       "name": "segments",
       "file": "segments.json",
       "item_count": 3,
-      "checksum": "sha256:e7dc5b5334d191ca",
+      "checksum": "sha256:b4d0e7159ded0318",
       "source_files": [
         "src/atomic-crm/validation/segments.ts"
       ],
@@ -256,7 +256,7 @@
       "name": "tags",
       "file": "tags.json",
       "item_count": 3,
-      "checksum": "sha256:f907cab3ea644a2e",
+      "checksum": "sha256:e9984716ebe9eb87",
       "source_files": [
         "src/atomic-crm/validation/tags.ts"
       ],
@@ -268,7 +268,7 @@
       "name": "task",
       "file": "task.json",
       "item_count": 3,
-      "checksum": "sha256:1d5e3e94b20ecda3",
+      "checksum": "sha256:7e626f002a4633e7",
       "source_files": [
         "src/atomic-crm/validation/task.ts"
       ],

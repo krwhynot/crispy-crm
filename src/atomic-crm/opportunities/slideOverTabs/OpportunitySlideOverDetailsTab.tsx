@@ -1,5 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import { Form, useUpdate, useNotify, ReferenceInput, useGetOne } from "react-admin";
+import { Form, useUpdate, useNotify, ReferenceInput, ReferenceField, useGetOne } from "react-admin";
+import { ArrayInput } from "@/components/admin/array-input";
+import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
+import { saleOptionRenderer } from "@/atomic-crm/utils/saleOptionRenderer";
 import { useFormContext, useFormState } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
@@ -170,10 +173,30 @@ function FormContent({
         helperText={false}
         fullWidth
       />
+      <ReferenceInput
+        source="account_manager_id"
+        reference="sales"
+        sort={{ field: "last_name", order: "ASC" }}
+        filter={{ "disabled@neq": true }}
+      >
+        <SelectInput
+          label="Account Manager"
+          optionText={saleOptionRenderer}
+          helperText={false}
+          fullWidth
+        />
+      </ReferenceInput>
       <LeadSourceInput />
       <TextInput
         source="estimated_close_date"
         label="Estimated Close Date"
+        type="date"
+        helperText={false}
+        fullWidth
+      />
+      <TextInput
+        source="actual_close_date"
+        label="Actual Close Date"
         type="date"
         helperText={false}
         fullWidth
@@ -198,6 +221,16 @@ function FormContent({
         helperText={false}
         fullWidth
       />
+      <TextInput source="competition" label="Competition" helperText={false} fullWidth />
+
+      {/* Tags section */}
+      <SidepaneSection label="Tags" showSeparator>
+        <ArrayInput source="tags" label={false}>
+          <SimpleFormIterator inline disableReordering>
+            <TextInput source="" label={false} helperText={false} placeholder="Add tag" />
+          </SimpleFormIterator>
+        </ArrayInput>
+      </SidepaneSection>
 
       {/* Organizations section - with inline creation via AutocompleteOrganizationInput */}
       <SidepaneSection label="Organizations" showSeparator>
@@ -471,6 +504,18 @@ export function OpportunitySlideOverDetailsTab({
           </div>
         </SidepaneSection>
 
+        {/* Ownership Section */}
+        {record.account_manager_id && (
+          <SidepaneSection label="Ownership" showSeparator>
+            <div>
+              <span className="text-xs text-muted-foreground">Account Manager</span>
+              <div className="mt-1 text-sm">
+                <ReferenceField source="account_manager_id" reference="sales" link={false} />
+              </div>
+            </div>
+          </SidepaneSection>
+        )}
+
         {/* Win/Loss Reason - shown for closed opportunities */}
         {isClosedOpportunity && closedReason && (
           <div
@@ -518,6 +563,12 @@ export function OpportunitySlideOverDetailsTab({
               <span className="text-xs text-muted-foreground">Est. Close</span>
               <p className="text-sm mt-1">{formatDate(record.estimated_close_date)}</p>
             </div>
+            {record.actual_close_date && (
+              <div>
+                <span className="text-xs text-muted-foreground">Actual Close</span>
+                <p className="text-sm mt-1">{formatDate(record.actual_close_date)}</p>
+              </div>
+            )}
           </div>
         </SidepaneSection>
 
@@ -526,7 +577,8 @@ export function OpportunitySlideOverDetailsTab({
           record.notes ||
           record.next_action ||
           record.next_action_date ||
-          record.decision_criteria) && (
+          record.decision_criteria ||
+          record.competition) && (
           <SidepaneSection label="Workflow" showSeparator>
             <div className="space-y-3">
               {/* Campaign */}
@@ -570,6 +622,27 @@ export function OpportunitySlideOverDetailsTab({
                   </p>
                 </div>
               )}
+
+              {/* Competition */}
+              {record.competition && (
+                <div>
+                  <span className="text-xs text-muted-foreground">Competition</span>
+                  <p className="text-sm mt-1">{record.competition}</p>
+                </div>
+              )}
+            </div>
+          </SidepaneSection>
+        )}
+
+        {/* Tags Section */}
+        {record.tags && record.tags.length > 0 && (
+          <SidepaneSection label="Tags" showSeparator>
+            <div className="flex flex-wrap gap-1">
+              {record.tags.map((tag, index) => (
+                <Badge key={index} variant="secondary">
+                  {tag}
+                </Badge>
+              ))}
             </div>
           </SidepaneSection>
         )}
@@ -596,6 +669,14 @@ export function OpportunitySlideOverDetailsTab({
             />
           </div>
         </SidepaneSection>
+
+        {/* Stage Changed timestamp */}
+        {record.stage_changed_at && (
+          <div className="px-0 py-2 border-t border-border">
+            <span className="text-xs text-muted-foreground">Stage Changed</span>
+            <p className="text-sm mt-0.5">{formatDate(record.stage_changed_at)}</p>
+          </div>
+        )}
 
         {/* Metadata - replaces manual timestamps */}
         <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
