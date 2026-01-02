@@ -165,6 +165,10 @@ export function OpportunityProductsTab({
             <SidepaneEmptyState
               title={EMPTY_STATE_CONTENT.products.title}
               description={EMPTY_STATE_CONTENT.products.description}
+              action={{
+                label: EMPTY_STATE_CONTENT.products.actionLabel,
+                onClick: () => onModeToggle?.(),
+              }}
             />
           </SidepaneSection>
         </div>

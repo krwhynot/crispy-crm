@@ -72,6 +72,10 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
       <SidepaneEmptyState
         title={EMPTY_STATE_CONTENT.opportunities.title}
         description={EMPTY_STATE_CONTENT.opportunities.description}
+        action={{
+          label: EMPTY_STATE_CONTENT.opportunities.actionLabel,
+          onClick: () => navigate(`/opportunities/create?customer_organization_id=${record.id}`),
+        }}
       />
     );
   }
