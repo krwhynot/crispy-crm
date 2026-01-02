@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-02T04:15:04.201Z",
+  "generated_at": "2026-01-02T06:45:07.854Z",
   "items": {
     "nodes": [
       {
@@ -211,10 +211,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "id": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "name": "ProductRelationshipsTab",
         "file": "src/atomic-crm/products/ProductRelationshipsTab.tsx",
-        "line": 32,
+        "line": 33,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -2409,164 +2409,173 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 34,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 79,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
         "edgeType": "render",
-        "line": 44,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "AsideSection",
         "targetName": "AsideSection",
-        "edgeType": "render",
-        "line": 48,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "Card",
-        "targetName": "Card",
         "edgeType": "render",
         "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "CardContent",
-        "targetName": "CardContent",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 53,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "AsideSection",
-        "targetName": "AsideSection",
-        "edgeType": "render",
-        "line": 63,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 64,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 65,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "RecordContextProvider",
-        "targetName": "RecordContextProvider",
-        "edgeType": "render",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 90,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "AsideSection",
-        "targetName": "AsideSection",
-        "edgeType": "render",
-        "line": 117,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "Building2",
-        "targetName": "Building2",
-        "edgeType": "render",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "TextField",
-        "targetName": "TextField",
         "edgeType": "render",
         "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "AsideSection",
+        "targetName": "AsideSection",
+        "edgeType": "render",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "RecordContextProvider",
+        "targetName": "RecordContextProvider",
+        "edgeType": "render",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 92,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "AsideSection",
+        "targetName": "AsideSection",
+        "edgeType": "render",
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "Building2",
+        "targetName": "Building2",
+        "edgeType": "render",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 95,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
-        "target": "DateField",
-        "targetName": "DateField",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "SidepaneEmptyState",
+        "targetName": "SidepaneEmptyState",
         "edgeType": "render",
-        "line": 122,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:32:ProductRelationshipsTab",
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
         "target": "DateField",
         "targetName": "DateField",
         "edgeType": "render",
-        "line": 132,
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/products/ProductRelationshipsTab.tsx:33:ProductRelationshipsTab",
+        "target": "DateField",
+        "targetName": "DateField",
+        "edgeType": "render",
+        "line": 134,
         "conditional": false,
         "inLoop": false
       },

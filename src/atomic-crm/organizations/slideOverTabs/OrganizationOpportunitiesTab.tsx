@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SidepaneEmptyState } from "@/components/layouts/sidepane";
+import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
 import { getOpportunityStageLabel } from "../../opportunities/constants/stageConstants";
@@ -68,7 +68,12 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
   }
 
   if (opportunities.length === 0) {
-    return <SidepaneEmptyState message="No opportunities yet" />;
+    return (
+      <SidepaneEmptyState
+        title={EMPTY_STATE_CONTENT.opportunities.title}
+        description={EMPTY_STATE_CONTENT.opportunities.description}
+      />
+    );
   }
 
   return (

@@ -18,6 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserIcon, Star } from "lucide-react";
 import {
   DirtyStateTracker,
+  EMPTY_STATE_CONTENT,
   SidepaneEmptyState,
   SidepaneSection,
 } from "@/components/layouts/sidepane";
@@ -178,7 +179,10 @@ export function OpportunityContactsTab({
 
   if (!junctionRecords || junctionRecords.length === 0) {
     return (
-      <SidepaneEmptyState message="No contacts associated with this opportunity" />
+      <SidepaneEmptyState
+        title={EMPTY_STATE_CONTENT.contacts.title}
+        description={EMPTY_STATE_CONTENT.contacts.description}
+      />
     );
   }
 

@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-02T04:14:56.669Z",
+  "generated_at": "2026-01-02T06:44:57.183Z",
   "item_count": 30,
   "items": [
     {
@@ -455,7 +455,7 @@
     {
       "name": "ProductRelationshipsTab",
       "file": "src/atomic-crm/products/ProductRelationshipsTab.tsx",
-      "line": 32,
+      "line": 33,
       "type": "presentational",
       "hooks": [
         "useGetList"
@@ -464,6 +464,7 @@
         "@/components/admin/date-field",
         "@/components/admin/reference-field",
         "@/components/admin/text-field",
+        "@/components/layouts/sidepane",
         "@/components/ui",
         "@/components/ui/card",
         "lucide-react",

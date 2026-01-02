@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-02T04:14:56.664Z",
+  "generated_at": "2026-01-02T06:44:57.171Z",
   "item_count": 78,
   "items": [
     {
@@ -2231,7 +2231,7 @@
     {
       "name": "OpportunityContactsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
-      "line": 93,
+      "line": 94,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -2295,7 +2295,7 @@
     {
       "name": "OpportunityProductsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-      "line": 44,
+      "line": 45,
       "type": "presentational",
       "hooks": [
         "useGetList",

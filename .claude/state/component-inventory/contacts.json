@@ -1,12 +1,12 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-02T04:14:56.660Z",
+  "generated_at": "2026-01-02T06:44:57.162Z",
   "item_count": 53,
   "items": [
     {
       "name": "ActivitiesTab",
       "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -16,6 +16,7 @@
         "../activities",
         "../activities/constants",
         "../types",
+        "@/components/layouts/sidepane",
         "@/components/ui/button",
         "@/components/ui/skeleton",
         "lucide-react",
@@ -35,7 +36,7 @@
     {
       "name": "ActivitiesTab",
       "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -45,6 +46,7 @@
         "../activities",
         "../activities/constants",
         "../types",
+        "@/components/layouts/sidepane",
         "@/components/ui/button",
         "@/components/ui/skeleton",
         "lucide-react",
