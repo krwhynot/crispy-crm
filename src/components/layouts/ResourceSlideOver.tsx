@@ -8,7 +8,6 @@ import { PriorityTabsList } from "@/components/ui/priority-tabs";
 import { Button } from "@/components/ui/button";
 import { SlideOverSkeleton } from "@/components/ui/list-skeleton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
 import { useKeyboardShortcuts, formatShortcut } from "@/hooks/useKeyboardShortcuts";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 
