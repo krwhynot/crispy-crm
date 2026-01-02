@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { CreateBase, Form } from "ra-core";
 
 import {
@@ -14,6 +16,15 @@ import { ContactFormTutorial } from "./ContactFormTutorial";
 
 const ContactCreate = () => {
   const { defaults, isLoading } = useSmartDefaults();
+  const location = useLocation();
+
+  // Read URL params (US3: ?organization_id=123)
+  const searchParams = new URLSearchParams(location.search);
+  const urlOrganizationId = searchParams.get("organization_id");
+
+  // Read location.state (US2: navigation from Org detail)
+  const stateOrganizationId = (location.state as { record?: { organization_id?: string | number } })
+    ?.record?.organization_id;
 
   const transformData = (data: Contact) => ({
     ...data,
@@ -34,12 +45,17 @@ const ContactCreate = () => {
 
   // Generate defaults from schema truth
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  // contactBaseSchema is a ZodObject (not ZodEffects), so .partial().parse({}) works
-  // Note: Only spread sales_id from defaults - contacts don't have activity_date
-  const formDefaults = {
-    ...contactBaseSchema.partial().parse({}),
-    sales_id: defaults.sales_id,
-  };
+  // URL param takes precedence over location.state
+  const formDefaults = useMemo(
+    () => ({
+      ...contactBaseSchema.partial().parse({}),
+      sales_id: defaults.sales_id,
+      // US2 + US3: organization context (URL param > state > undefined)
+      ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
+      ...(!urlOrganizationId && stateOrganizationId && { organization_id: Number(stateOrganizationId) }),
+    }),
+    [defaults.sales_id, urlOrganizationId, stateOrganizationId]
+  );
 
   return (
     <CreateBase redirect="list" transform={transformData}>
@@ -66,6 +82,7 @@ const ContactFormContent = () => {
         resourceName="contact"
         redirectPath="/contacts"
         tutorialAttribute="contact-save-btn"
+        preserveFields={["organization_id", "sales_id"]}
       />
     </>
   );
