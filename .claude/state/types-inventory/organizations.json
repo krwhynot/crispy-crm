@@ -1,12 +1,12 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-01T22:47:15.415Z",
+  "generated_at": "2026-01-02T02:25:45.420Z",
   "item_count": 17,
   "items": [
     {
       "name": "MappedCSVRow",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 48,
+      "line": 52,
       "kind": "interface",
       "properties": [
         {
@@ -106,7 +106,7 @@
     {
       "name": "ImportRowError",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 70,
+      "line": 74,
       "kind": "interface",
       "properties": [
         {
@@ -134,7 +134,7 @@
     {
       "name": "ImportBatchResult",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 79,
+      "line": 83,
       "kind": "interface",
       "properties": [
         {
@@ -162,7 +162,7 @@
     {
       "name": "ImportPreviewState",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 88,
+      "line": 92,
       "kind": "interface",
       "properties": [
         {
@@ -196,7 +196,7 @@
     {
       "name": "OrganizationExportRow",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 103,
+      "line": 107,
       "kind": "interface",
       "properties": [
         {
@@ -338,7 +338,7 @@
     {
       "name": "OrganizationRecord",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 136,
+      "line": 140,
       "kind": "interface",
       "properties": [
         {
@@ -375,7 +375,7 @@
     {
       "name": "OrganizationTabProps",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 148,
+      "line": 152,
       "kind": "interface",
       "properties": [
         {
@@ -391,7 +391,7 @@
     {
       "name": "OrganizationSlideOverTab",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 155,
+      "line": 159,
       "kind": "interface",
       "properties": [
         {
@@ -419,7 +419,7 @@
     {
       "name": "OrganizationTransformResult",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 175,
+      "line": 179,
       "kind": "interface",
       "properties": [
         {
@@ -519,7 +519,7 @@
     {
       "name": "ContextLink",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 205,
+      "line": 209,
       "kind": "interface",
       "properties": [
         {
@@ -541,7 +541,7 @@
     {
       "name": "EmailEntry",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 213,
+      "line": 217,
       "kind": "interface",
       "properties": [
         {
@@ -563,7 +563,7 @@
     {
       "name": "ColumnMapping",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 226,
+      "line": 230,
       "kind": "interface",
       "properties": [
         {
@@ -585,7 +585,7 @@
     {
       "name": "PreviewRow",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 234,
+      "line": 238,
       "kind": "interface",
       "properties": [
         {
@@ -613,7 +613,7 @@
     {
       "name": "ImportFieldValue",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 243,
+      "line": 247,
       "kind": "interface",
       "properties": [
         {
@@ -647,7 +647,7 @@
     {
       "name": "RawCSVRow",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 42,
+      "line": 46,
       "kind": "type_alias",
       "typeExpression": "string[]",
       "isComplex": false,
@@ -656,7 +656,7 @@
     {
       "name": "OrganizationFormValues",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 169,
+      "line": 173,
       "kind": "type_alias",
       "typeExpression": "Partial<Organization>",
       "isComplex": false,
@@ -665,7 +665,7 @@
     {
       "name": "DuplicateCheckCallback",
       "file": "src/atomic-crm/organizations/types.ts",
-      "line": 196,
+      "line": 200,
       "kind": "type_alias",
       "typeExpression": "(name: string, values: OrganizationFormValues) => void",
       "isComplex": false,

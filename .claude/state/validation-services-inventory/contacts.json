@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-01T22:47:15.805Z",
+  "generated_at": "2026-01-02T02:25:45.696Z",
   "item_count": 4,
   "items": [
     {
@@ -25,7 +25,7 @@
     {
       "name": "validateUpdateContact",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 656,
+      "line": 660,
       "type": "formatter",
       "schemaReference": "updateContactSchema",
       "errorFormatting": true,
@@ -35,7 +35,7 @@
     {
       "name": "validateContactOrganization",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 676,
+      "line": 680,
       "type": "formatter",
       "schemaReference": "contactOrganizationSchema",
       "errorFormatting": true,

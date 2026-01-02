@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-01T22:47:19.968Z",
+  "generated_at": "2026-01-02T02:25:47.354Z",
   "items": {
     "nodes": [
       {
@@ -856,7 +856,7 @@
         "target": "onChange",
         "targetName": "onChange",
         "edgeType": "call",
-        "line": 17,
+        "line": 19,
         "conditional": false,
         "inLoop": false
       },
@@ -865,7 +865,7 @@
         "target": "GenericSelectInput",
         "targetName": "GenericSelectInput",
         "edgeType": "render",
-        "line": 14,
+        "line": 16,
         "conditional": false,
         "inLoop": false
       },
@@ -991,7 +991,7 @@
         "target": "formatDistanceToNow",
         "targetName": "formatDistanceToNow",
         "edgeType": "call",
-        "line": 57,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
@@ -1000,7 +1000,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 57,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
@@ -1072,7 +1072,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 54,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },

@@ -1,14 +1,14 @@
 {
   "chunk_name": "contexts",
-  "generated_at": "2026-01-01T22:47:14.955Z",
+  "generated_at": "2026-01-02T02:25:45.066Z",
   "item_count": 3,
   "items": [
     {
       "name": "useAppBranding",
-      "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
-      "line": 63,
+      "file": "src/atomic-crm/contexts/useAppBranding.ts",
+      "line": 10,
       "parameters": [],
-      "returnType": "AppBranding",
+      "returnType": "import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/contexts/AppBrandingContext\").AppBranding",
       "dependencies": [
         "useContext"
       ],
@@ -16,10 +16,10 @@
     },
     {
       "name": "useFormOptions",
-      "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
-      "line": 63,
+      "file": "src/atomic-crm/contexts/useFormOptions.ts",
+      "line": 10,
       "parameters": [],
-      "returnType": "FormOptions",
+      "returnType": "import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/contexts/FormOptionsContext\").FormOptions",
       "dependencies": [
         "useContext"
       ],
@@ -27,10 +27,10 @@
     },
     {
       "name": "usePipelineConfig",
-      "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
-      "line": 79,
+      "file": "src/atomic-crm/contexts/usePipelineConfig.ts",
+      "line": 10,
       "parameters": [],
-      "returnType": "PipelineConfig",
+      "returnType": "import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/contexts/PipelineConfigContext\").PipelineConfig",
       "dependencies": [
         "useContext"
       ],

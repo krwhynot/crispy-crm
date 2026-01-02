@@ -13,7 +13,7 @@ import { OpportunityCreateFormTutorial } from "../tutorial/OpportunityCreateForm
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 const OpportunityCreate = () => {
-  const { data: identity } = useGetIdentity();
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
@@ -27,15 +27,24 @@ const OpportunityCreate = () => {
     resetConfirmation,
   } = useSimilarOpportunityCheck();
 
+  // Guard: Wait for identity to load before rendering form
+  // This prevents the race condition where form defaults are computed
+  // before identity is available, causing account_manager_id to be undefined
+  // and failing RLS policy: account_manager_id = current_sales_id()
+  if (identityLoading || !identity?.id) {
+    return <Loading />;
+  }
+
   // Generate defaults from schema, then merge with identity-specific values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // Use .partial() to make all fields optional during default generation
   // This extracts fields with .default() (stage, priority, estimated_close_date)
   // Explicitly initialize array fields for React Hook Form to track them:
+  // Note: identity.id is now guaranteed to be defined due to the guard above
   const formDefaults = {
     ...opportunitySchema.partial().parse({}),
-    opportunity_owner_id: identity?.id,
-    account_manager_id: identity?.id,
+    opportunity_owner_id: identity.id,
+    account_manager_id: identity.id,
     contact_ids: [], // Explicitly initialize for ReferenceArrayInput
     products_to_sync: [], // Explicitly initialize for ArrayInput
   };

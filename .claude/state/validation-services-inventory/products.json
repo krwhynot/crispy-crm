@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-01T22:47:15.811Z",
+  "generated_at": "2026-01-02T02:25:45.699Z",
   "item_count": 3,
   "items": [
     {
@@ -18,7 +18,7 @@
     {
       "name": "validateOpportunityProduct",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 134,
+      "line": 138,
       "type": "formatter",
       "schemaReference": "opportunityProductSchema",
       "errorFormatting": true,

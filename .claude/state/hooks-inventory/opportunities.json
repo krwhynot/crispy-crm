@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-01T22:47:14.956Z",
+  "generated_at": "2026-01-02T02:25:45.069Z",
   "item_count": 12,
   "items": [
     {
@@ -156,7 +156,7 @@
     {
       "name": "useStageMetrics",
       "file": "src/atomic-crm/opportunities/hooks/useStageMetrics.ts",
-      "line": 48,
+      "line": 46,
       "parameters": [
         "opportunities"
       ],

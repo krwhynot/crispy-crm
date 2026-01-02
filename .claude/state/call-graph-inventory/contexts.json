@@ -1,58 +1,58 @@
 {
   "chunk_name": "contexts",
-  "generated_at": "2026-01-01T22:47:19.900Z",
+  "generated_at": "2026-01-02T02:25:47.276Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/contexts/AppBrandingContext.tsx:39:AppBrandingProvider",
+        "id": "src/atomic-crm/contexts/AppBrandingContext.tsx:40:AppBrandingProvider",
         "name": "AppBrandingProvider",
         "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
-        "line": 39,
+        "line": 40,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contexts/AppBrandingContext.tsx:63:useAppBranding",
-        "name": "useAppBranding",
-        "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
-        "line": 63,
-        "nodeType": "hook",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/contexts/FormOptionsContext.tsx:39:FormOptionsProvider",
+        "id": "src/atomic-crm/contexts/FormOptionsContext.tsx:40:FormOptionsProvider",
         "name": "FormOptionsProvider",
         "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
-        "line": 39,
+        "line": 40,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contexts/FormOptionsContext.tsx:63:useFormOptions",
-        "name": "useFormOptions",
-        "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
-        "line": 63,
+        "id": "src/atomic-crm/contexts/PipelineConfigContext.tsx:48:PipelineConfigProvider",
+        "name": "PipelineConfigProvider",
+        "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
+        "line": 48,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/contexts/useAppBranding.ts:10:useAppBranding",
+        "name": "useAppBranding",
+        "file": "src/atomic-crm/contexts/useAppBranding.ts",
+        "line": 10,
         "nodeType": "hook",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contexts/PipelineConfigContext.tsx:47:PipelineConfigProvider",
-        "name": "PipelineConfigProvider",
-        "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
-        "line": 47,
-        "nodeType": "component",
+        "id": "src/atomic-crm/contexts/useFormOptions.ts:10:useFormOptions",
+        "name": "useFormOptions",
+        "file": "src/atomic-crm/contexts/useFormOptions.ts",
+        "line": 10,
+        "nodeType": "hook",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contexts/PipelineConfigContext.tsx:79:usePipelineConfig",
+        "id": "src/atomic-crm/contexts/usePipelineConfig.ts:10:usePipelineConfig",
         "name": "usePipelineConfig",
-        "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
-        "line": 79,
+        "file": "src/atomic-crm/contexts/usePipelineConfig.ts",
+        "line": 10,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -60,16 +60,16 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/contexts/AppBrandingContext.tsx:39:AppBrandingProvider",
+        "source": "src/atomic-crm/contexts/AppBrandingContext.tsx:40:AppBrandingProvider",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contexts/AppBrandingContext.tsx:39:AppBrandingProvider",
+        "source": "src/atomic-crm/contexts/AppBrandingContext.tsx:40:AppBrandingProvider",
         "target": "AppBrandingContext.Provider",
         "targetName": "AppBrandingContext.Provider",
         "edgeType": "render",
@@ -78,25 +78,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contexts/AppBrandingContext.tsx:63:useAppBranding",
-        "target": "useContext",
-        "targetName": "useContext",
-        "edgeType": "hook",
-        "line": 63,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contexts/FormOptionsContext.tsx:39:FormOptionsProvider",
+        "source": "src/atomic-crm/contexts/FormOptionsContext.tsx:40:FormOptionsProvider",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contexts/FormOptionsContext.tsx:39:FormOptionsProvider",
+        "source": "src/atomic-crm/contexts/FormOptionsContext.tsx:40:FormOptionsProvider",
         "target": "FormOptionsContext.Provider",
         "targetName": "FormOptionsContext.Provider",
         "edgeType": "render",
@@ -105,25 +96,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contexts/FormOptionsContext.tsx:63:useFormOptions",
-        "target": "useContext",
-        "targetName": "useContext",
-        "edgeType": "hook",
-        "line": 63,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contexts/PipelineConfigContext.tsx:47:PipelineConfigProvider",
+        "source": "src/atomic-crm/contexts/PipelineConfigContext.tsx:48:PipelineConfigProvider",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 55,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contexts/PipelineConfigContext.tsx:47:PipelineConfigProvider",
+        "source": "src/atomic-crm/contexts/PipelineConfigContext.tsx:48:PipelineConfigProvider",
         "target": "PipelineConfigContext.Provider",
         "targetName": "PipelineConfigContext.Provider",
         "edgeType": "render",
@@ -132,11 +114,29 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contexts/PipelineConfigContext.tsx:79:usePipelineConfig",
+        "source": "src/atomic-crm/contexts/useAppBranding.ts:10:useAppBranding",
         "target": "useContext",
         "targetName": "useContext",
         "edgeType": "hook",
-        "line": 79,
+        "line": 10,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contexts/useFormOptions.ts:10:useFormOptions",
+        "target": "useContext",
+        "targetName": "useContext",
+        "edgeType": "hook",
+        "line": 10,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contexts/usePipelineConfig.ts:10:usePipelineConfig",
+        "target": "useContext",
+        "targetName": "useContext",
+        "edgeType": "hook",
+        "line": 10,
         "conditional": false,
         "inLoop": false
       }

@@ -1,12 +1,12 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-01T22:47:15.807Z",
+  "generated_at": "2026-01-02T02:25:45.697Z",
   "item_count": 6,
   "items": [
     {
       "name": "validateOpportunityForm",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 200,
+      "line": 201,
       "type": "formatter",
       "schemaReference": "opportunitySchema",
       "errorFormatting": true,
@@ -19,7 +19,7 @@
     {
       "name": "validateCreateOpportunity",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 476,
+      "line": 487,
       "type": "formatter",
       "schemaReference": "createOpportunitySchema",
       "errorFormatting": true,
@@ -32,7 +32,7 @@
     {
       "name": "validateUpdateOpportunity",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 495,
+      "line": 506,
       "type": "formatter",
       "schemaReference": "updateOpportunitySchema",
       "errorFormatting": true,
@@ -45,7 +45,7 @@
     {
       "name": "validateCloseOpportunity",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 518,
+      "line": 529,
       "type": "formatter",
       "schemaReference": "closeOpportunitySchema",
       "errorFormatting": true,
@@ -58,13 +58,13 @@
     {
       "name": "checkExactDuplicate",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 609,
+      "line": 620,
       "pattern": "unknown"
     },
     {
       "name": "validateNoDuplicate",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 692,
+      "line": 703,
       "pattern": "date"
     }
   ]

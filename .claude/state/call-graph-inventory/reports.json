@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-01T22:47:19.956Z",
+  "generated_at": "2026-01-02T02:25:47.333Z",
   "items": {
     "nodes": [
       {
@@ -58,10 +58,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "name": "PrincipalGroupCard",
         "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-        "line": 492,
+        "line": 494,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -103,10 +103,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "id": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "name": "RepActivityCard",
         "file": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
-        "line": 316,
+        "line": 317,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -253,33 +253,6 @@
         "line": 52,
         "nodeType": "hook",
         "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/reports/index.tsx:10:WeeklyActivitySummary",
-        "name": "WeeklyActivitySummary",
-        "file": "src/atomic-crm/reports/index.tsx",
-        "line": 10,
-        "nodeType": "component",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/reports/index.tsx:16:OpportunitiesByPrincipalReport",
-        "name": "OpportunitiesByPrincipalReport",
-        "file": "src/atomic-crm/reports/index.tsx",
-        "line": 16,
-        "nodeType": "component",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/reports/index.tsx:22:CampaignActivityReport",
-        "name": "CampaignActivityReport",
-        "file": "src/atomic-crm/reports/index.tsx",
-        "line": 22,
-        "nodeType": "component",
-        "exported": false,
         "async": false
       },
       {
@@ -487,7 +460,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 141,
+        "line": 142,
         "conditional": false,
         "inLoop": false
       },
@@ -496,7 +469,7 @@
         "target": "toLocaleDateString",
         "targetName": "toLocaleDateString",
         "edgeType": "call",
-        "line": 150,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
@@ -505,7 +478,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 150,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
@@ -514,7 +487,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 153,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
@@ -550,7 +523,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 100,
+        "line": 101,
         "conditional": false,
         "inLoop": false
       },
@@ -559,7 +532,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 112,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
@@ -568,7 +541,7 @@
         "target": "ChevronDown",
         "targetName": "ChevronDown",
         "edgeType": "render",
-        "line": 91,
+        "line": 92,
         "conditional": true,
         "inLoop": false
       },
@@ -577,7 +550,7 @@
         "target": "ChevronRight",
         "targetName": "ChevronRight",
         "edgeType": "render",
-        "line": 93,
+        "line": 94,
         "conditional": true,
         "inLoop": false
       },
@@ -1810,7 +1783,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 476,
+        "line": 483,
         "conditional": false,
         "inLoop": false
       },
@@ -1819,7 +1792,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 478,
+        "line": 485,
         "conditional": false,
         "inLoop": false
       },
@@ -1828,7 +1801,7 @@
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 480,
+        "line": 487,
         "conditional": false,
         "inLoop": false
       },
@@ -1837,7 +1810,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 480,
+        "line": 487,
         "conditional": false,
         "inLoop": false
       },
@@ -1846,7 +1819,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 490,
+        "line": 497,
         "conditional": true,
         "inLoop": false
       },
@@ -1855,7 +1828,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 494,
+        "line": 501,
         "conditional": true,
         "inLoop": false
       },
@@ -1864,7 +1837,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 496,
+        "line": 503,
         "conditional": true,
         "inLoop": false
       },
@@ -1873,7 +1846,7 @@
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 499,
+        "line": 506,
         "conditional": false,
         "inLoop": false
       },
@@ -1882,7 +1855,7 @@
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 500,
+        "line": 507,
         "conditional": false,
         "inLoop": false
       },
@@ -1891,7 +1864,7 @@
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 501,
+        "line": 508,
         "conditional": false,
         "inLoop": false
       },
@@ -1900,7 +1873,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 503,
+        "line": 510,
         "conditional": true,
         "inLoop": false
       },
@@ -1909,7 +1882,7 @@
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 506,
+        "line": 513,
         "conditional": true,
         "inLoop": false
       },
@@ -1918,7 +1891,7 @@
         "target": "jsonExport",
         "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 511,
+        "line": 518,
         "conditional": true,
         "inLoop": false
       },
@@ -1927,7 +1900,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 513,
+        "line": 520,
         "conditional": true,
         "inLoop": false
       },
@@ -1936,7 +1909,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 514,
+        "line": 521,
         "conditional": true,
         "inLoop": false
       },
@@ -1945,7 +1918,7 @@
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 517,
+        "line": 524,
         "conditional": false,
         "inLoop": false
       },
@@ -1954,7 +1927,7 @@
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 517,
+        "line": 524,
         "conditional": false,
         "inLoop": false
       },
@@ -1963,7 +1936,7 @@
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 517,
+        "line": 524,
         "conditional": false,
         "inLoop": false
       },
@@ -1972,7 +1945,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 521,
+        "line": 528,
         "conditional": false,
         "inLoop": false
       },
@@ -1981,16 +1954,7 @@
         "target": "downloadCSV",
         "targetName": "downloadCSV",
         "edgeType": "call",
-        "line": 522,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 523,
+        "line": 529,
         "conditional": false,
         "inLoop": false
       },
@@ -2000,6 +1964,15 @@
         "targetName": "notify",
         "edgeType": "call",
         "line": 530,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 537,
         "conditional": true,
         "inLoop": false
       },
@@ -2008,7 +1981,7 @@
         "target": "flatMap",
         "targetName": "flatMap",
         "edgeType": "call",
-        "line": 534,
+        "line": 541,
         "conditional": true,
         "inLoop": false
       },
@@ -2017,7 +1990,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 535,
+        "line": 542,
         "conditional": false,
         "inLoop": false
       },
@@ -2026,7 +1999,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 537,
+        "line": 544,
         "conditional": true,
         "inLoop": false
       },
@@ -2035,7 +2008,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 539,
+        "line": 546,
         "conditional": false,
         "inLoop": false
       },
@@ -2044,7 +2017,7 @@
         "target": "floor",
         "targetName": "floor",
         "edgeType": "call",
-        "line": 541,
+        "line": 548,
         "conditional": true,
         "inLoop": false
       },
@@ -2053,7 +2026,7 @@
         "target": "now",
         "targetName": "now",
         "edgeType": "call",
-        "line": 541,
+        "line": 548,
         "conditional": true,
         "inLoop": false
       },
@@ -2062,70 +2035,7 @@
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 541,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 545,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 546,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 547,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
         "line": 548,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 549,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 550,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 551,
         "conditional": true,
         "inLoop": false
       },
@@ -2140,10 +2050,10 @@
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 552,
+        "line": 553,
         "conditional": false,
         "inLoop": false
       },
@@ -2167,55 +2077,19 @@
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "jsonExport",
-        "targetName": "jsonExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 560,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 562,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 563,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 566,
+        "line": 556,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "replace",
-        "targetName": "replace",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 566,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 566,
+        "line": 557,
         "conditional": false,
         "inLoop": false
       },
@@ -2224,7 +2098,106 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
+        "line": 558,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 559,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 559,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 561,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 562,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "jsonExport",
+        "targetName": "jsonExport",
+        "edgeType": "call",
+        "line": 567,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 569,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
         "line": 570,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 573,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 573,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 573,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 577,
         "conditional": false,
         "inLoop": false
       },
@@ -2233,7 +2206,7 @@
         "target": "downloadCSV",
         "targetName": "downloadCSV",
         "edgeType": "call",
-        "line": 571,
+        "line": 578,
         "conditional": false,
         "inLoop": false
       },
@@ -2242,7 +2215,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 572,
+        "line": 579,
         "conditional": false,
         "inLoop": false
       },
@@ -2251,17 +2224,8 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 603,
+        "line": 610,
         "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePresetHandler",
-        "targetName": "setDatePresetHandler",
-        "edgeType": "call",
-        "line": 644,
-        "conditional": false,
         "inLoop": false
       },
       {
@@ -2293,10 +2257,19 @@
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "setDatePresetHandler",
+        "targetName": "setDatePresetHandler",
+        "edgeType": "call",
+        "line": 672,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
         "target": "setDatePreset",
         "targetName": "setDatePreset",
         "edgeType": "call",
-        "line": 681,
+        "line": 688,
         "conditional": false,
         "inLoop": false
       },
@@ -2305,7 +2278,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 682,
+        "line": 689,
         "conditional": false,
         "inLoop": false
       },
@@ -2314,7 +2287,7 @@
         "target": "setDateRange",
         "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 685,
+        "line": 692,
         "conditional": true,
         "inLoop": false
       },
@@ -2323,7 +2296,7 @@
         "target": "setDatePreset",
         "targetName": "setDatePreset",
         "edgeType": "call",
-        "line": 701,
+        "line": 708,
         "conditional": false,
         "inLoop": false
       },
@@ -2332,7 +2305,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 702,
+        "line": 709,
         "conditional": false,
         "inLoop": false
       },
@@ -2341,7 +2314,7 @@
         "target": "setDateRange",
         "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 705,
+        "line": 712,
         "conditional": true,
         "inLoop": false
       },
@@ -2350,7 +2323,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 731,
+        "line": 738,
         "conditional": false,
         "inLoop": false
       },
@@ -2359,7 +2332,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 732,
+        "line": 739,
         "conditional": false,
         "inLoop": false
       },
@@ -2368,7 +2341,7 @@
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 737,
+        "line": 744,
         "conditional": false,
         "inLoop": false
       },
@@ -2377,7 +2350,7 @@
         "target": "toggleActivityType",
         "targetName": "toggleActivityType",
         "edgeType": "call",
-        "line": 738,
+        "line": 745,
         "conditional": false,
         "inLoop": false
       },
@@ -2386,7 +2359,7 @@
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 756,
+        "line": 763,
         "conditional": false,
         "inLoop": false
       },
@@ -2395,7 +2368,7 @@
         "target": "setSelectedSalesRep",
         "targetName": "setSelectedSalesRep",
         "edgeType": "call",
-        "line": 758,
+        "line": 765,
         "conditional": false,
         "inLoop": false
       },
@@ -2404,7 +2377,7 @@
         "target": "parseInt",
         "targetName": "parseInt",
         "edgeType": "call",
-        "line": 758,
+        "line": 765,
         "conditional": true,
         "inLoop": false
       },
@@ -2413,7 +2386,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 766,
+        "line": 773,
         "conditional": false,
         "inLoop": false
       },
@@ -2422,7 +2395,7 @@
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 767,
+        "line": 774,
         "conditional": false,
         "inLoop": false
       },
@@ -2431,7 +2404,7 @@
         "target": "setShowStaleLeads",
         "targetName": "setShowStaleLeads",
         "edgeType": "call",
-        "line": 783,
+        "line": 790,
         "conditional": false,
         "inLoop": false
       },
@@ -2440,7 +2413,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 834,
+        "line": 841,
         "conditional": true,
         "inLoop": false
       },
@@ -2449,7 +2422,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 898,
+        "line": 905,
         "conditional": true,
         "inLoop": false
       },
@@ -2458,7 +2431,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 925,
+        "line": 932,
         "conditional": true,
         "inLoop": false
       },
@@ -2467,7 +2440,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 929,
+        "line": 936,
         "conditional": false,
         "inLoop": false
       },
@@ -2476,7 +2449,7 @@
         "target": "handleToggle",
         "targetName": "handleToggle",
         "edgeType": "call",
-        "line": 930,
+        "line": 937,
         "conditional": false,
         "inLoop": false
       },
@@ -2485,7 +2458,7 @@
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 578,
+        "line": 585,
         "conditional": false,
         "inLoop": false
       },
@@ -2494,7 +2467,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 588,
+        "line": 595,
         "conditional": false,
         "inLoop": false
       },
@@ -2503,7 +2476,7 @@
         "target": "Select",
         "targetName": "Select",
         "edgeType": "render",
-        "line": 598,
+        "line": 605,
         "conditional": true,
         "inLoop": false
       },
@@ -2512,7 +2485,7 @@
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 599,
+        "line": 606,
         "conditional": true,
         "inLoop": false
       },
@@ -2521,7 +2494,7 @@
         "target": "SelectContent",
         "targetName": "SelectContent",
         "edgeType": "render",
-        "line": 602,
+        "line": 609,
         "conditional": true,
         "inLoop": false
       },
@@ -2530,7 +2503,7 @@
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 604,
+        "line": 611,
         "conditional": false,
         "inLoop": false
       },
@@ -2539,7 +2512,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 614,
+        "line": 621,
         "conditional": false,
         "inLoop": false
       },
@@ -2548,7 +2521,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 618,
+        "line": 625,
         "conditional": false,
         "inLoop": false
       },
@@ -2557,7 +2530,7 @@
         "target": "handleExport",
         "targetName": "handleExport",
         "edgeType": "callback",
-        "line": 620,
+        "line": 627,
         "conditional": false,
         "inLoop": false
       },
@@ -2566,7 +2539,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 633,
+        "line": 640,
         "conditional": false,
         "inLoop": false
       },
@@ -2574,15 +2547,6 @@
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
         "target": "CardContent",
         "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 634,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Button",
-        "targetName": "Button",
         "edgeType": "render",
         "line": 641,
         "conditional": false,
@@ -2617,10 +2581,10 @@
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Label",
-        "targetName": "Label",
+        "target": "Button",
+        "targetName": "Button",
         "edgeType": "render",
-        "line": 672,
+        "line": 669,
         "conditional": false,
         "inLoop": false
       },
@@ -2629,7 +2593,16 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 692,
+        "line": 679,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 699,
         "conditional": false,
         "inLoop": false
       },
@@ -2638,7 +2611,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 719,
+        "line": 726,
         "conditional": false,
         "inLoop": false
       },
@@ -2647,7 +2620,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 740,
+        "line": 747,
         "conditional": false,
         "inLoop": false
       },
@@ -2656,7 +2629,7 @@
         "target": "Select",
         "targetName": "Select",
         "edgeType": "render",
-        "line": 755,
+        "line": 762,
         "conditional": false,
         "inLoop": false
       },
@@ -2665,7 +2638,7 @@
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 761,
+        "line": 768,
         "conditional": false,
         "inLoop": false
       },
@@ -2674,7 +2647,7 @@
         "target": "SelectContent",
         "targetName": "SelectContent",
         "edgeType": "render",
-        "line": 764,
+        "line": 771,
         "conditional": false,
         "inLoop": false
       },
@@ -2683,7 +2656,7 @@
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 765,
+        "line": 772,
         "conditional": false,
         "inLoop": false
       },
@@ -2692,7 +2665,7 @@
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 767,
+        "line": 774,
         "conditional": false,
         "inLoop": false
       },
@@ -2701,7 +2674,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 785,
+        "line": 792,
         "conditional": false,
         "inLoop": false
       },
@@ -2710,7 +2683,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 835,
+        "line": 842,
         "conditional": false,
         "inLoop": false
       },
@@ -2719,7 +2692,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 836,
+        "line": 843,
         "conditional": false,
         "inLoop": false
       },
@@ -2728,7 +2701,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 839,
+        "line": 846,
         "conditional": false,
         "inLoop": false
       },
@@ -2737,7 +2710,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 847,
+        "line": 854,
         "conditional": true,
         "inLoop": false
       },
@@ -2746,7 +2719,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 848,
+        "line": 855,
         "conditional": true,
         "inLoop": false
       },
@@ -2755,7 +2728,7 @@
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 849,
+        "line": 856,
         "conditional": true,
         "inLoop": false
       },
@@ -2763,33 +2736,6 @@
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
         "target": "CardContent",
         "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 853,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 858,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 859,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
         "edgeType": "render",
         "line": 860,
         "conditional": true,
@@ -2797,19 +2743,10 @@
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 864,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 869,
+        "line": 865,
         "conditional": true,
         "inLoop": false
       },
@@ -2818,7 +2755,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 870,
+        "line": 866,
         "conditional": true,
         "inLoop": false
       },
@@ -2826,6 +2763,15 @@
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
         "target": "CardTitle",
         "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 867,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
         "line": 871,
         "conditional": true,
@@ -2833,19 +2779,10 @@
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 875,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 880,
+        "line": 876,
         "conditional": true,
         "inLoop": false
       },
@@ -2854,7 +2791,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 881,
+        "line": 877,
         "conditional": true,
         "inLoop": false
       },
@@ -2863,7 +2800,7 @@
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 882,
+        "line": 878,
         "conditional": true,
         "inLoop": false
       },
@@ -2872,7 +2809,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 886,
+        "line": 882,
         "conditional": true,
         "inLoop": false
       },
@@ -2881,7 +2818,43 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 899,
+        "line": 887,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 888,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 889,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 893,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 906,
         "conditional": false,
         "inLoop": false
       },
@@ -2890,7 +2863,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 900,
+        "line": 907,
         "conditional": false,
         "inLoop": false
       },
@@ -2899,7 +2872,7 @@
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 600,
+        "line": 607,
         "conditional": true,
         "inLoop": false
       },
@@ -2908,7 +2881,7 @@
         "target": "Checkbox",
         "targetName": "Checkbox",
         "edgeType": "render",
-        "line": 735,
+        "line": 742,
         "conditional": false,
         "inLoop": false
       },
@@ -2917,7 +2890,7 @@
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 762,
+        "line": 769,
         "conditional": false,
         "inLoop": false
       },
@@ -2926,7 +2899,7 @@
         "target": "Checkbox",
         "targetName": "Checkbox",
         "edgeType": "render",
-        "line": 780,
+        "line": 787,
         "conditional": false,
         "inLoop": false
       },
@@ -2935,7 +2908,7 @@
         "target": "AppliedFiltersBar",
         "targetName": "AppliedFiltersBar",
         "edgeType": "render",
-        "line": 816,
+        "line": 823,
         "conditional": false,
         "inLoop": false
       },
@@ -2944,7 +2917,7 @@
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 914,
+        "line": 921,
         "conditional": true,
         "inLoop": false
       },
@@ -2953,7 +2926,7 @@
         "target": "StaleLeadsView",
         "targetName": "StaleLeadsView",
         "edgeType": "render",
-        "line": 920,
+        "line": 927,
         "conditional": true,
         "inLoop": false
       },
@@ -2962,7 +2935,7 @@
         "target": "ActivityTypeCard",
         "targetName": "ActivityTypeCard",
         "edgeType": "render",
-        "line": 926,
+        "line": 933,
         "conditional": false,
         "inLoop": false
       },
@@ -2971,7 +2944,7 @@
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 937,
+        "line": 944,
         "conditional": true,
         "inLoop": false
       },
@@ -3376,7 +3349,7 @@
         "target": "useReportData",
         "targetName": "useReportData",
         "edgeType": "hook",
-        "line": 203,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
@@ -3385,7 +3358,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 211,
+        "line": 212,
         "conditional": false,
         "inLoop": false
       },
@@ -3394,7 +3367,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 213,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
@@ -3403,7 +3376,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 213,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
@@ -3412,7 +3385,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 213,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
@@ -3421,7 +3394,7 @@
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 217,
+        "line": 218,
         "conditional": false,
         "inLoop": false
       },
@@ -3430,7 +3403,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 222,
+        "line": 223,
         "conditional": false,
         "inLoop": false
       },
@@ -3439,7 +3412,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 223,
+        "line": 224,
         "conditional": false,
         "inLoop": false
       },
@@ -3448,7 +3421,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 228,
+        "line": 229,
         "conditional": false,
         "inLoop": false
       },
@@ -3457,7 +3430,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 234,
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
@@ -3466,7 +3439,7 @@
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 235,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
@@ -3475,7 +3448,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 238,
+        "line": 239,
         "conditional": true,
         "inLoop": false
       },
@@ -3484,7 +3457,7 @@
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 239,
+        "line": 240,
         "conditional": true,
         "inLoop": false
       },
@@ -3493,7 +3466,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 248,
+        "line": 249,
         "conditional": false,
         "inLoop": false
       },
@@ -3502,7 +3475,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 249,
+        "line": 250,
         "conditional": false,
         "inLoop": false
       },
@@ -3511,7 +3484,7 @@
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 258,
+        "line": 259,
         "conditional": false,
         "inLoop": false
       },
@@ -3520,7 +3493,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 258,
+        "line": 259,
         "conditional": false,
         "inLoop": false
       },
@@ -3529,7 +3502,7 @@
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 258,
+        "line": 259,
         "conditional": false,
         "inLoop": false
       },
@@ -3538,7 +3511,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 262,
+        "line": 263,
         "conditional": true,
         "inLoop": false
       },
@@ -3547,7 +3520,7 @@
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 262,
+        "line": 263,
         "conditional": true,
         "inLoop": false
       },
@@ -3556,7 +3529,7 @@
         "target": "setExpandedPrincipals",
         "targetName": "setExpandedPrincipals",
         "edgeType": "call",
-        "line": 263,
+        "line": 264,
         "conditional": true,
         "inLoop": false
       },
@@ -3565,7 +3538,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 273,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },
@@ -3574,7 +3547,7 @@
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 274,
+        "line": 275,
         "conditional": true,
         "inLoop": false
       },
@@ -3583,7 +3556,7 @@
         "target": "add",
         "targetName": "add",
         "edgeType": "call",
-        "line": 276,
+        "line": 277,
         "conditional": true,
         "inLoop": false
       },
@@ -3592,16 +3565,7 @@
         "target": "setExpandedPrincipals",
         "targetName": "setExpandedPrincipals",
         "edgeType": "call",
-        "line": 278,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 295,
+        "line": 279,
         "conditional": false,
         "inLoop": false
       },
@@ -3616,10 +3580,19 @@
       },
       {
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 297,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 298,
+        "line": 299,
         "conditional": true,
         "inLoop": false
       },
@@ -3627,15 +3600,6 @@
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
-        "edgeType": "call",
-        "line": 300,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
         "line": 301,
         "conditional": false,
@@ -3670,10 +3634,19 @@
       },
       {
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 305,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 305,
+        "line": 306,
         "conditional": true,
         "inLoop": false
       },
@@ -3682,7 +3655,7 @@
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 306,
+        "line": 307,
         "conditional": false,
         "inLoop": false
       },
@@ -3690,15 +3663,6 @@
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
         "target": "get",
         "targetName": "get",
-        "edgeType": "call",
-        "line": 306,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
         "line": 307,
         "conditional": false,
@@ -3715,10 +3679,19 @@
       },
       {
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 309,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 315,
+        "line": 316,
         "conditional": true,
         "inLoop": false
       },
@@ -3727,7 +3700,7 @@
         "target": "jsonExport",
         "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 319,
+        "line": 320,
         "conditional": false,
         "inLoop": false
       },
@@ -3736,7 +3709,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 321,
+        "line": 322,
         "conditional": true,
         "inLoop": false
       },
@@ -3745,7 +3718,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 322,
+        "line": 323,
         "conditional": true,
         "inLoop": false
       },
@@ -3754,7 +3727,7 @@
         "target": "downloadCSV",
         "targetName": "downloadCSV",
         "edgeType": "call",
-        "line": 325,
+        "line": 326,
         "conditional": false,
         "inLoop": false
       },
@@ -3763,7 +3736,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 325,
+        "line": 326,
         "conditional": false,
         "inLoop": false
       },
@@ -3772,7 +3745,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 326,
+        "line": 327,
         "conditional": false,
         "inLoop": false
       },
@@ -3781,7 +3754,7 @@
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 332,
+        "line": 333,
         "conditional": false,
         "inLoop": false
       },
@@ -3790,7 +3763,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 336,
+        "line": 337,
         "conditional": false,
         "inLoop": false
       },
@@ -3799,7 +3772,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 340,
+        "line": 341,
         "conditional": true,
         "inLoop": false
       },
@@ -3808,7 +3781,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 343,
+        "line": 344,
         "conditional": false,
         "inLoop": false
       },
@@ -3817,7 +3790,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 348,
+        "line": 349,
         "conditional": true,
         "inLoop": false
       },
@@ -3826,7 +3799,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 351,
+        "line": 352,
         "conditional": false,
         "inLoop": false
       },
@@ -3835,7 +3808,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 356,
+        "line": 357,
         "conditional": true,
         "inLoop": false
       },
@@ -3844,7 +3817,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 359,
+        "line": 360,
         "conditional": false,
         "inLoop": false
       },
@@ -3853,7 +3826,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 364,
+        "line": 365,
         "conditional": true,
         "inLoop": false
       },
@@ -3861,17 +3834,17 @@
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
         "target": "format",
         "targetName": "format",
-        "edgeType": "call",
-        "line": 366,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "setFilters",
-        "targetName": "setFilters",
         "edgeType": "call",
         "line": 367,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 368,
         "conditional": false,
         "inLoop": false
       },
@@ -3880,7 +3853,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 372,
+        "line": 373,
         "conditional": true,
         "inLoop": false
       },
@@ -3889,7 +3862,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 374,
+        "line": 375,
         "conditional": true,
         "inLoop": false
       },
@@ -3898,7 +3871,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 375,
+        "line": 376,
         "conditional": false,
         "inLoop": false
       },
@@ -3907,7 +3880,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 389,
+        "line": 391,
         "conditional": false,
         "inLoop": false
       },
@@ -3916,7 +3889,7 @@
         "target": "round",
         "targetName": "round",
         "edgeType": "call",
-        "line": 448,
+        "line": 450,
         "conditional": true,
         "inLoop": false
       },
@@ -3925,7 +3898,7 @@
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 462,
+        "line": 464,
         "conditional": false,
         "inLoop": false
       },
@@ -3934,7 +3907,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 467,
+        "line": 469,
         "conditional": true,
         "inLoop": false
       },
@@ -3943,7 +3916,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 471,
+        "line": 473,
         "conditional": false,
         "inLoop": false
       },
@@ -3952,7 +3925,7 @@
         "target": "togglePrincipalExpansion",
         "targetName": "togglePrincipalExpansion",
         "edgeType": "call",
-        "line": 472,
+        "line": 474,
         "conditional": false,
         "inLoop": false
       },
@@ -3961,7 +3934,7 @@
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 401,
+        "line": 403,
         "conditional": true,
         "inLoop": false
       },
@@ -3970,7 +3943,7 @@
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 411,
+        "line": 413,
         "conditional": false,
         "inLoop": false
       },
@@ -3979,7 +3952,7 @@
         "target": "handleExport",
         "targetName": "handleExport",
         "edgeType": "callback",
-        "line": 413,
+        "line": 415,
         "conditional": false,
         "inLoop": false
       },
@@ -3988,7 +3961,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 432,
+        "line": 434,
         "conditional": false,
         "inLoop": false
       },
@@ -3997,7 +3970,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 433,
+        "line": 435,
         "conditional": false,
         "inLoop": false
       },
@@ -4006,7 +3979,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 438,
+        "line": 440,
         "conditional": false,
         "inLoop": false
       },
@@ -4015,7 +3988,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 439,
+        "line": 441,
         "conditional": false,
         "inLoop": false
       },
@@ -4024,7 +3997,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 444,
+        "line": 446,
         "conditional": false,
         "inLoop": false
       },
@@ -4033,7 +4006,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 445,
+        "line": 447,
         "conditional": false,
         "inLoop": false
       },
@@ -4042,7 +4015,7 @@
         "target": "FilterToolbar",
         "targetName": "FilterToolbar",
         "edgeType": "render",
-        "line": 414,
+        "line": 416,
         "conditional": false,
         "inLoop": false
       },
@@ -4051,7 +4024,7 @@
         "target": "AppliedFiltersBar",
         "targetName": "AppliedFiltersBar",
         "edgeType": "render",
-        "line": 417,
+        "line": 419,
         "conditional": false,
         "inLoop": false
       },
@@ -4060,7 +4033,7 @@
         "target": "handleResetAllFilters",
         "targetName": "handleResetAllFilters",
         "edgeType": "callback",
-        "line": 419,
+        "line": 421,
         "conditional": false,
         "inLoop": false
       },
@@ -4069,7 +4042,7 @@
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 456,
+        "line": 458,
         "conditional": true,
         "inLoop": false
       },
@@ -4078,7 +4051,7 @@
         "target": "PrincipalGroupCard",
         "targetName": "PrincipalGroupCard",
         "edgeType": "render",
-        "line": 468,
+        "line": 470,
         "conditional": false,
         "inLoop": false
       },
@@ -4087,241 +4060,241 @@
         "target": "handleOpportunityClick",
         "targetName": "handleOpportunityClick",
         "edgeType": "callback",
-        "line": 473,
+        "line": 475,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 500,
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 500,
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 500,
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 500,
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 500,
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 549,
+        "line": 551,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 576,
+        "line": 578,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 577,
+        "line": 579,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 577,
+        "line": 579,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 581,
+        "line": 583,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "stopPropagation",
         "targetName": "stopPropagation",
         "edgeType": "call",
-        "line": 588,
+        "line": 590,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "onOpportunityClick",
         "targetName": "onOpportunityClick",
         "edgeType": "call",
-        "line": 589,
+        "line": 591,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 507,
+        "line": 509,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 508,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
-        "target": "onToggle",
-        "targetName": "onToggle",
-        "edgeType": "callback",
         "line": 510,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "target": "onToggle",
+        "targetName": "onToggle",
+        "edgeType": "callback",
         "line": 512,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
-        "target": "Badge",
-        "targetName": "Badge",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 522,
+        "line": 514,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 524,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 535,
+        "line": 537,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 555,
+        "line": 557,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 560,
+        "line": 562,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 565,
+        "line": 567,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 573,
+        "line": 575,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 584,
+        "line": 586,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "ChevronDown",
         "targetName": "ChevronDown",
-        "edgeType": "render",
-        "line": 515,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
-        "target": "ChevronRight",
-        "targetName": "ChevronRight",
         "edgeType": "render",
         "line": 517,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:492:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "target": "ChevronRight",
+        "targetName": "ChevronRight",
+        "edgeType": "render",
+        "line": 519,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
         "target": "ExternalLink",
         "targetName": "ExternalLink",
         "edgeType": "render",
-        "line": 592,
+        "line": 594,
         "conditional": false,
         "inLoop": false
       },
@@ -4753,7 +4726,7 @@
         "target": "useReportData",
         "targetName": "useReportData",
         "edgeType": "hook",
-        "line": 34,
+        "line": 38,
         "conditional": false,
         "inLoop": false
       },
@@ -4762,7 +4735,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 46,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
@@ -4771,7 +4744,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
@@ -4780,7 +4753,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
@@ -4789,7 +4762,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
@@ -4798,7 +4771,7 @@
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
@@ -4807,7 +4780,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 57,
+        "line": 58,
         "conditional": false,
         "inLoop": false
       },
@@ -4816,7 +4789,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 58,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
@@ -4825,7 +4798,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 58,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
@@ -4834,7 +4807,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 58,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
@@ -4843,7 +4816,7 @@
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 62,
+        "line": 63,
         "conditional": false,
         "inLoop": false
       },
@@ -4852,7 +4825,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 68,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
@@ -4861,7 +4834,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 68,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
@@ -4870,25 +4843,25 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 70,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
         "line": 71,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 76,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
@@ -4897,7 +4870,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 80,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
@@ -4905,24 +4878,6 @@
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "setDateRange",
         "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 85,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "startOfWeek",
-        "targetName": "startOfWeek",
         "edgeType": "call",
         "line": 86,
         "conditional": false,
@@ -4939,10 +4894,28 @@
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "target": "startOfWeek",
+        "targetName": "startOfWeek",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "endOfWeek",
         "targetName": "endOfWeek",
         "edgeType": "call",
-        "line": 87,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
@@ -4951,7 +4924,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 96,
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },
@@ -4960,7 +4933,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 97,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
@@ -4969,7 +4942,7 @@
         "target": "startOfWeek",
         "targetName": "startOfWeek",
         "edgeType": "call",
-        "line": 97,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
@@ -4978,7 +4951,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 98,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
@@ -4987,7 +4960,7 @@
         "target": "endOfWeek",
         "targetName": "endOfWeek",
         "edgeType": "call",
-        "line": 98,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
@@ -4996,7 +4969,7 @@
         "target": "setDateRange",
         "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 105,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
@@ -5005,7 +4978,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 106,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
@@ -5014,7 +4987,7 @@
         "target": "startOfWeek",
         "targetName": "startOfWeek",
         "edgeType": "call",
-        "line": 106,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
@@ -5023,7 +4996,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 107,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -5032,7 +5005,7 @@
         "target": "endOfWeek",
         "targetName": "endOfWeek",
         "edgeType": "call",
-        "line": 107,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -5041,7 +5014,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 112,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
@@ -5050,7 +5023,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 133,
+        "line": 134,
         "conditional": false,
         "inLoop": false
       },
@@ -5059,7 +5032,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 136,
+        "line": 137,
         "conditional": false,
         "inLoop": false
       },
@@ -5067,15 +5040,6 @@
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "has",
         "targetName": "has",
-        "edgeType": "call",
-        "line": 139,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "set",
-        "targetName": "set",
         "edgeType": "call",
         "line": 140,
         "conditional": true,
@@ -5083,10 +5047,19 @@
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 143,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
@@ -5095,7 +5068,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 146,
+        "line": 147,
         "conditional": true,
         "inLoop": false
       },
@@ -5104,7 +5077,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 147,
+        "line": 148,
         "conditional": true,
         "inLoop": false
       },
@@ -5113,7 +5086,7 @@
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 148,
+        "line": 149,
         "conditional": true,
         "inLoop": false
       },
@@ -5122,7 +5095,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 158,
+        "line": 159,
         "conditional": false,
         "inLoop": false
       },
@@ -5131,7 +5104,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 169,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
@@ -5140,16 +5113,7 @@
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 169,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 183,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
@@ -5164,8 +5128,8 @@
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "push",
-        "targetName": "push",
+        "target": "forEach",
+        "targetName": "forEach",
         "edgeType": "call",
         "line": 185,
         "conditional": false,
@@ -5173,8 +5137,8 @@
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
+        "target": "push",
+        "targetName": "push",
         "edgeType": "call",
         "line": 186,
         "conditional": false,
@@ -5191,10 +5155,19 @@
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 188,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "jsonExport",
         "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 197,
+        "line": 198,
         "conditional": false,
         "inLoop": false
       },
@@ -5203,7 +5176,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 199,
+        "line": 200,
         "conditional": true,
         "inLoop": false
       },
@@ -5212,7 +5185,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 200,
+        "line": 201,
         "conditional": true,
         "inLoop": false
       },
@@ -5221,7 +5194,7 @@
         "target": "downloadCSV",
         "targetName": "downloadCSV",
         "edgeType": "call",
-        "line": 203,
+        "line": 204,
         "conditional": false,
         "inLoop": false
       },
@@ -5230,7 +5203,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 204,
+        "line": 205,
         "conditional": false,
         "inLoop": false
       },
@@ -5239,7 +5212,7 @@
         "target": "setDateRange",
         "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 227,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
@@ -5248,7 +5221,7 @@
         "target": "setDateRange",
         "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 234,
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
@@ -5257,7 +5230,7 @@
         "target": "round",
         "targetName": "round",
         "edgeType": "call",
-        "line": 273,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },
@@ -5266,7 +5239,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 289,
+        "line": 290,
         "conditional": false,
         "inLoop": false
       },
@@ -5275,7 +5248,7 @@
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 210,
+        "line": 211,
         "conditional": true,
         "inLoop": false
       },
@@ -5284,7 +5257,7 @@
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 219,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
@@ -5293,7 +5266,7 @@
         "target": "handleExport",
         "targetName": "handleExport",
         "edgeType": "callback",
-        "line": 221,
+        "line": 222,
         "conditional": false,
         "inLoop": false
       },
@@ -5301,15 +5274,6 @@
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 257,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "CardContent",
-        "targetName": "CardContent",
         "edgeType": "render",
         "line": 258,
         "conditional": false,
@@ -5317,17 +5281,17 @@
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "Card",
-        "targetName": "Card",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
-        "line": 263,
+        "line": 259,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "CardContent",
-        "targetName": "CardContent",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 264,
         "conditional": false,
@@ -5335,10 +5299,19 @@
       },
       {
         "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 265,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 269,
+        "line": 270,
         "conditional": false,
         "inLoop": false
       },
@@ -5347,7 +5320,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 270,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
@@ -5356,7 +5329,7 @@
         "target": "AppliedFiltersBar",
         "targetName": "AppliedFiltersBar",
         "edgeType": "render",
-        "line": 240,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
@@ -5365,7 +5338,7 @@
         "target": "handleResetAllFilters",
         "targetName": "handleResetAllFilters",
         "edgeType": "callback",
-        "line": 242,
+        "line": 243,
         "conditional": false,
         "inLoop": false
       },
@@ -5374,7 +5347,7 @@
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 281,
+        "line": 282,
         "conditional": false,
         "inLoop": false
       },
@@ -5383,133 +5356,133 @@
         "target": "RepActivityCard",
         "targetName": "RepActivityCard",
         "edgeType": "render",
-        "line": 290,
+        "line": 291,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "reduce",
         "targetName": "reduce",
         "edgeType": "call",
-        "line": 317,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 317,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 317,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 322,
+        "line": 323,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 322,
+        "line": 323,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 322,
+        "line": 323,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "pluralize",
         "targetName": "pluralize",
         "edgeType": "call",
-        "line": 331,
+        "line": 332,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 347,
+        "line": 348,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 325,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 326,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 327,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
-        "target": "Badge",
-        "targetName": "Badge",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 331,
+        "line": 328,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 332,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 334,
+        "line": 335,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:316:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:317:RepActivityCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 355,
+        "line": 356,
         "conditional": false,
         "inLoop": false
       },
@@ -6004,7 +5977,7 @@
         "target": "onResetAll",
         "targetName": "onResetAll",
         "edgeType": "callback",
-        "line": 42,
+        "line": 39,
         "conditional": false,
         "inLoop": false
       },
@@ -6022,7 +5995,7 @@
         "target": "RotateCcw",
         "targetName": "RotateCcw",
         "edgeType": "render",
-        "line": 45,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
@@ -6076,7 +6049,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 33,
+        "line": 23,
         "conditional": false,
         "inLoop": false
       },
@@ -6085,7 +6058,7 @@
         "target": "Icon",
         "targetName": "Icon",
         "edgeType": "render",
-        "line": 23,
+        "line": 17,
         "conditional": false,
         "inLoop": false
       },
@@ -6787,7 +6760,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 72,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -6796,7 +6769,7 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 76,
+        "line": 71,
         "conditional": true,
         "inLoop": false
       },
@@ -6805,35 +6778,8 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 79,
+        "line": 74,
         "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 87,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "stringify",
-        "targetName": "stringify",
-        "edgeType": "call",
-        "line": 93,
-        "conditional": false,
         "inLoop": false
       },
       {
@@ -6841,7 +6787,7 @@
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 96,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
@@ -6850,7 +6796,7 @@
         "target": "setIsLoading",
         "targetName": "setIsLoading",
         "edgeType": "call",
-        "line": 98,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
@@ -6859,7 +6805,7 @@
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 99,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
@@ -6868,7 +6814,7 @@
         "target": "catch",
         "targetName": "catch",
         "edgeType": "call",
-        "line": 101,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
@@ -6877,7 +6823,7 @@
         "target": "then",
         "targetName": "then",
         "edgeType": "call",
-        "line": 101,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
@@ -6886,7 +6832,7 @@
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 101,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
@@ -6895,7 +6841,7 @@
         "target": "setData",
         "targetName": "setData",
         "edgeType": "call",
-        "line": 125,
+        "line": 112,
         "conditional": true,
         "inLoop": false
       },
@@ -6904,7 +6850,7 @@
         "target": "setIsLoading",
         "targetName": "setIsLoading",
         "edgeType": "call",
-        "line": 126,
+        "line": 113,
         "conditional": true,
         "inLoop": false
       },
@@ -6913,7 +6859,7 @@
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 133,
+        "line": 120,
         "conditional": true,
         "inLoop": false
       },
@@ -6922,7 +6868,7 @@
         "target": "setIsLoading",
         "targetName": "setIsLoading",
         "edgeType": "call",
-        "line": 134,
+        "line": 121,
         "conditional": true,
         "inLoop": false
       },
@@ -6931,7 +6877,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 135,
+        "line": 122,
         "conditional": true,
         "inLoop": false
       },
@@ -6940,7 +6886,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 144,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
@@ -6949,61 +6895,7 @@
         "target": "setRefetchTrigger",
         "targetName": "setRefetchTrigger",
         "edgeType": "call",
-        "line": 145,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/index.tsx:10:WeeklyActivitySummary",
-        "target": "ErrorBoundary",
-        "targetName": "ErrorBoundary",
-        "edgeType": "render",
-        "line": 11,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/index.tsx:10:WeeklyActivitySummary",
-        "target": "WeeklyActivitySummaryLazy",
-        "targetName": "WeeklyActivitySummaryLazy",
-        "edgeType": "render",
-        "line": 12,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/index.tsx:16:OpportunitiesByPrincipalReport",
-        "target": "ErrorBoundary",
-        "targetName": "ErrorBoundary",
-        "edgeType": "render",
-        "line": 17,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/index.tsx:16:OpportunitiesByPrincipalReport",
-        "target": "OpportunitiesByPrincipalReportLazy",
-        "targetName": "OpportunitiesByPrincipalReportLazy",
-        "edgeType": "render",
-        "line": 18,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/index.tsx:22:CampaignActivityReport",
-        "target": "ErrorBoundary",
-        "targetName": "ErrorBoundary",
-        "edgeType": "render",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/index.tsx:22:CampaignActivityReport",
-        "target": "CampaignActivityReportLazy",
-        "targetName": "CampaignActivityReportLazy",
-        "edgeType": "render",
-        "line": 24,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
@@ -8002,7 +7894,7 @@
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 405,
+        "line": 403,
         "conditional": false,
         "inLoop": false
       },
@@ -8011,7 +7903,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 412,
+        "line": 410,
         "conditional": true,
         "inLoop": false
       },
@@ -8020,7 +7912,7 @@
         "target": "Array",
         "targetName": "Array",
         "edgeType": "call",
-        "line": 412,
+        "line": 410,
         "conditional": true,
         "inLoop": false
       },
@@ -8029,7 +7921,7 @@
         "target": "ChartWrapper",
         "targetName": "ChartWrapper",
         "edgeType": "render",
-        "line": 460,
+        "line": 458,
         "conditional": false,
         "inLoop": false
       },
@@ -8038,7 +7930,7 @@
         "target": "ChartWrapper",
         "targetName": "ChartWrapper",
         "edgeType": "render",
-        "line": 464,
+        "line": 462,
         "conditional": false,
         "inLoop": false
       },
@@ -8047,7 +7939,7 @@
         "target": "ChartWrapper",
         "targetName": "ChartWrapper",
         "edgeType": "render",
-        "line": 468,
+        "line": 466,
         "conditional": false,
         "inLoop": false
       },
@@ -8056,7 +7948,7 @@
         "target": "ChartWrapper",
         "targetName": "ChartWrapper",
         "edgeType": "render",
-        "line": 472,
+        "line": 470,
         "conditional": false,
         "inLoop": false
       },
@@ -8101,7 +7993,7 @@
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 399,
+        "line": 397,
         "conditional": false,
         "inLoop": false
       },
@@ -8110,7 +8002,7 @@
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 413,
+        "line": 411,
         "conditional": false,
         "inLoop": false
       },
@@ -8119,7 +8011,7 @@
         "target": "KPICard",
         "targetName": "KPICard",
         "edgeType": "render",
-        "line": 418,
+        "line": 416,
         "conditional": true,
         "inLoop": false
       },
@@ -8128,7 +8020,7 @@
         "target": "handleTotalOpportunitiesClick",
         "targetName": "handleTotalOpportunitiesClick",
         "edgeType": "callback",
-        "line": 425,
+        "line": 423,
         "conditional": true,
         "inLoop": false
       },
@@ -8137,7 +8029,7 @@
         "target": "KPICard",
         "targetName": "KPICard",
         "edgeType": "render",
-        "line": 427,
+        "line": 425,
         "conditional": true,
         "inLoop": false
       },
@@ -8146,7 +8038,7 @@
         "target": "handleActivitiesClick",
         "targetName": "handleActivitiesClick",
         "edgeType": "callback",
-        "line": 434,
+        "line": 432,
         "conditional": true,
         "inLoop": false
       },
@@ -8155,7 +8047,7 @@
         "target": "KPICard",
         "targetName": "KPICard",
         "edgeType": "render",
-        "line": 436,
+        "line": 434,
         "conditional": true,
         "inLoop": false
       },
@@ -8164,7 +8056,7 @@
         "target": "handleStaleLeadsClick",
         "targetName": "handleStaleLeadsClick",
         "edgeType": "callback",
-        "line": 443,
+        "line": 441,
         "conditional": true,
         "inLoop": false
       },
@@ -8173,7 +8065,7 @@
         "target": "KPICard",
         "targetName": "KPICard",
         "edgeType": "render",
-        "line": 446,
+        "line": 444,
         "conditional": true,
         "inLoop": false
       },
@@ -8182,7 +8074,7 @@
         "target": "handleStaleDealsClick",
         "targetName": "handleStaleDealsClick",
         "edgeType": "callback",
-        "line": 454,
+        "line": 452,
         "conditional": true,
         "inLoop": false
       },
@@ -8191,7 +8083,7 @@
         "target": "PipelineChart",
         "targetName": "PipelineChart",
         "edgeType": "render",
-        "line": 461,
+        "line": 459,
         "conditional": false,
         "inLoop": false
       },
@@ -8200,7 +8092,7 @@
         "target": "ActivityTrendChart",
         "targetName": "ActivityTrendChart",
         "edgeType": "render",
-        "line": 465,
+        "line": 463,
         "conditional": false,
         "inLoop": false
       },
@@ -8209,7 +8101,7 @@
         "target": "TopPrincipalsChart",
         "targetName": "TopPrincipalsChart",
         "edgeType": "render",
-        "line": 469,
+        "line": 467,
         "conditional": false,
         "inLoop": false
       },
@@ -8218,7 +8110,7 @@
         "target": "RepPerformanceChart",
         "targetName": "RepPerformanceChart",
         "edgeType": "render",
-        "line": 473,
+        "line": 471,
         "conditional": false,
         "inLoop": false
       },

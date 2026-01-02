@@ -1,12 +1,12 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-01T22:47:15.229Z",
+  "generated_at": "2026-01-02T02:25:45.287Z",
   "item_count": 4,
   "items": [
     {
       "name": "baseNoteSchema",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 25,
+      "line": 29,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -96,7 +96,7 @@
     {
       "name": "contactNoteSchema",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 53,
+      "line": 57,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -113,7 +113,7 @@
     {
       "name": "opportunityNoteSchema",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 63,
+      "line": 67,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -130,7 +130,7 @@
     {
       "name": "organizationNoteSchema",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 74,
+      "line": 78,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [

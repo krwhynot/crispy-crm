@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizationDistributors",
-  "generated_at": "2026-01-01T22:47:15.231Z",
+  "generated_at": "2026-01-02T02:25:45.289Z",
   "item_count": 1,
   "items": [
     {
@@ -89,7 +89,7 @@
         },
         {
           "name": "deleted_at",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "max(VALIDATION_LIMITS.TIMESTAMP_MAX, \"Timestamp too long\")"
           ],

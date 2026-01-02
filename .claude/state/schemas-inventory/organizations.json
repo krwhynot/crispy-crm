@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-01T22:47:15.231Z",
+  "generated_at": "2026-01-02T02:25:45.290Z",
   "item_count": 7,
   "items": [
     {
@@ -26,7 +26,7 @@
     {
       "name": "organizationPrioritySchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 14,
+      "line": 20,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -45,7 +45,7 @@
     {
       "name": "orgScopeSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 17,
+      "line": 23,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -61,7 +61,7 @@
     {
       "name": "orgStatusSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 21,
+      "line": 27,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -78,7 +78,7 @@
     {
       "name": "orgStatusReasonSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 25,
+      "line": 31,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -99,7 +99,7 @@
     {
       "name": "paymentTermsSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 36,
+      "line": 42,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -118,7 +118,7 @@
     {
       "name": "organizationSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 89,
+      "line": 97,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -132,7 +132,7 @@
         },
         {
           "name": "name",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "trim()",
             "min(1, \"Organization name is required\")",

@@ -1,12 +1,12 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-01T22:47:08.025Z",
+  "generated_at": "2026-01-02T02:25:39.877Z",
   "item_count": 25,
   "items": [
     {
       "name": "ActivityCreate",
       "file": "src/atomic-crm/activities/ActivityCreate.tsx",
-      "line": 25,
+      "line": 22,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -265,7 +265,7 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
-      "line": 345,
+      "line": 348,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -336,7 +336,7 @@
     {
       "name": "ActivityCreate",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 25,
+      "line": 22,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -382,7 +382,7 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 345,
+      "line": 348,
       "type": "presentational",
       "hooks": [
         "useCallback",

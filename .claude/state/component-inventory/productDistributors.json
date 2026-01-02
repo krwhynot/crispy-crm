@@ -1,7 +1,7 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-01T22:47:08.052Z",
-  "item_count": 17,
+  "generated_at": "2026-01-02T02:25:39.890Z",
+  "item_count": 16,
   "items": [
     {
       "name": "ProductDistributorCreate",
@@ -106,7 +106,7 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 46,
+      "line": 39,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -127,7 +127,7 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 46,
+      "line": 39,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -146,9 +146,9 @@
       "componentRole": "wrapper"
     },
     {
-      "name": "productDistributors",
+      "name": "productDistributorsConfig",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 27,
+      "line": 12,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -160,7 +160,7 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 9,
+      "line": 8,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -172,7 +172,7 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 21,
+      "line": 20,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -184,7 +184,7 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 15,
+      "line": 14,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -196,12 +196,11 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 9,
+      "line": 8,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
-        "lucide-react",
         "react"
       ],
       "isDefaultExport": false,
@@ -212,12 +211,11 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 15,
+      "line": 14,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
-        "lucide-react",
         "react"
       ],
       "isDefaultExport": false,
@@ -228,31 +226,14 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 21,
+      "line": 20,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
-        "lucide-react",
         "react"
       ],
       "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "productDistributors",
-      "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 27,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "@/components/ResourceErrorBoundary",
-        "lucide-react",
-        "react"
-      ],
-      "isDefaultExport": true,
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
@@ -260,12 +241,11 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 9,
+      "line": 8,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
-        "lucide-react",
         "react"
       ],
       "isDefaultExport": false,
@@ -276,12 +256,11 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 21,
+      "line": 20,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
-        "lucide-react",
         "react"
       ],
       "isDefaultExport": false,
@@ -292,12 +271,11 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 15,
+      "line": 14,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
-        "lucide-react",
         "react"
       ],
       "isDefaultExport": false,
