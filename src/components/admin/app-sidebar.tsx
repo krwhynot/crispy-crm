@@ -22,6 +22,7 @@ import {
 import { useSidebar } from "@/components/ui/sidebar.utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { House, LayoutDashboard, List, Shell } from "lucide-react";
+import { FavoritesSidebarSection } from "./FavoritesSidebarSection";
 
 export function AppSidebar() {
   const hasDashboard = useHasDashboard();
@@ -47,6 +48,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        <FavoritesSidebarSection />
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

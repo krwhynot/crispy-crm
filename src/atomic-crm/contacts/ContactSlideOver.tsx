@@ -7,7 +7,7 @@ import { ContactDetailsTab } from "./ContactDetailsTab";
 import { ContactNotesTab } from "./slideOverTabs/ContactNotesTab";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { ContactHierarchyBreadcrumb } from "./ContactHierarchyBreadcrumb";
-import { QuickAddTaskButton } from "@/atomic-crm/components";
+import { QuickAddTaskButton, FavoriteToggleButton } from "@/atomic-crm/components";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { Contact } from "../types";
 
@@ -95,7 +95,16 @@ export function ContactSlideOver({
       recordRepresentation={getContactName}
       breadcrumbComponent={ContactHierarchyBreadcrumb}
       loadingSkeleton={ContactDetailSkeleton}
-      headerActions={(record) => <QuickAddTaskButton contactId={record.id} />}
+      headerActions={(record) => (
+        <>
+          <FavoriteToggleButton
+            entityType="contacts"
+            entityId={record.id}
+            displayName={`${record.first_name || ""} ${record.last_name || ""}`.trim() || `Contact #${record.id}`}
+          />
+          <QuickAddTaskButton contactId={record.id} />
+        </>
+      )}
     />
   );
 }
