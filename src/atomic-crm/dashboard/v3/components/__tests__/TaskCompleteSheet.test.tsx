@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { TaskItem } from "../../types";
+import type * as ReactAdmin from "react-admin";
 
 // Mock react-admin hooks - use importOriginal to preserve all exports
 const mockNotify = vi.fn();
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useNotify: () => mockNotify,

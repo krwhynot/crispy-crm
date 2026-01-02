@@ -1,5 +1,6 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { ShowContextProvider } from "ra-core";
+import type * as ReactAdmin from "react-admin";
 import { OpportunitiesTab } from "./OpportunitiesTab";
 
 const mockContact = {
@@ -63,7 +64,7 @@ vi.mock("./UnlinkConfirmDialog", () => ({
 
 // Mock react-admin components - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,

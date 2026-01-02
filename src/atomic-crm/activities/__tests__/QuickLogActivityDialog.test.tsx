@@ -30,7 +30,7 @@ let mockOppData: { data: unknown; isLoading: boolean; error: unknown } = {
 
 // Mock react-admin - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useGetOne: (resource: string) => {

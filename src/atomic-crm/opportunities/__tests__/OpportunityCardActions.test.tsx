@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { OpportunityCardActions } from "../kanban/OpportunityCardActions";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
+import type * as ReactAdmin from "react-admin";
 
 const mockRecord = {
   id: 1,
@@ -11,7 +12,7 @@ const mockRecord = {
 
 // Mock React Admin hooks - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useUpdate: () => [vi.fn()],

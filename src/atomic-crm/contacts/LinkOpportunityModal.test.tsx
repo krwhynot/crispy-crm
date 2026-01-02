@@ -1,13 +1,14 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { LinkOpportunityModal } from "./LinkOpportunityModal";
 import { vi } from "vitest";
+import type * as ReactAdmin from "react-admin";
 
 const mockCreate = vi.fn();
 const mockNotify = vi.fn();
 
 // Mock react-admin hooks - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useCreate: () => [mockCreate, { isLoading: false }],

@@ -2,6 +2,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useCurrentSale } from "../useCurrentSale";
 import type { DataProvider } from "react-admin";
+import type * as ReactAdmin from "react-admin";
 
 // Mock Supabase - define inside factory to avoid hoisting issues
 vi.mock("@/atomic-crm/providers/supabase/supabase", () => {
@@ -18,7 +19,7 @@ vi.mock("@/atomic-crm/providers/supabase/supabase", () => {
 
 // Mock React Admin's useDataProvider - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useDataProvider: vi.fn(),

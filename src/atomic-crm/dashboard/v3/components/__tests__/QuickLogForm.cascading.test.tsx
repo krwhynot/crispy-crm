@@ -17,6 +17,8 @@
 
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type * as ReactHookForm from "react-hook-form";
+import type * as ReactAdmin from "react-admin";
 import { QuickLogForm } from "../QuickLogForm";
 
 // ============================================================================
@@ -265,7 +267,7 @@ vi.mock("@hookform/resolvers/zod", () => ({
 
 // Mock react-hook-form with controlled form state - use importOriginal to preserve all exports
 vi.mock("react-hook-form", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-hook-form")>();
+  const actual = await importOriginal<typeof ReactHookForm>();
   const mockFormValues = {
     activityType: "Call",
     outcome: "Connected",
@@ -366,7 +368,7 @@ const mockNotify = vi.fn();
 
 // Mock hooks - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     AdminProvider: ({ children }: any) => <div data-testid="admin-provider">{children}</div>,

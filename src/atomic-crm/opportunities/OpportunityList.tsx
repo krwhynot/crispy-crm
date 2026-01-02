@@ -65,7 +65,7 @@ const OpportunityList = () => {
       setSearchParams(searchParams, { replace: true });
       saveViewPreference(urlView);
     }
-  }, [urlView, searchParams, setSearchParams, validViews]);
+  }, [urlView, searchParams, setSearchParams]);
 
   // Clean up stale cached filters from localStorage
   useFilterCleanup("opportunities");
