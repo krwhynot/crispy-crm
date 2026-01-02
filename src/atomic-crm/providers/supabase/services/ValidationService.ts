@@ -53,6 +53,8 @@ import {
   validateOrganizationDistributor,
 } from "../../../validation/organizationDistributors";
 import type { OrganizationDistributor } from "../../../validation/organizationDistributors";
+import { validateCreateFavorite, validateUpdateFavorite } from "../../../validation/favorites";
+import type { Favorite } from "../../../validation/favorites";
 import { filterableFields, isValidFilterField } from "../filterRegistry";
 import { DEV } from "@/lib/devLogger";
 
@@ -82,6 +84,7 @@ interface ResourceTypeMap {
   engagements: ActivityRecord;
   interactions: ActivityRecord;
   segments: Segment;
+  user_favorites: Favorite;
 }
 
 /**
@@ -188,6 +191,14 @@ export class ValidationService {
       },
       update: async (data: unknown) => {
         validateUpdateSegment(data);
+      },
+    },
+    user_favorites: {
+      create: async (data: unknown) => {
+        validateCreateFavorite(data);
+      },
+      update: async (data: unknown) => {
+        validateUpdateFavorite(data);
       },
     },
   };

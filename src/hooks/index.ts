@@ -30,3 +30,7 @@ export { useInAppUnsavedChanges } from "./useInAppUnsavedChanges";
 
 // Dialog Utilities
 export { useDialogError, parseServerError } from "./useDialogError";
+
+// Favorites
+export { useFavorites } from "./useFavorites";
+export type { UseFavoritesReturn } from "./useFavorites";
