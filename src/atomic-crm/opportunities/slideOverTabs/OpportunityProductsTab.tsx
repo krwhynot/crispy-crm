@@ -162,7 +162,6 @@ export function OpportunityProductsTab({
         <div className="px-6 py-4">
           <SidepaneSection label="Products">
             <SidepaneEmptyState
-              icon={Package}
               message="No products associated with this opportunity"
             />
           </SidepaneSection>

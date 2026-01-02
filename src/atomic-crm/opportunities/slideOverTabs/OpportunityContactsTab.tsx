@@ -178,7 +178,7 @@ export function OpportunityContactsTab({
 
   if (!junctionRecords || junctionRecords.length === 0) {
     return (
-      <SidepaneEmptyState icon={UserIcon} message="No contacts associated with this opportunity" />
+      <SidepaneEmptyState message="No contacts associated with this opportunity" />
     );
   }
 
