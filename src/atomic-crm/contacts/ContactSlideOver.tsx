@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useGetOne } from "react-admin";
 import { UserIcon, ActivityIcon, FileTextIcon } from "lucide-react";
 import { ResourceSlideOver, type TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ContactDetailSkeleton } from "@/components/ui/list-skeleton";
@@ -6,6 +8,7 @@ import { ContactNotesTab } from "./slideOverTabs/ContactNotesTab";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { ContactHierarchyBreadcrumb } from "./ContactHierarchyBreadcrumb";
 import { QuickAddTaskButton } from "@/atomic-crm/components";
+import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { Contact } from "../types";
 
 interface ContactSlideOverProps {
@@ -33,6 +36,24 @@ export function ContactSlideOver({
   onClose,
   onModeToggle,
 }: ContactSlideOverProps) {
+  const { addRecent } = useRecentSearches();
+
+  const { data: record } = useGetOne<Contact>(
+    "contacts",
+    { id: recordId! },
+    { enabled: !!recordId && isOpen }
+  );
+
+  useEffect(() => {
+    if (record?.id) {
+      addRecent({
+        id: record.id,
+        label: `${record.first_name || ""} ${record.last_name || ""}`.trim(),
+        entityType: "contacts",
+      });
+    }
+  }, [record?.id, addRecent]);
+
   // Tab configuration with count badges
   const contactTabs: TabConfig[] = [
     {

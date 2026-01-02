@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { TargetIcon, Users, Package, StickyNote } from "lucide-react";
 import { useGetIdentity, useGetOne } from "react-admin";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
@@ -7,6 +8,7 @@ import { OpportunityContactsTab } from "./slideOverTabs/OpportunityContactsTab";
 import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
 import { OpportunityNotesTab } from "./slideOverTabs/OpportunityNotesTab";
 import { QuickAddTaskButton } from "@/atomic-crm/components";
+import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { Opportunity } from "@/atomic-crm/types";
 import { useUserRole } from "@/hooks/useUserRole";
 
@@ -25,6 +27,7 @@ export function OpportunitySlideOver({
   mode,
   onModeToggle,
 }: OpportunitySlideOverProps) {
+  const { addRecent } = useRecentSearches();
   const { isManagerOrAdmin } = useUserRole();
   const { data: identity } = useGetIdentity();
   const currentSalesId = identity?.id;
@@ -34,6 +37,16 @@ export function OpportunitySlideOver({
     { id: recordId! },
     { enabled: recordId != null }
   );
+
+  useEffect(() => {
+    if (record?.id) {
+      addRecent({
+        id: record.id,
+        label: record.name,
+        entityType: "opportunities",
+      });
+    }
+  }, [record?.id, addRecent]);
 
   const canEdit = !record
     ? false
