@@ -194,7 +194,7 @@ describe("OrganizationSlideOver", () => {
       const recordWithNoCounts: OrganizationRecord = {
         id: 1,
         name: "Test Org",
-        organization_type: "operator",
+        organization_type: "customer",
         created_at: new Date().toISOString(),
       };
 
@@ -231,7 +231,7 @@ describe("OrganizationSlideOver", () => {
     it("falls back to Organization #id when name is undefined", () => {
       const record = {
         id: 456,
-        organization_type: "operator",
+        organization_type: "customer",
         created_at: new Date().toISOString(),
       } as OrganizationRecord;
 
@@ -256,7 +256,7 @@ describe("OrganizationSlideOver", () => {
     });
 
     it("correctly identifies non-distributor organization types", () => {
-      const nonDistributorTypes = ["principal", "operator", "prospect"] as const;
+      const nonDistributorTypes = ["principal", "customer", "prospect"] as const;
 
       for (const orgType of nonDistributorTypes) {
         const org: OrganizationRecord = {
