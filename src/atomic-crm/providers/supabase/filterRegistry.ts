@@ -66,6 +66,7 @@ export const filterableFields: Record<string, string[]> = {
     "last_seen",
     "first_seen",
     "gender",
+    "status", // Contact status enum (lead, current, former, etc.)
     "tags", // Array field
     "organization_id",
     "company_name", // From organizations join
