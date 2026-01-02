@@ -180,6 +180,7 @@ const OpportunityListLayout = ({
             <ListSearchBar
               placeholder="Search opportunities..."
               filterConfig={OPPORTUNITY_FILTER_CONFIG}
+              enableRecentSearches
             />
           </div>
           <div className="flex-shrink-0">

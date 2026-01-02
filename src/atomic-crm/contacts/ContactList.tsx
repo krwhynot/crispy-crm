@@ -109,7 +109,7 @@ const ContactListLayout = ({
   if (!data?.length && hasFilters) {
     return (
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <ListSearchBar placeholder="Search contacts..." filterConfig={CONTACT_FILTER_CONFIG} />
+        <ListSearchBar placeholder="Search contacts..." filterConfig={CONTACT_FILTER_CONFIG} enableRecentSearches />
         <ListNoResults />
       </StandardListLayout>
     );
@@ -118,7 +118,7 @@ const ContactListLayout = ({
   return (
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <ListSearchBar placeholder="Search contacts..." filterConfig={CONTACT_FILTER_CONFIG} />
+        <ListSearchBar placeholder="Search contacts..." filterConfig={CONTACT_FILTER_CONFIG} enableRecentSearches />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}

@@ -147,6 +147,7 @@ const OrganizationListLayout = ({
         <ListSearchBar
           placeholder="Search organizations..."
           filterConfig={ORGANIZATION_FILTER_CONFIG}
+          enableRecentSearches
         />
         <ListNoResults />
       </StandardListLayout>
@@ -159,6 +160,7 @@ const OrganizationListLayout = ({
         <ListSearchBar
           placeholder="Search organizations..."
           filterConfig={ORGANIZATION_FILTER_CONFIG}
+          enableRecentSearches
         />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
