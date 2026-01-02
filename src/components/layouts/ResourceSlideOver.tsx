@@ -3,7 +3,8 @@ import { useGetOne } from "react-admin";
 import type { RaRecord } from "react-admin";
 import { PencilIcon, XIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { PriorityTabsList } from "@/components/ui/priority-tabs";
 import { Button } from "@/components/ui/button";
 import { SlideOverSkeleton } from "@/components/ui/list-skeleton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
@@ -244,8 +245,15 @@ export function ResourceSlideOver({
 
               {/* Title and actions row */}
               <div className="flex flex-row items-center justify-between min-h-[28px] pr-14">
-                <SheetTitle id="slide-over-title" className="text-base font-semibold">
+                <SheetTitle id="slide-over-title" className="text-base font-semibold flex items-center gap-2">
                   {getRecordTitle()}
+                  {isDirty && (
+                    <span
+                      className="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0"
+                      aria-label="Unsaved changes"
+                      title="You have unsaved changes"
+                    />
+                  )}
                 </SheetTitle>
 
                 <div className="flex items-center gap-2">
@@ -294,30 +302,13 @@ export function ResourceSlideOver({
               onValueChange={setActiveTab}
               className="flex-1 flex flex-col overflow-hidden"
             >
-              <TabsList className="w-full justify-start rounded-none border-b border-border h-auto p-0 bg-transparent px-6">
-                {tabs.map((tab) => {
-                  // Compute count badge value if function provided
-                  const count = record && tab.countFromRecord ? tab.countFromRecord(record) : null;
-                  const showBadge = count != null && count > 0;
-
-                  return (
-                    <TabsTrigger
-                      key={tab.key}
-                      value={tab.key}
-                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent py-3 px-4 flex items-center gap-2"
-                      aria-label={showBadge ? `${tab.label} (${count})` : tab.label}
-                    >
-                      {tab.icon && <tab.icon className="h-4 w-4" />}
-                      <span className="text-sm font-medium">{tab.label}</span>
-                      {showBadge && (
-                        <Badge variant="secondary" className="ml-1 h-5 min-w-[20px] px-1.5 text-xs">
-                          {count > 99 ? "99+" : count}
-                        </Badge>
-                      )}
-                    </TabsTrigger>
-                  );
-                })}
-              </TabsList>
+              {/* Priority+ tabs with overflow dropdown for narrow viewports */}
+              <PriorityTabsList
+                tabs={tabs}
+                value={activeTab}
+                onValueChange={setActiveTab}
+                record={record}
+              />
 
               {/* Tab content panels - only render active tab's component for performance */}
               {tabs.map((tab) => {
