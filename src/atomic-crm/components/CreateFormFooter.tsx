@@ -9,16 +9,18 @@ interface CreateFormFooterProps {
   resourceName: string;
   redirectPath: string;
   tutorialAttribute?: string;
+  preserveFields?: string[]; // Fields to preserve on "Save & Add Another"
 }
 
 export const CreateFormFooter = ({
   resourceName,
   redirectPath,
   tutorialAttribute,
+  preserveFields = [],
 }: CreateFormFooterProps) => {
   const notify = useNotify();
   const redirect = useRedirect();
-  const { reset } = useFormContext();
+  const { reset, getValues } = useFormContext();
   const { isDirty } = useFormState();
 
   const handleCancel = useCallback(() => {
@@ -68,7 +70,19 @@ export const CreateFormFooter = ({
                 `${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`,
                 { type: "success" }
               );
-              reset();
+              // Preserve specified fields for rapid entry (e.g., organization_id)
+              if (preserveFields.length > 0) {
+                const currentValues = getValues();
+                const valuesToPreserve = preserveFields.reduce<Record<string, unknown>>((acc, field) => {
+                  if (currentValues[field] !== undefined) {
+                    acc[field] = currentValues[field];
+                  }
+                  return acc;
+                }, {});
+                reset(valuesToPreserve);
+              } else {
+                reset();
+              }
             },
             onError: handleError,
           }}
