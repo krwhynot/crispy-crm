@@ -109,7 +109,7 @@ export function ProductDetailsTab({
     try {
       // Get ALL current form values using the ref (not just dirty fields)
       const allFormValues = getValuesRef.current?.() ?? formData;
-      const completeData = { ...formData, ...allFormValues };
+      const completeData = { ...allFormValues };
 
       await update("products", {
         id: record.id,
