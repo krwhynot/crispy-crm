@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-02T08:19:16.989Z",
+  "generated_at": "2026-01-02T19:24:09.597Z",
   "items": {
     "nodes": [
       {
@@ -13,10 +13,10 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/commons/canAccess.ts:42:canAccess",
+        "id": "src/atomic-crm/providers/commons/canAccess.ts:43:canAccess",
         "name": "canAccess",
         "file": "src/atomic-crm/providers/commons/canAccess.ts",
-        "line": 42,
+        "line": 43,
         "nodeType": "arrow",
         "exported": true,
         "async": false

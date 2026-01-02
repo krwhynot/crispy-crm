@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-02T08:19:02.893Z",
+  "generated_at": "2026-01-02T19:24:07.149Z",
   "item_count": 7,
   "items": [
     {
@@ -13,8 +13,7 @@
         "customer",
         "prospect",
         "principal",
-        "distributor",
-        "operator"
+        "distributor"
       ],
       "relatedSchemas": [
         "organizationSchema"
@@ -26,7 +25,7 @@
     {
       "name": "organizationPrioritySchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 20,
+      "line": 19,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -45,7 +44,7 @@
     {
       "name": "orgScopeSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 23,
+      "line": 22,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -61,7 +60,7 @@
     {
       "name": "orgStatusSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 27,
+      "line": 26,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -78,7 +77,7 @@
     {
       "name": "orgStatusReasonSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 31,
+      "line": 30,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -99,7 +98,7 @@
     {
       "name": "paymentTermsSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 42,
+      "line": 41,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -118,7 +117,7 @@
     {
       "name": "organizationSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 97,
+      "line": 96,
       "schemaType": "strictObject",
       "fields": [
         {
