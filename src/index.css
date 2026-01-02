@@ -620,9 +620,9 @@
   /* ========================================
      SIDEPANE WIDTH SYSTEM
      ======================================== */
-  --sidepane-width: 440px;
-  --sidepane-width-min: 400px;
-  --sidepane-width-max: 560px;
+  --sidepane-width: 540px;
+  --sidepane-width-min: 480px;
+  --sidepane-width-max: 600px;
 
   /* === AESTHETIC POLISH TOKENS === */
 
