@@ -138,7 +138,7 @@ export function OrganizationDetailsTab({
 
               <TextInput source="email" label="Email" type="email" />
 
-              <TextInput source="phone" label="Phone" />
+              <TextInput source="phone" label="Phone" maxLength={30} />
               <TextInput source="website" label="Website" />
               <TextInput source="linkedin_url" label="LinkedIn URL" type="url" />
               <TextInput source="address" label="Street Address" />

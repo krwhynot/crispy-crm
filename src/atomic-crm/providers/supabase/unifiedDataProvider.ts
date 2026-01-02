@@ -454,6 +454,40 @@ async function wrapMethod<T>(
       throw new HttpError(friendlyMessage, 400);
     }
 
+    /**
+     * FOREIGN KEY CONSTRAINT ERROR TRANSFORMATION
+     *
+     * PostgreSQL returns technical errors like "violates foreign key constraint"
+     * when a referenced record doesn't exist. Transform these into user-friendly
+     * messages that explain what went wrong.
+     */
+    const message = extendedError?.message || '';
+    const fkMatch = message.match(/violates foreign key constraint.*"(\w+)"/i);
+    if (fkMatch) {
+      const constraint = fkMatch[1];
+
+      // Map constraint names to user-friendly messages
+      const fkMessages: Record<string, string> = {
+        'contacts_organization_id_fkey': "The selected organization doesn't exist or was deleted.",
+        'contacts_sales_id_fkey': "The selected account manager doesn't exist.",
+        'contacts_manager_id_fkey': "The selected manager doesn't exist.",
+        'opportunities_principal_id_fkey': "The selected principal doesn't exist or was deleted.",
+        'opportunities_organization_id_fkey': "The selected organization doesn't exist or was deleted.",
+        'opportunities_sales_id_fkey': "The selected account manager doesn't exist.",
+      };
+
+      const friendlyMessage = fkMessages[constraint] || "A referenced record doesn't exist or was deleted.";
+
+      if (DEV) {
+        devWarn("DataProvider", "FK constraint error:", {
+          constraint,
+          originalMessage: message,
+        });
+      }
+
+      throw new HttpError(friendlyMessage, 400);
+    }
+
     // For validation errors, ensure React Admin format
     // This allows errors to be displayed inline next to form fields
     if (extendedError?.body?.errors && typeof extendedError.body.errors === "object") {
