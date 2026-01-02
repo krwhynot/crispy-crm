@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-02T08:19:03.465Z",
+  "generated_at": "2026-01-02T19:24:07.313Z",
   "item_count": 17,
   "items": [
     {
@@ -213,7 +213,7 @@
         },
         {
           "name": "organization_type",
-          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"",
+          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\"",
           "optional": false,
           "readonly": false
         },
@@ -430,7 +430,7 @@
         },
         {
           "name": "organization_type",
-          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"",
+          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\"",
           "optional": false,
           "readonly": false
         },

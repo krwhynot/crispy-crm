@@ -34,10 +34,11 @@ type UserRole = "admin" | "manager" | "rep";
 /**
  * Permission matrix for RBAC:
  * - Admin: Full CRUD on all resources
- * - Manager: View all + Edit all + No delete (except own records)
- * - Rep: View all + Edit own only + No delete
+ * - Manager: Full CRUD on shared resources (contacts/orgs/products)
+ * - Rep: Full CRUD on shared resources (contacts/orgs/products)
  *
- * Shared resources (contacts/orgs/products): All roles can edit
+ * Admin-only: sales resource (team management)
+ * All roles: contacts, organizations, products, opportunities
  */
 export const canAccess = <RecordType extends Record<string, any> = Record<string, any>>(
   role: string,
@@ -51,18 +52,15 @@ export const canAccess = <RecordType extends Record<string, any> = Record<string
     return true;
   }
 
-  // Sales resource is admin-only
+  // Sales resource is admin-only (team management)
   if (resource === "sales") {
     return false;
   }
 
-  // DELETE action: Only admins can delete (already covered above for sales)
-  // For other resources, managers and reps cannot delete
-  if (action === "delete") {
-    return false;
-  }
+  // All other resources: managers and reps have full CRUD access
+  // (DELETE was previously admin-only, now enabled for all roles)
 
-  // Manager: Can view and edit all resources (except sales)
+  // Manager: Full CRUD on shared resources
   if (userRole === "manager") {
     return true;
   }

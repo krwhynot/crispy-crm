@@ -1,6 +1,6 @@
 {
   "chunk_name": "_root",
-  "generated_at": "2026-01-02T08:19:03.475Z",
+  "generated_at": "2026-01-02T19:24:07.314Z",
   "item_count": 30,
   "items": [
     {
@@ -1411,7 +1411,7 @@
         },
         {
           "name": "organization",
-          "type": "{ name: string; organization_type: \"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"; priority: \"A\" | \"B\" | \"C\" | \"D\"; is_operating_entity: boolean; status: \"active\" | \"inactive\"; billing_country: string; shipping_country: string; id?: number; logo?: any; parent_organization_id?: number; segment_id?: string; linkedin_url?: string; website?: string; phone?: string; address?: string; postal_code?: string; city?: string; state?: string; sales_id?: number; description?: string; context_links?: string[]; tags?: string; email?: string; notes?: string; employee_count?: number; founded_year?: number; tax_identifier?: string; logo_url?: string; updated_at?: string; updated_by?: number; nb_contacts?: number; nb_opportunities?: number; nb_notes?: number; org_scope?: \"national\" | \"regional\" | \"local\"; status_reason?: \"prospect\" | \"active_customer\" | \"authorized_distributor\" | \"account_closed\" | \"out_of_business\" | \"disqualified\"; billing_street?: string; billing_city?: string; billing_state?: string; billing_postal_code?: string; shipping_street?: string; shipping_city?: string; shipping_state?: string; shipping_postal_code?: string; payment_terms?: \"net_30\" | \"net_60\" | \"net_90\" | \"cod\" | \"prepaid\" | \"2_10_net_30\"; credit_limit?: number; territory?: string; created_at?: string; created_by?: number; deleted_at?: string; }",
+          "type": "{ name: string; organization_type: \"customer\" | \"prospect\" | \"principal\" | \"distributor\"; priority: \"A\" | \"B\" | \"C\" | \"D\"; is_operating_entity: boolean; status: \"active\" | \"inactive\"; billing_country: string; shipping_country: string; id?: number; logo?: any; parent_organization_id?: number; segment_id?: string; linkedin_url?: string; website?: string; phone?: string; address?: string; postal_code?: string; city?: string; state?: string; sales_id?: number; description?: string; context_links?: string[]; tags?: string; email?: string; notes?: string; employee_count?: number; founded_year?: number; tax_identifier?: string; logo_url?: string; updated_at?: string; updated_by?: number; nb_contacts?: number; nb_opportunities?: number; nb_notes?: number; org_scope?: \"national\" | \"regional\" | \"local\"; status_reason?: \"prospect\" | \"active_customer\" | \"authorized_distributor\" | \"account_closed\" | \"out_of_business\" | \"disqualified\"; billing_street?: string; billing_city?: string; billing_state?: string; billing_postal_code?: string; shipping_street?: string; shipping_city?: string; shipping_state?: string; shipping_postal_code?: string; payment_terms?: \"net_30\" | \"net_60\" | \"net_90\" | \"cod\" | \"prepaid\" | \"2_10_net_30\"; credit_limit?: number; territory?: string; created_at?: string; created_by?: number; deleted_at?: string; }",
           "optional": false,
           "readonly": false
         },
