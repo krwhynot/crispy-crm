@@ -182,6 +182,10 @@ export function OpportunityContactsTab({
       <SidepaneEmptyState
         title={EMPTY_STATE_CONTENT.contacts.title}
         description={EMPTY_STATE_CONTENT.contacts.description}
+        action={{
+          label: EMPTY_STATE_CONTENT.contacts.actionLabel,
+          onClick: () => onModeToggle?.(),
+        }}
       />
     );
   }
