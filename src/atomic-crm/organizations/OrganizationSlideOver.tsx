@@ -120,6 +120,13 @@ export function OrganizationSlideOver({
       tabs={tabs}
       recordRepresentation={recordRepresentation}
       loadingSkeleton={OrganizationDetailSkeleton}
+      headerActions={(record) => (
+        <FavoriteToggleButton
+          entityType="organizations"
+          entityId={record.id}
+          displayName={record.name || `Organization #${record.id}`}
+        />
+      )}
     />
   );
 }
