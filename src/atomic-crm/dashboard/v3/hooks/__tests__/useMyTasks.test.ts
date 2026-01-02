@@ -105,6 +105,7 @@ const stableDataProvider = {
 
 // Mock @tanstack/react-query's useQueryClient
 vi.mock("@tanstack/react-query", async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
   const actual = (await importOriginal()) as typeof import("@tanstack/react-query");
   return {
     ...actual,
@@ -116,7 +117,8 @@ vi.mock("@tanstack/react-query", async (importOriginal) => {
 
 // Mock react-admin with stable reference
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("react-admin");
   const React = await import("react");
 
   return {
@@ -143,6 +145,8 @@ vi.mock("react-admin", async (importOriginal) => {
         error: null,
       });
 
+      // Serialize params for stable dependency - params object changes each render but content is stable
+      const paramsKey = JSON.stringify(params);
       const fetchData = React.useCallback(async () => {
         if (!enabled) return;
         setState((s: any) => ({ ...s, isLoading: true, error: null }));
@@ -162,7 +166,8 @@ vi.mock("react-admin", async (importOriginal) => {
             error: e instanceof Error ? e : new Error("Failed to fetch"),
           });
         }
-      }, [resource, JSON.stringify(params), enabled, mutationVersion]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- params accessed via paramsKey serialization; mutationVersion is module-scoped
+      }, [resource, paramsKey, enabled, mutationVersion]);
 
       React.useEffect(() => {
         if (enabled) {

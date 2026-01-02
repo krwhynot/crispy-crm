@@ -23,7 +23,8 @@ const mockGetList = vi.fn();
  * Uses React state to properly simulate async behavior.
  */
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("react-admin");
   const React = await import("react");
 
   return {
@@ -48,6 +49,8 @@ vi.mock("react-admin", async (importOriginal) => {
         error: null,
       });
 
+      // Serialize params for stable dependency - params object changes each render but content is stable
+      const paramsKey = JSON.stringify(params);
       const fetchData = React.useCallback(async () => {
         if (!enabled) return;
         setState((s: any) => ({ ...s, isPending: true, error: null }));
@@ -67,7 +70,8 @@ vi.mock("react-admin", async (importOriginal) => {
             error: e instanceof Error ? e : new Error("Failed to fetch"),
           });
         }
-      }, [resource, JSON.stringify(params), enabled]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- params accessed via paramsKey serialization
+      }, [resource, paramsKey, enabled]);
 
       React.useEffect(() => {
         if (enabled) {
