@@ -21,6 +21,7 @@ import { OrganizationNotesTab } from "./slideOverTabs/OrganizationNotesTab";
 import { AuthorizationsTab } from "./AuthorizationsTab";
 import { useGetOne } from "react-admin";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
+import { FavoriteToggleButton } from "@/atomic-crm/components";
 import type { OrganizationRecord } from "./types";
 
 interface OrganizationSlideOverProps {

@@ -458,6 +458,18 @@ export const filterableFields: Record<string, string[]> = {
     "notes",
     "created_at",
   ],
+
+  // User Favorites resource
+  // Stores user-specific favorites for quick access to contacts, organizations
+  user_favorites: [
+    "id",
+    "user_id",
+    "entity_type",
+    "entity_id",
+    "display_name",
+    "created_at",
+    "deleted_at",
+  ],
 };
 
 /**

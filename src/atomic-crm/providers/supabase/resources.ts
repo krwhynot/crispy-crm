@@ -42,6 +42,7 @@ export const RESOURCE_MAPPING = {
   activities: "activities",
   products: "products",
   dashboard_snapshots: "dashboard_snapshots", // Historical KPI snapshots for week-over-week trends
+  user_favorites: "user_favorites", // User-specific favorites for quick access
 } as const;
 
 /**
@@ -100,6 +101,7 @@ export const SOFT_DELETE_RESOURCES = [
   "notifications",
   "distributor_principal_authorizations",
   "organization_distributors",
+  "user_favorites",
 ] as const;
 
 /**
