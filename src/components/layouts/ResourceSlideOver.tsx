@@ -248,7 +248,7 @@ export function ResourceSlideOver({
                   {getRecordTitle()}
                   {isDirty && (
                     <span
-                      className="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0"
+                      className="h-2 w-2 rounded-full bg-info-strong flex-shrink-0"
                       aria-label="Unsaved changes"
                       title="You have unsaved changes"
                     />
