@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useListPaginationContext, Translate, useTranslate } from "ra-core";
+import { useListPaginationContext, Translate, useTranslate, useListContext } from "ra-core";
 import { ExportButton } from "@/components/admin/export-button";
 
 export const ListPagination = ({
@@ -29,6 +29,7 @@ export const ListPagination = ({
   const translate = useTranslate();
   const { hasPreviousPage, hasNextPage, page, perPage, setPerPage, total, setPage } =
     useListPaginationContext();
+  const { selectedIds } = useListContext();
 
   // Ensure current perPage is always in options (prevents empty dropdown when perPage isn't in default options)
   const effectiveOptions = rowsPerPageOptions.includes(perPage)
@@ -89,7 +90,9 @@ export const ListPagination = ({
 
   return (
     <div className={`flex items-center justify-between w-full ${className}`}>
-      <div className="hidden md:flex items-center">{showExport && <ExportButton />}</div>
+      <div className="hidden md:flex items-center">
+        {showExport && !selectedIds?.length && <ExportButton />}
+      </div>
 
       <div className="flex items-center space-x-2 gap-4">
         <div className="hidden md:flex items-center space-x-2">
