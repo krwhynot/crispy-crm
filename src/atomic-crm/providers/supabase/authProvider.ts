@@ -14,6 +14,7 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
 
     return {
       id: sale.id,
+      user_id: sale.auth_user_id, // Supabase auth UUID for RLS queries (used by useFavorites, NotificationBell)
       fullName: `${sale.first_name} ${sale.last_name}`,
       avatar: sale.avatar_url,
       role: sale.role || "rep", // Default to 'rep' if not set
@@ -107,6 +108,7 @@ interface CachedSale {
   avatar_url: string | null;
   is_admin: boolean;
   role: string | null;
+  auth_user_id: string; // Supabase auth UUID for RLS queries
 }
 
 let cachedSale: CachedSale | undefined;
@@ -145,9 +147,13 @@ const getSaleFromCache = async () => {
     return undefined;
   }
 
-  cachedSale = dataSale;
+  // Cache sale data with the Supabase auth UUID for RLS-protected queries
+  cachedSale = {
+    ...dataSale,
+    auth_user_id: dataSession.session.user.id,
+  };
   cacheTimestamp = Date.now();
-  return dataSale;
+  return cachedSale;
 };
 
 /**
