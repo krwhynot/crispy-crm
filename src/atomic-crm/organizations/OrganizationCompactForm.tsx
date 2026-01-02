@@ -126,6 +126,7 @@ export const OrganizationCompactForm = () => {
               label="Phone"
               helperText="Format: (555) 123-4567"
               autoComplete="tel"
+              maxLength={30}
             />
           </FormFieldWrapper>
           <FormFieldWrapper name="linkedin_url">
