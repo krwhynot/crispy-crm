@@ -13,6 +13,7 @@
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { startOfDay, subDays } from "date-fns";
+import type * as ReactAdmin from "react-admin";
 import { useKPIMetrics } from "../useKPIMetrics";
 
 // Create stable mock functions
@@ -23,7 +24,7 @@ const stableDataProvider = {
 };
 
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useDataProvider: () => stableDataProvider,

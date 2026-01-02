@@ -2,10 +2,11 @@
 import { render, screen } from "@testing-library/react";
 import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { vi } from "vitest";
+import type * as ReactAdmin from "react-admin";
 
 // Mock react-admin hooks - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useDelete: () => [vi.fn(), { isLoading: false }],

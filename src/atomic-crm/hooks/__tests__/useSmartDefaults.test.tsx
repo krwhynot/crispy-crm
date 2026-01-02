@@ -1,11 +1,12 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type * as ReactAdmin from "react-admin";
 import { useSmartDefaults } from "../useSmartDefaults";
 import { format } from "date-fns";
 
 const mockUseGetIdentity = vi.fn();
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useGetIdentity: () => mockUseGetIdentity(),

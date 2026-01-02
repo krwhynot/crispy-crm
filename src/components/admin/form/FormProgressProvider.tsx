@@ -59,4 +59,8 @@ function FormProgressProvider({ children, initialProgress = 10 }: FormProgressPr
 
 export { FormProgressProvider };
 // Types re-exported from formProgressTypes.ts for backward compatibility
-export type { FormProgressContextValue, FormProgressProviderProps, FieldProgress } from "./formProgressTypes";
+export type {
+  FormProgressContextValue,
+  FormProgressProviderProps,
+  FieldProgress,
+} from "./formProgressTypes";
