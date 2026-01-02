@@ -39,6 +39,8 @@ vi.mock("react-admin", async () => {
         error: null,
       });
 
+      // Serialize params for stable dependency - params object changes each render but content is stable
+      const paramsKey = JSON.stringify(params);
       const fetchData = React.useCallback(async () => {
         setState((s: any) => ({ ...s, isPending: true, error: null }));
         try {
@@ -60,7 +62,8 @@ vi.mock("react-admin", async () => {
           });
           console.error("[useTeamActivities] Failed to fetch activities:", e);
         }
-      }, [resource, JSON.stringify(params)]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- params accessed via paramsKey serialization
+      }, [resource, paramsKey]);
 
       React.useEffect(() => {
         fetchData();

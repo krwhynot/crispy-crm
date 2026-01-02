@@ -61,6 +61,13 @@ export function useReportData<T extends RaRecord>(
 
   const { dateRange, salesRepId, additionalFilters, dateField = "created_at" } = options;
 
+  // Memoize additionalFilters serialization for stable value-based comparison
+  // This ensures the filter useMemo only recomputes when filter values actually change
+  const additionalFiltersKey = useMemo(
+    () => JSON.stringify(additionalFilters),
+    [additionalFilters]
+  );
+
   // Memoize filter object to prevent infinite re-render loops
   // This is critical - without memoization, a new filter object is created
   // on every render, causing useEffect to re-run infinitely
@@ -78,15 +85,7 @@ export function useReportData<T extends RaRecord>(
     }
 
     return baseFilter;
-  }, [
-    dateRange?.start?.getTime(),
-    dateRange?.end?.getTime(),
-    salesRepId,
-    dateField,
-    // Stringify additionalFilters for stable comparison
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(additionalFilters),
-  ]);
+  }, [additionalFilters, additionalFiltersKey, dateRange, salesRepId, dateField]);
 
   useEffect(() => {
     let cancelled = false;

@@ -40,13 +40,15 @@ const saveViewPreference = (view: OpportunityView) => {
   localStorage.setItem(OPPORTUNITY_VIEW_KEY, view);
 };
 
+// Valid view options (module-scoped for stable reference in useEffect deps)
+const validViews: OpportunityView[] = ["kanban", "list", "campaign", "principal"];
+
 const OpportunityList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Check for URL param (from /opportunities/kanban redirect or direct link)
   const urlView = searchParams.get("view") as OpportunityView | null;
-  const validViews: OpportunityView[] = ["kanban", "list", "campaign", "principal"];
 
   const [view, setView] = useState<OpportunityView>(() => {
     // URL param takes precedence over localStorage
@@ -63,7 +65,7 @@ const OpportunityList = () => {
       setSearchParams(searchParams, { replace: true });
       saveViewPreference(urlView);
     }
-  }, [urlView, searchParams, setSearchParams]);
+  }, [urlView, searchParams, setSearchParams, validViews]);
 
   // Clean up stale cached filters from localStorage
   useFilterCleanup("opportunities");
