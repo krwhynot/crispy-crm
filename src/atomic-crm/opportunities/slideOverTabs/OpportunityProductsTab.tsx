@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Package } from "lucide-react";
 import {
   DirtyStateTracker,
+  EMPTY_STATE_CONTENT,
   SidepaneEmptyState,
   SidepaneSection,
 } from "@/components/layouts/sidepane";
@@ -162,7 +163,8 @@ export function OpportunityProductsTab({
         <div className="px-6 py-4">
           <SidepaneSection label="Products">
             <SidepaneEmptyState
-              message="No products associated with this opportunity"
+              title={EMPTY_STATE_CONTENT.products.title}
+              description={EMPTY_STATE_CONTENT.products.description}
             />
           </SidepaneSection>
         </div>

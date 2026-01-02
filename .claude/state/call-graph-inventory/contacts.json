@@ -1,13 +1,13 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-02T04:15:04.153Z",
+  "generated_at": "2026-01-02T06:45:07.767Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "id": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "name": "ActivitiesTab",
         "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
-        "line": 14,
+        "line": 15,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -906,88 +906,79 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 15,
+        "line": 16,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 17,
+        "line": 18,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "parseInt",
         "targetName": "parseInt",
         "edgeType": "call",
-        "line": 24,
+        "line": 25,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 29,
+        "line": 30,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "setIsDialogOpen",
         "targetName": "setIsDialogOpen",
         "edgeType": "call",
-        "line": 50,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 60,
+        "line": 64,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "refetch",
         "targetName": "refetch",
         "edgeType": "call",
-        "line": 76,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 50,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -996,7 +987,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -1005,29 +996,47 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "Plus",
         "targetName": "Plus",
         "edgeType": "render",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
+        "target": "SidepaneEmptyState",
+        "targetName": "SidepaneEmptyState",
+        "edgeType": "render",
+        "line": 58,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "ActivityTimelineEntry",
         "targetName": "ActivityTimelineEntry",
         "edgeType": "render",
-        "line": 61,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:14:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
         "target": "QuickLogActivityDialog",
         "targetName": "QuickLogActivityDialog",
         "edgeType": "render",
-        "line": 67,
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },

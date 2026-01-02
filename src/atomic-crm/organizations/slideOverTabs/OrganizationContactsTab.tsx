@@ -2,7 +2,7 @@ import { useGetList, RecordContextProvider } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SidepaneEmptyState } from "@/components/layouts/sidepane";
+import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
 import { MAX_RELATED_ITEMS } from "../constants";
@@ -87,7 +87,12 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
   }
 
   if (contacts.length === 0) {
-    return <SidepaneEmptyState message="No contacts yet" />;
+    return (
+      <SidepaneEmptyState
+        title={EMPTY_STATE_CONTENT.contacts.title}
+        description={EMPTY_STATE_CONTENT.contacts.description}
+      />
+    );
   }
 
   return (

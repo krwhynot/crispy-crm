@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-02T04:14:56.666Z",
+  "generated_at": "2026-01-02T06:44:57.176Z",
   "item_count": 73,
   "items": [
     {
@@ -1780,7 +1780,7 @@
     {
       "name": "OrganizationContactsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx",
-      "line": 51,
+      "line": 50,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1793,7 +1793,6 @@
         "@/components/layouts/sidepane",
         "@/components/ui/scroll-area",
         "@/components/ui/skeleton",
-        "lucide-react",
         "ra-core",
         "react-router-dom"
       ],
@@ -1874,7 +1873,7 @@
     {
       "name": "OrganizationOpportunitiesTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx",
-      "line": 27,
+      "line": 26,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1889,7 +1888,6 @@
         "@/components/ui/scroll-area",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
-        "lucide-react",
         "ra-core",
         "react-router-dom"
       ],
