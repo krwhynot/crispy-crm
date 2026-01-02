@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { useFormProgress } from "./FormProgressProvider";
+import { useFormProgress } from "./formProgressUtils";
 
 interface FormProgressBarProps {
   showStepInfo?: boolean;

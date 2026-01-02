@@ -8,8 +8,8 @@ vi.mock("react-hook-form", () => ({
   useWatch: vi.fn(() => undefined),
 }));
 
-// Mock FormProgressProvider
-vi.mock("../FormProgressProvider", () => ({
+// Mock formProgressUtils
+vi.mock("../formProgressUtils", () => ({
   useFormProgress: vi.fn(() => ({
     registerField: vi.fn(),
     markFieldValid: vi.fn(),
@@ -22,7 +22,7 @@ vi.mock("../FormProgressProvider", () => ({
 
 // Import mocked modules to access their implementations
 import { useFormState, useWatch } from "react-hook-form";
-import { useFormProgress } from "../FormProgressProvider";
+import { useFormProgress } from "../formProgressUtils";
 
 // Get mock functions
 const mockUseFormState = vi.mocked(useFormState);

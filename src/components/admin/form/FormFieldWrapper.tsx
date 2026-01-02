@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { useFormState, useWatch } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { useFormProgress } from "./FormProgressProvider";
+import { useFormProgress } from "./formProgressUtils";
 import { Check, X } from "lucide-react";
 
 interface FormFieldWrapperProps {

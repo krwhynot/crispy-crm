@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, Circle } from "lucide-react";
-import { useFormProgress } from "./FormProgressProvider";
+import { useFormProgress } from "./formProgressUtils";
 
 interface FormSectionWithProgressProps {
   /** Unique section identifier */

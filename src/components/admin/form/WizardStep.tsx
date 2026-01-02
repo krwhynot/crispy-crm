@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { useWizard } from "./FormWizard";
+import { useWizard } from "./wizardUtils";
 
 interface WizardStepProps {
   /** Step number (1-indexed, must match position in steps array) */
