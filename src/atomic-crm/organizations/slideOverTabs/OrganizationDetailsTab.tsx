@@ -72,13 +72,10 @@ export function OrganizationDetailsTab({
       // This ensures sales_id is included even when initial value was null
       const allFormValues = getValuesRef.current?.() ?? formData;
 
-      // Merge form data with explicit sales_id from getValues()
-      // This fixes ra-data-postgrest change detection for null → value changes
+      // Use all form values to handle null → value transitions
+      // React Admin's dirty detection misses these changes
       const completeData = {
-        ...formData,
-        // Use allFormValues.sales_id which is the actual current form value
-        // Falls back to null if somehow not set
-        sales_id: allFormValues.sales_id ?? null,
+        ...allFormValues,
       };
 
       await update("organizations", {
