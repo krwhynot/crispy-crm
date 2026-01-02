@@ -56,13 +56,6 @@ export function OpportunityNotesTab({ record, mode }: OpportunityNotesTabProps) 
             >
               <NotesIterator reference="opportunities" />
             </ReferenceManyField>
-
-            {/* Helper text */}
-            <p className="text-sm text-muted-foreground text-center py-4">
-              {mode === "view"
-                ? "Notes are visible to all team members"
-                : "Add notes to track important information about this opportunity"}
-            </p>
           </SidepaneSection>
         </div>
       </ScrollArea>

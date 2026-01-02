@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Target } from "lucide-react";
 import { SidepaneEmptyState } from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
@@ -69,7 +68,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
   }
 
   if (opportunities.length === 0) {
-    return <SidepaneEmptyState icon={Target} message="No opportunities yet" />;
+    return <SidepaneEmptyState message="No opportunities yet" />;
   }
 
   return (

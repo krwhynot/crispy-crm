@@ -28,13 +28,6 @@ export function ContactNotesTab({ record, mode }: ContactNotesTabProps) {
         >
           <NotesIterator reference="contacts" />
         </ReferenceManyField>
-
-        {/* Helper text for empty state */}
-        <div className="text-sm text-muted-foreground text-center py-4">
-          {mode === "view"
-            ? "Notes are visible to all team members"
-            : "Add notes to track important information about this contact"}
-        </div>
       </div>
     </RecordContextProvider>
   );

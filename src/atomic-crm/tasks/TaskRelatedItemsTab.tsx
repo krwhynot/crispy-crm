@@ -4,7 +4,7 @@ import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { SidepaneSection, SidepaneEmptyState } from "@/components/layouts/sidepane";
 import { SaleName } from "../sales/SaleName";
-import { Building2, UserCircle, Target, Link } from "lucide-react";
+import { Building2, UserCircle, Target } from "lucide-react";
 import type { Task } from "../types";
 import { contactOptionText } from "../contacts/ContactOption";
 
@@ -33,7 +33,6 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
       <div className="space-y-6">
         {!hasRelationships && (
           <SidepaneEmptyState
-            icon={Link}
             message="No related items. Add relationships in the Details tab."
           />
         )}

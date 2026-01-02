@@ -2,7 +2,6 @@ import { useGetList, RecordContextProvider } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Users } from "lucide-react";
 import { SidepaneEmptyState } from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
@@ -88,7 +87,7 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
   }
 
   if (contacts.length === 0) {
-    return <SidepaneEmptyState icon={Users} message="No contacts yet" />;
+    return <SidepaneEmptyState message="No contacts yet" />;
   }
 
   return (

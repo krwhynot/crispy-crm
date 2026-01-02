@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { useGetList } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
 import { QuickLogActivityDialog, ActivityTimelineEntry } from "../activities";
 import type { ActivityRecord } from "../types";
 import { ACTIVITY_PAGE_SIZE } from "../activities/constants";
@@ -54,7 +55,10 @@ export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
       </div>
 
       {activities.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">No activities recorded yet</div>
+        <SidepaneEmptyState
+          title={EMPTY_STATE_CONTENT.activities.title}
+          description={EMPTY_STATE_CONTENT.activities.description}
+        />
       ) : (
         <div className="space-y-3">
           {activities.map((activity) => (
