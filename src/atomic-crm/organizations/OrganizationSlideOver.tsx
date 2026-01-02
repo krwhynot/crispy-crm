@@ -9,6 +9,7 @@
  * @see docs/archive/plans/2025-11-16-unified-design-system-rollout.md
  */
 
+import { useEffect } from "react";
 import { BuildingIcon, Users, Target, StickyNote, ShieldCheck } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
@@ -19,6 +20,7 @@ import { OrganizationOpportunitiesTab } from "./slideOverTabs/OrganizationOpport
 import { OrganizationNotesTab } from "./slideOverTabs/OrganizationNotesTab";
 import { AuthorizationsTab } from "./AuthorizationsTab";
 import { useGetOne } from "react-admin";
+import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { OrganizationRecord } from "./types";
 
 interface OrganizationSlideOverProps {
@@ -36,12 +38,24 @@ export function OrganizationSlideOver({
   mode,
   onModeToggle,
 }: OrganizationSlideOverProps) {
+  const { addRecent } = useRecentSearches();
+
   // Fetch the organization to determine its type
-  const { data: organization } = useGetOne(
+  const { data: organization } = useGetOne<OrganizationRecord>(
     "organizations",
     { id: recordId! },
     { enabled: !!recordId && isOpen }
   );
+
+  useEffect(() => {
+    if (organization?.id) {
+      addRecent({
+        id: organization.id,
+        label: organization.name,
+        entityType: "organizations",
+      });
+    }
+  }, [organization?.id, addRecent]);
 
   const isDistributor = organization?.organization_type === "distributor";
 
