@@ -32,10 +32,10 @@ export const ParentOrganizationInput = () => {
   const isReady = !record?.id || descendantsFetched;
 
   // Build filter: exclude self + all descendants
-  // Use @not_in with array - transformArrayFilters converts to PostgREST format
+  // Use @not.in with pre-formatted PostgREST syntax for reliable filtering
   const excludeIds = [record?.id, ...descendants].filter(Boolean) as number[];
   const filter =
-    excludeIds.length > 0 ? { "id@not_in": excludeIds } : {};
+    excludeIds.length > 0 ? { "id@not.in": `(${excludeIds.join(",")})` } : {};
 
   // Force ReferenceInput to refetch when descendants change
   // This prevents stale results from before descendants query completed

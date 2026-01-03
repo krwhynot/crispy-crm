@@ -24,6 +24,7 @@ import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, STATUS_CHOICES, ORG_SCOPE_
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { OrganizationTypeBadge, PriorityBadge } from "../OrganizationBadges";
 import { ParentOrganizationInput } from "../ParentOrganizationInput";
+import { BranchLocationsSection } from "../BranchLocationsSection";
 
 /**
  * Helper component that must be rendered INSIDE a Form to access form context.
