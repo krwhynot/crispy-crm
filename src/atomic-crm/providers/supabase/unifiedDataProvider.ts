@@ -539,10 +539,18 @@ export const unifiedDataProvider: DataProvider = {
       // CRITICAL: Validate and clean filters BEFORE applying search parameters
       // This prevents 400 errors from stale cached filters referencing non-existent columns
       if (processedParams.filter) {
+        // DEBUG: Trace filter for hierarchy exclusion investigation
+        if (resource === "organizations" && JSON.stringify(processedParams.filter).includes("not")) {
+          console.log("🔍 getList organizations filter BEFORE validation:", JSON.stringify(processedParams.filter));
+        }
         processedParams.filter = validationService.validateFilters(
           resource,
           processedParams.filter
         );
+        // DEBUG: Trace filter for hierarchy exclusion investigation
+        if (resource === "organizations" && JSON.stringify(processedParams.filter).includes("not")) {
+          console.log("🔍 getList organizations filter AFTER validation:", JSON.stringify(processedParams.filter));
+        }
       }
 
       // Apply search parameters (now uses cleaned filters)

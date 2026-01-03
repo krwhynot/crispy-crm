@@ -155,6 +155,11 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
     return filter || {};
   }
 
+  // DEBUG: Trace filter transformation for hierarchy exclusion investigation
+  if (filter && Object.keys(filter).some((k) => k.includes("not_in"))) {
+    console.log("🔍 transformArrayFilters input (not_in detected):", JSON.stringify(filter));
+  }
+
   const transformed: Record<string, unknown> = {};
 
   // Fields that are stored as JSONB arrays in PostgreSQL
@@ -210,6 +215,11 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
         transformed[key] = value;
       }
     }
+  }
+
+  // DEBUG: Trace filter transformation output for hierarchy exclusion investigation
+  if (Object.keys(transformed).some((k) => k.includes("not.in"))) {
+    console.log("🔍 transformArrayFilters output (not.in result):", JSON.stringify(transformed));
   }
 
   return transformed;

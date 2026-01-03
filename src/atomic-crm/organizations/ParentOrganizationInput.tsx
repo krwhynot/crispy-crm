@@ -13,7 +13,11 @@ export const ParentOrganizationInput = () => {
   const record = useRecordContext<{ id?: number; parent_organization_id?: number }>();
 
   // Fetch all descendant IDs to exclude from parent selection
-  const { data: descendants = [] } = useQuery({
+  const {
+    data: descendants = [],
+    isLoading: isLoadingDescendants,
+    isFetched: descendantsFetched,
+  } = useQuery({
     queryKey: ["org-descendants", record?.id],
     queryFn: async () => {
       if (!record?.id) return [];
@@ -26,6 +30,10 @@ export const ParentOrganizationInput = () => {
     enabled: !!record?.id,
     staleTime: 30000, // Cache for 30s - hierarchy doesn't change often
   });
+
+  // For existing records, wait for descendants to load before showing dropdown
+  // This prevents race condition where user could select a child before filter is ready
+  const isReady = !record?.id || descendantsFetched;
 
   // Build filter: exclude self + all descendants
   // Use @not_in with array - transformArrayFilters converts to PostgREST format
@@ -42,8 +50,13 @@ export const ParentOrganizationInput = () => {
     descendantsQueryEnabled: !!record?.id,
   });
 
+  // Force ReferenceInput to refetch when descendants change
+  // This prevents stale results from before descendants query completed
+  const filterKey = excludeIds.join(",");
+
   return (
     <ReferenceInput
+      key={filterKey}
       source="parent_organization_id"
       reference="organizations"
       filter={filter}
