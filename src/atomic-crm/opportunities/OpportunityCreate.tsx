@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
 import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
