@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { FilterLiveForm, useListContext } from "ra-core";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterChipBar } from "@/atomic-crm/filters/FilterChipBar";
@@ -46,7 +46,6 @@ export function ListSearchBar({
 }: ListSearchBarProps) {
   const { filterValues } = useListContext();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const anchorRef = useRef<HTMLDivElement>(null);
   const { recentItems, clearRecent } = useRecentSearches();
 
   // Get current search value from filter context
@@ -87,18 +86,14 @@ export function ListSearchBar({
           <SearchInput source={source} placeholder={placeholder} alwaysOn />
         </FilterLiveForm>
 
-        {/* Anchor for dropdown positioning */}
+        {/* Recent searches dropdown */}
         {enableRecentSearches && (
-          <>
-            <div ref={anchorRef} className="absolute left-0 top-full" />
-            <RecentSearchesDropdown
-              open={shouldShowDropdown}
-              onOpenChange={setDropdownOpen}
-              items={recentItems}
-              onClear={clearRecent}
-              anchorRef={anchorRef}
-            />
-          </>
+          <RecentSearchesDropdown
+            open={shouldShowDropdown}
+            onOpenChange={setDropdownOpen}
+            items={recentItems}
+            onClear={clearRecent}
+          />
         )}
       </div>
 

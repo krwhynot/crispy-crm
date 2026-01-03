@@ -29,7 +29,6 @@ interface RecentSearchesDropdownProps {
   onOpenChange: (open: boolean) => void;
   items: RecentSearchItem[];
   onClear: () => void;
-  anchorRef: React.RefObject<HTMLDivElement | null>;
 }
 
 function groupByEntityType(
@@ -52,7 +51,6 @@ export function RecentSearchesDropdown({
   onOpenChange,
   items,
   onClear,
-  anchorRef,
 }: RecentSearchesDropdownProps) {
   const navigate = useNavigate();
   const groupedItems = groupByEntityType(items);
@@ -70,10 +68,13 @@ export function RecentSearchesDropdown({
 
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
-      <PopoverAnchor virtualRef={anchorRef} />
+      <PopoverAnchor asChild>
+        <span className="absolute left-0 top-full w-full h-0" aria-hidden="true" />
+      </PopoverAnchor>
       <PopoverContent
         className="w-80 p-0"
         align="start"
+        sideOffset={4}
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <Command shouldFilter={false}>
