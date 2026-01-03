@@ -421,6 +421,17 @@
     @apply bg-card border border-border shadow-lg rounded-xl p-6;
   }
 
+  /* Swipe actions overlay - touch-only feature */
+  .swipe-actions-overlay {
+    display: none;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .swipe-actions-overlay {
+      display: block;
+    }
+  }
+
   /* Sidebar filter panel */
   .filter-sidebar {
     @apply w-64 shrink-0 space-y-4;
