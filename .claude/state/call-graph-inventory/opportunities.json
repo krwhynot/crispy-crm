@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-02T19:24:09.574Z",
+  "generated_at": "2026-01-03T04:10:37.445Z",
   "items": {
     "nodes": [
       {
@@ -292,10 +292,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "id": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
         "name": "OpportunitySlideOver",
         "file": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx",
-        "line": 21,
+        "line": 23,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -6994,7 +6994,7 @@
         "target": "StandardListLayout",
         "targetName": "StandardListLayout",
         "edgeType": "render",
-        "line": 201,
+        "line": 202,
         "conditional": false,
         "inLoop": false
       },
@@ -7057,7 +7057,7 @@
         "target": "OpportunityViewSwitcher",
         "targetName": "OpportunityViewSwitcher",
         "edgeType": "render",
-        "line": 187,
+        "line": 188,
         "conditional": true,
         "inLoop": false
       },
@@ -7066,7 +7066,7 @@
         "target": "onViewChange",
         "targetName": "onViewChange",
         "edgeType": "callback",
-        "line": 187,
+        "line": 188,
         "conditional": true,
         "inLoop": false
       },
@@ -7075,7 +7075,7 @@
         "target": "ListNoResults",
         "targetName": "ListNoResults",
         "edgeType": "render",
-        "line": 191,
+        "line": 192,
         "conditional": true,
         "inLoop": false
       },
@@ -7084,7 +7084,7 @@
         "target": "OpportunityArchivedList",
         "targetName": "OpportunityArchivedList",
         "edgeType": "render",
-        "line": 192,
+        "line": 193,
         "conditional": true,
         "inLoop": false
       },
@@ -7093,7 +7093,7 @@
         "target": "OpportunityListFilter",
         "targetName": "OpportunityListFilter",
         "edgeType": "render",
-        "line": 201,
+        "line": 202,
         "conditional": false,
         "inLoop": false
       },
@@ -7102,7 +7102,7 @@
         "target": "ListSearchBar",
         "targetName": "ListSearchBar",
         "edgeType": "render",
-        "line": 205,
+        "line": 206,
         "conditional": false,
         "inLoop": false
       },
@@ -7111,7 +7111,7 @@
         "target": "OpportunityViewSwitcher",
         "targetName": "OpportunityViewSwitcher",
         "edgeType": "render",
-        "line": 212,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
@@ -7120,7 +7120,7 @@
         "target": "onViewChange",
         "targetName": "onViewChange",
         "edgeType": "callback",
-        "line": 212,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
@@ -7129,7 +7129,7 @@
         "target": "OpportunityListContent",
         "targetName": "OpportunityListContent",
         "edgeType": "render",
-        "line": 218,
+        "line": 219,
         "conditional": true,
         "inLoop": false
       },
@@ -7138,7 +7138,7 @@
         "target": "CampaignGroupedList",
         "targetName": "CampaignGroupedList",
         "edgeType": "render",
-        "line": 224,
+        "line": 225,
         "conditional": true,
         "inLoop": false
       },
@@ -7147,7 +7147,7 @@
         "target": "PrincipalGroupedList",
         "targetName": "PrincipalGroupedList",
         "edgeType": "render",
-        "line": 226,
+        "line": 227,
         "conditional": true,
         "inLoop": false
       },
@@ -7156,7 +7156,7 @@
         "target": "OpportunityRowListView",
         "targetName": "OpportunityRowListView",
         "edgeType": "render",
-        "line": 228,
+        "line": 229,
         "conditional": true,
         "inLoop": false
       },
@@ -7165,7 +7165,7 @@
         "target": "OpportunityArchivedList",
         "targetName": "OpportunityArchivedList",
         "edgeType": "render",
-        "line": 230,
+        "line": 231,
         "conditional": false,
         "inLoop": false
       },
@@ -9330,101 +9330,128 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "useRecentSearches",
+        "targetName": "useRecentSearches",
+        "edgeType": "hook",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
         "target": "useUserRole",
         "targetName": "useUserRole",
         "edgeType": "hook",
-        "line": 28,
+        "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 29,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
-        "target": "useGetOne",
-        "targetName": "useGetOne",
         "edgeType": "hook",
         "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 42,
-        "conditional": true,
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "useGetOne",
+        "targetName": "useGetOne",
+        "edgeType": "hook",
+        "line": 35,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 42,
-        "conditional": true,
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 41,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 43,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
-        "target": "Number",
-        "targetName": "Number",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "addRecent",
+        "targetName": "addRecent",
         "edgeType": "call",
         "line": 43,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
         "target": "ResourceSlideOver",
         "targetName": "ResourceSlideOver",
         "edgeType": "render",
-        "line": 77,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 81,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "callback",
-        "line": 83,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:23:OpportunitySlideOver",
         "target": "QuickAddTaskButton",
         "targetName": "QuickAddTaskButton",
         "edgeType": "render",
-        "line": 87,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },

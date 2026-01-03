@@ -1,0 +1,92 @@
+{
+  "chunk_name": "favorites",
+  "generated_at": "2026-01-03T04:10:33.677Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "favoriteSchema",
+      "file": "src/atomic-crm/validation/favorites.ts",
+      "line": 24,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "user_id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()",
+            "max(36)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "entity_type",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "entity_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "display_name",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"Display name is required\")",
+            "max(255, \"Display name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

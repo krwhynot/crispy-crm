@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-02T19:24:00.110Z",
+  "generated_at": "2026-01-03T04:10:20.464Z",
   "item_count": 78,
   "items": [
     {
@@ -917,11 +917,13 @@
     {
       "name": "OpportunitySlideOver",
       "file": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx",
-      "line": 21,
+      "line": 23,
       "type": "presentational",
       "hooks": [
+        "useEffect",
         "useGetIdentity",
         "useGetOne",
+        "useRecentSearches",
         "useUserRole"
       ],
       "imports": [
@@ -930,10 +932,12 @@
         "./slideOverTabs/OpportunityProductsTab",
         "./slideOverTabs/OpportunitySlideOverDetailsTab",
         "@/atomic-crm/components",
+        "@/atomic-crm/hooks/useRecentSearches",
         "@/atomic-crm/types",
         "@/components/layouts/ResourceSlideOver",
         "@/hooks/useUserRole",
         "lucide-react",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": false,

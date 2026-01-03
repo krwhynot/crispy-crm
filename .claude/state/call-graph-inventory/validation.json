@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-02T19:24:09.618Z",
+  "generated_at": "2026-01-03T04:10:37.553Z",
   "items": {
     "nodes": [
       {
@@ -164,6 +164,24 @@
         "nodeType": "function",
         "exported": true,
         "async": true
+      },
+      {
+        "id": "src/atomic-crm/validation/favorites.ts:72:validateCreateFavorite",
+        "name": "validateCreateFavorite",
+        "file": "src/atomic-crm/validation/favorites.ts",
+        "line": 72,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/validation/favorites.ts:82:validateUpdateFavorite",
+        "name": "validateUpdateFavorite",
+        "file": "src/atomic-crm/validation/favorites.ts",
+        "line": 82,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
       },
       {
         "id": "src/atomic-crm/validation/notes.ts:137:validateCreateContactNote",
@@ -1397,6 +1415,24 @@
         "targetName": "join",
         "edgeType": "call",
         "line": 293,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/favorites.ts:72:validateCreateFavorite",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/favorites.ts:82:validateUpdateFavorite",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },

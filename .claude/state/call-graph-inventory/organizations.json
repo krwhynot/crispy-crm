@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-02T19:24:09.585Z",
+  "generated_at": "2026-01-03T04:10:37.466Z",
   "items": {
     "nodes": [
       {
@@ -283,37 +283,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationList.tsx:35:OrganizationListActions",
+        "id": "src/atomic-crm/organizations/OrganizationList.tsx:39:OrganizationListActions",
         "name": "OrganizationListActions",
         "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-        "line": 35,
+        "line": 39,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
+        "id": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
         "name": "exporter",
         "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-        "line": 45,
+        "line": 49,
         "nodeType": "arrow",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "id": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "name": "OrganizationListLayout",
         "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-        "line": 111,
+        "line": 115,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "id": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "name": "OrganizationList",
         "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-        "line": 237,
+        "line": 268,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -382,10 +382,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:32:OrganizationSlideOver",
+        "id": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
         "name": "OrganizationSlideOver",
         "file": "src/atomic-crm/organizations/OrganizationSlideOver.tsx",
-        "line": 32,
+        "line": 35,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -575,6 +575,15 @@
         "name": "validateTransformedOrganizations",
         "file": "src/atomic-crm/organizations/organizationImport.logic.ts",
         "line": 215,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/organizations/organizationSwipeActions.ts:10:createOrganizationSwipeActions",
+        "name": "createOrganizationSwipeActions",
+        "file": "src/atomic-crm/organizations/organizationSwipeActions.ts",
+        "line": 10,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -8664,524 +8673,605 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:35:OrganizationListActions",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:39:OrganizationListActions",
         "target": "TopToolbar",
         "targetName": "TopToolbar",
         "edgeType": "render",
-        "line": 36,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:35:OrganizationListActions",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:39:OrganizationListActions",
         "target": "SortButton",
         "targetName": "SortButton",
-        "edgeType": "render",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:35:OrganizationListActions",
-        "target": "ExportButton",
-        "targetName": "ExportButton",
         "edgeType": "render",
         "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
-        "target": "fetchRelatedRecords",
-        "targetName": "fetchRelatedRecords",
-        "edgeType": "call",
-        "line": 46,
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:39:OrganizationListActions",
+        "target": "ExportButton",
+        "targetName": "ExportButton",
+        "edgeType": "render",
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
         "target": "fetchRelatedRecords",
         "targetName": "fetchRelatedRecords",
-        "edgeType": "call",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
-        "target": "from",
-        "targetName": "from",
         "edgeType": "call",
         "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
         "target": "fetchRelatedRecords",
         "targetName": "fetchRelatedRecords",
         "edgeType": "call",
-        "line": 57,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 64,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
+        "target": "fetchRelatedRecords",
+        "targetName": "fetchRelatedRecords",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
         "target": "jsonExport",
         "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 106,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:45:exporter",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:49:exporter",
         "target": "downloadCSV",
         "targetName": "downloadCSV",
         "edgeType": "call",
-        "line": 107,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 118,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "useListKeyboardNavigation",
-        "targetName": "useListKeyboardNavigation",
         "edgeType": "hook",
         "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "setQuickLogContext",
+        "targetName": "setQuickLogContext",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "setQuickLogOpen",
+        "targetName": "setQuickLogOpen",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "createOrganizationSwipeActions",
+        "targetName": "createOrganizationSwipeActions",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "useListKeyboardNavigation",
+        "targetName": "useListKeyboardNavigation",
+        "edgeType": "hook",
+        "line": 144,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 124,
+        "line": 145,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 124,
+        "line": 145,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 128,
+        "line": 149,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 164,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 164,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "StandardListLayout",
         "targetName": "StandardListLayout",
         "edgeType": "render",
-        "line": 133,
+        "line": 154,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "StandardListLayout",
         "targetName": "StandardListLayout",
         "edgeType": "render",
-        "line": 146,
+        "line": 167,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
         "target": "StandardListLayout",
         "targetName": "StandardListLayout",
-        "edgeType": "render",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "PremiumDatagrid",
-        "targetName": "PremiumDatagrid",
-        "edgeType": "render",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "FilterableBadge",
-        "targetName": "FilterableBadge",
         "edgeType": "render",
         "line": 180,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "FilterableBadge",
-        "targetName": "FilterableBadge",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "SwipeableListWrapper",
+        "targetName": "SwipeableListWrapper",
         "edgeType": "render",
-        "line": 191,
+        "line": 186,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 198,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationListFilter",
-        "targetName": "OrganizationListFilter",
-        "edgeType": "render",
-        "line": 133,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationListSkeleton",
-        "targetName": "OrganizationListSkeleton",
-        "edgeType": "render",
-        "line": 134,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationEmpty",
-        "targetName": "OrganizationEmpty",
-        "edgeType": "render",
-        "line": 141,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationListFilter",
-        "targetName": "OrganizationListFilter",
-        "edgeType": "render",
-        "line": 146,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "ListSearchBar",
-        "targetName": "ListSearchBar",
-        "edgeType": "render",
-        "line": 147,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "ListNoResults",
-        "targetName": "ListNoResults",
-        "edgeType": "render",
-        "line": 151,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationListFilter",
-        "targetName": "OrganizationListFilter",
-        "edgeType": "render",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "ListSearchBar",
-        "targetName": "ListSearchBar",
-        "edgeType": "render",
-        "line": 159,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "TextField",
-        "targetName": "TextField",
-        "edgeType": "render",
-        "line": 168,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationNameHeader",
-        "targetName": "OrganizationNameHeader",
-        "edgeType": "render",
-        "line": 170,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
-        "edgeType": "render",
-        "line": 176,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationTypeHeader",
-        "targetName": "OrganizationTypeHeader",
-        "edgeType": "render",
-        "line": 177,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationTypeBadge",
-        "targetName": "OrganizationTypeBadge",
-        "edgeType": "render",
-        "line": 181,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "PremiumDatagrid",
+        "targetName": "PremiumDatagrid",
         "edgeType": "render",
         "line": 187,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationPriorityHeader",
-        "targetName": "OrganizationPriorityHeader",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "FilterableBadge",
+        "targetName": "FilterableBadge",
         "edgeType": "render",
-        "line": 188,
+        "line": 204,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "PriorityBadge",
-        "targetName": "PriorityBadge",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "FilterableBadge",
+        "targetName": "FilterableBadge",
         "edgeType": "render",
-        "line": 192,
+        "line": 215,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "TextField",
-        "targetName": "TextField",
-        "edgeType": "render",
-        "line": 208,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
-        "edgeType": "render",
-        "line": 212,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
         "edgeType": "render",
         "line": 222,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:111:OrganizationListLayout",
-        "target": "OrganizationBulkActionsToolbar",
-        "targetName": "OrganizationBulkActionsToolbar",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationListFilter",
+        "targetName": "OrganizationListFilter",
+        "edgeType": "render",
+        "line": 154,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationListSkeleton",
+        "targetName": "OrganizationListSkeleton",
+        "edgeType": "render",
+        "line": 155,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationEmpty",
+        "targetName": "OrganizationEmpty",
+        "edgeType": "render",
+        "line": 162,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationListFilter",
+        "targetName": "OrganizationListFilter",
+        "edgeType": "render",
+        "line": 167,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "ListSearchBar",
+        "targetName": "ListSearchBar",
+        "edgeType": "render",
+        "line": 168,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "ListNoResults",
+        "targetName": "ListNoResults",
+        "edgeType": "render",
+        "line": 173,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationListFilter",
+        "targetName": "OrganizationListFilter",
+        "edgeType": "render",
+        "line": 180,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "ListSearchBar",
+        "targetName": "ListSearchBar",
+        "edgeType": "render",
+        "line": 181,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 192,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationNameHeader",
+        "targetName": "OrganizationNameHeader",
+        "edgeType": "render",
+        "line": 194,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationTypeHeader",
+        "targetName": "OrganizationTypeHeader",
+        "edgeType": "render",
+        "line": 201,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationTypeBadge",
+        "targetName": "OrganizationTypeBadge",
+        "edgeType": "render",
+        "line": 205,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 211,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationPriorityHeader",
+        "targetName": "OrganizationPriorityHeader",
+        "edgeType": "render",
+        "line": 212,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "PriorityBadge",
+        "targetName": "PriorityBadge",
+        "edgeType": "render",
+        "line": 216,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "TextField",
+        "targetName": "TextField",
         "edgeType": "render",
         "line": 232,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 236,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "OrganizationBulkActionsToolbar",
+        "targetName": "OrganizationBulkActionsToolbar",
+        "edgeType": "render",
+        "line": 257,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:115:OrganizationListLayout",
+        "target": "QuickLogActivityDialog",
+        "targetName": "QuickLogActivityDialog",
+        "edgeType": "render",
+        "line": 258,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 238,
+        "line": 269,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "useSlideOverState",
         "targetName": "useSlideOverState",
         "edgeType": "hook",
-        "line": 240,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "useFilterCleanup",
         "targetName": "useFilterCleanup",
         "edgeType": "hook",
-        "line": 244,
+        "line": 275,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "List",
         "targetName": "List",
         "edgeType": "render",
-        "line": 252,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "OrganizationListSkeleton",
         "targetName": "OrganizationListSkeleton",
         "edgeType": "render",
-        "line": 246,
+        "line": 277,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "OrganizationListActions",
         "targetName": "OrganizationListActions",
         "edgeType": "render",
-        "line": 254,
+        "line": 285,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "OrganizationListLayout",
         "targetName": "OrganizationListLayout",
         "edgeType": "render",
-        "line": 259,
+        "line": 290,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "FloatingCreateButton",
         "targetName": "FloatingCreateButton",
         "edgeType": "render",
-        "line": 260,
+        "line": 291,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "OrganizationSlideOver",
         "targetName": "OrganizationSlideOver",
         "edgeType": "render",
-        "line": 263,
+        "line": 294,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationList.tsx:237:OrganizationList",
+        "source": "src/atomic-crm/organizations/OrganizationList.tsx:268:OrganizationList",
         "target": "PageTutorialTrigger",
         "targetName": "PageTutorialTrigger",
         "edgeType": "render",
-        "line": 270,
+        "line": 301,
         "conditional": false,
         "inLoop": false
       },
@@ -9933,56 +10023,92 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:32:OrganizationSlideOver",
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "useRecentSearches",
+        "targetName": "useRecentSearches",
+        "edgeType": "hook",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
         "target": "useGetOne",
         "targetName": "useGetOne",
         "edgeType": "hook",
-        "line": 40,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:32:OrganizationSlideOver",
-        "target": "slice",
-        "targetName": "slice",
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "addRecent",
+        "targetName": "addRecent",
         "edgeType": "call",
-        "line": 82,
+        "line": 53,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:32:OrganizationSlideOver",
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 89,
+        "line": 97,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:32:OrganizationSlideOver",
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 104,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
         "target": "ResourceSlideOver",
         "targetName": "ResourceSlideOver",
         "edgeType": "render",
-        "line": 98,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:32:OrganizationSlideOver",
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 102,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:32:OrganizationSlideOver",
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "callback",
-        "line": 104,
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "FavoriteToggleButton",
+        "targetName": "FavoriteToggleButton",
+        "edgeType": "render",
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
@@ -13890,6 +14016,42 @@
         "edgeType": "call",
         "line": 236,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/organizationSwipeActions.ts:10:createOrganizationSwipeActions",
+        "target": "openQuickLogDialog",
+        "targetName": "openQuickLogDialog",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/organizationSwipeActions.ts:10:createOrganizationSwipeActions",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/organizationSwipeActions.ts:10:createOrganizationSwipeActions",
+        "target": "openSlideOver",
+        "targetName": "openSlideOver",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/organizationSwipeActions.ts:10:createOrganizationSwipeActions",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": true,
         "inLoop": false
       },
       {
