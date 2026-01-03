@@ -41,17 +41,6 @@ export const ParentOrganizationInput = () => {
   const filter =
     excludeIds.length > 0 ? { "id@not_in": excludeIds } : {};
 
-  // DEBUG: Trace filter values for hierarchy exclusion investigation
-  console.log("🔍 ParentOrganizationInput filter debug:", {
-    recordId: record?.id,
-    descendants,
-    excludeIds,
-    filter,
-    isReady,
-    descendantsFetched,
-    isLoadingDescendants,
-  });
-
   // Force ReferenceInput to refetch when descendants change
   // This prevents stale results from before descendants query completed
   const filterKey = excludeIds.join(",");
