@@ -1,1 +1,3 @@
 [2026-01-03T22:42:34.025Z] ✓ go_to_definition | symbolName="UserIdentity", kind="any" | 70ms
+[2026-01-03T23:09:01.046Z] ✓ search_code | query: "redirect prop pattern after form submission" | limit=20, type="all" | results: 0 | 10758ms
+[2026-01-03T23:09:17.336Z] ✓ search_code | query: "navigate to create page with parameters parent context" | limit=25, type="all" | results: 0 | 10742ms

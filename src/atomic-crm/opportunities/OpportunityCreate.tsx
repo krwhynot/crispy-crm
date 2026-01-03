@@ -15,6 +15,11 @@ import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 const OpportunityCreate = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
+  const location = useLocation();
+
+  // Read URL params (e.g., ?customer_organization_id=123 from Org slideover)
+  const searchParams = new URLSearchParams(location.search);
+  const urlCustomerOrgId = searchParams.get("customer_organization_id");
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
@@ -48,6 +53,8 @@ const OpportunityCreate = () => {
     account_manager_id: identity.id,
     contact_ids: [], // Explicitly initialize for ReferenceArrayInput
     products_to_sync: [], // Explicitly initialize for ArrayInput
+    // URL param pre-fill: customer org from Organization slideover context
+    ...(urlCustomerOrgId && { customer_organization_id: Number(urlCustomerOrgId) }),
   };
 
   return (
