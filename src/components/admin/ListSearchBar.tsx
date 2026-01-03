@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import { FilterLiveForm, useListContext } from "ra-core";
+import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterChipBar } from "@/atomic-crm/filters/FilterChipBar";
-import { RecentSearchesDropdown } from "@/components/admin/RecentSearchesDropdown";
+import { RecentSearchesContent } from "@/components/admin/RecentSearchesDropdown";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { FilterConfig } from "@/atomic-crm/filters/types";
 
@@ -74,28 +75,46 @@ export function ListSearchBar({
     setTimeout(() => setDropdownOpen(false), 150);
   }, []);
 
+  // Render search input with optional Popover wrapper for recent searches
+  const searchInputContent = (
+    <FilterLiveForm>
+      <SearchInput source={source} placeholder={placeholder} alwaysOn />
+    </FilterLiveForm>
+  );
+
   return (
     <div className="flex items-center gap-4">
-      {/* Search Input - wrapped in FilterLiveForm for live updates */}
-      <div
-        className="flex-shrink-0 w-64 relative"
-        onFocusCapture={handleFocus}
-        onBlurCapture={handleBlur}
-      >
-        <FilterLiveForm>
-          <SearchInput source={source} placeholder={placeholder} alwaysOn />
-        </FilterLiveForm>
+      {/* Search Input - optionally wrapped in Popover for recent searches */}
+      {enableRecentSearches ? (
+        <Popover open={shouldShowDropdown} onOpenChange={setDropdownOpen}>
+          {/* PopoverAnchor WRAPS the input container - this is the key fix! */}
+          <PopoverAnchor asChild>
+            <div
+              className="flex-shrink-0 w-64"
+              onFocusCapture={handleFocus}
+              onBlurCapture={handleBlur}
+            >
+              {searchInputContent}
+            </div>
+          </PopoverAnchor>
 
-        {/* Recent searches dropdown */}
-        {enableRecentSearches && (
-          <RecentSearchesDropdown
-            open={shouldShowDropdown}
-            onOpenChange={setDropdownOpen}
-            items={recentItems}
-            onClear={clearRecent}
-          />
-        )}
-      </div>
+          {/* PopoverContent renders the dropdown menu */}
+          <PopoverContent
+            className="w-80 p-0"
+            align="start"
+            sideOffset={4}
+            onOpenAutoFocus={(e) => e.preventDefault()}
+          >
+            <RecentSearchesContent
+              items={recentItems}
+              onClear={clearRecent}
+              onOpenChange={setDropdownOpen}
+            />
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <div className="flex-shrink-0 w-64">{searchInputContent}</div>
+      )}
 
       {/* Active Filter Chips - only rendered when filter config exists */}
       {filterConfig && filterConfig.length > 0 && (
