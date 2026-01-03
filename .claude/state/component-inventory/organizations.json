@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-03T04:10:20.467Z",
+  "generated_at": "2026-01-03T04:34:16.293Z",
   "item_count": 73,
   "items": [
     {
@@ -878,7 +878,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 268,
+      "line": 239,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -898,9 +898,7 @@
         "./OrganizationSlideOver",
         "./constants",
         "./organizationFilterConfig",
-        "./organizationSwipeActions",
         "./types",
-        "@/atomic-crm/activities/QuickLogActivityDialog",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListNoResults",
@@ -909,14 +907,12 @@
         "@/components/admin/export-button",
         "@/components/admin/list",
         "@/components/admin/sort-button",
-        "@/components/admin/swipe-actions",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
         "ra-core",
-        "react",
         "react-admin"
       ],
       "isDefaultExport": false,
@@ -946,7 +942,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 268,
+      "line": 239,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -966,9 +962,7 @@
         "./OrganizationSlideOver",
         "./constants",
         "./organizationFilterConfig",
-        "./organizationSwipeActions",
         "./types",
-        "@/atomic-crm/activities/QuickLogActivityDialog",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListNoResults",
@@ -977,14 +971,12 @@
         "@/components/admin/export-button",
         "@/components/admin/list",
         "@/components/admin/sort-button",
-        "@/components/admin/swipe-actions",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
         "ra-core",
-        "react",
         "react-admin"
       ],
       "isDefaultExport": true,
@@ -1528,7 +1520,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 268,
+      "line": 239,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",

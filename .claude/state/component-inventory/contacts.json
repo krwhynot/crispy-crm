@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-03T04:10:20.458Z",
+  "generated_at": "2026-01-03T04:34:16.286Z",
   "item_count": 57,
   "items": [
     {
@@ -803,7 +803,7 @@
     {
       "name": "ContactList",
       "file": "src/atomic-crm/contacts/ContactList.tsx",
-      "line": 39,
+      "line": 35,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -824,9 +824,7 @@
         "./ContactSlideOver",
         "./contactExporter",
         "./contactFilterConfig",
-        "./contactSwipeActions",
         "./formatters",
-        "@/atomic-crm/activities/QuickLogActivityDialog",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListNoResults",
@@ -837,7 +835,6 @@
         "@/components/admin/list",
         "@/components/admin/reference-field",
         "@/components/admin/sort-button",
-        "@/components/admin/swipe-actions",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
@@ -845,7 +842,6 @@
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "ra-core",
-        "react",
         "react-admin"
       ],
       "isDefaultExport": false,
@@ -869,7 +865,7 @@
     {
       "name": "ContactList",
       "file": "src/atomic-crm/contacts/ContactList.tsx",
-      "line": 39,
+      "line": 35,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -890,9 +886,7 @@
         "./ContactSlideOver",
         "./contactExporter",
         "./contactFilterConfig",
-        "./contactSwipeActions",
         "./formatters",
-        "@/atomic-crm/activities/QuickLogActivityDialog",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListNoResults",
@@ -903,7 +897,6 @@
         "@/components/admin/list",
         "@/components/admin/reference-field",
         "@/components/admin/sort-button",
-        "@/components/admin/swipe-actions",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
@@ -911,7 +904,6 @@
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "ra-core",
-        "react",
         "react-admin"
       ],
       "isDefaultExport": true,

@@ -1,7 +1,7 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-03T04:10:33.211Z",
-  "item_count": 7,
+  "generated_at": "2026-01-03T04:34:21.354Z",
+  "item_count": 4,
   "items": [
     {
       "name": "useFormProgress",
@@ -35,42 +35,6 @@
       "returnType": "WizardContextValue",
       "dependencies": [
         "useContext"
-      ],
-      "isReact19Action": false
-    },
-    {
-      "name": "useSwipeActions",
-      "file": "src/components/admin/swipe-actions/SwipeActionsContext.tsx",
-      "line": 35,
-      "parameters": [],
-      "returnType": "SwipeActionsContextValue",
-      "dependencies": [
-        "useContext"
-      ],
-      "isReact19Action": false
-    },
-    {
-      "name": "useRowPositions",
-      "file": "src/components/admin/swipe-actions/useRowPositions.ts",
-      "line": 11,
-      "parameters": [],
-      "returnType": "Map<string | number, RowPosition>",
-      "dependencies": [
-        "useCallback",
-        "useEffect",
-        "useListContext"
-      ],
-      "isReact19Action": false
-    },
-    {
-      "name": "useTouchDevice",
-      "file": "src/components/admin/swipe-actions/useTouchDevice.ts",
-      "line": 10,
-      "parameters": [],
-      "returnType": "boolean",
-      "dependencies": [
-        "useEffect",
-        "useState"
       ],
       "isReact19Action": false
     },
