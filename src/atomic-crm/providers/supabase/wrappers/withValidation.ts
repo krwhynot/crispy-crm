@@ -137,17 +137,6 @@ export function withValidation<T extends DataProvider>(
     resource: string,
     params: UpdateParams<RecordType>
   ) => {
-    // DEBUG: Trace org_scope through update pipeline
-    if (resource === "organizations") {
-      const data = params.data as Record<string, unknown>;
-      console.log("[withValidation] Update organizations:", {
-        id: params.id,
-        dataKeys: Object.keys(params.data),
-        org_scope: data?.org_scope,
-        hasOrgScope: "org_scope" in data,
-      });
-    }
-
     try {
       // Validate before update
       // Include params.id in data since some schemas (e.g., taskUpdateSchema) require id

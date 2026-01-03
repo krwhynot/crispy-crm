@@ -312,13 +312,7 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
     computedFields.length > 0 ||
     Object.keys(createDefaults).length > 0
   ) {
-    callbacks.beforeSave = async (data, _dataProvider, resourceName) => {
-      // DEBUG: Trace org_scope through beforeSave pipeline
-      if (resourceName === "organizations") {
-        console.log("[beforeSave] Input data:", data);
-        console.log("[beforeSave] org_scope:", (data as Record<string, unknown>).org_scope);
-      }
-
+    callbacks.beforeSave = async (data, _dataProvider, _resource) => {
       // 1. Apply write transform pipeline
       let processed = writePipeline(data);
 
@@ -330,12 +324,6 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
       // 3. Merge create defaults if create operation
       if (!data.id && Object.keys(createDefaults).length > 0) {
         processed = { ...createDefaults, ...processed };
-      }
-
-      // DEBUG: Trace org_scope after processing
-      if (resourceName === "organizations") {
-        console.log("[beforeSave] Output processed:", processed);
-        console.log("[beforeSave] org_scope after:", (processed as Record<string, unknown>).org_scope);
       }
 
       return processed;

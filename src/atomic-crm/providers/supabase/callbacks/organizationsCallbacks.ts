@@ -38,6 +38,8 @@ export const COMPUTED_FIELDS = [
   "total_contacts_across_branches",
   "total_opportunities_across_branches",
   "last_opportunity_activity",
+  // PostgreSQL tsvector - auto-generated, cannot be updated
+  "search_tsv",
 ] as const;
 
 /**
