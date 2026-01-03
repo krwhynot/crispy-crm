@@ -198,6 +198,14 @@ export const SelectInput = (props: SelectInputProps) => {
     finalChoices = [...finalChoices, createItem];
   }
 
+  // Find the selected choice to display in the closed dropdown
+  // This fixes a race condition where field.value is set before ReferenceInput loads choices.
+  // Radix SelectValue only shows text when it finds a matching SelectItem in children.
+  // Without this, the dropdown appears blank during the loading gap.
+  const selectedChoice = finalChoices?.find(
+    (choice) => choice && getChoiceValue(choice)?.toString() === field.value?.toString()
+  );
+
   // Handle reset functionality
   const handleReset = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
@@ -234,7 +242,14 @@ export const SelectInput = (props: SelectInputProps) => {
               onValueChange={handleChangeWithCreateSupport}
             >
               <SelectTrigger className={cn("w-full transition-all hover:bg-accent")}>
-                <SelectValue placeholder={renderEmptyItemOption()} />
+                <SelectValue placeholder={renderEmptyItemOption()}>
+                  {selectedChoice
+                    ? renderMenuItemOption(selectedChoice)
+                    : field.value && field.value !== emptyValue
+                      ? <span className="text-muted-foreground animate-pulse">Loading...</span>
+                      : null
+                  }
+                </SelectValue>
 
                 {field.value && field.value !== emptyValue ? (
                   <div
