@@ -122,18 +122,8 @@ export function OrganizationDetailsTab({
                 <SelectInput label="Account Manager" optionText={saleOptionRenderer} />
               </ReferenceInput>
 
-              <ReferenceInput
-                source="parent_organization_id"
-                reference="organizations"
-                filter={record?.id ? { "id@neq": record.id } : {}}
-              >
-                <AutocompleteInput
-                  label="Parent Organization"
-                  emptyText="No parent organization"
-                  optionText="name"
-                  filterToQuery={(searchText) => ({ "name@ilike": `%${searchText}%` })}
-                />
-              </ReferenceInput>
+              {/* Uses ParentOrganizationInput to exclude self AND all descendants */}
+              <ParentOrganizationInput />
 
               <SelectInput
                 source="org_scope"
