@@ -79,12 +79,18 @@ export function ListSearchBar({
   }, [enableRecentSearches, searchValue]);
 
   const handleBlur = useCallback((e: React.FocusEvent) => {
+    console.log('[ListSearchBar] handleBlur called!', {
+      relatedTarget: (e.relatedTarget as HTMLElement)?.tagName,
+      relatedTargetClass: (e.relatedTarget as HTMLElement)?.className?.slice(0, 50)
+    });
     // Don't close if focus moved to popover content
     const relatedTarget = e.relatedTarget as HTMLElement | null;
     if (relatedTarget?.closest("[data-radix-popper-content-wrapper]")) {
+      console.log('[ListSearchBar] Blur ignored - focus moved to popover');
       return;
     }
     // Delay close to allow click handlers to fire
+    console.log('[ListSearchBar] Scheduling dropdown close in 150ms');
     setTimeout(() => setDropdownOpen(false), 150);
   }, []);
 
@@ -104,6 +110,8 @@ export function ListSearchBar({
           <PopoverAnchor asChild>
             <div
               className="flex-shrink-0 w-64"
+              onClick={() => console.log('[ListSearchBar] DIV CLICKED!')}
+              onFocus={() => console.log('[ListSearchBar] DIV onFocus (bubble)')}
               onFocusCapture={handleFocus}
               onBlurCapture={handleBlur}
             >
