@@ -47,12 +47,30 @@ export const ParentOrganizationInput = () => {
     descendants,
     excludeIds,
     filter,
-    descendantsQueryEnabled: !!record?.id,
+    isReady,
+    descendantsFetched,
+    isLoadingDescendants,
   });
 
   // Force ReferenceInput to refetch when descendants change
   // This prevents stale results from before descendants query completed
   const filterKey = excludeIds.join(",");
+
+  // Show loading state while fetching descendants for existing records
+  // This prevents the race condition where dropdown opens before filter is ready
+  if (!isReady) {
+    return (
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-foreground">Parent Organization</label>
+        <div className="h-10 bg-muted animate-pulse rounded-md flex items-center px-3">
+          <span className="text-sm text-muted-foreground">Loading hierarchy...</span>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Select a parent organization if this is a branch location
+        </p>
+      </div>
+    );
+  }
 
   return (
     <ReferenceInput
