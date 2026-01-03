@@ -1,6 +1,10 @@
+import { useState, useMemo, useCallback } from "react";
 import { useGetIdentity, useListContext } from "ra-core";
 
+import { SwipeableListWrapper } from "@/components/admin/swipe-actions";
+import { QuickLogActivityDialog } from "@/atomic-crm/activities/QuickLogActivityDialog";
 import { ContactBulkActionsToolbar } from "./ContactBulkActionsToolbar";
+import { createContactSwipeActions } from "./contactSwipeActions";
 import { List } from "@/components/admin/list";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -82,6 +86,24 @@ const ContactListLayout = ({
   isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
+
+  // State for QuickLogActivityDialog (swipe action)
+  const [quickLogOpen, setQuickLogOpen] = useState(false);
+  const [quickLogContext, setQuickLogContext] = useState<{
+    contactId?: number;
+    organizationId?: number;
+  }>({});
+
+  const openQuickLogDialog = useCallback((context: typeof quickLogContext) => {
+    setQuickLogContext(context);
+    setQuickLogOpen(true);
+  }, []);
+
+  // Create swipe actions config
+  const swipeConfig = useMemo(
+    () => createContactSwipeActions({ openSlideOver, openQuickLogDialog }),
+    [openSlideOver, openQuickLogDialog]
+  );
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
