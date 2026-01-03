@@ -1,5 +1,7 @@
 import { useGetList, RecordContextProvider } from "ra-core";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
@@ -101,9 +103,27 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
 
   return (
     <RecordContextProvider value={record}>
-      <ScrollArea className="h-full">
-        <div className="px-6 py-4 space-y-3">
-          {contacts.map((contact) => (
+      <div className="flex flex-col h-full">
+        {/* Header with count and Add button */}
+        <div className="flex justify-between items-center px-6 py-3 border-b border-border">
+          <p className="text-sm text-muted-foreground">
+            {contacts.length} contact{contacts.length !== 1 ? "s" : ""}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(`/contacts/create?organization_id=${record.id}`)}
+            className="h-11"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add Contact
+          </Button>
+        </div>
+
+        {/* Contacts list */}
+        <ScrollArea className="flex-1">
+          <div className="px-6 py-4 space-y-3">
+            {contacts.map((contact) => (
             <div
               key={contact.id}
               className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
@@ -142,7 +162,8 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
             </div>
           ))}
         </div>
-      </ScrollArea>
+        </ScrollArea>
+      </div>
     </RecordContextProvider>
   );
 }
