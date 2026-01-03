@@ -75,18 +75,11 @@ export function OrganizationDetailsTab({
       // This ensures sales_id is included even when initial value was null
       const allFormValues = getValuesRef.current?.() ?? formData;
 
-      // DEBUG: Trace org_scope through save pipeline
-      console.log("[SlideOver Save] formData:", formData);
-      console.log("[SlideOver Save] allFormValues:", allFormValues);
-      console.log("[SlideOver Save] org_scope value:", allFormValues?.org_scope);
-
       // Use all form values to handle null → value transitions
       // React Admin's dirty detection misses these changes
       const completeData = {
         ...allFormValues,
       };
-
-      console.log("[SlideOver Save] completeData to update:", completeData);
 
       await update("organizations", {
         id: record.id,
