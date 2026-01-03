@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-03T04:34:16.293Z",
+  "generated_at": "2026-01-03T19:36:45.932Z",
   "item_count": 73,
   "items": [
     {
@@ -1186,14 +1186,17 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
-      "line": 9,
+      "line": 12,
       "type": "presentational",
       "hooks": [
+        "useQuery",
         "useRecordContext"
       ],
       "imports": [
+        "../providers/supabase/supabase",
         "@/components/admin/autocomplete-input",
         "@/components/admin/reference-input",
+        "@tanstack/react-query",
         "ra-core"
       ],
       "isDefaultExport": false,
@@ -1586,9 +1589,10 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 9,
+      "line": 12,
       "type": "presentational",
       "hooks": [
+        "useQuery",
         "useRecordContext"
       ],
       "imports": [],
@@ -1813,7 +1817,7 @@
     {
       "name": "OrganizationDetailsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
-      "line": 58,
+      "line": 60,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -1824,11 +1828,13 @@
         "../../types",
         "../../utils/saleOptionRenderer",
         "../OrganizationBadges",
+        "../ParentOrganizationInput",
         "../constants",
         "../types",
         "@/components/admin/SegmentComboboxInput",
         "@/components/admin/autocomplete-array-input",
         "@/components/admin/autocomplete-input",
+        "@/components/admin/boolean-input",
         "@/components/admin/reference-array-input",
         "@/components/admin/reference-input",
         "@/components/admin/select-input",
@@ -1848,8 +1854,10 @@
         "ORGANIZATION_TYPE_CHOICES",
         "PRIORITY_CHOICES",
         "STATUS_CHOICES",
+        "ORG_SCOPE_CHOICES",
         "OrganizationTypeBadge",
-        "PriorityBadge"
+        "PriorityBadge",
+        "ParentOrganizationInput"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
