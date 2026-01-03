@@ -77,11 +77,7 @@ function loadFromStorage(): RecentSearchItem[] {
 }
 
 // Initialize cached snapshot on module load
-console.log('[RecentSearches] Module init - checking localStorage...');
-const rawOnInit = localStorage.getItem(STORAGE_KEY);
-console.log('[RecentSearches] Raw data on init:', rawOnInit ? `${rawOnInit.length} chars` : 'null');
 cachedSnapshot = loadFromStorage();
-console.log('[RecentSearches] Initial snapshot:', cachedSnapshot.length, 'items');
 
 /**
  * External store for recent searches
