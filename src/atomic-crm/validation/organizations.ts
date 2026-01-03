@@ -9,8 +9,8 @@ import { sanitizeHtml } from "@/lib/sanitization";
 // Organization type enum - must match database enum and constants.ts
 // Valid types: customer, prospect, principal, distributor
 export const organizationTypeSchema = z.enum([
+  "prospect",   // Most common (80% of new orgs) - show first in dropdown
   "customer",
-  "prospect",
   "principal",
   "distributor",
 ]);
