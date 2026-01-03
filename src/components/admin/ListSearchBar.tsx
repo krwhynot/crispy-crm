@@ -59,15 +59,6 @@ export function ListSearchBar({
     !searchValue &&
     recentItems.length > 0;
 
-  // DEBUG: Log render state to verify items are present
-  console.log('[ListSearchBar] Render state:', {
-    enableRecentSearches,
-    dropdownOpen,
-    searchValue,
-    recentItemsCount: recentItems.length,
-    shouldShowDropdown,
-  });
-
   const handleFocus = useCallback(() => {
     if (enableRecentSearches && !searchValue && recentItems.length > 0) {
       // FIX: Defer state update to bypass focus/click race condition with Radix Popover
@@ -102,7 +93,16 @@ export function ListSearchBar({
     <div className="flex items-center gap-4">
       {/* Search Input - optionally wrapped in Popover for recent searches */}
       {enableRecentSearches ? (
-        <Popover open={shouldShowDropdown} onOpenChange={setDropdownOpen}>
+        <Popover
+          open={shouldShowDropdown}
+          onOpenChange={(isOpen) => {
+            // Only allow explicit close actions, ignore Radix sync events that try to close
+            // when the popover first mounts. Blur handler manages closing.
+            if (!isOpen) {
+              setDropdownOpen(false);
+            }
+          }}
+        >
           <PopoverAnchor asChild>
             <div className="flex-shrink-0 w-64" onBlurCapture={handleBlur}>
               {searchInputContent}
