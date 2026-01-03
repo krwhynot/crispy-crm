@@ -22,12 +22,6 @@ const OpportunityCreate = () => {
   const searchParams = new URLSearchParams(location.search);
   const urlCustomerOrgId = searchParams.get("customer_organization_id");
 
-  // DEBUG: Verify URL param parsing (remove after fix is verified)
-  console.log("🔍 OpportunityCreate URL Debug:", {
-    pathname: location.pathname,
-    search: location.search,
-    urlCustomerOrgId,
-  });
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
@@ -69,14 +63,12 @@ const OpportunityCreate = () => {
     [identity.id, urlCustomerOrgId]
   );
 
-  // DEBUG: Verify formDefaults includes customer_organization_id (remove after fix is verified)
-  console.log("🔍 OpportunityCreate formDefaults:", formDefaults);
 
   return (
     <CreateBase redirect="show">
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
-          <Form defaultValues={formDefaults} key={urlCustomerOrgId || "no-customer-org"}>
+          <Form defaultValues={formDefaults}>
             <Card>
               <CardContent>
                 <OpportunityFormContent

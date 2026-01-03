@@ -74,7 +74,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
         description={EMPTY_STATE_CONTENT.opportunities.description}
         action={{
           label: EMPTY_STATE_CONTENT.opportunities.actionLabel,
-          onClick: () => navigate(`/opportunities/create?customer_organization_id=${record.id}`),
+          onClick: () => navigate(`/opportunities/create?source=${encodeURIComponent(JSON.stringify({ customer_organization_id: record.id }))}`),
         }}
       />
     );
