@@ -13,11 +13,7 @@ export const ParentOrganizationInput = () => {
   const record = useRecordContext<{ id?: number; parent_organization_id?: number }>();
 
   // Fetch all descendant IDs to exclude from parent selection
-  const {
-    data: descendants = [],
-    isLoading: isLoadingDescendants,
-    isFetched: descendantsFetched,
-  } = useQuery({
+  const { data: descendants = [], isFetched: descendantsFetched } = useQuery({
     queryKey: ["org-descendants", record?.id],
     queryFn: async () => {
       if (!record?.id) return [];
