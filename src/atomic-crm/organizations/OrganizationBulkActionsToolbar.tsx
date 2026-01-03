@@ -1,7 +1,7 @@
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { BulkExportButton } from "@/components/admin/bulk-export-button";
-import { BulkDeleteButton } from "@/components/admin/bulk-delete-button";
 import { BulkReassignButton } from "./BulkReassignButton";
+import { OrganizationBulkDeleteButton } from "./OrganizationBulkDeleteButton";
 
 /**
  * OrganizationBulkActionsToolbar - Custom bulk actions for the organizations list
@@ -9,7 +9,7 @@ import { BulkReassignButton } from "./BulkReassignButton";
  * Extends the generic BulkActionsToolbar with organization-specific actions:
  * - Reassign: Bulk reassign organizations to a different sales rep
  * - Export: Export selected organizations to CSV
- * - Delete: Soft delete selected organizations
+ * - Delete: Soft delete selected organizations (blocked for orgs with child branches)
  *
  * Uses the floating card pattern from the base BulkActionsToolbar
  * which appears at the bottom of the screen when items are selected.
@@ -19,7 +19,7 @@ export const OrganizationBulkActionsToolbar = () => {
     <BulkActionsToolbar>
       <BulkReassignButton />
       <BulkExportButton />
-      <BulkDeleteButton />
+      <OrganizationBulkDeleteButton />
     </BulkActionsToolbar>
   );
 };

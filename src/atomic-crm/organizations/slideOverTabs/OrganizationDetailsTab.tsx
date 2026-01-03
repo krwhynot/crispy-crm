@@ -188,6 +188,13 @@ export function OrganizationDetailsTab({
                 <span className="text-sm text-muted-foreground">Priority:</span>
                 <PriorityBadge priority={record.priority} />
               </div>
+
+              {record.org_scope && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Scope:</span>
+                  <span className="text-sm capitalize">{record.org_scope}</span>
+                </div>
+              )}
             </div>
           </SidepaneSection>
 
