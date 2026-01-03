@@ -2894,6 +2894,36 @@ export type Database = {
           },
         ]
       }
+      user_favorites: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          display_name: string
+          entity_id: number
+          entity_type: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          display_name: string
+          entity_id: number
+          entity_type: string
+          id?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          display_name?: string
+          entity_id?: number
+          entity_type?: string
+          id?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       authorization_status: {
@@ -3942,10 +3972,13 @@ export type Database = {
           child_branch_count: number | null
           city: string | null
           created_at: string | null
+          deleted_at: string | null
           description: string | null
+          email: string | null
           employee_count: number | null
           id: number | null
           last_opportunity_activity: string | null
+          linkedin_url: string | null
           name: string | null
           nb_contacts: number | null
           nb_notes: number | null
@@ -3963,6 +3996,7 @@ export type Database = {
           state: string | null
           total_contacts_across_branches: number | null
           total_opportunities_across_branches: number | null
+          updated_at: string | null
           website: string | null
         }
         Relationships: [
@@ -4528,6 +4562,10 @@ export type Database = {
           purchase_influence: number
           role: Database["public"]["Enums"]["contact_role"]
         }[]
+      }
+      get_organization_descendants: {
+        Args: { org_id: number }
+        Returns: number[]
       }
       get_overdue_tasks_for_user: {
         Args: { p_sales_id: number }
