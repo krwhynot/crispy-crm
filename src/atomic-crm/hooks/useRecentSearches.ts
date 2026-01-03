@@ -1,10 +1,5 @@
-import { useState, useCallback } from "react";
+import { useSyncExternalStore, useCallback } from "react";
 import { z } from "zod";
-import {
-  getStorageItem,
-  setStorageItem,
-  removeStorageItem,
-} from "../utils/secureStorage";
 
 /**
  * Entity types that support recent searches
@@ -46,8 +41,103 @@ const recentSearchItemSchema = z.strictObject({
 
 const recentSearchesSchema = z.array(recentSearchItemSchema).max(MAX_RECENT_ITEMS);
 
+// Module-level subscriber set for same-tab synchronization
+const listeners = new Set<() => void>();
+
+// Cached snapshot - CRITICAL: getSnapshot must return stable reference
+// to avoid infinite re-render loops in useSyncExternalStore
+let cachedSnapshot: RecentSearchItem[] = [];
+
+/**
+ * Load items from localStorage and update cached snapshot
+ * Only creates a new array reference when data actually changes
+ */
+function loadFromStorage(): RecentSearchItem[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+
+    const parsed: unknown = JSON.parse(raw);
+    const result = recentSearchesSchema.safeParse(parsed);
+
+    if (!result.success) {
+      console.error(
+        "[RecentSearches] Validation failed:",
+        result.error.flatten()
+      );
+      return [];
+    }
+
+    // Sort by timestamp descending (most recent first)
+    return result.data.sort((a, b) => b.timestamp - a.timestamp);
+  } catch (e) {
+    console.error("[RecentSearches] Error reading from storage:", e);
+    return [];
+  }
+}
+
+// Initialize cached snapshot on module load
+cachedSnapshot = loadFromStorage();
+
+/**
+ * External store for recent searches
+ *
+ * Uses useSyncExternalStore pattern per React docs:
+ * - getSnapshot: returns CACHED reference (must be stable!)
+ * - subscribe: registers callbacks for state changes
+ * - emitChange: refreshes cache and notifies subscribers
+ *
+ * IMPORTANT: getSnapshot must return the same reference unless data changed.
+ * Creating a new array on every call causes infinite re-renders.
+ */
+const recentSearchesStore = {
+  /**
+   * Return cached snapshot - MUST return stable reference!
+   * Do NOT create new arrays here (no .sort(), no spread, no .map())
+   */
+  getSnapshot: (): RecentSearchItem[] => cachedSnapshot,
+
+  /**
+   * Subscribe to store changes
+   * Called by React to register re-render callbacks
+   */
+  subscribe: (callback: () => void) => {
+    listeners.add(callback);
+
+    // Cross-tab sync: browser fires 'storage' event when localStorage
+    // changes in another tab (but NOT in the same tab)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY) {
+        // Refresh cache from storage and notify
+        cachedSnapshot = loadFromStorage();
+        callback();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    // Return unsubscribe function
+    return () => {
+      listeners.delete(callback);
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  },
+
+  /**
+   * Refresh cache from localStorage and notify all subscribers
+   * Creates new snapshot reference to trigger re-renders
+   */
+  refreshCache: () => {
+    cachedSnapshot = loadFromStorage();
+    listeners.forEach((fn) => fn());
+  },
+};
+
 /**
  * Hook for managing cross-entity recent searches
+ *
+ * Uses useSyncExternalStore to sync state across all hook instances.
+ * When any component calls addRecent(), all components using this hook
+ * will automatically re-render with the updated items.
  *
  * Stores up to 10 recently viewed records across all entity types.
  * Items are persisted to localStorage and sorted by recency.
@@ -65,56 +155,45 @@ const recentSearchesSchema = z.array(recentSearchItemSchema).max(MAX_RECENT_ITEM
  * clearRecent();
  * ```
  */
-export const useRecentSearches = (): UseRecentSearchesReturn => {
-  const loadFromStorage = (): RecentSearchItem[] => {
-    const items =
-      getStorageItem<RecentSearchItem[]>(STORAGE_KEY, {
-        type: "local",
-        schema: recentSearchesSchema,
-      }) ?? [];
-
-    // Sort by timestamp descending (most recent first)
-    return items.sort((a, b) => b.timestamp - a.timestamp);
-  };
-
-  const [recentItems, setRecentItems] =
-    useState<RecentSearchItem[]>(loadFromStorage);
-
-  const saveToStorage = useCallback((items: RecentSearchItem[]) => {
-    setStorageItem(STORAGE_KEY, items, { type: "local" });
-  }, []);
+export function useRecentSearches(): UseRecentSearchesReturn {
+  const recentItems = useSyncExternalStore(
+    recentSearchesStore.subscribe,
+    recentSearchesStore.getSnapshot,
+    () => [] // Server snapshot for SSR (returns empty array)
+  );
 
   const addRecent = useCallback(
     (item: Omit<RecentSearchItem, "timestamp">) => {
-      setRecentItems((current) => {
-        // Remove existing item with same ID AND entityType (deduplicate)
-        const filtered = current.filter(
-          (existing) =>
-            !(existing.id === item.id && existing.entityType === item.entityType)
-        );
+      // Read current items from cached snapshot
+      const current = cachedSnapshot;
 
-        // Create new item with timestamp
-        const newItem: RecentSearchItem = {
-          ...item,
-          timestamp: Date.now(),
-        };
+      // Remove existing item with same ID AND entityType (deduplicate)
+      const filtered = current.filter(
+        (existing) =>
+          !(existing.id === item.id && existing.entityType === item.entityType)
+      );
 
-        // Add new item to front
-        const updated = [newItem, ...filtered];
+      // Create new item with timestamp
+      const newItem: RecentSearchItem = {
+        ...item,
+        timestamp: Date.now(),
+      };
 
-        // Limit to max items
-        const limited = updated.slice(0, MAX_RECENT_ITEMS);
+      // Add new item to front, limit to max items
+      const updated = [newItem, ...filtered].slice(0, MAX_RECENT_ITEMS);
 
-        saveToStorage(limited);
-        return limited;
-      });
+      // Persist to localStorage
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
+      // Update cache and trigger re-render in all subscribers
+      recentSearchesStore.refreshCache();
     },
-    [saveToStorage]
+    []
   );
 
   const clearRecent = useCallback(() => {
-    setRecentItems([]);
-    removeStorageItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEY);
+    recentSearchesStore.refreshCache();
   }, []);
 
   return {
@@ -122,4 +201,4 @@ export const useRecentSearches = (): UseRecentSearchesReturn => {
     addRecent,
     clearRecent,
   };
-};
+}
