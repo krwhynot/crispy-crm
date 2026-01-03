@@ -140,6 +140,7 @@ export function OrganizationDetailsTab({
                 choices={ORG_SCOPE_CHOICES}
                 helperText="National = brand/HQ, Regional = operating company"
                 emptyText="Select scope"
+                parse={(v) => v || null}
               />
 
               <BooleanInput
