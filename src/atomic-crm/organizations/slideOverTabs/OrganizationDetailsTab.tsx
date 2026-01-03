@@ -283,6 +283,9 @@ export function OrganizationDetailsTab({
               </SidepaneSection>
             )}
 
+          {/* Branch Locations - self-hides when no branches */}
+          <BranchLocationsSection />
+
           {/* Metadata - created/updated timestamps */}
           <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
         </div>
