@@ -59,9 +59,22 @@ export function ListSearchBar({
     !searchValue &&
     recentItems.length > 0;
 
+  // Debug logging
+  console.log('[ListSearchBar] Render check:', {
+    enableRecentSearches,
+    dropdownOpen,
+    searchValue,
+    recentItemsCount: recentItems.length,
+    shouldShowDropdown
+  });
+
   const handleFocus = useCallback(() => {
+    console.log('[ListSearchBar] handleFocus called!', { enableRecentSearches, searchValue });
     if (enableRecentSearches && !searchValue) {
+      console.log('[ListSearchBar] Setting dropdownOpen to TRUE');
       setDropdownOpen(true);
+    } else {
+      console.log('[ListSearchBar] Skipping dropdown open:', { enableRecentSearches, hasSearchValue: !!searchValue });
     }
   }, [enableRecentSearches, searchValue]);
 
