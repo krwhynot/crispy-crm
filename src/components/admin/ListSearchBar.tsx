@@ -59,11 +59,20 @@ export function ListSearchBar({
     !searchValue &&
     recentItems.length > 0;
 
+  // DEBUG: Log render state to verify items are present
+  console.log('[ListSearchBar] Render state:', {
+    enableRecentSearches,
+    dropdownOpen,
+    searchValue,
+    recentItemsCount: recentItems.length,
+    shouldShowDropdown,
+  });
+
   const handleFocus = useCallback(() => {
-    console.log('[ListSearchBar] handleFocus called!', { enableRecentSearches, searchValue, recentItemsCount: recentItems.length });
-    if (enableRecentSearches && !searchValue) {
-      console.log('[ListSearchBar] Opening dropdown');
-      setDropdownOpen(true);
+    if (enableRecentSearches && !searchValue && recentItems.length > 0) {
+      // FIX: Defer state update to bypass focus/click race condition with Radix Popover
+      // The Popover may trigger onOpenChange(false) synchronously during the focus event
+      setTimeout(() => setDropdownOpen(true), 0);
     }
   }, [enableRecentSearches, searchValue, recentItems.length]);
 
