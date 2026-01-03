@@ -127,9 +127,7 @@ const recentSearchesStore = {
    * Creates new snapshot reference to trigger re-renders
    */
   refreshCache: () => {
-    console.log('[RecentSearches] refreshCache called, listeners:', listeners.size);
     cachedSnapshot = loadFromStorage();
-    console.log('[RecentSearches] After refresh, snapshot has', cachedSnapshot.length, 'items');
     listeners.forEach((fn) => fn());
   },
 };
@@ -166,10 +164,8 @@ export function useRecentSearches(): UseRecentSearchesReturn {
 
   const addRecent = useCallback(
     (item: Omit<RecentSearchItem, "timestamp">) => {
-      console.log('[RecentSearches] addRecent called:', item);
       // Read current items from cached snapshot
       const current = cachedSnapshot;
-      console.log('[RecentSearches] Current snapshot before add:', current.length, 'items');
 
       // Remove existing item with same ID AND entityType (deduplicate)
       const filtered = current.filter(
@@ -188,7 +184,6 @@ export function useRecentSearches(): UseRecentSearchesReturn {
 
       // Persist to localStorage
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      console.log('[RecentSearches] Saved to localStorage:', updated.length, 'items');
 
       // Update cache and trigger re-render in all subscribers
       recentSearchesStore.refreshCache();

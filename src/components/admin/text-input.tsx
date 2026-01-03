@@ -8,6 +8,8 @@ import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 
 export type TextInputProps = InputProps & {
   multiline?: boolean;
+  /** Custom focus handler - will be called after React Admin's internal handler */
+  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 } & React.ComponentProps<"textarea"> &
   React.ComponentProps<"input">;
 
@@ -21,6 +23,7 @@ export const TextInput = (props: TextInputProps) => {
     validate: _validateProp,
     format: _formatProp,
     helperText,
+    onFocus: customOnFocus,
     ...rest
   } = props;
   const { id, field, isRequired } = useInput(props);
@@ -55,9 +58,26 @@ export const TextInput = (props: TextInputProps) => {
       )}
       <FormControl>
         {multiline ? (
-          <Textarea {...sanitizedProps} {...field} value={value} />
+          <Textarea
+            {...sanitizedProps}
+            {...field}
+            value={value}
+            onFocus={(e) => {
+              field.onFocus?.(e);
+              customOnFocus?.(e);
+            }}
+          />
         ) : (
-          <Input {...sanitizedProps} {...field} value={value} />
+          <Input
+            {...sanitizedProps}
+            {...field}
+            value={value}
+            onFocus={(e) => {
+              console.log('[TextInput] onFocus fired!', { hasCustomHandler: !!customOnFocus });
+              field.onFocus?.(e);
+              customOnFocus?.(e);
+            }}
+          />
         )}
       </FormControl>
       <InputHelperText helperText={helperText} />
