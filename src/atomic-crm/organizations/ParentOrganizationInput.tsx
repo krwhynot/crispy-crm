@@ -28,9 +28,10 @@ export const ParentOrganizationInput = () => {
   });
 
   // Build filter: exclude self + all descendants
-  const excludeIds = [record?.id, ...descendants].filter(Boolean);
+  // Use @not_in with array - transformArrayFilters converts to PostgREST format
+  const excludeIds = [record?.id, ...descendants].filter(Boolean) as number[];
   const filter =
-    excludeIds.length > 0 ? { "id@nin": excludeIds.join(",") } : {};
+    excludeIds.length > 0 ? { "id@not_in": excludeIds } : {};
 
   return (
     <ReferenceInput

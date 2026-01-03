@@ -19,6 +19,7 @@ export const OrganizationHierarchySection = () => {
               choices={ORG_SCOPE_CHOICES}
               helperText="National = brand/HQ, Regional = operating company"
               emptyText="Select scope"
+              parse={(v) => v || null}
             />
           </FormFieldWrapper>
           <div className="space-y-1">
