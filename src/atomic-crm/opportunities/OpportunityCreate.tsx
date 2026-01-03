@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
 import { useFormState } from "react-hook-form";
@@ -20,6 +21,13 @@ const OpportunityCreate = () => {
   // Read URL params (e.g., ?customer_organization_id=123 from Org slideover)
   const searchParams = new URLSearchParams(location.search);
   const urlCustomerOrgId = searchParams.get("customer_organization_id");
+
+  // DEBUG: Verify URL param parsing (remove after fix is verified)
+  console.log("🔍 OpportunityCreate URL Debug:", {
+    pathname: location.pathname,
+    search: location.search,
+    urlCustomerOrgId,
+  });
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
@@ -47,21 +55,28 @@ const OpportunityCreate = () => {
   // This extracts fields with .default() (stage, priority, estimated_close_date)
   // Explicitly initialize array fields for React Hook Form to track them:
   // Note: identity.id is now guaranteed to be defined due to the guard above
-  const formDefaults = {
-    ...opportunitySchema.partial().parse({}),
-    opportunity_owner_id: identity.id,
-    account_manager_id: identity.id,
-    contact_ids: [], // Explicitly initialize for ReferenceArrayInput
-    products_to_sync: [], // Explicitly initialize for ArrayInput
-    // URL param pre-fill: customer org from Organization slideover context
-    ...(urlCustomerOrgId && { customer_organization_id: Number(urlCustomerOrgId) }),
-  };
+  // Use useMemo to prevent unnecessary re-renders that could reset form state
+  const formDefaults = useMemo(
+    () => ({
+      ...opportunitySchema.partial().parse({}),
+      opportunity_owner_id: identity.id,
+      account_manager_id: identity.id,
+      contact_ids: [], // Explicitly initialize for ReferenceArrayInput
+      products_to_sync: [], // Explicitly initialize for ArrayInput
+      // URL param pre-fill: customer org from Organization slideover context
+      ...(urlCustomerOrgId && { customer_organization_id: Number(urlCustomerOrgId) }),
+    }),
+    [identity.id, urlCustomerOrgId]
+  );
+
+  // DEBUG: Verify formDefaults includes customer_organization_id (remove after fix is verified)
+  console.log("🔍 OpportunityCreate formDefaults:", formDefaults);
 
   return (
     <CreateBase redirect="show">
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
-          <Form defaultValues={formDefaults}>
+          <Form defaultValues={formDefaults} key={urlCustomerOrgId || "no-customer-org"}>
             <Card>
               <CardContent>
                 <OpportunityFormContent
