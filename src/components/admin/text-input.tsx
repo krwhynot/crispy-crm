@@ -73,7 +73,6 @@ export const TextInput = (props: TextInputProps) => {
             {...field}
             value={value}
             onFocus={(e) => {
-              console.log('[TextInput] onFocus fired!', { hasCustomHandler: !!customOnFocus });
               field.onFocus?.(e);
               customOnFocus?.(e);
             }}

@@ -60,10 +60,12 @@ export function ListSearchBar({
     recentItems.length > 0;
 
   const handleFocus = useCallback(() => {
+    console.log('[ListSearchBar] handleFocus called!', { enableRecentSearches, searchValue, recentItemsCount: recentItems.length });
     if (enableRecentSearches && !searchValue) {
+      console.log('[ListSearchBar] Opening dropdown');
       setDropdownOpen(true);
     }
-  }, [enableRecentSearches, searchValue]);
+  }, [enableRecentSearches, searchValue, recentItems.length]);
 
   const handleBlur = useCallback((e: React.FocusEvent) => {
     // Don't close if focus moved to popover content

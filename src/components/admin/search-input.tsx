@@ -18,12 +18,12 @@ export const SearchInput = (inProps: SearchInputProps & {
   return (
     <div className="relative w-full">
       <TextInput
+        {...rest}
         label={false}
         helperText={false}
         placeholder={translate("ra.action.search")}
         className="w-full [&_input]:pr-10 [&_input]:pl-3"
         onFocus={onFocus}
-        {...rest}
       />
       <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
     </div>
