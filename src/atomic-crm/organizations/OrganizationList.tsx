@@ -255,7 +255,7 @@ export const OrganizationList = () => {
           title={false}
           actions={<OrganizationListActions />}
           perPage={DEFAULT_LIST_PAGE_SIZE}
-          sort={{ field: "name", order: "ASC" }}
+          sort={{ field: "updated_at", order: "DESC" }}
           exporter={exporter}
         >
           <OrganizationListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
