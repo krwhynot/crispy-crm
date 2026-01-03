@@ -289,6 +289,34 @@ mcp-test:
 mcp-inspect:
     npx @modelcontextprotocol/inspector npx tsx scripts/mcp/server.ts
 
+# View MCP tool usage logs (live tail)
+mcp-logs:
+    @echo "📊 MCP Tool Usage Log (Ctrl+C to exit)"
+    @echo "─────────────────────────────────────"
+    @tail -f .claude/state/usage.log 2>/dev/null || echo "No usage log yet. Use Claude's search_code/go_to_definition/find_references tools to generate entries."
+
+# Show recent MCP tool calls
+mcp-recent count="20":
+    @echo "📊 Recent MCP Tool Calls (last {{count}})"
+    @echo "─────────────────────────────────────"
+    @tail -n {{count}} .claude/state/usage.log 2>/dev/null || echo "No usage log yet."
+
+# Show MCP usage stats summary
+mcp-stats:
+    @echo "📊 MCP Tool Usage Statistics"
+    @echo "─────────────────────────────────────"
+    @if [ -f .claude/state/usage.log ]; then \
+        echo "Total calls: $$(wc -l < .claude/state/usage.log)"; \
+        echo ""; \
+        echo "By tool:"; \
+        grep -oE '(search_code|go_to_definition|find_references)' .claude/state/usage.log | sort | uniq -c | sort -rn; \
+        echo ""; \
+        echo "Last 5 calls:"; \
+        tail -5 .claude/state/usage.log; \
+    else \
+        echo "No usage log yet."; \
+    fi
+
 # ─────────────────────────────────────────────────────────────
 # 📦 Composite Commands
 # ─────────────────────────────────────────────────────────────
