@@ -1,11 +1,7 @@
-import { useState, useMemo, useCallback } from "react";
 import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
 import { TextField, ReferenceField, FunctionField } from "react-admin";
-import { SwipeableListWrapper } from "@/components/admin/swipe-actions";
-import { QuickLogActivityDialog } from "@/atomic-crm/activities/QuickLogActivityDialog";
-import { createOrganizationSwipeActions } from "./organizationSwipeActions";
 import { OrganizationBulkActionsToolbar } from "./OrganizationBulkActionsToolbar";
 import { List } from "@/components/admin/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -122,23 +118,6 @@ const OrganizationListLayout = ({
   const { data, isPending, filterValues } = useListContext();
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
-  // State for QuickLogActivityDialog (swipe action)
-  const [quickLogOpen, setQuickLogOpen] = useState(false);
-  const [quickLogContext, setQuickLogContext] = useState<{
-    organizationId?: number;
-  }>({});
-
-  const openQuickLogDialog = useCallback((context: typeof quickLogContext) => {
-    setQuickLogContext(context);
-    setQuickLogOpen(true);
-  }, []);
-
-  // Create swipe actions config
-  const swipeConfig = useMemo(
-    () => createOrganizationSwipeActions({ openSlideOver, openQuickLogDialog }),
-    [openSlideOver, openQuickLogDialog]
-  );
-
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
   const { focusedIndex } = useListKeyboardNavigation({
@@ -183,84 +162,76 @@ const OrganizationListLayout = ({
           filterConfig={ORGANIZATION_FILTER_CONFIG}
           enableRecentSearches
         />
-        <SwipeableListWrapper config={swipeConfig}>
-          <PremiumDatagrid
-            onRowClick={(id) => openSlideOver(Number(id), "view")}
-            focusedIndex={focusedIndex}
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), "view")}
+          focusedIndex={focusedIndex}
+        >
+          {/* Column 1: Name - Primary identifier (sortable) - always visible */}
+          <TextField
+            source="name"
+            label={<OrganizationNameHeader />}
+            sortable
+            cellClassName="truncate max-w-[250px]"
+          />
+
+          {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
+          <FunctionField
+            label={<OrganizationTypeHeader />}
+            sortBy="organization_type"
+            render={(record: OrganizationRecord) => (
+              <FilterableBadge source="organization_type" value={record.organization_type}>
+                <OrganizationTypeBadge type={record.organization_type} />
+              </FilterableBadge>
+            )}
+          />
+
+          {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
+          <FunctionField
+            label={<OrganizationPriorityHeader />}
+            sortBy="priority"
+            render={(record: OrganizationRecord) => (
+              <FilterableBadge source="priority" value={record.priority}>
+                <PriorityBadge priority={record.priority} />
+              </FilterableBadge>
+            )}
+          />
+
+          {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}
+          <ReferenceField
+            source="parent_organization_id"
+            reference="organizations"
+            label="Parent"
+            link={false}
+            emptyText="-"
+            sortable
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
           >
-            {/* Column 1: Name - Primary identifier (sortable) - always visible */}
-            <TextField
-              source="name"
-              label={<OrganizationNameHeader />}
-              sortable
-              cellClassName="truncate max-w-[250px]"
-            />
+            <TextField source="name" className="truncate max-w-[200px]" />
+          </ReferenceField>
 
-            {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
-            <FunctionField
-              label={<OrganizationTypeHeader />}
-              sortBy="organization_type"
-              render={(record: OrganizationRecord) => (
-                <FilterableBadge source="organization_type" value={record.organization_type}>
-                  <OrganizationTypeBadge type={record.organization_type} />
-                </FilterableBadge>
-              )}
-            />
+          {/* Column 5: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
+          <FunctionField
+            label="Contacts"
+            sortable={false}
+            render={(record: OrganizationRecord) => record.nb_contacts || 0}
+            textAlign="center"
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
+          />
 
-            {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
-            <FunctionField
-              label={<OrganizationPriorityHeader />}
-              sortBy="priority"
-              render={(record: OrganizationRecord) => (
-                <FilterableBadge source="priority" value={record.priority}>
-                  <PriorityBadge priority={record.priority} />
-                </FilterableBadge>
-              )}
-            />
-
-            {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}
-            <ReferenceField
-              source="parent_organization_id"
-              reference="organizations"
-              label="Parent"
-              link={false}
-              emptyText="-"
-              sortable
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            >
-              <TextField source="name" className="truncate max-w-[200px]" />
-            </ReferenceField>
-
-            {/* Column 5: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
-            <FunctionField
-              label="Contacts"
-              sortable={false}
-              render={(record: OrganizationRecord) => record.nb_contacts || 0}
-              textAlign="center"
-              cellClassName="hidden md:table-cell"
-              headerClassName="hidden md:table-cell"
-            />
-
-            {/* Column 6: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
-            <FunctionField
-              label="Opportunities"
-              sortable={false}
-              render={(record: OrganizationRecord) => record.nb_opportunities || 0}
-              textAlign="center"
-              cellClassName="hidden md:table-cell"
-              headerClassName="hidden md:table-cell"
-            />
-          </PremiumDatagrid>
-        </SwipeableListWrapper>
+          {/* Column 6: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
+          <FunctionField
+            label="Opportunities"
+            sortable={false}
+            render={(record: OrganizationRecord) => record.nb_opportunities || 0}
+            textAlign="center"
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
+          />
+        </PremiumDatagrid>
       </StandardListLayout>
       <OrganizationBulkActionsToolbar />
-      <QuickLogActivityDialog
-        open={quickLogOpen}
-        onOpenChange={setQuickLogOpen}
-        entityContext={quickLogContext}
-        config={{ enableDraftPersistence: false }}
-      />
     </>
   );
 };

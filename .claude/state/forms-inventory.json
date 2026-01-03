@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-03T04:10:34.332Z",
+  "generated_at": "2026-01-03T04:34:22.117Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:5bdd09665bbdd4d5",
+  "checksum": "sha256:3396890f0d991ad1",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
     "src/atomic-crm/activities/ActivityEdit.tsx": "80dec2decee2",
