@@ -141,83 +141,91 @@ const ContactListLayout = ({
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
         <ListSearchBar placeholder="Search contacts..." filterConfig={CONTACT_FILTER_CONFIG} enableRecentSearches />
-        <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), "view")}
-          focusedIndex={focusedIndex}
-        >
-          {/* Column 1: Avatar - Visual identifier (non-sortable) - hidden on mobile */}
-          <FunctionField
-            label=""
-            sortable={false}
-            render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
-          <FunctionField
-            label={<ContactNameHeader />}
-            sortBy="first_name"
-            render={(record: Contact) => (
-              <TruncatedText className="max-w-[200px]">
-                {formatFullName(record.first_name, record.last_name)}
-              </TruncatedText>
-            )}
-          />
-
-          {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
-          <FunctionField
-            label="Role"
-            sortBy="title"
-            render={(record: Contact) => formatRoleAndDept(record.title, record.department)}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 4: Organization - Relationship reference (sortable) - always visible */}
-          <ReferenceField
-            source="organization_id"
-            reference="organizations"
-            label="Organization"
-            link={false}
-            sortable
+        <SwipeableListWrapper config={swipeConfig}>
+          <PremiumDatagrid
+            onRowClick={(id) => openSlideOver(Number(id), "view")}
+            focusedIndex={focusedIndex}
           >
-            <TextField source="name" />
-          </ReferenceField>
+            {/* Column 1: Avatar - Visual identifier (non-sortable) - hidden on mobile */}
+            <FunctionField
+              label=""
+              sortable={false}
+              render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            />
 
-          {/* Column 5: Status - Badge-based indicator (filterable) - always visible */}
-          <FunctionField
-            label={<ContactStatusHeader />}
-            sortable={false}
-            render={(record: Contact) => (
-              <FilterableBadge source="status" value={record.status}>
-                <ContactStatusBadge status={record.status} />
-              </FilterableBadge>
-            )}
-          />
+            {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
+            <FunctionField
+              label={<ContactNameHeader />}
+              sortBy="first_name"
+              render={(record: Contact) => (
+                <TruncatedText className="max-w-[200px]">
+                  {formatFullName(record.first_name, record.last_name)}
+                </TruncatedText>
+              )}
+            />
 
-          {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}
-          <FunctionField
-            label="Notes"
-            sortable={false}
-            render={(record: Contact) => record.nb_notes ?? 0}
-            textAlign="center"
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
+            {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
+            <FunctionField
+              label="Role"
+              sortBy="title"
+              render={(record: Contact) => formatRoleAndDept(record.title, record.department)}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            />
 
-          {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
-          <DateField
-            source="last_seen"
-            label="Last Activity"
-            sortable
-            showTime={false}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-        </PremiumDatagrid>
+            {/* Column 4: Organization - Relationship reference (sortable) - always visible */}
+            <ReferenceField
+              source="organization_id"
+              reference="organizations"
+              label="Organization"
+              link={false}
+              sortable
+            >
+              <TextField source="name" />
+            </ReferenceField>
+
+            {/* Column 5: Status - Badge-based indicator (filterable) - always visible */}
+            <FunctionField
+              label={<ContactStatusHeader />}
+              sortable={false}
+              render={(record: Contact) => (
+                <FilterableBadge source="status" value={record.status}>
+                  <ContactStatusBadge status={record.status} />
+                </FilterableBadge>
+              )}
+            />
+
+            {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}
+            <FunctionField
+              label="Notes"
+              sortable={false}
+              render={(record: Contact) => record.nb_notes ?? 0}
+              textAlign="center"
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            />
+
+            {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
+            <DateField
+              source="last_seen"
+              label="Last Activity"
+              sortable
+              showTime={false}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            />
+          </PremiumDatagrid>
+        </SwipeableListWrapper>
       </StandardListLayout>
       <ContactBulkActionsToolbar />
+      <QuickLogActivityDialog
+        open={quickLogOpen}
+        onOpenChange={setQuickLogOpen}
+        entityContext={quickLogContext}
+        config={{ enableDraftPersistence: false }}
+      />
     </>
   );
 };

@@ -1,7 +1,7 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2026-01-02T19:24:06.929Z",
-  "item_count": 20,
+  "generated_at": "2026-01-03T04:10:33.212Z",
+  "item_count": 21,
   "items": [
     {
       "name": "useSavedQueries",
@@ -132,6 +132,22 @@
       "returnType": "{ error: DialogError; handleError: (err: unknown) => void; clearError: () => void; }",
       "dependencies": [
         "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useFavorites",
+      "file": "src/hooks/useFavorites.ts",
+      "line": 20,
+      "parameters": [],
+      "returnType": "UseFavoritesReturn",
+      "dependencies": [
+        "useCallback",
+        "useCreate",
+        "useGetIdentity",
+        "useMemo",
+        "useNotify",
+        "useUpdate"
       ],
       "isReact19Action": false
     },

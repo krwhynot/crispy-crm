@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-02T19:24:00.104Z",
+  "generated_at": "2026-01-03T04:10:20.458Z",
   "item_count": 57,
   "items": [
     {
@@ -375,9 +375,11 @@
     {
       "name": "ContactCreate",
       "file": "src/atomic-crm/contacts/ContactCreate.tsx",
-      "line": 15,
+      "line": 17,
       "type": "presentational",
       "hooks": [
+        "useLocation",
+        "useMemo",
         "useSmartDefaults"
       ],
       "imports": [
@@ -388,7 +390,9 @@
         "@/atomic-crm/components",
         "@/atomic-crm/hooks/useSmartDefaults",
         "@/components/admin/form",
-        "ra-core"
+        "ra-core",
+        "react",
+        "react-router-dom"
       ],
       "isDefaultExport": true,
       "childComponents": [
@@ -799,7 +803,7 @@
     {
       "name": "ContactList",
       "file": "src/atomic-crm/contacts/ContactList.tsx",
-      "line": 35,
+      "line": 39,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -820,7 +824,9 @@
         "./ContactSlideOver",
         "./contactExporter",
         "./contactFilterConfig",
+        "./contactSwipeActions",
         "./formatters",
+        "@/atomic-crm/activities/QuickLogActivityDialog",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListNoResults",
@@ -831,6 +837,7 @@
         "@/components/admin/list",
         "@/components/admin/reference-field",
         "@/components/admin/sort-button",
+        "@/components/admin/swipe-actions",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
@@ -838,6 +845,7 @@
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": false,
@@ -861,7 +869,7 @@
     {
       "name": "ContactList",
       "file": "src/atomic-crm/contacts/ContactList.tsx",
-      "line": 35,
+      "line": 39,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -882,7 +890,9 @@
         "./ContactSlideOver",
         "./contactExporter",
         "./contactFilterConfig",
+        "./contactSwipeActions",
         "./formatters",
+        "@/atomic-crm/activities/QuickLogActivityDialog",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListNoResults",
@@ -893,6 +903,7 @@
         "@/components/admin/list",
         "@/components/admin/reference-field",
         "@/components/admin/sort-button",
+        "@/components/admin/swipe-actions",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
@@ -900,6 +911,7 @@
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": true,
@@ -1064,9 +1076,13 @@
     {
       "name": "ContactSlideOver",
       "file": "src/atomic-crm/contacts/ContactSlideOver.tsx",
-      "line": 29,
+      "line": 32,
       "type": "presentational",
-      "hooks": [],
+      "hooks": [
+        "useEffect",
+        "useGetOne",
+        "useRecentSearches"
+      ],
       "imports": [
         "../types",
         "./ActivitiesTab",
@@ -1074,9 +1090,12 @@
         "./ContactHierarchyBreadcrumb",
         "./slideOverTabs/ContactNotesTab",
         "@/atomic-crm/components",
+        "@/atomic-crm/hooks/useRecentSearches",
         "@/components/layouts/ResourceSlideOver",
         "@/components/ui/list-skeleton",
-        "lucide-react"
+        "lucide-react",
+        "react",
+        "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [

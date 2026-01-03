@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-02T19:24:09.570Z",
+  "generated_at": "2026-01-03T04:10:37.438Z",
   "items": {
     "nodes": [
       {
@@ -17,6 +17,24 @@
         "name": "useFilterCleanup",
         "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
         "line": 64,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "name": "loadFromStorage",
+        "file": "src/atomic-crm/hooks/useRecentSearches.ts",
+        "line": 55,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "name": "useRecentSearches",
+        "file": "src/atomic-crm/hooks/useRecentSearches.ts",
+        "line": 158,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -117,6 +135,24 @@
         "file": "src/hooks/useDialogError.ts",
         "line": 20,
         "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useFavorites.ts:16:createFavoriteKey",
+        "name": "createFavoriteKey",
+        "file": "src/hooks/useFavorites.ts",
+        "line": 16,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useFavorites.ts:20:useFavorites",
+        "name": "useFavorites",
+        "file": "src/hooks/useFavorites.ts",
+        "line": 20,
+        "nodeType": "hook",
         "exported": true,
         "async": false
       },
@@ -416,6 +452,168 @@
         "targetName": "error",
         "edgeType": "call",
         "line": 141,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "target": "getItem",
+        "targetName": "getItem",
+        "edgeType": "call",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "target": "safeParse",
+        "targetName": "safeParse",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "target": "flatten",
+        "targetName": "flatten",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:55:loadFromStorage",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "useSyncExternalStore",
+        "targetName": "useSyncExternalStore",
+        "edgeType": "hook",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 165,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 171,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 179,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 186,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 186,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "refreshCache",
+        "targetName": "refreshCache",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 194,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "removeItem",
+        "targetName": "removeItem",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSearches.ts:158:useRecentSearches",
+        "target": "refreshCache",
+        "targetName": "refreshCache",
+        "edgeType": "call",
+        "line": 196,
         "conditional": false,
         "inLoop": false
       },
@@ -993,6 +1191,339 @@
         "edgeType": "call",
         "line": 35,
         "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useCreate",
+        "targetName": "useCreate",
+        "edgeType": "hook",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
+        "edgeType": "hook",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "createFavoriteKey",
+        "targetName": "createFavoriteKey",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "some",
+        "targetName": "some",
+        "edgeType": "call",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "createFavoriteKey",
+        "targetName": "createFavoriteKey",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "isFavorite",
+        "targetName": "isFavorite",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 76,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "setOptimisticState",
+        "targetName": "setOptimisticState",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 84,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 89,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "setOptimisticState",
+        "targetName": "setOptimisticState",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "refetch",
+        "targetName": "refetch",
+        "edgeType": "call",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "setOptimisticState",
+        "targetName": "setOptimisticState",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "setOptimisticState",
+        "targetName": "setOptimisticState",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "refetch",
+        "targetName": "refetch",
+        "edgeType": "call",
+        "line": 135,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "setOptimisticState",
+        "targetName": "setOptimisticState",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "setOptimisticState",
+        "targetName": "setOptimisticState",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:20:useFavorites",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 155,
+        "conditional": false,
         "inLoop": false
       },
       {
