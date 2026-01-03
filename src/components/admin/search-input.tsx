@@ -2,8 +2,10 @@ import { useTranslate } from "ra-core";
 import { Search } from "lucide-react";
 import { TextInput, type TextInputProps } from "@/components/admin/text-input";
 
-export const SearchInput = (inProps: SearchInputProps) => {
-  const { label, ...rest } = inProps;
+export const SearchInput = (inProps: SearchInputProps & {
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+}) => {
+  const { label, onFocus, ...rest } = inProps;
 
   const translate = useTranslate();
 
@@ -20,6 +22,7 @@ export const SearchInput = (inProps: SearchInputProps) => {
         helperText={false}
         placeholder={translate("ra.action.search")}
         className="w-full [&_input]:pr-10 [&_input]:pl-3"
+        onFocus={onFocus}
         {...rest}
       />
       <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />

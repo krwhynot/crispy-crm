@@ -59,45 +59,31 @@ export function ListSearchBar({
     !searchValue &&
     recentItems.length > 0;
 
-  // Debug logging
-  console.log('[ListSearchBar] Render check:', {
-    enableRecentSearches,
-    dropdownOpen,
-    searchValue,
-    recentItemsCount: recentItems.length,
-    shouldShowDropdown
-  });
-
   const handleFocus = useCallback(() => {
-    console.log('[ListSearchBar] handleFocus called!', { enableRecentSearches, searchValue });
     if (enableRecentSearches && !searchValue) {
-      console.log('[ListSearchBar] Setting dropdownOpen to TRUE');
       setDropdownOpen(true);
-    } else {
-      console.log('[ListSearchBar] Skipping dropdown open:', { enableRecentSearches, hasSearchValue: !!searchValue });
     }
   }, [enableRecentSearches, searchValue]);
 
   const handleBlur = useCallback((e: React.FocusEvent) => {
-    console.log('[ListSearchBar] handleBlur called!', {
-      relatedTarget: (e.relatedTarget as HTMLElement)?.tagName,
-      relatedTargetClass: (e.relatedTarget as HTMLElement)?.className?.slice(0, 50)
-    });
     // Don't close if focus moved to popover content
     const relatedTarget = e.relatedTarget as HTMLElement | null;
     if (relatedTarget?.closest("[data-radix-popper-content-wrapper]")) {
-      console.log('[ListSearchBar] Blur ignored - focus moved to popover');
       return;
     }
     // Delay close to allow click handlers to fire
-    console.log('[ListSearchBar] Scheduling dropdown close in 150ms');
     setTimeout(() => setDropdownOpen(false), 150);
   }, []);
 
-  // Render search input with optional Popover wrapper for recent searches
+  // Render search input - onFocus attached directly to input element
   const searchInputContent = (
     <FilterLiveForm>
-      <SearchInput source={source} placeholder={placeholder} alwaysOn />
+      <SearchInput
+        source={source}
+        placeholder={placeholder}
+        alwaysOn
+        onFocus={handleFocus}
+      />
     </FilterLiveForm>
   );
 
@@ -106,15 +92,8 @@ export function ListSearchBar({
       {/* Search Input - optionally wrapped in Popover for recent searches */}
       {enableRecentSearches ? (
         <Popover open={shouldShowDropdown} onOpenChange={setDropdownOpen}>
-          {/* PopoverAnchor WRAPS the input container - this is the key fix! */}
           <PopoverAnchor asChild>
-            <div
-              className="flex-shrink-0 w-64"
-              onClick={() => console.log('[ListSearchBar] DIV CLICKED!')}
-              onFocus={() => console.log('[ListSearchBar] DIV onFocus (bubble)')}
-              onFocusCapture={handleFocus}
-              onBlurCapture={handleBlur}
-            >
+            <div className="flex-shrink-0 w-64" onBlurCapture={handleBlur}>
               {searchInputContent}
             </div>
           </PopoverAnchor>
