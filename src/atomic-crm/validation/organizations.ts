@@ -175,6 +175,14 @@ export const organizationSchema = z.strictObject({
   created_at: z.string().max(50).optional(),
   created_by: z.coerce.number().nullish(), // Audit: who created
   deleted_at: z.string().max(50).optional().nullable(), // Soft-delete timestamp
+
+  // Database columns discovered during SlideOver save debugging
+  // These fields exist in the organizations table but were missing from schema
+  import_session_id: z.string().uuid().nullable().optional(), // Tracks import batch
+  playbook_category_id: z.string().uuid().nullable().optional(), // References playbook_categories
+  cuisine: z.string().max(100).nullable().optional(), // Restaurant cuisine type
+  needs_review: z.coerce.boolean().default(false), // Data quality flag
+  sector: z.string().max(100).nullable().optional(), // Industry sector
 });
 
 // Type inference
