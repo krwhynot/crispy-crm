@@ -20,7 +20,7 @@ import {
 import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { ContextLink } from "../types";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, STATUS_CHOICES } from "../constants";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, STATUS_CHOICES, ORG_SCOPE_CHOICES } from "../constants";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { OrganizationTypeBadge, PriorityBadge } from "../OrganizationBadges";
 
@@ -133,6 +133,20 @@ export function OrganizationDetailsTab({
                   filterToQuery={(searchText) => ({ "name@ilike": `%${searchText}%` })}
                 />
               </ReferenceInput>
+
+              <SelectInput
+                source="org_scope"
+                label="Scope"
+                choices={ORG_SCOPE_CHOICES}
+                helperText="National = brand/HQ, Regional = operating company"
+                emptyText="Select scope"
+              />
+
+              <BooleanInput
+                source="is_operating_entity"
+                label="This location processes orders"
+                helperText={false}
+              />
 
               <TextInput source="email" label="Email" type="email" />
 
