@@ -1,6 +1,10 @@
 import * as React from "react";
-import { useCallback } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  AUTOCOMPLETE_MIN_CHARS,
+  AUTOCOMPLETE_DEBOUNCE_MS,
+} from "@/atomic-crm/utils/autocompleteDefaults";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
