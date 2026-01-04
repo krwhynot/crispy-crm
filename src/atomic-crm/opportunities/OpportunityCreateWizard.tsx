@@ -59,6 +59,20 @@ const OPPORTUNITY_FIELD_LABELS: Record<string, string> = {
 
 const OpportunityCreateWizard = () => {
   const { data: identity, isPending: identityLoading } = useGetIdentity();
+  const location = useLocation();
+
+  // Parse ?source=JSON URL parameter (React Admin pattern for pre-filling forms)
+  // Example: ?source={"customer_organization_id":123}
+  const urlSourceParam = useMemo(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const sourceJson = searchParams.get("source");
+    if (!sourceJson) return null;
+    try {
+      return JSON.parse(sourceJson) as { customer_organization_id?: number };
+    } catch {
+      return null;
+    }
+  }, [location.search]);
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
@@ -84,8 +98,12 @@ const OpportunityCreateWizard = () => {
       account_manager_id: identity?.id,
       contact_ids: [], // Explicitly initialize for ReferenceArrayInput
       products_to_sync: [], // Explicitly initialize for ArrayInput
+      // URL param pre-fill: customer org from Organization slideover context
+      ...(urlSourceParam?.customer_organization_id && {
+        customer_organization_id: urlSourceParam.customer_organization_id,
+      }),
     }),
-    [identity?.id] // Only recompute when identity.id changes
+    [identity?.id, urlSourceParam] // Recompute when identity or URL param changes
   );
 
   // Wait for identity to load before rendering form
@@ -111,7 +129,7 @@ const OpportunityCreateWizard = () => {
     <CreateBase redirect="show">
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
-          <Form defaultValues={formDefaults} mode="onBlur">
+          <Form defaultValues={formDefaults} mode="onBlur" key={urlSourceParam?.customer_organization_id ?? "no-prefill"}>
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl">Create Opportunity</CardTitle>
