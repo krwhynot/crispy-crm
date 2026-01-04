@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-03T19:36:57.491Z",
+  "generated_at": "2026-01-04T06:41:29.193Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:b8485cc980fc392f",
+  "checksum": "sha256:c64640bd906169bf",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
     "src/atomic-crm/activities/ActivityEdit.tsx": "80dec2decee2",
@@ -18,34 +18,34 @@
     "src/atomic-crm/activity-log/ActivityLogOpportunityCreated.tsx": "796619cbf306",
     "src/atomic-crm/activity-log/ActivityLogOpportunityNoteCreated.tsx": "2c5ed84847a9",
     "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx": "776329f3726e",
-    "src/atomic-crm/components/CreateFormFooter.tsx": "2b7d9f7785b9",
-    "src/atomic-crm/contacts/ContactCompactForm.tsx": "5e22020be374",
-    "src/atomic-crm/contacts/ContactCreate.tsx": "ec94a6b9ffa7",
+    "src/atomic-crm/components/CreateFormFooter.tsx": "a0543888b118",
+    "src/atomic-crm/contacts/ContactCompactForm.tsx": "70b04f831c75",
+    "src/atomic-crm/contacts/ContactCreate.tsx": "6952e16bf4db",
     "src/atomic-crm/contacts/ContactEdit.tsx": "5f5ab1bb89f8",
     "src/atomic-crm/contacts/ContactFormTutorial.tsx": "c8b35aa930c8",
     "src/atomic-crm/contacts/ContactInputs.tsx": "ce69f6134689",
     "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "ee789dccd170",
     "src/atomic-crm/contacts/TagsListEdit.tsx": "740faec91d7c",
     "src/atomic-crm/contexts/FormOptionsContext.tsx": "164b5fa6c2d5",
-    "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "d2e3bf70cdac",
+    "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "f46a0bebf432",
     "src/atomic-crm/layout/FormToolbar.tsx": "cffd014a8b77",
     "src/atomic-crm/notes/NoteCreate.tsx": "870a953cb9ea",
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "449fd353b4c9",
-    "src/atomic-crm/opportunities/OpportunityCreate.tsx": "40237b920307",
-    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "9eab44570034",
+    "src/atomic-crm/opportunities/OpportunityCreate.tsx": "5b10ff22f2fe",
+    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "c81da4df2cb6",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "c708dc329667",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
-    "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "12727b6692e8",
+    "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "f3d00d00722d",
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
     "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "dcaaa7351875",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "312f55506318",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "ac6d923ab592",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "cfd06596f54b",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "fa95a5cc5ec7",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "a22f8f2b9cb9",
     "src/atomic-crm/organizations/QuickCreatePopover.tsx": "aacff00db1fe",
-    "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "ee4f078e01e6",
+    "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "b0361ce82864",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "694c8f64dffa",
     "src/atomic-crm/products/ProductCreate.tsx": "f6b417ed7273",
     "src/atomic-crm/products/ProductEdit.tsx": "e68372b90093",
@@ -58,7 +58,7 @@
     "src/atomic-crm/tags/TagCreateModal.tsx": "0f6d4e2f2e1d",
     "src/atomic-crm/tags/TagEditModal.tsx": "da8202cbdc29",
     "src/atomic-crm/tags/TagSelectWithCreate.tsx": "a3e06ae5a0e9",
-    "src/atomic-crm/tasks/TaskCreate.tsx": "24bcecb19428",
+    "src/atomic-crm/tasks/TaskCreate.tsx": "3286104d9b06",
     "src/atomic-crm/tasks/TaskEdit.tsx": "2f967b45c78a",
     "src/atomic-crm/tasks/TaskInputs.tsx": "9c004edad5db",
     "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "1ea16822a0ca"
@@ -148,7 +148,7 @@
     {
       "componentName": "CreateFormFooter",
       "file": "src/atomic-crm/components/CreateFormFooter.tsx",
-      "line": 15,
+      "line": 16,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -174,7 +174,7 @@
     {
       "componentName": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 17,
+      "line": 18,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -209,7 +209,7 @@
     {
       "componentName": "ContactCreate",
       "file": "src/atomic-crm/contacts/ContactCreate.tsx",
-      "line": 17,
+      "line": 19,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -337,7 +337,7 @@
     {
       "componentName": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 61,
+      "line": 65,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -450,7 +450,7 @@
     {
       "componentName": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 15,
+      "line": 18,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -479,7 +479,7 @@
     {
       "componentName": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 15,
+      "line": 18,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -508,7 +508,7 @@
     {
       "componentName": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 59,
+      "line": 61,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -535,7 +535,7 @@
     {
       "componentName": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 59,
+      "line": 61,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -637,7 +637,7 @@
     {
       "componentName": "OpportunityCompactForm",
       "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
-      "line": 46,
+      "line": 47,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -875,7 +875,7 @@
     {
       "componentName": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 27,
+      "line": 31,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -906,7 +906,7 @@
     {
       "componentName": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 27,
+      "line": 31,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -1143,7 +1143,7 @@
     {
       "componentName": "TaskCreate",
       "file": "src/atomic-crm/tasks/TaskCreate.tsx",
-      "line": 32,
+      "line": 33,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",

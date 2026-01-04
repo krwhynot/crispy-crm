@@ -1,17 +1,18 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-03T19:36:45.940Z",
+  "generated_at": "2026-01-04T06:41:21.273Z",
   "item_count": 16,
   "items": [
     {
       "name": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 27,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useMemo"
       ],
       "imports": [
+        "../utils/autocompleteDefaults",
         "../validation/productDistributors",
         "./constants",
         "@/components/admin/FormErrorSummary",
@@ -29,7 +30,8 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES",
+        "AUTOCOMPLETE_DEBOUNCE_MS"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -37,12 +39,13 @@
     {
       "name": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 27,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useMemo"
       ],
       "imports": [
+        "../utils/autocompleteDefaults",
         "../validation/productDistributors",
         "./constants",
         "@/components/admin/FormErrorSummary",
@@ -60,7 +63,8 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES",
+        "AUTOCOMPLETE_DEBOUNCE_MS"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -106,10 +110,11 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 39,
+      "line": 47,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "../utils/autocompleteDefaults",
         "./constants",
         "@/components/admin/autocomplete-input",
         "@/components/admin/reference-input",
@@ -119,7 +124,8 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES",
+        "AUTOCOMPLETE_DEBOUNCE_MS"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -127,10 +133,11 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 39,
+      "line": 47,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "../utils/autocompleteDefaults",
         "./constants",
         "@/components/admin/autocomplete-input",
         "@/components/admin/reference-input",
@@ -140,7 +147,8 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES",
+        "AUTOCOMPLETE_DEBOUNCE_MS"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

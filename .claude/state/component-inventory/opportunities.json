@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-03T19:36:45.921Z",
+  "generated_at": "2026-01-04T06:41:21.267Z",
   "item_count": 78,
   "items": [
     {
@@ -337,10 +337,13 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 15,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
+        "useLocation",
+        "useMemo",
+        "useSearchParams",
         "useSimilarOpportunityCheck"
       ],
       "imports": [
@@ -351,12 +354,15 @@
         "./components/OpportunityCreateSaveButton",
         "./components/SimilarOpportunitiesDialog",
         "./hooks/useSimilarOpportunityCheck",
+        "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/admin/FormErrorSummary",
         "@/components/admin/cancel-button",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
         "ra-core",
-        "react-hook-form"
+        "react",
+        "react-hook-form",
+        "react-router-dom"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -372,10 +378,13 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 15,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
+        "useLocation",
+        "useMemo",
+        "useSearchParams",
         "useSimilarOpportunityCheck"
       ],
       "imports": [
@@ -386,12 +395,15 @@
         "./components/OpportunityCreateSaveButton",
         "./components/SimilarOpportunitiesDialog",
         "./hooks/useSimilarOpportunityCheck",
+        "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/admin/FormErrorSummary",
         "@/components/admin/cancel-button",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
         "ra-core",
-        "react-hook-form"
+        "react",
+        "react-hook-form",
+        "react-router-dom"
       ],
       "isDefaultExport": true,
       "childComponents": [
@@ -407,11 +419,12 @@
     {
       "name": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 59,
+      "line": 61,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
         "useMemo",
+        "useSearchParams",
         "useSimilarOpportunityCheck"
       ],
       "imports": [
@@ -421,6 +434,7 @@
         "./forms/OpportunityWizardSteps",
         "./forms/opportunityWizardConfig",
         "./hooks/useSimilarOpportunityCheck",
+        "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/admin/FormErrorSummary",
         "@/components/admin/form",
         "@/components/ui/card",
@@ -428,7 +442,8 @@
         "@/hooks",
         "ra-core",
         "react",
-        "react-hook-form"
+        "react-hook-form",
+        "react-router-dom"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -446,11 +461,12 @@
     {
       "name": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 59,
+      "line": 61,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
         "useMemo",
+        "useSearchParams",
         "useSimilarOpportunityCheck"
       ],
       "imports": [
@@ -460,6 +476,7 @@
         "./forms/OpportunityWizardSteps",
         "./forms/opportunityWizardConfig",
         "./hooks/useSimilarOpportunityCheck",
+        "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/admin/FormErrorSummary",
         "@/components/admin/form",
         "@/components/ui/card",
@@ -467,7 +484,8 @@
         "@/hooks",
         "ra-core",
         "react",
-        "react-hook-form"
+        "react-hook-form",
+        "react-router-dom"
       ],
       "isDefaultExport": true,
       "childComponents": [
@@ -793,10 +811,11 @@
     {
       "name": "OpportunityShow",
       "file": "src/atomic-crm/opportunities/OpportunityShow.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "../components/TrackRecordView",
         "../notes",
         "../sales/SaleAvatar",
         "../types",
@@ -847,7 +866,8 @@
         "SaleAvatar",
         "WorkflowManagementSection",
         "ActivityTimelineFilters",
-        "RelatedOpportunitiesSection"
+        "RelatedOpportunitiesSection",
+        "TrackRecordView"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -855,10 +875,11 @@
     {
       "name": "OpportunityShow",
       "file": "src/atomic-crm/opportunities/OpportunityShow.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "../components/TrackRecordView",
         "../notes",
         "../sales/SaleAvatar",
         "../types",
@@ -909,7 +930,8 @@
         "SaleAvatar",
         "WorkflowManagementSection",
         "ActivityTimelineFilters",
-        "RelatedOpportunitiesSection"
+        "RelatedOpportunitiesSection",
+        "TrackRecordView"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -1503,7 +1525,7 @@
     {
       "name": "OpportunityCompactForm",
       "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
-      "line": 46,
+      "line": 47,
       "type": "presentational",
       "hooks": [
         "useAutoGenerateName",
@@ -1520,6 +1542,7 @@
         "../../contacts/QuickCreateContactPopover",
         "../../organizations/AutocompleteOrganizationInput",
         "../../organizations/OrganizationInputs",
+        "../../utils/autocompleteDefaults",
         "../../utils/saleOptionRenderer",
         "../../validation/organizations",
         "../components/ContactOrgMismatchWarning",
@@ -2235,7 +2258,7 @@
     {
       "name": "OpportunityContactsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
-      "line": 94,
+      "line": 100,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -2249,6 +2272,7 @@
         "@/atomic-crm/providers/supabase/extensions/types",
         "@/atomic-crm/services/opportunities.service",
         "@/atomic-crm/types",
+        "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-array-input",
         "@/components/layouts/sidepane",
         "@/components/ui/badge",
@@ -2299,7 +2323,7 @@
     {
       "name": "OpportunityProductsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-      "line": 45,
+      "line": 49,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -2309,6 +2333,7 @@
       ],
       "imports": [
         "@/atomic-crm/types",
+        "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-array-input",
         "@/components/layouts/sidepane",
         "@/components/ui/badge",

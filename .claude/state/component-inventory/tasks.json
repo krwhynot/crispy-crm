@@ -1,12 +1,12 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-03T19:36:45.962Z",
+  "generated_at": "2026-01-04T06:41:21.282Z",
   "item_count": 28,
   "items": [
     {
       "name": "AddTask",
       "file": "src/atomic-crm/tasks/AddTask.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -21,6 +21,7 @@
         "../contacts/ContactOption",
         "../root/ConfigurationContext",
         "../validation/task",
+        "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
         "@/components/admin/form",
         "@/components/admin/reference-input",
@@ -84,16 +85,17 @@
     {
       "name": "TaskCreate",
       "file": "src/atomic-crm/tasks/TaskCreate.tsx",
-      "line": 32,
+      "line": 33,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
-        "useLocation"
+        "useSearchParams"
       ],
       "imports": [
         "../validation/task",
         "./TaskInputs",
         "@/atomic-crm/components",
+        "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/admin/form",
         "@hookform/resolvers/zod",
         "ra-core",
@@ -109,7 +111,7 @@
     {
       "name": "TaskDetailsTab",
       "file": "src/atomic-crm/tasks/TaskDetailsTab.tsx",
-      "line": 7,
+      "line": 12,
       "type": "presentational",
       "hooks": [
         "useFormOptions"
@@ -117,6 +119,7 @@
       "imports": [
         "../contacts/ContactOption",
         "../root/ConfigurationContext",
+        "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
         "@/components/admin/reference-input",
         "@/components/admin/select-input"

@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-03T19:37:00.515Z",
+  "generated_at": "2026-01-04T06:41:32.048Z",
   "items": {
     "nodes": [
       {
@@ -17,6 +17,15 @@
         "name": "useFilterCleanup",
         "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
         "line": 64,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "name": "useRecentItems",
+        "file": "src/atomic-crm/hooks/useRecentItems.ts",
+        "line": 40,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -452,6 +461,78 @@
         "targetName": "error",
         "edgeType": "call",
         "line": 141,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "useStore",
+        "targetName": "useStore",
+        "edgeType": "hook",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "setRecentItems",
+        "targetName": "setRecentItems",
+        "edgeType": "call",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentItems.ts:40:useRecentItems",
+        "target": "setRecentItems",
+        "targetName": "setRecentItems",
+        "edgeType": "call",
+        "line": 63,
         "conditional": false,
         "inLoop": false
       },

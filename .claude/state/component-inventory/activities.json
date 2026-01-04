@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-03T19:36:45.879Z",
+  "generated_at": "2026-01-04T06:41:21.256Z",
   "item_count": 25,
   "items": [
     {
@@ -211,11 +211,12 @@
     {
       "name": "ActivitySinglePage",
       "file": "src/atomic-crm/activities/ActivitySinglePage.tsx",
-      "line": 15,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../contacts/ContactOption",
+        "../utils/autocompleteDefaults",
         "../validation/activities",
         "@/components/admin/autocomplete-input",
         "@/components/admin/form",
@@ -265,19 +266,21 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
-      "line": 348,
+      "line": 349,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useEffect",
         "useGetOne",
         "useMemo",
+        "useRecentSearches",
         "useRef",
         "useState"
       ],
       "imports": [
         "../types",
         "@/atomic-crm/activities/activityDraftSchema",
+        "@/atomic-crm/hooks/useRecentSearches",
         "@/atomic-crm/utils/safeJsonParse",
         "@/atomic-crm/validation/activities",
         "@/components/ui/badge",
@@ -382,13 +385,14 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 348,
+      "line": 349,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useEffect",
         "useGetOne",
         "useMemo",
+        "useRecentSearches",
         "useRef",
         "useState"
       ],

@@ -1,12 +1,12 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-03T19:36:45.895Z",
-  "item_count": 24,
+  "generated_at": "2026-01-04T06:41:21.261Z",
+  "item_count": 25,
   "items": [
     {
       "name": "CreateFormFooter",
       "file": "src/atomic-crm/components/CreateFormFooter.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -518,6 +518,31 @@
       "isDefaultExport": true,
       "childComponents": [],
       "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "TrackRecordView",
+      "file": "src/atomic-crm/components/TrackRecordView.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useGetRecordRepresentation",
+        "useRecentItems",
+        "useRecordContext",
+        "useRef",
+        "useResourceContext"
+      ],
+      "imports": [
+        "../hooks/useRecentItems",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
       "componentRole": "leaf"
     }
   ]
