@@ -26,6 +26,29 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
 
 export const authProvider: AuthProvider = {
   ...baseAuthProvider,
+  /**
+   * Override checkError to distinguish auth failures from permission errors
+   *
+   * ra-supabase-core's default checkError treats BOTH 401 and 403 as auth failures,
+   * triggering logout. But 403 from RLS policy violations are permission errors,
+   * not authentication failures - the user IS logged in, they just lack permission.
+   *
+   * Fix: Only logout on 401 (Unauthorized), not 403 (Forbidden/RLS violation)
+   */
+  checkError: async (error: { status?: number; name?: string }) => {
+    // 401 = Not authenticated → logout
+    // AuthSessionMissingError = Session expired → logout
+    if (
+      error.status === 401 ||
+      (error.status === 400 && error.name === "AuthSessionMissingError")
+    ) {
+      return Promise.reject(); // Triggers logout
+    }
+
+    // 403 = Forbidden (RLS policy violation) → DON'T logout
+    // Let the error propagate to UI as a notification instead
+    return Promise.resolve();
+  },
   login: async (params) => {
     const result = await baseAuthProvider.login(params);
     cachedSale = undefined;
