@@ -38,6 +38,7 @@ import { OrganizationAside } from "./OrganizationAside";
 import { OrganizationAvatar } from "./OrganizationAvatar";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { AuthorizationsTab } from "./AuthorizationsTab";
+import { TrackRecordView } from "../components/TrackRecordView";
 
 const OrganizationShow = () => (
   <ShowBase>
@@ -70,7 +71,9 @@ const OrganizationShowContent = () => {
   const tabGridCols = isDistributor ? "grid-cols-5" : "grid-cols-4";
 
   return (
-    <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
+    <>
+      <TrackRecordView />
+      <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
       <main role="main" aria-label="Organization details">
         <Card>
           <CardContent className="p-6">
@@ -160,6 +163,7 @@ const OrganizationShowContent = () => {
         <OrganizationAside />
       </aside>
     </ResponsiveGrid>
+    </>
   );
 };
 

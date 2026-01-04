@@ -12,6 +12,7 @@ import { Avatar } from "./Avatar";
 import { ContactAside } from "./ContactAside";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { OpportunitiesTab } from "./OpportunitiesTab";
+import { TrackRecordView } from "../components/TrackRecordView";
 
 export const ContactShow = () => (
   <ShowBase>
@@ -24,7 +25,9 @@ const ContactShowContent = () => {
   if (isPending || !record) return null;
 
   return (
-    <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
+    <>
+      <TrackRecordView />
+      <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
       <main role="main" aria-label="Contact details">
         <Card>
           <CardContent className="p-6">
@@ -115,6 +118,7 @@ const ContactShowContent = () => {
         <ContactAside />
       </aside>
     </ResponsiveGrid>
+    </>
   );
 };
 
