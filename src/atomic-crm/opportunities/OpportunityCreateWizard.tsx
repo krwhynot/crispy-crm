@@ -11,8 +11,9 @@
  * 4. Additional Details - classification, notes
  */
 import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
+import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { useFormState } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useInAppUnsavedChanges } from "@/hooks";

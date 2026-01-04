@@ -82,47 +82,71 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
     );
   }
 
+  // Build the navigation URL with JSON-encoded source param
+  const createOpportunityUrl = `/opportunities/create?source=${encodeURIComponent(
+    JSON.stringify({ customer_organization_id: record.id })
+  )}`;
+
   return (
     <RecordContextProvider value={record}>
-      <ScrollArea className="h-full">
-        <div className="px-6 py-4 space-y-3">
-          {opportunities.map((opportunity) => (
-            <div
-              key={opportunity.id}
-              className="p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
-            >
-              <div className="flex items-start justify-between mb-2">
-                <button
-                  type="button"
-                  onClick={() => navigate(`/opportunities?view=${opportunity.id}`)}
-                  className="text-sm font-medium text-primary hover:underline text-left"
-                >
-                  {opportunity.name}
-                </button>
-                <StageBadge stage={opportunity.stage} />
-              </div>
-
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                {opportunity.estimated_value && (
-                  <span>${opportunity.estimated_value.toLocaleString()}</span>
-                )}
-                {opportunity.estimated_close_date && (
-                  <span>
-                    Close:{" "}
-                    {parseDateSafely(opportunity.estimated_close_date)?.toLocaleDateString() ??
-                      "N/A"}
-                  </span>
-                )}
-                {opportunity.status && (
-                  <Badge variant="outline" className="text-xs">
-                    {opportunity.status}
-                  </Badge>
-                )}
-              </div>
-            </div>
-          ))}
+      <div className="flex flex-col h-full">
+        {/* Header with count and Add button */}
+        <div className="flex justify-between items-center px-6 py-3 border-b border-border">
+          <p className="text-sm text-muted-foreground">
+            {opportunities.length} opportunit{opportunities.length !== 1 ? "ies" : "y"}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(createOpportunityUrl)}
+            className="h-11"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add Opportunity
+          </Button>
         </div>
-      </ScrollArea>
+
+        {/* Opportunities list */}
+        <ScrollArea className="flex-1">
+          <div className="px-6 py-4 space-y-3">
+            {opportunities.map((opportunity) => (
+              <div
+                key={opportunity.id}
+                className="p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/opportunities?view=${opportunity.id}`)}
+                    className="text-sm font-medium text-primary hover:underline text-left"
+                  >
+                    {opportunity.name}
+                  </button>
+                  <StageBadge stage={opportunity.stage} />
+                </div>
+
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  {opportunity.estimated_value && (
+                    <span>${opportunity.estimated_value.toLocaleString()}</span>
+                  )}
+                  {opportunity.estimated_close_date && (
+                    <span>
+                      Close:{" "}
+                      {parseDateSafely(opportunity.estimated_close_date)?.toLocaleDateString() ??
+                        "N/A"}
+                    </span>
+                  )}
+                  {opportunity.status && (
+                    <Badge variant="outline" className="text-xs">
+                      {opportunity.status}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
     </RecordContextProvider>
   );
 }
