@@ -5,6 +5,7 @@ import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
 import { DashboardTutorial } from "./DashboardTutorial";
+import { RecentItemsWidget } from "../RecentItemsWidget";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
@@ -50,6 +51,11 @@ export function PrincipalDashboardV3() {
         {/* KPI Summary Row - compact, shrinks to content */}
         <div className="shrink-0">
           <KPISummaryRow key={`kpi-${refreshKey}`} />
+        </div>
+
+        {/* Recent Items Widget - quick access to recently viewed records */}
+        <div className="shrink-0">
+          <RecentItemsWidget />
         </div>
 
         {/* Tabbed interface - fills ALL remaining height */}
