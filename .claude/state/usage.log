@@ -4,3 +4,5 @@
 [2026-01-04T03:07:01.416Z] ✓ find_references | symbolName="useRecentSelections", includeDefinition=true | results: 14 | 40ms
 [2026-01-04T03:07:01.827Z] ✓ go_to_definition | symbolName="useRecentSelections", kind="function" | 180ms
 [2026-01-04T03:07:27.573Z] ✓ search_code | query: "ReferenceInput principal" | limit=10, type="all" | results: 0 | 10783ms
+[2026-01-04T06:44:04.489Z] ✓ search_code | query: "recently viewed tracking storage" | limit=20, type="all" | results: 0 | 10686ms
+[2026-01-04T06:44:15.225Z] ✓ search_code | query: "activity log pre-fill contact" | limit=20, type="all" | results: 0 | 10525ms
