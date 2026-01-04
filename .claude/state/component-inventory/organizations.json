@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-04T06:41:21.270Z",
+  "generated_at": "2026-01-04T15:59:38.630Z",
   "item_count": 75,
   "items": [
     {
@@ -1069,13 +1069,14 @@
     {
       "name": "OrganizationListFilter",
       "file": "src/atomic-crm/organizations/OrganizationListFilter.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useListContext"
       ],
       "imports": [
         "../filters/FilterCategory",
+        "../filters/StarredFilterToggle",
         "@/atomic-crm/validation/operatorSegments",
         "@/atomic-crm/validation/segments",
         "@/components/admin/OwnerFilterDropdown",
@@ -1086,7 +1087,8 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "FilterCategory"
+        "FilterCategory",
+        "StarredFilterToggle"
       ],
       "contextDependencies": [
         "useListContext"
