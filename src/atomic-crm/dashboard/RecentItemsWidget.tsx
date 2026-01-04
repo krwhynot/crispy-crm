@@ -6,7 +6,7 @@ import {
   CardTitle,
   CardContent,
 } from "@/components/ui/card";
-import { useRecentItems, type RecentItem } from "../hooks/useRecentItems";
+import { useRecentSearches, type RecentSearchItem } from "../hooks/useRecentSearches";
 import { Building2, User, Target, ListTodo, Clock } from "lucide-react";
 
 /**
@@ -21,16 +21,14 @@ const RESOURCE_ICONS: Record<string, React.ComponentType<{ className?: string }>
 };
 
 /**
- * Format a timestamp as relative time using Intl.RelativeTimeFormat.
+ * Format a Unix timestamp as relative time using Intl.RelativeTimeFormat.
  * Constitution P13: Use native APIs for localization.
  *
  * @example
- * formatRelativeTime("2025-01-03T10:00:00Z") // "2 hours ago"
+ * formatRelativeTime(1704268800000) // "2 hours ago"
  */
-const formatRelativeTime = (isoString: string): string => {
-  const date = new Date(isoString);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
+const formatRelativeTime = (timestamp: number): string => {
+  const diffMs = Date.now() - timestamp;
   const diffMins = Math.floor(diffMs / 60000);
 
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
@@ -48,21 +46,21 @@ const formatRelativeTime = (isoString: string): string => {
 const RecentItemLink = memo(function RecentItemLink({
   item,
 }: {
-  item: RecentItem;
+  item: RecentSearchItem;
 }) {
-  const Icon = RESOURCE_ICONS[item.resource] || Building2;
+  const Icon = RESOURCE_ICONS[item.entityType] || Building2;
 
   return (
     <li>
       <Link
-        to={`/${item.resource}/${item.id}/show`}
+        to={`/${item.entityType}?view=${item.id}`}
         className="flex items-center gap-3 p-2 rounded-md hover:bg-muted min-h-[44px] transition-colors"
       >
         <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium truncate">{item.title}</p>
+          <p className="text-sm font-medium truncate">{item.label}</p>
           <p className="text-xs text-muted-foreground">
-            {formatRelativeTime(item.viewedAt)}
+            {formatRelativeTime(item.timestamp)}
           </p>
         </div>
       </Link>
@@ -87,7 +85,7 @@ const RecentItemLink = memo(function RecentItemLink({
  * ```
  */
 export function RecentItemsWidget() {
-  const { recentItems } = useRecentItems();
+  const { recentItems } = useRecentSearches();
   const displayItems = recentItems.slice(0, 5);
 
   return (
@@ -107,7 +105,7 @@ export function RecentItemsWidget() {
           <ul className="space-y-1" role="list">
             {displayItems.map((item) => (
               <RecentItemLink
-                key={`${item.resource}-${item.id}`}
+                key={`${item.entityType}-${item.id}`}
                 item={item}
               />
             ))}
