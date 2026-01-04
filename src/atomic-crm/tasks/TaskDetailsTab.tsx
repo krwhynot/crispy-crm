@@ -6,6 +6,7 @@ import { contactOptionText } from "../contacts/ContactOption";
 import {
   getAutocompleteProps,
   getQSearchAutocompleteProps,
+  enableGetChoices,
 } from "@/atomic-crm/utils/autocompleteDefaults";
 
 export const TaskDetailsTab = () => {
@@ -30,7 +31,7 @@ export const TaskDetailsTab = () => {
         choices={taskTypes.map((type) => ({ id: type, name: type }))}
         helperText="Category of task"
       />
-      <ReferenceInput source="organization_id" reference="organizations">
+      <ReferenceInput source="organization_id" reference="organizations" enableGetChoices={enableGetChoices}>
         <AutocompleteInput
           {...getAutocompleteProps("name")}
           label="Organization"
@@ -38,7 +39,7 @@ export const TaskDetailsTab = () => {
           helperText="Link to organization"
         />
       </ReferenceInput>
-      <ReferenceInput source="opportunity_id" reference="opportunities">
+      <ReferenceInput source="opportunity_id" reference="opportunities" enableGetChoices={enableGetChoices}>
         <AutocompleteInput
           {...getAutocompleteProps("title")}
           label="Opportunity"
@@ -46,7 +47,7 @@ export const TaskDetailsTab = () => {
           helperText="Link to opportunity"
         />
       </ReferenceInput>
-      <ReferenceInput source="contact_id" reference="contacts_summary">
+      <ReferenceInput source="contact_id" reference="contacts_summary" enableGetChoices={enableGetChoices}>
         <AutocompleteInput
           {...getQSearchAutocompleteProps()}
           label="Contact"
@@ -54,7 +55,7 @@ export const TaskDetailsTab = () => {
           helperText="Link to contact"
         />
       </ReferenceInput>
-      <ReferenceInput source="sales_id" reference="sales">
+      <ReferenceInput source="sales_id" reference="sales" enableGetChoices={enableGetChoices}>
         <AutocompleteInput
           {...getQSearchAutocompleteProps()}
           label="Assigned To"

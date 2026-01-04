@@ -11,6 +11,16 @@ export const AUTOCOMPLETE_DEBOUNCE_MS = 300;
 export const AUTOCOMPLETE_MIN_CHARS = 2;
 
 /**
+ * ReferenceInput prop to prevent API calls until minimum chars typed.
+ * IMPORTANT: shouldRenderSuggestions only hides dropdown, this actually blocks fetch.
+ *
+ * @example
+ * <ReferenceInput enableGetChoices={enableGetChoices} ... />
+ */
+export const enableGetChoices = ({ q }: { q?: string }) =>
+  !!(q && q.length >= AUTOCOMPLETE_MIN_CHARS);
+
+/**
  * Standard shouldRenderSuggestions function
  * Requires minimum 2 characters before triggering search
  */
