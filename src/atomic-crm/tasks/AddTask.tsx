@@ -29,6 +29,7 @@ import { useState } from "react";
 import { contactOptionText } from "../contacts/ContactOption";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { getTaskDefaultValues } from "../validation/task";
+import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 
 export const AddTask = ({
   selectContact,
@@ -144,6 +145,7 @@ export const AddTask = ({
                 {selectContact && (
                   <ReferenceInput source="contact_id" reference="contacts_summary">
                     <AutocompleteInput
+                      {...getQSearchAutocompleteProps()}
                       label="Contact *"
                       optionText={contactOptionText}
                       helperText="Required field"

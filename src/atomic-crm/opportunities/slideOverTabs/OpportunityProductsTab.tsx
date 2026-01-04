@@ -13,6 +13,10 @@ import {
   SidepaneEmptyState,
   SidepaneSection,
 } from "@/components/layouts/sidepane";
+import {
+  AUTOCOMPLETE_DEBOUNCE_MS,
+  shouldRenderSuggestions,
+} from "@/atomic-crm/utils/autocompleteDefaults";
 import { Card } from "@/components/ui/card";
 import type { Opportunity } from "@/atomic-crm/types";
 
@@ -130,6 +134,8 @@ export function OpportunityProductsTab({
             label="Products"
             optionText="name"
             filterToQuery={(searchText: string) => ({ q: searchText })}
+            debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+            shouldRenderSuggestions={shouldRenderSuggestions}
             helperText="Search and select products for this opportunity"
           />
         </ReferenceArrayInput>

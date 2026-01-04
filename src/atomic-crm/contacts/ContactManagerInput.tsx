@@ -1,6 +1,10 @@
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { useRecordContext } from "ra-core";
+import {
+  AUTOCOMPLETE_DEBOUNCE_MS,
+  shouldRenderSuggestions,
+} from "@/atomic-crm/utils/autocompleteDefaults";
 
 interface Contact {
   id?: number;
@@ -23,6 +27,8 @@ export const ContactManagerInput = () => {
       filter={record?.id ? { "id@neq": record.id } : {}}
     >
       <AutocompleteInput
+        debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+        shouldRenderSuggestions={shouldRenderSuggestions}
         label="Reports To"
         emptyText="No manager"
         helperText="Direct manager / supervisor"

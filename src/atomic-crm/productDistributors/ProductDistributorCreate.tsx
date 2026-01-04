@@ -12,6 +12,10 @@ import { FormToolbar } from "@/components/admin/simple-form";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { productDistributorSchema } from "../validation/productDistributors";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
+import {
+  AUTOCOMPLETE_DEBOUNCE_MS,
+  shouldRenderSuggestions,
+} from "../utils/autocompleteDefaults";
 
 // Human-readable field labels for error messages
 const FIELD_LABELS: Record<string, string> = {
@@ -57,6 +61,8 @@ const ProductDistributorFormContent = () => {
 
       <ReferenceInput source="product_id" reference="products" isRequired>
         <AutocompleteInput
+          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+          shouldRenderSuggestions={shouldRenderSuggestions}
           optionText="name"
           label="Product *"
           filterToQuery={(q) => ({ "name@ilike": `%${q}%` })}
@@ -66,6 +72,8 @@ const ProductDistributorFormContent = () => {
 
       <ReferenceInput source="distributor_id" reference="organizations" isRequired>
         <AutocompleteInput
+          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+          shouldRenderSuggestions={shouldRenderSuggestions}
           optionText="name"
           label="Distributor *"
           filterToQuery={(q) => ({ "name@ilike": `%${q}%`, organization_type: "distributor" })}

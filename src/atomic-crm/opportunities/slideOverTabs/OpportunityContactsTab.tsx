@@ -22,6 +22,10 @@ import {
   SidepaneEmptyState,
   SidepaneSection,
 } from "@/components/layouts/sidepane";
+import {
+  AUTOCOMPLETE_DEBOUNCE_MS,
+  shouldRenderSuggestions,
+} from "@/atomic-crm/utils/autocompleteDefaults";
 import { Card } from "@/components/ui/card";
 import { QuickCreateContactRA } from "../../contacts/QuickCreateContactPopover";
 import { contactOptionText } from "../../contacts/ContactOption";
@@ -57,6 +61,8 @@ function ContactEditFormContent({
           label="Contacts"
           optionText={contactOptionText}
           filterToQuery={(searchText: string) => ({ q: searchText })}
+          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+          shouldRenderSuggestions={shouldRenderSuggestions}
           helperText="Search and select contacts associated with this opportunity"
           create={
             record.customer_organization_id ? (
