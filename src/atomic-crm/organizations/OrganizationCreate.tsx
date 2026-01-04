@@ -238,6 +238,7 @@ const OrganizationCreate = () => {
   const formDefaults = {
     ...organizationSchema.partial().parse({}),
     sales_id: smartDefaults?.sales_id ?? null, // Handle loading state
+    account_manager_id: smartDefaults?.sales_id ?? null,
     // Use null (not undefined) when no segment found - null is a valid value for nullable UUID fields
     segment_id: unknownSegmentId ?? null,
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch

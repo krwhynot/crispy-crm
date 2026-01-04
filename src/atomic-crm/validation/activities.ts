@@ -27,7 +27,7 @@ export const interactionTypeSchema = z.enum([
   "social",
   "note",
   "sample", // Added for sample tracking workflow (PRD §4.4)
-]);
+]).default("call");
 
 // Sample status enum - workflow states for sample activities
 // Workflow: sent → received → feedback_pending → feedback_received
@@ -457,7 +457,7 @@ const ALL_ACTIVITY_DISPLAY_TYPES = [
  * Display activity type schema (Title Case for UI)
  * Mirrors interactionTypeSchema but with display-friendly values
  */
-export const activityDisplayTypeSchema = z.enum(ALL_ACTIVITY_DISPLAY_TYPES);
+export const activityDisplayTypeSchema = z.enum(ALL_ACTIVITY_DISPLAY_TYPES).default("Call");
 
 /**
  * Map from Title Case (UI) to snake_case (API/database)
