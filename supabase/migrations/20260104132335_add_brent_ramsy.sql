@@ -77,7 +77,7 @@ BEGIN
 
   -- Add Brent Ramsy to sales team as Account Manager (rep role)
   INSERT INTO sales (first_name, last_name, email, role, user_id, created_at, updated_at)
-  VALUES ('Brent', 'Ramsy', 'bramsy@masterfoodbokers.com', 'rep', brent_user_id, NOW(), NOW());
+  VALUES ('Brent', 'Ramsy', 'bramsy@masterfoodbokers.com', 'rep'::user_role, brent_user_id, NOW(), NOW());
 
   RAISE NOTICE 'SUCCESS: Added Brent Ramsy to sales team with user_id %', brent_user_id;
 END $$;
