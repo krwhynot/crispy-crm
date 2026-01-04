@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
+import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
@@ -17,9 +18,10 @@ import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 const OpportunityCreate = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const redirect = getContextAwareRedirect(searchParams);
 
   // Read URL params (e.g., ?customer_organization_id=123 from Org slideover)
-  const searchParams = new URLSearchParams(location.search);
   const urlCustomerOrgId = searchParams.get("customer_organization_id");
 
 
@@ -65,7 +67,7 @@ const OpportunityCreate = () => {
 
 
   return (
-    <CreateBase redirect="show">
+    <CreateBase redirect={redirect}>
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <Form defaultValues={formDefaults}>
