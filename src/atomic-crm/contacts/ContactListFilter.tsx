@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
+import { endOfYesterday, startOfMonth, startOfWeek, subDays } from "date-fns";
 import { Clock, Tag, User } from "lucide-react";
 import { useGetList, useListContext } from "ra-core";
 import { cn } from "@/lib/utils";
@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { StarredFilterToggle } from "../filters/StarredFilterToggle";
+import { DateRangeFilterButton } from "../filters/DateRangeFilterButton";
 import { getTagColorClass } from "../tags/tag-colors";
 import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
@@ -49,28 +50,21 @@ export const ContactListFilter = () => {
           />
           <ToggleFilterButton
             className="w-full justify-between"
-            label="Before this week"
+            label="Last week"
             value={{
-              "last_seen@gte": undefined,
-              "last_seen@lte": startOfWeek(new Date()).toISOString(),
+              "last_seen@gte": subDays(new Date(), 7).toISOString(),
+              "last_seen@lte": endOfYesterday().toISOString(),
             }}
           />
           <ToggleFilterButton
             className="w-full justify-between"
-            label="Before this month"
+            label="This month"
             value={{
-              "last_seen@gte": undefined,
-              "last_seen@lte": startOfMonth(new Date()).toISOString(),
+              "last_seen@gte": startOfMonth(new Date()).toISOString(),
+              "last_seen@lte": undefined,
             }}
           />
-          <ToggleFilterButton
-            className="w-full justify-between"
-            label="Before last month"
-            value={{
-              "last_seen@gte": undefined,
-              "last_seen@lte": subMonths(startOfMonth(new Date()), 1).toISOString(),
-            }}
-          />
+          <DateRangeFilterButton filterKeyPrefix="last_seen" />
         </FilterCategory>
 
         <FilterCategory label="Tags" icon={<Tag className="h-4 w-4" />}>

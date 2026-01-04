@@ -14,7 +14,7 @@
 import {
   startOfWeek,
   startOfMonth,
-  subMonths,
+  subDays,
   endOfYesterday,
   isSameDay,
   format,
@@ -57,14 +57,19 @@ export function detectDatePresetLabel(
     if (isSameDay(gteDate, startOfMonth(now))) return "This month";
   }
 
-  // Only @lte set (no @gte) - "before" filters
-  if (lteDate && !gteDate) {
-    if (isSameDay(lteDate, startOfWeek(now))) return "Before this week";
-    if (isSameDay(lteDate, startOfMonth(now))) return "Before this month";
-    if (isSameDay(lteDate, subMonths(startOfMonth(now), 1))) return "Before last month";
+  // Both @gte and @lte set - range filters
+  if (gteDate && lteDate) {
+    // Last week: 7 days ago to yesterday
+    if (
+      isSameDay(gteDate, subDays(now, 7)) &&
+      isSameDay(lteDate, endOfYesterday())
+    ) {
+      return "Last week";
+    }
+    // Custom range: fall through to formatted dates
   }
 
-  // Both set (custom range) or no match - return null to use default formatting
+  // Custom range or no match - return null to use default formatting
   return null;
 }
 

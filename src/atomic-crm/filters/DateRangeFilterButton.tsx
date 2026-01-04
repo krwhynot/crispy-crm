@@ -4,16 +4,19 @@
  * A button that opens a popover with date inputs to select a custom date range.
  * Integrates with React Admin's filter system via useListContext.
  *
+ * Uses compact date inputs instead of full calendars to fit within sidebar constraints.
+ *
  * @module filters/DateRangeFilterButton
  */
 
 import { useState } from "react";
 import { useListContext } from "react-admin";
-import { format, startOfDay, endOfDay } from "date-fns";
+import { format, startOfDay, endOfDay, parseISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +25,22 @@ interface DateRangeFilterButtonProps {
   filterKeyPrefix: string;
   /** Optional class name for the trigger button */
   className?: string;
+}
+
+/**
+ * Format Date to YYYY-MM-DD for input[type="date"]
+ */
+function toInputDate(date: Date | undefined): string {
+  if (!date) return "";
+  return format(date, "yyyy-MM-dd");
+}
+
+/**
+ * Parse YYYY-MM-DD string to Date
+ */
+function fromInputDate(value: string): Date | undefined {
+  if (!value) return undefined;
+  return parseISO(value);
 }
 
 /**
@@ -42,19 +61,19 @@ export function DateRangeFilterButton({
   const gteValue = filterValues[gteKey] as string | undefined;
   const lteValue = filterValues[lteKey] as string | undefined;
 
-  // Parse dates for the calendar
+  // Parse dates for display
   const fromDate = gteValue ? new Date(gteValue) : undefined;
   const toDate = lteValue ? new Date(lteValue) : undefined;
 
   // Local state for the picker (before Apply)
-  const [selectedFrom, setSelectedFrom] = useState<Date | undefined>(fromDate);
-  const [selectedTo, setSelectedTo] = useState<Date | undefined>(toDate);
+  const [selectedFrom, setSelectedFrom] = useState<string>(toInputDate(fromDate));
+  const [selectedTo, setSelectedTo] = useState<string>(toInputDate(toDate));
 
   // Sync local state when popover opens
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
-      setSelectedFrom(fromDate);
-      setSelectedTo(toDate);
+      setSelectedFrom(toInputDate(fromDate));
+      setSelectedTo(toInputDate(toDate));
     }
     setOpen(isOpen);
   };
@@ -62,15 +81,17 @@ export function DateRangeFilterButton({
   // Apply the selected date range
   const handleApply = () => {
     const newFilters = { ...filterValues };
+    const fromParsed = fromInputDate(selectedFrom);
+    const toParsed = fromInputDate(selectedTo);
 
-    if (selectedFrom) {
-      newFilters[gteKey] = startOfDay(selectedFrom).toISOString();
+    if (fromParsed) {
+      newFilters[gteKey] = startOfDay(fromParsed).toISOString();
     } else {
       delete newFilters[gteKey];
     }
 
-    if (selectedTo) {
-      newFilters[lteKey] = endOfDay(selectedTo).toISOString();
+    if (toParsed) {
+      newFilters[lteKey] = endOfDay(toParsed).toISOString();
     } else {
       delete newFilters[lteKey];
     }
@@ -85,12 +106,12 @@ export function DateRangeFilterButton({
     delete newFilters[gteKey];
     delete newFilters[lteKey];
     setFilters(newFilters, displayedFilters);
-    setSelectedFrom(undefined);
-    setSelectedTo(undefined);
+    setSelectedFrom("");
+    setSelectedTo("");
     setOpen(false);
   };
 
-  // Check if a custom date range is active (not a preset)
+  // Check if a custom date range is active
   const hasCustomRange = fromDate || toDate;
 
   // Format the button label
@@ -106,6 +127,9 @@ export function DateRangeFilterButton({
     }
     return "Select dates";
   };
+
+  // Check if Apply should be enabled
+  const canApply = selectedFrom || selectedTo;
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -124,28 +148,35 @@ export function DateRangeFilterButton({
           </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-4" align="start">
+      <PopoverContent className="w-72 p-4" align="start">
         <div className="flex flex-col gap-4">
-          {/* From Date */}
+          {/* From Date Input */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-muted-foreground">From</label>
-            <Calendar
-              mode="single"
-              selected={selectedFrom}
-              onSelect={setSelectedFrom}
-              disabled={(date) => (selectedTo ? date > selectedTo : false)}
-              initialFocus
+            <Label htmlFor="from-date" className="text-sm font-medium">
+              From
+            </Label>
+            <Input
+              id="from-date"
+              type="date"
+              value={selectedFrom}
+              onChange={(e) => setSelectedFrom(e.target.value)}
+              max={selectedTo || undefined}
+              className="h-11"
             />
           </div>
 
-          {/* To Date */}
+          {/* To Date Input */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-muted-foreground">To</label>
-            <Calendar
-              mode="single"
-              selected={selectedTo}
-              onSelect={setSelectedTo}
-              disabled={(date) => (selectedFrom ? date < selectedFrom : false)}
+            <Label htmlFor="to-date" className="text-sm font-medium">
+              To
+            </Label>
+            <Input
+              id="to-date"
+              type="date"
+              value={selectedTo}
+              onChange={(e) => setSelectedTo(e.target.value)}
+              min={selectedFrom || undefined}
+              className="h-11"
             />
           </div>
 
@@ -163,7 +194,7 @@ export function DateRangeFilterButton({
               size="sm"
               className="flex-1 h-10"
               onClick={handleApply}
-              disabled={!selectedFrom && !selectedTo}
+              disabled={!canApply}
             >
               Apply
             </Button>
