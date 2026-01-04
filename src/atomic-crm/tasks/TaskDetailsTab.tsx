@@ -3,6 +3,10 @@ import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
+import {
+  getAutocompleteProps,
+  getQSearchAutocompleteProps,
+} from "@/atomic-crm/utils/autocompleteDefaults";
 
 export const TaskDetailsTab = () => {
   const { taskTypes } = useFormOptions();
@@ -28,6 +32,7 @@ export const TaskDetailsTab = () => {
       />
       <ReferenceInput source="organization_id" reference="organizations">
         <AutocompleteInput
+          {...getAutocompleteProps("name")}
           label="Organization"
           optionText="name"
           helperText="Link to organization"
@@ -35,6 +40,7 @@ export const TaskDetailsTab = () => {
       </ReferenceInput>
       <ReferenceInput source="opportunity_id" reference="opportunities">
         <AutocompleteInput
+          {...getAutocompleteProps("title")}
           label="Opportunity"
           optionText="title"
           helperText="Link to opportunity"
@@ -42,13 +48,18 @@ export const TaskDetailsTab = () => {
       </ReferenceInput>
       <ReferenceInput source="contact_id" reference="contacts_summary">
         <AutocompleteInput
+          {...getQSearchAutocompleteProps()}
           label="Contact"
           optionText={contactOptionText}
           helperText="Link to contact"
         />
       </ReferenceInput>
       <ReferenceInput source="sales_id" reference="sales">
-        <AutocompleteInput label="Assigned To" helperText="Who owns this task (defaults to you)" />
+        <AutocompleteInput
+          {...getQSearchAutocompleteProps()}
+          label="Assigned To"
+          helperText="Who owns this task (defaults to you)"
+        />
       </ReferenceInput>
     </div>
   );

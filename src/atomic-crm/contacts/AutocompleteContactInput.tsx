@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGetIdentity } from "ra-core";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { QuickCreateContactPopover } from "./QuickCreateContactPopover";
+import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 
 interface AutocompleteContactInputProps {
   label?: string;
@@ -44,13 +45,13 @@ export const AutocompleteContactInput = ({
   return (
     <>
       <AutocompleteInput
+        {...getQSearchAutocompleteProps()}
         source={source}
         optionText={contactOptionText}
         helperText={helperText}
         onCreate={handleCreateContact}
         createItemLabel="Create %{item}"
         label={label}
-        filterToQuery={(searchText) => ({ q: searchText })}
       />
       {showQuickCreate && organizationId && (
         <QuickCreateContactPopover

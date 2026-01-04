@@ -1,5 +1,6 @@
 import { useCreate, useNotify, Form, ReferenceInput } from "react-admin";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { getAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 import {
   Dialog,
   DialogContent,
@@ -86,7 +87,7 @@ export function LinkOpportunityModal({
         <Form onSubmit={handleLink} className="space-y-4">
           <ReferenceInput source="opportunity_id" reference="opportunities">
             <AutocompleteInput
-              filterToQuery={(searchText: string) => ({ name: searchText })}
+              {...getAutocompleteProps("name")}
               optionText={(opp: Opportunity) =>
                 opp ? `${opp.name} - ${opp.customer_organization_name || ""} (${opp.stage})` : ""
               }

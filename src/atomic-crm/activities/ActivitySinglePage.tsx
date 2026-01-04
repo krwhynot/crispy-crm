@@ -5,6 +5,10 @@ import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { FormGrid, FormSection, FormFieldWrapper } from "@/components/admin/form";
 import { contactOptionText } from "../contacts/ContactOption";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
+import {
+  getAutocompleteProps,
+  getQSearchAutocompleteProps,
+} from "../utils/autocompleteDefaults";
 
 const sentimentChoices = [
   { id: "positive", name: "Positive" },
@@ -75,6 +79,7 @@ export default function ActivitySinglePage() {
             <FormFieldWrapper name="opportunity_id">
               <ReferenceInput source="opportunity_id" reference="opportunities">
                 <AutocompleteInput
+                  {...getAutocompleteProps("name")}
                   label="Opportunity"
                   optionText="name"
                   helperText="Required for interaction activities"
@@ -86,6 +91,7 @@ export default function ActivitySinglePage() {
           <FormFieldWrapper name="contact_id">
             <ReferenceInput source="contact_id" reference="contacts_summary">
               <AutocompleteInput
+                {...getQSearchAutocompleteProps()}
                 label="Contact"
                 optionText={contactOptionText}
                 helperText="Optional contact involved"
@@ -98,6 +104,7 @@ export default function ActivitySinglePage() {
         <FormFieldWrapper name="organization_id">
           <ReferenceInput source="organization_id" reference="organizations">
             <AutocompleteInput
+              {...getAutocompleteProps("name")}
               label="Organization"
               optionText="name"
               helperText="Optional organization context"

@@ -1,4 +1,5 @@
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 import { QuickCreateOrganizationRA } from "./QuickCreatePopover";
 
 export const AutocompleteOrganizationInput = ({
@@ -14,6 +15,7 @@ export const AutocompleteOrganizationInput = ({
 }) => {
   return (
     <AutocompleteInput
+      {...getQSearchAutocompleteProps()}
       source={source}
       optionText="name"
       helperText={helperText}
@@ -27,7 +29,6 @@ export const AutocompleteOrganizationInput = ({
       }
       createItemLabel="Create %{item}"
       label={label}
-      filterToQuery={(searchText) => ({ q: searchText })}
     />
   );
 };
