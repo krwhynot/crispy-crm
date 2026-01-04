@@ -8,7 +8,6 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-import { format, isToday, isThisWeek, isThisMonth } from "date-fns";
 import {
   INTERACTION_TYPE_OPTIONS,
   SAMPLE_STATUS_OPTIONS,
@@ -32,21 +31,6 @@ const SENTIMENT_CHOICES = sentimentSchema.options.map((value) => ({
   id: value,
   name: value.charAt(0).toUpperCase() + value.slice(1),
 }));
-
-/**
- * Format date values for chip display
- */
-function formatDateLabel(value: unknown): string {
-  if (!value || typeof value !== "string") return String(value);
-
-  const date = new Date(value);
-  if (isNaN(date.getTime())) return String(value);
-
-  if (isToday(date)) return "Today";
-  if (isThisWeek(date)) return "This week";
-  if (isThisMonth(date)) return "This month";
-  return format(date, "MMM d, yyyy");
-}
 
 /**
  * Filter configuration for Activities list
@@ -77,14 +61,12 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
     key: "activity_date@gte",
     label: "After",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "activity_date_range",
   },
   {
     key: "activity_date@lte",
     label: "Before",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "activity_date_range",
   },
   {

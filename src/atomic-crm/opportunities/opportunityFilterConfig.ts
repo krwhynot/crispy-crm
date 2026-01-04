@@ -8,24 +8,8 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-import { format, isToday, isThisWeek, isThisMonth } from "date-fns";
 // Import from existing constants - note camelCase exports
 import { stageChoices, priorityChoices } from "./constants/filterChoices";
-
-/**
- * Format date values for chip display
- */
-function formatDateLabel(value: unknown): string {
-  if (!value || typeof value !== "string") return String(value);
-
-  const date = new Date(value);
-  if (isNaN(date.getTime())) return String(value);
-
-  if (isToday(date)) return "Today";
-  if (isThisWeek(date)) return "This week";
-  if (isThisMonth(date)) return "This month";
-  return format(date, "MMM d, yyyy");
-}
 
 /**
  * Filter configuration for Opportunities list
@@ -86,28 +70,24 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     key: "estimated_close_date_gte",
     label: "Close after",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "estimated_close_date_range",
   },
   {
     key: "estimated_close_date_lte",
     label: "Close before",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "estimated_close_date_range",
   },
   {
     key: "next_action_date_gte",
     label: "Action after",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "next_action_date_range",
   },
   {
     key: "next_action_date_lte",
     label: "Action before",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "next_action_date_range",
   },
   // "Recent Wins" preset filter
@@ -115,6 +95,5 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     key: "updated_at_gte",
     label: "Updated after",
     type: "date-range",
-    formatLabel: formatDateLabel,
   },
 ]);

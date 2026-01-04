@@ -7,7 +7,6 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-import { format, isToday, isThisWeek, isThisMonth } from "date-fns";
 
 /**
  * Priority choices for tasks
@@ -19,21 +18,6 @@ const PRIORITY_CHOICES = [
   { id: "high", name: "High" },
   { id: "critical", name: "Critical" },
 ];
-
-/**
- * Format date values for chip display
- */
-function formatDateLabel(value: unknown): string {
-  if (!value || typeof value !== "string") return String(value);
-
-  const date = new Date(value);
-  if (isNaN(date.getTime())) return String(value);
-
-  if (isToday(date)) return "Today";
-  if (isThisWeek(date)) return "This week";
-  if (isThisMonth(date)) return "This month";
-  return format(date, "MMM d, yyyy");
-}
 
 /**
  * Dynamic task type choices callback
@@ -65,14 +49,12 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
     key: "due_date@gte",
     label: "Due after",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "due_date_range",
   },
   {
     key: "due_date@lte",
     label: "Due before",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "due_date_range",
   },
   {
