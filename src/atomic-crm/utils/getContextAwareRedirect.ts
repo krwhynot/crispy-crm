@@ -2,9 +2,15 @@ import type { RaRecord, RedirectTo } from "ra-core";
 
 /**
  * Returns a redirect function that navigates back to parent context
- * if one exists, otherwise defaults to the new record's show page.
+ * if one exists, otherwise defaults to the new record's slide-over.
  *
- * Used with React Admin's CreateBase redirect prop.
+ * Uses the app's slide-over navigation pattern (`?view={id}`) instead of
+ * dedicated show pages. This matches the current app architecture where
+ * detail views are rendered as right-side panels on list pages.
+ *
+ * URL Patterns:
+ * - Parent context exists: `/{parentResource}?view={parentId}`
+ * - Direct create: `/{resource}?view={newId}`
  *
  * @example
  * // In ContactCreate.tsx
@@ -36,15 +42,15 @@ export const getContextAwareRedirect = (
     // Priority order: organization > opportunity > contact > new record
     // This matches the typical navigation hierarchy in the CRM
     if (organizationId) {
-      return `/organizations/${organizationId}/show`;
+      return `/organizations?view=${organizationId}`;
     }
     if (opportunityId) {
-      return `/opportunities/${opportunityId}/show`;
+      return `/opportunities?view=${opportunityId}`;
     }
     if (contactId) {
-      return `/contacts/${contactId}/show`;
+      return `/contacts?view=${contactId}`;
     }
-    // Default: go to new record's show page
-    return `/${resource}/${id}/show`;
+    // Default: go to new record's slide-over on its list page
+    return `/${resource}?view=${id}`;
   };
 };
