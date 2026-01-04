@@ -1,7 +1,7 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-03T19:36:56.415Z",
-  "item_count": 5,
+  "generated_at": "2026-01-04T06:41:27.975Z",
+  "item_count": 6,
   "items": [
     {
       "name": "useAppBarHeight",
@@ -25,6 +25,17 @@
       "dependencies": [
         "useEffect",
         "useStore"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useRecentItems",
+      "file": "src/atomic-crm/hooks/useRecentItems.ts",
+      "line": 40,
+      "parameters": [],
+      "returnType": "{ recentItems: RecentItem[]; addRecentItem: (item: Omit<RecentItem, \"viewedAt\">) => void; clearRecentItems: () => void; }",
+      "dependencies": [
+        "useCallback"
       ],
       "isReact19Action": false
     },

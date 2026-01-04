@@ -16,6 +16,7 @@ import {
   activityDraftSchema,
   type ActivityDraft,
 } from "@/atomic-crm/activities/activityDraftSchema";
+import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 
 // Lazy load QuickLogForm - saves ~15-20KB from initial chunk
 const QuickLogForm = lazy(() =>
@@ -363,6 +364,27 @@ export function QuickLogActivityDialog({
   const activityTypePreset = config?.activityType;
 
   // ═══════════════════════════════════════════════════════════════════
+  // Recently viewed items for smart defaults (FAB path)
+  // ═══════════════════════════════════════════════════════════════════
+  const { recentItems } = useRecentSearches();
+
+  // Derive smart defaults from recently viewed (only when no explicit context)
+  const recentDefaults = useMemo(() => {
+    // Skip if explicit context provided (slide-over usage)
+    if (entityContext?.contactId || entityContext?.organizationId) {
+      return {};
+    }
+
+    const recentContact = recentItems.find(item => item.entityType === "contacts");
+    const recentOrg = recentItems.find(item => item.entityType === "organizations");
+
+    return {
+      contactId: recentContact ? Number(recentContact.id) : undefined,
+      organizationId: recentOrg ? Number(recentOrg.id) : undefined,
+    };
+  }, [recentItems, entityContext?.contactId, entityContext?.organizationId]);
+
+  // ═══════════════════════════════════════════════════════════════════
   // Draft persistence state
   // ═══════════════════════════════════════════════════════════════════
   const [hasDraft, setHasDraft] = useState(false);
@@ -433,13 +455,10 @@ export function QuickLogActivityDialog({
       contextValues.activityType = activityTypePreset;
     }
 
-    // Merge: draft values + context overrides
-    return draft
-      ? { ...draft, ...contextValues }
-      : Object.keys(contextValues).length > 0
-        ? contextValues
-        : null;
-  }, [open, enableDraftPersistence, draftStorageKey, entityContext, activityTypePreset]);
+    // Merge order: recentDefaults (lowest) < draft < contextValues (highest)
+    const merged = { ...recentDefaults, ...(draft || {}), ...contextValues };
+    return Object.keys(merged).length > 0 ? merged : null;
+  }, [open, enableDraftPersistence, draftStorageKey, entityContext, activityTypePreset, recentDefaults]);
 
   // ═══════════════════════════════════════════════════════════════════
   // Dialog description based on context

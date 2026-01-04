@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-03T19:36:56.868Z",
+  "generated_at": "2026-01-04T06:41:28.449Z",
   "item_count": 7,
   "items": [
     {
@@ -10,8 +10,8 @@
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
-        "customer",
         "prospect",
+        "customer",
         "principal",
         "distributor"
       ],
@@ -632,6 +632,59 @@
           "zodType": "string",
           "constraints": [
             "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "import_session_id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "playbook_category_id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "cuisine",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "needs_review",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "sector",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,

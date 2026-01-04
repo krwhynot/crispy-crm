@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-03T19:36:45.932Z",
-  "item_count": 73,
+  "generated_at": "2026-01-04T06:41:21.270Z",
+  "item_count": 75,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -138,11 +138,12 @@
     {
       "name": "AutocompleteOrganizationInput",
       "file": "src/atomic-crm/organizations/AutocompleteOrganizationInput.tsx",
-      "line": 4,
+      "line": 5,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./QuickCreatePopover",
+        "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input"
       ],
       "isDefaultExport": false,
@@ -395,13 +396,14 @@
       "hooks": [],
       "imports": [
         "./BulkReassignButton",
+        "./OrganizationBulkDeleteButton",
         "@/components/admin/bulk-actions-toolbar",
-        "@/components/admin/bulk-delete-button",
         "@/components/admin/bulk-export-button"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "BulkReassignButton"
+        "BulkReassignButton",
+        "OrganizationBulkDeleteButton"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -414,15 +416,76 @@
       "hooks": [],
       "imports": [
         "./BulkReassignButton",
+        "./OrganizationBulkDeleteButton",
         "@/components/admin/bulk-actions-toolbar",
-        "@/components/admin/bulk-delete-button",
         "@/components/admin/bulk-export-button"
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "BulkReassignButton"
+        "BulkReassignButton",
+        "OrganizationBulkDeleteButton"
       ],
       "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "OrganizationBulkDeleteButton",
+      "file": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
+      "line": 26,
+      "type": "presentational",
+      "hooks": [
+        "useDeleteMany",
+        "useListContext",
+        "useNotify",
+        "useRefresh",
+        "useResourceContext",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/components/admin/delete-confirm-dialog",
+        "@/components/ui/button",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationWithHierarchy"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "OrganizationBulkDeleteButton",
+      "file": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
+      "line": 26,
+      "type": "presentational",
+      "hooks": [
+        "useDeleteMany",
+        "useListContext",
+        "useNotify",
+        "useRefresh",
+        "useResourceContext",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/components/admin/delete-confirm-dialog",
+        "@/components/ui/button",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "OrganizationWithHierarchy"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
       "componentRole": "wrapper"
     },
     {
@@ -1033,11 +1096,12 @@
     {
       "name": "OrganizationShow",
       "file": "src/atomic-crm/organizations/OrganizationShow.tsx",
-      "line": 42,
+      "line": 43,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../activity-log/ActivityLog",
+        "../components/TrackRecordView",
         "../contacts/Avatar",
         "../contacts/TagsList",
         "../opportunities/opportunity",
@@ -1072,7 +1136,8 @@
         "OrganizationAside",
         "OrganizationAvatar",
         "ActivitiesTab",
-        "AuthorizationsTab"
+        "AuthorizationsTab",
+        "TrackRecordView"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -1080,11 +1145,12 @@
     {
       "name": "OrganizationShow",
       "file": "src/atomic-crm/organizations/OrganizationShow.tsx",
-      "line": 42,
+      "line": 43,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../activity-log/ActivityLog",
+        "../components/TrackRecordView",
         "../contacts/Avatar",
         "../contacts/TagsList",
         "../opportunities/opportunity",
@@ -1119,7 +1185,8 @@
         "OrganizationAside",
         "OrganizationAvatar",
         "ActivitiesTab",
-        "AuthorizationsTab"
+        "AuthorizationsTab",
+        "TrackRecordView"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -1186,7 +1253,7 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
-      "line": 12,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useQuery",
@@ -1194,6 +1261,7 @@
       ],
       "imports": [
         "../providers/supabase/supabase",
+        "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
         "@/components/admin/reference-input",
         "@tanstack/react-query",
@@ -1577,7 +1645,7 @@
     {
       "name": "OrganizationShow",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 42,
+      "line": 43,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1589,7 +1657,7 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 12,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useQuery",
@@ -1789,7 +1857,7 @@
     {
       "name": "OrganizationContactsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx",
-      "line": 50,
+      "line": 52,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1800,8 +1868,10 @@
         "../constants",
         "../types",
         "@/components/layouts/sidepane",
+        "@/components/ui/button",
         "@/components/ui/scroll-area",
         "@/components/ui/skeleton",
+        "lucide-react",
         "ra-core",
         "react-router-dom"
       ],
@@ -1817,7 +1887,7 @@
     {
       "name": "OrganizationDetailsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
-      "line": 60,
+      "line": 61,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -1827,6 +1897,7 @@
       "imports": [
         "../../types",
         "../../utils/saleOptionRenderer",
+        "../BranchLocationsSection",
         "../OrganizationBadges",
         "../ParentOrganizationInput",
         "../constants",
@@ -1857,7 +1928,8 @@
         "ORG_SCOPE_CHOICES",
         "OrganizationTypeBadge",
         "PriorityBadge",
-        "ParentOrganizationInput"
+        "ParentOrganizationInput",
+        "BranchLocationsSection"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -1886,7 +1958,7 @@
     {
       "name": "OrganizationOpportunitiesTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx",
-      "line": 26,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1898,9 +1970,11 @@
         "../constants",
         "@/components/layouts/sidepane",
         "@/components/ui/badge",
+        "@/components/ui/button",
         "@/components/ui/scroll-area",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
+        "lucide-react",
         "ra-core",
         "react-router-dom"
       ],

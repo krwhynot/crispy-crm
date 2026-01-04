@@ -1,8 +1,53 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-03T19:37:00.628Z",
+  "generated_at": "2026-01-04T06:41:32.118Z",
   "items": {
     "nodes": [
+      {
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:20:enableGetChoices",
+        "name": "enableGetChoices",
+        "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
+        "line": 20,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:27:shouldRenderSuggestions",
+        "name": "shouldRenderSuggestions",
+        "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
+        "line": 27,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:37:getAutocompleteProps",
+        "name": "getAutocompleteProps",
+        "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
+        "line": 37,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:52:getQSearchAutocompleteProps",
+        "name": "getQSearchAutocompleteProps",
+        "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
+        "line": 52,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:65:getContactSearchAutocompleteProps",
+        "name": "getContactSearchAutocompleteProps",
+        "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
+        "line": 65,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
       {
         "id": "src/atomic-crm/utils/avatar/fetchWithTimeout.ts:3:fetchWithTimeout",
         "name": "fetchWithTimeout",
@@ -337,6 +382,24 @@
         "async": false
       },
       {
+        "id": "src/atomic-crm/utils/getContextAwareRedirect.ts:18:parseSourceParam",
+        "name": "parseSourceParam",
+        "file": "src/atomic-crm/utils/getContextAwareRedirect.ts",
+        "line": 18,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "name": "getContextAwareRedirect",
+        "file": "src/atomic-crm/utils/getContextAwareRedirect.ts",
+        "line": 55,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
         "id": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
         "name": "levenshteinDistance",
         "file": "src/atomic-crm/utils/levenshtein.ts",
@@ -509,6 +572,15 @@
       }
     ],
     "edges": [
+      {
+        "source": "src/atomic-crm/utils/autocompleteDefaults.ts:27:shouldRenderSuggestions",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
       {
         "source": "src/atomic-crm/utils/avatar/fetchWithTimeout.ts:3:fetchWithTimeout",
         "target": "setTimeout",
@@ -1856,6 +1928,78 @@
         "targetName": "trim",
         "edgeType": "call",
         "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:18:parseSourceParam",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:18:parseSourceParam",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:18:parseSourceParam",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "target": "parseSourceParam",
+        "targetName": "parseSourceParam",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },

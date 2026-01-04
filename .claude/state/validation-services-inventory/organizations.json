@@ -1,12 +1,12 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-03T19:36:57.523Z",
+  "generated_at": "2026-01-04T06:41:29.224Z",
   "item_count": 4,
   "items": [
     {
       "name": "validateOrganizationForSubmission",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 190,
+      "line": 198,
       "type": "formatter",
       "schemaReference": "organizationSchema",
       "errorFormatting": true,
@@ -18,7 +18,7 @@
     {
       "name": "validateCreateOrganization",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 237,
+      "line": 245,
       "type": "formatter",
       "schemaReference": "createOrganizationSchema",
       "errorFormatting": true,
@@ -30,7 +30,7 @@
     {
       "name": "validateUpdateOrganization",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 256,
+      "line": 264,
       "type": "formatter",
       "schemaReference": "updateOrganizationSchema",
       "errorFormatting": true,
@@ -42,7 +42,7 @@
     {
       "name": "validateOrganizationForm",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 276,
+      "line": 284,
       "pattern": "date"
     }
   ]

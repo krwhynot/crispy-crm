@@ -1,8 +1,30 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-03T19:36:45.900Z",
-  "item_count": 30,
+  "generated_at": "2026-01-04T06:41:21.263Z",
+  "item_count": 31,
   "items": [
+    {
+      "name": "RecentItemsWidget",
+      "file": "src/atomic-crm/dashboard/RecentItemsWidget.tsx",
+      "line": 87,
+      "type": "presentational",
+      "hooks": [
+        "useRecentSearches"
+      ],
+      "imports": [
+        "../hooks/useRecentSearches",
+        "@/components/ui/card",
+        "lucide-react",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "RecentSearchItem"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
     {
       "name": "DashboardTutorial",
       "file": "src/atomic-crm/dashboard/v3/DashboardTutorial.tsx",
@@ -33,13 +55,14 @@
     {
       "name": "PrincipalDashboardV3",
       "file": "src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
-      "line": 24,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useState"
       ],
       "imports": [
+        "../RecentItemsWidget",
         "./DashboardTutorial",
         "./components/DashboardTabPanel",
         "./components/KPISummaryRow",
@@ -55,7 +78,8 @@
         "MobileQuickActionBar",
         "TaskCompleteSheet",
         "KPISummaryRow",
-        "DashboardTutorial"
+        "DashboardTutorial",
+        "RecentItemsWidget"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -481,7 +505,7 @@
     {
       "name": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 61,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -502,9 +526,13 @@
         "./FollowUpSection",
         "@/atomic-crm/validation/activities",
         "@/components/ui/button",
+        "@/components/ui/calendar",
         "@/components/ui/form",
+        "@/components/ui/popover",
         "@/components/ui/textarea",
+        "@/lib/utils",
         "@hookform/resolvers/zod",
+        "date-fns",
         "lucide-react",
         "react",
         "react-admin",

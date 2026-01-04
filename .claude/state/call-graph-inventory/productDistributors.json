@@ -1,22 +1,22 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-03T19:37:00.568Z",
+  "generated_at": "2026-01-04T06:41:32.088Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
+        "id": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
         "name": "ProductDistributorCreate",
         "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-        "line": 27,
+        "line": 31,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "id": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "name": "ProductDistributorFormContent",
         "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-        "line": 46,
+        "line": 50,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -31,10 +31,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
+        "id": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
         "name": "ProductDistributorList",
         "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-        "line": 39,
+        "line": 47,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -69,209 +69,209 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 29,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 29,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 29,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
         "target": "CreateBase",
         "targetName": "CreateBase",
-        "edgeType": "render",
-        "line": 32,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 34,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
-        "target": "Form",
-        "targetName": "Form",
         "edgeType": "render",
         "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:27:ProductDistributorCreate",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
+        "target": "Form",
+        "targetName": "Form",
+        "edgeType": "render",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:31:ProductDistributorCreate",
         "target": "ProductDistributorFormContent",
         "targetName": "ProductDistributorFormContent",
         "edgeType": "render",
-        "line": 37,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "useFormState",
         "targetName": "useFormState",
         "edgeType": "hook",
-        "line": 47,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 67,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
-        "target": "FormToolbar",
-        "targetName": "FormToolbar",
-        "edgeType": "render",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
-        "target": "FormErrorSummary",
-        "targetName": "FormErrorSummary",
-        "edgeType": "render",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
-        "target": "AutocompleteInput",
-        "targetName": "AutocompleteInput",
-        "edgeType": "render",
         "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
+        "target": "FormToolbar",
+        "targetName": "FormToolbar",
+        "edgeType": "render",
+        "line": 109,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
+        "target": "FormErrorSummary",
+        "targetName": "FormErrorSummary",
+        "edgeType": "render",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 68,
+        "line": 63,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
+        "target": "AutocompleteInput",
+        "targetName": "AutocompleteInput",
+        "edgeType": "render",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 76,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 83,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 90,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 92,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 99,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "CancelButton",
         "targetName": "CancelButton",
         "edgeType": "render",
-        "line": 103,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:46:ProductDistributorFormContent",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx:50:ProductDistributorFormContent",
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 104,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
@@ -375,92 +375,92 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
         "target": "List",
         "targetName": "List",
         "edgeType": "render",
-        "line": 40,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
         "target": "Datagrid",
         "targetName": "Datagrid",
-        "edgeType": "render",
-        "line": 45,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 46,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
-        "target": "TextField",
-        "targetName": "TextField",
-        "edgeType": "render",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
-        "target": "TextField",
-        "targetName": "TextField",
-        "edgeType": "render",
-        "line": 50,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
-        "target": "TextField",
-        "targetName": "TextField",
-        "edgeType": "render",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
-        "target": "SelectField",
-        "targetName": "SelectField",
         "edgeType": "render",
         "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
-        "target": "DateField",
-        "targetName": "DateField",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
         "edgeType": "render",
         "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:39:ProductDistributorList",
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
+        "target": "SelectField",
+        "targetName": "SelectField",
+        "edgeType": "render",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
         "target": "DateField",
         "targetName": "DateField",
         "edgeType": "render",
-        "line": 55,
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/ProductDistributorList.tsx:47:ProductDistributorList",
+        "target": "DateField",
+        "targetName": "DateField",
+        "edgeType": "render",
+        "line": 63,
         "conditional": false,
         "inLoop": false
       },

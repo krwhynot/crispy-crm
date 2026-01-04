@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-03T19:36:45.941Z",
+  "generated_at": "2026-01-04T06:41:21.274Z",
   "item_count": 30,
   "items": [
     {
@@ -91,10 +91,11 @@
     {
       "name": "ProductDetailsInputTab",
       "file": "src/atomic-crm/products/ProductDetailsInputTab.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "../utils/autocompleteDefaults",
         "../validation/products",
         "@/components/admin/autocomplete-input",
         "@/components/admin/form",
