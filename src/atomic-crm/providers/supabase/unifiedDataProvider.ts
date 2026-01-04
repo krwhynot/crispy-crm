@@ -488,6 +488,39 @@ async function wrapMethod<T>(
       throw new HttpError(friendlyMessage, 400);
     }
 
+    /**
+     * RLS POLICY VIOLATION HANDLING
+     *
+     * 403 from RLS policy violations should NOT trigger logout.
+     * ra-supabase-core treats 403 as auth failure and calls logout,
+     * but RLS violations are permission errors, not authentication failures.
+     *
+     * Transform into a 400 error so React Admin displays it as a
+     * notification instead of triggering the auth flow.
+     */
+    if (
+      extendedError?.status === 403 ||
+      (typeof message === "string" && (
+        message.includes("row-level security") ||
+        message.includes("policy") ||
+        message.includes("permission denied")
+      ))
+    ) {
+      const friendlyMessage = "You don't have permission to modify this item.";
+
+      if (DEV) {
+        devWarn("DataProvider", "RLS policy violation (403→400):", {
+          method,
+          resource,
+          originalMessage: message,
+          status: extendedError?.status,
+        });
+      }
+
+      // Throw HttpError with 400 (not 403) to prevent logout trigger
+      throw new HttpError(friendlyMessage, 400);
+    }
+
     // For validation errors, ensure React Admin format
     // This allows errors to be displayed inline next to form fields
     if (extendedError?.body?.errors && typeof extendedError.body.errors === "object") {
