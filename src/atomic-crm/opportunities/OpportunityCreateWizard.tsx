@@ -11,7 +11,7 @@
  * 4. Additional Details - classification, notes
  */
 import { useMemo } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { useFormState } from "react-hook-form";
@@ -60,12 +60,14 @@ const OPPORTUNITY_FIELD_LABELS: Record<string, string> = {
 
 const OpportunityCreateWizard = () => {
   const { data: identity, isPending: identityLoading } = useGetIdentity();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  // Context-aware redirect: returns to parent context if navigated from org/opp
+  const redirect = getContextAwareRedirect(searchParams);
 
   // Parse ?source=JSON URL parameter (React Admin pattern for pre-filling forms)
   // Example: ?source={"customer_organization_id":123}
   const urlSourceParam = useMemo(() => {
-    const searchParams = new URLSearchParams(location.search);
     const sourceJson = searchParams.get("source");
     if (!sourceJson) return null;
     try {
@@ -73,7 +75,7 @@ const OpportunityCreateWizard = () => {
     } catch {
       return null;
     }
-  }, [location.search]);
+  }, [searchParams]);
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
@@ -127,7 +129,7 @@ const OpportunityCreateWizard = () => {
   }
 
   return (
-    <CreateBase redirect="show">
+    <CreateBase redirect={redirect}>
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <Form defaultValues={formDefaults} mode="onBlur" key={urlSourceParam?.customer_organization_id ?? "no-prefill"}>
@@ -140,6 +142,7 @@ const OpportunityCreateWizard = () => {
                   checkForSimilar={checkForSimilar}
                   hasConfirmed={hasConfirmed}
                   resetConfirmation={resetConfirmation}
+                  contextAwareRedirect={redirect}
                 />
               </CardContent>
             </Card>
@@ -166,16 +169,18 @@ interface OpportunityWizardContentProps {
   checkForSimilar: (name: string) => Promise<void>;
   hasConfirmed: boolean;
   resetConfirmation: () => void;
+  contextAwareRedirect: (resource: string, id?: string | number) => string;
 }
 
 const OpportunityWizardContent = ({
   checkForSimilar,
   hasConfirmed,
   resetConfirmation: _resetConfirmation,
+  contextAwareRedirect,
 }: OpportunityWizardContentProps) => {
   const { errors } = useFormState();
   const notify = useNotify();
-  const redirect = useRedirect();
+  const redirectFn = useRedirect();
   const [create] = useCreate();
 
   const { showWarning, confirmDiscard, cancelDiscard, handlePotentialDiscard } =
@@ -196,7 +201,9 @@ const OpportunityWizardContent = ({
         {
           onSuccess: (record) => {
             notify("Opportunity created successfully", { type: "success" });
-            redirect("show", "opportunities", record.id);
+            // Use context-aware redirect: returns to parent org if navigated from there
+            const redirectPath = contextAwareRedirect("opportunities", record.id);
+            redirectFn(redirectPath);
           },
           onError: (error: unknown) => {
             const errorMessage =
@@ -211,7 +218,7 @@ const OpportunityWizardContent = ({
   };
 
   const handleCancel = () => {
-    handlePotentialDiscard(() => redirect("list", "opportunities"));
+    handlePotentialDiscard(() => redirectFn("list", "opportunities"));
   };
 
   return (
