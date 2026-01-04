@@ -29,6 +29,7 @@ import { SaleAvatar } from "../sales/SaleAvatar";
 import { WorkflowManagementSection } from "./WorkflowManagementSection";
 import { ActivityTimelineFilters } from "./ActivityTimelineFilters";
 import { RelatedOpportunitiesSection } from "./RelatedOpportunitiesSection";
+import { TrackRecordView } from "../components/TrackRecordView";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -75,7 +76,9 @@ const OpportunityShowContent = () => {
   if (isPending || !record) return null;
 
   return (
-    <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
+    <>
+      <TrackRecordView />
+      <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
       <main role="main" aria-label="Opportunity details">
         {record.deleted_at ? <ArchivedBanner /> : null}
         <Card>
@@ -353,6 +356,7 @@ const OpportunityShowContent = () => {
         <OpportunityAside />
       </aside>
     </ResponsiveGrid>
+    </>
   );
 };
 
