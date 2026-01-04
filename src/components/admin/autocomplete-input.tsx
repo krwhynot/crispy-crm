@@ -74,6 +74,14 @@ export const AutocompleteInput = (
   });
 
   const [filterValue, setFilterValue] = React.useState("");
+  const debounceRef = useRef<NodeJS.Timeout>();
+
+  // Cleanup debounce timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   const [open, setOpen] = React.useState(false);
   const selectedChoice = allChoices.find((choice) => getChoiceValue(choice) === field.value);
@@ -142,17 +150,8 @@ export const AutocompleteInput = (
     filter: filterValue,
   });
 
-  // TEMPORARY DEBUG - Remove after fixing Bug #2
-  console.log("🔍 Create item debug:", {
-    hasCreate: !!create,
-    hasOnCreate: !!onCreate,
-    filterValue,
-    createLabel,
-    createItemLabel,
-  });
   const createItem =
     (create || onCreate) && (filterValue !== "" || createLabel) ? getCreateItem(filterValue) : null;
-  console.log("🔍 Create item result:", { createItem: !!createItem, createItemValue: createItem });
   let finalChoices = allChoices;
   if (createItem) {
     finalChoices = [...finalChoices, createItem];
@@ -197,10 +196,20 @@ export const AutocompleteInput = (
                   value={filterValue}
                   onValueChange={(filter) => {
                     setFilterValue(filter);
+
                     // We don't want the ChoicesContext to filter the choices if the input
                     // is not from a reference as it would also filter out the selected values
                     if (isFromReference) {
-                      setFilters(filterToQuery(filter));
+                      // Clear any pending debounced request
+                      if (debounceRef.current) clearTimeout(debounceRef.current);
+
+                      // Debounce API calls and enforce minimum character requirement
+                      debounceRef.current = setTimeout(() => {
+                        // Only call setFilters if empty (reset) or min chars met
+                        if (filter === "" || filter.length >= AUTOCOMPLETE_MIN_CHARS) {
+                          setFilters(filterToQuery(filter));
+                        }
+                      }, AUTOCOMPLETE_DEBOUNCE_MS);
                     }
                   }}
                 />
