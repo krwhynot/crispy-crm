@@ -1,6 +1,8 @@
 import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
-import { CreateBase, Form } from "ra-core";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { CreateBase, Form, type RedirectTo } from "ra-core";
+
+import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 
 import {
   FormLoadingSkeleton,
@@ -17,9 +19,12 @@ import { ContactFormTutorial } from "./ContactFormTutorial";
 const ContactCreate = () => {
   const { defaults, isLoading } = useSmartDefaults();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  // Compute context-aware redirect (returns to parent if navigated from org/opp)
+  const redirect = getContextAwareRedirect(searchParams);
 
   // Read URL params (US3: ?organization_id=123)
-  const searchParams = new URLSearchParams(location.search);
   const urlOrganizationId = searchParams.get("organization_id");
 
   // Read location.state (US2: navigation from Org detail)
@@ -58,13 +63,13 @@ const ContactCreate = () => {
   );
 
   return (
-    <CreateBase redirect="list" transform={transformData}>
+    <CreateBase redirect={redirect} transform={transformData}>
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar className="mb-6" />
             <Form defaultValues={formDefaults} mode="onBlur">
-              <ContactFormContent />
+              <ContactFormContent redirect={redirect} />
             </Form>
           </FormProgressProvider>
         </div>
@@ -74,13 +79,18 @@ const ContactCreate = () => {
   );
 };
 
-const ContactFormContent = () => {
+interface ContactFormContentProps {
+  redirect: RedirectTo;
+}
+
+const ContactFormContent = ({ redirect }: ContactFormContentProps) => {
   return (
     <>
       <ContactInputs />
       <CreateFormFooter
         resourceName="contact"
         redirectPath="/contacts"
+        redirect={redirect}
         tutorialAttribute="contact-save-btn"
         preserveFields={["organization_id", "sales_id"]}
       />

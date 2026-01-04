@@ -8,6 +8,7 @@ import { SaveButton } from "@/components/admin/form";
 interface CreateFormFooterProps {
   resourceName: string;
   redirectPath: string;
+  redirect?: (resource: string, id: string | number, data: unknown) => string;
   tutorialAttribute?: string;
   preserveFields?: string[]; // Fields to preserve on "Save & Add Another"
 }
@@ -15,11 +16,12 @@ interface CreateFormFooterProps {
 export const CreateFormFooter = ({
   resourceName,
   redirectPath,
+  redirect,
   tutorialAttribute,
   preserveFields = [],
 }: CreateFormFooterProps) => {
   const notify = useNotify();
-  const redirect = useRedirect();
+  const redirectFn = useRedirect();
   const { reset, getValues } = useFormContext();
   const { isDirty } = useFormState();
 
@@ -28,8 +30,8 @@ export const CreateFormFooter = ({
       const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
       if (!confirmed) return;
     }
-    redirect(redirectPath);
-  }, [isDirty, redirect, redirectPath]);
+    redirectFn(redirectPath);
+  }, [isDirty, redirectFn, redirectPath]);
 
   const handleError = useCallback(
     (error: Error) => {
@@ -50,12 +52,16 @@ export const CreateFormFooter = ({
           alwaysEnable
           data-tutorial={tutorialAttribute}
           mutationOptions={{
-            onSuccess: () => {
+            onSuccess: (data: { id: string | number }) => {
               notify(
                 `${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`,
                 { type: "success" }
               );
-              redirect(redirectPath);
+              if (redirect) {
+                redirectFn(redirect(resourceName + "s", data.id, data));
+              } else {
+                redirectFn(redirectPath);
+              }
             },
             onError: handleError,
           }}

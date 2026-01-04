@@ -1,5 +1,6 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
@@ -31,10 +32,12 @@ const URL_TYPE_MAP: Record<string, string> = {
  */
 export default function TaskCreate() {
   const { data: identity } = useGetIdentity();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  // Compute context-aware redirect (returns to parent entity if navigated from one)
+  const redirect = getContextAwareRedirect(searchParams);
 
   // Read URL params for pre-fill (follow-up task creation flow)
-  const searchParams = new URLSearchParams(location.search);
   const urlTitle = searchParams.get("title");
   const urlType = searchParams.get("type");
   const urlContactId = searchParams.get("contact_id");
@@ -53,7 +56,7 @@ export default function TaskCreate() {
   };
 
   return (
-    <CreateBase redirect="list">
+    <CreateBase redirect={redirect}>
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
@@ -67,6 +70,7 @@ export default function TaskCreate() {
               <CreateFormFooter
                 resourceName="task"
                 redirectPath="/tasks"
+                redirect={redirect}
                 tutorialAttribute="task-save-btn"
               />
             </Form>
