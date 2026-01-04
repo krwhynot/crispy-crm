@@ -21,6 +21,13 @@ import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
  */
 export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
   {
+    key: "id",
+    label: "Starred",
+    type: "multiselect",
+    // Custom label for chip display - shows "Starred" instead of individual IDs
+    formatLabel: () => "Starred items only",
+  },
+  {
     key: "organization_type",
     label: "Type",
     type: "multiselect",

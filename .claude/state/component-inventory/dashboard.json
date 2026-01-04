@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-04T06:41:21.263Z",
+  "generated_at": "2026-01-04T15:59:38.625Z",
   "item_count": 31,
   "items": [
     {
@@ -55,14 +55,13 @@
     {
       "name": "PrincipalDashboardV3",
       "file": "src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
-      "line": 25,
+      "line": 24,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useState"
       ],
       "imports": [
-        "../RecentItemsWidget",
         "./DashboardTutorial",
         "./components/DashboardTabPanel",
         "./components/KPISummaryRow",
@@ -78,8 +77,7 @@
         "MobileQuickActionBar",
         "TaskCompleteSheet",
         "KPISummaryRow",
-        "DashboardTutorial",
-        "RecentItemsWidget"
+        "DashboardTutorial"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -159,46 +157,54 @@
     {
       "name": "DashboardTabPanel",
       "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
-      "line": 45,
+      "line": 129,
       "type": "presentational",
       "hooks": [
         "useTaskCount"
       ],
       "imports": [
+        "../../../hooks/useRecentSearches",
         "../hooks/useTaskCount",
         "@/components/ui/badge",
         "@/components/ui/card",
         "@/components/ui/skeleton",
         "@/components/ui/tabs",
         "lucide-react",
-        "react"
+        "react",
+        "react-router-dom"
       ],
       "isDefaultExport": false,
-      "childComponents": [],
+      "childComponents": [
+        "RecentSearchItem"
+      ],
       "contextDependencies": [],
-      "componentRole": "leaf"
+      "componentRole": "wrapper"
     },
     {
       "name": "DashboardTabPanel",
       "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
-      "line": 45,
+      "line": 129,
       "type": "presentational",
       "hooks": [
         "useTaskCount"
       ],
       "imports": [
+        "../../../hooks/useRecentSearches",
         "../hooks/useTaskCount",
         "@/components/ui/badge",
         "@/components/ui/card",
         "@/components/ui/skeleton",
         "@/components/ui/tabs",
         "lucide-react",
-        "react"
+        "react",
+        "react-router-dom"
       ],
       "isDefaultExport": true,
-      "childComponents": [],
+      "childComponents": [
+        "RecentSearchItem"
+      ],
       "contextDependencies": [],
-      "componentRole": "leaf"
+      "componentRole": "wrapper"
     },
     {
       "name": "EntityCombobox",
@@ -288,16 +294,19 @@
     {
       "name": "LogActivityFAB",
       "file": "src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx",
-      "line": 156,
+      "line": 157,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useEffect",
+        "useMemo",
+        "useRecentSearches",
         "useRef",
         "useState"
       ],
       "imports": [
         "@/atomic-crm/activities/activityDraftSchema",
+        "@/atomic-crm/hooks/useRecentSearches",
         "@/atomic-crm/utils/safeJsonParse",
         "@/atomic-crm/validation/activities",
         "@/components/ui/button",

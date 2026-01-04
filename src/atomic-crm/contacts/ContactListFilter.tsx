@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { StarredFilterToggle } from "../filters/StarredFilterToggle";
 import { getTagColorClass } from "../tags/tag-colors";
 import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
@@ -24,6 +25,9 @@ export const ContactListFilter = () => {
 
   return (
     <div className="flex flex-col gap-4" data-tutorial="contact-filters">
+      {/* Starred Quick Filter - TOP of sidebar */}
+      <StarredFilterToggle entityType="contacts" />
+
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
         <FilterCategory label="Last activity" icon={<Clock className="h-4 w-4" />}>

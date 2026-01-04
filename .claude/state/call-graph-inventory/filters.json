@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-04T06:41:32.044Z",
+  "generated_at": "2026-01-04T15:59:47.767Z",
   "items": {
     "nodes": [
       {
@@ -44,6 +44,15 @@
         "name": "FilterSidebar",
         "file": "src/atomic-crm/filters/FilterSidebar.tsx",
         "line": 49,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "name": "StarredFilterToggle",
+        "file": "src/atomic-crm/filters/StarredFilterToggle.tsx",
+        "line": 32,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -893,6 +902,267 @@
         "targetName": "SearchInput",
         "edgeType": "render",
         "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "useFavorites",
+        "targetName": "useFavorites",
+        "edgeType": "hook",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "every",
+        "targetName": "every",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 76,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 95,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "handleClick",
+        "targetName": "handleClick",
+        "edgeType": "callback",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "TooltipProvider",
+        "targetName": "TooltipProvider",
+        "edgeType": "render",
+        "line": 125,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "Tooltip",
+        "targetName": "Tooltip",
+        "edgeType": "render",
+        "line": 126,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "TooltipTrigger",
+        "targetName": "TooltipTrigger",
+        "edgeType": "render",
+        "line": 127,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "TooltipContent",
+        "targetName": "TooltipContent",
+        "edgeType": "render",
+        "line": 128,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "target": "Star",
+        "targetName": "Star",
+        "edgeType": "render",
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },

@@ -1,7 +1,7 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-04T06:41:21.264Z",
-  "item_count": 5,
+  "generated_at": "2026-01-04T15:59:38.626Z",
+  "item_count": 6,
   "items": [
     {
       "name": "FilterCategory",
@@ -109,6 +109,34 @@
       "isDefaultExport": false,
       "childComponents": [],
       "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "StarredFilterToggle",
+      "file": "src/atomic-crm/filters/StarredFilterToggle.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useFavorites",
+        "useListContext",
+        "useMemo"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/favorites",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "@/hooks/useFavorites",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useListContext"
+      ],
       "componentRole": "leaf"
     }
   ]

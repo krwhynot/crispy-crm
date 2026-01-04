@@ -5,6 +5,7 @@ import { useListContext } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { StarredFilterToggle } from "../filters/StarredFilterToggle";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_PARENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
 import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
@@ -41,6 +42,9 @@ export const OrganizationListFilter = () => {
 
   return (
     <div className="flex flex-col gap-4" data-tutorial="org-filters">
+      {/* Starred Quick Filter - TOP of sidebar */}
+      <StarredFilterToggle entityType="organizations" />
+
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
         {/* Playbook Categories - for Distributors/Principals */}

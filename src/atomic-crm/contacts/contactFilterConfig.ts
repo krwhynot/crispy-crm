@@ -35,6 +35,13 @@ function formatDateLabel(value: unknown): string {
  */
 export const CONTACT_FILTER_CONFIG = validateFilterConfig([
   {
+    key: "id",
+    label: "Starred",
+    type: "multiselect",
+    // Custom label for chip display - shows "Starred" instead of individual IDs
+    formatLabel: () => "Starred items only",
+  },
+  {
     key: "first_name",
     label: "Name",
     type: "search",

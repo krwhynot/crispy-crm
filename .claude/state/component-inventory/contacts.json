@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-04T06:41:21.261Z",
+  "generated_at": "2026-01-04T15:59:38.624Z",
   "item_count": 57,
   "items": [
     {
@@ -931,7 +931,7 @@
     {
       "name": "ContactListFilter",
       "file": "src/atomic-crm/contacts/ContactListFilter.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -939,6 +939,7 @@
       ],
       "imports": [
         "../filters/FilterCategory",
+        "../filters/StarredFilterToggle",
         "../tags/tag-colors",
         "@/components/admin/OwnerFilterDropdown",
         "@/components/admin/toggle-filter-button",
@@ -950,7 +951,8 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "FilterCategory"
+        "FilterCategory",
+        "StarredFilterToggle"
       ],
       "contextDependencies": [
         "useListContext"
