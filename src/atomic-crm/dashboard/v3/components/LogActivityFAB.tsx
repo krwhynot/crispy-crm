@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, lazy, Suspense, useRef } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense, useRef, useMemo } from "react";
 import { PencilLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,7 @@ import {
   activityDraftSchema,
   type ActivityDraft,
 } from "@/atomic-crm/activities/activityDraftSchema";
+import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 
 // Lazy load QuickLogForm - saves ~15-20KB from main dashboard chunk
 const QuickLogForm = lazy(() =>
@@ -165,6 +166,20 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
     setHasDraft(draft !== null);
   }, []);
 
+  // Recently viewed items for smart pre-fill (mirrors QuickLogActivityDialog pattern)
+  const { recentItems } = useRecentSearches();
+
+  // Derive smart defaults from recently viewed contacts/orgs
+  const recentDefaults = useMemo(() => {
+    const recentContact = recentItems.find(item => item.entityType === "contacts");
+    const recentOrg = recentItems.find(item => item.entityType === "organizations");
+
+    return {
+      ...(recentContact && { contactId: Number(recentContact.id) }),
+      ...(recentOrg && { organizationId: Number(recentOrg.id) }),
+    };
+  }, [recentItems]);
+
   // Handle form completion (successful save)
   const handleComplete = useCallback(() => {
     clearDraft();
@@ -208,8 +223,16 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
     };
   }, []);
 
-  // Get initial draft for form
-  const initialDraft = isOpen ? loadDraft() : null;
+  // Get initial draft for form, merging recently viewed with draft
+  // Priority: recentDefaults (lowest) < draft (highest)
+  const initialDraft = useMemo(() => {
+    if (!isOpen) return null;
+
+    const draft = loadDraft();
+    const merged = { ...recentDefaults, ...(draft || {}) };
+
+    return Object.keys(merged).length > 0 ? merged : null;
+  }, [isOpen, recentDefaults]);
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
