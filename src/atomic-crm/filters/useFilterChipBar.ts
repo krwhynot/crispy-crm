@@ -10,6 +10,7 @@
 import { useCallback, useMemo } from "react";
 import { useListContext } from "react-admin";
 import type { ChipFilterConfig, FilterChoice } from "./filterConfigSchema";
+import { detectDatePresetLabel, formatDateValue } from "./dateFilterLabels";
 import { useOrganizationNames } from "./useOrganizationNames";
 import { useSalesNames } from "./useSalesNames";
 import { useTagNames } from "./useTagNames";
@@ -180,19 +181,37 @@ export function useFilterChipBar(
 
         // Find all configs in this removalGroup
         const groupConfigs = filterConfig.filter((c) => c.removalGroup === config.removalGroup);
-        const groupLabels: string[] = [];
 
-        groupConfigs.forEach((gc) => {
-          const gValue = filterValues[gc.key];
-          if (gValue !== undefined && gValue !== null) {
-            const formatted = gc.formatLabel ? gc.formatLabel(gValue) : String(gValue);
-            groupLabels.push(formatted);
-          }
-        });
+        // Extract @gte and @lte values for date range detection
+        const gteConfig = groupConfigs.find(
+          (c) => c.key.includes("@gte") || c.key.includes("_gte")
+        );
+        const lteConfig = groupConfigs.find(
+          (c) => c.key.includes("@lte") || c.key.includes("_lte")
+        );
+        const gteValue = gteConfig
+          ? (filterValues[gteConfig.key] as string | undefined)
+          : undefined;
+        const lteValue = lteConfig
+          ? (filterValues[lteConfig.key] as string | undefined)
+          : undefined;
 
-        if (groupLabels.length > 0) {
-          // Combined label: "Jan 1 – Jan 31" or just "Jan 1" if only one endpoint
-          const combinedLabel = groupLabels.join(" – ");
+        // Try to detect a known sidebar preset (e.g., "This week", "Before this month")
+        const presetLabel = detectDatePresetLabel(gteValue, lteValue);
+
+        let combinedLabel: string;
+        if (presetLabel) {
+          // Use the semantic preset label
+          combinedLabel = presetLabel;
+        } else {
+          // Fall back to formatted date range for custom ranges
+          const labels: string[] = [];
+          if (gteValue) labels.push(formatDateValue(gteValue));
+          if (lteValue) labels.push(formatDateValue(lteValue));
+          combinedLabel = labels.join(" – ");
+        }
+
+        if (combinedLabel) {
           // Use removalGroup as key so removal clears all
           result.push({
             key: config.removalGroup,
