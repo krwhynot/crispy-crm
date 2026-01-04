@@ -29,6 +29,7 @@ import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { DEFAULT_SEGMENT_ID } from "../../constants";
 import { organizationSchema } from "../../validation/organizations";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
+import { enableGetChoices } from "../../utils/autocompleteDefaults";
 
 const priorityChoices = [
   { id: "low", name: "Low" },
@@ -163,6 +164,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               source="customer_organization_id"
               reference="organizations"
               filter={{ "organization_type@in": "(prospect,customer)" }}
+              enableGetChoices={enableGetChoices}
             >
               <AutocompleteOrganizationInput
                 label="Customer Organization *"
@@ -203,6 +205,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               source="principal_organization_id"
               reference="organizations"
               filter={{ organization_type: "principal" }}
+              enableGetChoices={enableGetChoices}
             >
               <AutocompleteOrganizationInput
                 label="Principal Organization *"
@@ -293,6 +296,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               source="distributor_organization_id"
               reference="organizations"
               filter={{ organization_type: "distributor" }}
+              enableGetChoices={enableGetChoices}
             >
               <AutocompleteOrganizationInput
                 label="Distributor Organization"
@@ -323,6 +327,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                     source="contact_ids"
                     reference="contacts_summary"
                     filter={contactFilter}
+                    enableGetChoices={enableGetChoices}
                   >
                     <AutocompleteArrayInput
                       label={false}

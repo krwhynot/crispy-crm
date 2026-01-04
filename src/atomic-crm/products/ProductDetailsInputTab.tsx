@@ -4,6 +4,7 @@ import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { FormFieldWrapper } from "@/components/admin/form";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
+import { enableGetChoices } from "../utils/autocompleteDefaults";
 
 /**
  * Product Details tab for ProductCreate/ProductEdit forms.
@@ -58,6 +59,7 @@ export const ProductDetailsInputTab = () => {
             reference="organizations"
             label="Principal/Supplier *"
             filter={{ organization_type: "principal" }}
+            enableGetChoices={enableGetChoices}
           >
             <AutocompleteInput
               optionText="name"

@@ -7,6 +7,7 @@ import { CompactFormRow, FormFieldWrapper, FormSectionWithProgress } from "@/com
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
+import { enableGetChoices } from "../utils/autocompleteDefaults";
 import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
@@ -84,6 +85,7 @@ export const ContactCompactForm = () => {
               reference="organizations"
               label="Organization *"
               isRequired
+              enableGetChoices={enableGetChoices}
             >
               <AutocompleteOrganizationInput helperText="Required field" />
             </ReferenceInput>
