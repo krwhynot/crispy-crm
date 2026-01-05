@@ -14,7 +14,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
-import { useFormState } from "react-hook-form";
+import { useFormState, useFormContext } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useInAppUnsavedChanges } from "@/hooks";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
@@ -210,6 +210,15 @@ const OpportunityWizardContent = ({
             const errorMessage =
               error instanceof Error ? error.message : "Failed to create opportunity";
             notify(errorMessage, { type: "error" });
+
+            // Extract field errors from server response and set on form
+            // Error format from wrapMethod: { message, body: { errors: { field: message } } }
+            const extendedError = error as { body?: { errors?: Record<string, string> } };
+            if (extendedError.body?.errors) {
+              Object.entries(extendedError.body.errors).forEach(([field, message]) => {
+                form.setError(field, { type: "server", message });
+              });
+            }
           },
         }
       );
