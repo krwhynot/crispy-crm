@@ -528,6 +528,19 @@ async function wrapMethod<T>(
       throw error;
     }
 
+    // Handle { message, errors } format from validateData()
+    // The !extendedError.code check prevents matching Supabase database errors
+    if (
+      extendedError?.errors &&
+      typeof extendedError.errors === "object" &&
+      !extendedError.code
+    ) {
+      throw {
+        message: extendedError.message || "Validation failed",
+        body: { errors: extendedError.errors },
+      };
+    }
+
     // For Supabase errors, try to extract field-specific errors
     if (extendedError?.code && extendedError?.details) {
       const fieldErrors: Record<string, string> = {};
