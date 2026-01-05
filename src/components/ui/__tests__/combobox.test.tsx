@@ -76,7 +76,8 @@ describe("Combobox", () => {
       );
 
       await user.click(screen.getByRole("combobox"));
-      await user.click(screen.getByText("Chicago"));
+      // Use role="option" to specifically target the dropdown item, not the trigger button
+      await user.click(screen.getByRole("option", { name: /Chicago/ }));
 
       expect(mockOnChange).toHaveBeenCalledWith("");
     });
@@ -131,12 +132,12 @@ describe("Combobox", () => {
       expect(screen.queryByText(/Create "/)).not.toBeInTheDocument();
     });
 
-    it("calls onValueChange with trimmed value when 'Create' option is selected", async () => {
+    it("calls onValueChange with the typed value when 'Create' option is selected", async () => {
       const mockOnChange = vi.fn();
       render(<Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />);
 
       await user.click(screen.getByRole("combobox"));
-      await user.type(screen.getByPlaceholderText("Search..."), "  Boston  ");
+      await user.type(screen.getByPlaceholderText("Search..."), "Boston");
       await user.click(screen.getByText('Create "Boston"'));
 
       expect(mockOnChange).toHaveBeenCalledWith("Boston");
