@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-04T15:59:47.797Z",
+  "generated_at": "2026-01-05T07:13:31.023Z",
   "items": {
     "nodes": [
       {
@@ -22,28 +22,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/authProvider.ts:93:isPublicPath",
+        "id": "src/atomic-crm/providers/supabase/authProvider.ts:116:isPublicPath",
         "name": "isPublicPath",
         "file": "src/atomic-crm/providers/supabase/authProvider.ts",
-        "line": 93,
+        "line": 116,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
+        "id": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
         "name": "getSaleFromCache",
         "file": "src/atomic-crm/providers/supabase/authProvider.ts",
-        "line": 118,
+        "line": 141,
         "nodeType": "arrow",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/authProvider.ts:163:invalidateIdentityCache",
+        "id": "src/atomic-crm/providers/supabase/authProvider.ts:186:invalidateIdentityCache",
         "name": "invalidateIdentityCache",
         "file": "src/atomic-crm/providers/supabase/authProvider.ts",
-        "line": 163,
+        "line": 186,
         "nodeType": "arrow",
         "exported": true,
         "async": false
@@ -544,19 +544,19 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1744:resourceUsesValidation",
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1790:resourceUsesValidation",
         "name": "resourceUsesValidation",
         "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
-        "line": 1744,
+        "line": 1790,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1751:resourceUsesTransformers",
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1797:resourceUsesTransformers",
         "name": "resourceUsesTransformers",
         "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
-        "line": 1751,
+        "line": 1797,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -681,110 +681,110 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:93:isPublicPath",
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:116:isPublicPath",
         "target": "some",
         "targetName": "some",
-        "edgeType": "call",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:93:isPublicPath",
-        "target": "startsWith",
-        "targetName": "startsWith",
-        "edgeType": "call",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "now",
-        "targetName": "now",
-        "edgeType": "call",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "getSession",
-        "targetName": "getSession",
         "edgeType": "call",
         "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "includes",
-        "targetName": "includes",
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:116:isPublicPath",
+        "target": "startsWith",
+        "targetName": "startsWith",
         "edgeType": "call",
-        "line": 127,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "signOut",
-        "targetName": "signOut",
-        "edgeType": "call",
-        "line": 128,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "maybeSingle",
-        "targetName": "maybeSingle",
-        "edgeType": "call",
-        "line": 139,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "match",
-        "targetName": "match",
-        "edgeType": "call",
-        "line": 139,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "select",
-        "targetName": "select",
-        "edgeType": "call",
-        "line": 139,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 139,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:118:getSaleFromCache",
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
         "target": "now",
         "targetName": "now",
         "edgeType": "call",
-        "line": 155,
+        "line": 142,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/authProvider.ts:163:invalidateIdentityCache",
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "getSession",
+        "targetName": "getSession",
+        "edgeType": "call",
+        "line": 147,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "signOut",
+        "targetName": "signOut",
+        "edgeType": "call",
+        "line": 151,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "maybeSingle",
+        "targetName": "maybeSingle",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "select",
+        "targetName": "select",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:141:getSaleFromCache",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:186:invalidateIdentityCache",
         "target": "log",
         "targetName": "log",
         "edgeType": "call",
-        "line": 166,
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
@@ -3247,28 +3247,64 @@
       },
       {
         "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:387:wrapMethod",
-        "target": "match",
-        "targetName": "match",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 504,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:387:wrapMethod",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
         "line": 505,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1744:resourceUsesValidation",
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:387:wrapMethod",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 506,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:387:wrapMethod",
+        "target": "devWarn",
+        "targetName": "devWarn",
+        "edgeType": "call",
+        "line": 512,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:387:wrapMethod",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 551,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1790:resourceUsesValidation",
         "target": "hasValidation",
         "targetName": "hasValidation",
         "edgeType": "call",
-        "line": 1745,
+        "line": 1791,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1751:resourceUsesTransformers",
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1797:resourceUsesTransformers",
         "target": "hasTransform",
         "targetName": "hasTransform",
         "edgeType": "call",
-        "line": 1752,
+        "line": 1798,
         "conditional": false,
         "inLoop": false
       },

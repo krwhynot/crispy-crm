@@ -25,7 +25,7 @@ export default function ActivitySinglePage() {
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
               <SelectInput
                 source="type"
-                label="Interaction Type"
+                label="Interaction Type *"
                 choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
                   id: option.value,
                   name: option.label,
@@ -40,7 +40,7 @@ export default function ActivitySinglePage() {
         <FormFieldWrapper name="subject" isRequired>
           <TextInput
             source="subject"
-            label="Subject"
+            label="Subject *"
             isRequired
             helperText="Summarize the outcome or topic"
           />
@@ -48,7 +48,7 @@ export default function ActivitySinglePage() {
 
         <FormGrid>
           <FormFieldWrapper name="activity_date" isRequired countDefaultAsFilled>
-            <TextInput source="activity_date" label="Date" type="date" isRequired />
+            <TextInput source="activity_date" label="Date *" type="date" isRequired />
           </FormFieldWrapper>
           <FormFieldWrapper name="duration_minutes">
             <TextInput
