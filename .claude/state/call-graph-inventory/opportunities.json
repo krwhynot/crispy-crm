@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-05T07:13:30.974Z",
+  "generated_at": "2026-01-05T20:07:08.736Z",
   "items": {
     "nodes": [
       {
@@ -20305,7 +20305,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 295,
+        "line": 294,
         "conditional": false,
         "inLoop": false
       },
@@ -20314,7 +20314,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 304,
+        "line": 302,
         "conditional": false,
         "inLoop": false
       },
@@ -20323,7 +20323,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 308,
+        "line": 306,
         "conditional": false,
         "inLoop": false
       },
@@ -20332,7 +20332,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 312,
+        "line": 310,
         "conditional": false,
         "inLoop": false
       },
@@ -20341,7 +20341,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 332,
+        "line": 330,
         "conditional": false,
         "inLoop": false
       },
@@ -20350,7 +20350,7 @@
         "target": "handleCitySelect",
         "targetName": "handleCitySelect",
         "edgeType": "call",
-        "line": 348,
+        "line": 340,
         "conditional": false,
         "inLoop": false
       },
@@ -20359,7 +20359,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 363,
+        "line": 356,
         "conditional": false,
         "inLoop": false
       },
@@ -20368,7 +20368,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 365,
+        "line": 358,
         "conditional": false,
         "inLoop": false
       },
@@ -20377,7 +20377,7 @@
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 366,
+        "line": 359,
         "conditional": false,
         "inLoop": false
       },
@@ -20386,7 +20386,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 366,
+        "line": 359,
         "conditional": false,
         "inLoop": false
       },
@@ -20395,7 +20395,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 380,
+        "line": 373,
         "conditional": false,
         "inLoop": false
       },
@@ -20404,7 +20404,7 @@
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 395,
+        "line": 388,
         "conditional": false,
         "inLoop": false
       },
@@ -20413,7 +20413,7 @@
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "call",
-        "line": 395,
+        "line": 388,
         "conditional": false,
         "inLoop": false
       },
@@ -20422,7 +20422,7 @@
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 404,
+        "line": 397,
         "conditional": false,
         "inLoop": false
       },
@@ -20431,7 +20431,7 @@
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "call",
-        "line": 404,
+        "line": 397,
         "conditional": false,
         "inLoop": false
       },
@@ -20512,7 +20512,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 298,
+        "line": 297,
         "conditional": false,
         "inLoop": false
       },
@@ -20521,7 +20521,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 307,
+        "line": 305,
         "conditional": false,
         "inLoop": false
       },
@@ -20530,7 +20530,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 311,
+        "line": 309,
         "conditional": false,
         "inLoop": false
       },
@@ -20539,7 +20539,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 326,
+        "line": 324,
         "conditional": false,
         "inLoop": false
       },
@@ -20548,7 +20548,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 337,
+        "line": 335,
         "conditional": false,
         "inLoop": false
       },
@@ -20557,7 +20557,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 361,
+        "line": 354,
         "conditional": false,
         "inLoop": false
       },
@@ -20566,7 +20566,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 377,
+        "line": 370,
         "conditional": false,
         "inLoop": false
       },
@@ -20575,7 +20575,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 388,
+        "line": 381,
         "conditional": false,
         "inLoop": false
       },
@@ -20584,7 +20584,7 @@
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "callback",
-        "line": 388,
+        "line": 381,
         "conditional": false,
         "inLoop": false
       },
@@ -20593,7 +20593,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 393,
+        "line": 386,
         "conditional": false,
         "inLoop": false
       },
@@ -20602,7 +20602,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 401,
+        "line": 394,
         "conditional": false,
         "inLoop": false
       },
@@ -20638,7 +20638,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 295,
+        "line": 294,
         "conditional": false,
         "inLoop": false
       },
@@ -20647,7 +20647,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 304,
+        "line": 302,
         "conditional": false,
         "inLoop": false
       },
@@ -20656,7 +20656,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 308,
+        "line": 306,
         "conditional": false,
         "inLoop": false
       },
@@ -20665,7 +20665,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 312,
+        "line": 310,
         "conditional": false,
         "inLoop": false
       },
@@ -20674,7 +20674,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 332,
+        "line": 330,
         "conditional": false,
         "inLoop": false
       },
@@ -20683,7 +20683,7 @@
         "target": "Combobox",
         "targetName": "Combobox",
         "edgeType": "render",
-        "line": 344,
+        "line": 336,
         "conditional": false,
         "inLoop": false
       },
@@ -20692,7 +20692,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 362,
+        "line": 355,
         "conditional": false,
         "inLoop": false
       },
@@ -20701,7 +20701,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 378,
+        "line": 371,
         "conditional": false,
         "inLoop": false
       },

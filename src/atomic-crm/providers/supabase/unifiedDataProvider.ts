@@ -209,8 +209,7 @@ function logError(
     params: {
       id: params?.id,
       ids: params?.ids ? `[${params.ids.length} items]` : undefined,
-      // Expanded from 200 to 1000 chars for pagination debugging
-      filter: params?.filter ? JSON.stringify(params.filter).slice(0, 1000) : undefined,
+      filter: params?.filter ? JSON.stringify(params.filter).slice(0, 200) : undefined,
       sort: params?.sort,
       pagination: params?.pagination,
       target: params?.target,
@@ -219,10 +218,9 @@ function logError(
     timestamp: new Date().toISOString(),
     // Include validation errors for debugging
     validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
-    // Supabase/PostgREST error details
+    // Supabase error details
     supabaseCode: extendedError?.code,
     supabaseDetails: extendedError?.details,
-    supabaseHint: extendedError?.hint,
   };
 
   // Track request failure for error rate calculation

@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-05T07:13:26.932Z",
+  "generated_at": "2026-01-05T20:07:01.279Z",
   "item_count": 12,
   "items": [
     {
@@ -130,7 +130,7 @@
       "file": "src/atomic-crm/opportunities/hooks/useQuickAdd.ts",
       "line": 21,
       "parameters": [],
-      "returnType": "import(\"/home/krwhynot/projects/crispy-crm/node_modules/@tanstack/react-query/build/legacy/types\").UseMutationResult<any, Error, { first_name: string; last_name: string; org_name: string; city: string; state: string; campaign: string; principal_id: number; product_ids: number[]; phone?: string; email?: string; quick_note?: string; }, unknown>",
+      "returnType": "import(\"/home/krwhynot/projects/crispy-crm/node_modules/@tanstack/react-query/build/legacy/types\").UseMutationResult<any, Error, { org_name: string; campaign: string; principal_id: number; product_ids: number[]; first_name?: string; last_name?: string; phone?: string; email?: string; city?: string; state?: string; quick_note?: string; }, unknown>",
       "dependencies": [
         "useDataProvider",
         "useMutation",
