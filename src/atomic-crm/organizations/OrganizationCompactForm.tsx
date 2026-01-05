@@ -12,6 +12,7 @@ import { StateComboboxInput } from "@/components/admin/state-combobox-input";
 import { PRIORITY_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
+import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
@@ -40,6 +41,9 @@ export const OrganizationCompactForm = () => {
         </CompactFormRow>
 
         <CompactFormRow>
+          <FormFieldWrapper name="parent_organization_id">
+            <ParentOrganizationInput />
+          </FormFieldWrapper>
           <FormFieldWrapper name="priority">
             <SelectInput
               source="priority"

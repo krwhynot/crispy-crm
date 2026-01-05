@@ -1,17 +1,12 @@
 import { SelectInput } from "@/components/admin/select-input";
 import { BooleanInput } from "@/components/admin/boolean-input";
 import { CollapsibleSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
-import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { ORG_SCOPE_CHOICES } from "./constants";
 
 export const OrganizationHierarchySection = () => {
   return (
     <CollapsibleSection title="Organization Hierarchy">
-      <div className="space-y-4">
-        <FormFieldWrapper name="parent_organization_id">
-          <ParentOrganizationInput />
-        </FormFieldWrapper>
-        <CompactFormRow>
+      <CompactFormRow>
           <FormFieldWrapper name="org_scope">
             <SelectInput
               source="org_scope"
@@ -37,8 +32,7 @@ export const OrganizationHierarchySection = () => {
               Corporation)
             </p>
           </div>
-        </CompactFormRow>
-      </div>
+      </CompactFormRow>
     </CollapsibleSection>
   );
 };

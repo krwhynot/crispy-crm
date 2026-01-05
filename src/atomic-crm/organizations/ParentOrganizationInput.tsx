@@ -3,10 +3,7 @@ import { useRecordContext } from "ra-core";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../providers/supabase/supabase";
-import {
-  AUTOCOMPLETE_DEBOUNCE_MS,
-  shouldRenderSuggestions,
-} from "@/atomic-crm/utils/autocompleteDefaults";
+import { AUTOCOMPLETE_DEBOUNCE_MS } from "@/atomic-crm/utils/autocompleteDefaults";
 
 /**
  * Parent organization input that prevents hierarchy cycles.
@@ -70,12 +67,15 @@ export const ParentOrganizationInput = () => {
     >
       <AutocompleteInput
         debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-        shouldRenderSuggestions={shouldRenderSuggestions}
         label="Parent Organization"
         emptyText="No parent organization"
         helperText="Select a parent organization if this is a branch location"
         optionText="name"
-        filterToQuery={(searchText) => ({ "name@ilike": `%${searchText}%` })}
+        filterToQuery={(searchText) =>
+          searchText
+            ? { "name@ilike": `%${searchText}%` }
+            : { "parent_organization_id@is": "null" }
+        }
       />
     </ReferenceInput>
   );
