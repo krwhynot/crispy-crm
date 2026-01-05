@@ -66,15 +66,17 @@ const DuplicateCheckSaveButton = ({
     async (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
 
-      // Get current form values
-      const values = form.getValues();
-      const name = values.name?.trim();
-
-      if (!name) {
-        // Empty name - trigger validation to show required field error
-        form.trigger("name");
+      // Validate ALL form fields first (not just name)
+      // This ensures errors display in FormErrorSummary before any other checks
+      const isValid = await form.trigger();
+      if (!isValid) {
+        // Form has validation errors - they're now set and will display
         return;
       }
+
+      // Get current form values (we know name is valid now)
+      const values = form.getValues();
+      const name = values.name?.trim();
 
       // Check for duplicates
       const duplicate = await checkForDuplicate(name);
