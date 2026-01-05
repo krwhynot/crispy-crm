@@ -8,14 +8,15 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, US_STATES } from "./constants";
 
 /**
  * Filter configuration for Organizations list
  *
- * Matches filters available in OrganizationListFilter.tsx:
+ * Matches filters available in OrganizationListFilter.tsx and OrganizationDatagridHeader.tsx:
  * - organization_type: Organization classification (customer, prospect, etc.)
  * - priority: A-D priority scale
+ * - state: US state code (IN, OH, etc.) - uses 2-letter codes, NOT full names
  * - segment_id: Playbook category reference
  * - sales_id: Owner/sales rep reference
  */
@@ -38,6 +39,12 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
     label: "Priority",
     type: "multiselect",
     choices: [...PRIORITY_CHOICES],
+  },
+  {
+    key: "state",
+    label: "State",
+    type: "multiselect",
+    choices: [...US_STATES],
   },
   {
     key: "segment_id",
