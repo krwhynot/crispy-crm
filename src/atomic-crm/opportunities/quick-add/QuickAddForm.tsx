@@ -290,7 +290,6 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             name="first_name"
             label="First Name"
             error={errors.first_name?.message}
-            required
           >
             <Input ref={firstNameRef} {...register("first_name")} placeholder="John" />
           </AccessibleField>
@@ -299,7 +298,6 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             name="last_name"
             label="Last Name"
             error={errors.last_name?.message}
-            required
           >
             <Input {...register("last_name")} placeholder="Doe" />
           </AccessibleField>

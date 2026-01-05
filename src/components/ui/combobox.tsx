@@ -29,6 +29,8 @@ interface ComboboxProps {
   className?: string;
   disabled?: boolean;
   id?: string;
+  /** When true, allows creating new options by typing values not in the list */
+  creatable?: boolean;
 }
 
 export function Combobox({
@@ -41,6 +43,7 @@ export function Combobox({
   className,
   disabled = false,
   id,
+  creatable = false,
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
@@ -91,6 +94,23 @@ export function Combobox({
                   {option.label}
                 </CommandItem>
               ))}
+              {creatable &&
+                searchValue.trim() &&
+                !options.some(
+                  (opt) =>
+                    opt.label.toLowerCase() === searchValue.trim().toLowerCase()
+                ) && (
+                  <CommandItem
+                    value={`__create__${searchValue.trim()}`}
+                    onSelect={() => {
+                      onValueChange?.(searchValue.trim());
+                      setOpen(false);
+                      setSearchValue("");
+                    }}
+                  >
+                    Create "{searchValue.trim()}"
+                  </CommandItem>
+                )}
             </CommandGroup>
           </CommandList>
         </Command>
