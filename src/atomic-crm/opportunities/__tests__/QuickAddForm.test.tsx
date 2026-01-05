@@ -256,9 +256,7 @@ describe("QuickAddForm", () => {
     await user.click(screen.getByRole("button", { name: /save & close/i }));
 
     await waitFor(() => {
-      // Check for at least some key validation messages
-      expect(screen.getByText(/first name required/i)).toBeInTheDocument();
-      expect(screen.getByText(/last name required/i)).toBeInTheDocument();
+      // Check for required validation messages (first_name, last_name, city, state are now optional)
       expect(screen.getByText(/organization name required/i)).toBeInTheDocument();
     });
   });

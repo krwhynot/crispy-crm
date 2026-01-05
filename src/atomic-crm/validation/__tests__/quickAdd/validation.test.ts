@@ -27,8 +27,8 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(result.principal_id).toBe(123);
     });
 
-    it("should reject missing first_name", () => {
-      const invalidData = {
+    it("should accept missing first_name (optional)", () => {
+      const data = {
         last_name: "Doe",
         phone: "555-1234",
         org_name: "Acme Corp",
@@ -38,21 +38,13 @@ describe("Quick Add Booth Visitor Validation", () => {
         principal_id: 123,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
-      try {
-        quickAddSchema.parse(invalidData);
-      } catch (error) {
-        if (error instanceof z.ZodError) {
-          const firstNameError = error.issues.find((issue) => issue.path[0] === "first_name");
-          expect(firstNameError).toBeDefined();
-          // Zod gives type error when field is missing entirely
-          expect(firstNameError?.code).toBe("invalid_type");
-        }
-      }
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
+      const result = quickAddSchema.parse(data);
+      expect(result.first_name).toBeUndefined();
     });
 
-    it("should reject empty first_name", () => {
-      const invalidData = {
+    it("should accept empty first_name (optional)", () => {
+      const data = {
         first_name: "",
         last_name: "Doe",
         phone: "555-1234",
@@ -63,11 +55,11 @@ describe("Quick Add Booth Visitor Validation", () => {
         principal_id: 123,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
     });
 
-    it("should reject missing last_name", () => {
-      const invalidData = {
+    it("should accept missing last_name (optional)", () => {
+      const data = {
         first_name: "John",
         phone: "555-1234",
         org_name: "Acme Corp",
@@ -77,16 +69,9 @@ describe("Quick Add Booth Visitor Validation", () => {
         principal_id: 123,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
-      try {
-        quickAddSchema.parse(invalidData);
-      } catch (error) {
-        if (error instanceof z.ZodError) {
-          const lastNameError = error.issues.find((issue) => issue.path[0] === "last_name");
-          expect(lastNameError).toBeDefined();
-          expect(lastNameError?.code).toBe("invalid_type");
-        }
-      }
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
+      const result = quickAddSchema.parse(data);
+      expect(result.last_name).toBeUndefined();
     });
 
     it("should reject missing org_name", () => {
@@ -112,8 +97,8 @@ describe("Quick Add Booth Visitor Validation", () => {
       }
     });
 
-    it("should reject missing city", () => {
-      const invalidData = {
+    it("should accept missing city (optional)", () => {
+      const data = {
         first_name: "John",
         last_name: "Doe",
         phone: "555-1234",
@@ -123,20 +108,13 @@ describe("Quick Add Booth Visitor Validation", () => {
         principal_id: 123,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
-      try {
-        quickAddSchema.parse(invalidData);
-      } catch (error) {
-        if (error instanceof z.ZodError) {
-          const cityError = error.issues.find((issue) => issue.path[0] === "city");
-          expect(cityError).toBeDefined();
-          expect(cityError?.code).toBe("invalid_type");
-        }
-      }
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
+      const result = quickAddSchema.parse(data);
+      expect(result.city).toBeUndefined();
     });
 
-    it("should reject missing state", () => {
-      const invalidData = {
+    it("should accept missing state (optional)", () => {
+      const data = {
         first_name: "John",
         last_name: "Doe",
         phone: "555-1234",
@@ -146,16 +124,9 @@ describe("Quick Add Booth Visitor Validation", () => {
         principal_id: 123,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
-      try {
-        quickAddSchema.parse(invalidData);
-      } catch (error) {
-        if (error instanceof z.ZodError) {
-          const stateError = error.issues.find((issue) => issue.path[0] === "state");
-          expect(stateError).toBeDefined();
-          expect(stateError?.code).toBe("invalid_type");
-        }
-      }
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
+      const result = quickAddSchema.parse(data);
+      expect(result.state).toBeUndefined();
     });
 
     it("should reject missing campaign", () => {
