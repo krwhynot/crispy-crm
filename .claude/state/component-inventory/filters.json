@@ -1,8 +1,35 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-04T15:59:38.626Z",
-  "item_count": 6,
+  "generated_at": "2026-01-05T07:13:20.078Z",
+  "item_count": 7,
   "items": [
+    {
+      "name": "DateRangeFilterButton",
+      "file": "src/atomic-crm/filters/DateRangeFilterButton.tsx",
+      "line": 50,
+      "type": "presentational",
+      "hooks": [
+        "useListContext",
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "leaf"
+    },
     {
       "name": "FilterCategory",
       "file": "src/atomic-crm/filters/FilterCategory.tsx",

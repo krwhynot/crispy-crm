@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-04T15:59:38.630Z",
+  "generated_at": "2026-01-05T07:13:20.093Z",
   "item_count": 75,
   "items": [
     {
@@ -521,7 +521,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 135,
+      "line": 137,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -568,7 +568,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 135,
+      "line": 137,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1609,7 +1609,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 135,
+      "line": 137,
       "type": "presentational",
       "hooks": [
         "useCallback",

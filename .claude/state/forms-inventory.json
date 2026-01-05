@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-04T15:59:45.688Z",
+  "generated_at": "2026-01-05T07:13:27.950Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:e932e31269d3a191",
+  "checksum": "sha256:e7496844df8342d3",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
     "src/atomic-crm/activities/ActivityEdit.tsx": "80dec2decee2",
@@ -33,7 +33,7 @@
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "449fd353b4c9",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "5b10ff22f2fe",
-    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "c81da4df2cb6",
+    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "da6816f96a2e",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "c708dc329667",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
@@ -41,7 +41,7 @@
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
     "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "dcaaa7351875",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "312f55506318",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "cfd06596f54b",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "47163a7a8a08",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "fa95a5cc5ec7",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "a22f8f2b9cb9",
     "src/atomic-crm/organizations/QuickCreatePopover.tsx": "aacff00db1fe",
@@ -711,7 +711,7 @@
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 135,
+      "line": 137,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -741,7 +741,7 @@
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 135,
+      "line": 137,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",

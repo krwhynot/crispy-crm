@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-04T15:59:47.736Z",
+  "generated_at": "2026-01-05T07:13:30.924Z",
   "items": {
     "nodes": [
       {
@@ -181,15 +181,6 @@
         "line": 349,
         "nodeType": "component",
         "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "name": "formatDateLabel",
-        "file": "src/atomic-crm/activities/activityFilterConfig.ts",
-        "line": 39,
-        "nodeType": "function",
-        "exported": false,
         "async": false
       },
       {
@@ -3305,78 +3296,6 @@
         "targetName": "handleComplete",
         "edgeType": "callback",
         "line": 584,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 40,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "isNaN",
-        "targetName": "isNaN",
-        "edgeType": "call",
-        "line": 43,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 43,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 43,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "isToday",
-        "targetName": "isToday",
-        "edgeType": "call",
-        "line": 45,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "isThisWeek",
-        "targetName": "isThisWeek",
-        "edgeType": "call",
-        "line": 46,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "isThisMonth",
-        "targetName": "isThisMonth",
-        "edgeType": "call",
-        "line": 47,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/activityFilterConfig.ts:39:formatDateLabel",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 48,
         "conditional": false,
         "inLoop": false
       },

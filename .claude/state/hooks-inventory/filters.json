@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-04T15:59:44.739Z",
+  "generated_at": "2026-01-05T07:13:26.929Z",
   "item_count": 8,
   "items": [
     {
@@ -37,7 +37,7 @@
     {
       "name": "useFilterChipBar",
       "file": "src/atomic-crm/filters/useFilterChipBar.ts",
-      "line": 76,
+      "line": 77,
       "parameters": [
         "filterConfig",
         "context"

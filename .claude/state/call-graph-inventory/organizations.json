@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-04T15:59:47.787Z",
+  "generated_at": "2026-01-05T07:13:30.998Z",
   "items": {
     "nodes": [
       {
@@ -157,28 +157,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationCreate.tsx:125:handleFormKeyDown",
+        "id": "src/atomic-crm/organizations/OrganizationCreate.tsx:127:handleFormKeyDown",
         "name": "handleFormKeyDown",
         "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-        "line": 125,
+        "line": 127,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "id": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "name": "OrganizationCreate",
         "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-        "line": 135,
+        "line": 137,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationCreate.tsx:309:OrganizationFormContent",
+        "id": "src/atomic-crm/organizations/OrganizationCreate.tsx:311:OrganizationFormContent",
         "name": "OrganizationFormContent",
         "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-        "line": 309,
+        "line": 311,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -3256,10 +3256,19 @@
       },
       {
         "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:56:DuplicateCheckSaveButton",
+        "target": "trigger",
+        "targetName": "trigger",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:56:DuplicateCheckSaveButton",
         "target": "getValues",
         "targetName": "getValues",
         "edgeType": "call",
-        "line": 70,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
@@ -3268,17 +3277,8 @@
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 71,
+        "line": 79,
         "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:56:DuplicateCheckSaveButton",
-        "target": "trigger",
-        "targetName": "trigger",
-        "edgeType": "call",
-        "line": 75,
-        "conditional": true,
         "inLoop": false
       },
       {
@@ -3286,7 +3286,7 @@
         "target": "checkForDuplicate",
         "targetName": "checkForDuplicate",
         "edgeType": "call",
-        "line": 80,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
@@ -3295,7 +3295,7 @@
         "target": "onDuplicateFound",
         "targetName": "onDuplicateFound",
         "edgeType": "call",
-        "line": 83,
+        "line": 85,
         "conditional": true,
         "inLoop": false
       },
@@ -3304,7 +3304,7 @@
         "target": "click",
         "targetName": "click",
         "edgeType": "call",
-        "line": 88,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
@@ -3313,7 +3313,7 @@
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 104,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
@@ -3322,466 +3322,466 @@
         "target": "handleClick",
         "targetName": "handleClick",
         "edgeType": "callback",
-        "line": 107,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:125:handleFormKeyDown",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:127:handleFormKeyDown",
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 131,
+        "line": 133,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useLocation",
         "targetName": "useLocation",
-        "edgeType": "hook",
-        "line": 136,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "useCreate",
-        "targetName": "useCreate",
-        "edgeType": "hook",
-        "line": 137,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
         "edgeType": "hook",
         "line": 138,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "useCreate",
+        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
+        "edgeType": "hook",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 141,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useSmartDefaults",
         "targetName": "useSmartDefaults",
         "edgeType": "hook",
-        "line": 142,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useDuplicateOrgCheck",
         "targetName": "useDuplicateOrgCheck",
         "edgeType": "hook",
-        "line": 146,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useRef",
         "targetName": "useRef",
         "edgeType": "hook",
-        "line": 149,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useState",
         "targetName": "useState",
-        "edgeType": "hook",
-        "line": 150,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "useGetList",
-        "targetName": "useGetList",
         "edgeType": "hook",
         "line": 152,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "useCallback",
-        "targetName": "useCallback",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "useGetList",
+        "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 172,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 174,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 173,
+        "line": 175,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 180,
+        "line": 182,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 188,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "setIsCreating",
         "targetName": "setIsCreating",
-        "edgeType": "call",
-        "line": 191,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "transformValues",
-        "targetName": "transformValues",
         "edgeType": "call",
         "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "transformValues",
+        "targetName": "transformValues",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 194,
+        "line": 196,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "bypassDuplicate",
         "targetName": "bypassDuplicate",
-        "edgeType": "call",
-        "line": 199,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "redirect",
-        "targetName": "redirect",
-        "edgeType": "call",
-        "line": 202,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 205,
+        "line": 203,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "redirect",
+        "targetName": "redirect",
+        "edgeType": "call",
+        "line": 204,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 207,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "setIsCreating",
         "targetName": "setIsCreating",
         "edgeType": "call",
-        "line": 212,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 217,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "clearDuplicate",
         "targetName": "clearDuplicate",
         "edgeType": "call",
-        "line": 218,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 223,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "clearDuplicate",
-        "targetName": "clearDuplicate",
-        "edgeType": "call",
         "line": 225,
-        "conditional": true,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "redirect",
-        "targetName": "redirect",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "clearDuplicate",
+        "targetName": "clearDuplicate",
         "edgeType": "call",
         "line": 227,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "redirect",
+        "targetName": "redirect",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 239,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 239,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "useForm",
         "targetName": "useForm",
         "edgeType": "hook",
-        "line": 252,
+        "line": 254,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "zodResolver",
         "targetName": "zodResolver",
         "edgeType": "call",
-        "line": 253,
+        "line": 255,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "CreateBase",
         "targetName": "CreateBase",
         "edgeType": "render",
-        "line": 272,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "handleFormKeyDown",
         "targetName": "handleFormKeyDown",
         "edgeType": "callback",
-        "line": 275,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "FormProgressProvider",
-        "targetName": "FormProgressProvider",
-        "edgeType": "render",
         "line": 277,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "Form",
-        "targetName": "Form",
-        "edgeType": "render",
-        "line": 278,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 280,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 281,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "FormLoadingSkeleton",
-        "targetName": "FormLoadingSkeleton",
-        "edgeType": "render",
-        "line": 264,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "FormProgressBar",
-        "targetName": "FormProgressBar",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "FormProgressProvider",
+        "targetName": "FormProgressProvider",
         "edgeType": "render",
         "line": 279,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "OrganizationFormContent",
-        "targetName": "OrganizationFormContent",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "Form",
+        "targetName": "Form",
+        "edgeType": "render",
+        "line": 280,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 282,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "handleDuplicateFound",
-        "targetName": "handleDuplicateFound",
-        "edgeType": "callback",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
         "line": 283,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "FormLoadingSkeleton",
+        "targetName": "FormLoadingSkeleton",
+        "edgeType": "render",
+        "line": 266,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "FormProgressBar",
+        "targetName": "FormProgressBar",
+        "edgeType": "render",
+        "line": 281,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "OrganizationFormContent",
+        "targetName": "OrganizationFormContent",
+        "edgeType": "render",
+        "line": 284,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "handleDuplicateFound",
+        "targetName": "handleDuplicateFound",
+        "edgeType": "callback",
+        "line": 285,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "DuplicateOrgWarningDialog",
         "targetName": "DuplicateOrgWarningDialog",
         "edgeType": "render",
-        "line": 296,
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
         "target": "handleCancelDuplicate",
         "targetName": "handleCancelDuplicate",
-        "edgeType": "callback",
-        "line": 300,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "handleProceedAnyway",
-        "targetName": "handleProceedAnyway",
-        "edgeType": "callback",
-        "line": 301,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:135:OrganizationCreate",
-        "target": "handleViewExisting",
-        "targetName": "handleViewExisting",
         "edgeType": "callback",
         "line": 302,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:309:OrganizationFormContent",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "handleProceedAnyway",
+        "targetName": "handleProceedAnyway",
+        "edgeType": "callback",
+        "line": 303,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:137:OrganizationCreate",
+        "target": "handleViewExisting",
+        "targetName": "handleViewExisting",
+        "edgeType": "callback",
+        "line": 304,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:311:OrganizationFormContent",
         "target": "useUnsavedChangesWarning",
         "targetName": "useUnsavedChangesWarning",
         "edgeType": "hook",
-        "line": 318,
+        "line": 320,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:309:OrganizationFormContent",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:311:OrganizationFormContent",
         "target": "FormToolbar",
         "targetName": "FormToolbar",
-        "edgeType": "render",
-        "line": 323,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:309:OrganizationFormContent",
-        "target": "OrganizationInputs",
-        "targetName": "OrganizationInputs",
-        "edgeType": "render",
-        "line": 322,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:309:OrganizationFormContent",
-        "target": "CancelButton",
-        "targetName": "CancelButton",
         "edgeType": "render",
         "line": 325,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:309:OrganizationFormContent",
-        "target": "DuplicateCheckSaveButton",
-        "targetName": "DuplicateCheckSaveButton",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:311:OrganizationFormContent",
+        "target": "OrganizationInputs",
+        "targetName": "OrganizationInputs",
         "edgeType": "render",
-        "line": 326,
+        "line": 324,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:309:OrganizationFormContent",
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:311:OrganizationFormContent",
+        "target": "CancelButton",
+        "targetName": "CancelButton",
+        "edgeType": "render",
+        "line": 327,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:311:OrganizationFormContent",
+        "target": "DuplicateCheckSaveButton",
+        "targetName": "DuplicateCheckSaveButton",
+        "edgeType": "render",
+        "line": 328,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreate.tsx:311:OrganizationFormContent",
         "target": "onDuplicateFound",
         "targetName": "onDuplicateFound",
         "edgeType": "callback",
-        "line": 327,
+        "line": 329,
         "conditional": false,
         "inLoop": false
       },
