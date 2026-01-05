@@ -179,6 +179,7 @@ const OpportunityWizardContent = ({
   contextAwareRedirect,
 }: OpportunityWizardContentProps) => {
   const { errors } = useFormState();
+  const form = useFormContext();
   const notify = useNotify();
   const redirectFn = useRedirect();
   const [create] = useCreate();
