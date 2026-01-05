@@ -264,9 +264,9 @@ Before running tests 3-8, ensure these code changes are made:
 - [x] Prop destructured with default `false` (line 46)
 - [x] Create option rendered when conditions met (lines 97-113)
 
-### 2. QuickAddForm (TODO)
+### 2. QuickAddForm (DONE)
 **File:** `src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx`
-- [ ] Add `creatable` prop to City Combobox (around line 336)
+- [x] Add `creatable` prop to City Combobox (line 345)
 
 ```tsx
 // Before:
