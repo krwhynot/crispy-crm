@@ -1,6 +1,6 @@
 {
   "chunk_name": "quickAdd",
-  "generated_at": "2026-01-05T07:13:27.309Z",
+  "generated_at": "2026-01-05T20:07:01.773Z",
   "item_count": 1,
   "items": [
     {
@@ -13,10 +13,9 @@
           "name": "first_name",
           "zodType": "string",
           "constraints": [
-            "min(1, \"First name required\")",
             "max(100)"
           ],
-          "optional": false,
+          "optional": true,
           "nullable": false,
           "hasTransform": false,
           "hasDefault": false
@@ -25,10 +24,9 @@
           "name": "last_name",
           "zodType": "string",
           "constraints": [
-            "min(1, \"Last name required\")",
             "max(100)"
           ],
-          "optional": false,
+          "optional": true,
           "nullable": false,
           "hasTransform": false,
           "hasDefault": false
@@ -72,10 +70,9 @@
           "name": "city",
           "zodType": "string",
           "constraints": [
-            "min(1, \"City required\")",
             "max(100)"
           ],
-          "optional": false,
+          "optional": true,
           "nullable": false,
           "hasTransform": false,
           "hasDefault": false
@@ -84,10 +81,9 @@
           "name": "state",
           "zodType": "string",
           "constraints": [
-            "min(1, \"State required\")",
             "max(50)"
           ],
-          "optional": false,
+          "optional": true,
           "nullable": false,
           "hasTransform": false,
           "hasDefault": false

@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-05T07:13:20.093Z",
-  "item_count": 75,
+  "generated_at": "2026-01-05T20:06:51.891Z",
+  "item_count": 76,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -491,7 +491,7 @@
     {
       "name": "OrganizationCompactForm",
       "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useCityStateMapping"
@@ -499,6 +499,7 @@
       "imports": [
         "../utils/saleOptionRenderer",
         "./OrganizationHierarchySection",
+        "./ParentOrganizationInput",
         "./PrincipalAwareTypeInput",
         "./constants",
         "@/components/admin/SegmentComboboxInput",
@@ -513,6 +514,7 @@
       "childComponents": [
         "PRIORITY_CHOICES",
         "OrganizationHierarchySection",
+        "ParentOrganizationInput",
         "PrincipalAwareTypeInput"
       ],
       "contextDependencies": [],
@@ -625,7 +627,8 @@
       "isDefaultExport": false,
       "childComponents": [
         "ORGANIZATION_TYPE_CHOICES",
-        "PRIORITY_CHOICES"
+        "PRIORITY_CHOICES",
+        "US_STATES"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -643,7 +646,8 @@
       "isDefaultExport": false,
       "childComponents": [
         "ORGANIZATION_TYPE_CHOICES",
-        "PRIORITY_CHOICES"
+        "PRIORITY_CHOICES",
+        "US_STATES"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -661,7 +665,27 @@
       "isDefaultExport": false,
       "childComponents": [
         "ORGANIZATION_TYPE_CHOICES",
-        "PRIORITY_CHOICES"
+        "PRIORITY_CHOICES",
+        "US_STATES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "OrganizationStateHeader",
+      "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
+      "line": 80,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORGANIZATION_TYPE_CHOICES",
+        "PRIORITY_CHOICES",
+        "US_STATES"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -743,11 +767,10 @@
     {
       "name": "OrganizationHierarchySection",
       "file": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx",
-      "line": 7,
+      "line": 6,
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "./ParentOrganizationInput",
         "./constants",
         "@/components/admin/boolean-input",
         "@/components/admin/form",
@@ -755,7 +778,6 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "ParentOrganizationInput",
         "ORG_SCOPE_CHOICES"
       ],
       "contextDependencies": [],
@@ -941,7 +963,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 239,
+      "line": 249,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -991,6 +1013,7 @@
         "OrganizationNameHeader",
         "OrganizationTypeHeader",
         "OrganizationPriorityHeader",
+        "OrganizationStateHeader",
         "PageTutorialTrigger",
         "Organization",
         "Sale",
@@ -1005,7 +1028,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 239,
+      "line": 249,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1055,6 +1078,7 @@
         "OrganizationNameHeader",
         "OrganizationTypeHeader",
         "OrganizationPriorityHeader",
+        "OrganizationStateHeader",
         "PageTutorialTrigger",
         "Organization",
         "Sale",
@@ -1255,7 +1279,7 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
-      "line": 16,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useQuery",
@@ -1593,7 +1617,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 239,
+      "line": 249,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1659,7 +1683,7 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 16,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useQuery",
