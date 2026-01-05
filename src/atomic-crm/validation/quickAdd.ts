@@ -8,29 +8,29 @@ import { z } from "zod";
  * which atomically creates an organization, contact, and opportunity record.
  *
  * Requirements:
- * - Contact must have first_name and last_name
+ * - Contact first_name, last_name are optional
  * - Contact must have at least one of phone OR email
- * - Organization must have name, city, and state
+ * - Organization must have name; city and state are optional
  * - Opportunity must have campaign and principal_id
  * - Products and notes are optional
  */
 export const quickAddSchema = z
   .strictObject({
-    // Contact fields (required)
-    first_name: z.string({ error: "First name required" }).min(1, "First name required").max(100),
-    last_name: z.string({ error: "Last name required" }).min(1, "Last name required").max(100),
+    // Contact fields (optional)
+    first_name: z.string().max(100).optional(),
+    last_name: z.string().max(100).optional(),
 
     // Contact information (at least one required, validated in refine)
     phone: z.string().max(50).optional(),
     email: z.union([z.string().email("Invalid email address").max(254), z.literal("")]).optional(),
 
-    // Organization fields (required)
+    // Organization fields (org_name required, city/state optional)
     org_name: z
       .string({ error: "Organization name required" })
       .min(1, "Organization name required")
       .max(255),
-    city: z.string({ error: "City required" }).min(1, "City required").max(100),
-    state: z.string({ error: "State required" }).min(1, "State required").max(50),
+    city: z.string().max(100).optional(),
+    state: z.string().max(50).optional(),
 
     // Opportunity fields (required)
     campaign: z.string({ error: "Campaign required" }).min(1, "Campaign required").max(255),
