@@ -606,50 +606,15 @@ export const unifiedDataProvider: DataProvider = {
         } = await supabase.auth.getSession();
         devLog("DataProvider", "Auth state", { authenticated: !!session });
 
-        // DEBUG: Log full request params for pagination debugging
-        console.log("[DataProvider] DEBUG REQUEST PARAMS", {
+        // DEBUG: Log before baseDataProvider call
+        console.log("[DataProvider] DEBUG API unifiedDataProvider.getList", {
           originalResource: resource,
           dbResource,
-          originalFilter: processedParams.filter,
-          transformedFilter: searchParams.filter,
-          pagination: searchParams.pagination,
-          sort: searchParams.sort,
-          // Compute range for debugging pagination issues
-          computedRange: searchParams.pagination
-            ? {
-                offset:
-                  (searchParams.pagination.page - 1) *
-                  searchParams.pagination.perPage,
-                limit: searchParams.pagination.perPage,
-              }
-            : null,
         });
       }
 
-      // Execute query with diagnostic error capture
-      let result;
-      try {
-        result = await baseDataProvider.getList(dbResource, searchParams);
-      } catch (apiError) {
-        // Log full diagnostic context BEFORE error transformation
-        console.error("[DataProvider] PAGINATION DIAGNOSTIC", {
-          resource,
-          dbResource,
-          searchParams: {
-            filter: searchParams.filter,
-            pagination: searchParams.pagination,
-            sort: searchParams.sort,
-          },
-          error: {
-            message: (apiError as ExtendedError)?.message,
-            code: (apiError as ExtendedError)?.code,
-            details: (apiError as ExtendedError)?.details,
-            hint: (apiError as ExtendedError)?.hint,
-            status: (apiError as ExtendedError)?.status,
-          },
-        });
-        throw apiError; // Re-throw to let wrapMethod handle it
-      }
+      // Execute query
+      const result = await baseDataProvider.getList(dbResource, searchParams);
 
       // DEBUG: Log result with customer_organization_name check for opportunities
       if (DEV) {

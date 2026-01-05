@@ -26,6 +26,7 @@ import {
   OrganizationNameHeader,
   OrganizationTypeHeader,
   OrganizationPriorityHeader,
+  OrganizationStateHeader,
 } from "./OrganizationDatagridHeader";
 import { PageTutorialTrigger } from "../tutorial";
 import type { Organization, Sale, Segment } from "../types";
@@ -196,7 +197,16 @@ const OrganizationListLayout = ({
             )}
           />
 
-          {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}
+          {/* Column 4: State - US state code (sortable, filterable) - hidden on tablet */}
+          <TextField
+            source="state"
+            label={<OrganizationStateHeader />}
+            sortable
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
+          />
+
+          {/* Column 5: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}
           <ReferenceField
             source="parent_organization_id"
             reference="organizations"

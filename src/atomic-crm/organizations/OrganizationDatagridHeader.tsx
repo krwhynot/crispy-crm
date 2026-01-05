@@ -69,3 +69,21 @@ export function OrganizationPriorityHeader() {
     />
   );
 }
+
+/**
+ * Filterable header for State column
+ * Uses checkbox filter with multi-select for all 50 US states
+ *
+ * IMPORTANT: Uses state codes (id: "IN") not full names (name: "Indiana")
+ * The CheckboxColumnFilter has built-in scroll (max-h-64) for large lists
+ */
+export function OrganizationStateHeader() {
+  return (
+    <FilterableColumnHeader
+      source="state"
+      label="State"
+      filterType="checkbox"
+      choices={[...US_STATES]}
+    />
+  );
+}
