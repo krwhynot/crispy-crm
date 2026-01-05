@@ -90,15 +90,15 @@ describe("QuickAddForm", () => {
     expect(screen.getByText("Principal")).toBeInTheDocument();
 
     // Contact section
-    expect(screen.getByLabelText(/first name \*/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/last name \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^phone$/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^email$/i)).toBeInTheDocument();
 
     // Organization section
     expect(screen.getByLabelText(/organization name \*/i)).toBeInTheDocument();
     expect(screen.getByText("City")).toBeInTheDocument();
-    expect(screen.getByLabelText(/state \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/state/i)).toBeInTheDocument();
 
     // Optional details
     expect(screen.getAllByText(/products/i)).toHaveLength(2); // Label and placeholder
@@ -136,8 +136,8 @@ describe("QuickAddForm", () => {
 
     // Fill required fields except phone/email
     await user.type(campaignInput, "Test Campaign");
-    await user.type(screen.getByLabelText(/first name \*/i), "John");
-    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/first name/i), "John");
+    await user.type(screen.getByLabelText(/last name/i), "Doe");
     await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
     // City uses Combobox - use helper to select city and verify state auto-fill
@@ -166,8 +166,8 @@ describe("QuickAddForm", () => {
     );
 
     // Fill form
-    await user.type(screen.getByLabelText(/first name \*/i), "John");
-    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/first name/i), "John");
+    await user.type(screen.getByLabelText(/last name/i), "Doe");
     await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
     await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
@@ -182,7 +182,7 @@ describe("QuickAddForm", () => {
       expect(mockOnSuccess).not.toHaveBeenCalled(); // Should not close dialog
 
       // Form should be reset except campaign and principal
-      const firstNameInput = screen.getByLabelText(/first name \*/i) as HTMLInputElement;
+      const firstNameInput = screen.getByLabelText(/first name/i) as HTMLInputElement;
       expect(firstNameInput.value).toBe("");
 
       const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
@@ -204,8 +204,8 @@ describe("QuickAddForm", () => {
     );
 
     // Fill form
-    await user.type(screen.getByLabelText(/first name \*/i), "John");
-    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/first name/i), "John");
+    await user.type(screen.getByLabelText(/last name/i), "Doe");
     await user.type(screen.getByLabelText(/^phone$/i), "555-1234");
     await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
@@ -271,8 +271,8 @@ describe("QuickAddForm", () => {
     );
 
     // Fill required fields except phone/email
-    await user.type(screen.getByLabelText(/first name \*/i), "John");
-    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/first name/i), "John");
+    await user.type(screen.getByLabelText(/last name/i), "Doe");
     await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
     // City uses Combobox - use helper to select city and verify state auto-fill
@@ -641,8 +641,8 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
     });
 
     // Fill minimum required fields
-    await user.type(screen.getByLabelText(/first name \*/i), "John");
-    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/first name/i), "John");
+    await user.type(screen.getByLabelText(/last name/i), "Doe");
     await user.type(screen.getByLabelText(/^email$/i), "john@test.com");
     await user.type(screen.getByLabelText(/organization name \*/i), "Test Org");
 
@@ -663,7 +663,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
     });
 
     // Other fields should be cleared
-    const firstNameInput = screen.getByLabelText(/first name \*/i) as HTMLInputElement;
+    const firstNameInput = screen.getByLabelText(/first name/i) as HTMLInputElement;
     expect(firstNameInput.value).toBe("");
   }, 20000);
 });

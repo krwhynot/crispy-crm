@@ -1131,13 +1131,13 @@ Step-by-step guide to test opportunity creation flow, including creating new con
 | Submit with no Customer Organization | "Customer organization required" | Blocks save? Clear error? |
 | Submit with no Contacts | Should allow (contacts optional in create) | Does it? |
 | Submit with no Products | Should block - "At least 1 product required" | What happens? |
-| Contact: empty First Name | "First name required" | |
-| Contact: empty Last Name | "Last name required" | |
+| Contact: empty First Name | Should allow (optional in QuickAdd) | |
+| Contact: empty Last Name | Should allow (optional in QuickAdd) | |
 | Contact: no Email | "At least one email required" | Clear messaging? |
 | Quick Add: no Phone AND no Email | "Phone or email required" | Is the "or" logic clear? |
 | Quick Add: empty Organization Name | "Organization name required" | |
-| Quick Add: empty City | "City required" | |
-| Quick Add: empty State | "State required" | |
+| Quick Add: empty City | Should allow (optional) | |
+| Quick Add: empty State | Should allow (optional) | |
 
 #### BOUNDARY DATE VALUES
 

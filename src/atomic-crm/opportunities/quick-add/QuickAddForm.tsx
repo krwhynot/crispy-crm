@@ -332,13 +332,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="city">
-                City
-                <span className="text-destructive" aria-hidden="true">
-                  {" "}
-                  *
-                </span>
-              </Label>
+              <Label htmlFor="city">City</Label>
               <Combobox
                 id="city"
                 options={cityOptions}
@@ -348,6 +342,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
                 searchPlaceholder="Search cities..."
                 emptyText="Type to search cities"
                 className="w-full"
+                creatable
               />
               {errors.city && (
                 <p id="city-error" role="alert" className="text-sm text-destructive">
@@ -356,7 +351,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
               )}
             </div>
 
-            <AccessibleField name="state" label="State" error={errors.state?.message} required>
+            <AccessibleField name="state" label="State" error={errors.state?.message}>
               <Input
                 {...register("state")}
                 placeholder="CA"
