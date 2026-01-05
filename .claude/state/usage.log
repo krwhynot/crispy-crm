@@ -7,3 +7,5 @@
 [2026-01-04T06:44:04.489Z] ✓ search_code | query: "recently viewed tracking storage" | limit=20, type="all" | results: 0 | 10686ms
 [2026-01-04T06:44:15.225Z] ✓ search_code | query: "activity log pre-fill contact" | limit=20, type="all" | results: 0 | 10525ms
 [2026-01-05T05:32:01.093Z] ✓ search_code | query: "task form tabs" | limit=10, type="component" | results: 0 | 10584ms
+[2026-01-05T18:54:48.871Z] ✓ search_code | query: "state filter organization" | limit=20, type="all" | results: 0 | 10683ms
+[2026-01-05T18:56:16.910Z] ✓ search_code | query: "state filter checkbox column" | limit=20, type="component" | results: 0 | 10527ms
