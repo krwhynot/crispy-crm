@@ -633,4 +633,56 @@ describe("QuickAdd Integration", () => {
     expect(cancelButton).not.toBeDisabled();
     // saveAddButton might be disabled if form is invalid, so we don't check it
   });
+
+  it("submits successfully without optional fields (first_name, last_name, city, state)", async () => {
+    renderWithAdminContext(<QuickAddButton />);
+
+    // Open dialog
+    await user.click(screen.getByText(/quick add/i));
+
+    // Fill ONLY required fields - skip first_name, last_name, city, state
+    await user.type(screen.getByLabelText(/email/i), "minimal@example.com");
+    await user.type(screen.getByLabelText(/organization name/i), "Minimal Corp");
+    await user.type(screen.getByLabelText(/campaign/i), "Trade Show 2024");
+
+    // Select Principal
+    const principalLabel = screen.getByText("Principal");
+    const principalContainer = principalLabel.parentElement;
+    const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
+    if (!principalTrigger) throw new Error("Principal trigger not found");
+    await user.click(principalTrigger);
+    await user.click(await screen.findByRole("option", { name: "Principal A" }));
+
+    // Submit with Save & Close
+    await user.click(screen.getByText(/save & close/i));
+
+    // Verify atomic transaction was called WITHOUT optional fields
+    await waitFor(() => {
+      expect(mockCreateBoothVisitor).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: "minimal@example.com",
+          org_name: "Minimal Corp",
+          campaign: "Trade Show 2024",
+          principal_id: 1,
+        })
+      );
+    });
+
+    // Verify the call did NOT include the optional fields (or they're undefined)
+    const callArgs = mockCreateBoothVisitor.mock.calls[0][0];
+    // These fields should either be undefined or not present
+    expect(callArgs.first_name).toBeFalsy();
+    expect(callArgs.last_name).toBeFalsy();
+
+    // Verify success toast shown with minimal info
+    expect(mockNotify).toHaveBeenCalledWith(
+      expect.stringContaining("Minimal Corp"),
+      expect.objectContaining({ type: "success" })
+    );
+
+    // Verify dialog closed
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  }, 20000);
 });
