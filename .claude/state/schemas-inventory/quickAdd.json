@@ -1,6 +1,6 @@
 {
   "chunk_name": "quickAdd",
-  "generated_at": "2026-01-05T20:07:01.773Z",
+  "generated_at": "2026-01-06T00:47:45.994Z",
   "item_count": 1,
   "items": [
     {
@@ -58,6 +58,7 @@
           "name": "org_name",
           "zodType": "unknown",
           "constraints": [
+            "trim()",
             "min(1, \"Organization name required\")",
             "max(255)"
           ],
@@ -92,6 +93,7 @@
           "name": "campaign",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "min(1, \"Campaign required\")",
             "max(255)"
           ],

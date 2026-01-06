@@ -50,7 +50,7 @@ export const emailAndTypeSchema = z.strictObject({
 
 // Field is "value" (not "number") to match database JSONB format
 export const phoneNumberAndTypeSchema = z.strictObject({
-  value: z.string().max(30, "Phone number too long"),
+  value: z.string().trim().max(30, "Phone number too long"),
   type: personalInfoTypeSchema.default("work"),
 });
 
@@ -89,9 +89,9 @@ export const contactBaseSchema = z.strictObject({
   id: z.coerce.number().optional(),
 
   // Name fields - ContactIdentityInputs (required in UI)
-  name: z.string().max(255, "Name too long").optional(), // Computed from first + last
-  first_name: z.string().max(100, "First name too long").optional().nullable(),
-  last_name: z.string().max(100, "Last name too long").optional().nullable(),
+  name: z.string().trim().max(255, "Name too long").optional(), // Computed from first + last
+  first_name: z.string().trim().max(100, "First name too long").optional().nullable(),
+  last_name: z.string().trim().max(100, "Last name too long").optional().nullable(),
 
   // Contact information - ContactPersonalInformationInputs
   // JSONB arrays in database: email and phone
@@ -99,8 +99,8 @@ export const contactBaseSchema = z.strictObject({
   phone: z.array(phoneNumberAndTypeSchema).default([]),
 
   // Professional information - ContactPositionInputs
-  title: z.string().max(100, "Title too long").optional().nullable(),
-  department: z.string().max(100, "Department too long").optional().nullable(),
+  title: z.string().trim().max(100, "Title too long").optional().nullable(),
+  department: z.string().trim().max(100, "Department too long").optional().nullable(),
   department_type: contactDepartmentSchema.nullable().optional(),
 
   // Social media - ContactMiscInputs
@@ -117,8 +117,8 @@ export const contactBaseSchema = z.strictObject({
   organization_id: z.coerce.number().nullable().optional(),
 
   // Territory assignment fields
-  district_code: z.string().max(10, "District code too long").nullable().optional(),
-  territory_name: z.string().max(100, "Territory name too long").nullable().optional(),
+  district_code: z.string().trim().max(10, "District code too long").nullable().optional(),
+  territory_name: z.string().trim().max(100, "Territory name too long").nullable().optional(),
 
   // System fields (readonly, not validated)
   created_at: z.string().max(50).optional(),
@@ -139,26 +139,27 @@ export const contactBaseSchema = z.strictObject({
   // Notes field - text field for additional contact information
   notes: z
     .string()
+    .trim()
     .max(5000, "Notes too long")
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
 
   // Address fields - exist in DB, may not have UI inputs yet
-  address: z.string().max(500, "Address too long").optional().nullable(),
-  city: z.string().max(100, "City too long").optional().nullable(),
-  state: z.string().max(100, "State too long").optional().nullable(),
-  postal_code: z.string().max(20, "Postal code too long").optional().nullable(),
-  country: z.string().max(100, "Country too long").optional().nullable(),
+  address: z.string().trim().max(500, "Address too long").optional().nullable(),
+  city: z.string().trim().max(100, "City too long").optional().nullable(),
+  state: z.string().trim().max(100, "State too long").optional().nullable(),
+  postal_code: z.string().trim().max(20, "Postal code too long").optional().nullable(),
+  country: z.string().trim().max(100, "Country too long").optional().nullable(),
 
   // Personal info fields - exist in DB
   birthday: z.coerce.date().optional().nullable(),
-  gender: z.string().max(50, "Gender too long").optional().nullable(),
-  twitter_handle: z.string().max(100, "Twitter handle too long").optional().nullable(),
+  gender: z.string().trim().max(50, "Gender too long").optional().nullable(),
+  twitter_handle: z.string().trim().max(100, "Twitter handle too long").optional().nullable(),
 
   // Classification fields - exist in DB
-  tags: z.array(z.string().max(100)).default([]),
-  status: z.string().max(50, "Status too long").optional().nullable(),
+  tags: z.array(z.string().trim().max(100)).default([]),
+  status: z.string().trim().max(50, "Status too long").optional().nullable(),
 
   // System fields (readonly, set by triggers)
   updated_by: z.coerce.number().optional().nullable(),
@@ -239,8 +240,8 @@ export const contactSchema = contactBaseSchema
 // More permissive than the main schema to handle real-world CSV data
 export const importContactSchema = z
   .object({
-    first_name: z.string().max(100).optional().nullable(),
-    last_name: z.string().max(100).optional().nullable(),
+    first_name: z.string().trim().max(100).optional().nullable(),
+    last_name: z.string().trim().max(100).optional().nullable(),
     organization_name: z
       .string({ error: "Organization name is required" })
       .trim()
@@ -326,15 +327,15 @@ export const importContactSchema = z
       .nullable(),
     // Other optional fields - allow empty, null, or any string (with .max() for DoS prevention)
     title: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(100)])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(100)])
       .optional()
       .nullable(),
     notes: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(5000)])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(5000)])
       .optional()
       .nullable(),
     tags: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(1000)])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(1000)])
       .optional()
       .nullable(),
     first_seen: z
@@ -346,7 +347,7 @@ export const importContactSchema = z
       .optional()
       .nullable(),
     gender: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(50)])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(50)])
       .optional()
       .nullable(),
     // Avatar field - allow URL strings for importing avatar images
@@ -384,7 +385,7 @@ export const quickCreateContactSchema = z.strictObject({
   organization_id: z.coerce.number().int().positive(),
 
   // OPTIONAL: Can be empty for quick create
-  last_name: z.string().max(100).optional().default(""),
+  last_name: z.string().trim().max(100).optional().default(""),
   email: z.array(emailAndTypeSchema).optional().default([]),
   phone: z.array(phoneNumberAndTypeSchema).optional().default([]),
 

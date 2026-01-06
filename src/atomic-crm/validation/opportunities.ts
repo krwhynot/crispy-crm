@@ -97,6 +97,7 @@ const opportunityBaseSchema = z.strictObject({
     .max(255, "Opportunity name too long"),
   description: z
     .string()
+    .trim()
     .max(2000, "Description must be 2000 characters or less")
     .optional()
     .nullable()
@@ -131,29 +132,33 @@ const opportunityBaseSchema = z.strictObject({
   // Campaign & Workflow Tracking fields (added 2025-11-03)
   campaign: z
     .string()
+    .trim()
     .max(100, "Campaign name must be 100 characters or less")
     .optional()
     .nullable(),
   related_opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
   notes: z
     .string()
+    .trim()
     .max(5000, "Notes must be 5000 characters or less")
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)), // General notes about the opportunity (separate from activity log)
   tags: z
-    .array(z.string().max(50, "Tag must be 50 characters or less"))
+    .array(z.string().trim().max(50, "Tag must be 50 characters or less"))
     .max(20, "Maximum 20 tags allowed")
     .optional()
     .default([]),
   next_action: z
     .string()
+    .trim()
     .max(500, "Next action must be 500 characters or less")
     .optional()
     .nullable(),
   next_action_date: z.coerce.date().optional().nullable(),
   decision_criteria: z
     .string()
+    .trim()
     .max(2000, "Decision criteria must be 2000 characters or less")
     .optional()
     .nullable()
@@ -166,6 +171,7 @@ const opportunityBaseSchema = z.strictObject({
   loss_reason: lossReasonSchema.optional().nullable(),
   close_reason_notes: z
     .string()
+    .trim()
     .max(500, "Close reason notes must be 500 characters or less")
     .optional()
     .nullable()

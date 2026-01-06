@@ -74,6 +74,7 @@ const baseActivitiesSchema = z.strictObject({
   subject: z.string().trim().min(1, "Subject is required").max(255, "Subject too long"),
   description: z
     .string()
+    .trim()
     .max(5000)
     .optional()
     .nullable()
@@ -91,6 +92,7 @@ const baseActivitiesSchema = z.strictObject({
   follow_up_date: z.coerce.date().optional().nullable(),
   follow_up_notes: z
     .string()
+    .trim()
     .max(5000)
     .optional()
     .nullable()
@@ -99,14 +101,15 @@ const baseActivitiesSchema = z.strictObject({
   // Activity details
   outcome: z
     .string()
+    .trim()
     .max(2000)
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
   sentiment: sentimentSchema.optional().nullable(),
   attachments: z.array(z.string().max(2048)).max(20).optional().nullable(),
-  location: z.string().max(255).optional().nullable(),
-  attendees: z.array(z.string().max(255)).max(50).optional().nullable(),
+  location: z.string().trim().max(255).optional().nullable(),
+  attendees: z.array(z.string().trim().max(255)).max(50).optional().nullable(),
   tags: z
     .array(z.union([z.string().max(100), z.number()]))
     .max(20)
@@ -534,6 +537,7 @@ export const quickLogFormSchema = z
     opportunityId: z.number().optional(),
     notes: z
       .string()
+      .trim()
       .min(1, "Notes are required")
       .transform((val) => sanitizeHtml(val)),
     createFollowUp: z.coerce.boolean().default(false),

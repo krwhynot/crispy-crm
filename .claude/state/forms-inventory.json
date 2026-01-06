@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-05T20:07:02.526Z",
+  "generated_at": "2026-01-06T00:47:46.415Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:52db1a9c8e8eb3d3",
+  "checksum": "sha256:0d67d239d2c147f9",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
     "src/atomic-crm/activities/ActivityEdit.tsx": "80dec2decee2",
@@ -44,7 +44,7 @@
     "src/atomic-crm/organizations/OrganizationCreate.tsx": "47163a7a8a08",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "fa95a5cc5ec7",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "a22f8f2b9cb9",
-    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "aacff00db1fe",
+    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "b89bd6e129e4",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "b0361ce82864",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "694c8f64dffa",
     "src/atomic-crm/products/ProductCreate.tsx": "f6b417ed7273",

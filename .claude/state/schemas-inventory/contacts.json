@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-05T20:07:01.763Z",
+  "generated_at": "2026-01-06T00:47:45.987Z",
   "item_count": 10,
   "items": [
     {
@@ -46,7 +46,7 @@
     {
       "name": "emailAndTypeSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 45,
+      "line": 46,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -79,13 +79,14 @@
     {
       "name": "phoneNumberAndTypeSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 51,
+      "line": 52,
       "schemaType": "strictObject",
       "fields": [
         {
           "name": "value",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(30, \"Phone number too long\")"
           ],
           "optional": false,
@@ -111,7 +112,7 @@
     {
       "name": "contactOrganizationSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 60,
+      "line": 61,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -199,7 +200,7 @@
     {
       "name": "contactBaseSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 86,
+      "line": 87,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -215,6 +216,7 @@
           "name": "name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(255, \"Name too long\")"
           ],
           "optional": true,
@@ -226,6 +228,7 @@
           "name": "first_name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"First name too long\")"
           ],
           "optional": true,
@@ -237,6 +240,7 @@
           "name": "last_name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"Last name too long\")"
           ],
           "optional": true,
@@ -266,6 +270,7 @@
           "name": "title",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"Title too long\")"
           ],
           "optional": true,
@@ -277,6 +282,7 @@
           "name": "department",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"Department too long\")"
           ],
           "optional": true,
@@ -333,6 +339,7 @@
           "name": "district_code",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(10, \"District code too long\")"
           ],
           "optional": true,
@@ -344,6 +351,7 @@
           "name": "territory_name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"Territory name too long\")"
           ],
           "optional": true,
@@ -457,6 +465,7 @@
           "name": "notes",
           "zodType": "unknown",
           "constraints": [
+            "trim()",
             "max(5000, \"Notes too long\")"
           ],
           "optional": true,
@@ -472,6 +481,7 @@
           "name": "address",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(500, \"Address too long\")"
           ],
           "optional": true,
@@ -483,6 +493,7 @@
           "name": "city",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"City too long\")"
           ],
           "optional": true,
@@ -494,6 +505,7 @@
           "name": "state",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"State too long\")"
           ],
           "optional": true,
@@ -505,6 +517,7 @@
           "name": "postal_code",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(20, \"Postal code too long\")"
           ],
           "optional": true,
@@ -516,6 +529,7 @@
           "name": "country",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"Country too long\")"
           ],
           "optional": true,
@@ -536,6 +550,7 @@
           "name": "gender",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(50, \"Gender too long\")"
           ],
           "optional": true,
@@ -547,6 +562,7 @@
           "name": "twitter_handle",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"Twitter handle too long\")"
           ],
           "optional": true,
@@ -558,6 +574,7 @@
           "name": "tags",
           "zodType": "array",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": false,
@@ -569,6 +586,7 @@
           "name": "status",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(50, \"Status too long\")"
           ],
           "optional": true,
@@ -619,7 +637,7 @@
     {
       "name": "contactSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 201,
+      "line": 203,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -638,13 +656,14 @@
     {
       "name": "importContactSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 239,
+      "line": 241,
       "schemaType": "object",
       "fields": [
         {
           "name": "first_name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -656,6 +675,7 @@
           "name": "last_name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -759,7 +779,9 @@
         {
           "name": "linkedin_url",
           "zodType": "literal",
-          "constraints": [],
+          "constraints": [
+            "max(2048, \"URL too long\")"
+          ],
           "optional": true,
           "nullable": true,
           "hasTransform": false,
@@ -769,6 +791,7 @@
           "name": "title",
           "zodType": "literal",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -780,6 +803,7 @@
           "name": "notes",
           "zodType": "literal",
           "constraints": [
+            "trim()",
             "max(5000)"
           ],
           "optional": true,
@@ -791,6 +815,7 @@
           "name": "tags",
           "zodType": "literal",
           "constraints": [
+            "trim()",
             "max(1000)"
           ],
           "optional": true,
@@ -824,6 +849,7 @@
           "name": "gender",
           "zodType": "literal",
           "constraints": [
+            "trim()",
             "max(50)"
           ],
           "optional": true,
@@ -859,13 +885,14 @@
     {
       "name": "quickCreateContactSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 380,
+      "line": 382,
       "schemaType": "strictObject",
       "fields": [
         {
           "name": "first_name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "min(1, \"First name required\")",
             "max(100)"
           ],
@@ -887,6 +914,7 @@
           "name": "last_name",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -978,7 +1006,7 @@
     {
       "name": "createContactSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 495,
+      "line": 497,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
