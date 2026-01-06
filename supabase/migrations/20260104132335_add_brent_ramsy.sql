@@ -53,7 +53,7 @@ BEGIN
       brent_user_id,
       '00000000-0000-0000-0000-000000000000',
       'bramsy@masterfoodbokers.com',
-      crypt('Welcome123!', gen_salt('bf')),
+      extensions.crypt('Welcome123!', extensions.gen_salt('bf')),
       NOW(),
       NOW(),
       NOW(),

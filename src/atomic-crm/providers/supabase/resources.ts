@@ -70,7 +70,7 @@ export const SEARCHABLE_RESOURCES = {
     "customer_organization_name",
   ],
   contacts_summary: ["first_name", "last_name"],
-  products: ["name", "sku", "category", "description", "manufacturer_part_number"],
+  products: ["name", "category", "description", "manufacturer_part_number"],
   // deals: REMOVED - use opportunities
 } as const;
 

@@ -15,6 +15,11 @@ DROP POLICY IF EXISTS "Authenticated users can view product_distributors" ON pro
 DROP POLICY IF EXISTS "Admins can insert product_distributors" ON product_distributors;
 DROP POLICY IF EXISTS "Admins can update product_distributors" ON product_distributors;
 DROP POLICY IF EXISTS "Admins can delete product_distributors" ON product_distributors;
+-- Drop new-style policies if they exist (idempotent)
+DROP POLICY IF EXISTS "select_product_distributors" ON product_distributors;
+DROP POLICY IF EXISTS "insert_product_distributors" ON product_distributors;
+DROP POLICY IF EXISTS "update_product_distributors" ON product_distributors;
+DROP POLICY IF EXISTS "delete_product_distributors" ON product_distributors;
 
 -- Create clean team-wide policies
 CREATE POLICY "select_product_distributors" ON product_distributors
@@ -43,6 +48,10 @@ CREATE POLICY "delete_product_distributors" ON product_distributors
 DROP POLICY IF EXISTS "Users can view own tutorial progress" ON tutorial_progress;
 DROP POLICY IF EXISTS "Users can insert own tutorial progress" ON tutorial_progress;
 DROP POLICY IF EXISTS "Users can update own tutorial progress" ON tutorial_progress;
+-- Drop new-style policies if they exist (idempotent)
+DROP POLICY IF EXISTS "select_tutorial_progress" ON tutorial_progress;
+DROP POLICY IF EXISTS "insert_tutorial_progress" ON tutorial_progress;
+DROP POLICY IF EXISTS "update_tutorial_progress" ON tutorial_progress;
 
 -- Create clean owner-only policies
 CREATE POLICY "select_tutorial_progress" ON tutorial_progress

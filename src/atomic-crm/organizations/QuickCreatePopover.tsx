@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
 
 const quickCreateSchema = z.object({
-  name: z.string().min(1).max(255),
+  name: z.string().trim().min(1).max(255),
   organization_type: z.enum(["customer", "prospect", "principal", "distributor"]),
   priority: z.enum(["A", "B", "C", "D"]).default("C"),
   city: z.string().max(100).optional(),
