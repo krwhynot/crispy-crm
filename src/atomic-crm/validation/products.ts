@@ -29,6 +29,7 @@ export const FB_CONSUMABLE_CATEGORIES = [
 // Product category schema - now accepts any non-empty string
 export const productCategorySchema = z
   .string()
+  .trim()
   .min(1, "Category is required")
   .max(100, "Category too long")
   .default("beverages");
@@ -59,15 +60,15 @@ export const productSchema = z.strictObject({
 
   // Optional fields with defaults
   status: productStatusSchema.default("active"),
-  description: z.string().max(2000).optional(),
+  description: z.string().trim().max(2000).optional(),
 
   // Food/health specific fields (kept for flexibility)
   // NOTE: Using .nullish() to accept both undefined and null values
   certifications: z.array(z.string().max(100)).max(50).nullish(),
   allergens: z.array(z.string().max(100)).max(50).nullish(),
-  ingredients: z.string().max(5000).nullish(),
+  ingredients: z.string().trim().max(5000).nullish(),
   nutritional_info: z.record(z.any()).nullish(),
-  marketing_description: z.string().max(2000).nullish(),
+  marketing_description: z.string().trim().max(2000).nullish(),
 
   // System fields (handled automatically)
   created_by: z.number().int().nullish(),
@@ -128,7 +129,7 @@ export const opportunityProductSchema = z.strictObject({
     .min(1, "Product name is required")
     .max(255, "Product name too long"),
   product_category: z.string().max(100).optional(),
-  notes: z.string().max(500).optional(),
+  notes: z.string().trim().max(500).optional(),
 });
 
 // Type inference for opportunity products

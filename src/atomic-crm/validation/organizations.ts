@@ -107,31 +107,33 @@ export const organizationSchema = z.strictObject({
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.nullish(),
   website: isValidUrl.nullish(),
-  phone: z.string().max(30, "Phone number too long").nullish(), // was: phone_number
-  address: z.string().max(500, "Address too long").nullish(),
-  postal_code: z.string().max(20, "Postal code too long").nullish(), // was: zipcode
-  city: z.string().max(100, "City name too long").nullish(),
-  state: z.string().max(100, "State name too long").nullish(), // was: stateAbbr
+  phone: z.string().trim().max(30, "Phone number too long").nullish(), // was: phone_number
+  address: z.string().trim().max(500, "Address too long").nullish(),
+  postal_code: z.string().trim().max(20, "Postal code too long").nullish(), // was: zipcode
+  city: z.string().trim().max(100, "City name too long").nullish(),
+  state: z.string().trim().max(100, "State name too long").nullish(), // was: stateAbbr
   sales_id: z.coerce.number().nullish(),
   description: z
     .string()
+    .trim()
     .max(5000, "Description too long")
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
   context_links: z.array(isValidUrl).nullish(),
-  tags: z.string().max(1000, "Tags too long").optional(), // Comma-separated tag names for CSV import
+  tags: z.string().trim().max(1000, "Tags too long").optional(), // Comma-separated tag names for CSV import
 
   // Business fields (DB columns added for completeness)
   email: z.string().email().max(254, "Email too long").nullish(), // Organization contact email
   notes: z
     .string()
+    .trim()
     .max(5000, "Notes too long")
     .nullish()
     .transform((val) => (val ? sanitizeHtml(val) : val)), // General notes about organization
   employee_count: z.coerce.number().int().positive().nullish(), // Number of employees
   founded_year: z.coerce.number().int().min(1800).max(new Date().getFullYear()).nullish(), // Year founded
-  tax_identifier: z.string().max(50, "Tax identifier too long").nullish(), // Tax ID / EIN
+  tax_identifier: z.string().trim().max(50, "Tax identifier too long").nullish(), // Tax ID / EIN
   logo_url: z.string().url().max(2048, "URL too long").nullish(), // Direct URL to logo (separate from logo RAFile)
   updated_at: z.string().max(50).optional(), // System-managed timestamp
   updated_by: z.coerce.number().nullish(), // Audit: who last updated
@@ -154,23 +156,23 @@ export const organizationSchema = z.strictObject({
   status_reason: orgStatusReasonSchema.nullable().optional(),
 
   // Billing Address fields (Task 14)
-  billing_street: z.string().max(255).nullable().optional(),
-  billing_city: z.string().max(100).nullable().optional(),
-  billing_state: z.string().max(2).nullable().optional(),
-  billing_postal_code: z.string().max(20).nullable().optional(),
-  billing_country: z.string().max(2).default("US"),
+  billing_street: z.string().trim().max(255).nullable().optional(),
+  billing_city: z.string().trim().max(100).nullable().optional(),
+  billing_state: z.string().trim().max(2).nullable().optional(),
+  billing_postal_code: z.string().trim().max(20).nullable().optional(),
+  billing_country: z.string().trim().max(2).default("US"),
 
   // Shipping Address fields (Task 14)
-  shipping_street: z.string().max(255).nullable().optional(),
-  shipping_city: z.string().max(100).nullable().optional(),
-  shipping_state: z.string().max(2).nullable().optional(),
-  shipping_postal_code: z.string().max(20).nullable().optional(),
-  shipping_country: z.string().max(2).default("US"),
+  shipping_street: z.string().trim().max(255).nullable().optional(),
+  shipping_city: z.string().trim().max(100).nullable().optional(),
+  shipping_state: z.string().trim().max(2).nullable().optional(),
+  shipping_postal_code: z.string().trim().max(20).nullable().optional(),
+  shipping_country: z.string().trim().max(2).default("US"),
 
   // Payment fields (Task 14)
   payment_terms: paymentTermsSchema.nullable().optional(),
   credit_limit: z.coerce.number().nonnegative().nullable().optional(),
-  territory: z.string().max(100).nullable().optional(),
+  territory: z.string().trim().max(100).nullable().optional(),
 
   // System/Audit fields
   created_at: z.string().max(50).optional(),
@@ -181,9 +183,9 @@ export const organizationSchema = z.strictObject({
   // These fields exist in the organizations table but were missing from schema
   import_session_id: z.string().uuid().nullable().optional(), // Tracks import batch
   playbook_category_id: z.string().uuid().nullable().optional(), // References playbook_categories
-  cuisine: z.string().max(100).nullable().optional(), // Restaurant cuisine type
+  cuisine: z.string().trim().max(100).nullable().optional(), // Restaurant cuisine type
   needs_review: z.coerce.boolean().default(false), // Data quality flag
-  sector: z.string().max(100).nullable().optional(), // Industry sector
+  sector: z.string().trim().max(100).nullable().optional(), // Industry sector
 });
 
 // Type inference

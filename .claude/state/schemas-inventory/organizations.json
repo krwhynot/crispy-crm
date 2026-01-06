@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-05T20:07:01.768Z",
+  "generated_at": "2026-01-06T00:47:45.991Z",
   "item_count": 7,
   "items": [
     {
@@ -117,7 +117,7 @@
     {
       "name": "organizationSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 96,
+      "line": 97,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -203,6 +203,7 @@
           "name": "phone",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(30, \"Phone number too long\")"
           ],
           "optional": false,
@@ -214,6 +215,7 @@
           "name": "address",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(500, \"Address too long\")"
           ],
           "optional": false,
@@ -225,6 +227,7 @@
           "name": "postal_code",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(20, \"Postal code too long\")"
           ],
           "optional": false,
@@ -236,6 +239,7 @@
           "name": "city",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"City name too long\")"
           ],
           "optional": false,
@@ -247,6 +251,7 @@
           "name": "state",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100, \"State name too long\")"
           ],
           "optional": false,
@@ -267,6 +272,7 @@
           "name": "description",
           "zodType": "unknown",
           "constraints": [
+            "trim()",
             "max(5000, \"Description too long\")"
           ],
           "optional": true,
@@ -291,6 +297,7 @@
           "name": "tags",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(1000, \"Tags too long\")"
           ],
           "optional": true,
@@ -302,7 +309,8 @@
           "name": "email",
           "zodType": "string",
           "constraints": [
-            "email()"
+            "email()",
+            "max(254, \"Email too long\")"
           ],
           "optional": false,
           "nullable": true,
@@ -313,6 +321,7 @@
           "name": "notes",
           "zodType": "unknown",
           "constraints": [
+            "trim()",
             "max(5000, \"Notes too long\")"
           ],
           "optional": false,
@@ -349,6 +358,7 @@
           "name": "tax_identifier",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(50, \"Tax identifier too long\")"
           ],
           "optional": false,
@@ -360,7 +370,8 @@
           "name": "logo_url",
           "zodType": "string",
           "constraints": [
-            "url()"
+            "url()",
+            "max(2048, \"URL too long\")"
           ],
           "optional": false,
           "nullable": true,
@@ -472,6 +483,7 @@
           "name": "billing_street",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(255)"
           ],
           "optional": true,
@@ -483,6 +495,7 @@
           "name": "billing_city",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -494,6 +507,7 @@
           "name": "billing_state",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(2)"
           ],
           "optional": true,
@@ -505,6 +519,7 @@
           "name": "billing_postal_code",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(20)"
           ],
           "optional": true,
@@ -516,6 +531,7 @@
           "name": "billing_country",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(2)"
           ],
           "optional": false,
@@ -527,6 +543,7 @@
           "name": "shipping_street",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(255)"
           ],
           "optional": true,
@@ -538,6 +555,7 @@
           "name": "shipping_city",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -549,6 +567,7 @@
           "name": "shipping_state",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(2)"
           ],
           "optional": true,
@@ -560,6 +579,7 @@
           "name": "shipping_postal_code",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(20)"
           ],
           "optional": true,
@@ -571,6 +591,7 @@
           "name": "shipping_country",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(2)"
           ],
           "optional": false,
@@ -600,6 +621,7 @@
           "name": "territory",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -664,6 +686,7 @@
           "name": "cuisine",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,
@@ -684,6 +707,7 @@
           "name": "sector",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(100)"
           ],
           "optional": true,

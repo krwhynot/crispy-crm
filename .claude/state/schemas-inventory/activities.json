@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-05T20:07:01.761Z",
+  "generated_at": "2026-01-06T00:47:45.984Z",
   "item_count": 11,
   "items": [
     {
@@ -80,7 +80,7 @@
     {
       "name": "activitiesSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 130,
+      "line": 133,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -93,7 +93,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 193,
+      "line": 196,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -106,7 +106,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 246,
+      "line": 249,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -119,7 +119,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 424,
+      "line": 427,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -182,7 +182,7 @@
     {
       "name": "activityDisplayTypeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 460,
+      "line": 463,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [],
@@ -193,7 +193,7 @@
     {
       "name": "activityOutcomeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 508,
+      "line": 511,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -211,7 +211,7 @@
     {
       "name": "quickLogFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 526,
+      "line": 529,
       "schemaType": "object",
       "fields": [
         {
@@ -283,6 +283,7 @@
           "name": "notes",
           "zodType": "unknown",
           "constraints": [
+            "trim()",
             "min(1, \"Notes are required\")"
           ],
           "optional": false,

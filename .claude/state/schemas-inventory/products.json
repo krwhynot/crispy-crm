@@ -1,12 +1,12 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-05T20:07:01.771Z",
+  "generated_at": "2026-01-06T00:47:45.993Z",
   "item_count": 3,
   "items": [
     {
       "name": "productStatusSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 41,
+      "line": 42,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -24,7 +24,7 @@
     {
       "name": "productSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 47,
+      "line": 48,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -71,6 +71,7 @@
           "name": "description",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(2000)"
           ],
           "optional": true,
@@ -106,6 +107,7 @@
           "name": "ingredients",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(5000)"
           ],
           "optional": false,
@@ -126,6 +128,7 @@
           "name": "marketing_description",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(2000)"
           ],
           "optional": false,
@@ -170,7 +173,7 @@
     {
       "name": "opportunityProductSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 122,
+      "line": 123,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -219,6 +222,7 @@
           "name": "notes",
           "zodType": "string",
           "constraints": [
+            "trim()",
             "max(500)"
           ],
           "optional": true,
