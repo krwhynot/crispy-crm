@@ -34,7 +34,7 @@ vi.mock("../supabase", () => ({
 }));
 
 // Import after mocking
-import { unifiedDataProvider } from "../unifiedDataProvider";
+import { dataProvider } from "..";
 
 describe("Opportunity Delete Cascade", () => {
   const mockRpc = supabase.rpc as ReturnType<typeof vi.fn>;
@@ -60,7 +60,7 @@ describe("Opportunity Delete Cascade", () => {
       mockRpc.mockResolvedValueOnce({ data: null, error: null });
 
       // Act
-      const result = await unifiedDataProvider.delete("opportunities", {
+      const result = await dataProvider.delete("opportunities", {
         id: opportunityId,
         previousData,
       });
@@ -83,7 +83,7 @@ describe("Opportunity Delete Cascade", () => {
       mockRpc.mockResolvedValueOnce({ data: null, error: null });
 
       // Act
-      await unifiedDataProvider.delete("opportunities", {
+      await dataProvider.delete("opportunities", {
         id: opportunityId,
         previousData,
       });
@@ -107,7 +107,7 @@ describe("Opportunity Delete Cascade", () => {
 
       // Act & Assert - should throw, not silently fail
       await expect(
-        unifiedDataProvider.delete("opportunities", {
+        dataProvider.delete("opportunities", {
           id: opportunityId,
           previousData: { id: opportunityId },
         })
@@ -123,7 +123,7 @@ describe("Opportunity Delete Cascade", () => {
       mockRpc.mockResolvedValueOnce({ data: null, error: null });
 
       // Act - delete without previousData (edge case)
-      const result = await unifiedDataProvider.delete("opportunities", {
+      const result = await dataProvider.delete("opportunities", {
         id: opportunityId,
       } as any); // Cast to bypass TypeScript strict check
 
@@ -144,7 +144,7 @@ describe("Opportunity Delete Cascade", () => {
         .mockResolvedValueOnce({ data: null, error: null });
 
       // Act
-      const result = await unifiedDataProvider.deleteMany("opportunities", {
+      const result = await dataProvider.deleteMany("opportunities", {
         ids: opportunityIds,
       });
 
@@ -176,7 +176,7 @@ describe("Opportunity Delete Cascade", () => {
 
       // Act & Assert
       await expect(
-        unifiedDataProvider.deleteMany("opportunities", { ids: opportunityIds })
+        dataProvider.deleteMany("opportunities", { ids: opportunityIds })
       ).rejects.toThrow("Failed to delete opportunity 202: Database error");
 
       // Should have stopped after the error (not called for 203)
