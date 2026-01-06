@@ -1,16 +1,34 @@
 ---
 active: true
 iteration: 1
-max_iterations: 40
-completion_promise: "PHASE_3_COMPLETE"
-started_at: "2026-01-06T05:37:01Z"
+max_iterations: 50
+completion_promise: "PHASE_4_COMPLETE"
+started_at: "2026-01-06T05:50:09Z"
 ---
 
-Read T/home/krwhynot/projects/crispy-crm/docs/TODOs/TODO_PROVIDER.md. Focus ONLY on 'Phase 3: Service Layer Extraction'.
+Read 'TODO_PROVIDER_MASTER.md' (or 'docs/TODOs/TODO_PROVIDER.md'). Focus ONLY on 'Phase 4: High-Risk Migration'.
 
-1. **Create ProductsService.ts**: Read 'src/atomic-crm/providers/supabase/unifiedDataProvider.ts' to find the raw 'supabase.from(products)' logic (specifically: getOneWithDistributors, createWithDistributors, updateWithDistributors, softDelete, softDeleteMany). **COPY** this logic into a new class 'ProductsService' in 'src/atomic-crm/services/ProductsService.ts'. Ensure it follows the dependency injection pattern (accepting 'baseProvider' or 'supabase' client).
-2. **Create ProductDistributorsService.ts**: COPY the composite key logic (getOne, update, delete for 'product_distributors') from 'unifiedDataProvider.ts' into 'src/atomic-crm/services/ProductDistributorsService.ts'.
-3. **Test ProductsService**: Create 'src/atomic-crm/services/__tests__/ProductsService.test.ts'. Write unit tests for 'createWithDistributors' (verifying transaction logic) and 'softDelete' (verifying RPC calls).
-4. **Important**: Do NOT remove code from 'unifiedDataProvider.ts' yet. We are building the parallel infrastructure.
+1. **Create Missing Handlers**:
+   - Create 'src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts' (copy logic from unified).
+   - Create 'src/atomic-crm/providers/supabase/handlers/productDistributorsHandler.ts' (inject 'ProductDistributorsService').
+   - Register both in 'composedDataProvider.ts'.
 
-Mark tasks as [x] in TODO_PROVIDER.md as you finish them. Output <promise>PHASE_3_COMPLETE</promise> when all Phase 3 tasks are done.
+2. **Migrate Products**:
+   - Create 'src/atomic-crm/providers/supabase/handlers/productsHandler.ts'.
+   - Inject 'ProductsService'.
+   - Implement create/update interception (using the Service) and delete (using the Service).
+   - Cleanup 'Products' logic from 'unifiedDataProvider.ts'.
+
+3. **Migrate Opportunities (The Boss)**:
+   - Create 'src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts'.
+   - Inject 'OpportunitiesService'.
+   - **CRITICAL**: Ensure 'create' calls 'opportunitiesService.createWithProducts' and 'update' calls 'opportunitiesService.updateWithProducts'.
+   - Implement 'deleteMany' cascade logic.
+   - **Type Safety**: Bind 'OPPORTUNITY_FIELDS_TO_STRIP' to 'keyof Opportunity' (fix the time bomb).
+   - Cleanup 'Opportunities' logic from 'unifiedDataProvider.ts'.
+
+4. **Refactor Sales**:
+   - Update 'salesHandler.ts' to add the RLS bypass logic (delegating to the Edge Function/Service).
+   - Cleanup 'Sales' logic from 'unifiedDataProvider.ts'.
+
+Mark tasks as [x] in the todo file as you finish them. Output <promise>PHASE_4_COMPLETE</promise> when all Phase 4 tasks are done.
