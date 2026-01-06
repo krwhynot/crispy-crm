@@ -1,17 +1,22 @@
 ---
 active: true
 iteration: 1
-max_iterations: 30
-completion_promise: "PHASE_5_COMPLETE"
-started_at: "2026-01-06T06:12:53Z"
+max_iterations: 25
+completion_promise: "PHASE_6_COMPLETE"
+started_at: "2026-01-06T06:47:55Z"
 ---
 
-Read 'TODO_PROVIDER.md'Focus on 'Phase 5: Final Switch'.
+Read 'TODO_PROVIDER.md'Focus on 'Phase 6: Architecture Debt'.
 
-1. **Create Missing Test**: Create 'src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts'. Test that 'create' calls the service correctly and that view fields are stripped.
-2. **Switch Feature Flag**: Update '.env' (and production envs) to set 'VITE_USE_COMPOSED_PROVIDER=true'.
-3. **Verify Provider Tests**: Run 'npm test src/atomic-crm/providers/supabase'. **FIX** any failures in the provider/handler tests caused by the switch. (Ignore unrelated UI component tests for now).
-4. **Delete The Monolith**: Once provider tests pass, DELETE 'src/atomic-crm/providers/supabase/unifiedDataProvider.ts'.
-5. **Update Index**: Remove the import of 'unifiedDataProvider' from 'src/atomic-crm/providers/supabase/index.ts' and ensure 'dataProvider' export uses the composed version directly (remove the feature flag logic since the old one is gone).
+1. **Extract Shared Utilities**:
+   - Locate 'transformQToIlikeSearch' (it is duplicated in multiple callback files like 'contactsCallbacks', 'salesCallbacks', etc.).
+   - Move it to 'src/atomic-crm/providers/supabase/callbacks/commonTransforms.ts'.
+   - Update all callback files to import it from there.
+   - Do the same for the 'escapeForIlike' pattern if applicable.
 
-Mark tasks as [x] in the todo file. Output <promise>PHASE_5_COMPLETE</promise> when finished.
+2. **Refactor Opportunities Callbacks**:
+   - Open 'src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts'.
+   - Currently, it defines callbacks inline. Refactor this to use the 'createResourceCallbacks' factory pattern (like 'contactsCallbacks' or 'tasksCallbacks'), passing the specific logic (like 'beforeSave' stripping) as overrides.
+   - Add a comment block explaining why Opportunities needs specific overrides (Products sync, etc.).
+
+Mark tasks as [x] in the todo file. Output <promise>PHASE_6_COMPLETE</promise> when finished.

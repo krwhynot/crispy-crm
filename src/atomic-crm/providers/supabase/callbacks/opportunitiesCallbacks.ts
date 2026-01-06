@@ -10,8 +10,9 @@
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { RaRecord, GetListParams } from "ra-core";
-import type { ResourceCallbacks } from "./createResourceCallbacks";
+import type { RaRecord, GetListParams, DataProvider } from "ra-core";
+import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
+import { createQToIlikeTransformer } from "./commonTransforms";
 import type { Opportunity } from "../../../types";
 import { supabase } from "../supabase";
 

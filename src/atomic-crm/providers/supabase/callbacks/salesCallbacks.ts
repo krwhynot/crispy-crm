@@ -12,6 +12,7 @@
 
 import type { GetListParams, DataProvider } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
+import { createQToIlikeTransformer } from "./commonTransforms";
 
 /**
  * Computed fields from sales view (must be stripped before save)
