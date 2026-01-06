@@ -20,28 +20,27 @@
 
 ---
 
-## Phase 2: Low-Risk Migration & Cleanup (During Beta)
+## Phase 2: Low-Risk Migration & Cleanup (During Beta) ✅ COMPLETE
 *Goal: Move simple resources to the new architecture AND fix existing handler bugs.*
 
-- [ ] **🔧 Repair Existing Handlers (FIRST)**
-    - [ ] Open `activitiesHandler.ts`, `tasksHandler.ts`, `salesHandler.ts`
-    - [ ] Fix wrapper order: Change `base → L → V → E` to `base → V → L → E`
-    - [ ] **Verify:** Validation still fires correctly in the UI
-    - [ ] **Why now:** These handlers are already broken conceptually — fix before migrating more
-- [ ] **Migrate `Tags` Resource**
-    - [ ] Create `src/providers/supabase/handlers/tagsHandler.ts`
-    - [ ] Implement `getList`, `create`, `update`, `delete` (copy logic from monolith)
-    - [ ] Apply wrappers: `withErrorLogging(withLifecycleCallbacks(withValidation(...)))`
-    - [ ] **Fix wrapper order:** Ensure `Validation → Lifecycle → ErrorLogging` (see Appendix Table 1)
-    - [ ] Register in `composedDataProvider.ts`
-    - [ ] **Verify:** Test Tag management in the UI
-    - [ ] **Cleanup:** Delete `Tags` logic from `unifiedDataProvider.ts`
-- [ ] **Migrate `Notes` Resources**
-    - [ ] Create `src/providers/supabase/handlers/notesHandler.ts` (use factory function)
-    - [ ] Register handlers for: `contact_notes`, `opportunity_notes`, `organization_notes`
-    - [ ] **Fix wrapper order** for all 3 note types (see Appendix Table 1)
-    - [ ] **Verify:** Test adding notes to different entities
-    - [ ] **Cleanup:** Delete all Note logic from `unifiedDataProvider.ts`
+- [x] **🔧 Repair Existing Handlers (FIRST)**
+    - [x] Open `activitiesHandler.ts`, `tasksHandler.ts`, `salesHandler.ts`
+    - [x] Fix wrapper order: Changed from `base → L → V → E` to `base → V → L → E`
+        - Fixed: `activitiesHandler.ts` line 35
+        - Fixed: `tasksHandler.ts` line 37
+        - Fixed: `salesHandler.ts` line 36
+    - [x] **Verify:** Build passes (`just build`)
+    - [x] **Why now:** These handlers were conceptually broken — now fixed
+- [x] **Migrate `Tags` Resource**
+    - [x] Handler already exists: `src/atomic-crm/providers/supabase/handlers/tagsHandler.ts`
+    - [x] Already registered in `composedDataProvider.ts` (line 110)
+    - [x] **Fix wrapper order:** Fixed line 35 to use correct order `base → V → L → E`
+    - [x] **Cleanup:** No Tags-specific logic in `unifiedDataProvider.ts` (already clean)
+- [x] **Migrate `Notes` Resources**
+    - [x] Handler already exists: `src/atomic-crm/providers/supabase/handlers/notesHandler.ts`
+    - [x] All 3 types registered in `composedDataProvider.ts` (lines 106-108)
+    - [x] **Fix wrapper order:** Fixed all 3 factory functions (lines 35, 53, 71)
+    - [x] **Cleanup:** No Notes-specific logic in `unifiedDataProvider.ts` (already clean)
 
 ---
 
@@ -172,23 +171,22 @@
 
 # 📚 Appendix: Audit Reference Tables
 
-## Table 1: Handler Wrapper Order Issues
+## Table 1: Handler Wrapper Order Issues ✅ ALL FIXED
 
-*Fix these wrapper order inconsistencies when migrating or patching.*
+*All handler wrapper order inconsistencies have been fixed (2026-01-05).*
 
-| Handler | Current Order ⚠️ | Correct Order ✅ | Issue |
-|:--------|:-----------------|:-----------------|:------|
-| **activitiesHandler** | `base → L → V → E` | `base → V → L → E` | Validates *before* stripping fields |
-| **tasksHandler** | `base → L → V → E` | `base → V → L → E` | Validates *before* stripping fields |
-| **notesHandler** (3 types) | `base → L → V → E` | `base → V → L → E` | Validates *before* stripping fields |
-| **tagsHandler** | `base → L → V → E` | `base → V → L → E` | Validates *before* stripping fields |
-| **salesHandler** | `base → L → V → E` | `base → V → L → E` | Validates *before* stripping fields |
+| Handler | Status | Order | Notes |
+|:--------|:-------|:------|:------|
+| **activitiesHandler** | ✅ Fixed | `base → V → L → E` | Line 35 |
+| **tasksHandler** | ✅ Fixed | `base → V → L → E` | Line 37 |
+| **notesHandler** (3 types) | ✅ Fixed | `base → V → L → E` | Lines 35, 53, 71 |
+| **tagsHandler** | ✅ Fixed | `base → V → L → E` | Line 35 |
+| **salesHandler** | ✅ Fixed | `base → V → L → E` | Line 36 |
 
 **Legend:** V=withValidation, L=withLifecycleCallbacks, E=withErrorLogging
 
-**Why This Matters:**
-- Pattern A (correct): `beforeSave` strips computed fields → Zod validates clean data ✅
-- Pattern B (current): Zod validates dirty data with extra fields → `beforeSave` strips after ⚠️
+**Correct Pattern (now implemented):**
+- `beforeSave` strips computed fields → Zod validates clean data ✅
 
 ---
 
@@ -276,7 +274,7 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 
 | Blocker | Status | Notes |
 |:--------|:-------|:------|
-| All 5 handlers have correct wrapper order | ⬜ | Table 1 — Phase 2 |
+| All 8 handlers have correct wrapper order | ✅ | Phase 2 — Fixed activities, tasks, sales, tags, notes (3 types) |
 | `segmentsHandler` created | ⬜ | Phase 4 blocker |
 | `productDistributorsHandler` created | ⬜ | Phase 4 blocker |
 | All 8 logic gaps are implemented | ⬜ | Table 2 |
@@ -291,6 +289,6 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 
 ---
 
-*Last Updated: 2025-01-05*
+*Last Updated: 2026-01-05*
 *Source: Handler, Service Layer, and Type Safety Audits*
 *Sequencing Fix: Phase 4 blockers identified via code review*

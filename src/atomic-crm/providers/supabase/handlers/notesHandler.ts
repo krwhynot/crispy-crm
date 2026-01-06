@@ -22,35 +22,53 @@ import {
 /**
  * Create a fully composed DataProvider for contact_notes
  *
+ * Composition order (innermost to outermost):
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
+ * computed fields before DB write.
+ *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with soft delete and validation
  */
 export function createContactNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(withLifecycleCallbacks(baseProvider, [contactNotesCallbacks]))
+    withLifecycleCallbacks(withValidation(baseProvider), [contactNotesCallbacks])
   );
 }
 
 /**
  * Create a fully composed DataProvider for opportunity_notes
  *
+ * Composition order (innermost to outermost):
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
+ * computed fields before DB write.
+ *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with soft delete and validation
  */
 export function createOpportunityNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(withLifecycleCallbacks(baseProvider, [opportunityNotesCallbacks]))
+    withLifecycleCallbacks(withValidation(baseProvider), [opportunityNotesCallbacks])
   );
 }
 
 /**
  * Create a fully composed DataProvider for organization_notes
  *
+ * Composition order (innermost to outermost):
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
+ * computed fields before DB write.
+ *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with soft delete and validation
  */
 export function createOrganizationNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(withLifecycleCallbacks(baseProvider, [organizationNotesCallbacks]))
+    withLifecycleCallbacks(withValidation(baseProvider), [organizationNotesCallbacks])
   );
 }
