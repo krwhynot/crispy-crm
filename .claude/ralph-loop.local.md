@@ -1,34 +1,17 @@
 ---
 active: true
 iteration: 1
-max_iterations: 50
-completion_promise: "PHASE_4_COMPLETE"
-started_at: "2026-01-06T05:50:09Z"
+max_iterations: 30
+completion_promise: "PHASE_5_COMPLETE"
+started_at: "2026-01-06T06:12:53Z"
 ---
 
-Read 'TODO_PROVIDER_MASTER.md' (or 'docs/TODOs/TODO_PROVIDER.md'). Focus ONLY on 'Phase 4: High-Risk Migration'.
+Read 'TODO_PROVIDER.md'Focus on 'Phase 5: Final Switch'.
 
-1. **Create Missing Handlers**:
-   - Create 'src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts' (copy logic from unified).
-   - Create 'src/atomic-crm/providers/supabase/handlers/productDistributorsHandler.ts' (inject 'ProductDistributorsService').
-   - Register both in 'composedDataProvider.ts'.
+1. **Create Missing Test**: Create 'src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts'. Test that 'create' calls the service correctly and that view fields are stripped.
+2. **Switch Feature Flag**: Update '.env' (and production envs) to set 'VITE_USE_COMPOSED_PROVIDER=true'.
+3. **Verify Provider Tests**: Run 'npm test src/atomic-crm/providers/supabase'. **FIX** any failures in the provider/handler tests caused by the switch. (Ignore unrelated UI component tests for now).
+4. **Delete The Monolith**: Once provider tests pass, DELETE 'src/atomic-crm/providers/supabase/unifiedDataProvider.ts'.
+5. **Update Index**: Remove the import of 'unifiedDataProvider' from 'src/atomic-crm/providers/supabase/index.ts' and ensure 'dataProvider' export uses the composed version directly (remove the feature flag logic since the old one is gone).
 
-2. **Migrate Products**:
-   - Create 'src/atomic-crm/providers/supabase/handlers/productsHandler.ts'.
-   - Inject 'ProductsService'.
-   - Implement create/update interception (using the Service) and delete (using the Service).
-   - Cleanup 'Products' logic from 'unifiedDataProvider.ts'.
-
-3. **Migrate Opportunities (The Boss)**:
-   - Create 'src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts'.
-   - Inject 'OpportunitiesService'.
-   - **CRITICAL**: Ensure 'create' calls 'opportunitiesService.createWithProducts' and 'update' calls 'opportunitiesService.updateWithProducts'.
-   - Implement 'deleteMany' cascade logic.
-   - **Type Safety**: Bind 'OPPORTUNITY_FIELDS_TO_STRIP' to 'keyof Opportunity' (fix the time bomb).
-   - Cleanup 'Opportunities' logic from 'unifiedDataProvider.ts'.
-
-4. **Refactor Sales**:
-   - Update 'salesHandler.ts' to add the RLS bypass logic (delegating to the Edge Function/Service).
-   - Cleanup 'Sales' logic from 'unifiedDataProvider.ts'.
-
-Mark tasks as [x] in the todo file as you finish them. Output <promise>PHASE_4_COMPLETE</promise> when all Phase 4 tasks are done.
+Mark tasks as [x] in the todo file. Output <promise>PHASE_5_COMPLETE</promise> when finished.

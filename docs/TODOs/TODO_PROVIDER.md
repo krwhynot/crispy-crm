@@ -289,20 +289,20 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 | Blocker | Status | Notes |
 |:--------|:-------|:------|
 | All 8 handlers have correct wrapper order | ✅ | Phase 2 — Fixed activities, tasks, sales, tags, notes (3 types) |
-| `segmentsHandler` created | ⬜ | Phase 4 blocker |
-| `productDistributorsHandler` created | ⬜ | Phase 4 blocker |
-| All 8 logic gaps are implemented | ⬜ | Table 2 |
-| All 8 Supabase calls are in services | ⬜ | Table 3 (ProductsService + ProductDistributorsService done) |
-| Products: create/update/delete all work | ⬜ | Critical path (service layer ready) |
+| `segmentsHandler` created | ✅ | Phase 4 — Delegates to SegmentsService |
+| `productDistributorsHandler` created | ✅ | Phase 4 — Composite key handling |
+| All 8 logic gaps are implemented | ✅ | Phase 4 — All handlers now intercept create/update/delete |
+| All 8 Supabase calls are in services | ✅ | Phase 3+4 — ProductsService, ProductDistributorsService, OpportunitiesService, SalesService |
+| Products: create/update/delete all work | ✅ | Phase 4 — Handler intercepts via ProductsService |
 | **🧪 ProductsService tests pass** | ✅ | Phase 3 — 28 tests pass |
-| Opportunities: products sync on create/update | ⬜ | Critical path |
-| Opportunities: `FIELDS_TO_STRIP` type-safe | ⬜ | Phase 4 |
-| **🧪 opportunitiesHandler tests pass** | ⬜ | Phase 4 — "The Boss" |
-| Sales: updates work (RLS bypass) | ⬜ | Edge Function |
+| Opportunities: products sync on create/update | ✅ | Phase 4 — Handler intercepts via OpportunitiesService |
+| Opportunities: `FIELDS_TO_STRIP` type-safe | ✅ | Phase 4 — `TYPED_COMPUTED_FIELDS satisfies keyof Opportunity` |
+| **🧪 opportunitiesHandler tests pass** | ⬜ | Phase 5 — Test hardening |
+| Sales: updates work (RLS bypass) | ✅ | Phase 4 — Handler intercepts via SalesService |
 | **🧪 `npm test` passes with flag enabled** | ⬜ | Phase 5 — final gate |
 
 ---
 
-*Last Updated: 2026-01-05*
+*Last Updated: 2026-01-06*
 *Source: Handler, Service Layer, and Type Safety Audits*
 *Sequencing Fix: Phase 4 blockers identified via code review*
