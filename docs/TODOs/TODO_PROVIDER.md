@@ -1,6 +1,6 @@
 # 🏗️ Master Plan: Provider Cleanup & Restructuring
 
-**Status:** ✅ PHASE 6 COMPLETE — Architecture Debt Cleaned
+**Status:** ✅ PHASE 7 COMPLETE — Type Safety Hardening
 **Goal:** Migrate from Monolithic (`unifiedDataProvider`) to Composed (`handlers/`) architecture safely using the Strangler Fig pattern.
 
 > **🎉 Migration Complete (2026-01-06):** The 1090+ LOC `unifiedDataProvider.ts` monolith has been deleted.
@@ -101,7 +101,7 @@
     - [x] Add `update()` interception (mirrors the existing `create()` pattern)
     - [x] Add `delete()` and `deleteMany()` via `ProductsService.softDelete()` RPC
     - [x] **Verify:** Build passes (`just build`)
-    - [ ] **Cleanup:** Delete `Products` logic from `unifiedDataProvider.ts` *(deferred to Phase 5)*
+    - [x] **Cleanup:** Delete `Products` logic from `unifiedDataProvider.ts` *(Monolith deleted in Phase 5)*
 - [x] **Migrate `Opportunities` Resource (The Boss)**
     - [x] Handler already exists: `src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts`
     - [x] Inject `OpportunitiesService`
@@ -203,23 +203,41 @@
 
 ---
 
-## Phase 7: Type Safety (P2 — Hardening)
+## Phase 7: Type Safety (P2 — Hardening) ✅ COMPLETE
 *Goal: Eliminate remaining type-unsafe patterns.*
 
 > **Note:** `OPPORTUNITY_FIELDS_TO_STRIP` type safety moved to Phase 4 (Opportunities migration).
 
-- [ ] **Type-Link Filter Registry**
-    - [ ] Bind `filterableFields` to DB column types from `database.generated.ts`
-    - [ ] **Security Fix:** Throw on unknown resources instead of allowing all filters
-- [ ] **Eliminate Widening Casts**
-    - [ ] Replace `as Record<string, unknown>` with Zod `.parse()` at these locations:
-        - [ ] unified:620 — Array bounds check missing
-        - [ ] unified:789, 828, 934 — processedData loses type info
-        - [ ] unified:1024, 1035, 1079 — params.data generic widening
-        - [ ] productsHandler:80-81 — Double cast pattern
-- [ ] **Add Drift Prevention Tests**
-    - [ ] Test: Compare `OPPORTUNITY_FIELDS_TO_STRIP` vs `opportunities_summary` view columns
-    - [ ] Test: Compare `filterableFields` vs actual DB columns per resource
+- [x] **Type-Link Filter Registry**
+    - [x] Bind `filterableFields` to DB column types from `database.generated.ts`
+        - Added `FilterRegistry` type using `Database["public"]["Tables"]` and `Database["public"]["Views"]`
+        - Used `as const satisfies Partial<FilterRegistry>` for type-safe registry
+        - Added helper types: `TableColumns<T>`, `ViewColumns<T>`, `FilterableResource`
+    - [x] **Security Fix:** Throw on unknown resources instead of allowing all filters
+        - Created `UnregisteredResourceError` class with security context
+        - Added `getFilterableFields()` that THROWS on unknown resources
+        - Modified `isValidFilterField()` to throw instead of returning false
+        - Added `isRegisteredResource()` type guard
+- [x] **Eliminate Widening Casts**
+    - [x] Replace `as Record<string, unknown>` with Zod `.parse()` at these locations:
+        - [x] ~~unified:620~~ — Monolith deleted in Phase 5
+        - [x] ~~unified:789, 828, 934~~ — Monolith deleted in Phase 5
+        - [x] ~~unified:1024, 1035, 1079~~ — Monolith deleted in Phase 5
+        - [x] productsHandler:80-81 — Replaced with `productUpdateWithDistributorsSchema.parse()`
+        - [x] productDistributorsHandler — Replaced with `updateProductDistributorSchema.passthrough().parse()`
+        - [x] opportunitiesHandler — Replaced with `handlerInputSchema.parse()` and `previousDataSchema.parse()`
+- [x] **Add Drift Prevention Tests**
+    - [x] Test: Compare `OPPORTUNITY_FIELDS_TO_STRIP` vs `opportunities_summary` view columns
+    - [x] Test: Compare `filterableFields` vs actual DB columns per resource
+    - [x] Test: Security hardening (UnregisteredResourceError behavior)
+    - [x] Test: Type exports verification (FilterableResource, error class)
+
+**Phase 7 Summary (2026-01-06):**
+- ✅ `filterRegistry.ts` refactored with Database type bindings
+- ✅ Security-hardened with `UnregisteredResourceError` + throw-on-unknown
+- ✅ All 3 handlers fixed: productsHandler, productDistributorsHandler, opportunitiesHandler
+- ✅ Created `schemaDrift.test.ts` with 38 tests for drift prevention
+- ✅ All 38 drift prevention tests pass
 
 ---
 
@@ -346,6 +364,6 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 ---
 
 *Last Updated: 2026-01-06*
-*Phase 5 Completed: 2026-01-06 — Monolith deleted, composed provider is permanent*
+*Phase 7 Completed: 2026-01-06 — Type safety hardening with drift prevention tests*
 *Source: Handler, Service Layer, and Type Safety Audits*
 *Sequencing Fix: Phase 4 blockers identified via code review*
