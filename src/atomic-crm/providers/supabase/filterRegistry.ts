@@ -195,6 +195,8 @@ export const filterableFields: Record<string, string[]> = {
 
   // Opportunities Summary View (database view with computed fields)
   // Used automatically by getDatabaseResource() for opportunities list queries
+  // Note: Fields removed 2025-01-05 - these don't exist in opportunities_summary view:
+  // amount, probability, sales_id
   opportunities_summary: [
     "id",
     "name",
@@ -202,8 +204,6 @@ export const filterableFields: Record<string, string[]> = {
     "status",
     "priority",
     "index",
-    "amount",
-    "probability",
     "estimated_close_date",
     "actual_close_date",
     "customer_organization_id",
@@ -221,7 +221,6 @@ export const filterableFields: Record<string, string[]> = {
     "campaign",
     "tags", // Array field
     "created_by",
-    "sales_id", // FK to sales (alias for filtering by owner, commonly used in dashboard queries)
     "created_at",
     "updated_at",
     "deleted_at", // Soft delete timestamp
@@ -358,25 +357,20 @@ export const filterableFields: Record<string, string[]> = {
   ],
 
   // Products resource
+  // Note: Many fields removed 2025-01-05 - these don't exist in the products table:
+  // sku, distributor_id, certifications, allergens, ingredients, marketing_description, minimum_order_quantity
   products: [
     "id",
     "principal_id",
-    "distributor_id",
     "name",
     "description",
-    "sku",
     "category",
     "status",
-    "certifications", // Array field
-    "allergens", // Array field
-    "ingredients",
-    "marketing_description",
     "created_at",
     "updated_at",
     "created_by",
     "updated_by",
     "deleted_at", // Soft delete timestamp
-    "minimum_order_quantity",
     "manufacturer_part_number",
     "q", // Special: full-text search parameter
   ],

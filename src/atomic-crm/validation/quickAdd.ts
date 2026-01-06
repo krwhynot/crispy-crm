@@ -27,13 +27,14 @@ export const quickAddSchema = z
     // Organization fields (org_name required, city/state optional)
     org_name: z
       .string({ error: "Organization name required" })
+      .trim()
       .min(1, "Organization name required")
       .max(255),
     city: z.string().max(100).optional(),
     state: z.string().max(50).optional(),
 
     // Opportunity fields (required)
-    campaign: z.string({ error: "Campaign required" }).min(1, "Campaign required").max(255),
+    campaign: z.string({ error: "Campaign required" }).trim().min(1, "Campaign required").max(255),
     principal_id: z.number({ error: "Principal required" }),
 
     // Optional fields
