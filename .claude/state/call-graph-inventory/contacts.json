@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-06T00:47:48.341Z",
+  "generated_at": "2026-01-06T02:23:51.075Z",
   "items": {
     "nodes": [
       {
@@ -121,10 +121,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactCreate.tsx:86:ContactFormContent",
+        "id": "src/atomic-crm/contacts/ContactCreate.tsx:87:ContactFormContent",
         "name": "ContactFormContent",
         "file": "src/atomic-crm/contacts/ContactCreate.tsx",
-        "line": 86,
+        "line": 87,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -2815,28 +2815,10 @@
       },
       {
         "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 54,
+        "line": 38,
         "conditional": false,
         "inLoop": false
       },
@@ -2845,7 +2827,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 56,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
@@ -2854,7 +2836,7 @@
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 56,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
@@ -2863,7 +2845,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 59,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
@@ -2872,7 +2854,25 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 60,
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
@@ -2881,7 +2881,7 @@
         "target": "CreateBase",
         "targetName": "CreateBase",
         "edgeType": "render",
-        "line": 66,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -2890,7 +2890,7 @@
         "target": "FormProgressProvider",
         "targetName": "FormProgressProvider",
         "edgeType": "render",
-        "line": 69,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
@@ -2899,7 +2899,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 71,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
@@ -2908,7 +2908,7 @@
         "target": "FormLoadingSkeleton",
         "targetName": "FormLoadingSkeleton",
         "edgeType": "render",
-        "line": 45,
+        "line": 60,
         "conditional": true,
         "inLoop": false
       },
@@ -2917,7 +2917,7 @@
         "target": "FormProgressBar",
         "targetName": "FormProgressBar",
         "edgeType": "render",
-        "line": 70,
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },
@@ -2926,7 +2926,7 @@
         "target": "ContactFormContent",
         "targetName": "ContactFormContent",
         "edgeType": "render",
-        "line": 72,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
@@ -2935,25 +2935,25 @@
         "target": "ContactFormTutorial",
         "targetName": "ContactFormTutorial",
         "edgeType": "render",
-        "line": 77,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:86:ContactFormContent",
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:87:ContactFormContent",
         "target": "ContactInputs",
         "targetName": "ContactInputs",
         "edgeType": "render",
-        "line": 89,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:86:ContactFormContent",
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:87:ContactFormContent",
         "target": "CreateFormFooter",
         "targetName": "CreateFormFooter",
         "edgeType": "render",
-        "line": 90,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },

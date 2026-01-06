@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-06T00:47:48.406Z",
+  "generated_at": "2026-01-06T02:23:51.144Z",
   "items": {
     "nodes": [
       {
@@ -112,28 +112,28 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "id": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "name": "validateCreateContact",
         "file": "src/atomic-crm/validation/contacts.ts",
-        "line": 555,
+        "line": 592,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/contacts.ts:662:validateUpdateContact",
+        "id": "src/atomic-crm/validation/contacts.ts:719:validateUpdateContact",
         "name": "validateUpdateContact",
         "file": "src/atomic-crm/validation/contacts.ts",
-        "line": 662,
+        "line": 719,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/contacts.ts:682:validateContactOrganization",
+        "id": "src/atomic-crm/validation/contacts.ts:739:validateContactOrganization",
         "name": "validateContactOrganization",
         "file": "src/atomic-crm/validation/contacts.ts",
-        "line": 682,
+        "line": 739,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -1015,10 +1015,28 @@
       },
       {
         "source": "src/atomic-crm/validation/contacts.ts:405:validateContactForm",
+        "target": "addIssue",
+        "targetName": "addIssue",
+        "edgeType": "call",
+        "line": 438,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts.ts:405:validateContactForm",
+        "target": "addIssue",
+        "targetName": "addIssue",
+        "edgeType": "call",
+        "line": 447,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts.ts:405:validateContactForm",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 437,
+        "line": 455,
         "conditional": true,
         "inLoop": false
       },
@@ -1027,7 +1045,7 @@
         "target": "email",
         "targetName": "email",
         "edgeType": "call",
-        "line": 438,
+        "line": 456,
         "conditional": true,
         "inLoop": false
       },
@@ -1036,7 +1054,7 @@
         "target": "string",
         "targetName": "string",
         "edgeType": "call",
-        "line": 438,
+        "line": 456,
         "conditional": true,
         "inLoop": false
       },
@@ -1045,7 +1063,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 439,
+        "line": 457,
         "conditional": true,
         "inLoop": false
       },
@@ -1054,7 +1072,7 @@
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 440,
+        "line": 458,
         "conditional": true,
         "inLoop": false
       },
@@ -1063,7 +1081,7 @@
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 441,
+        "line": 459,
         "conditional": true,
         "inLoop": false
       },
@@ -1072,7 +1090,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 451,
+        "line": 469,
         "conditional": true,
         "inLoop": false
       },
@@ -1081,7 +1099,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 453,
+        "line": 471,
         "conditional": true,
         "inLoop": false
       },
@@ -1090,7 +1108,7 @@
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 454,
+        "line": 472,
         "conditional": true,
         "inLoop": false
       },
@@ -1099,7 +1117,7 @@
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 455,
+        "line": 473,
         "conditional": true,
         "inLoop": false
       },
@@ -1108,7 +1126,7 @@
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 466,
+        "line": 484,
         "conditional": true,
         "inLoop": false
       },
@@ -1117,7 +1135,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 476,
+        "line": 494,
         "conditional": false,
         "inLoop": false
       },
@@ -1126,7 +1144,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 481,
+        "line": 499,
         "conditional": true,
         "inLoop": false
       },
@@ -1135,205 +1153,223 @@
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 482,
+        "line": 500,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "superRefine",
         "targetName": "superRefine",
         "edgeType": "call",
-        "line": 564,
+        "line": 601,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "transform",
         "targetName": "transform",
         "edgeType": "call",
-        "line": 564,
+        "line": 601,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "omit",
         "targetName": "omit",
         "edgeType": "call",
-        "line": 564,
+        "line": 601,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "extend",
         "targetName": "extend",
         "edgeType": "call",
-        "line": 564,
+        "line": 601,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "optional",
         "targetName": "optional",
         "edgeType": "call",
-        "line": 567,
+        "line": 604,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "boolean",
         "targetName": "boolean",
         "edgeType": "call",
-        "line": 567,
+        "line": 604,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 588,
+        "line": 623,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 595,
+        "line": 633,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 605,
+        "line": 645,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 615,
+        "line": 652,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 625,
+        "line": 662,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
+        "target": "addIssue",
+        "targetName": "addIssue",
+        "edgeType": "call",
+        "line": 672,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
+        "target": "addIssue",
+        "targetName": "addIssue",
+        "edgeType": "call",
+        "line": 682,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 634,
+        "line": 691,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 635,
+        "line": 692,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 645,
+        "line": 702,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 649,
+        "line": 706,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:555:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:592:validateCreateContact",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 650,
+        "line": 707,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:662:validateUpdateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:719:validateUpdateContact",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 664,
+        "line": 721,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:662:validateUpdateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:719:validateUpdateContact",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 668,
+        "line": 725,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:662:validateUpdateContact",
+        "source": "src/atomic-crm/validation/contacts.ts:719:validateUpdateContact",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 669,
+        "line": 726,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:682:validateContactOrganization",
+        "source": "src/atomic-crm/validation/contacts.ts:739:validateContactOrganization",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 684,
+        "line": 741,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:682:validateContactOrganization",
+        "source": "src/atomic-crm/validation/contacts.ts:739:validateContactOrganization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 688,
+        "line": 745,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts.ts:682:validateContactOrganization",
+        "source": "src/atomic-crm/validation/contacts.ts:739:validateContactOrganization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 689,
+        "line": 746,
         "conditional": false,
         "inLoop": false
       },

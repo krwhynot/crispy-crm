@@ -424,6 +424,24 @@ export async function validateContactForm(data: unknown): Promise<void> {
 
   // Create a schema that includes the email entry validation
   const formSchema = contactBaseSchema.transform(transformContactData).superRefine((data, ctx) => {
+    // Reject whitespace-only first_name (after .trim() in schema, becomes empty string)
+    if (typeof data.first_name === 'string' && data.first_name === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["first_name"],
+        message: "First name is required",
+      });
+    }
+
+    // Reject whitespace-only last_name (after .trim() in schema, becomes empty string)
+    if (typeof data.last_name === 'string' && data.last_name === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["last_name"],
+        message: "Last name is required",
+      });
+    }
+
     // Validate that at least name or first_name/last_name is provided
     if (!data.name && !data.first_name && !data.last_name) {
       ctx.addIssue({
@@ -509,6 +527,25 @@ export const createContactSchema = contactBaseSchema
   })
   .transform(transformContactData)
   .superRefine((data, ctx) => {
+    // Reject whitespace-only first_name (after .trim() in schema, becomes empty string)
+    // Must check BEFORE the name computation fallback logic
+    if (typeof data.first_name === 'string' && data.first_name === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["first_name"],
+        message: "First name is required",
+      });
+    }
+
+    // Reject whitespace-only last_name (after .trim() in schema, becomes empty string)
+    if (typeof data.last_name === 'string' && data.last_name === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["last_name"],
+        message: "Last name is required",
+      });
+    }
+
     // For creation, we need at least first_name and last_name OR name
     if (!data.name && (!data.first_name || !data.last_name)) {
       if (!data.first_name) {
@@ -580,6 +617,26 @@ export async function validateCreateContact(data: unknown): Promise<void> {
     })
     .transform(transformContactData)
     .superRefine((data, ctx) => {
+      // Reject whitespace-only first_name (after .trim() in schema, becomes empty string)
+      // Must check BEFORE the name computation fallback logic
+      if (typeof data.first_name === 'string' && data.first_name === '') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["first_name"],
+          message: "First name is required",
+        });
+      }
+
+      // Reject whitespace-only last_name (after .trim() in schema, becomes empty string)
+      // Only for non-quick-create (quick create allows empty last_name)
+      if (!isQuickCreate && typeof data.last_name === 'string' && data.last_name === '') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["last_name"],
+          message: "Last name is required",
+        });
+      }
+
       // For quick create, only require first_name
       // For regular creation, require first_name and last_name OR name
       if (!isQuickCreate) {
