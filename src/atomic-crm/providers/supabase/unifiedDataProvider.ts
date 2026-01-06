@@ -1163,6 +1163,27 @@ export const unifiedDataProvider: DataProvider = {
         return { data: (params.previousData || { id: params.id }) as RecordType };
       }
 
+      // P0 FIX: Products require RPC for soft-delete due to RLS SELECT policy conflict
+      // The SELECT policy (deleted_at IS NULL) blocks direct UPDATE because PostgreSQL
+      // verifies the user can see the resulting row. SECURITY DEFINER RPC bypasses this.
+      if (resource === "products") {
+        const numericId = Number(params.id);
+        if (!Number.isInteger(numericId) || numericId <= 0) {
+          throw new Error(`Invalid product ID: ${params.id}`);
+        }
+
+        const { error: rpcError } = await supabase.rpc("soft_delete_product", {
+          product_id: numericId,
+        });
+
+        if (rpcError) {
+          console.error("🔴 [delete] Product soft-delete RPC FAILED:", rpcError);
+          throw new Error(`Failed to delete product: ${rpcError.message}`);
+        }
+
+        return { data: (params.previousData || { id: params.id }) as RecordType };
+      }
+
       // Constitution: soft-deletes rule - check if resource supports soft delete
       if (supportsSoftDelete(dbResource)) {
         // Soft delete: set deleted_at timestamp
@@ -1205,6 +1226,29 @@ export const unifiedDataProvider: DataProvider = {
             console.error(`Failed to archive opportunity ${id} with relations:`, rpcError);
             throw new Error(`Failed to delete opportunity ${id}: ${rpcError.message}`);
           }
+        }
+
+        return { data: params.ids };
+      }
+
+      // P0 FIX: Products require RPC for soft-delete due to RLS SELECT policy conflict
+      // Uses bulk RPC function for efficiency
+      if (resource === "products") {
+        const numericIds = params.ids.map((id) => {
+          const numId = Number(id);
+          if (!Number.isInteger(numId) || numId <= 0) {
+            throw new Error(`Invalid product ID: ${id}`);
+          }
+          return numId;
+        });
+
+        const { error: rpcError } = await supabase.rpc("soft_delete_products", {
+          product_ids: numericIds,
+        });
+
+        if (rpcError) {
+          console.error("🔴 [deleteMany] Products soft-delete RPC FAILED:", rpcError);
+          throw new Error(`Failed to delete products: ${rpcError.message}`);
         }
 
         return { data: params.ids };

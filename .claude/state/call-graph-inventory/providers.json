@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-06T02:25:02.525Z",
+  "generated_at": "2026-01-06T02:45:15.993Z",
   "items": {
     "nodes": [
       {
@@ -544,19 +544,19 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1790:resourceUsesValidation",
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1834:resourceUsesValidation",
         "name": "resourceUsesValidation",
         "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
-        "line": 1790,
+        "line": 1834,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1797:resourceUsesTransformers",
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1841:resourceUsesTransformers",
         "name": "resourceUsesTransformers",
         "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
-        "line": 1797,
+        "line": 1841,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -3291,20 +3291,20 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1790:resourceUsesValidation",
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1834:resourceUsesValidation",
         "target": "hasValidation",
         "targetName": "hasValidation",
         "edgeType": "call",
-        "line": 1791,
+        "line": 1835,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1797:resourceUsesTransformers",
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1841:resourceUsesTransformers",
         "target": "hasTransform",
         "targetName": "hasTransform",
         "edgeType": "call",
-        "line": 1798,
+        "line": 1842,
         "conditional": false,
         "inLoop": false
       },
