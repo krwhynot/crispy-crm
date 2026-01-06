@@ -21,13 +21,17 @@ import { activitiesCallbacks } from "../callbacks";
  * Create a fully composed DataProvider for activities
  *
  * Composition order (innermost to outermost):
- * baseProvider → withLifecycleCallbacks → withValidation → withErrorLogging
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
+ * computed fields before DB write. This ensures Zod validates clean user input,
+ * not post-processed data.
  *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with all activities-specific behavior
  */
 export function createActivitiesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(withLifecycleCallbacks(baseProvider, [activitiesCallbacks]))
+    withLifecycleCallbacks(withValidation(baseProvider), [activitiesCallbacks])
   );
 }
