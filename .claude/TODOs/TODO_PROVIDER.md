@@ -60,6 +60,12 @@
         - [ ] `getOne(productId, distributorId)` — Replace unified:658-672
         - [ ] `update(productId, distributorId, data)` — Replace unified:974-994
         - [ ] `delete(productId, distributorId)` — Replace unified:1103-1114
+- [ ] **🧪 Test ProductsService**
+    - [ ] Create `src/atomic-crm/services/__tests__/ProductsService.test.ts`
+    - [ ] Test `createWithDistributors` (verify transaction logic — both inserts succeed or fail together)
+    - [ ] Test `softDelete` (verify RPC call with correct parameters)
+    - [ ] Test `getOneWithDistributors` (verify JOIN returns distributors array)
+    - [ ] **Why:** Transaction logic is critical — manual UI testing insufficient
 
 ---
 
