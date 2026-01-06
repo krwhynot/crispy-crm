@@ -1,8 +1,15 @@
 /**
- * Filter Registry - Filterable Fields Definition
+ * Filter Registry - Type-Safe Filterable Fields Definition
  *
  * This registry defines valid filterable fields for each resource, preventing
  * 400 errors from stale cached filters that reference non-existent database columns.
+ *
+ * ## Type Safety (Phase 7)
+ *
+ * This module is now TYPE-LINKED to `database.generated.ts`:
+ * - `RegisteredResource` type constrains keys to actual Tables + Views
+ * - Column arrays include DB columns + virtual fields (q, stale, nested filters)
+ * - `getFilterableFields()` throws on unknown resources (security hardening)
  *
  * Used by:
  * - ValidationService.validateFilters() in the dataProvider layer (API protection)
@@ -39,10 +46,80 @@
  * ```
  *
  * Schema Source: Derived from actual database columns via supabase-lite MCP tools
- * Last Updated: 2025-12-12
+ * Last Updated: 2026-01-06
  */
 
-export const filterableFields: Record<string, string[]> = {
+import type { Database } from "@/types/database.generated";
+
+// =============================================================================
+// TYPE-SAFE HELPER TYPES
+// =============================================================================
+
+/**
+ * Extract all table names from the Database type
+ */
+type TableName = keyof Database["public"]["Tables"];
+
+/**
+ * Extract all view names from the Database type
+ */
+type ViewName = keyof Database["public"]["Views"];
+
+/**
+ * All database resources (tables + views)
+ */
+type DatabaseResource = TableName | ViewName;
+
+/**
+ * Extract column names from a table's Row type
+ */
+type TableColumns<T extends TableName> = keyof Database["public"]["Tables"][T]["Row"];
+
+/**
+ * Extract column names from a view's Row type
+ */
+type ViewColumns<T extends ViewName> = keyof Database["public"]["Views"][T]["Row"];
+
+/**
+ * Virtual fields that exist in React Admin but not in the database.
+ * These are transformed by the data provider layer.
+ */
+type VirtualFilterField =
+  | "q" // Full-text search parameter
+  | "stale" // Staleness filter (transformed to last_activity_date + stage)
+  | "type" // Alias for organization_type/activity_type in some contexts
+  | "opportunities.campaign" // Nested relationship filter
+  | "opportunities.deleted_at"; // Nested relationship filter
+
+/**
+ * Resources registered in the filter registry.
+ * Includes database resources + React Admin aliases (e.g., contactNotes → contact_notes)
+ */
+type RegisteredResource =
+  | DatabaseResource
+  | "contactNotes" // React Admin alias for contact_notes
+  | "opportunityNotes" // React Admin alias for opportunity_notes
+  | "user_favorites"; // May not be in generated types yet
+
+/**
+ * Type for the filter registry - keys must be registered resources,
+ * values are arrays of column names (string for flexibility with virtual fields)
+ */
+type FilterRegistry = Record<RegisteredResource, readonly string[]>;
+
+// =============================================================================
+// FILTER REGISTRY
+// =============================================================================
+
+/**
+ * The filterable fields registry with type-safe resource keys.
+ *
+ * NOTE: We use `as const satisfies FilterRegistry` to:
+ * 1. Ensure all keys are valid RegisteredResource types
+ * 2. Preserve the readonly tuple types for values
+ * 3. Allow TypeScript to catch typos in resource names
+ */
+export const filterableFields = {
   // Contacts resource (uses contacts_summary view)
   contacts: [
     "id",
@@ -464,19 +541,85 @@ export const filterableFields: Record<string, string[]> = {
     "created_at",
     "deleted_at",
   ],
-};
+} as const satisfies Partial<FilterRegistry>;
+
+// Export the type for external use
+export type FilterableResource = keyof typeof filterableFields;
+
+// =============================================================================
+// SECURITY-HARDENED ACCESSOR FUNCTIONS
+// =============================================================================
+
+/**
+ * Custom error class for filter registry security violations.
+ * Thrown when an unregistered resource attempts to use filters.
+ */
+export class UnregisteredResourceError extends Error {
+  constructor(resource: string) {
+    super(
+      `[SECURITY] Resource "${resource}" is not registered in filterRegistry. ` +
+        `This could indicate a filter injection attempt or a missing registry entry. ` +
+        `Register the resource in filterableFields if it's legitimate.`
+    );
+    this.name = "UnregisteredResourceError";
+  }
+}
+
+/**
+ * Get filterable fields for a resource (SECURE VERSION).
+ *
+ * @param resource The resource name to look up
+ * @returns The array of filterable field names
+ * @throws UnregisteredResourceError if the resource is not in the registry
+ *
+ * ## Security Rationale
+ *
+ * The old `isValidFilterField` returned `false` for unknown resources,
+ * which could silently allow malformed filters through in some code paths.
+ * This function THROWS on unknown resources, ensuring:
+ *
+ * 1. **Fail-Fast**: Invalid resources are caught immediately at the validation layer
+ * 2. **No Silent Failures**: Developers see explicit errors in logs
+ * 3. **Defense in Depth**: Even if other validation is bypassed, this catches it
+ *
+ * @example
+ * ```typescript
+ * // Safe usage
+ * const fields = getFilterableFields("contacts"); // Returns string[]
+ *
+ * // Throws on unknown resource (security protection)
+ * const fields = getFilterableFields("malicious_table"); // Throws UnregisteredResourceError
+ * ```
+ */
+export function getFilterableFields(resource: string): readonly string[] {
+  const fields = filterableFields[resource as FilterableResource];
+  if (!fields) {
+    throw new UnregisteredResourceError(resource);
+  }
+  return fields;
+}
+
+/**
+ * Check if a resource is registered in the filter registry.
+ * Use this for conditional logic where you need to handle unregistered resources gracefully.
+ *
+ * @param resource The resource name to check
+ * @returns true if the resource is registered, false otherwise
+ */
+export function isRegisteredResource(resource: string): resource is FilterableResource {
+  return resource in filterableFields;
+}
 
 /**
  * Helper function to check if a filter field is valid for a resource
  * @param resource The resource name
  * @param filterKey The filter key (may include operators like @gte)
  * @returns true if the filter is valid, false otherwise
+ * @throws UnregisteredResourceError if the resource is not in the registry (security hardening)
  */
 export function isValidFilterField(resource: string, filterKey: string): boolean {
-  const allowedFields = filterableFields[resource];
-  if (!allowedFields) {
-    return false; // Unknown resource, consider invalid
-  }
+  // SECURITY: Throw on unknown resources instead of returning false
+  const allowedFields = getFilterableFields(resource);
 
   // Logical operators - whitelist both input and output formats:
   // Input: MongoDB-style $or/$and/$not from components
@@ -492,3 +635,13 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
 
   return allowedFields.includes(baseField) || allowedFields.includes(filterKey);
 }
+
+// =============================================================================
+// TYPE EXPORTS FOR DRIFT PREVENTION TESTS
+// =============================================================================
+
+/**
+ * Export helper types for use in schema drift tests.
+ * These types allow tests to compare registry entries against actual DB schema.
+ */
+export type { TableName, ViewName, DatabaseResource, TableColumns, ViewColumns };

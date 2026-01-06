@@ -34,6 +34,10 @@ import {
   type ProductDistributor,
   type ProductDistributorUpdateInput,
 } from "../../../services/productDistributors.service";
+import {
+  updateProductDistributorSchema,
+  createProductDistributorSchema,
+} from "../../../validation/productDistributors";
 
 /**
  * Create a fully composed DataProvider for product_distributors
@@ -95,21 +99,29 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
 
       const { product_id, distributor_id } = parseCompositeId(String(params.id));
 
-      // Extract update fields from params.data
-      const updateData: ProductDistributorUpdateInput = {};
-      const data = params.data as Record<string, unknown>;
+      // Validate and extract update fields using Zod schema
+      // Using passthrough to preserve any extra fields that may be present
+      const validatedData = updateProductDistributorSchema.passthrough().parse(params.data);
 
-      if ("vendor_item_number" in data) {
-        updateData.vendor_item_number = data.vendor_item_number as string | null;
+      // Build update input from validated data
+      const updateData: ProductDistributorUpdateInput = {};
+      if (validatedData.vendor_item_number !== undefined) {
+        updateData.vendor_item_number = validatedData.vendor_item_number;
       }
-      if ("status" in data) {
-        updateData.status = data.status as string;
+      if (validatedData.status !== undefined) {
+        updateData.status = validatedData.status;
       }
-      if ("valid_from" in data) {
-        updateData.valid_from = data.valid_from as string;
+      if (validatedData.valid_from !== undefined) {
+        updateData.valid_from = validatedData.valid_from instanceof Date
+          ? validatedData.valid_from.toISOString()
+          : String(validatedData.valid_from);
       }
-      if ("valid_to" in data) {
-        updateData.valid_to = data.valid_to as string | null;
+      if (validatedData.valid_to !== undefined) {
+        updateData.valid_to = validatedData.valid_to instanceof Date
+          ? validatedData.valid_to.toISOString()
+          : validatedData.valid_to === null
+            ? null
+            : String(validatedData.valid_to);
       }
 
       const updatedData = await service.update(product_id, distributor_id, updateData);
@@ -159,30 +171,31 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
         return composedHandler.create<RecordType>(resource, params);
       }
 
-      const data = params.data as Record<string, unknown>;
-      const productId = data.product_id as number;
-      const distributorId = data.distributor_id as number;
+      // Validate create data using Zod schema (requires product_id and distributor_id)
+      const validatedData = createProductDistributorSchema.passthrough().parse(params.data);
 
-      if (!productId || !distributorId) {
-        throw new Error(
-          "Create product_distributor requires both product_id and distributor_id"
-        );
-      }
+      const productId = validatedData.product_id;
+      const distributorId = validatedData.distributor_id;
 
-      // Extract optional fields for create
+      // Build create input from validated data (optional fields)
       const createData: Partial<ProductDistributorUpdateInput> = {};
-
-      if ("vendor_item_number" in data) {
-        createData.vendor_item_number = data.vendor_item_number as string | null;
+      if (validatedData.vendor_item_number !== undefined) {
+        createData.vendor_item_number = validatedData.vendor_item_number;
       }
-      if ("status" in data) {
-        createData.status = data.status as string;
+      if (validatedData.status !== undefined) {
+        createData.status = validatedData.status;
       }
-      if ("valid_from" in data) {
-        createData.valid_from = data.valid_from as string;
+      if (validatedData.valid_from !== undefined) {
+        createData.valid_from = validatedData.valid_from instanceof Date
+          ? validatedData.valid_from.toISOString()
+          : String(validatedData.valid_from);
       }
-      if ("valid_to" in data) {
-        createData.valid_to = data.valid_to as string | null;
+      if (validatedData.valid_to !== undefined) {
+        createData.valid_to = validatedData.valid_to instanceof Date
+          ? validatedData.valid_to.toISOString()
+          : validatedData.valid_to === null
+            ? null
+            : String(validatedData.valid_to);
       }
 
       const createdData = await service.create(productId, distributorId, createData);

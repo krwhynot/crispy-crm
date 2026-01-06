@@ -92,11 +92,11 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
       params: CreateParams<RecordType>
     ) => {
       if (resource === "opportunities") {
-        const data = params.data as unknown as Record<string, unknown>;
-        const productsToSync = data.products_to_sync as Product[] | undefined;
+        const validatedData = handlerInputSchema.parse(params.data);
+        const productsToSync = validatedData.products_to_sync as Product[] | undefined;
 
         if (Array.isArray(productsToSync)) {
-          const result = await service.createWithProducts(data);
+          const result = await service.createWithProducts(validatedData);
           return { data: result as RecordType };
         }
       }
@@ -119,14 +119,14 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
       params: UpdateParams<RecordType>
     ) => {
       if (resource === "opportunities") {
-        const data = params.data as unknown as Record<string, unknown>;
-        const productsToSync = data.products_to_sync as Product[] | undefined;
+        const validatedData = handlerInputSchema.parse(params.data);
+        const productsToSync = validatedData.products_to_sync as Product[] | undefined;
 
         if (Array.isArray(productsToSync)) {
-          const previousData = params.previousData as unknown as Record<string, unknown>;
-          const previousProducts = (previousData?.products as Product[]) ?? [];
+          const validatedPreviousData = previousDataSchema.parse(params.previousData);
+          const previousProducts = (validatedPreviousData.products as Product[]) ?? [];
 
-          const result = await service.updateWithProducts(params.id, data, previousProducts);
+          const result = await service.updateWithProducts(params.id, validatedData, previousProducts);
           return { data: result as RecordType };
         }
       }
