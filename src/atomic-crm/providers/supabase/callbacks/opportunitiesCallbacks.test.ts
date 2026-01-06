@@ -11,12 +11,27 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
+
+// Must use vi.hoisted to define mock before vi.mock (hoisting issues)
+const { mockRpc } = vi.hoisted(() => ({
+  mockRpc: vi.fn(),
+}));
+
+// Mock the supabase client used directly by beforeDelete
+vi.mock("../supabase", () => ({
+  supabase: {
+    rpc: mockRpc,
+  },
+}));
+
 import { opportunitiesCallbacks } from "./opportunitiesCallbacks";
 
 describe("opportunitiesCallbacks", () => {
-  let mockDataProvider: DataProvider & { rpc?: ReturnType<typeof vi.fn> };
+  let mockDataProvider: DataProvider;
 
   beforeEach(() => {
+    vi.clearAllMocks();
+
     mockDataProvider = {
       getList: vi.fn().mockResolvedValue({ data: [], total: 0 }),
       getOne: vi.fn().mockResolvedValue({ data: { id: 1 } }),
@@ -27,8 +42,10 @@ describe("opportunitiesCallbacks", () => {
       updateMany: vi.fn().mockResolvedValue({ data: [1] }),
       delete: vi.fn().mockResolvedValue({ data: { id: 1 } }),
       deleteMany: vi.fn().mockResolvedValue({ data: [1, 2] }),
-      rpc: vi.fn().mockResolvedValue({ data: { id: 1 } }),
     };
+
+    // Default successful RPC mock
+    mockRpc.mockResolvedValue({ error: null });
   });
 
   describe("resource configuration", () => {
@@ -46,8 +63,8 @@ describe("opportunitiesCallbacks", () => {
 
       const result = await opportunitiesCallbacks.beforeDelete!(params, mockDataProvider);
 
-      // Should call archive RPC instead of direct delete
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
+      // Should call supabase.rpc directly (not dataProvider.rpc)
+      expect(mockRpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
         opp_id: 1,
       });
 
@@ -57,7 +74,8 @@ describe("opportunitiesCallbacks", () => {
     });
 
     it("should handle archive RPC errors gracefully", async () => {
-      mockDataProvider.rpc = vi.fn().mockRejectedValue(new Error("RPC failed"));
+      // Mock RPC returning an error (Supabase pattern)
+      mockRpc.mockResolvedValue({ error: { message: "RPC failed" } });
 
       const params = {
         id: 1,
