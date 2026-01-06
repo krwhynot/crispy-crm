@@ -26,10 +26,12 @@ import {
 import { withErrorLogging, withValidation } from "../wrappers";
 import { productsCallbacks } from "../callbacks";
 import {
-  validateCreateProductWithDistributors,
+  productWithDistributorsSchema,
+  distributorAssociationSchema,
   transformToRpcParams,
   type ProductWithDistributors,
 } from "../../../validation/productWithDistributors";
+import { z } from "zod";
 import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
 import type { ExtendedDataProvider } from "../extensions/types";
 
@@ -40,6 +42,29 @@ import type { ExtendedDataProvider } from "../extensions/types";
 interface DataProviderWithRpc extends DataProvider {
   rpc?: (functionName: string, params: Record<string, unknown>) => Promise<unknown>;
 }
+
+/**
+ * Schema for product update data with optional distributor associations
+ * Uses .passthrough() to allow additional fields from the form that we strip later
+ */
+const productUpdateWithDistributorsSchema = z.object({
+  distributors: z.array(distributorAssociationSchema).optional(),
+  distributor_ids: z.array(z.coerce.number().int().positive()).optional(),
+  product_distributors: z.record(
+    z.coerce.number(),
+    z.object({ vendor_item_number: z.string().nullable() })
+  ).optional(),
+}).passthrough();
+
+/**
+ * Schema for stripping distributor fields from product data
+ * Used when productWithDistributorsSchema validation fails (no distributors case)
+ */
+const productFieldStripSchema = z.object({
+  distributors: z.unknown().optional(),
+  distributor_ids: z.unknown().optional(),
+  product_distributors: z.unknown().optional(),
+}).passthrough();
 
 /**
  * Create a fully composed DataProvider for products
@@ -82,18 +107,15 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       // Only intercept products resource
       if (resource === "products") {
-        const data = params.data as unknown as Record<string, unknown>;
-        const distributors = data.distributors as unknown[] | undefined;
+        // Parse with Zod schema for type-safe access (Engineering Constitution: Zod at boundary)
+        const parseResult = productWithDistributorsSchema.safeParse(params.data);
 
         // Check if we have distributors to create atomically
-        if (Array.isArray(distributors) && distributors.length > 0) {
-          // Validate with the combined schema (Engineering Constitution: Zod at boundary)
-          await validateCreateProductWithDistributors(data);
+        if (parseResult.success && parseResult.data.distributors.length > 0) {
+          const validatedData = parseResult.data;
 
-          // Transform to RPC parameters
-          const { productData, distributors: distData } = transformToRpcParams(
-            data as unknown as ProductWithDistributors
-          );
+          // Transform to RPC parameters using validated data
+          const { productData, distributors: distData } = transformToRpcParams(validatedData);
 
           // Get RPC method from composed handler
           const dpWithRpc = composedHandler as DataProviderWithRpc;
@@ -113,14 +135,15 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           return { data: result as RecordType };
         }
 
-        // No distributors - strip any distributor-related fields and use normal flow
+        // No distributors or validation failed - strip any distributor-related fields and use normal flow
         // This prevents "Unrecognized keys" error from z.strictObject()
+        const parsed = productFieldStripSchema.parse(params.data);
         const {
           distributors: _distributors,
           distributor_ids: _distributorIds,
           product_distributors: _productDistributors,
           ...cleanData
-        } = data;
+        } = parsed;
 
         return composedHandler.create<RecordType>(resource, {
           ...params,
@@ -148,14 +171,14 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       // Only intercept products resource
       if (resource === "products") {
-        const data = params.data as unknown as Record<string, unknown>;
-        const distributors = data.distributors as unknown[] | undefined;
-        const distributorIds = data.distributor_ids as number[] | undefined;
+        // Parse with Zod schema for type-safe access (Engineering Constitution: Zod at boundary)
+        const validatedData = productUpdateWithDistributorsSchema.parse(params.data);
+        const { distributors, distributor_ids, product_distributors, ...cleanData } = validatedData;
 
         // Check if we have distributor data to sync
         if (
           (Array.isArray(distributors) && distributors.length > 0) ||
-          (Array.isArray(distributorIds) && distributorIds.length > 0)
+          (Array.isArray(distributor_ids) && distributor_ids.length > 0)
         ) {
           // Create service instance with extended data provider
           const service = new ProductsService(baseProvider as ExtendedDataProvider);
@@ -164,33 +187,18 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           let distributorInputs: ProductDistributorInput[] = [];
 
           if (Array.isArray(distributors) && distributors.length > 0) {
-            // Full distributor objects with vendor_item_number
-            distributorInputs = distributors.map((d) => {
-              const dist = d as Record<string, unknown>;
-              return {
-                distributor_id: Number(dist.distributor_id ?? dist.id),
-                vendor_item_number: (dist.vendor_item_number as string) ?? null,
-              };
-            });
-          } else if (Array.isArray(distributorIds) && distributorIds.length > 0) {
-            // Just IDs - no vendor_item_number
-            const productDistributors = (data.product_distributors ?? {}) as Record<
-              number,
-              { vendor_item_number: string | null }
-            >;
-            distributorInputs = distributorIds.map((id) => ({
+            // Full distributor objects with vendor_item_number - already validated by Zod
+            distributorInputs = distributors.map((dist) => ({
+              distributor_id: Number(dist.distributor_id),
+              vendor_item_number: dist.vendor_item_number ?? null,
+            }));
+          } else if (Array.isArray(distributor_ids) && distributor_ids.length > 0) {
+            // Just IDs - use product_distributors map for vendor_item_number
+            distributorInputs = distributor_ids.map((id) => ({
               distributor_id: id,
-              vendor_item_number: productDistributors[id]?.vendor_item_number ?? null,
+              vendor_item_number: product_distributors?.[id]?.vendor_item_number ?? null,
             }));
           }
-
-          // Strip distributor fields from product data
-          const {
-            distributors: _distributors,
-            distributor_ids: _distributorIds,
-            product_distributors: _productDistributors,
-            ...cleanData
-          } = data;
 
           // Call service for atomic update
           const result = await service.updateWithDistributors(
@@ -202,13 +210,7 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           return { data: result as RecordType };
         }
 
-        // No distributors - strip any distributor-related fields and use normal flow
-        const {
-          distributors: _distributors,
-          distributor_ids: _distributorIds,
-          product_distributors: _productDistributors,
-          ...cleanData
-        } = data;
+        // No distributors - cleanData already has distributor fields stripped
 
         return composedHandler.update<RecordType>(resource, {
           ...params,
