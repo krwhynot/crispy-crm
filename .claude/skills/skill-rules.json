@@ -1190,6 +1190,159 @@
         "Included file:line references throughout",
         "Offered continuation/deeper dive"
       ]
+    },
+    "crispy-data-provider": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Data Provider architecture rules - Strangler Fig migration (new resources in handlers/, shrink unifiedDataProvider.ts), View/Table duality (read from views, write to tables), validation at Handler boundary (Zod, not forms), Service layer encapsulation, soft deletes, explicit handler composition.",
+      "requiredSkills": ["enforcing-principles", "data-integrity-guards"],
+      "promptTriggers": {
+        "keywords": [
+          "data provider",
+          "data handler",
+          "unifiedDataProvider",
+          "unified provider",
+          "composedDataProvider",
+          "composed provider",
+          "create handler",
+          "add handler",
+          "new resource",
+          "add resource",
+          "CRUD",
+          "getList",
+          "getOne",
+          "create",
+          "update",
+          "delete",
+          "React Admin handler",
+          "react-admin handler",
+          "Supabase query",
+          "supabase handler",
+          "strangler fig",
+          "migration pattern",
+          "view table",
+          "view duality",
+          "read from view",
+          "write to table",
+          "computed fields",
+          "strip fields",
+          "service layer",
+          "soft delete",
+          "handler composition",
+          "withValidation",
+          "withErrorLogging",
+          "withLifecycleCallbacks",
+          "lifecycle callbacks",
+          "HttpError",
+          "data provider error",
+          "service",
+          "business logic",
+          "workflow",
+          "orchestrate",
+          "multi-step",
+          "zod",
+          "schema",
+          "validation",
+          "parse",
+          "safeParse",
+          "rpc",
+          "postgres function",
+          "raw query",
+          "supabase.rpc",
+          "call function",
+          "database function"
+        ],
+        "intentPatterns": [
+          "(create|add|implement|build).*?(data provider|handler|resource)",
+          "(modify|update|change|fix).*?(data provider|unifiedDataProvider|handler)",
+          "(add|create|implement).*?(CRUD|getList|getOne|create|update|delete)",
+          "(migrate|move|extract).*?(resource|handler|provider)",
+          "(read|query|fetch).*?(from|view|table)",
+          "(write|insert|update).*?(to|table)",
+          "(strip|remove|clean).*?(computed|view).*?field",
+          "(compose|wrap|decorate).*?handler",
+          "(service|business).*?layer",
+          "(soft|hard).*?delete",
+          "how.*?(data provider|handler|resource).*?(work|implement|create)",
+          "(strangler|migration).*?(fig|pattern)",
+          "(view|table).*?(duality|separation|pattern)",
+          "(put|place|add).*?(logic|workflow|sync).*?(handler|provider|service)",
+          "(where|how).*?(business logic|workflow|orchestrat)",
+          "(call|invoke|use).*?(rpc|postgres function|database function)",
+          "(validate|parse|check).*?(schema|zod|input)",
+          "(sync|coordinate|multi-step).*?(operation|workflow|action)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/providers/supabase/**/*.ts",
+          "src/providers/**/*.ts",
+          "src/services/**/*.ts"
+        ],
+        "contentPatterns": [
+          "unifiedDataProvider",
+          "composedDataProvider",
+          "getList.*?params",
+          "getOne.*?params",
+          "create.*?params",
+          "update.*?params",
+          "\\.from\\(['\"]\\w+_summary['\"]\\)",
+          "withValidation",
+          "withErrorLogging",
+          "withLifecycleCallbacks",
+          "HttpError",
+          "deleted_at.*?new Date",
+          "stripComputedFields",
+          "TransformService",
+          "\\.rpc\\(",
+          "z\\.object\\(",
+          "\\.safeParse\\(",
+          "\\.parse\\(",
+          "supabase\\.rpc",
+          "ZodError"
+        ]
+      },
+      "antiPatterns": {
+        "description": "Patterns that violate data provider architecture - trigger warning",
+        "patterns": [
+          "unifiedDataProvider.*?=.*?\\{",
+          "\\.from\\(['\"]\\w+_summary['\"]\\)\\.insert",
+          "\\.from\\(['\"]\\w+_summary['\"]\\)\\.update",
+          "\\.delete\\(\\)",
+          "createAutoHandler",
+          "magicCRUD",
+          "supabase\\.rpc.*?\\w+Handler",
+          "\\.rpc\\(['\"]\\w+['\"]\\)(?!.*Service)"
+        ]
+      },
+      "architectureWarnings": {
+        "rpcDuplication": {
+          "description": "RPC calls should be wrapped in Services to avoid duplication",
+          "pattern": "\\.rpc\\(",
+          "recommendation": "Check if this RPC is already wrapped in a Service before calling directly"
+        },
+        "validationInHandler": {
+          "description": "Validation should use withValidation wrapper, not inline",
+          "pattern": "z\\.object\\(.*?\\)\\.parse\\(",
+          "recommendation": "Use withValidation(handler, schema) wrapper for consistent error handling"
+        },
+        "businessLogicInProvider": {
+          "description": "Multi-step operations should be in Service layer",
+          "pattern": "await.*?await.*?await",
+          "recommendation": "Consider extracting to a Service class for testability and reuse"
+        }
+      },
+      "codeReviewChecklist": [
+        "New logic in handlers/ (not unifiedDataProvider.ts)?",
+        "Writes target Base Table (not View)?",
+        "Zod validation at Handler boundary?",
+        "Business logic in Service layer?",
+        "Errors mapped to React Admin format?",
+        "Soft delete used (not hard delete)?",
+        "Handler composition is explicit?"
+      ]
     }
   }
 }
