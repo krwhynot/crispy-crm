@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-06T00:47:46.415Z",
+  "generated_at": "2026-01-06T02:23:48.264Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:0d67d239d2c147f9",
+  "checksum": "sha256:b89b8cc231693adb",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
     "src/atomic-crm/activities/ActivityEdit.tsx": "80dec2decee2",
@@ -20,7 +20,7 @@
     "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx": "776329f3726e",
     "src/atomic-crm/components/CreateFormFooter.tsx": "a0543888b118",
     "src/atomic-crm/contacts/ContactCompactForm.tsx": "70b04f831c75",
-    "src/atomic-crm/contacts/ContactCreate.tsx": "6952e16bf4db",
+    "src/atomic-crm/contacts/ContactCreate.tsx": "e0899fadf9d1",
     "src/atomic-crm/contacts/ContactEdit.tsx": "5f5ab1bb89f8",
     "src/atomic-crm/contacts/ContactFormTutorial.tsx": "c8b35aa930c8",
     "src/atomic-crm/contacts/ContactInputs.tsx": "ce69f6134689",
