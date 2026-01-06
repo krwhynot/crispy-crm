@@ -6,16 +6,26 @@
  * 2. withLifecycleCallbacks → Resource-specific logic (RPC archive, soft delete filter)
  * 3. withValidation → Zod schema validation
  * 4. withErrorLogging → Structured error handling
+ * 5. Service delegation → OpportunitiesService for product sync
  *
  * Note: The RPC archive_opportunity_with_relations logic is encapsulated
  * in opportunitiesCallbacks. The handler composition remains identical.
  *
- * Engineering Constitution: Composition over inheritance, ~20 lines
+ * Engineering Constitution: Composition over inheritance, Service layer for business logic
  */
 
-import { withLifecycleCallbacks, type DataProvider } from "react-admin";
+import {
+  withLifecycleCallbacks,
+  type DataProvider,
+  type CreateParams,
+  type UpdateParams,
+  type RaRecord,
+} from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
+import { OpportunitiesService } from "../../../services/opportunities.service";
+import type { ExtendedDataProvider } from "../extensions/types";
+import type { Product } from "../../../opportunities/utils/diffProducts";
 
 /**
  * Create a fully composed DataProvider for opportunities
@@ -27,11 +37,76 @@ import { opportunitiesCallbacks } from "../callbacks";
  * can strip computed fields (from views/triggers) BEFORE Zod validation runs.
  * Otherwise validation fails with "Unrecognized keys" for view-computed fields.
  *
+ * ADDITION: Wraps create/update methods to intercept opportunities with products,
+ * delegating to OpportunitiesService for atomic product synchronization.
+ *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with all opportunities-specific behavior
  */
 export function createOpportunitiesHandler(baseProvider: DataProvider): DataProvider {
-  return withErrorLogging(
+  const composedHandler = withErrorLogging(
     withLifecycleCallbacks(withValidation(baseProvider), [opportunitiesCallbacks])
   );
+
+  const service = new OpportunitiesService(baseProvider as ExtendedDataProvider);
+
+  return {
+    ...composedHandler,
+
+    /**
+     * Intercept create for opportunities with products
+     *
+     * If products_to_sync field is present:
+     * 1. Delegate to OpportunitiesService.createWithProducts
+     * 2. Return created opportunity in React Admin format
+     *
+     * Otherwise, delegate to composed handler
+     */
+    create: async <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: CreateParams<RecordType>
+    ) => {
+      if (resource === "opportunities") {
+        const data = params.data as unknown as Record<string, unknown>;
+        const productsToSync = data.products_to_sync as Product[] | undefined;
+
+        if (Array.isArray(productsToSync)) {
+          const result = await service.createWithProducts(data);
+          return { data: result as RecordType };
+        }
+      }
+
+      return composedHandler.create<RecordType>(resource, params);
+    },
+
+    /**
+     * Intercept update for opportunities with products
+     *
+     * If products_to_sync field is present:
+     * 1. Extract previousData.products for diffing
+     * 2. Delegate to OpportunitiesService.updateWithProducts
+     * 3. Return updated opportunity in React Admin format
+     *
+     * Otherwise, delegate to composed handler
+     */
+    update: async <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: UpdateParams<RecordType>
+    ) => {
+      if (resource === "opportunities") {
+        const data = params.data as unknown as Record<string, unknown>;
+        const productsToSync = data.products_to_sync as Product[] | undefined;
+
+        if (Array.isArray(productsToSync)) {
+          const previousData = params.previousData as unknown as Record<string, unknown>;
+          const previousProducts = (previousData?.products as Product[]) ?? [];
+
+          const result = await service.updateWithProducts(params.id, data, previousProducts);
+          return { data: result as RecordType };
+        }
+      }
+
+      return composedHandler.update<RecordType>(resource, params);
+    },
+  };
 }
