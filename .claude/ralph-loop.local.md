@@ -1,26 +1,14 @@
 ---
 active: true
 iteration: 1
-max_iterations: 30
-completion_promise: "PHASE_7_COMPLETE"
-started_at: "2026-01-06T07:05:45Z"
+max_iterations: 15
+completion_promise: "PROJECT_CLOSED"
+started_at: "2026-01-06T13:35:26Z"
 ---
 
-Read 'TODO_PROVIDER.md'Focus on 'Phase 7: Type Safety'.
+Read 'TODO_PROVIDER.md'1. **Verify Deletion**: Confirm 'src/atomic-crm/providers/supabase/unifiedDataProvider.ts' does not exist.
+2. **Close Phase 4**: Mark the deferred 'Cleanup' tasks in Phase 4 as [x] (since the file is gone).
+3. **Documentation**: Update 'src/atomic-crm/providers/supabase/README.md' to describe the new Handlers + Services architecture (Golden Rules, Wrapper Pattern).
+4. **Final Status**: Mark the 'Manual smoke test' as [x] ONLY if you can verify the 'Opportunities' handler file exists and has the correct service calls (static verification), OR add a note that it requires manual QA.
 
-1. **Type-Link Filter Registry**:
-   - Open 'src/atomic-crm/providers/supabase/filterRegistry.ts'.
-   - Import the 'Database' type from 'database.generated.ts'.
-   - Refactor 'filterableFields' to use a generic type that enforces keys match Table names and values match Column names (e.g., 'Record<TableName, ColumnName[]>').
-   - **Security Fix**: Modify the function to THROW an error if a resource is not in the registry, rather than returning 'undefined' or allowing all filters.
-
-2. **Eliminate Widening Casts**:
-   - Scan 'src/atomic-crm/providers/supabase/handlers/' and 'src/atomic-crm/services/' for the pattern 'as Record<string, unknown>'.
-   - Replace these unsafe casts with Zod schema parsing ('.parse()') or proper type guards.
-
-3. **Add Drift Prevention Tests**:
-   - Create 'src/atomic-crm/providers/supabase/__tests__/schemaDrift.test.ts'.
-   - **Test 1**: Verify 'filterableFields' matches the actual DB schema (fail if a column is renamed in DB but not in registry).
-   - **Test 2**: Verify 'OPPORTUNITY_FIELDS_TO_STRIP' matches 'opportunities_summary' view columns (fail if view changes).
-
-Mark tasks as [x] in the todo file. Output <promise>PHASE_7_COMPLETE</promise> when finished.
+Output <promise>PROJECT_CLOSED</promise> when the Todo file is clean and README is updated.
