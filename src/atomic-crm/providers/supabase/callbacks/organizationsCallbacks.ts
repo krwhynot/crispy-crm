@@ -50,67 +50,18 @@ export const ORGANIZATIONS_SEARCH_FIELDS = ["name", "city", "state", "sector"] a
 
 /**
  * Transform q filter into ILIKE search on organization fields
+ * Uses raw PostgREST mode to handle multi-word searches correctly
  *
  * WORKAROUND for ra-data-postgrest library bug:
  * The library splits multi-word ILIKE values on whitespace and has a bug
- * handling 3+ words (line 151 checks result[key] instead of result.filter[key]).
- * This causes nested arrays that produce malformed PostgREST queries like:
- *   "name.ilike."%Test",ilike."Organization"" (missing field name on 2nd term)
+ * handling 3+ words. Uses "or@" key with escaping to bypass this issue.
  *
- * SOLUTION: Use "or@" key (empty operator) which passes the value through
- * unchanged per library line 131: `if (operation.length === 0) return value;`
- * This bypasses the flawed ILIKE splitting and array handling entirely.
- *
- * @param params - GetListParams containing the filter with q
- * @returns GetListParams with q transformed to raw PostgREST OR filter
- *
- * @example
- * ```typescript
- * // Input filter:
- * { q: "Test Organization 2024", org_type: "customer" }
- *
- * // Output filter (raw PostgREST syntax):
- * {
- *   org_type: "customer",
- *   "or@": "(name.ilike.*Test Organization 2024*,city.ilike.*Test Organization 2024*,...)"
- * }
- * ```
+ * @see createQToIlikeTransformer in commonTransforms.ts (useRawPostgrest mode)
  */
-export function transformQToIlikeSearch(params: GetListParams): GetListParams {
-  const { q, ...filterWithoutQ } = params.filter || {};
-
-  // If no q filter, return params unchanged
-  if (!q || typeof q !== "string") {
-    return params;
-  }
-
-  // Trim and escape ILIKE special characters (%, _, \) in search term
-  const trimmed = q.trim();
-  if (!trimmed) {
-    return params;
-  }
-  const escaped = escapeForIlike(trimmed);
-
-  // Build raw PostgREST OR condition with properly escaped ILIKE
-  // Uses * for wildcards (PostgREST URL syntax, not SQL %)
-  // Values with spaces/special chars are double-quoted per PostgREST spec
-  const needsQuoting = /[,."':() ]/.test(escaped);
-  const wildcardValue = needsQuoting ? `"*${escaped}*"` : `*${escaped}*`;
-
-  const orConditions = ORGANIZATIONS_SEARCH_FIELDS.map(
-    (field) => `${field}.ilike.${wildcardValue}`
-  ).join(",");
-
-  // Use "or@" key to pass raw PostgREST syntax through unchanged
-  // The empty operator (@) makes ra-data-postgrest return the value as-is
-  return {
-    ...params,
-    filter: {
-      ...filterWithoutQ,
-      "or@": `(${orConditions})`,
-    },
-  };
-}
+export const transformQToIlikeSearch = createQToIlikeTransformer({
+  searchFields: ORGANIZATIONS_SEARCH_FIELDS,
+  useRawPostgrest: true,
+});
 
 /**
  * Base callbacks from factory (soft delete, computed fields, transforms)

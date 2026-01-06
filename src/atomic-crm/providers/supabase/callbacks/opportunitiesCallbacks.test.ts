@@ -226,7 +226,26 @@ describe("opportunitiesCallbacks", () => {
   });
 
   describe("afterRead - data normalization", () => {
-    it("should preserve all standard fields", async () => {
+    /**
+     * NOTE: After refactoring to use createResourceCallbacks factory,
+     * afterRead is no longer defined for opportunities since there are
+     * no read transforms needed (no JSONB arrays to normalize).
+     *
+     * The factory only creates afterRead when readTransforms or
+     * afterReadTransform are configured.
+     */
+    it("should not define afterRead (no transformation needed for opportunities)", () => {
+      // Opportunities don't have JSONB arrays or other fields that need normalization
+      // so afterRead is not defined in the factory-based implementation
+      expect(opportunitiesCallbacks.afterRead).toBeUndefined();
+    });
+
+    it("should preserve all standard fields when afterRead is called (if defined)", async () => {
+      // Skip this test if afterRead is not defined (factory pattern behavior)
+      if (!opportunitiesCallbacks.afterRead) {
+        return; // No transformation needed = records pass through unchanged
+      }
+
       const record = {
         id: 1,
         name: "Big Deal",
@@ -235,12 +254,17 @@ describe("opportunitiesCallbacks", () => {
         expected_close_date: "2024-03-15",
       } as RaRecord;
 
-      const result = await opportunitiesCallbacks.afterRead!(record, mockDataProvider);
+      const result = await opportunitiesCallbacks.afterRead(record, mockDataProvider);
 
       expect(result).toEqual(record);
     });
 
-    it("should handle null expected_close_date", async () => {
+    it("should handle null expected_close_date when afterRead is called (if defined)", async () => {
+      // Skip this test if afterRead is not defined (factory pattern behavior)
+      if (!opportunitiesCallbacks.afterRead) {
+        return; // No transformation needed = null values pass through unchanged
+      }
+
       const record = {
         id: 1,
         name: "Big Deal",
@@ -248,7 +272,7 @@ describe("opportunitiesCallbacks", () => {
         expected_close_date: null,
       } as RaRecord;
 
-      const result = await opportunitiesCallbacks.afterRead!(record, mockDataProvider);
+      const result = await opportunitiesCallbacks.afterRead(record, mockDataProvider);
 
       expect(result.expected_close_date).toBeNull();
     });

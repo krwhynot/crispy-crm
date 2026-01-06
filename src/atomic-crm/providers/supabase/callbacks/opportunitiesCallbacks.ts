@@ -2,15 +2,32 @@
  * Opportunities Resource Lifecycle Callbacks
  *
  * Resource-specific logic for opportunities using React Admin's withLifecycleCallbacks pattern.
- * More complex than contacts/organizations due to:
- * 1. Cascading soft delete via RPC (archive_opportunity_with_relations)
- * 2. Virtual field stripping (products_to_sync is UI-only, handled via OpportunitiesService)
- * 3. Default value merging for create validation
+ * Uses createResourceCallbacks factory with custom overrides for complex behaviors.
+ *
+ * WHY OPPORTUNITIES IS MORE COMPLEX:
+ * ----------------------------------
+ * Unlike simpler resources (contacts, sales), opportunities requires custom overrides for:
+ *
+ * 1. CASCADE DELETE VIA RPC:
+ *    Standard soft delete sets `deleted_at` on ONE record. Opportunities needs to archive
+ *    the opportunity AND all related records (activities, notes, tasks, participants) atomically.
+ *    This is done via `archive_opportunity_with_relations` PostgreSQL RPC function.
+ *
+ * 2. PRODUCTS SYNC VIA SERVICE:
+ *    The UI sends `products_to_sync` (array of product IDs to link) which is handled by
+ *    OpportunitiesService.createWithProducts/updateWithProducts in the handler layer.
+ *    This virtual field must be stripped before database save.
+ *
+ * 3. STAGE-ONLY UPDATES (KANBAN):
+ *    When dragging cards on Kanban board, only `stage` is sent. If `contact_ids` is empty
+ *    from previousData merge, it would fail Zod validation. We detect stage-only updates
+ *    and strip empty contact_ids to avoid validation errors.
  *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
+ * Pattern: Factory + custom overrides (hybrid approach for complex resources)
  */
 
-import type { RaRecord, GetListParams, DataProvider } from "ra-core";
+import type { RaRecord, GetListParams, DataProvider, DeleteParams } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 import { createQToIlikeTransformer } from "./commonTransforms";
 import type { Opportunity } from "../../../types";
@@ -105,56 +122,13 @@ export const OPPORTUNITIES_SEARCH_FIELDS = ["name", "description"] as const;
 
 /**
  * Transform q filter into ILIKE search on opportunity fields
+ * Uses shared factory from commonTransforms for DRY compliance
  *
- * Matches the unified data provider's search behavior by transforming a simple
- * `q` filter into an `@or` filter with ILIKE conditions on each searchable field.
- *
- * @param params - GetListParams containing the filter with q
- * @returns GetListParams with q transformed to @or ILIKE filters
- *
- * @example
- * ```typescript
- * // Input filter:
- * { q: "enterprise", stage: "negotiation" }
- *
- * // Output filter:
- * {
- *   stage: "negotiation",
- *   "@or": {
- *     "name@ilike": "%enterprise%",
- *     "description@ilike": "%enterprise%"
- *   }
- * }
- * ```
+ * @see createQToIlikeTransformer in commonTransforms.ts
  */
-export function transformQToIlikeSearch(params: GetListParams): GetListParams {
-  const { q, ...filterWithoutQ } = params.filter || {};
-
-  // If no q filter, return params unchanged
-  if (!q || typeof q !== "string") {
-    return params;
-  }
-
-  // Wrap search term with wildcards for partial matching
-  const searchTerm = `%${q}%`;
-
-  // Build @or filter with ILIKE conditions for each searchable field
-  const orFilter = OPPORTUNITIES_SEARCH_FIELDS.reduce(
-    (acc, field) => ({
-      ...acc,
-      [`${field}@ilike`]: searchTerm,
-    }),
-    {} as Record<string, string>
-  );
-
-  return {
-    ...params,
-    filter: {
-      ...filterWithoutQ,
-      "@or": orFilter,
-    },
-  };
-}
+export const transformQToIlikeSearch = createQToIlikeTransformer({
+  searchFields: OPPORTUNITIES_SEARCH_FIELDS,
+});
 
 /**
  * Strip computed and virtual fields that shouldn't be sent to database
@@ -192,8 +166,164 @@ function mergeCreateDefaults(data: Partial<RaRecord>): Partial<RaRecord> {
   };
 }
 
+// ============================================================================
+// CUSTOM CALLBACKS (Override factory defaults)
+// ============================================================================
+
+/**
+ * Custom beforeDelete: Use archive RPC for cascading soft delete
+ *
+ * WHY CUSTOM: Standard soft delete only sets `deleted_at` on ONE record.
+ * Opportunities have related data that must be archived atomically:
+ * - activities (calls, emails, meetings)
+ * - opportunityNotes
+ * - opportunity_participants (junction table)
+ * - tasks
+ *
+ * The `archive_opportunity_with_relations` RPC handles this in a single transaction.
+ */
+async function opportunitiesBeforeDelete(
+  params: DeleteParams,
+  _dataProvider: DataProvider
+): Promise<DeleteParams & { meta?: { skipDelete?: boolean } }> {
+  console.log(
+    "🟡 [opportunitiesCallbacks.beforeDelete] ENTRY - id:",
+    params.id,
+    "type:",
+    typeof params.id
+  );
+
+  // Validate ID before RPC call (fail-fast)
+  const numericId = Number(params.id);
+  if (!Number.isInteger(numericId) || numericId <= 0) {
+    throw new Error(`Invalid opportunity ID: ${params.id}`);
+  }
+
+  console.log(
+    "🟡 [opportunitiesCallbacks.beforeDelete] Calling supabase.rpc with opp_id:",
+    numericId
+  );
+
+  // Use Supabase client directly - bypasses DataProvider abstraction
+  // This is the React Admin recommended pattern for lifecycle callbacks
+  const { error: rpcError } = await supabase.rpc("archive_opportunity_with_relations", {
+    opp_id: numericId,
+  });
+
+  if (rpcError) {
+    console.error("🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:", rpcError);
+    throw new Error(`Archive opportunity failed: ${rpcError.message}`);
+  }
+
+  console.log("🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS - returning skipDelete");
+
+  // Return params with meta flag to skip actual delete (RPC already archived)
+  return {
+    ...params,
+    meta: { ...params.meta, skipDelete: true },
+  };
+}
+
+/**
+ * Custom beforeGetList: Transform q filter + apply soft delete filter
+ *
+ * Chains:
+ * 1. q filter → ILIKE search transformation (via shared factory)
+ * 2. Soft delete filter (exclude deleted_at IS NOT NULL)
+ */
+async function opportunitiesBeforeGetList(
+  params: GetListParams,
+  _dataProvider: DataProvider
+): Promise<GetListParams> {
+  // Step 1: Transform q filter to ILIKE search (removes q from filter)
+  const searchTransformedParams = transformQToIlikeSearch(params);
+
+  // Step 2: Apply soft delete filter
+  const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
+  const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
+
+  return {
+    ...searchTransformedParams,
+    filter: {
+      ...otherFilters,
+      ...softDeleteFilter,
+    },
+  };
+}
+
+/**
+ * Custom beforeSave: Strip fields + handle stage-only updates
+ *
+ * WHY CUSTOM: Beyond standard computed field stripping, opportunities needs:
+ * 1. Virtual field stripping (products_to_sync, products)
+ * 2. Stage-only update detection for Kanban (strip empty contact_ids)
+ * 3. Create defaults merging
+ */
+async function opportunitiesBeforeSave(
+  data: Partial<RaRecord>,
+  _dataProvider: DataProvider,
+  _resource: string
+): Promise<Partial<RaRecord>> {
+  // Strip computed fields first
+  let processed = stripComputedFields(data);
+
+  // Strip empty contact_ids for stage-only updates (Kanban drag-drop)
+  // NOTE: data.id is NOT available in beforeSave - id is passed separately as params.id
+  // Detection: stage is present, name is NOT present (name is required for create/full edit)
+  // When contact_ids is empty array from previousData merge, strip it to avoid validation error
+  const isStageOnlyUpdate = data.stage && !data.name;
+  const hasEmptyContactIds = Array.isArray(data.contact_ids) && data.contact_ids.length === 0;
+
+  // Debug logging - remove after verification
+  console.log("[beforeSave] Processing opportunity:", {
+    incomingData: { stage: data.stage, name: data.name, contact_ids: data.contact_ids },
+    isStageOnlyUpdate,
+    hasEmptyContactIds,
+    willStripContactIds: isStageOnlyUpdate && hasEmptyContactIds,
+  });
+
+  if (isStageOnlyUpdate && hasEmptyContactIds) {
+    delete processed.contact_ids;
+  }
+
+  // Merge defaults for create (when no required fields present - indicates create operation)
+  // Note: We check for name since it's required for create, not data.id (unavailable here)
+  if (!data.name) {
+    // Only merge defaults if this looks like a create (no id means create in validation layer)
+    // But for stage-only updates, skip defaults
+    if (!isStageOnlyUpdate) {
+      processed = mergeCreateDefaults(processed);
+    }
+  }
+
+  console.log("[beforeSave] Final processed data:", {
+    stage: processed.stage,
+    keys: Object.keys(processed),
+  });
+
+  return processed;
+}
+
+// ============================================================================
+// FACTORY + OVERRIDES (Hybrid Pattern)
+// ============================================================================
+
+/**
+ * Base callbacks from factory
+ * We DON'T use soft delete from factory because we need custom RPC cascade delete
+ */
+const baseCallbacks = createResourceCallbacks({
+  resource: "opportunities",
+  supportsSoftDelete: false, // We handle soft delete via custom RPC
+  computedFields: [], // We handle in custom beforeSave (includes virtual fields)
+  createDefaults: CREATE_DEFAULTS,
+});
+
 /**
  * Opportunities lifecycle callbacks for React Admin withLifecycleCallbacks
+ *
+ * Uses factory pattern with custom overrides for complex behaviors.
+ * See module header comment for detailed explanation of WHY overrides are needed.
  *
  * Usage:
  * ```typescript
@@ -206,133 +336,12 @@ function mergeCreateDefaults(data: Partial<RaRecord>): Partial<RaRecord> {
  * ```
  */
 export const opportunitiesCallbacks: ResourceCallbacks = {
-  resource: "opportunities",
-
-  /**
-   * Use archive RPC for cascading soft delete
-   * This archives the opportunity AND all related records:
-   * - activities
-   * - opportunityNotes
-   * - opportunity_participants
-   * - tasks
-   */
-  beforeDelete: async (params) => {
-    console.log(
-      "🟡 [opportunitiesCallbacks.beforeDelete] ENTRY - id:",
-      params.id,
-      "type:",
-      typeof params.id
-    );
-
-    // Validate ID before RPC call (fail-fast)
-    const numericId = Number(params.id);
-    if (!Number.isInteger(numericId) || numericId <= 0) {
-      throw new Error(`Invalid opportunity ID: ${params.id}`);
-    }
-
-    console.log(
-      "🟡 [opportunitiesCallbacks.beforeDelete] Calling supabase.rpc with opp_id:",
-      numericId
-    );
-
-    // Use Supabase client directly - bypasses DataProvider abstraction
-    // This is the React Admin recommended pattern for lifecycle callbacks
-    const { error: rpcError } = await supabase.rpc("archive_opportunity_with_relations", {
-      opp_id: numericId,
-    });
-
-    if (rpcError) {
-      console.error("🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:", rpcError);
-      throw new Error(`Archive opportunity failed: ${rpcError.message}`);
-    }
-
-    console.log("🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS - returning skipDelete");
-
-    // Return params with meta flag to skip actual delete (RPC already archived)
-    return {
-      ...params,
-      meta: { ...params.meta, skipDelete: true },
-    };
-  },
-
-  /**
-   * Normalize data after reading from database
-   * Opportunities don't have JSONB arrays, but we keep this for consistency
-   */
-  afterRead: async (record, _dataProvider) => {
-    // No transformation needed - dates and values are already properly formatted
-    return record;
-  },
-
-  /**
-   * Add soft delete filter and transform q filter before getList
-   * 1. Transform q filter → ILIKE search
-   * 2. Exclude soft-deleted records by default
-   */
-  beforeGetList: async (params, _dataProvider) => {
-    // Step 1: Transform q filter to ILIKE search (removes q from filter)
-    const searchTransformedParams = transformQToIlikeSearch(params);
-
-    // Step 2: Apply soft delete filter
-    const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
-    const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
-
-    return {
-      ...searchTransformedParams,
-      filter: {
-        ...otherFilters,
-        ...softDeleteFilter,
-      },
-    };
-  },
-
-  /**
-   * Process data before save (create/update)
-   * - Strip computed fields (from views/aggregations)
-   * - Strip virtual fields (products_to_sync, products - UI-only fields)
-   * - Strip contact_ids for stage-only updates (Kanban drag-drop)
-   * - Merge defaults for create
-   */
-  beforeSave: async (data, _dataProvider, _resource) => {
-    // Strip computed fields first
-    let processed = stripComputedFields(data);
-
-    // Strip empty contact_ids for stage-only updates (Kanban drag-drop)
-    // NOTE: data.id is NOT available in beforeSave - id is passed separately as params.id
-    // Detection: stage is present, name is NOT present (name is required for create/full edit)
-    // When contact_ids is empty array from previousData merge, strip it to avoid validation error
-    const isStageOnlyUpdate = data.stage && !data.name;
-    const hasEmptyContactIds = Array.isArray(data.contact_ids) && data.contact_ids.length === 0;
-
-    // Debug logging - remove after verification
-    console.log("[beforeSave] Processing opportunity:", {
-      incomingData: { stage: data.stage, name: data.name, contact_ids: data.contact_ids },
-      isStageOnlyUpdate,
-      hasEmptyContactIds,
-      willStripContactIds: isStageOnlyUpdate && hasEmptyContactIds,
-    });
-
-    if (isStageOnlyUpdate && hasEmptyContactIds) {
-      delete processed.contact_ids;
-    }
-
-    // Merge defaults for create (when no required fields present - indicates create operation)
-    // Note: We check for name since it's required for create, not data.id (unavailable here)
-    if (!data.name) {
-      // Only merge defaults if this looks like a create (no id means create in validation layer)
-      // But for stage-only updates, skip defaults
-      if (!isStageOnlyUpdate) {
-        processed = mergeCreateDefaults(processed);
-      }
-    }
-
-    console.log("[beforeSave] Final processed data:", {
-      stage: processed.stage,
-      keys: Object.keys(processed),
-    });
-
-    return processed;
-  },
+  ...baseCallbacks,
+  // Override with custom implementations
+  beforeDelete: opportunitiesBeforeDelete,
+  beforeGetList: opportunitiesBeforeGetList,
+  beforeSave: opportunitiesBeforeSave,
+  // afterRead is inherited from base (no-op since opportunities has no JSONB arrays)
 };
 
 /**

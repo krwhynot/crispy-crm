@@ -58,58 +58,13 @@ export { normalizeJsonbArrays } from "./commonTransforms";
 
 /**
  * Transform q filter into ILIKE search on contact name fields
+ * Uses shared factory from commonTransforms for DRY compliance
  *
- * Matches the unified data provider's search behavior by transforming a simple
- * `q` filter into an `@or` filter with ILIKE conditions on each searchable field.
- *
- * @param params - GetListParams containing the filter with q
- * @returns GetListParams with q transformed to @or ILIKE filters
- *
- * @example
- * ```typescript
- * // Input filter:
- * { q: "john", status: "active" }
- *
- * // Output filter:
- * {
- *   status: "active",
- *   "@or": {
- *     "name@ilike": "%john%",
- *     "first_name@ilike": "%john%",
- *     "last_name@ilike": "%john%",
- *     "email@ilike": "%john%"
- *   }
- * }
- * ```
+ * @see createQToIlikeTransformer in commonTransforms.ts
  */
-export function transformQToIlikeSearch(params: GetListParams): GetListParams {
-  const { q, ...filterWithoutQ } = params.filter || {};
-
-  // If no q filter, return params unchanged
-  if (!q || typeof q !== "string") {
-    return params;
-  }
-
-  // Wrap search term with wildcards for partial matching
-  const searchTerm = `%${q}%`;
-
-  // Build @or filter with ILIKE conditions for each searchable field
-  const orFilter = CONTACTS_SEARCH_FIELDS.reduce(
-    (acc, field) => ({
-      ...acc,
-      [`${field}@ilike`]: searchTerm,
-    }),
-    {} as Record<string, string>
-  );
-
-  return {
-    ...params,
-    filter: {
-      ...filterWithoutQ,
-      "@or": orFilter,
-    },
-  };
-}
+export const transformQToIlikeSearch = createQToIlikeTransformer({
+  searchFields: CONTACTS_SEARCH_FIELDS,
+});
 
 /**
  * Compute name field from first_name and last_name
