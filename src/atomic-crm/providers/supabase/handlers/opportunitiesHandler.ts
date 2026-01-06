@@ -21,11 +21,36 @@ import {
   type UpdateParams,
   type RaRecord,
 } from "react-admin";
+import { z } from "zod";
 import { withErrorLogging, withValidation } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
 import { OpportunitiesService } from "../../../services/opportunities.service";
 import type { ExtendedDataProvider } from "../extensions/types";
 import type { Product } from "../../../opportunities/utils/diffProducts";
+
+/**
+ * Schema for validating handler input data with products_to_sync virtual field.
+ * Uses .passthrough() to preserve all opportunity fields while type-checking the products array.
+ */
+const productSchema = z.object({
+  id: z.union([z.string(), z.number()]).optional(),
+  product_id_reference: z.union([z.string(), z.number()]),
+  product_name: z.string().optional(),
+  product_category: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+const handlerInputSchema = z
+  .object({
+    products_to_sync: z.array(productSchema).optional(),
+  })
+  .passthrough();
+
+const previousDataSchema = z
+  .object({
+    products: z.array(productSchema).optional(),
+  })
+  .passthrough();
 
 /**
  * Create a fully composed DataProvider for opportunities
