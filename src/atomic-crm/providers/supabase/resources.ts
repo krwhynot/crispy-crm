@@ -21,11 +21,15 @@ export const RESOURCE_MAPPING = {
   priority_tasks: "priority_tasks", // Dashboard V2 - prioritized tasks view
   // deals_summary: REMOVED - migrated to opportunities
 
-  // Notes/activities
-  contactNotes: "contactNotes",
-  // dealNotes: REMOVED - use opportunityNotes
-  opportunityNotes: "opportunityNotes",
-  organizationNotes: "organizationNotes",
+  // Notes/activities (snake_case to match HANDLED_RESOURCES in composedDataProvider)
+  contact_notes: "contact_notes",
+  // dealNotes: REMOVED - use opportunity_notes
+  opportunity_notes: "opportunity_notes",
+  organization_notes: "organization_notes",
+
+  // Resources with composed handlers (map to themselves for completeness)
+  segments: "segments",
+  product_distributors: "product_distributors",
 
   // Junction tables for many-to-many relationships
   // contact_organizations: REMOVED - deprecated, contacts now use single organization_id FK
