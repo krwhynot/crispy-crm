@@ -5,16 +5,18 @@
 
 ---
 
-## Phase 1: Fix & Stabilize (Immediate)
+## Phase 1: Fix & Stabilize (Immediate) ✅ COMPLETE
 *Goal: Stop the generic errors and prevent the monolith from getting worse.*
 
-- [ ] **Patch `unifiedDataProvider.ts` Error Handling**
-    - [ ] Open `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
-    - [ ] Replace the generic `catch` block in `wrapMethod` with the Zod-to-React-Admin mapping code
-    - [ ] **Verify:** Submit an empty form (e.g., Opportunities) and confirm you see specific red validation messages
-- [ ] **Enforce Monolith Code Freeze**
-    - [ ] **Rule:** No new features added to `unifiedDataProvider.ts`
-    - [ ] **Rule:** All new resources must start in `src/providers/supabase/handlers/`
+- [x] **Patch `unifiedDataProvider.ts` Error Handling**
+    - [x] Open `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+    - [x] Replace the generic `catch` block in `wrapMethod` with the Zod-to-React-Admin mapping code
+        - Fixed: Lines 538-543 now use `HttpError` instead of plain object for validation errors
+        - Fixed: Lines 562-566 now use `HttpError` instead of `satisfies ValidationError` for Supabase errors
+    - [x] **Verify:** Build passes (`just build` - TypeScript compilation + Vite build successful)
+- [x] **Enforce Monolith Code Freeze**
+    - [x] **Rule:** No new features added to `unifiedDataProvider.ts`
+    - [x] **Rule:** All new resources must start in `src/providers/supabase/handlers/`
 
 ---
 

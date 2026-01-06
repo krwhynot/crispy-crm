@@ -544,6 +544,7 @@ async function wrapMethod<T>(
     }
 
     // For Supabase errors, try to extract field-specific errors
+    // CRITICAL: Must use HttpError for React Admin to display inline field errors
     if (extendedError?.code && extendedError?.details) {
       const fieldErrors: Record<string, string> = {};
 
@@ -558,10 +559,11 @@ async function wrapMethod<T>(
         }
       }
 
-      throw {
-        message: extendedError.message || "Operation failed",
-        errors: fieldErrors,
-      } satisfies ValidationError;
+      throw new HttpError(
+        extendedError.message || "Operation failed",
+        400,
+        { errors: fieldErrors }
+      );
     }
 
     // Pass through other errors
