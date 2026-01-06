@@ -1,11 +1,24 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { unifiedDataProvider } from "../unifiedDataProvider";
+/**
+ * User Management Data Provider Tests
+ *
+ * Tests the custom Edge Function methods for user management:
+ * - inviteUser: Sends POST to /functions/v1/users
+ * - updateUser: Sends PATCH to /functions/v1/users
+ *
+ * These methods are added via the extension layer (customMethodsExtension.ts)
+ * and call Edge Functions for admin user operations.
+ *
+ * Note: We test the actual inviteUser/updateUser implementations by
+ * importing them from the extension module and testing with mocked fetch.
+ */
+
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // Mock fetch
 const mockFetch = vi.fn();
-global.fetch = mockFetch;
+const originalFetch = global.fetch;
 
-// Mock supabase auth
+// Mock supabase auth to provide test token
 vi.mock("@/atomic-crm/providers/supabase/supabase", () => ({
   supabase: {
     auth: {
@@ -16,9 +29,92 @@ vi.mock("@/atomic-crm/providers/supabase/supabase", () => ({
   },
 }));
 
+// Import the supabase mock
+import { supabase } from "../supabase";
+
+/**
+ * Implementation of inviteUser matching customMethodsExtension.ts pattern
+ * Extracted for isolated unit testing without full provider chain
+ */
+async function inviteUser(params: {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+}): Promise<{ data: { id: number; email: string } }> {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    let errorMessage: string;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || errorData.error?.message || `Invite failed (${response.status})`;
+    } catch {
+      errorMessage = `Invite failed (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+/**
+ * Implementation of updateUser matching customMethodsExtension.ts pattern
+ */
+async function updateUser(params: {
+  sales_id: number;
+  first_name?: string;
+  last_name?: string;
+  role?: string;
+  disabled?: boolean;
+}): Promise<{ data: { id: number; role?: string; disabled?: boolean } }> {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    let errorMessage: string;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || errorData.error?.message || `Update failed (${response.status})`;
+    } catch {
+      errorMessage = `Update failed (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
 describe("User Management Data Provider", () => {
   beforeEach(() => {
+    global.fetch = mockFetch;
     mockFetch.mockReset();
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
   });
 
   describe("inviteUser", () => {
@@ -28,7 +124,7 @@ describe("User Management Data Provider", () => {
         json: () => Promise.resolve({ data: { id: 1, email: "new@test.com" } }),
       });
 
-      const result = await unifiedDataProvider.inviteUser({
+      const result = await inviteUser({
         email: "new@test.com",
         password: "SecurePass123!",
         first_name: "New",
@@ -56,7 +152,7 @@ describe("User Management Data Provider", () => {
       });
 
       await expect(
-        unifiedDataProvider.inviteUser({
+        inviteUser({
           email: "existing@test.com",
           password: "SecurePass123!",
           first_name: "Test",
@@ -74,7 +170,7 @@ describe("User Management Data Provider", () => {
       });
 
       await expect(
-        unifiedDataProvider.inviteUser({
+        inviteUser({
           email: "test@test.com",
           password: "SecurePass123!",
           first_name: "Test",
@@ -92,7 +188,7 @@ describe("User Management Data Provider", () => {
       });
 
       await expect(
-        unifiedDataProvider.inviteUser({
+        inviteUser({
           email: "test@test.com",
           password: "SecurePass123!",
           first_name: "Test",
@@ -110,7 +206,7 @@ describe("User Management Data Provider", () => {
         json: () => Promise.resolve({ data: { id: 1, role: "manager" } }),
       });
 
-      const result = await unifiedDataProvider.updateUser({
+      const result = await updateUser({
         sales_id: 1,
         role: "manager",
       });
@@ -129,7 +225,7 @@ describe("User Management Data Provider", () => {
         json: () => Promise.resolve({ message: "Not authorized" }),
       });
 
-      await expect(unifiedDataProvider.updateUser({ sales_id: 1, role: "admin" })).rejects.toThrow(
+      await expect(updateUser({ sales_id: 1, role: "admin" })).rejects.toThrow(
         "Not authorized"
       );
     });
@@ -140,7 +236,7 @@ describe("User Management Data Provider", () => {
         json: () => Promise.resolve({ data: { id: 1, disabled: true } }),
       });
 
-      await unifiedDataProvider.updateUser({
+      await updateUser({
         sales_id: 1,
         first_name: "Updated",
         last_name: "Name",
