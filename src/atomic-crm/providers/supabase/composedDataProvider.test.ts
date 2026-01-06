@@ -141,7 +141,7 @@ describe("composedDataProvider", () => {
   });
 
   describe("resource routing - fallback to base provider", () => {
-    it("should fall back to base provider for unknown resources (with soft delete filter)", async () => {
+    it("should fall back to base provider for unknown resources (passthrough - no soft delete filter)", async () => {
       const provider = createComposedDataProvider(mockBaseProvider);
 
       // Use a resource that's truly not in HANDLED_RESOURCES
@@ -152,11 +152,12 @@ describe("composedDataProvider", () => {
         filter: { status: "active" },
       });
 
-      // All resources get soft delete filter added by default handler
+      // Unknown resources pass through unchanged (no soft delete filter added)
+      // Only HANDLED_RESOURCES get lifecycle callbacks applied
       expect(mockBaseProvider.getList).toHaveBeenCalledWith("reports", {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "id", order: "ASC" },
-        filter: { status: "active", "deleted_at@is": null },
+        filter: { status: "active" },
       });
     });
 
@@ -264,12 +265,13 @@ describe("composedDataProvider", () => {
       expect(HANDLED_RESOURCES).toContain("sales");
     });
 
-    it("should have exactly 11 handled resources", () => {
+    it("should have exactly 13 handled resources", () => {
       // Core: contacts, organizations, opportunities, activities, products
       // Tasks: tasks
       // Notes: contact_notes, opportunity_notes, organization_notes
       // Supporting: tags, sales
-      expect(HANDLED_RESOURCES).toHaveLength(11);
+      // Phase 4 additions: segments, product_distributors
+      expect(HANDLED_RESOURCES).toHaveLength(13);
     });
   });
 
