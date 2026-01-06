@@ -145,14 +145,15 @@ describe("composedDataProvider", () => {
       const provider = createComposedDataProvider(mockBaseProvider);
 
       // Use a resource that's truly not in HANDLED_RESOURCES
-      await provider.getList("segments", {
+      // Note: "segments" was added in Phase 4, so we use "reports" instead
+      await provider.getList("reports", {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "id", order: "ASC" },
         filter: { status: "active" },
       });
 
       // All resources get soft delete filter added by default handler
-      expect(mockBaseProvider.getList).toHaveBeenCalledWith("segments", {
+      expect(mockBaseProvider.getList).toHaveBeenCalledWith("reports", {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "id", order: "ASC" },
         filter: { status: "active", "deleted_at@is": null },
