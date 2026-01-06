@@ -18,9 +18,14 @@
 
 ---
 
-## Phase 2: Low-Risk Migration (During Beta)
-*Goal: Move simple resources to the new architecture to prove it works safely.*
+## Phase 2: Low-Risk Migration & Cleanup (During Beta)
+*Goal: Move simple resources to the new architecture AND fix existing handler bugs.*
 
+- [ ] **🔧 Repair Existing Handlers (FIRST)**
+    - [ ] Open `activitiesHandler.ts`, `tasksHandler.ts`, `salesHandler.ts`
+    - [ ] Fix wrapper order: Change `base → L → V → E` to `base → V → L → E`
+    - [ ] **Verify:** Validation still fires correctly in the UI
+    - [ ] **Why now:** These handlers are already broken conceptually — fix before migrating more
 - [ ] **Migrate `Tags` Resource**
     - [ ] Create `src/providers/supabase/handlers/tagsHandler.ts`
     - [ ] Implement `getList`, `create`, `update`, `delete` (copy logic from monolith)
@@ -61,6 +66,14 @@
 ## Phase 4: High-Risk Migration (Refactor Gate)
 *Goal: Migrate the complex "Core" resources once Beta features are stable.*
 
+- [ ] **🚨 Create Missing Handlers (BLOCKERS for Phase 5)**
+    - [ ] Create `segmentsHandler.ts`
+        - [ ] Port logic from unified (delegating to `segmentsService.getOrCreateSegment()`)
+        - [ ] **Why blocker:** Without this, Playbooks will break when flag is flipped
+    - [ ] Create `productDistributorsHandler.ts`
+        - [ ] Inject `ProductDistributorsService`
+        - [ ] Handle composite key (`product_id` + `distributor_id`)
+        - [ ] **Why blocker:** Composed provider falls back to raw Supabase without this
 - [ ] **Migrate `Products` Resource**
     - [ ] Create `src/providers/supabase/handlers/productsHandler.ts`
     - [ ] Inject `ProductsService` into the handler
@@ -75,11 +88,14 @@
     - [ ] **Critical Fix:** Add `update()` interception calling `opportunitiesService.updateWithProducts`
     - [ ] Add `deleteMany()` cascade via RPC loop
     - [ ] Ensure View-only fields are stripped before saving
+    - [ ] **Type Safety (do now, not later):** Bind `OPPORTUNITY_FIELDS_TO_STRIP` to `keyof Opportunity`
+        - [ ] Don't move the "time bomb" to the new file — fix it while rewriting
     - [ ] **Cleanup:** Delete `Opportunities` logic from `unifiedDataProvider.ts`
-- [ ] **Migrate `Sales` Resource**
-    - [ ] Create `src/providers/supabase/handlers/salesHandler.ts`
+- [ ] **Refactor `Sales` Resource**
+    - [ ] Update existing `src/providers/supabase/handlers/salesHandler.ts`
     - [ ] **Critical Fix:** Add `update()` delegation to Edge Function (RLS bypass)
     - [ ] **Cleanup:** Delete `Sales` logic from `unifiedDataProvider.ts`
+    - [ ] *(Note: Handler exists — wrapper order fixed in Phase 2)*
 
 ---
 
@@ -95,27 +111,25 @@
 
 ---
 
-## Phase 6: Architecture Debt (P1)
-*Goal: Clean up duplicated code and missing handlers.*
+## Phase 6: Architecture Debt (P1 — Post-Switch Cleanup)
+*Goal: Clean up duplicated code after the migration is complete.*
 
 - [ ] **Extract Shared Utilities**
     - [ ] Move `transformQToIlikeSearch` to `commonTransforms.ts` (duplicated in 4 callbacks)
     - [ ] Move `escapeForIlike` usage pattern to shared utility
-- [ ] **Create Missing Handlers**
-    - [ ] Create `segmentsHandler.ts` — Currently only in unified (uses `segmentsService.getOrCreateSegment()`)
-    - [ ] Create `productDistributorsHandler.ts` — Composite key resource needs dedicated handler
 - [ ] **Refactor Opportunities Callbacks**
     - [ ] Convert inline callbacks to use factory pattern (like other resources)
     - [ ] Document why opportunities is more complex (products sync, cascade delete)
 
+> **Note:** "Create Missing Handlers" moved to Phase 4 — they're blockers, not cleanup.
+
 ---
 
-## Phase 7: Type Safety (P2)
-*Goal: Eliminate type-unsafe patterns that could cause runtime errors.*
+## Phase 7: Type Safety (P2 — Hardening)
+*Goal: Eliminate remaining type-unsafe patterns.*
 
-- [ ] **Type-Link Field Strip Lists**
-    - [ ] Bind `OPPORTUNITY_FIELDS_TO_STRIP` to `keyof Opportunity | keyof OpportunitySummaryView`
-    - [ ] Add compile-time validation for field names
+> **Note:** `OPPORTUNITY_FIELDS_TO_STRIP` type safety moved to Phase 4 (Opportunities migration).
+
 - [ ] **Type-Link Filter Registry**
     - [ ] Bind `filterableFields` to DB column types from `database.generated.ts`
     - [ ] **Security Fix:** Throw on unknown resources instead of allowing all filters
@@ -236,14 +250,18 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 
 | Blocker | Status | Notes |
 |:--------|:-------|:------|
-| All 5 handlers have correct wrapper order | ⬜ | Table 1 |
+| All 5 handlers have correct wrapper order | ⬜ | Table 1 — Phase 2 |
+| `segmentsHandler` created | ⬜ | **NEW** — Phase 4 blocker |
+| `productDistributorsHandler` created | ⬜ | **NEW** — Phase 4 blocker |
 | All 8 logic gaps are implemented | ⬜ | Table 2 |
 | All 8 Supabase calls are in services | ⬜ | Table 3 |
 | Products: create/update/delete all work | ⬜ | Critical path |
 | Opportunities: products sync on create/update | ⬜ | Critical path |
+| Opportunities: `FIELDS_TO_STRIP` type-safe | ⬜ | **NEW** — Phase 4 |
 | Sales: updates work (RLS bypass) | ⬜ | Edge Function |
 
 ---
 
 *Last Updated: 2025-01-05*
 *Source: Handler, Service Layer, and Type Safety Audits*
+*Sequencing Fix: Phase 4 blockers identified via code review*
