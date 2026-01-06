@@ -1,14 +1,17 @@
 ---
 active: true
 iteration: 1
-max_iterations: 15
-completion_promise: "PROJECT_CLOSED"
-started_at: "2026-01-06T13:35:26Z"
+max_iterations: 30
+completion_promise: "HEALTH_95_ACHIEVED"
+started_at: "2026-01-06T14:01:17Z"
 ---
 
-Read 'TODO_PROVIDER.md'1. **Verify Deletion**: Confirm 'src/atomic-crm/providers/supabase/unifiedDataProvider.ts' does not exist.
-2. **Close Phase 4**: Mark the deferred 'Cleanup' tasks in Phase 4 as [x] (since the file is gone).
-3. **Documentation**: Update 'src/atomic-crm/providers/supabase/README.md' to describe the new Handlers + Services architecture (Golden Rules, Wrapper Pattern).
-4. **Final Status**: Mark the 'Manual smoke test' as [x] ONLY if you can verify the 'Opportunities' handler file exists and has the correct service calls (static verification), OR add a note that it requires manual QA.
+Read 'TODO_PROVIDER.md'Focus on 'Phase 8: Health & Hardening'.
 
-Output <promise>PROJECT_CLOSED</promise> when the Todo file is clean and README is updated.
+1. **Fix Resources**: Open 'src/atomic-crm/providers/supabase/resources.ts'. Rename the note keys to snake_case ('contact_notes', etc.) and add entries for 'segments' and 'product_distributors' to RESOURCE_MAPPING.
+2. **Protect Junctions**: Create 'src/atomic-crm/providers/supabase/handlers/junctionHandlers.ts'. Export handlers for 'opportunity_participants', 'opportunity_contacts', 'interaction_participants', 'distributor_principal_authorizations', 'organization_distributors', 'user_favorites'. Use 'createContactsHandler' as a template but use 'createResourceCallbacks({ supportsSoftDelete: true })'. Register them in 'composedDataProvider.ts'.
+3. **Silence Logs**: Remove console.logs from 'withValidation.ts' and 'customMethodsExtension.ts'.
+4. **DRY Search**: In 'opportunitiesCallbacks.ts', remove the 'transformQToIlikeSearch' call inside 'beforeGetList'.
+5. **Docs**: Update 'src/atomic-crm/providers/supabase/README.md' with the final architecture details.
+
+Mark tasks as [x] in the master plan. Output <promise>HEALTH_95_ACHIEVED</promise> when done.

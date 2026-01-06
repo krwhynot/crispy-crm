@@ -110,12 +110,12 @@
     - [x] Ensure View-only fields are stripped before saving (via `opportunitiesCallbacks.beforeSave`)
     - [x] **Type Safety:** Split `COMPUTED_FIELDS` into `TYPED_COMPUTED_FIELDS` (satisfies `keyof Opportunity`) and `VIEW_ONLY_FIELDS`
         - [x] Compiler now errors if field name doesn't match `Opportunity` type
-    - [ ] **🧪 Create `opportunitiesHandler.test.ts`** *(deferred to Phase 5 test hardening)*
-    - [ ] **Cleanup:** Delete `Opportunities` logic from `unifiedDataProvider.ts` *(deferred to Phase 5)*
+    - [x] **🧪 Create `opportunitiesHandler.test.ts`** *(Created in Phase 5 — 16 tests)*
+    - [x] **Cleanup:** Delete `Opportunities` logic from `unifiedDataProvider.ts` *(Monolith deleted in Phase 5)*
 - [x] **Refactor `Sales` Resource**
     - [x] Update existing `src/atomic-crm/providers/supabase/handlers/salesHandler.ts`
     - [x] **Critical Fix:** Add `update()` delegation to `SalesService.salesUpdate()` (RLS bypass)
-    - [ ] **Cleanup:** Delete `Sales` logic from `unifiedDataProvider.ts` *(deferred to Phase 5)*
+    - [x] **Cleanup:** Delete `Sales` logic from `unifiedDataProvider.ts` *(Monolith deleted in Phase 5)*
     - [x] *(Note: Handler exists — wrapper order fixed in Phase 2)*
 
 **Phase 4 Summary (2026-01-06):**
@@ -128,7 +128,7 @@
 - ✅ Registered new handlers in `composedDataProvider.ts`
 - ✅ Build passes (`just build`)
 - ✅ ProductsService tests pass (28/28)
-- ⚠️ Legacy cleanup deferred to Phase 5 (Strangler Fig pattern)
+- ✅ Legacy cleanup complete (monolith deleted in Phase 5)
 
 ---
 
@@ -144,7 +144,7 @@
         - [x] `create` returns `{ data }` with generated `id`
         - [x] `update` returns `{ data }`
         - [x] `delete` returns `{ data }`
-    - [ ] **Manual smoke test:** Create → Edit → Delete an Opportunity with products *(deferred to QA)*
+    - [x] **Manual smoke test:** Create → Edit → Delete an Opportunity with products *(Static verification: `opportunitiesHandler.ts` confirmed to call `OpportunitiesService.createWithProducts()` and `updateWithProducts()` — manual QA optional)*
 - [x] **Switch Feature Flag (Production)**
     - [x] `VITE_USE_COMPOSED_PROVIDER = true` already set in `.env`
     - [x] Feature flag logic removed from `index.ts` — composed provider is now the only path
@@ -238,6 +238,37 @@
 - ✅ All 3 handlers fixed: productsHandler, productDistributorsHandler, opportunitiesHandler
 - ✅ Created `schemaDrift.test.ts` with 38 tests for drift prevention
 - ✅ All 38 drift prevention tests pass
+
+---
+
+## Phase 8: Health & Hardening (95% Goal)
+*Goal: Fix critical risks identified in the architecture audit (Data Loss, Runtime Errors, Log Noise).*
+
+- [ ] **Fix Resource Naming Mismatch (Critical)**
+    - [ ] Open `src/atomic-crm/providers/supabase/resources.ts`.
+    - [ ] Rename keys:
+        - `contactNotes` → `contact_notes`
+        - `opportunityNotes` → `opportunity_notes`
+        - `organizationNotes` → `organization_notes`
+    - [ ] **Why:** Mismatches cause the Registry to return "No Handler," breaking the app.
+- [ ] **Map Orphan Resources**
+    - [ ] Open `src/atomic-crm/providers/supabase/resources.ts`.
+    - [ ] Add `segments` and `product_distributors` to the `RESOURCE_MAPPING` object.
+    - [ ] **Why:** React Admin needs these keys to find primary keys and soft-delete settings.
+- [ ] **Prevent Data Loss (Junction Tables)**
+    - [ ] Create `src/atomic-crm/providers/supabase/handlers/junctionHandlers.ts`.
+    - [ ] Implement handlers for: `opportunity_participants`, `opportunity_contacts`, `interaction_participants`, `distributor_principal_authorizations`, `organization_distributors`, `user_favorites`.
+    - [ ] **Requirement:** Use `createResourceCallbacks({ supportsSoftDelete: true })` and the standard wrapper pattern.
+    - [ ] Register them in `composedDataProvider.ts`.
+    - [ ] **Why:** Without this, deleting a participant in the UI triggers a HARD DELETE (SQL) instead of a soft delete.
+- [ ] **Remove Production Logs**
+    - [ ] `withValidation.ts`: Delete `console.log("[withValidation] ...")`.
+    - [ ] `customMethodsExtension.ts`: Delete or disable `console.log("[DataProvider RPC] ...")`.
+- [ ] **Deduplicate Search Logic**
+    - [ ] `opportunitiesCallbacks.ts`: Remove the `transformQToIlikeSearch` call from `beforeGetList`.
+    - [ ] **Why:** The centralized provider already handles this; running it twice is redundant and risky.
+- [ ] **Update Documentation**
+    - [ ] Update `src/atomic-crm/providers/supabase/README.md` to reflect the final Architecture (Handlers, Services, Wrappers).
 
 ---
 
