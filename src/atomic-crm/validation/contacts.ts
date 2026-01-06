@@ -379,7 +379,7 @@ export type ImportContactInput = z.input<typeof importContactSchema>;
 // Quick create schema - reduced requirements but maintains security
 export const quickCreateContactSchema = z.strictObject({
   // REQUIRED: Security-critical fields
-  first_name: z.string().min(1, "First name required").max(100),
+  first_name: z.string().trim().min(1, "First name required").max(100),
   organization_id: z.coerce.number().int().positive(),
 
   // OPTIONAL: Can be empty for quick create
