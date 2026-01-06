@@ -31,6 +31,21 @@ const ContactCreate = () => {
   const stateOrganizationId = (location.state as { record?: { organization_id?: string | number } })
     ?.record?.organization_id;
 
+  // Generate defaults from schema truth
+  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+  // URL param takes precedence over location.state
+  // NOTE: Must be BEFORE early return to satisfy React Rules of Hooks
+  const formDefaults = useMemo(
+    () => ({
+      ...contactBaseSchema.partial().parse({}),
+      sales_id: defaults.sales_id,
+      // US2 + US3: organization context (URL param > state > undefined)
+      ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
+      ...(!urlOrganizationId && stateOrganizationId && { organization_id: Number(stateOrganizationId) }),
+    }),
+    [defaults.sales_id, urlOrganizationId, stateOrganizationId]
+  );
+
   const transformData = (data: Contact) => ({
     ...data,
     first_seen: new Date().toISOString(),
@@ -47,20 +62,6 @@ const ContactCreate = () => {
       </div>
     );
   }
-
-  // Generate defaults from schema truth
-  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  // URL param takes precedence over location.state
-  const formDefaults = useMemo(
-    () => ({
-      ...contactBaseSchema.partial().parse({}),
-      sales_id: defaults.sales_id,
-      // US2 + US3: organization context (URL param > state > undefined)
-      ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
-      ...(!urlOrganizationId && stateOrganizationId && { organization_id: Number(stateOrganizationId) }),
-    }),
-    [defaults.sales_id, urlOrganizationId, stateOrganizationId]
-  );
 
   return (
     <CreateBase redirect={redirect} transform={transformData}>
