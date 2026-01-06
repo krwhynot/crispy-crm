@@ -1,10 +1,13 @@
 # 🏗️ Master Plan: Provider Cleanup & Restructuring
 
-**Status:** ✅ PHASE 5 COMPLETE — Monolith Deleted
+**Status:** ✅ PHASE 6 COMPLETE — Architecture Debt Cleaned
 **Goal:** Migrate from Monolithic (`unifiedDataProvider`) to Composed (`handlers/`) architecture safely using the Strangler Fig pattern.
 
 > **🎉 Migration Complete (2026-01-06):** The 1090+ LOC `unifiedDataProvider.ts` monolith has been deleted.
 > All data access now flows through the composed handler architecture with lifecycle callbacks.
+>
+> **🧹 Architecture Debt Cleaned (2026-01-06):** Duplicated `transformQToIlikeSearch` extracted to shared factory.
+> Opportunities callbacks now use factory pattern with custom overrides for complex behaviors.
 
 ---
 
@@ -170,15 +173,31 @@
 
 ---
 
-## Phase 6: Architecture Debt (P1 — Post-Switch Cleanup)
+## Phase 6: Architecture Debt (P1 — Post-Switch Cleanup) ✅ COMPLETE
 *Goal: Clean up duplicated code after the migration is complete.*
 
-- [ ] **Extract Shared Utilities**
-    - [ ] Move `transformQToIlikeSearch` to `commonTransforms.ts` (duplicated in 4 callbacks)
-    - [ ] Move `escapeForIlike` usage pattern to shared utility
-- [ ] **Refactor Opportunities Callbacks**
-    - [ ] Convert inline callbacks to use factory pattern (like other resources)
-    - [ ] Document why opportunities is more complex (products sync, cascade delete)
+- [x] **Extract Shared Utilities**
+    - [x] Move `transformQToIlikeSearch` to `commonTransforms.ts` (duplicated in 4 callbacks)
+        - Created `createQToIlikeTransformer` factory function with two modes:
+        - Standard mode: Uses React Admin `@or` filter syntax (contacts, opportunities, sales)
+        - Raw PostgREST mode: Uses `or@` with escaping for multi-word searches (organizations)
+    - [x] Move `escapeForIlike` usage pattern to shared utility
+        - Already existed in `dataProviderUtils.ts`, now imported by `commonTransforms.ts`
+- [x] **Refactor Opportunities Callbacks**
+    - [x] Convert inline callbacks to use factory pattern (like other resources)
+        - Now uses `createResourceCallbacks` with custom overrides for complex behaviors
+    - [x] Document why opportunities is more complex (products sync, cascade delete)
+        - Added comprehensive module header explaining:
+        - CASCADE DELETE: Uses `archive_opportunity_with_relations` RPC for atomic archiving
+        - PRODUCTS SYNC: Virtual `products_to_sync` field handled by OpportunitiesService
+        - STAGE-ONLY UPDATES: Kanban drag-drop needs special handling for empty contact_ids
+
+**Phase 6 Summary (2026-01-06):**
+- ✅ Created `createQToIlikeTransformer` factory in `commonTransforms.ts`
+- ✅ Refactored all 4 callback files to use the shared factory
+- ✅ `opportunitiesCallbacks` now uses factory + custom overrides pattern
+- ✅ All 104 callback tests pass
+- ✅ TypeScript build passes
 
 > **Note:** "Create Missing Handlers" moved to Phase 4 — they're blockers, not cleanup.
 
