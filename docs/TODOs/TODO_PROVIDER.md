@@ -44,29 +44,35 @@
 
 ---
 
-## Phase 3: Service Layer Extraction (Pre-Launch)
+## Phase 3: Service Layer Extraction (Pre-Launch) ✅ COMPLETE
 *Goal: Extract complex business logic so it can be reused by the new handlers.*
 
-- [ ] **Create `ProductsService.ts`**
-    - [ ] Create `src/atomic-crm/services/ProductsService.ts`
-    - [ ] Move these raw `supabase.from('products')` calls from monolith:
-        - [ ] `getOneWithDistributors(id)` — Replace unified:677-694
-        - [ ] `createWithDistributors(data, distributorIds)` — Replace unified:834-860
-        - [ ] `updateWithDistributors(id, data, distributorIds)` — Replace unified:932-970
-        - [ ] `softDelete(id)` — Replace RPC call at unified:1175-1184
-        - [ ] `softDeleteMany(ids)` — Replace RPC at unified:1245-1255
-- [ ] **Create `ProductDistributorsService.ts`**
-    - [ ] Create `src/atomic-crm/services/ProductDistributorsService.ts`
-    - [ ] Encapsulate Composite Key logic (`product_id` + `distributor_id`):
-        - [ ] `getOne(productId, distributorId)` — Replace unified:658-672
-        - [ ] `update(productId, distributorId, data)` — Replace unified:974-994
-        - [ ] `delete(productId, distributorId)` — Replace unified:1103-1114
-- [ ] **🧪 Test ProductsService**
-    - [ ] Create `src/atomic-crm/services/__tests__/ProductsService.test.ts`
-    - [ ] Test `createWithDistributors` (verify transaction logic — both inserts succeed or fail together)
-    - [ ] Test `softDelete` (verify RPC call with correct parameters)
-    - [ ] Test `getOneWithDistributors` (verify JOIN returns distributors array)
-    - [ ] **Why:** Transaction logic is critical — manual UI testing insufficient
+- [x] **Create `ProductsService.ts`**
+    - [x] Create `src/atomic-crm/services/products.service.ts`
+    - [x] Move these methods (delegating to DataProvider, ready for handler injection):
+        - [x] `getOneWithDistributors(id)` — Fetches product with distributor relationships
+        - [x] `createWithDistributors(data, distributors)` — Atomic create + junction records
+        - [x] `updateWithDistributors(id, data, distributors)` — Update + sync (delete+insert pattern)
+        - [x] `softDelete(id)` — RPC call to `soft_delete_product`
+        - [x] `softDeleteMany(ids)` — RPC call to `soft_delete_products`
+- [x] **Create `ProductDistributorsService.ts`**
+    - [x] Create `src/atomic-crm/services/productDistributors.service.ts`
+    - [x] Encapsulate Composite Key logic (`product_id` + `distributor_id`):
+        - [x] `parseCompositeId(id)` / `createCompositeId(productId, distributorId)` — Helpers
+        - [x] `getOne(productId, distributorId)` — Fetch by composite key
+        - [x] `update(productId, distributorId, data)` — Update junction record
+        - [x] `delete(productId, distributorId)` — Hard delete (not soft delete)
+        - [x] `create(productId, distributorId, data)` — Create junction record
+        - [x] `getDistributorsForProduct(productId)` — List all distributors for product
+- [x] **🧪 Test ProductsService**
+    - [x] Create `src/atomic-crm/services/__tests__/ProductsService.test.ts` (28 tests)
+    - [x] Test `createWithDistributors` (verify transaction logic — product + junction inserts)
+    - [x] Test `updateWithDistributors` (verify delete+insert sync pattern)
+    - [x] Test `softDelete` (verify RPC call with correct `product_id` parameter)
+    - [x] Test `softDeleteMany` (verify RPC call with `product_ids` array)
+    - [x] Test `getOneWithDistributors` (verify distributor_ids returned)
+    - [x] Test ID validation (reject invalid, zero, negative IDs)
+    - [x] **Verified:** All 28 tests pass (`npm test`)
 
 ---
 
@@ -278,9 +284,9 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 | `segmentsHandler` created | ⬜ | Phase 4 blocker |
 | `productDistributorsHandler` created | ⬜ | Phase 4 blocker |
 | All 8 logic gaps are implemented | ⬜ | Table 2 |
-| All 8 Supabase calls are in services | ⬜ | Table 3 |
-| Products: create/update/delete all work | ⬜ | Critical path |
-| **🧪 ProductsService tests pass** | ⬜ | Phase 3 — transaction logic |
+| All 8 Supabase calls are in services | ⬜ | Table 3 (ProductsService + ProductDistributorsService done) |
+| Products: create/update/delete all work | ⬜ | Critical path (service layer ready) |
+| **🧪 ProductsService tests pass** | ✅ | Phase 3 — 28 tests pass |
 | Opportunities: products sync on create/update | ⬜ | Critical path |
 | Opportunities: `FIELDS_TO_STRIP` type-safe | ⬜ | Phase 4 |
 | **🧪 opportunitiesHandler tests pass** | ⬜ | Phase 4 — "The Boss" |

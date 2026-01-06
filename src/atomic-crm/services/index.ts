@@ -7,12 +7,28 @@ export { ActivitiesService } from "./activities.service";
 export { JunctionsService } from "./junctions.service";
 export { SegmentsService } from "./segments.service";
 export { DigestService, createDigestService } from "./digest.service";
+export { ProductsService } from "./products.service";
+export {
+  ProductDistributorsService,
+  parseCompositeId,
+  createCompositeId,
+} from "./productDistributors.service";
 
 // Re-export types for convenience
 export type { SalesFormData, Sale } from "../types";
 export type { ContactOrganization, OpportunityParticipant } from "../types";
 export type { Opportunity } from "../types";
 export type { OpportunityCreateInput, OpportunityUpdateInput } from "./opportunities.service";
+export type {
+  ProductCreateInput,
+  ProductUpdateInput,
+  ProductWithDistributors,
+  ProductDistributorInput,
+} from "./products.service";
+export type {
+  ProductDistributor,
+  ProductDistributorUpdateInput,
+} from "./productDistributors.service";
 
 // Re-export digest types
 export type {
