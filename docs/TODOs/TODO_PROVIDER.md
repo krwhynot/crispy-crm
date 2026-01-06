@@ -1,6 +1,6 @@
 # 🏗️ Master Plan: Provider Cleanup & Restructuring
 
-**Status:** ✅ PHASE 7 COMPLETE — Type Safety Hardening
+**Status:** ✅ PHASE 8 COMPLETE — Health & Hardening (95% Goal Achieved)
 **Goal:** Migrate from Monolithic (`unifiedDataProvider`) to Composed (`handlers/`) architecture safely using the Strangler Fig pattern.
 
 > **🎉 Migration Complete (2026-01-06):** The 1090+ LOC `unifiedDataProvider.ts` monolith has been deleted.
@@ -241,34 +241,44 @@
 
 ---
 
-## Phase 8: Health & Hardening (95% Goal)
+## Phase 8: Health & Hardening (95% Goal) ✅ COMPLETE
 *Goal: Fix critical risks identified in the architecture audit (Data Loss, Runtime Errors, Log Noise).*
 
-- [ ] **Fix Resource Naming Mismatch (Critical)**
-    - [ ] Open `src/atomic-crm/providers/supabase/resources.ts`.
-    - [ ] Rename keys:
+- [x] **Fix Resource Naming Mismatch (Critical)**
+    - [x] Open `src/atomic-crm/providers/supabase/resources.ts`.
+    - [x] Rename keys:
         - `contactNotes` → `contact_notes`
         - `opportunityNotes` → `opportunity_notes`
         - `organizationNotes` → `organization_notes`
-    - [ ] **Why:** Mismatches cause the Registry to return "No Handler," breaking the app.
-- [ ] **Map Orphan Resources**
-    - [ ] Open `src/atomic-crm/providers/supabase/resources.ts`.
-    - [ ] Add `segments` and `product_distributors` to the `RESOURCE_MAPPING` object.
-    - [ ] **Why:** React Admin needs these keys to find primary keys and soft-delete settings.
-- [ ] **Prevent Data Loss (Junction Tables)**
-    - [ ] Create `src/atomic-crm/providers/supabase/handlers/junctionHandlers.ts`.
-    - [ ] Implement handlers for: `opportunity_participants`, `opportunity_contacts`, `interaction_participants`, `distributor_principal_authorizations`, `organization_distributors`, `user_favorites`.
-    - [ ] **Requirement:** Use `createResourceCallbacks({ supportsSoftDelete: true })` and the standard wrapper pattern.
-    - [ ] Register them in `composedDataProvider.ts`.
-    - [ ] **Why:** Without this, deleting a participant in the UI triggers a HARD DELETE (SQL) instead of a soft delete.
-- [ ] **Remove Production Logs**
-    - [ ] `withValidation.ts`: Delete `console.log("[withValidation] ...")`.
-    - [ ] `customMethodsExtension.ts`: Delete or disable `console.log("[DataProvider RPC] ...")`.
-- [ ] **Deduplicate Search Logic**
-    - [ ] `opportunitiesCallbacks.ts`: Remove the `transformQToIlikeSearch` call from `beforeGetList`.
-    - [ ] **Why:** The centralized provider already handles this; running it twice is redundant and risky.
-- [ ] **Update Documentation**
-    - [ ] Update `src/atomic-crm/providers/supabase/README.md` to reflect the final Architecture (Handlers, Services, Wrappers).
+    - [x] **Why:** Mismatches cause the Registry to return "No Handler," breaking the app.
+- [x] **Map Orphan Resources**
+    - [x] Open `src/atomic-crm/providers/supabase/resources.ts`.
+    - [x] Add `segments` and `product_distributors` to the `RESOURCE_MAPPING` object.
+    - [x] **Why:** React Admin needs these keys to find primary keys and soft-delete settings.
+- [x] **Prevent Data Loss (Junction Tables)**
+    - [x] Create `src/atomic-crm/providers/supabase/handlers/junctionHandlers.ts`.
+    - [x] Implement handlers for: `opportunity_participants`, `opportunity_contacts`, `interaction_participants`, `distributor_principal_authorizations`, `organization_distributors`, `user_favorites`.
+    - [x] **Requirement:** Use `createResourceCallbacks({ supportsSoftDelete: true })` and the standard wrapper pattern.
+    - [x] Register them in `composedDataProvider.ts`.
+    - [x] **Why:** Without this, deleting a participant in the UI triggers a HARD DELETE (SQL) instead of a soft delete.
+- [x] **Remove Production Logs**
+    - [x] `withValidation.ts`: Delete `console.log("[withValidation] ...")`.
+    - [x] `customMethodsExtension.ts`: Delete or disable `console.log("[DataProvider RPC] ...")`.
+    - [x] `opportunitiesCallbacks.ts`: Delete debug console.logs from beforeDelete and beforeSave.
+- [x] **Deduplicate Search Logic**
+    - [x] `opportunitiesCallbacks.ts`: Remove the `transformQToIlikeSearch` call from `beforeGetList`.
+    - [x] **Why:** The centralized provider already handles this; running it twice is redundant and risky.
+- [x] **Update Documentation**
+    - [x] Update `src/atomic-crm/providers/supabase/README.md` to reflect the final Architecture (Handlers, Services, Wrappers).
+
+**Phase 8 Summary (2026-01-06):**
+- ✅ Fixed resource naming: `contactNotes` → `contact_notes` (and similar for opportunity/organization notes)
+- ✅ Added `segments` and `product_distributors` to `RESOURCE_MAPPING`
+- ✅ Created `junctionHandlers.ts` with 6 handlers for junction tables (soft delete protection)
+- ✅ Registered all junction handlers in `composedDataProvider.ts`
+- ✅ Removed 20+ console.logs from `withValidation.ts`, `customMethodsExtension.ts`, `opportunitiesCallbacks.ts`
+- ✅ Removed duplicate `transformQToIlikeSearch` from opportunities `beforeGetList` (now centralized)
+- ✅ Updated README.md with complete resource listing and Phase 8 in migration history
 
 ---
 
@@ -395,6 +405,6 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 ---
 
 *Last Updated: 2026-01-06*
-*Phase 7 Completed: 2026-01-06 — Type safety hardening with drift prevention tests*
+*Phase 8 Completed: 2026-01-06 — Health & hardening (junction handlers, log cleanup, DRY search)*
 *Source: Handler, Service Layer, and Type Safety Audits*
 *Sequencing Fix: Phase 4 blockers identified via code review*
