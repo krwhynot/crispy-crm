@@ -96,6 +96,12 @@
     - [ ] Ensure View-only fields are stripped before saving
     - [ ] **Type Safety (do now, not later):** Bind `OPPORTUNITY_FIELDS_TO_STRIP` to `keyof Opportunity`
         - [ ] Don't move the "time bomb" to the new file — fix it while rewriting
+    - [ ] **🧪 Migrate/Create Tests**
+        - [ ] Locate existing tests in `src/atomic-crm/providers/supabase/__tests__/`
+        - [ ] Create `opportunitiesHandler.test.ts`
+        - [ ] **Critical Test:** Verify View Field Stripping works (computed fields removed before DB write)
+        - [ ] **Critical Test:** Verify `createWithProducts` syncs products correctly
+        - [ ] **Why:** "The Boss" resource cannot rely solely on manual UI testing
     - [ ] **Cleanup:** Delete `Opportunities` logic from `unifiedDataProvider.ts`
 - [ ] **Refactor `Sales` Resource**
     - [ ] Update existing `src/providers/supabase/handlers/salesHandler.ts`
@@ -108,12 +114,23 @@
 ## Phase 5: Final Switch (Post-Migration)
 *Goal: Remove the legacy system entirely.*
 
-- [ ] **Switch Feature Flag**
-    - [ ] Set `VITE_USE_COMPOSED_PROVIDER = true` in all environments
-    - [ ] Run full regression test suite
+- [ ] **🧪 Run Full Regression Test Suite**
+    - [ ] Set `VITE_USE_COMPOSED_PROVIDER = true` in test environment
+    - [ ] Run `npm test` — all tests must pass
+    - [ ] Verify `composedDataProvider` passes standard React Admin data provider contract:
+        - [ ] `getList` returns `{ data, total }`
+        - [ ] `getOne` returns `{ data }`
+        - [ ] `create` returns `{ data }` with generated `id`
+        - [ ] `update` returns `{ data }`
+        - [ ] `delete` returns `{ data }`
+    - [ ] **Manual smoke test:** Create → Edit → Delete an Opportunity with products
+- [ ] **Switch Feature Flag (Production)**
+    - [ ] Set `VITE_USE_COMPOSED_PROVIDER = true` in `.env.production`
+    - [ ] Deploy to staging first, verify for 24h
 - [ ] **Delete The Monolith**
     - [ ] Delete `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
     - [ ] Remove `unifiedDataProvider` import from `index.ts`
+    - [ ] Run `npm test` again — ensure no imports break
 
 ---
 
@@ -225,7 +242,8 @@
 | tags | ❌ hard delete | ❌ | ❌ | ❌ | ✅ | No soft delete |
 | sales | ✅ soft | ❌ | ✅ soft+search | ✅ strip | ✅ | q→ILIKE |
 
----
+--- 
+--- 
 
 ## Quick Reference: Wrapper Composition
 
@@ -257,14 +275,17 @@ Before setting `VITE_USE_COMPOSED_PROVIDER=true`:
 | Blocker | Status | Notes |
 |:--------|:-------|:------|
 | All 5 handlers have correct wrapper order | ⬜ | Table 1 — Phase 2 |
-| `segmentsHandler` created | ⬜ | **NEW** — Phase 4 blocker |
-| `productDistributorsHandler` created | ⬜ | **NEW** — Phase 4 blocker |
+| `segmentsHandler` created | ⬜ | Phase 4 blocker |
+| `productDistributorsHandler` created | ⬜ | Phase 4 blocker |
 | All 8 logic gaps are implemented | ⬜ | Table 2 |
 | All 8 Supabase calls are in services | ⬜ | Table 3 |
 | Products: create/update/delete all work | ⬜ | Critical path |
+| **🧪 ProductsService tests pass** | ⬜ | Phase 3 — transaction logic |
 | Opportunities: products sync on create/update | ⬜ | Critical path |
-| Opportunities: `FIELDS_TO_STRIP` type-safe | ⬜ | **NEW** — Phase 4 |
+| Opportunities: `FIELDS_TO_STRIP` type-safe | ⬜ | Phase 4 |
+| **🧪 opportunitiesHandler tests pass** | ⬜ | Phase 4 — "The Boss" |
 | Sales: updates work (RLS bypass) | ⬜ | Edge Function |
+| **🧪 `npm test` passes with flag enabled** | ⬜ | Phase 5 — final gate |
 
 ---
 
