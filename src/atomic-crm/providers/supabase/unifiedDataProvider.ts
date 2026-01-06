@@ -530,15 +530,17 @@ async function wrapMethod<T>(
 
     // Handle { message, errors } format from validateData()
     // The !extendedError.code check prevents matching Supabase database errors
+    // CRITICAL: Must use HttpError for React Admin to display inline field errors
     if (
       extendedError?.errors &&
       typeof extendedError.errors === "object" &&
       !extendedError.code
     ) {
-      throw {
-        message: extendedError.message || "Validation failed",
-        body: { errors: extendedError.errors },
-      };
+      throw new HttpError(
+        extendedError.message || "Validation failed",
+        400,
+        { errors: extendedError.errors }
+      );
     }
 
     // For Supabase errors, try to extract field-specific errors
