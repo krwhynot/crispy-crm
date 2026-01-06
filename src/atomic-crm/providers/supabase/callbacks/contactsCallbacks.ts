@@ -17,7 +17,7 @@
 
 import type { RaRecord, GetListParams, DataProvider } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
-import { normalizeJsonbArrays } from "./commonTransforms";
+import { normalizeJsonbArrays, createQToIlikeTransformer } from "./commonTransforms";
 
 /**
  * Computed fields that should be stripped before saving to database
