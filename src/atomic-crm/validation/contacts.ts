@@ -25,6 +25,7 @@ export type ContactDepartment = z.infer<typeof contactDepartmentSchema>;
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin\.com\//;
 const isLinkedinUrl = z
   .string()
+  .max(2048, "URL too long")
   .refine(
     (url) => {
       if (!url) return true;
@@ -309,7 +310,7 @@ export const importContactSchema = z
         z.literal(""),
         z.literal(null),
         z.undefined(),
-        z.string().refine(
+        z.string().max(2048, "URL too long").refine(
           (url) => {
             try {
               const parsedUrl = new URL(url);

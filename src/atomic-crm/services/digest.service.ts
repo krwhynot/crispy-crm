@@ -87,7 +87,7 @@ export const UserDigestSummarySchema = z.strictObject({
   user_id: z.string().uuid(),
   first_name: z.string().nullable(),
   last_name: z.string().nullable(),
-  email: z.string().email().nullable(),
+  email: z.string().email().max(254, "Email too long").nullable(),
   tasks_due_today: z.number().int().min(0),
   tasks_overdue: z.number().int().min(0),
   stale_deals: z.number().int().min(0),

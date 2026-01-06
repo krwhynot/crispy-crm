@@ -74,6 +74,7 @@ const isValidUrl = z
 
 const isLinkedinUrl = z
   .string()
+  .max(2048, "URL too long")
   .transform(urlAutoPrefix)
   .pipe(
     z.string().refine(
@@ -122,7 +123,7 @@ export const organizationSchema = z.strictObject({
   tags: z.string().max(1000, "Tags too long").optional(), // Comma-separated tag names for CSV import
 
   // Business fields (DB columns added for completeness)
-  email: z.string().email().nullish(), // Organization contact email
+  email: z.string().email().max(254, "Email too long").nullish(), // Organization contact email
   notes: z
     .string()
     .max(5000, "Notes too long")
@@ -131,7 +132,7 @@ export const organizationSchema = z.strictObject({
   employee_count: z.coerce.number().int().positive().nullish(), // Number of employees
   founded_year: z.coerce.number().int().min(1800).max(new Date().getFullYear()).nullish(), // Year founded
   tax_identifier: z.string().max(50, "Tax identifier too long").nullish(), // Tax ID / EIN
-  logo_url: z.string().url().nullish(), // Direct URL to logo (separate from logo RAFile)
+  logo_url: z.string().url().max(2048, "URL too long").nullish(), // Direct URL to logo (separate from logo RAFile)
   updated_at: z.string().max(50).optional(), // System-managed timestamp
   updated_by: z.coerce.number().nullish(), // Audit: who last updated
 

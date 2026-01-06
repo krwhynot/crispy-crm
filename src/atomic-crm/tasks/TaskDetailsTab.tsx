@@ -27,9 +27,10 @@ export const TaskDetailsTab = () => {
       />
       <SelectInput
         source="type"
-        label="Type"
+        label="Type *"
         choices={taskTypes.map((type) => ({ id: type, name: type }))}
         helperText="Category of task"
+        isRequired
       />
       <ReferenceInput source="organization_id" reference="organizations" enableGetChoices={enableGetChoices}>
         <AutocompleteInput
@@ -58,8 +59,9 @@ export const TaskDetailsTab = () => {
       <ReferenceInput source="sales_id" reference="sales" enableGetChoices={enableGetChoices}>
         <AutocompleteInput
           {...getQSearchAutocompleteProps()}
-          label="Assigned To"
+          label="Assigned To *"
           helperText="Who owns this task (defaults to you)"
+          isRequired
         />
       </ReferenceInput>
     </div>

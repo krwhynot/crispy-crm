@@ -78,7 +78,7 @@ DROP POLICY IF EXISTS "authenticated_insert_contact_notes" ON contact_notes;
 DROP POLICY IF EXISTS "authenticated_update_contact_notes" ON contact_notes;
 DROP POLICY IF EXISTS "authenticated_delete_contact_notes" ON contact_notes;
 
--- Drop legacy policies
+-- Drop legacy policies (also serves as idempotent drop for new-style names)
 DROP POLICY IF EXISTS "select_contact_notes" ON contact_notes;
 DROP POLICY IF EXISTS "insert_contact_notes" ON contact_notes;
 DROP POLICY IF EXISTS "update_contact_notes" ON contact_notes;
@@ -113,7 +113,7 @@ DROP POLICY IF EXISTS "authenticated_insert_opportunity_notes" ON opportunity_no
 DROP POLICY IF EXISTS "authenticated_update_opportunity_notes" ON opportunity_notes;
 DROP POLICY IF EXISTS "authenticated_delete_opportunity_notes" ON opportunity_notes;
 
--- Drop legacy policies
+-- Drop legacy policies (also serves as idempotent drop for new-style names)
 DROP POLICY IF EXISTS "select_opportunity_notes" ON opportunity_notes;
 DROP POLICY IF EXISTS "insert_opportunity_notes" ON opportunity_notes;
 DROP POLICY IF EXISTS "update_opportunity_notes" ON opportunity_notes;
@@ -147,7 +147,7 @@ CREATE POLICY "delete_opportunity_notes" ON opportunity_notes
 DROP POLICY IF EXISTS "authenticated_select_organizationNotes" ON organization_notes;
 DROP POLICY IF EXISTS "authenticated_insert_organizationNotes" ON organization_notes;
 
--- Drop legacy policies
+-- Drop legacy policies (also serves as idempotent drop for new-style names)
 DROP POLICY IF EXISTS "select_organization_notes" ON organization_notes;
 DROP POLICY IF EXISTS "insert_organization_notes" ON organization_notes;
 DROP POLICY IF EXISTS "update_organization_notes" ON organization_notes;
@@ -179,6 +179,11 @@ CREATE POLICY "delete_organization_notes" ON organization_notes
 -- Drop existing policies to recreate with consistent naming
 DROP POLICY IF EXISTS "Allow authenticated read access" ON segments;
 DROP POLICY IF EXISTS "Allow authenticated users to create" ON segments;
+-- Drop new-style policies if they exist (idempotent)
+DROP POLICY IF EXISTS "select_segments" ON segments;
+DROP POLICY IF EXISTS "insert_segments" ON segments;
+DROP POLICY IF EXISTS "update_segments" ON segments;
+DROP POLICY IF EXISTS "delete_segments" ON segments;
 
 -- Create full CRUD team-wide policies
 CREATE POLICY "select_segments" ON segments
