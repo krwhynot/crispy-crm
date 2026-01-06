@@ -14,6 +14,12 @@ import type { DataProvider, RaRecord } from "ra-core";
 import { createOpportunitiesHandler } from "../opportunitiesHandler";
 import { OpportunitiesService } from "../../../../services/opportunities.service";
 import type { Product } from "../../../../opportunities/utils/diffProducts";
+import {
+  stripComputedFields,
+  COMPUTED_FIELDS,
+  TYPED_COMPUTED_FIELDS,
+  VIEW_ONLY_FIELDS,
+} from "../../callbacks/opportunitiesCallbacks";
 
 // Mock the OpportunitiesService
 vi.mock("../../../../services/opportunities.service", () => {
@@ -95,7 +101,9 @@ describe("createOpportunitiesHandler", () => {
       expect(mockServiceInstance.createWithProducts).not.toHaveBeenCalled();
     });
 
-    it("should NOT delegate to service when products_to_sync is empty array", async () => {
+    it("should delegate to service when products_to_sync is empty array (service handles efficiently)", async () => {
+      // Note: Empty array IS an array, so handler delegates to service.
+      // The service handles empty arrays efficiently by using standard create.
       const opportunityData = {
         name: "Test Opportunity",
         customer_organization_id: 1,
@@ -103,10 +111,13 @@ describe("createOpportunitiesHandler", () => {
         estimated_close_date: "2026-02-01",
         products_to_sync: [],
       };
+      const createdOpportunity = { id: 124, ...opportunityData };
+
+      mockServiceInstance.createWithProducts.mockResolvedValue(createdOpportunity);
 
       await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockServiceInstance.createWithProducts).not.toHaveBeenCalled();
+      expect(mockServiceInstance.createWithProducts).toHaveBeenCalledWith(opportunityData);
     });
 
     it("should pass through non-opportunities resources to base provider", async () => {
@@ -164,12 +175,17 @@ describe("createOpportunitiesHandler", () => {
       expect(mockServiceInstance.updateWithProducts).not.toHaveBeenCalled();
     });
 
-    it("should NOT delegate to service when products_to_sync is empty array", async () => {
+    it("should delegate to service when products_to_sync is empty array (service handles efficiently)", async () => {
+      // Note: Empty array IS an array, so handler delegates to service.
+      // The service handles empty arrays efficiently by using standard update.
       const updateData = {
         id: 123,
         name: "Updated Opportunity",
         products_to_sync: [],
       };
+      const updatedOpportunity = { id: 123, name: "Updated Opportunity" };
+
+      mockServiceInstance.updateWithProducts.mockResolvedValue(updatedOpportunity);
 
       await handler.update("opportunities", {
         id: 123,
@@ -177,7 +193,7 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123 } as RaRecord,
       });
 
-      expect(mockServiceInstance.updateWithProducts).not.toHaveBeenCalled();
+      expect(mockServiceInstance.updateWithProducts).toHaveBeenCalledWith(123, updateData, []);
     });
 
     it("should pass empty array when previousData.products is missing", async () => {
@@ -208,14 +224,6 @@ describe("createOpportunitiesHandler", () => {
  * before database operations. This happens in the beforeSave lifecycle callback.
  */
 describe("opportunitiesCallbacks - view field stripping", () => {
-  // Import the callbacks directly for isolated testing
-  const {
-    stripComputedFields,
-    COMPUTED_FIELDS,
-    TYPED_COMPUTED_FIELDS,
-    VIEW_ONLY_FIELDS,
-  } = require("../../callbacks/opportunitiesCallbacks");
-
   describe("stripComputedFields()", () => {
     it("should strip typed computed fields (from Opportunity type)", () => {
       const data = {
