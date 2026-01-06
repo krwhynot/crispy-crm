@@ -37,3 +37,5 @@ export {
 // Supporting resources
 export { createTagsHandler } from "./tagsHandler";
 export { createSalesHandler } from "./salesHandler";
+export { createSegmentsHandler } from "./segmentsHandler";
+export { createProductDistributorsHandler } from "./productDistributorsHandler";

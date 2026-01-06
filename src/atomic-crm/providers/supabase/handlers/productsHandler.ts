@@ -18,6 +18,9 @@ import {
   withLifecycleCallbacks,
   type DataProvider,
   type CreateParams,
+  type UpdateParams,
+  type DeleteParams,
+  type DeleteManyParams,
   type RaRecord,
 } from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
@@ -27,6 +30,8 @@ import {
   transformToRpcParams,
   type ProductWithDistributors,
 } from "../../../validation/productWithDistributors";
+import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
+import type { ExtendedDataProvider } from "../extensions/types";
 
 /**
  * Extended DataProvider interface with RPC support
@@ -125,6 +130,139 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
 
       // Not products - delegate to composed handler
       return composedHandler.create<RecordType>(resource, params);
+    },
+
+    /**
+     * Intercept update for products with distributors
+     *
+     * If distributors or distributor_ids is present:
+     * 1. Extract distributor data from params
+     * 2. Call ProductsService.updateWithDistributors() for atomic update
+     * 3. Return updated product
+     *
+     * Otherwise, strip distributor fields and delegate to normal flow
+     */
+    update: async <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: UpdateParams<RecordType>
+    ) => {
+      // Only intercept products resource
+      if (resource === "products") {
+        const data = params.data as unknown as Record<string, unknown>;
+        const distributors = data.distributors as unknown[] | undefined;
+        const distributorIds = data.distributor_ids as number[] | undefined;
+
+        // Check if we have distributor data to sync
+        if (
+          (Array.isArray(distributors) && distributors.length > 0) ||
+          (Array.isArray(distributorIds) && distributorIds.length > 0)
+        ) {
+          // Create service instance with extended data provider
+          const service = new ProductsService(baseProvider as ExtendedDataProvider);
+
+          // Transform distributors to service format
+          let distributorInputs: ProductDistributorInput[] = [];
+
+          if (Array.isArray(distributors) && distributors.length > 0) {
+            // Full distributor objects with vendor_item_number
+            distributorInputs = distributors.map((d) => {
+              const dist = d as Record<string, unknown>;
+              return {
+                distributor_id: Number(dist.distributor_id ?? dist.id),
+                vendor_item_number: (dist.vendor_item_number as string) ?? null,
+              };
+            });
+          } else if (Array.isArray(distributorIds) && distributorIds.length > 0) {
+            // Just IDs - no vendor_item_number
+            const productDistributors = (data.product_distributors ?? {}) as Record<
+              number,
+              { vendor_item_number: string | null }
+            >;
+            distributorInputs = distributorIds.map((id) => ({
+              distributor_id: id,
+              vendor_item_number: productDistributors[id]?.vendor_item_number ?? null,
+            }));
+          }
+
+          // Strip distributor fields from product data
+          const {
+            distributors: _distributors,
+            distributor_ids: _distributorIds,
+            product_distributors: _productDistributors,
+            ...cleanData
+          } = data;
+
+          // Call service for atomic update
+          const result = await service.updateWithDistributors(
+            params.id,
+            cleanData,
+            distributorInputs
+          );
+
+          return { data: result as RecordType };
+        }
+
+        // No distributors - strip any distributor-related fields and use normal flow
+        const {
+          distributors: _distributors,
+          distributor_ids: _distributorIds,
+          product_distributors: _productDistributors,
+          ...cleanData
+        } = data;
+
+        return composedHandler.update<RecordType>(resource, {
+          ...params,
+          data: cleanData as Partial<RecordType>,
+        } as UpdateParams<RecordType>);
+      }
+
+      // Not products - delegate to composed handler
+      return composedHandler.update<RecordType>(resource, params);
+    },
+
+    /**
+     * Intercept delete for products
+     *
+     * Uses ProductsService.softDelete() via RPC to bypass RLS SELECT policy
+     * that would otherwise prevent seeing the updated row after setting deleted_at.
+     */
+    delete: async <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: DeleteParams<RecordType>
+    ) => {
+      // Only intercept products resource
+      if (resource === "products") {
+        const service = new ProductsService(baseProvider as ExtendedDataProvider);
+        await service.softDelete(params.id);
+
+        // Return in React Admin format
+        return { data: params.previousData as RecordType };
+      }
+
+      // Not products - delegate to composed handler
+      return composedHandler.delete<RecordType>(resource, params);
+    },
+
+    /**
+     * Intercept deleteMany for products
+     *
+     * Uses ProductsService.softDeleteMany() via RPC to bypass RLS SELECT policy.
+     */
+    deleteMany: async <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: DeleteManyParams<RecordType>
+    ) => {
+      // Only intercept products resource
+      if (resource === "products") {
+        const service = new ProductsService(baseProvider as ExtendedDataProvider);
+        await service.softDeleteMany(params.ids);
+
+        // Return in React Admin format
+        return { data: params.ids };
+      }
+
+      // Not products - delegate to composed handler
+      return composedHandler.deleteMany<RecordType>(resource, params);
     },
   };
 }

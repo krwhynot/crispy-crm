@@ -26,6 +26,8 @@ import {
   createOrganizationNotesHandler,
   createTagsHandler,
   createSalesHandler,
+  createSegmentsHandler,
+  createProductDistributorsHandler,
 } from "./handlers";
 import { applySearchParams, getDatabaseResource } from "./dataProviderUtils";
 
@@ -51,6 +53,8 @@ export const HANDLED_RESOURCES = [
   // Supporting resources
   "tags",
   "sales",
+  "segments",
+  "product_distributors",
 ] as const;
 
 export type HandledResource = (typeof HANDLED_RESOURCES)[number];
@@ -109,6 +113,8 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
     // Supporting resources
     tags: createTagsHandler(baseProvider),
     sales: createSalesHandler(baseProvider),
+    segments: createSegmentsHandler(baseProvider),
+    product_distributors: createProductDistributorsHandler(baseProvider),
   };
 
   /**
