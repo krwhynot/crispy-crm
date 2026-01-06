@@ -38,17 +38,18 @@ src/atomic-crm/providers/supabase/
 ├── index.ts                     # Main export (dataProvider)
 ├── composedDataProvider.ts      # Handler router
 ├── handlers/                    # Resource-specific handlers
-│   ├── contactsHandler.ts
-│   ├── organizationsHandler.ts
-│   ├── opportunitiesHandler.ts
-│   ├── productsHandler.ts
-│   ├── productDistributorsHandler.ts
-│   ├── activitiesHandler.ts
-│   ├── tasksHandler.ts
-│   ├── notesHandler.ts
-│   ├── tagsHandler.ts
-│   ├── salesHandler.ts
-│   └── segmentsHandler.ts
+│   ├── contactsHandler.ts       # Contact management
+│   ├── organizationsHandler.ts  # Organization management
+│   ├── opportunitiesHandler.ts  # Deal pipeline (complex: cascade delete, products sync)
+│   ├── productsHandler.ts       # Product catalog
+│   ├── productDistributorsHandler.ts # Composite key junction
+│   ├── activitiesHandler.ts     # Call/email/meeting tracking
+│   ├── tasksHandler.ts          # Task management
+│   ├── notesHandler.ts          # Notes (contact, opportunity, organization)
+│   ├── tagsHandler.ts           # Tags (hard delete)
+│   ├── salesHandler.ts          # Sales records (RLS bypass)
+│   ├── segmentsHandler.ts       # Playbook categories
+│   └── junctionHandlers.ts      # Junction tables (6 tables with soft delete)
 ├── callbacks/                   # Lifecycle callbacks (beforeSave, beforeDelete)
 │   ├── contactsCallbacks.ts
 │   ├── organizationsCallbacks.ts
@@ -192,11 +193,38 @@ Run tests:
 npm test -- --grep "handler"
 ```
 
+## Handled Resources
+
+### Core CRM Resources
+- `contacts` - Customer contacts with JSONB array normalization
+- `organizations` - Companies (principals, distributors, operators)
+- `opportunities` - Sales pipeline (cascade delete via RPC, products sync)
+- `activities` - Interaction tracking (calls, emails, meetings)
+- `products` - Product catalog with distributor relationships
+
+### Supporting Resources
+- `tasks` - Task management with completion/snooze handling
+- `contact_notes`, `opportunity_notes`, `organization_notes` - Notes (snake_case)
+- `tags` - Tagging system (hard delete, no soft delete)
+- `sales` - Sales records (RLS bypass via Edge Function)
+- `segments` - Playbook categories
+- `product_distributors` - Composite key junction (product_id + distributor_id)
+
+### Junction Tables (Soft Delete Protected)
+These junction tables have handlers to prevent data loss from hard deletes:
+- `opportunity_participants` - Links opportunities to sales reps
+- `opportunity_contacts` - Links opportunities to contacts
+- `interaction_participants` - Links activities to contacts
+- `distributor_principal_authorizations` - Links distributors to principals
+- `organization_distributors` - Links organizations to distributor records
+- `user_favorites` - User-favorited records
+
 ## Migration History
 
 - **Phase 1-4**: Incremental handler migration (Strangler Fig pattern)
 - **Phase 5**: Deleted `unifiedDataProvider.ts` monolith (1090+ LOC)
 - **Phase 6**: Extracted shared utilities (`commonTransforms.ts`)
 - **Phase 7**: Type safety hardening (`filterRegistry.ts`)
+- **Phase 8**: Health & hardening (junction handlers, log cleanup, DRY search)
 
 See `docs/TODOs/TODO_PROVIDER.md` for complete migration history.

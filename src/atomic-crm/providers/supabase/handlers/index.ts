@@ -39,3 +39,13 @@ export { createTagsHandler } from "./tagsHandler";
 export { createSalesHandler } from "./salesHandler";
 export { createSegmentsHandler } from "./segmentsHandler";
 export { createProductDistributorsHandler } from "./productDistributorsHandler";
+
+// Junction tables (soft delete support)
+export {
+  createOpportunityParticipantsHandler,
+  createOpportunityContactsHandler,
+  createInteractionParticipantsHandler,
+  createDistributorPrincipalAuthorizationsHandler,
+  createOrganizationDistributorsHandler,
+  createUserFavoritesHandler,
+} from "./junctionHandlers";

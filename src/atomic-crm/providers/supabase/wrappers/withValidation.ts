@@ -110,16 +110,6 @@ export function withValidation<T extends DataProvider>(
     params: CreateParams<RecordType>
   ) => {
     try {
-      // DEBUG: Log data being validated
-      if (resource === "organizations") {
-        console.log(
-          "[withValidation] Creating organization with data:",
-          JSON.stringify(params.data, null, 2)
-        );
-        const data = params.data as Record<string, unknown>;
-        console.log("[withValidation] segment_id value:", data.segment_id);
-        console.log("[withValidation] segment_id type:", typeof data.segment_id);
-      }
       // Validate before create
       await validationService.validate(resource, "create", params.data);
     } catch (error: unknown) {

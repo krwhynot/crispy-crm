@@ -96,9 +96,9 @@ export const SOFT_DELETE_RESOURCES = [
   "contact_preferred_principals",
   // Added per Constitution audit - now have deleted_at columns:
   "segments",
-  "contactNotes",
-  "opportunityNotes", // FIX: Was missing - VIEW over opportunity_notes table
-  "organizationNotes",
+  "contact_notes", // snake_case to match RESOURCE_MAPPING
+  "opportunity_notes", // snake_case to match RESOURCE_MAPPING
+  "organization_notes", // snake_case to match RESOURCE_MAPPING
   "interaction_participants",
   "tags",
   "opportunity_products",
@@ -112,14 +112,14 @@ export const SOFT_DELETE_RESOURCES = [
  * Resource configuration for lifecycle callbacks
  */
 export const RESOURCE_LIFECYCLE_CONFIG = {
-  contactNotes: {
+  contact_notes: {
     hasAttachments: true,
   },
-  // dealNotes: REMOVED - use opportunityNotes
-  opportunityNotes: {
+  // dealNotes: REMOVED - use opportunity_notes
+  opportunity_notes: {
     hasAttachments: true,
   },
-  organizationNotes: {
+  organization_notes: {
     hasAttachments: true,
   },
   sales: {
