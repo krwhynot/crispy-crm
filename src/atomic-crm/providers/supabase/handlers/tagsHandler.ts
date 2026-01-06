@@ -22,9 +22,15 @@ import { tagsCallbacks } from "../callbacks/tagsCallbacks";
 /**
  * Create a fully composed DataProvider for tags
  *
+ * Composition order (innermost to outermost):
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks execute
+ * (though tags have minimal callbacks since they use hard delete).
+ *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with validation and error handling
  */
 export function createTagsHandler(baseProvider: DataProvider): DataProvider {
-  return withErrorLogging(withValidation(withLifecycleCallbacks(baseProvider, [tagsCallbacks])));
+  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [tagsCallbacks]));
 }

@@ -22,9 +22,16 @@ import { salesCallbacks } from "../callbacks/salesCallbacks";
 /**
  * Create a fully composed DataProvider for sales
  *
+ * Composition order (innermost to outermost):
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
+ * computed fields before DB write. This ensures Zod validates clean user input,
+ * not post-processed data.
+ *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with soft delete, validation, and error handling
  */
 export function createSalesHandler(baseProvider: DataProvider): DataProvider {
-  return withErrorLogging(withValidation(withLifecycleCallbacks(baseProvider, [salesCallbacks])));
+  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [salesCallbacks]));
 }
