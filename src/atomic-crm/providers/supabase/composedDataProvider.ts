@@ -28,6 +28,12 @@ import {
   createSalesHandler,
   createSegmentsHandler,
   createProductDistributorsHandler,
+  createOpportunityParticipantsHandler,
+  createOpportunityContactsHandler,
+  createInteractionParticipantsHandler,
+  createDistributorPrincipalAuthorizationsHandler,
+  createOrganizationDistributorsHandler,
+  createUserFavoritesHandler,
 } from "./handlers";
 import { applySearchParams, getDatabaseResource } from "./dataProviderUtils";
 
@@ -55,6 +61,13 @@ export const HANDLED_RESOURCES = [
   "sales",
   "segments",
   "product_distributors",
+  // Junction tables (soft delete support)
+  "opportunity_participants",
+  "opportunity_contacts",
+  "interaction_participants",
+  "distributor_principal_authorizations",
+  "organization_distributors",
+  "user_favorites",
 ] as const;
 
 export type HandledResource = (typeof HANDLED_RESOURCES)[number];
@@ -115,6 +128,14 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
     sales: createSalesHandler(baseProvider),
     segments: createSegmentsHandler(baseProvider),
     product_distributors: createProductDistributorsHandler(baseProvider),
+    // Junction tables (soft delete support)
+    opportunity_participants: createOpportunityParticipantsHandler(baseProvider),
+    opportunity_contacts: createOpportunityContactsHandler(baseProvider),
+    interaction_participants: createInteractionParticipantsHandler(baseProvider),
+    distributor_principal_authorizations:
+      createDistributorPrincipalAuthorizationsHandler(baseProvider),
+    organization_distributors: createOrganizationDistributorsHandler(baseProvider),
+    user_favorites: createUserFavoritesHandler(baseProvider),
   };
 
   /**

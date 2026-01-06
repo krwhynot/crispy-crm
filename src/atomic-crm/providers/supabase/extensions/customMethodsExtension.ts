@@ -480,9 +480,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
     ): Promise<T> => {
       let validatedParams = params;
       try {
-        // Log the operation for debugging
-        console.log(`[DataProvider RPC] Calling ${functionName}`, params);
-
         // Validate params if schema exists for this RPC function
         if (functionName in RPC_SCHEMAS) {
           const schema = RPC_SCHEMAS[functionName as RPCFunctionName];
@@ -505,7 +502,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
           throw new Error(`RPC ${functionName} failed: ${error.message}`);
         }
 
-        console.log(`[DataProvider RPC] ${functionName} succeeded`, data);
         return data as T;
       } catch (error) {
         logError("rpc", functionName, { data: validatedParams }, error);
@@ -541,11 +537,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
         file: File | Blob
       ): Promise<{ path: string }> => {
         try {
-          console.log(`[DataProvider Storage] Uploading to ${bucket}/${path}`, {
-            size: file.size,
-            type: file.type,
-          });
-
           // Validate file size (10MB limit)
           if (file.size > 10 * 1024 * 1024) {
             throw new Error("File size exceeds 10MB limit");
@@ -561,7 +552,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
             throw new Error(`Upload failed: ${error.message}`);
           }
 
-          console.log(`[DataProvider Storage] Upload succeeded`, data);
           return data;
         } catch (error) {
           logError("storage.upload", bucket, { path }, error);
@@ -578,7 +568,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
        */
       getPublicUrl: (bucket: string, path: string): string => {
         const { data } = supabaseClient.storage.from(bucket).getPublicUrl(path);
-        console.log(`[DataProvider Storage] Generated public URL for ${bucket}/${path}`);
         return data.publicUrl;
       },
 
@@ -592,8 +581,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
        */
       remove: async (bucket: string, paths: string[]): Promise<void> => {
         try {
-          console.log(`[DataProvider Storage] Removing from ${bucket}`, paths);
-
           const { error } = await supabaseClient.storage.from(bucket).remove(paths);
 
           if (error) {
@@ -601,7 +588,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
             throw new Error(`Remove failed: ${error.message}`);
           }
 
-          console.log(`[DataProvider Storage] Remove succeeded`);
         } catch (error) {
           logError("storage.remove", bucket, { paths }, error);
           throw error;
@@ -619,8 +605,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
        */
       list: async (bucket: string, path?: string): Promise<FileObject[]> => {
         try {
-          console.log(`[DataProvider Storage] Listing ${bucket}/${path || ""}`);
-
           const { data, error } = await supabaseClient.storage.from(bucket).list(path);
 
           if (error) {
@@ -628,7 +612,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
             throw new Error(`List failed: ${error.message}`);
           }
 
-          console.log(`[DataProvider Storage] Listed ${data?.length || 0} files`);
           return (data as FileObject[]) || [];
         } catch (error) {
           logError("storage.list", bucket, { data: { path } }, error);
@@ -679,8 +662,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
     ): Promise<T> => {
       const processedOptions = { ...options };
       try {
-        console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
-
         // Validate body params if schema exists for this Edge Function
         // Note: edgeFunctionSchemas is currently empty, validation will be added when Edge Functions are implemented
         const edgeFunctionNames = Object.keys(edgeFunctionSchemas);
@@ -718,7 +699,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
           throw new Error(`Edge function ${functionName} returned no data`);
         }
 
-        console.log(`[DataProvider Edge] ${functionName} succeeded`, data);
         return data;
       } catch (error) {
         logError("invoke", functionName, { data: processedOptions }, error);
@@ -755,8 +735,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
      */
     createBoothVisitor: async (data: QuickAddInput): Promise<{ data: BoothVisitorResult }> => {
       try {
-        console.log("[DataProvider] Creating booth visitor", data);
-
         const { data: result, error } = await supabaseClient.rpc(
           "create_booth_visitor_opportunity",
           {
@@ -769,7 +747,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
           throw new Error(`Create booth visitor failed: ${error.message}`);
         }
 
-        console.log("[DataProvider] Booth visitor created successfully", result);
         return { data: result as BoothVisitorResult };
       } catch (error) {
         logError("createBoothVisitor", "booth_visitor", { data }, error);

@@ -29,7 +29,6 @@
 
 import type { RaRecord, GetListParams, DataProvider, DeleteParams } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
-import { createQToIlikeTransformer } from "./commonTransforms";
 import type { Opportunity } from "../../../types";
 import { supabase } from "../supabase";
 
@@ -115,22 +114,6 @@ const CREATE_DEFAULTS = {
 } as const;
 
 /**
- * Fields to search when q filter is provided
- * These fields will be searched with ILIKE for partial matching
- */
-export const OPPORTUNITIES_SEARCH_FIELDS = ["name", "description"] as const;
-
-/**
- * Transform q filter into ILIKE search on opportunity fields
- * Uses shared factory from commonTransforms for DRY compliance
- *
- * @see createQToIlikeTransformer in commonTransforms.ts
- */
-export const transformQToIlikeSearch = createQToIlikeTransformer({
-  searchFields: OPPORTUNITIES_SEARCH_FIELDS,
-});
-
-/**
  * Strip computed and virtual fields that shouldn't be sent to database
  *
  * @param data - The data being saved
@@ -186,23 +169,11 @@ async function opportunitiesBeforeDelete(
   params: DeleteParams,
   _dataProvider: DataProvider
 ): Promise<DeleteParams & { meta?: { skipDelete?: boolean } }> {
-  console.log(
-    "🟡 [opportunitiesCallbacks.beforeDelete] ENTRY - id:",
-    params.id,
-    "type:",
-    typeof params.id
-  );
-
   // Validate ID before RPC call (fail-fast)
   const numericId = Number(params.id);
   if (!Number.isInteger(numericId) || numericId <= 0) {
     throw new Error(`Invalid opportunity ID: ${params.id}`);
   }
-
-  console.log(
-    "🟡 [opportunitiesCallbacks.beforeDelete] Calling supabase.rpc with opp_id:",
-    numericId
-  );
 
   // Use Supabase client directly - bypasses DataProvider abstraction
   // This is the React Admin recommended pattern for lifecycle callbacks
@@ -211,11 +182,8 @@ async function opportunitiesBeforeDelete(
   });
 
   if (rpcError) {
-    console.error("🟡 [opportunitiesCallbacks.beforeDelete] RPC FAILED:", rpcError);
     throw new Error(`Archive opportunity failed: ${rpcError.message}`);
   }
-
-  console.log("🟡 [opportunitiesCallbacks.beforeDelete] RPC SUCCESS - returning skipDelete");
 
   // Return params with meta flag to skip actual delete (RPC already archived)
   return {
@@ -225,25 +193,21 @@ async function opportunitiesBeforeDelete(
 }
 
 /**
- * Custom beforeGetList: Transform q filter + apply soft delete filter
+ * Custom beforeGetList: Apply soft delete filter only
  *
- * Chains:
- * 1. q filter → ILIKE search transformation (via shared factory)
- * 2. Soft delete filter (exclude deleted_at IS NOT NULL)
+ * NOTE: q filter transformation is handled centrally by applySearchParams() in composedDataProvider.
+ * This callback only needs to apply the soft delete filter.
  */
 async function opportunitiesBeforeGetList(
   params: GetListParams,
   _dataProvider: DataProvider
 ): Promise<GetListParams> {
-  // Step 1: Transform q filter to ILIKE search (removes q from filter)
-  const searchTransformedParams = transformQToIlikeSearch(params);
-
-  // Step 2: Apply soft delete filter
-  const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
+  // Apply soft delete filter (search is handled by applySearchParams in composedDataProvider)
+  const { includeDeleted, ...otherFilters } = params.filter || {};
   const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
 
   return {
-    ...searchTransformedParams,
+    ...params,
     filter: {
       ...otherFilters,
       ...softDeleteFilter,
@@ -274,14 +238,6 @@ async function opportunitiesBeforeSave(
   const isStageOnlyUpdate = data.stage && !data.name;
   const hasEmptyContactIds = Array.isArray(data.contact_ids) && data.contact_ids.length === 0;
 
-  // Debug logging - remove after verification
-  console.log("[beforeSave] Processing opportunity:", {
-    incomingData: { stage: data.stage, name: data.name, contact_ids: data.contact_ids },
-    isStageOnlyUpdate,
-    hasEmptyContactIds,
-    willStripContactIds: isStageOnlyUpdate && hasEmptyContactIds,
-  });
-
   if (isStageOnlyUpdate && hasEmptyContactIds) {
     delete processed.contact_ids;
   }
@@ -295,11 +251,6 @@ async function opportunitiesBeforeSave(
       processed = mergeCreateDefaults(processed);
     }
   }
-
-  console.log("[beforeSave] Final processed data:", {
-    stage: processed.stage,
-    keys: Object.keys(processed),
-  });
 
   return processed;
 }
