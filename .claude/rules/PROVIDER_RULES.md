@@ -14,11 +14,26 @@ You can paste these rules at the top of any future task or save them as `PROVIDE
 * **New Resources:** **NEVER** add new resources to `unifiedDataProvider.ts`. All new resources must be built using the **Composed Handler Pattern** in `src/providers/supabase/handlers/`.
 * **Goal:** The `unifiedDataProvider.ts` should only shrink, never grow.
 
-### 2. View vs. Table Duality (Read/Write Rule)
+### 2. View vs. Table Duality — Two-Schema Rule (Read/Write Rule)
 
 * **Reads (`getList`, `getOne`):** Query the **SQL View** (e.g., `*_summary`) to get computed fields (counts, joined names) efficiently.
 * **Writes (`create`, `update`):** Write directly to the **Base Table**.
-* **The Transform:** You **MUST** strip "View-Only" fields (like `customer_organization_name` or `nb_notes`) before sending data back to the Base Table. Use the `TransformService` for this.
+* **The Transform (Two-Schema Rule):** You **MUST** strip "View-Only" fields before DB writes. Two mechanisms available:
+
+  **Option A: TransformService** (recommended for complex resources)
+  ```typescript
+  // Define explicit strip list in TransformService
+  const RESOURCE_FIELDS_TO_STRIP = ["computed_field", "joined_name"] as const;
+  transformService.transformForValidation(resource, data);
+  ```
+
+  **Option B: Schema `.strip()`** (for simple resources)
+  ```typescript
+  export const updateSchema = baseSchema.strip(); // Removes unknown keys silently
+  ```
+
+* **Defense in Depth:** For critical resources, use BOTH layers + `z.strictObject()` as final gate.
+* **See also:** `validation/PATTERNS.md` → Pattern B2: Two-Schema Rule
 
 ### 3. Zod at the Boundary (Validation Rule)
 

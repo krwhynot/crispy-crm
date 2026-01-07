@@ -228,6 +228,23 @@ export default tseslint.config(
     //   },
     // },
   },
+  // Provider override for as-casting ban
+  {
+    files: ["**/providers/**/*.ts"],
+    rules: {
+      "@typescript-eslint/consistent-type-assertions": [
+        "error",
+        { assertionStyle: "never" },
+      ],
+    },
+  },
+  // Allow as-casting in tests (for mocking)
+  {
+    files: ["**/__tests__/**/*.ts", "**/*.test.ts"],
+    rules: {
+      "@typescript-eslint/consistent-type-assertions": "off",
+    },
+  },
   // JavaScript/MJS configuration (for scripts)
   {
     extends: [js.configs.recommended],
