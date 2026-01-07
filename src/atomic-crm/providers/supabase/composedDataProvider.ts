@@ -34,6 +34,7 @@ import {
   createDistributorPrincipalAuthorizationsHandler,
   createOrganizationDistributorsHandler,
   createUserFavoritesHandler,
+  createNotificationsHandler,
 } from "./handlers";
 import { applySearchParams, getDatabaseResource } from "./dataProviderUtils";
 
@@ -68,6 +69,8 @@ export const HANDLED_RESOURCES = [
   "distributor_principal_authorizations",
   "organization_distributors",
   "user_favorites",
+  // Notifications
+  "notifications",
 ] as const;
 
 export type HandledResource = (typeof HANDLED_RESOURCES)[number];
@@ -136,6 +139,8 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
       createDistributorPrincipalAuthorizationsHandler(baseProvider),
     organization_distributors: createOrganizationDistributorsHandler(baseProvider),
     user_favorites: createUserFavoritesHandler(baseProvider),
+    // Notifications
+    notifications: createNotificationsHandler(baseProvider),
   };
 
   /**

@@ -49,3 +49,6 @@ export {
   createOrganizationDistributorsHandler,
   createUserFavoritesHandler,
 } from "./junctionHandlers";
+
+// Notifications
+export { createNotificationsHandler } from "./notificationsHandler";

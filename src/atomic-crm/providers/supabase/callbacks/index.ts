@@ -86,3 +86,6 @@ export { tagsCallbacks } from "./tagsCallbacks";
 // Sales callbacks
 export { salesCallbacks } from "./salesCallbacks";
 export { COMPUTED_FIELDS as SALES_COMPUTED_FIELDS } from "./salesCallbacks";
+
+// Notifications callbacks
+export { notificationsCallbacks } from "./notificationsCallbacks";
