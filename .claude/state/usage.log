@@ -11,3 +11,4 @@
 [2026-01-05T18:56:16.910Z] ✓ search_code | query: "state filter checkbox column" | limit=20, type="component" | results: 0 | 10527ms
 [2026-01-07T01:53:59.260Z] ✓ search_code | query: "form validation Zod schema" | limit=20, type="all" | results: 0 | 11366ms
 [2026-01-07T03:47:14.498Z] ✓ search_code | query: "products data provider handler" | limit=20, type="all" | results: 0 | 11096ms
+[2026-01-07T11:53:55.836Z] ✓ search_code | query: "form default values schema partial parse" | limit=10, type="all" | results: 0 | 10629ms
