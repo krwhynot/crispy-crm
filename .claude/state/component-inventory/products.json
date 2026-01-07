@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-06T02:44:57.931Z",
+  "generated_at": "2026-01-07T23:40:38.846Z",
   "item_count": 30,
   "items": [
     {
@@ -188,12 +188,13 @@
     {
       "name": "ProductEdit",
       "file": "src/atomic-crm/products/ProductEdit.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
+        "../queryKeys",
         "../types",
         "./ProductInputs",
         "@/atomic-crm/validation/products",
@@ -217,12 +218,13 @@
     {
       "name": "ProductEdit",
       "file": "src/atomic-crm/products/ProductEdit.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
+        "../queryKeys",
         "../types",
         "./ProductInputs",
         "@/atomic-crm/validation/products",

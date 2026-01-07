@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-06T02:45:15.904Z",
+  "generated_at": "2026-01-07T23:40:47.337Z",
   "items": {
     "nodes": [
       {
@@ -157,19 +157,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactEdit.tsx:13:ContactEdit",
+        "id": "src/atomic-crm/contacts/ContactEdit.tsx:14:ContactEdit",
         "name": "ContactEdit",
         "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-        "line": 13,
+        "line": 14,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "id": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "name": "ContactEditContent",
         "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-        "line": 33,
+        "line": 34,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -3381,25 +3381,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:13:ContactEdit",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:14:ContactEdit",
         "target": "useQueryClient",
         "targetName": "useQueryClient",
         "edgeType": "hook",
-        "line": 14,
+        "line": 15,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:13:ContactEdit",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:13:ContactEdit",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:14:ContactEdit",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
@@ -3408,7 +3399,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:13:ContactEdit",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:14:ContactEdit",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
@@ -3417,119 +3408,128 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:13:ContactEdit",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:14:ContactEdit",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:14:ContactEdit",
         "target": "EditBase",
         "targetName": "EditBase",
         "edgeType": "render",
-        "line": 17,
+        "line": 18,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:13:ContactEdit",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:14:ContactEdit",
         "target": "ContactEditContent",
         "targetName": "ContactEditContent",
         "edgeType": "render",
-        "line": 28,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "useEditContext",
         "targetName": "useEditContext",
         "edgeType": "hook",
-        "line": 34,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 36,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 36,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 36,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "ResponsiveGrid",
         "targetName": "ResponsiveGrid",
         "edgeType": "render",
-        "line": 41,
+        "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 43,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
-        "target": "CardContent",
-        "targetName": "CardContent",
         "edgeType": "render",
         "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
-        "target": "ContactInputs",
-        "targetName": "ContactInputs",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
         "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
-        "target": "FormToolbar",
-        "targetName": "FormToolbar",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
+        "target": "ContactInputs",
+        "targetName": "ContactInputs",
         "edgeType": "render",
         "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactEdit.tsx:33:ContactEditContent",
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
+        "target": "FormToolbar",
+        "targetName": "FormToolbar",
+        "edgeType": "render",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactEdit.tsx:34:ContactEditContent",
         "target": "ContactAside",
         "targetName": "ContactAside",
         "edgeType": "render",
-        "line": 59,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },

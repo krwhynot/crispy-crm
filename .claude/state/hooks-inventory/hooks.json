@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-06T02:45:11.323Z",
+  "generated_at": "2026-01-07T23:40:43.891Z",
   "item_count": 6,
   "items": [
     {
@@ -24,6 +24,7 @@
       "returnType": "void",
       "dependencies": [
         "useEffect",
+        "useNotify",
         "useStore"
       ],
       "isReact19Action": false

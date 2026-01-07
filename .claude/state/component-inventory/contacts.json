@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-06T02:44:57.703Z",
+  "generated_at": "2026-01-07T23:40:38.834Z",
   "item_count": 57,
   "items": [
     {
@@ -481,13 +481,14 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 13,
+      "line": 14,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
         "../layout/FormToolbar",
+        "../queryKeys",
         "../types",
         "./ContactAside",
         "./ContactInputs",
@@ -511,13 +512,14 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 13,
+      "line": 14,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
         "../layout/FormToolbar",
+        "../queryKeys",
         "../types",
         "./ContactAside",
         "./ContactInputs",

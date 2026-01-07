@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-06T02:44:57.846Z",
+  "generated_at": "2026-01-07T23:40:38.840Z",
   "item_count": 78,
   "items": [
     {
@@ -503,7 +503,7 @@
     {
       "name": "OpportunityEdit",
       "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-      "line": 17,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -513,6 +513,7 @@
       "imports": [
         "../layout/FormToolbar",
         "../organizations/OrganizationAvatar",
+        "../queryKeys",
         "../types",
         "./components/OpportunityActivitySection",
         "./forms/OpportunityCompactForm",
@@ -541,7 +542,7 @@
     {
       "name": "OpportunityEdit",
       "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-      "line": 17,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -551,6 +552,7 @@
       "imports": [
         "../layout/FormToolbar",
         "../organizations/OrganizationAvatar",
+        "../queryKeys",
         "../types",
         "./components/OpportunityActivitySection",
         "./forms/OpportunityCompactForm",

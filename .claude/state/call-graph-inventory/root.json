@@ -1,76 +1,76 @@
 {
   "chunk_name": "root",
-  "generated_at": "2026-01-06T02:45:16.008Z",
+  "generated_at": "2026-01-07T23:40:47.390Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/root/CRM.tsx:47:AdminUserRedirect",
+        "id": "src/atomic-crm/root/CRM.tsx:48:AdminUserRedirect",
         "name": "AdminUserRedirect",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 47,
+        "line": 48,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/CRM.tsx:53:ContactShowRedirect",
+        "id": "src/atomic-crm/root/CRM.tsx:54:ContactShowRedirect",
         "name": "ContactShowRedirect",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 53,
+        "line": 54,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/CRM.tsx:59:TaskShowRedirect",
+        "id": "src/atomic-crm/root/CRM.tsx:60:TaskShowRedirect",
         "name": "TaskShowRedirect",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 59,
+        "line": 60,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/CRM.tsx:65:ProductShowRedirect",
+        "id": "src/atomic-crm/root/CRM.tsx:66:ProductShowRedirect",
         "name": "ProductShowRedirect",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 65,
+        "line": 66,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/CRM.tsx:71:OrganizationShowRedirect",
+        "id": "src/atomic-crm/root/CRM.tsx:72:OrganizationShowRedirect",
         "name": "OrganizationShowRedirect",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 71,
+        "line": 72,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/CRM.tsx:77:OpportunityShowRedirect",
+        "id": "src/atomic-crm/root/CRM.tsx:78:OpportunityShowRedirect",
         "name": "OpportunityShowRedirect",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 77,
+        "line": 78,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/CRM.tsx:84:OpportunityKanbanRedirect",
+        "id": "src/atomic-crm/root/CRM.tsx:85:OpportunityKanbanRedirect",
         "name": "OpportunityKanbanRedirect",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 84,
+        "line": 85,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "id": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "name": "CRM",
         "file": "src/atomic-crm/root/CRM.tsx",
-        "line": 144,
+        "line": 145,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -96,439 +96,430 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/root/CRM.tsx:47:AdminUserRedirect",
+        "source": "src/atomic-crm/root/CRM.tsx:48:AdminUserRedirect",
         "target": "useParams",
         "targetName": "useParams",
         "edgeType": "hook",
-        "line": 48,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:47:AdminUserRedirect",
-        "target": "Navigate",
-        "targetName": "Navigate",
-        "edgeType": "render",
         "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:53:ContactShowRedirect",
-        "target": "useParams",
-        "targetName": "useParams",
-        "edgeType": "hook",
-        "line": 54,
+        "source": "src/atomic-crm/root/CRM.tsx:48:AdminUserRedirect",
+        "target": "Navigate",
+        "targetName": "Navigate",
+        "edgeType": "render",
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:53:ContactShowRedirect",
-        "target": "Navigate",
-        "targetName": "Navigate",
-        "edgeType": "render",
+        "source": "src/atomic-crm/root/CRM.tsx:54:ContactShowRedirect",
+        "target": "useParams",
+        "targetName": "useParams",
+        "edgeType": "hook",
         "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:59:TaskShowRedirect",
-        "target": "useParams",
-        "targetName": "useParams",
-        "edgeType": "hook",
-        "line": 60,
+        "source": "src/atomic-crm/root/CRM.tsx:54:ContactShowRedirect",
+        "target": "Navigate",
+        "targetName": "Navigate",
+        "edgeType": "render",
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:59:TaskShowRedirect",
-        "target": "Navigate",
-        "targetName": "Navigate",
-        "edgeType": "render",
+        "source": "src/atomic-crm/root/CRM.tsx:60:TaskShowRedirect",
+        "target": "useParams",
+        "targetName": "useParams",
+        "edgeType": "hook",
         "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:65:ProductShowRedirect",
-        "target": "useParams",
-        "targetName": "useParams",
-        "edgeType": "hook",
-        "line": 66,
+        "source": "src/atomic-crm/root/CRM.tsx:60:TaskShowRedirect",
+        "target": "Navigate",
+        "targetName": "Navigate",
+        "edgeType": "render",
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:65:ProductShowRedirect",
-        "target": "Navigate",
-        "targetName": "Navigate",
-        "edgeType": "render",
+        "source": "src/atomic-crm/root/CRM.tsx:66:ProductShowRedirect",
+        "target": "useParams",
+        "targetName": "useParams",
+        "edgeType": "hook",
         "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:71:OrganizationShowRedirect",
-        "target": "useParams",
-        "targetName": "useParams",
-        "edgeType": "hook",
-        "line": 72,
+        "source": "src/atomic-crm/root/CRM.tsx:66:ProductShowRedirect",
+        "target": "Navigate",
+        "targetName": "Navigate",
+        "edgeType": "render",
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:71:OrganizationShowRedirect",
-        "target": "Navigate",
-        "targetName": "Navigate",
-        "edgeType": "render",
+        "source": "src/atomic-crm/root/CRM.tsx:72:OrganizationShowRedirect",
+        "target": "useParams",
+        "targetName": "useParams",
+        "edgeType": "hook",
         "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:77:OpportunityShowRedirect",
-        "target": "useParams",
-        "targetName": "useParams",
-        "edgeType": "hook",
-        "line": 78,
+        "source": "src/atomic-crm/root/CRM.tsx:72:OrganizationShowRedirect",
+        "target": "Navigate",
+        "targetName": "Navigate",
+        "edgeType": "render",
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:77:OpportunityShowRedirect",
-        "target": "Navigate",
-        "targetName": "Navigate",
-        "edgeType": "render",
+        "source": "src/atomic-crm/root/CRM.tsx:78:OpportunityShowRedirect",
+        "target": "useParams",
+        "targetName": "useParams",
+        "edgeType": "hook",
         "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:84:OpportunityKanbanRedirect",
+        "source": "src/atomic-crm/root/CRM.tsx:78:OpportunityShowRedirect",
         "target": "Navigate",
         "targetName": "Navigate",
         "edgeType": "render",
-        "line": 85,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:85:OpportunityKanbanRedirect",
+        "target": "Navigate",
+        "targetName": "Navigate",
+        "edgeType": "render",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 158,
+        "line": 159,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "localStorageStore",
         "targetName": "localStorageStore",
         "edgeType": "call",
-        "line": 187,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "ConfigurationProvider",
         "targetName": "ConfigurationProvider",
         "edgeType": "render",
-        "line": 173,
+        "line": 174,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Admin",
         "targetName": "Admin",
         "edgeType": "render",
-        "line": 183,
+        "line": 184,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "DashboardErrorBoundary",
         "targetName": "DashboardErrorBoundary",
-        "edgeType": "render",
-        "line": 192,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "CustomRoutes",
-        "targetName": "CustomRoutes",
-        "edgeType": "render",
-        "line": 200,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "CustomRoutes",
-        "targetName": "CustomRoutes",
-        "edgeType": "render",
-        "line": 205,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "PrincipalDashboardV3",
-        "targetName": "PrincipalDashboardV3",
         "edgeType": "render",
         "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "CustomRoutes",
+        "targetName": "CustomRoutes",
         "edgeType": "render",
         "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "CustomRoutes",
+        "targetName": "CustomRoutes",
+        "edgeType": "render",
+        "line": 206,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "PrincipalDashboardV3",
+        "targetName": "PrincipalDashboardV3",
+        "edgeType": "render",
+        "line": 194,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 202,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "SetPasswordPage",
         "targetName": "SetPasswordPage",
         "edgeType": "render",
-        "line": 201,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
-        "edgeType": "render",
         "line": 202,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "ForgotPasswordPage",
         "targetName": "ForgotPasswordPage",
         "edgeType": "render",
-        "line": 202,
+        "line": 203,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Route",
         "targetName": "Route",
         "edgeType": "render",
-        "line": 206,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "SettingsPage",
         "targetName": "SettingsPage",
         "edgeType": "render",
-        "line": 206,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
-        "edgeType": "render",
         "line": 207,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 208,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "ReportsPage",
         "targetName": "ReportsPage",
         "edgeType": "render",
-        "line": 207,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
-        "edgeType": "render",
         "line": 208,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 209,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "HealthDashboard",
         "targetName": "HealthDashboard",
         "edgeType": "render",
-        "line": 208,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Route",
         "targetName": "Route",
         "edgeType": "render",
-        "line": 210,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Navigate",
         "targetName": "Navigate",
         "edgeType": "render",
-        "line": 210,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
-        "edgeType": "render",
         "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 212,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "AdminUserRedirect",
         "targetName": "AdminUserRedirect",
         "edgeType": "render",
-        "line": 211,
+        "line": 212,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Route",
         "targetName": "Route",
         "edgeType": "render",
-        "line": 213,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "OpportunityKanbanRedirect",
         "targetName": "OpportunityKanbanRedirect",
         "edgeType": "render",
-        "line": 213,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Route",
         "targetName": "Route",
         "edgeType": "render",
-        "line": 215,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "ContactShowRedirect",
         "targetName": "ContactShowRedirect",
         "edgeType": "render",
-        "line": 215,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
-        "edgeType": "render",
         "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "TaskShowRedirect",
         "targetName": "TaskShowRedirect",
         "edgeType": "render",
-        "line": 216,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
-        "edgeType": "render",
         "line": 217,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 218,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "ProductShowRedirect",
         "targetName": "ProductShowRedirect",
         "edgeType": "render",
-        "line": 217,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Route",
-        "targetName": "Route",
-        "edgeType": "render",
         "line": 218,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Route",
+        "targetName": "Route",
+        "edgeType": "render",
+        "line": 219,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "OrganizationShowRedirect",
         "targetName": "OrganizationShowRedirect",
         "edgeType": "render",
-        "line": 218,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Route",
         "targetName": "Route",
         "edgeType": "render",
-        "line": 219,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "OpportunityShowRedirect",
         "targetName": "OpportunityShowRedirect",
         "edgeType": "render",
-        "line": 219,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
-        "target": "Resource",
-        "targetName": "Resource",
-        "edgeType": "render",
-        "line": 221,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -537,7 +528,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -546,7 +537,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -555,7 +546,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -564,7 +555,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -573,7 +564,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -582,7 +573,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -591,7 +582,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -600,7 +591,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -609,7 +600,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -618,7 +609,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -627,7 +618,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
@@ -636,11 +627,20 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/root/CRM.tsx:144:CRM",
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
         "target": "Resource",
         "targetName": "Resource",
         "edgeType": "render",
         "line": 234,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:145:CRM",
+        "target": "Resource",
+        "targetName": "Resource",
+        "edgeType": "render",
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
