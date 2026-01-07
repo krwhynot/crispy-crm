@@ -1,17 +1,18 @@
 {
   "chunk_name": "root",
-  "generated_at": "2026-01-06T02:44:57.948Z",
+  "generated_at": "2026-01-07T04:23:05.885Z",
   "item_count": 8,
   "items": [
     {
       "name": "CRM",
       "file": "src/atomic-crm/root/CRM.tsx",
-      "line": 144,
+      "line": 145,
       "type": "presentational",
       "hooks": [
         "useEffect"
       ],
       "imports": [
+        "../../constants/resources",
         "../activities",
         "../contacts",
         "../dashboard/v3",
@@ -44,7 +45,8 @@
         "Layout",
         "SettingsPage",
         "ConfigurationContextValue",
-        "ConfigurationProvider"
+        "ConfigurationProvider",
+        "RESOURCES"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

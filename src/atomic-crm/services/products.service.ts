@@ -1,5 +1,6 @@
 import type { Identifier } from "ra-core";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
+import { supabase } from "../providers/supabase/supabase";
 import { devLog, devError } from "@/lib/devLogger";
 
 /**
@@ -276,9 +277,10 @@ export class ProductsService {
         throw new Error(`Invalid product ID: ${id}`);
       }
 
-      await this.dataProvider.rpc("soft_delete_product", {
+      const { error } = await supabase.rpc("soft_delete_product", {
         product_id: numericId,
       });
+      if (error) throw new Error(error.message);
 
       devLog("ProductsService", "Product soft deleted", { id });
     } catch (error: unknown) {
@@ -307,9 +309,10 @@ export class ProductsService {
         return numId;
       });
 
-      await this.dataProvider.rpc("soft_delete_products", {
+      const { error } = await supabase.rpc("soft_delete_products", {
         product_ids: numericIds,
       });
+      if (error) throw new Error(error.message);
 
       devLog("ProductsService", "Products soft deleted", { count: ids.length });
     } catch (error: unknown) {

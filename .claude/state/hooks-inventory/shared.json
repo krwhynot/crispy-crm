@@ -1,7 +1,7 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2026-01-06T02:45:11.328Z",
-  "item_count": 21,
+  "generated_at": "2026-01-07T04:23:16.164Z",
+  "item_count": 22,
   "items": [
     {
       "name": "useSavedQueries",
@@ -193,6 +193,19 @@
         "useListContext",
         "useNavigate",
         "useResourceContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationDescendants",
+      "file": "src/hooks/useOrganizationDescendants.ts",
+      "line": 19,
+      "parameters": [
+        "orgId"
+      ],
+      "returnType": "UseOrganizationDescendantsReturn",
+      "dependencies": [
+        "useQuery"
       ],
       "isReact19Action": false
     },
