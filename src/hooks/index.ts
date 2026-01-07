@@ -34,3 +34,7 @@ export { useDialogError, parseServerError } from "./useDialogError";
 // Favorites
 export { useFavorites } from "./useFavorites";
 export type { UseFavoritesReturn } from "./useFavorites";
+
+// Organization Hierarchy
+export { useOrganizationDescendants } from "./useOrganizationDescendants";
+export type { UseOrganizationDescendantsReturn } from "./useOrganizationDescendants";
