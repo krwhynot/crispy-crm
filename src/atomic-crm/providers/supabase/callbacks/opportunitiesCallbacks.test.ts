@@ -175,10 +175,15 @@ describe("opportunitiesCallbacks", () => {
       expect(result.contact_ids).toEqual([]);
     });
 
-    it("should strip products_to_sync virtual field before database save", async () => {
+    it("should PRESERVE products_to_sync for handler processing (NOT stripped by callbacks)", async () => {
+      // NOTE: products_to_sync is intentionally NOT stripped by callbacks because:
+      // 1. The handler layer (opportunitiesHandler.ts) needs to process it first
+      // 2. Handler extracts products_to_sync and delegates to OpportunitiesService
+      // 3. The service handles the atomic product sync via RPC
+      // 4. By the time data reaches baseProvider, products_to_sync is already handled
       const products = [
-        { product_id: 1, quantity: 10, unit_price: 100 },
-        { product_id: 2, quantity: 5, unit_price: 200 },
+        { product_id_reference: "101", notes: "Premium grade" },
+        { product_id_reference: "102" },
       ];
       const data = {
         name: "Big Deal",
@@ -192,9 +197,9 @@ describe("opportunitiesCallbacks", () => {
         "opportunities"
       );
 
-      // products_to_sync is a UI-only field and should be stripped before database save
-      // Product sync is handled via OpportunitiesService.createWithProducts() which uses RPC
-      expect(result.products_to_sync).toBeUndefined();
+      // products_to_sync is PRESERVED for handler processing
+      expect(result.products_to_sync).toBeDefined();
+      expect(result.products_to_sync).toEqual(products);
       expect(result.name).toBe("Big Deal");
       expect(result.stage).toBe("proposal");
     });

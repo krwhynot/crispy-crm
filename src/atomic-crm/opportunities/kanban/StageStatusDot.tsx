@@ -26,7 +26,9 @@ export function StageStatusDot({
   daysSinceLastActivity,
   daysInStage,
 }: StageStatusDotProps) {
-  const { colorClass, label } = getStatusConfig(status, daysInStage ?? 0);
+  // Override to warning when no activity recorded - signals attention needed
+  const effectiveStatus = daysSinceLastActivity === null ? "warning" : status;
+  const { colorClass, label } = getStatusConfig(effectiveStatus, daysInStage ?? 0, daysSinceLastActivity === null);
 
   // Display "X days" for last activity, "No activity" when null
   const displayText =
@@ -51,7 +53,8 @@ export function StageStatusDot({
 
 function getStatusConfig(
   status: StageStatus,
-  daysInStage: number
+  daysInStage: number,
+  noActivityRecorded = false
 ): { colorClass: string; label: string } {
   const dayText = `${daysInStage} ${daysInStage === 1 ? "day" : "days"} in stage`;
 
@@ -69,7 +72,9 @@ function getStatusConfig(
     case "warning":
       return {
         colorClass: "bg-warning",
-        label: `${dayText} - approaching threshold`,
+        label: noActivityRecorded
+          ? "No activity recorded - needs attention"
+          : `${dayText} - approaching threshold`,
       };
     case "healthy":
       return {
