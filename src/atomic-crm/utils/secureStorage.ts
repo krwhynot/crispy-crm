@@ -37,6 +37,22 @@ export interface StorageOptions<T = unknown> {
    * Invalid data returns null (fail-fast principle)
    */
   schema?: ZodSchema<T>;
+
+  /**
+   * Optional callback for error notification
+   * Called when storage operations fail, allowing components to show user-facing errors
+   *
+   * @param error - The error that occurred
+   * @param key - The storage key involved
+   * @param operation - The type of operation that failed
+   *
+   * @example
+   * // Components can handle storage errors:
+   * const { getItem } = useSecureStorage({
+   *   onError: (error, key, op) => notify(`Storage ${op} failed for ${key}`, { type: "error" })
+   * });
+   */
+  onError?: (error: Error, key: string, operation: "read" | "write" | "remove") => void;
 }
 
 /**
@@ -67,7 +83,9 @@ export function getStorageItem<T = unknown>(
       if (options.schema) {
         const result = options.schema.safeParse(parsed);
         if (!result.success) {
+          const validationError = new Error(`Validation failed: ${JSON.stringify(result.error.flatten())}`);
           console.error(`[Storage] Validation failed for key "${key}":`, result.error.flatten());
+          options.onError?.(validationError, key, "read");
           return null;
         }
         return result.data;
