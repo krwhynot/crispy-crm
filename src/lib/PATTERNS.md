@@ -11,14 +11,13 @@ Standard patterns for shared utilities in Crispy CRM.
 +-----------------+-----------------------------------+
 |  UI UTILITIES   |   DATA UTILITIES                  |
 |  +- cn()        |  +- parseDateSafely()             |
-|  +- colors      |  +- queryKeys                     |
-|  +- storage     |  +- sanitization                  |
+|  +- colors      |  +- sanitization                  |
 |                 |  +- csvUploadValidator            |
 +-----------------+-----------------------------------+
 | REACT UTILITIES |   LOGGING                         |
 |  +- genericMemo |  +- logger (Sentry)               |
 |  +- FieldProps  |  +- devLogger (dev-only)          |
-|  +- inputProps  |                                   |
+|  +- inputProps  |  +- i18nProvider                  |
 +-----------------+-----------------------------------+
 ```
 
@@ -308,9 +307,7 @@ if (DEV) {
 
 ---
 
----
-
-## Pattern G: Sanitization Utilities
+## Pattern E: Sanitization Utilities
 
 For rendering user-generated HTML content safely.
 
@@ -386,7 +383,7 @@ const emailBody = sanitizeEmailHtml(templateHtml);
 
 ---
 
-## Pattern H: Type Helpers
+## Pattern F: Type Helpers
 
 ### Semantic Color Types
 
@@ -525,12 +522,12 @@ export const MyField = genericMemo(MyFieldImpl);
 | **C: CSV Validation** | csvUploadValidator.ts | File upload security |
 | **D: Logger** | logger.ts | Production error tracking |
 | **D: DevLogger** | devLogger.ts | Dev-only debug output |
-| **E: Storage** | storage-utils.ts | localStorage abstraction |
-| **F: QueryKeys** | queryKeys.ts | Custom query cache keys |
-| **G: Sanitization** | sanitization.ts | XSS prevention |
-| **H: Color Types** | color-types.ts | Design system tokens |
-| **H: FieldProps** | field.type.ts | React Admin field types |
-| **H: genericMemo** | genericMemo.ts | Generic component memoization |
+| **E: Sanitization** | sanitization.ts | XSS prevention |
+| **F: Color Types** | color-types.ts | Design system tokens |
+| **F: FieldProps** | field.type.ts | React Admin field types |
+| **F: genericMemo** | genericMemo.ts | Generic component memoization |
+| **—** | i18nProvider.ts | React Admin i18n setup |
+| **—** | sanitizeInputRestProps.ts | Filter RA input props for DOM |
 
 ---
 
@@ -538,14 +535,13 @@ export const MyField = genericMemo(MyFieldImpl);
 
 | Anti-Pattern | Correct Approach |
 |--------------|------------------|
-| `localStorage.getItem(key)` directly | Use `getLocalStorageString(key, default)` |
 | `new Date(isoString)` | Use `parseDateSafely(isoString)` |
 | Hardcoded hex colors (`#ef4444`) | Use `SEMANTIC_COLORS[colorName]` |
 | Manual className strings | Use `cn()` for conflict resolution |
 | `console.log` in production code | Use `devLog()` with DEV guard |
-| `queryKeys` with React Admin hooks | Don't - RA auto-generates keys |
 | `dangerouslySetInnerHTML` without sanitization | Always use `sanitizeHtml()` first |
 | Direct file processing without size limits | Use `validateCsvFile()` with limits |
+| Passing RA input props to DOM elements | Use `sanitizeInputRestProps()` to filter |
 
 ---
 
