@@ -1,21 +1,22 @@
 /**
  * Sales Handler - Composed DataProvider
  *
- * Composes infrastructure for the sales (users) resource:
- * 1. Base provider → Raw Supabase operations
- * 2. withLifecycleCallbacks → Soft delete, computed field stripping
- * 3. withValidation → Zod schema validation
- * 4. withErrorLogging → Structured error handling + Sentry
+ * Composes all infrastructure pieces for the sales resource:
+ * 1. customHandler → Sales-specific logic (update via Edge Function)
+ * 2. withValidation → Zod schema validation
+ * 3. withLifecycleCallbacks → Soft delete, computed field stripping
+ * 4. withErrorLogging → Structured error handling + Sentry (OUTERMOST)
+ *
+ * CRITICAL FIX (2025-01): Custom update method is now defined INSIDE the wrapper
+ * chain, not outside. This ensures withErrorLogging catches and reports all errors
+ * from SalesService.salesUpdate() properly.
  *
  * Sales records represent CRM users:
  * - Read operations available to all authenticated users
  * - Write operations restricted to admins via RLS bypass (Edge Function)
  * - Soft delete (disabled flag instead of true deletion)
  *
- * UPDATE: Sales updates are routed through SalesService.salesUpdate() which
- * calls an Edge Function to bypass RLS restrictions on the sales table.
- *
- * Engineering Constitution: Composition over inheritance, ~20 lines
+ * Engineering Constitution: Composition over inheritance
  */
 
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
@@ -42,34 +43,58 @@ type DataProviderWithInvoke = DataProvider & {
  * Create a fully composed DataProvider for sales
  *
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ * customHandler → withValidation → withLifecycleCallbacks → withErrorLogging
  *
- * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
- * computed fields before DB write. This ensures Zod validates clean user input,
- * not post-processed data.
+ * CRITICAL: Custom logic is defined INSIDE the wrapper chain so that:
+ * - withErrorLogging catches and logs ALL errors (including from SalesService)
+ * - withValidation validates data at API boundary
+ * - withLifecycleCallbacks runs before/after hooks
  *
- * UPDATE: The update method is intercepted to route through SalesService,
+ * The update method is intercepted to route through SalesService,
  * which calls an Edge Function to bypass RLS restrictions.
  *
  * @param baseProvider - The raw Supabase DataProvider (must have invoke capability)
  * @returns Composed DataProvider with soft delete, validation, and error handling
  */
 export function createSalesHandler(baseProvider: DataProviderWithInvoke): DataProvider {
-  const composedHandler = withErrorLogging(
-    withLifecycleCallbacks(withValidation(baseProvider), [salesCallbacks])
-  );
-
   const salesService = new SalesService(baseProvider);
 
-  return {
-    ...composedHandler,
+  /**
+   * Custom sales handler with sales-specific logic
+   *
+   * This handler is defined FIRST, then wrapped with the standard wrapper chain.
+   * This ensures all custom logic is INSIDE the "safety bubble" of withErrorLogging.
+   */
+  const customHandler: DataProvider = {
+    ...baseProvider,
 
+    /**
+     * Intercept update for sales resource
+     *
+     * Routes through SalesService.salesUpdate() which calls an Edge Function
+     * to bypass RLS restrictions on the sales table.
+     */
     update: async (resource, params) => {
       if (resource === "sales") {
         await salesService.salesUpdate(params.id, params.data);
         return { data: { ...params.previousData, ...params.data, id: params.id } };
       }
-      return composedHandler.update(resource, params);
+      return baseProvider.update(resource, params);
     },
   };
+
+  /**
+   * Wrap the custom handler with the standard wrapper chain
+   *
+   * Order (innermost to outermost):
+   * 1. customHandler - Our sales-specific logic
+   * 2. withValidation - Zod schema validation at API boundary
+   * 3. withLifecycleCallbacks - Before/after hooks for soft delete
+   * 4. withErrorLogging - Structured error logging (catches ALL errors)
+   *
+   * This ensures ALL custom logic is protected by error logging.
+   */
+  return withErrorLogging(
+    withLifecycleCallbacks(withValidation(customHandler), [salesCallbacks])
+  );
 }

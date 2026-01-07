@@ -6,8 +6,11 @@
  * which looks up by name (no dynamic creation).
  *
  * Composition:
- * 1. Base provider → Raw Supabase operations for reads
- * 2. Custom create → Delegates to SegmentsService.getOrCreateSegment()
+ * 1. customHandler → Segments-specific logic (create, getOne, getList, getMany)
+ * 2. withErrorLogging → Structured error handling (OUTERMOST)
+ *
+ * Note: No withValidation needed (segments are fixed constants, not user input).
+ * Note: No withLifecycleCallbacks needed (segments don't need lifecycle hooks).
  *
  * Engineering Constitution: Service Layer for business logic
  */
@@ -16,6 +19,7 @@ import type { DataProvider, CreateParams, RaRecord } from "react-admin";
 import { SegmentsService } from "../../../services/segments.service";
 import type { ExtendedDataProvider } from "../extensions/types";
 import type { Segment } from "../../../validation/segments";
+import { withErrorLogging } from "../wrappers";
 
 /**
  * Create a composed DataProvider for segments
@@ -31,7 +35,13 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
   // Create service instance with extended provider
   const segmentsService = new SegmentsService(baseProvider as ExtendedDataProvider);
 
-  return {
+  /**
+   * Custom segments handler with segment-specific logic
+   *
+   * This handler is defined FIRST, then wrapped with withErrorLogging.
+   * This ensures all custom logic is INSIDE the "safety bubble" of error logging.
+   */
+  const customHandler: DataProvider = {
     ...baseProvider,
 
     /**
@@ -128,4 +138,15 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
       return baseProvider.getMany<RecordType>(resource, params);
     },
   };
+
+  /**
+   * Wrap the custom handler with error logging
+   *
+   * withErrorLogging is the ONLY wrapper needed for segments:
+   * - No withValidation (segments are fixed constants, not user input)
+   * - No withLifecycleCallbacks (segments don't need lifecycle hooks)
+   *
+   * This ensures ALL errors from segment operations are properly caught and logged.
+   */
+  return withErrorLogging(customHandler);
 }
