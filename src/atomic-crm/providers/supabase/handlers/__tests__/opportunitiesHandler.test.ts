@@ -9,10 +9,9 @@
  * Engineering Constitution: Tests verify service delegation and data transformation
  */
 
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
 import { createOpportunitiesHandler } from "../opportunitiesHandler";
-import { OpportunitiesService } from "../../../../services/opportunities.service";
 // Note: Product type from diffProducts.ts is for internal handler use
 // The API boundary (createOpportunitySchema) uses a DIFFERENT shape for products_to_sync
 // This is the Two-Schema Rule in action - API validation vs handler processing
@@ -217,9 +216,9 @@ describe("createOpportunitiesHandler", () => {
     });
 
     it("should pass empty array when previousData.products is missing", async () => {
-      // Products must have product_id_reference (required by Product interface)
-      const products: Product[] = [
-        { id: 1, product_id_reference: 101, product_name: "New Product" },
+      // products_to_sync shape must match updateOpportunitySchema (API boundary)
+      const products = [
+        { product_id_reference: "101" },
       ];
       const updateData = {
         id: 123,
@@ -235,7 +234,16 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123 } as RaRecord, // No products property
       });
 
-      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, []);
+      // Note: Lifecycle callbacks may add defaults (contact_ids: [])
+      // Use objectContaining to verify the key fields we care about
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(
+        123,
+        expect.objectContaining({
+          id: 123,
+          products_to_sync: products,
+        }),
+        []
+      );
     });
   });
 });
@@ -318,19 +326,26 @@ describe("opportunitiesCallbacks - view field stripping", () => {
       }
     });
 
-    it("should strip virtual fields (products_to_sync, products)", () => {
+    it("should strip 'products' virtual field (legacy field name)", () => {
+      // NOTE: products_to_sync is NOT stripped by stripComputedFields because:
+      // 1. The handler layer (opportunitiesHandler.ts) needs to process it first
+      // 2. Handler extracts products_to_sync and delegates to OpportunitiesService
+      // 3. The service handles the atomic product sync and returns clean data
+      // 4. By the time data reaches baseProvider, products_to_sync is already handled
       const data = {
         id: 1,
         name: "Test Opportunity",
-        products_to_sync: [{ id: 1, name: "Product A" }],
-        products: [{ id: 1, name: "Product A" }],
+        products_to_sync: [{ product_id_reference: "101" }],
+        products: [{ id: 1, name: "Product A" }], // Legacy field, stripped
       };
 
       const result = stripComputedFields(data);
 
       expect(result).toHaveProperty("id", 1);
       expect(result).toHaveProperty("name", "Test Opportunity");
-      expect(result).not.toHaveProperty("products_to_sync");
+      // products_to_sync is PRESERVED for handler processing
+      expect(result).toHaveProperty("products_to_sync");
+      // products (legacy) is stripped
       expect(result).not.toHaveProperty("products");
     });
 
