@@ -40,16 +40,7 @@ import {
 } from "../../../validation/productWithDistributors";
 import { z } from "zod";
 import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
-import type { ExtendedDataProvider } from "../extensions/types";
 import { hasRpcMethod, assertExtendedDataProvider } from "../typeGuards";
-
-/**
- * Extended DataProvider interface with RPC support
- * Mirrors the pattern from opportunitiesCallbacks.ts
- */
-interface DataProviderWithRpc extends DataProvider {
-  rpc?: (functionName: string, params: Record<string, unknown>) => Promise<unknown>;
-}
 
 /**
  * Schema for product update data with optional distributor associations
@@ -233,13 +224,13 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
             distributorInputs
           );
 
-          return { data: result as RecordType };
+          return { data: result } as { data: RecordType };
         }
 
         // No distributors - cleanData already has distributor fields stripped
         return baseProvider.update<RecordType>(resource, {
           ...params,
-          data: cleanData as Partial<RecordType>,
+          data: cleanData,
         } as UpdateParams<RecordType>);
       }
 
@@ -270,11 +261,12 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       // Only intercept products resource
       if (resource === "products") {
-        const service = new ProductsService(baseProvider as ExtendedDataProvider);
+        const extendedProvider = assertExtendedDataProvider(baseProvider);
+        const service = new ProductsService(extendedProvider);
         await service.softDelete(params.id);
 
         // Return in React Admin format
-        return { data: params.previousData as RecordType };
+        return { data: params.previousData } as { data: RecordType };
       }
 
       // Not products - delegate to base provider
@@ -295,7 +287,8 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       // Only intercept products resource
       if (resource === "products") {
-        const service = new ProductsService(baseProvider as ExtendedDataProvider);
+        const extendedProvider = assertExtendedDataProvider(baseProvider);
+        const service = new ProductsService(extendedProvider);
         await service.softDeleteMany(params.ids);
 
         // Return in React Admin format

@@ -1,0 +1,76 @@
+/**
+ * Query Key Factories
+ *
+ * Centralized cache key management for React Query.
+ * Ensures fetch keys and invalidation keys always match.
+ *
+ * Usage:
+ * - Fetching: useQuery({ queryKey: contactKeys.detail(123), ... })
+ * - Invalidating: queryClient.invalidateQueries({ queryKey: contactKeys.all })
+ *
+ * @see https://tanstack.com/query/latest/docs/framework/react/guides/query-keys
+ */
+
+// Factory pattern for each resource
+const createKeys = <T extends string>(resource: T) => ({
+  all: [resource] as const,
+  lists: () => [resource, 'list'] as const,
+  list: (filters?: Record<string, unknown>) => [resource, 'list', filters] as const,
+  details: () => [resource, 'detail'] as const,
+  detail: (id: number | string) => [resource, 'detail', id] as const,
+});
+
+// Core CRM Resources
+export const contactKeys = createKeys('contacts');
+export const organizationKeys = createKeys('organizations');
+export const opportunityKeys = createKeys('opportunities');
+export const activityKeys = createKeys('activities');
+export const taskKeys = createKeys('tasks');
+export const productKeys = createKeys('products');
+
+// Notes (polymorphic)
+export const contactNoteKeys = createKeys('contact_notes');
+export const opportunityNoteKeys = createKeys('opportunity_notes');
+export const organizationNoteKeys = createKeys('organization_notes');
+
+// Supporting Resources
+export const tagKeys = createKeys('tags');
+export const saleKeys = createKeys('sales');
+export const segmentKeys = createKeys('segments');
+
+// Junction Tables
+export const opportunityParticipantKeys = createKeys('opportunity_participants');
+export const opportunityContactKeys = createKeys('opportunity_contacts');
+export const userFavoriteKeys = createKeys('user_favorites');
+
+// Custom / Non-CRUD Keys
+export const orgDescendantKeys = {
+  all: ['org-descendants'] as const,
+  detail: (orgId: number) => ['org-descendants', orgId] as const,
+};
+
+export const digestKeys = {
+  all: ['digestPreference'] as const,
+  preference: () => ['digestPreference'] as const,
+};
+
+// Aggregate export for convenience
+export const queryKeys = {
+  contacts: contactKeys,
+  organizations: organizationKeys,
+  opportunities: opportunityKeys,
+  activities: activityKeys,
+  tasks: taskKeys,
+  products: productKeys,
+  contactNotes: contactNoteKeys,
+  opportunityNotes: opportunityNoteKeys,
+  organizationNotes: organizationNoteKeys,
+  tags: tagKeys,
+  sales: saleKeys,
+  segments: segmentKeys,
+  opportunityParticipants: opportunityParticipantKeys,
+  opportunityContacts: opportunityContactKeys,
+  userFavorites: userFavoriteKeys,
+  orgDescendants: orgDescendantKeys,
+  digest: digestKeys,
+} as const;

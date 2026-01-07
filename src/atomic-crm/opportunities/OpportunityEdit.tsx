@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { EditBase, Form, useRecordContext, useNotify, useRefresh } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
+
+import { opportunityKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DeleteButton } from "@/components/admin/delete-button";
@@ -26,7 +28,7 @@ const OpportunityEdit = () => {
       mutationMode="pessimistic"
       mutationOptions={{
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["opportunities"] });
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         },
         onError: (error: Error) => {
           if (error.message?.includes("CONFLICT")) {

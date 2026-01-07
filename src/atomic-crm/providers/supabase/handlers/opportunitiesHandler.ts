@@ -40,7 +40,6 @@ import { withErrorLogging, withValidation } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
 import { OpportunitiesService } from "../../../services/opportunities.service";
 import { assertExtendedDataProvider } from "../typeGuards";
-import type { Product } from "../../../opportunities/utils/diffProducts";
 
 /**
  * Schema for validating handler input data with products_to_sync virtual field.
