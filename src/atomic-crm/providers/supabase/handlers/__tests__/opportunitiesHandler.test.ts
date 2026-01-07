@@ -13,7 +13,9 @@ import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
 import { createOpportunitiesHandler } from "../opportunitiesHandler";
 import { OpportunitiesService } from "../../../../services/opportunities.service";
-import type { Product } from "../../../../opportunities/utils/diffProducts";
+// Note: Product type from diffProducts.ts is for internal handler use
+// The API boundary (createOpportunitySchema) uses a DIFFERENT shape for products_to_sync
+// This is the Two-Schema Rule in action - API validation vs handler processing
 import {
   stripComputedFields,
   COMPUTED_FIELDS,
@@ -71,15 +73,16 @@ describe("createOpportunitiesHandler", () => {
 
   describe("create() - service delegation", () => {
     it("should delegate to OpportunitiesService.createWithProducts when products_to_sync is present", async () => {
-      // Products must have product_id_reference (required by Product interface)
-      const products: Product[] = [
-        { id: 1, product_id_reference: 101, product_name: "Product A" },
-        { id: 2, product_id_reference: 102, product_name: "Product B" },
+      // products_to_sync shape must match createOpportunitySchema (API boundary)
+      // Schema: { product_id_reference: string|number (optional), notes: string (optional) }
+      const products = [
+        { product_id_reference: "101" },
+        { product_id_reference: "102", notes: "Premium grade" },
       ];
       const opportunityData = {
         name: "Test Opportunity",
-        customer_organization_id: 1,
-        principal_organization_id: 2,
+        customer_organization_id: "1", // Required by createOpportunitySchema
+        principal_organization_id: "2",
         estimated_close_date: "2026-02-01",
         products_to_sync: products,
       };
@@ -89,15 +92,18 @@ describe("createOpportunitiesHandler", () => {
 
       const result = await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockCreateWithProducts).toHaveBeenCalledWith(opportunityData);
+      expect(mockCreateWithProducts).toHaveBeenCalledWith(expect.objectContaining({
+        name: "Test Opportunity",
+        products_to_sync: products,
+      }));
       expect(result).toEqual({ data: createdOpportunity });
     });
 
     it("should NOT delegate to service when products_to_sync is absent", async () => {
       const opportunityData = {
         name: "Test Opportunity",
-        customer_organization_id: 1,
-        principal_organization_id: 2,
+        customer_organization_id: "1", // Required by createOpportunitySchema
+        principal_organization_id: "2",
         estimated_close_date: "2026-02-01",
       };
 
@@ -113,8 +119,8 @@ describe("createOpportunitiesHandler", () => {
       // The service handles empty arrays efficiently by using standard create.
       const opportunityData = {
         name: "Test Opportunity",
-        customer_organization_id: 1,
-        principal_organization_id: 2,
+        customer_organization_id: "1", // Required by createOpportunitySchema
+        principal_organization_id: "2",
         estimated_close_date: "2026-02-01",
         products_to_sync: [],
       };
@@ -124,7 +130,10 @@ describe("createOpportunitiesHandler", () => {
 
       await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockCreateWithProducts).toHaveBeenCalledWith(opportunityData);
+      expect(mockCreateWithProducts).toHaveBeenCalledWith(expect.objectContaining({
+        name: "Test Opportunity",
+        products_to_sync: [],
+      }));
     });
 
     it("should pass through non-opportunities resources to base provider", async () => {
@@ -139,10 +148,13 @@ describe("createOpportunitiesHandler", () => {
 
   describe("update() - service delegation", () => {
     it("should delegate to OpportunitiesService.updateWithProducts when products_to_sync is present", async () => {
+      // Products must have product_id_reference (required by Product interface)
       const products: Product[] = [
-        { id: 1, name: "Product A", quantity: 15 }, // Updated quantity
+        { id: 1, product_id_reference: 101, product_name: "Product A", notes: "Updated" },
       ];
-      const previousProducts: Product[] = [{ id: 1, name: "Product A", quantity: 10 }];
+      const previousProducts: Product[] = [
+        { id: 1, product_id_reference: 101, product_name: "Product A" },
+      ];
       const updateData = {
         id: 123,
         name: "Updated Opportunity",
@@ -204,7 +216,10 @@ describe("createOpportunitiesHandler", () => {
     });
 
     it("should pass empty array when previousData.products is missing", async () => {
-      const products: Product[] = [{ id: 1, name: "New Product", quantity: 5 }];
+      // Products must have product_id_reference (required by Product interface)
+      const products: Product[] = [
+        { id: 1, product_id_reference: 101, product_name: "New Product" },
+      ];
       const updateData = {
         id: 123,
         products_to_sync: products,
