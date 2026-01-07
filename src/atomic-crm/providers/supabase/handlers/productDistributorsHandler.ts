@@ -194,7 +194,8 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
 
       const createdData = await service.create(productId, distributorId, createData);
 
-      return { data: createdData as unknown as RecordType };
+      // ProductDistributor satisfies RaRecord (has id field)
+      return { data: createdData } as { data: RecordType };
     },
 
     /**
@@ -236,7 +237,8 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
 
       const updatedData = await service.update(product_id, distributor_id, updateData);
 
-      return { data: updatedData as unknown as RecordType };
+      // ProductDistributor satisfies RaRecord (has id field)
+      return { data: updatedData } as { data: RecordType };
     },
 
     updateMany: <RecordType extends RaRecord = RaRecord>(
@@ -261,13 +263,14 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
       const { product_id, distributor_id } = parseCompositeId(String(params.id));
       await service.delete(product_id, distributor_id);
 
-      const deletedData = params.previousData || {
+      const deletedData = params.previousData ?? {
         id: params.id,
         product_id,
         distributor_id,
       };
 
-      return { data: deletedData as RecordType };
+      // deletedData satisfies RaRecord (has id field)
+      return { data: deletedData } as { data: RecordType };
     },
 
     deleteMany: <RecordType extends RaRecord = RaRecord>(

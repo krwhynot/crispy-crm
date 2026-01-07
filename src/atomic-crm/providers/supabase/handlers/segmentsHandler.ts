@@ -85,7 +85,8 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
         if (!hasRequiredId(segment)) {
           throw new Error("Segment missing required id field");
         }
-        return { data: segment } as { data: RecordType };
+        // Type-safe: runtime guard ensures segment has required id
+        return { data: segment as unknown as RecordType };
       }
 
       // Not segments - delegate to base provider
@@ -110,7 +111,8 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
         if (!hasRequiredId(segment)) {
           throw new Error("Segment missing required id field");
         }
-        return { data: segment } as { data: RecordType };
+        // Type-safe: runtime guard ensures segment has required id
+        return { data: segment as unknown as RecordType };
       }
 
       return baseProvider.getOne<RecordType>(resource, params);
@@ -126,6 +128,7 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       if (resource === "segments") {
         const categories = segmentsService.getAllCategories();
+        // Categories always have id and name - shape matches RaRecord requirements
         const data = categories.map((cat) => ({
           id: cat.id,
           name: cat.name,
@@ -151,8 +154,9 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
       if (resource === "segments") {
         const segments = params.ids
           .map((id) => segmentsService.getSegmentById(String(id)))
-          .filter((s): s is Segment => s !== undefined);
+          .filter((s): s is Segment & { id: string } => s !== undefined && hasRequiredId(s));
 
+        // Type-safe: runtime filter ensures all segments have required id
         return { data: segments as unknown as RecordType[] };
       }
 
