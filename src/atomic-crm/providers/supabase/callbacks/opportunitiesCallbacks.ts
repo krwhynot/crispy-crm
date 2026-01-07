@@ -99,9 +99,14 @@ const COMPUTED_FIELDS = [
 /**
  * Virtual fields that should be stripped before database save
  * These are UI-only fields not present in the database schema
+ *
+ * NOTE: products_to_sync is NOT stripped here because:
+ * 1. The handler layer (opportunitiesHandler.ts) needs to process it first
+ * 2. Handler extracts products_to_sync and delegates to OpportunitiesService
+ * 3. The service handles the atomic product sync and returns clean data
+ * 4. By the time data reaches baseProvider.create/update, products_to_sync is already stripped
  */
 const VIRTUAL_FIELDS = [
-  "products_to_sync", // UI field for product sync (handled via RPC in OpportunitiesService)
   "products", // Legacy field name, may come from some forms
 ] as const;
 

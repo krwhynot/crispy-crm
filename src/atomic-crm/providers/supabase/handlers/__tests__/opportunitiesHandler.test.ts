@@ -148,12 +148,13 @@ describe("createOpportunitiesHandler", () => {
 
   describe("update() - service delegation", () => {
     it("should delegate to OpportunitiesService.updateWithProducts when products_to_sync is present", async () => {
-      // Products must have product_id_reference (required by Product interface)
-      const products: Product[] = [
-        { id: 1, product_id_reference: 101, product_name: "Product A", notes: "Updated" },
+      // products_to_sync shape must match updateOpportunitySchema (API boundary)
+      // Schema: { product_id_reference: string|number (optional), notes: string (optional) }
+      const products = [
+        { product_id_reference: "101", notes: "Updated notes" },
       ];
-      const previousProducts: Product[] = [
-        { id: 1, product_id_reference: 101, product_name: "Product A" },
+      const previousProducts = [
+        { product_id_reference: "101", product_name: "Product A" },
       ];
       const updateData = {
         id: 123,
