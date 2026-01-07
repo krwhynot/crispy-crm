@@ -70,61 +70,48 @@ const previousDataSchema = z
  * Create a fully composed DataProvider for opportunities
  *
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withLifecycleCallbacks → customInterception → withErrorLogging
+ * customOpportunitiesHandler → withValidation → withLifecycleCallbacks → withErrorLogging
  *
- * CRITICAL: Custom create/update must intercept BEFORE withLifecycleCallbacks because:
- * - opportunitiesCallbacks.beforeSave strips products_to_sync (virtual field)
- * - Custom logic needs products_to_sync to delegate to OpportunitiesService
- * - Fallback paths still go through lifecycle callbacks for proper field stripping
+ * CRITICAL: Custom logic is defined INSIDE the wrapper chain so that:
+ * - withErrorLogging catches and logs ALL errors (including from OpportunitiesService)
+ * - withValidation validates data at API boundary
+ * - withLifecycleCallbacks runs before/after hooks (soft delete filter, RPC archive)
  *
- * CRITICAL FIX (2025-01): Custom methods now wrapped by withErrorLogging so errors
- * from OpportunitiesService are properly caught and logged.
+ * Note on products_to_sync: This virtual field is handled by the custom create/update
+ * methods BEFORE lifecycle callbacks strip it. The OpportunitiesService handles the
+ * atomic product sync operations.
  *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with all opportunities-specific behavior
  */
 export function createOpportunitiesHandler(baseProvider: DataProvider): DataProvider {
-  const service = new OpportunitiesService(baseProvider as ExtendedDataProvider);
-
   /**
-   * First, compose the standard wrapper chain for fallback operations.
-   * This handles validation, lifecycle callbacks (soft delete, field stripping), etc.
-   */
-  const composedHandler = withLifecycleCallbacks(
-    withValidation(baseProvider),
-    [opportunitiesCallbacks]
-  );
-
-  /**
-   * Custom opportunities handler that intercepts BEFORE lifecycle callbacks
-   * for products_to_sync handling, but delegates to composedHandler for fallback.
+   * Custom opportunities handler with product sync logic
    *
-   * This ensures:
-   * 1. products_to_sync is available when checking for product sync
-   * 2. Fallback paths still get lifecycle callbacks (beforeSave strips fields)
-   * 3. All operations are wrapped by withErrorLogging (outermost)
+   * This handler is defined FIRST, then wrapped with the standard wrapper chain.
+   * This ensures all custom logic is INSIDE the "safety bubble" of withErrorLogging.
    */
-  const customHandler: DataProvider = {
-    // Pass through read operations to composedHandler (gets lifecycle callbacks)
+  const customOpportunitiesHandler: DataProvider = {
+    // Pass through read operations directly to baseProvider
     getList: <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: GetListParams
-    ) => composedHandler.getList<RecordType>(resource, params),
+    ) => baseProvider.getList<RecordType>(resource, params),
 
     getOne: <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: GetOneParams<RecordType>
-    ) => composedHandler.getOne<RecordType>(resource, params),
+    ) => baseProvider.getOne<RecordType>(resource, params),
 
     getMany: <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: GetManyParams<RecordType>
-    ) => composedHandler.getMany<RecordType>(resource, params),
+    ) => baseProvider.getMany<RecordType>(resource, params),
 
     getManyReference: <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: GetManyReferenceParams
-    ) => composedHandler.getManyReference<RecordType>(resource, params),
+    ) => baseProvider.getManyReference<RecordType>(resource, params),
 
     /**
      * Intercept create for opportunities with products
@@ -133,7 +120,7 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
      * 1. Delegate to OpportunitiesService.createWithProducts
      * 2. Return created opportunity in React Admin format
      *
-     * Otherwise, delegate to composedHandler (which runs lifecycle callbacks)
+     * Otherwise, delegate to baseProvider (lifecycle callbacks will strip virtual fields)
      */
     create: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
@@ -144,13 +131,15 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
         const productsToSync = validatedData.products_to_sync as Product[] | undefined;
 
         if (Array.isArray(productsToSync)) {
+          // Service is instantiated here to ensure it uses the wrapped provider
+          const service = new OpportunitiesService(baseProvider as ExtendedDataProvider);
           const result = await service.createWithProducts(validatedData);
           return { data: result as RecordType };
         }
       }
 
-      // Fallback: delegate to composedHandler (includes lifecycle callbacks)
-      return composedHandler.create<RecordType>(resource, params);
+      // Fallback: delegate to baseProvider (lifecycle callbacks will handle field stripping)
+      return baseProvider.create<RecordType>(resource, params);
     },
 
     /**
@@ -161,7 +150,7 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
      * 2. Delegate to OpportunitiesService.updateWithProducts
      * 3. Return updated opportunity in React Admin format
      *
-     * Otherwise, delegate to composedHandler (which runs lifecycle callbacks)
+     * Otherwise, delegate to baseProvider (lifecycle callbacks will strip virtual fields)
      */
     update: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
@@ -175,47 +164,57 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
           const validatedPreviousData = previousDataSchema.parse(params.previousData);
           const previousProducts = (validatedPreviousData.products as Product[]) ?? [];
 
+          // Service is instantiated here to ensure it uses the wrapped provider
+          const service = new OpportunitiesService(baseProvider as ExtendedDataProvider);
           const result = await service.updateWithProducts(params.id, validatedData, previousProducts);
           return { data: result as RecordType };
         }
       }
 
-      // Fallback: delegate to composedHandler (includes lifecycle callbacks)
-      return composedHandler.update<RecordType>(resource, params);
+      // Fallback: delegate to baseProvider (lifecycle callbacks will handle field stripping)
+      return baseProvider.update<RecordType>(resource, params);
     },
 
     /**
-     * Pass through updateMany to composedHandler
+     * Pass through updateMany to baseProvider
      */
     updateMany: <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: UpdateManyParams<RecordType>
-    ) => composedHandler.updateMany<RecordType>(resource, params),
+    ) => baseProvider.updateMany<RecordType>(resource, params),
 
     /**
-     * Pass through delete to composedHandler (gets RPC archive via beforeDelete)
+     * Pass through delete to baseProvider (lifecycle callbacks handle RPC archive)
      */
     delete: <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: DeleteParams<RecordType>
-    ) => composedHandler.delete<RecordType>(resource, params),
+    ) => baseProvider.delete<RecordType>(resource, params),
 
     /**
-     * Pass through deleteMany to composedHandler
+     * Pass through deleteMany to baseProvider
      */
     deleteMany: <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: DeleteManyParams<RecordType>
-    ) => composedHandler.deleteMany<RecordType>(resource, params),
+    ) => baseProvider.deleteMany<RecordType>(resource, params),
   };
 
   /**
-   * Wrap the custom handler with error logging (OUTERMOST)
+   * Wrap the custom handler with the standard wrapper chain
    *
-   * This ensures ALL errors are caught and logged, including:
-   * - Errors from OpportunitiesService.createWithProducts/updateWithProducts
-   * - Errors from composedHandler (lifecycle callbacks, validation)
-   * - Any other unexpected errors
+   * Order (innermost to outermost):
+   * 1. customOpportunitiesHandler - Our product sync logic
+   * 2. withValidation - Zod schema validation at API boundary
+   * 3. withLifecycleCallbacks - Before/after hooks (soft delete filter, RPC archive)
+   * 4. withErrorLogging - Structured error logging (catches ALL errors)
+   *
+   * This ensures ALL custom logic is protected by error logging.
    */
-  return withErrorLogging(customHandler);
+  return withErrorLogging(
+    withLifecycleCallbacks(
+      withValidation(customOpportunitiesHandler),
+      [opportunitiesCallbacks]
+    )
+  );
 }
