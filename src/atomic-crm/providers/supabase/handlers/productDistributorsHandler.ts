@@ -59,19 +59,44 @@ import {
  * - create: Extract product_id + distributor_id from data, delegate to service
  * - getList: Add composite IDs to returned records
  *
+ * CRITICAL: Custom logic is defined INSIDE the wrapper chain so that:
+ * - withErrorLogging catches and logs ALL errors (including from service calls)
+ * - withValidation validates data at API boundary
+ *
  * @param baseProvider - The raw Supabase DataProvider (must be ExtendedDataProvider)
  * @returns Composed DataProvider with composite key handling
  */
 export function createProductDistributorsHandler(baseProvider: DataProvider): DataProvider {
-  // Create the standard composed handler with validation and error logging
-  const composedHandler = withErrorLogging(withValidation(baseProvider));
-
-  // Create service instance for composite key operations
+  /**
+   * Custom product_distributors handler with composite key logic
+   *
+   * This handler is defined FIRST, then wrapped with the standard wrapper chain.
+   * This ensures all custom logic is INSIDE the "safety bubble" of withErrorLogging.
+   */
   const service = new ProductDistributorsService(baseProvider as ExtendedDataProvider);
 
-  // Return handler with method interceptions for composite key handling
-  return {
-    ...composedHandler,
+  const customHandler: DataProvider = {
+    getList: async <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: GetListParams
+    ) => {
+      if (resource !== "product_distributors") {
+        return baseProvider.getList<RecordType>(resource, params);
+      }
+
+      const result = await baseProvider.getList<ProductDistributor>(resource, params);
+
+      const dataWithIds = result.data.map((record) => ({
+        ...record,
+        id: createCompositeId(record.product_id, record.distributor_id),
+      }));
+
+      return {
+        data: dataWithIds as unknown as RecordType[],
+        total: result.total,
+        pageInfo: result.pageInfo,
+      };
+    },
 
     /**
      * Get a single product_distributor by composite ID
@@ -82,9 +107,8 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
       resource: string,
       params: GetOneParams
     ) => {
-      // Only intercept product_distributors resource
       if (resource !== "product_distributors") {
-        return composedHandler.getOne<RecordType>(resource, params);
+        return baseProvider.getOne<RecordType>(resource, params);
       }
 
       const { product_id, distributor_id } = parseCompositeId(String(params.id));
@@ -93,79 +117,15 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
       return { data: data as unknown as RecordType };
     },
 
-    /**
-     * Update a product_distributor by composite ID
-     *
-     * Parses composite ID and delegates to service.
-     */
-    update: async <RecordType extends RaRecord = RaRecord>(
+    getMany: <RecordType extends RaRecord = RaRecord>(
       resource: string,
-      params: UpdateParams<RecordType>
-    ) => {
-      // Only intercept product_distributors resource
-      if (resource !== "product_distributors") {
-        return composedHandler.update<RecordType>(resource, params);
-      }
+      params: GetManyParams<RecordType>
+    ) => baseProvider.getMany<RecordType>(resource, params),
 
-      const { product_id, distributor_id } = parseCompositeId(String(params.id));
-
-      // Validate and extract update fields using Zod schema
-      // Using passthrough to preserve any extra fields that may be present
-      const validatedData = updateProductDistributorSchema.passthrough().parse(params.data);
-
-      // Build update input from validated data
-      const updateData: ProductDistributorUpdateInput = {};
-      if (validatedData.vendor_item_number !== undefined) {
-        updateData.vendor_item_number = validatedData.vendor_item_number;
-      }
-      if (validatedData.status !== undefined) {
-        updateData.status = validatedData.status;
-      }
-      if (validatedData.valid_from !== undefined) {
-        updateData.valid_from = validatedData.valid_from instanceof Date
-          ? validatedData.valid_from.toISOString()
-          : String(validatedData.valid_from);
-      }
-      if (validatedData.valid_to !== undefined) {
-        updateData.valid_to = validatedData.valid_to instanceof Date
-          ? validatedData.valid_to.toISOString()
-          : validatedData.valid_to === null
-            ? null
-            : String(validatedData.valid_to);
-      }
-
-      const updatedData = await service.update(product_id, distributor_id, updateData);
-
-      return { data: updatedData as unknown as RecordType };
-    },
-
-    /**
-     * Delete a product_distributor by composite ID (HARD DELETE)
-     *
-     * Parses composite ID and delegates to service.
-     * Note: This is a hard delete, not soft delete.
-     */
-    delete: async <RecordType extends RaRecord = RaRecord>(
+    getManyReference: <RecordType extends RaRecord = RaRecord>(
       resource: string,
-      params: DeleteParams<RecordType>
-    ) => {
-      // Only intercept product_distributors resource
-      if (resource !== "product_distributors") {
-        return composedHandler.delete<RecordType>(resource, params);
-      }
-
-      const { product_id, distributor_id } = parseCompositeId(String(params.id));
-      await service.delete(product_id, distributor_id);
-
-      // Return the deleted record data (or previousData if available)
-      const deletedData = params.previousData || {
-        id: params.id,
-        product_id,
-        distributor_id,
-      };
-
-      return { data: deletedData as RecordType };
-    },
+      params: GetManyReferenceParams
+    ) => baseProvider.getManyReference<RecordType>(resource, params),
 
     /**
      * Create a product_distributor
@@ -176,18 +136,15 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
       resource: string,
       params: CreateParams<RecordType>
     ) => {
-      // Only intercept product_distributors resource
       if (resource !== "product_distributors") {
-        return composedHandler.create<RecordType>(resource, params);
+        return baseProvider.create<RecordType>(resource, params);
       }
 
-      // Validate create data using Zod schema (requires product_id and distributor_id)
       const validatedData = createProductDistributorSchema.passthrough().parse(params.data);
 
       const productId = validatedData.product_id;
       const distributorId = validatedData.distributor_id;
 
-      // Build create input from validated data (optional fields)
       const createData: Partial<ProductDistributorUpdateInput> = {};
       if (validatedData.vendor_item_number !== undefined) {
         createData.vendor_item_number = validatedData.vendor_item_number;
@@ -214,33 +171,95 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
     },
 
     /**
-     * Get list of product_distributors with composite IDs
+     * Update a product_distributor by composite ID
      *
-     * Delegates to base provider and adds composite IDs to each record.
+     * Parses composite ID and delegates to service.
      */
-    getList: async <RecordType extends RaRecord = RaRecord>(
+    update: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
-      params: GetListParams
+      params: UpdateParams<RecordType>
     ) => {
-      // Only intercept product_distributors resource
       if (resource !== "product_distributors") {
-        return composedHandler.getList<RecordType>(resource, params);
+        return baseProvider.update<RecordType>(resource, params);
       }
 
-      // Use composed handler for the actual query
-      const result = await composedHandler.getList<ProductDistributor>(resource, params);
+      const { product_id, distributor_id } = parseCompositeId(String(params.id));
 
-      // Add composite IDs to each record
-      const dataWithIds = result.data.map((record) => ({
-        ...record,
-        id: createCompositeId(record.product_id, record.distributor_id),
-      }));
+      const validatedData = updateProductDistributorSchema.passthrough().parse(params.data);
 
-      return {
-        data: dataWithIds as unknown as RecordType[],
-        total: result.total,
-        pageInfo: result.pageInfo,
-      };
+      const updateData: ProductDistributorUpdateInput = {};
+      if (validatedData.vendor_item_number !== undefined) {
+        updateData.vendor_item_number = validatedData.vendor_item_number;
+      }
+      if (validatedData.status !== undefined) {
+        updateData.status = validatedData.status;
+      }
+      if (validatedData.valid_from !== undefined) {
+        updateData.valid_from = validatedData.valid_from instanceof Date
+          ? validatedData.valid_from.toISOString()
+          : String(validatedData.valid_from);
+      }
+      if (validatedData.valid_to !== undefined) {
+        updateData.valid_to = validatedData.valid_to instanceof Date
+          ? validatedData.valid_to.toISOString()
+          : validatedData.valid_to === null
+            ? null
+            : String(validatedData.valid_to);
+      }
+
+      const updatedData = await service.update(product_id, distributor_id, updateData);
+
+      return { data: updatedData as unknown as RecordType };
     },
+
+    updateMany: <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: UpdateManyParams<RecordType>
+    ) => baseProvider.updateMany<RecordType>(resource, params),
+
+    /**
+     * Delete a product_distributor by composite ID (HARD DELETE)
+     *
+     * Parses composite ID and delegates to service.
+     * Note: This is a hard delete, not soft delete.
+     */
+    delete: async <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: DeleteParams<RecordType>
+    ) => {
+      if (resource !== "product_distributors") {
+        return baseProvider.delete<RecordType>(resource, params);
+      }
+
+      const { product_id, distributor_id } = parseCompositeId(String(params.id));
+      await service.delete(product_id, distributor_id);
+
+      const deletedData = params.previousData || {
+        id: params.id,
+        product_id,
+        distributor_id,
+      };
+
+      return { data: deletedData as RecordType };
+    },
+
+    deleteMany: <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: DeleteManyParams<RecordType>
+    ) => baseProvider.deleteMany<RecordType>(resource, params),
   };
+
+  /**
+   * Wrap the custom handler with the standard wrapper chain
+   *
+   * Order (innermost to outermost):
+   * 1. customHandler - Our product_distributors-specific logic
+   * 2. withValidation - Zod schema validation at API boundary
+   * 3. withErrorLogging - Structured error logging (catches ALL errors)
+   *
+   * No withLifecycleCallbacks needed - junction table uses hard delete.
+   *
+   * This ensures ALL custom logic is protected by error logging.
+   */
+  return withErrorLogging(withValidation(customHandler));
 }
