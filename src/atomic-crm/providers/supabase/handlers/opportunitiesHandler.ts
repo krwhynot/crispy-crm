@@ -39,12 +39,15 @@ import { z } from "zod";
 import { withErrorLogging, withValidation } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
 import { OpportunitiesService } from "../../../services/opportunities.service";
-import type { ExtendedDataProvider } from "../extensions/types";
+import { assertExtendedDataProvider } from "../typeGuards";
 import type { Product } from "../../../opportunities/utils/diffProducts";
 
 /**
  * Schema for validating handler input data with products_to_sync virtual field.
  * Uses .passthrough() to preserve all opportunity fields while type-checking the products array.
+ *
+ * Note: productSchema mirrors the Product interface from diffProducts.ts
+ * The inferred type from Zod validation flows to Product[] without casting.
  */
 const productSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
@@ -53,6 +56,8 @@ const productSchema = z.object({
   product_category: z.string().optional(),
   notes: z.string().optional(),
 });
+
+type ProductFromSchema = z.infer<typeof productSchema>;
 
 const handlerInputSchema = z
   .object({
@@ -128,13 +133,14 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
     ) => {
       if (resource === "opportunities") {
         const validatedData = handlerInputSchema.parse(params.data);
-        const productsToSync = validatedData.products_to_sync as Product[] | undefined;
+        const productsToSync: ProductFromSchema[] | undefined = validatedData.products_to_sync;
 
         if (Array.isArray(productsToSync)) {
           // Service is instantiated here to ensure it uses the wrapped provider
-          const service = new OpportunitiesService(baseProvider as ExtendedDataProvider);
+          const extendedProvider = assertExtendedDataProvider(baseProvider);
+          const service = new OpportunitiesService(extendedProvider);
           const result = await service.createWithProducts(validatedData);
-          return { data: result as RecordType };
+          return { data: result } as { data: RecordType };
         }
       }
 
@@ -158,16 +164,17 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
     ) => {
       if (resource === "opportunities") {
         const validatedData = handlerInputSchema.parse(params.data);
-        const productsToSync = validatedData.products_to_sync as Product[] | undefined;
+        const productsToSync: ProductFromSchema[] | undefined = validatedData.products_to_sync;
 
         if (Array.isArray(productsToSync)) {
           const validatedPreviousData = previousDataSchema.parse(params.previousData);
-          const previousProducts = (validatedPreviousData.products as Product[]) ?? [];
+          const previousProducts: ProductFromSchema[] = validatedPreviousData.products ?? [];
 
           // Service is instantiated here to ensure it uses the wrapped provider
-          const service = new OpportunitiesService(baseProvider as ExtendedDataProvider);
+          const extendedProvider = assertExtendedDataProvider(baseProvider);
+          const service = new OpportunitiesService(extendedProvider);
           const result = await service.updateWithProducts(params.id, validatedData, previousProducts);
-          return { data: result as RecordType };
+          return { data: result } as { data: RecordType };
         }
       }
 

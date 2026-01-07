@@ -599,6 +599,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           error instanceof Error
             ? error.message
             : "A critical error occurred during batch processing.";
+        notify(`Critical error during import batch: ${errorMessage}`, { type: "error" });
         const batchStartRow = rowOffsetRef.current + 2;
 
         // Add an error entry for each organization in the failed batch
