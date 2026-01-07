@@ -2,14 +2,18 @@
  * Opportunities Handler - Composed DataProvider
  *
  * Composes all infrastructure pieces for the opportunities resource:
- * 1. customHandler → Opportunities-specific logic (create/update with products)
- * 2. withValidation → Zod schema validation
+ * 1. customOpportunitiesHandler → Opportunities-specific logic (create/update with products)
+ * 2. withValidation → Zod schema validation at API boundary
  * 3. withLifecycleCallbacks → Resource-specific callbacks (RPC archive, soft delete filter)
  * 4. withErrorLogging → Structured error handling (OUTERMOST)
  *
+ * Composition order (innermost to outermost):
+ * customOpportunitiesHandler → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
  * CRITICAL FIX (2025-01): Custom methods are now defined INSIDE the wrapper chain,
  * not outside. This ensures withErrorLogging catches and reports all errors properly.
- * Previously, create/update with products_to_sync bypassed error logging.
+ * Previously, create/update with products_to_sync bypassed error logging when the
+ * "post-composition spread pattern" was used.
  *
  * Note: The RPC archive_opportunity_with_relations logic is encapsulated
  * in opportunitiesCallbacks. The handler composition remains identical.
