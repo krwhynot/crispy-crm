@@ -36,7 +36,7 @@ import type {
   RaRecord,
 } from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
-import type { ExtendedDataProvider } from "../extensions/types";
+import { assertExtendedDataProvider } from "../typeGuards";
 import {
   ProductDistributorsService,
   parseCompositeId,
@@ -73,7 +73,8 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
    * This handler is defined FIRST, then wrapped with the standard wrapper chain.
    * This ensures all custom logic is INSIDE the "safety bubble" of withErrorLogging.
    */
-  const service = new ProductDistributorsService(baseProvider as ExtendedDataProvider);
+  const extendedProvider = assertExtendedDataProvider(baseProvider);
+  const service = new ProductDistributorsService(extendedProvider);
 
   const customHandler: DataProvider = {
     getList: async <RecordType extends RaRecord = RaRecord>(
@@ -91,11 +92,13 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
         id: createCompositeId(record.product_id, record.distributor_id),
       }));
 
+      // ProductDistributor satisfies RaRecord (has id field)
+      // Type assertion is safe: dataWithIds elements extend RaRecord
       return {
-        data: dataWithIds as unknown as RecordType[],
+        data: dataWithIds,
         total: result.total,
         pageInfo: result.pageInfo,
-      };
+      } as { data: RecordType[]; total?: number; pageInfo?: { hasNextPage?: boolean; hasPreviousPage?: boolean } };
     },
 
     /**
@@ -114,7 +117,8 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
       const { product_id, distributor_id } = parseCompositeId(String(params.id));
       const data = await service.getOne(product_id, distributor_id);
 
-      return { data: data as unknown as RecordType };
+      // ProductDistributor satisfies RaRecord (has id field)
+      return { data } as { data: RecordType };
     },
 
     getMany: async <RecordType extends RaRecord = RaRecord>(
@@ -141,7 +145,8 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
         id: createCompositeId(record.product_id, record.distributor_id),
       }));
 
-      return { data: dataWithIds as unknown as RecordType[] };
+      // ProductDistributor satisfies RaRecord (has id field)
+      return { data: dataWithIds } as { data: RecordType[] };
     },
 
     getManyReference: <RecordType extends RaRecord = RaRecord>(

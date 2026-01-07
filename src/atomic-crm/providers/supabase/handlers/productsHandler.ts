@@ -41,6 +41,7 @@ import {
 import { z } from "zod";
 import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
 import type { ExtendedDataProvider } from "../extensions/types";
+import { hasRpcMethod, assertExtendedDataProvider } from "../typeGuards";
 
 /**
  * Extended DataProvider interface with RPC support
@@ -143,21 +144,20 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           const { productData, distributors: distData } = transformToRpcParams(validatedData);
 
           // Get RPC method from baseProvider (will be available after wrapping)
-          const dpWithRpc = baseProvider as DataProviderWithRpc;
-          if (!dpWithRpc.rpc) {
+          if (!hasRpcMethod(baseProvider)) {
             throw new Error(
               "Product creation with distributors failed: DataProvider does not support RPC"
             );
           }
 
           // Call atomic RPC function
-          const result = await dpWithRpc.rpc("create_product_with_distributors", {
+          const result = await baseProvider.rpc("create_product_with_distributors", {
             product_data: productData,
             distributors: distData,
           });
 
           // Return in React Admin format
-          return { data: result as RecordType };
+          return { data: result } as { data: RecordType };
         }
 
         // No distributors or validation failed - strip any distributor-related fields and use normal flow
@@ -172,7 +172,7 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
 
         return baseProvider.create<RecordType>(resource, {
           ...params,
-          data: cleanData as RecordType,
+          data: cleanData,
         } as CreateParams<RecordType>);
       }
 
@@ -206,7 +206,8 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           (Array.isArray(distributor_ids) && distributor_ids.length > 0)
         ) {
           // Create service instance with extended data provider
-          const service = new ProductsService(baseProvider as ExtendedDataProvider);
+          const extendedProvider = assertExtendedDataProvider(baseProvider);
+          const service = new ProductsService(extendedProvider);
 
           // Transform distributors to service format
           let distributorInputs: ProductDistributorInput[] = [];
