@@ -21,12 +21,19 @@ import {
   VIEW_ONLY_FIELDS,
 } from "../../callbacks/opportunitiesCallbacks";
 
-// Mock the OpportunitiesService
+// Mock service methods using vi.hoisted to ensure they're available when vi.mock runs
+// (vi.mock is hoisted to the top of the file, so regular const won't be defined yet)
+const { mockCreateWithProducts, mockUpdateWithProducts } = vi.hoisted(() => ({
+  mockCreateWithProducts: vi.fn(),
+  mockUpdateWithProducts: vi.fn(),
+}));
+
+// Mock the OpportunitiesService - service is instantiated lazily in handler methods
 vi.mock("../../../../services/opportunities.service", () => {
   return {
     OpportunitiesService: vi.fn().mockImplementation(() => ({
-      createWithProducts: vi.fn(),
-      updateWithProducts: vi.fn(),
+      createWithProducts: mockCreateWithProducts,
+      updateWithProducts: mockUpdateWithProducts,
     })),
   };
 });
@@ -34,13 +41,11 @@ vi.mock("../../../../services/opportunities.service", () => {
 describe("createOpportunitiesHandler", () => {
   let mockBaseProvider: DataProvider;
   let handler: DataProvider;
-  let mockServiceInstance: {
-    createWithProducts: Mock;
-    updateWithProducts: Mock;
-  };
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockCreateWithProducts.mockReset();
+    mockUpdateWithProducts.mockReset();
 
     // Create mock base provider with ExtendedDataProvider methods
     // (required by assertExtendedDataProvider type guard)
@@ -54,25 +59,22 @@ describe("createOpportunitiesHandler", () => {
       updateMany: vi.fn().mockResolvedValue({ data: [1] }),
       delete: vi.fn().mockResolvedValue({ data: { id: 1 } }),
       deleteMany: vi.fn().mockResolvedValue({ data: [1, 2] }),
-      // ExtendedDataProvider methods (mocked)
+      // ExtendedDataProvider methods (mocked for assertExtendedDataProvider)
       rpc: vi.fn(),
       storage: { upload: vi.fn(), download: vi.fn() },
       invoke: vi.fn(),
     };
 
-    // Create handler
+    // Create handler (service is instantiated lazily in create/update methods)
     handler = createOpportunitiesHandler(mockBaseProvider);
-
-    // Get the mock service instance (created during handler construction)
-    mockServiceInstance = (OpportunitiesService as unknown as Mock).mock.results[0]
-      .value as typeof mockServiceInstance;
   });
 
   describe("create() - service delegation", () => {
     it("should delegate to OpportunitiesService.createWithProducts when products_to_sync is present", async () => {
+      // Products must have product_id_reference (required by Product interface)
       const products: Product[] = [
-        { id: 1, name: "Product A", quantity: 10 },
-        { id: 2, name: "Product B", quantity: 5 },
+        { id: 1, product_id_reference: 101, product_name: "Product A" },
+        { id: 2, product_id_reference: 102, product_name: "Product B" },
       ];
       const opportunityData = {
         name: "Test Opportunity",
@@ -83,11 +85,11 @@ describe("createOpportunitiesHandler", () => {
       };
       const createdOpportunity = { id: 123, ...opportunityData };
 
-      mockServiceInstance.createWithProducts.mockResolvedValue(createdOpportunity);
+      mockCreateWithProducts.mockResolvedValue(createdOpportunity);
 
       const result = await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockServiceInstance.createWithProducts).toHaveBeenCalledWith(opportunityData);
+      expect(mockCreateWithProducts).toHaveBeenCalledWith(opportunityData);
       expect(result).toEqual({ data: createdOpportunity });
     });
 
@@ -103,7 +105,7 @@ describe("createOpportunitiesHandler", () => {
       // which includes lifecycle callbacks - the call goes through the wrapper
       await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockServiceInstance.createWithProducts).not.toHaveBeenCalled();
+      expect(mockCreateWithProducts).not.toHaveBeenCalled();
     });
 
     it("should delegate to service when products_to_sync is empty array (service handles efficiently)", async () => {
@@ -118,11 +120,11 @@ describe("createOpportunitiesHandler", () => {
       };
       const createdOpportunity = { id: 124, ...opportunityData };
 
-      mockServiceInstance.createWithProducts.mockResolvedValue(createdOpportunity);
+      mockCreateWithProducts.mockResolvedValue(createdOpportunity);
 
       await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockServiceInstance.createWithProducts).toHaveBeenCalledWith(opportunityData);
+      expect(mockCreateWithProducts).toHaveBeenCalledWith(opportunityData);
     });
 
     it("should pass through non-opportunities resources to base provider", async () => {
@@ -130,7 +132,7 @@ describe("createOpportunitiesHandler", () => {
 
       await handler.create("contacts", { data: contactData });
 
-      expect(mockServiceInstance.createWithProducts).not.toHaveBeenCalled();
+      expect(mockCreateWithProducts).not.toHaveBeenCalled();
       // Base provider create is called through the wrapper chain
     });
   });
@@ -148,7 +150,7 @@ describe("createOpportunitiesHandler", () => {
       };
       const updatedOpportunity = { id: 123, name: "Updated Opportunity" };
 
-      mockServiceInstance.updateWithProducts.mockResolvedValue(updatedOpportunity);
+      mockUpdateWithProducts.mockResolvedValue(updatedOpportunity);
 
       const result = await handler.update("opportunities", {
         id: 123,
@@ -156,7 +158,7 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123, products: previousProducts } as RaRecord,
       });
 
-      expect(mockServiceInstance.updateWithProducts).toHaveBeenCalledWith(
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(
         123,
         updateData,
         previousProducts
@@ -177,7 +179,7 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123 } as RaRecord,
       });
 
-      expect(mockServiceInstance.updateWithProducts).not.toHaveBeenCalled();
+      expect(mockUpdateWithProducts).not.toHaveBeenCalled();
     });
 
     it("should delegate to service when products_to_sync is empty array (service handles efficiently)", async () => {
@@ -190,7 +192,7 @@ describe("createOpportunitiesHandler", () => {
       };
       const updatedOpportunity = { id: 123, name: "Updated Opportunity" };
 
-      mockServiceInstance.updateWithProducts.mockResolvedValue(updatedOpportunity);
+      mockUpdateWithProducts.mockResolvedValue(updatedOpportunity);
 
       await handler.update("opportunities", {
         id: 123,
@@ -198,7 +200,7 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123 } as RaRecord,
       });
 
-      expect(mockServiceInstance.updateWithProducts).toHaveBeenCalledWith(123, updateData, []);
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, []);
     });
 
     it("should pass empty array when previousData.products is missing", async () => {
@@ -209,7 +211,7 @@ describe("createOpportunitiesHandler", () => {
       };
       const updatedOpportunity = { id: 123 };
 
-      mockServiceInstance.updateWithProducts.mockResolvedValue(updatedOpportunity);
+      mockUpdateWithProducts.mockResolvedValue(updatedOpportunity);
 
       await handler.update("opportunities", {
         id: 123,
@@ -217,7 +219,7 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123 } as RaRecord, // No products property
       });
 
-      expect(mockServiceInstance.updateWithProducts).toHaveBeenCalledWith(123, updateData, []);
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, []);
     });
   });
 });
