@@ -74,19 +74,20 @@ import { tasksCallbacks } from "../callbacks/tasksCallbacks";
 
 /**
  * Composition order (innermost to outermost):
- * baseProvider → withLifecycleCallbacks → withValidation → withErrorLogging
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
  */
 export function createTasksHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [tasksCallbacks])
+    withLifecycleCallbacks(
+      withValidation(baseProvider),
+      [tasksCallbacks]
     )
   );
 }
 ```
 
 ### Key Points
-- **Composition Order Matters**: `withLifecycleCallbacks` wraps `withValidation` so `beforeSave` can strip computed fields BEFORE Zod runs
+- **Composition Order Matters**: `withValidation` runs FIRST on raw input, then `withLifecycleCallbacks` strips computed view fields before DB write
 - **Each Resource Gets Own Handler**: `createContactsHandler`, `createOpportunitiesHandler`, etc.
 - **~20 Lines Per Handler**: Keep handlers thin - logic goes in callbacks/services
 - **Handlers Are Registered**: In `composedDataProvider.ts` handlers registry
