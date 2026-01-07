@@ -5,6 +5,8 @@
  */
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
+
+import { activityKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import type { ActivityRecord } from "../types";
@@ -20,7 +22,7 @@ const ActivityEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate activities cache to refresh list views
-          queryClient.invalidateQueries({ queryKey: ["activities"] });
+          queryClient.invalidateQueries({ queryKey: activityKeys.all });
         },
       }}
     >

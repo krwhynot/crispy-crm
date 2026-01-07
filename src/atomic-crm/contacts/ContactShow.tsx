@@ -94,7 +94,7 @@ const ContactShowContent = () => {
               <TabsContent value="notes" className="pt-2">
                 <ReferenceManyField
                   target="contact_id"
-                  reference="contactNotes"
+                  reference="contact_notes"
                   sort={{ field: "created_at", order: "DESC" }}
                   empty={<NoteCreate reference="contacts" />}
                 >

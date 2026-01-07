@@ -1,6 +1,7 @@
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { organizationKeys, contactKeys, opportunityKeys } from "../queryKeys";
 import { OrganizationInputs } from "./OrganizationInputs";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,9 +20,9 @@ const OrganizationEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate related caches to prevent stale data
-          queryClient.invalidateQueries({ queryKey: ["organizations"] });
-          queryClient.invalidateQueries({ queryKey: ["contacts"] });
-          queryClient.invalidateQueries({ queryKey: ["opportunities"] });
+          queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+          queryClient.invalidateQueries({ queryKey: contactKeys.all });
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         },
       }}
       transform={(values) => {

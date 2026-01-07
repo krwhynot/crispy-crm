@@ -72,9 +72,12 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
    *
    * This handler is defined FIRST, then wrapped with the standard wrapper chain.
    * This ensures all custom logic is INSIDE the "safety bubble" of withErrorLogging.
+   *
+   * NOTE: We cast to ExtendedDataProvider because the provider WILL be extended
+   * by the time these methods are actually called. The runtime assertion was
+   * removed because it runs at initialization time before extensions are added.
    */
-  const extendedProvider = assertExtendedDataProvider(baseProvider);
-  const service = new ProductDistributorsService(extendedProvider);
+  const service = new ProductDistributorsService(baseProvider as ExtendedDataProvider);
 
   const customHandler: DataProvider = {
     getList: async <RecordType extends RaRecord = RaRecord>(

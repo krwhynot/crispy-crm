@@ -103,6 +103,59 @@ describe("productsHandler", () => {
 
       await expect(handler.getOne("products", { id: 1 })).rejects.toThrow();
     });
+
+    it("should propagate delete errors through withErrorLogging", async () => {
+      // Spy on console.error to verify withErrorLogging is invoked
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+      // Create a mock provider with RPC that throws
+      const mockProviderWithRpc = {
+        ...mockBaseProvider,
+        rpc: vi.fn().mockRejectedValue(new Error("RPC soft_delete_product failed: Product not found")),
+      };
+
+      const handler = createProductsHandler(mockProviderWithRpc);
+
+      // Attempt delete - should throw and be logged
+      await expect(
+        handler.delete("products", {
+          id: 999,
+          previousData: { id: 999, name: "Test Product" },
+        })
+      ).rejects.toThrow();
+
+      // Verify withErrorLogging caught and logged the error
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[DataProvider Error]"),
+        expect.anything(),
+        expect.anything()
+      );
+
+      consoleErrorSpy.mockRestore();
+    });
+
+    it("should propagate deleteMany errors through withErrorLogging", async () => {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+      const mockProviderWithRpc = {
+        ...mockBaseProvider,
+        rpc: vi.fn().mockRejectedValue(new Error("RPC soft_delete_products failed: Invalid IDs")),
+      };
+
+      const handler = createProductsHandler(mockProviderWithRpc);
+
+      await expect(
+        handler.deleteMany("products", { ids: [997, 998, 999] })
+      ).rejects.toThrow();
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[DataProvider Error]"),
+        expect.anything(),
+        expect.anything()
+      );
+
+      consoleErrorSpy.mockRestore();
+    });
   });
 
   describe("handler is minimal composition code", () => {
