@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-06T02:45:15.969Z",
+  "generated_at": "2026-01-07T04:23:20.662Z",
   "items": {
     "nodes": [
       {
@@ -418,10 +418,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
+        "id": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
         "name": "ParentOrganizationInput",
         "file": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
-        "line": 13,
+        "line": 12,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -10437,74 +10437,65 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
+        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 14,
+        "line": 13,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
-        "target": "useQuery",
-        "targetName": "useQuery",
+        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
+        "target": "useOrganizationDescendants",
+        "targetName": "useOrganizationDescendants",
         "edgeType": "hook",
-        "line": 17,
+        "line": 16,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
-        "target": "rpc",
-        "targetName": "rpc",
-        "edgeType": "call",
-        "line": 21,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
+        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 37,
+        "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
+        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 39,
+        "line": 26,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
+        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 43,
+        "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
+        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 62,
+        "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:13:ParentOrganizationInput",
+        "source": "src/atomic-crm/organizations/ParentOrganizationInput.tsx:12:ParentOrganizationInput",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 68,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
