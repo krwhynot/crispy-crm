@@ -25,7 +25,7 @@ export function OrganizationNotesTab({ record, mode }: OrganizationNotesTabProps
           {/* Notes list with create form - NotesIterator includes NoteCreate internally */}
           <ReferenceManyField
             target="organization_id"
-            reference="organizationNotes"
+            reference="organization_notes"
             sort={{ field: "created_at", order: "DESC" }}
           >
             <NotesIterator reference="organizations" />

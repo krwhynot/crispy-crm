@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStore } from "ra-core";
+import { useNotify, useStore } from "ra-core";
 import { z } from "zod";
 import { isValidFilterField } from "../providers/supabase/filterRegistry";
 import { safeJsonParse } from "../utils/safeJsonParse";
@@ -63,6 +63,7 @@ const listParamsSchema = z
  */
 export const useFilterCleanup = (resource: string) => {
   const [, storeApi] = useStore();
+  const notify = useNotify();
 
   useEffect(() => {
     // IMPORTANT: Key must match the store name initialized in CRM.tsx (line 123)
@@ -142,8 +143,9 @@ export const useFilterCleanup = (resource: string) => {
         `[useFilterCleanup] Error parsing localStorage for resource "${resource}":`,
         error
       );
-      // Don't throw - fail gracefully and let the app continue
-      // Optionally, could clear the corrupted key: localStorage.removeItem(key);
+      notify(`Filter state for ${resource} was corrupted and has been reset.`, {
+        type: "warning",
+      });
     }
-  }, [resource, storeApi]);
+  }, [resource, storeApi, notify]);
 };

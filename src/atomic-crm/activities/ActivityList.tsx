@@ -58,7 +58,7 @@ export default function ActivityList() {
       <div data-tutorial="activities-list">
         <List
           title={false}
-          perPage={50}
+          perPage={25}
           sort={{ field: "activity_date", order: "DESC" }}
           exporter={exporter}
           filter={{

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { endOfToday, startOfToday, startOfWeek, subDays } from "date-fns";
-import { Calendar, Filter, Package, Tag, User, Users } from "lucide-react";
+import { Calendar, Clock, Filter, Package, Tag, User } from "lucide-react";
 import { FilterLiveForm, useGetIdentity } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
@@ -56,9 +56,10 @@ export const ActivityListFilter = () => {
           <ToggleFilterButton
             className="w-full justify-between"
             label={
-              <Badge variant="default" className="text-xs">
+              <span className="flex items-center gap-2">
+                <Clock className="h-4 w-4" aria-hidden="true" />
                 Pending Feedback
-              </Badge>
+              </span>
             }
             value={{ sample_status: "feedback_pending" }}
           />
@@ -172,16 +173,7 @@ export const ActivityListFilter = () => {
           />
         </FilterCategory>
 
-        {/* Created By Filter */}
-        <FilterCategory icon={<Users className="h-4 w-4" aria-hidden="true" />} label="Created By">
-          <ToggleFilterButton
-            className="w-full justify-between"
-            label="Me"
-            value={{ created_by: identity?.id }}
-          />
-        </FilterCategory>
-
-        {/* Owner Filter Dropdown */}
+        {/* Created By Filter - Role-aware dropdown */}
         <FilterCategory label="Created By" icon={<User className="h-4 w-4" />}>
           <OwnerFilterDropdown source="created_by" label="Created By" />
         </FilterCategory>

@@ -1,9 +1,8 @@
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { useRecordContext } from "ra-core";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "../providers/supabase/supabase";
 import { AUTOCOMPLETE_DEBOUNCE_MS } from "@/atomic-crm/utils/autocompleteDefaults";
+import { useOrganizationDescendants } from "@/hooks";
 
 /**
  * Parent organization input that prevents hierarchy cycles.
@@ -14,19 +13,7 @@ export const ParentOrganizationInput = () => {
   const record = useRecordContext<{ id?: number; parent_organization_id?: number }>();
 
   // Fetch all descendant IDs to exclude from parent selection
-  const { data: descendants = [], isFetched: descendantsFetched } = useQuery({
-    queryKey: ["org-descendants", record?.id],
-    queryFn: async () => {
-      if (!record?.id) return [];
-      const { data, error } = await supabase.rpc("get_organization_descendants", {
-        org_id: record.id,
-      });
-      if (error) throw error;
-      return (data as number[]) || [];
-    },
-    enabled: !!record?.id,
-    staleTime: 30000, // Cache for 30s - hierarchy doesn't change often
-  });
+  const { descendants, isFetched: descendantsFetched } = useOrganizationDescendants(record?.id);
 
   // For existing records, wait for descendants to load before showing dropdown
   // This prevents race condition where user could select a child before filter is ready
