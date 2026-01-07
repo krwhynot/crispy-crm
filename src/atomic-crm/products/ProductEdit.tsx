@@ -7,7 +7,7 @@ import { SaveButton } from "@/components/admin/form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { ProductInputs } from "./ProductInputs";
-import { productSchema } from "@/atomic-crm/validation/products";
+import { productUpdateSchema } from "@/atomic-crm/validation/products";
 import type { Product } from "../types";
 
 const ProductEdit = () => {
@@ -37,7 +37,7 @@ const ProductEditForm = () => {
 
   const defaultValues = useMemo(
     () => ({
-      ...productSchema.partial().parse(record),
+      ...productUpdateSchema.partial().parse(record ?? {}),
       updated_by: identity?.id,
     }),
     [record, identity?.id]
