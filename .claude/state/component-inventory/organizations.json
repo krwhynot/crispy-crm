@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-07T04:23:05.877Z",
+  "generated_at": "2026-01-06T02:44:57.882Z",
   "item_count": 76,
   "items": [
     {
@@ -1279,17 +1279,18 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
-        "useOrganizationDescendants",
+        "useQuery",
         "useRecordContext"
       ],
       "imports": [
+        "../providers/supabase/supabase",
         "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
         "@/components/admin/reference-input",
-        "@/hooks",
+        "@tanstack/react-query",
         "ra-core"
       ],
       "isDefaultExport": false,
@@ -1682,10 +1683,10 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
-        "useOrganizationDescendants",
+        "useQuery",
         "useRecordContext"
       ],
       "imports": [],

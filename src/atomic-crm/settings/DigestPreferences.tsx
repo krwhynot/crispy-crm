@@ -4,8 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDataProvider, useNotify } from "ra-core";
-
-import { digestKeys } from "../queryKeys";
 import { Mail, Bell, BellOff } from "lucide-react";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 
@@ -48,7 +46,7 @@ export function DigestPreferences() {
     isLoading,
     error: fetchError,
   } = useQuery<DigestPreferenceResponse>({
-    queryKey: digestKeys.all,
+    queryKey: ["digestPreference"],
     queryFn: async () => {
       // Use generic RPC typing to avoid explicit assertion
       return dataProvider.rpc<DigestPreferenceResponse>("get_digest_preference", {});
@@ -73,7 +71,7 @@ export function DigestPreferences() {
     },
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: digestKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["digestPreference"] });
       notify(data.message || "Preference updated successfully");
     },
     onError: (error: Error) => {

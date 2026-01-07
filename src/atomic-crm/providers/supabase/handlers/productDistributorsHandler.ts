@@ -36,7 +36,7 @@ import type {
   RaRecord,
 } from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
-import { assertExtendedDataProvider } from "../typeGuards";
+import type { ExtendedDataProvider } from "../extensions/types";
 import {
   ProductDistributorsService,
   parseCompositeId,

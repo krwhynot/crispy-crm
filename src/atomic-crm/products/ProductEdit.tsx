@@ -1,15 +1,13 @@
 import { EditBase, Form, useRecordContext, useGetIdentity } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
-
-import { productKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { SaveButton } from "@/components/admin/form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { ProductInputs } from "./ProductInputs";
-import { productUpdateSchema } from "@/atomic-crm/validation/products";
+import { productSchema } from "@/atomic-crm/validation/products";
 import type { Product } from "../types";
 
 const ProductEdit = () => {
@@ -22,7 +20,7 @@ const ProductEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate products cache
-          queryClient.invalidateQueries({ queryKey: productKeys.all });
+          queryClient.invalidateQueries({ queryKey: ["products"] });
         },
       }}
     >
@@ -39,7 +37,7 @@ const ProductEditForm = () => {
 
   const defaultValues = useMemo(
     () => ({
-      ...productUpdateSchema.partial().parse(record ?? {}),
+      ...productSchema.partial().parse(record),
       updated_by: identity?.id,
     }),
     [record, identity?.id]

@@ -51,7 +51,7 @@ export function OpportunityNotesTab({ record, mode }: OpportunityNotesTabProps) 
             {/* Notes list with create form - NotesIterator includes NoteCreate internally */}
             <ReferenceManyField
               target="opportunity_id"
-              reference="opportunity_notes"
+              reference="opportunityNotes"
               sort={{ field: "created_at", order: "DESC" }}
             >
               <NotesIterator reference="opportunities" />

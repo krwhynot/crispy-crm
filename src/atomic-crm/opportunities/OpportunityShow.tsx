@@ -333,7 +333,7 @@ const OpportunityShowContent = () => {
                     <h3 className="text-lg font-semibold mb-4">Notes</h3>
                     <ReferenceManyField
                       target="opportunity_id"
-                      reference="opportunity_notes"
+                      reference="opportunityNotes"
                       sort={{ field: "created_at", order: "DESC" }}
                       empty={<NoteCreate reference={"opportunities"} />}
                     >

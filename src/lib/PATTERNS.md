@@ -11,13 +11,14 @@ Standard patterns for shared utilities in Crispy CRM.
 +-----------------+-----------------------------------+
 |  UI UTILITIES   |   DATA UTILITIES                  |
 |  +- cn()        |  +- parseDateSafely()             |
-|  +- colors      |  +- sanitization                  |
+|  +- colors      |  +- queryKeys                     |
+|  +- storage     |  +- sanitization                  |
 |                 |  +- csvUploadValidator            |
 +-----------------+-----------------------------------+
 | REACT UTILITIES |   LOGGING                         |
 |  +- genericMemo |  +- logger (Sentry)               |
 |  +- FieldProps  |  +- devLogger (dev-only)          |
-|  +- inputProps  |  +- i18nProvider                  |
+|  +- inputProps  |                                   |
 +-----------------+-----------------------------------+
 ```
 
@@ -307,7 +308,110 @@ if (DEV) {
 
 ---
 
-## Pattern E: Sanitization Utilities
+## Pattern E: Storage Abstractions
+
+For persisting UI preferences with fail-silent design.
+
+```tsx
+// src/lib/storage-utils.ts
+
+/**
+ * Safely read a string from localStorage with validation.
+ * Returns defaultValue if key doesn't exist, value is null, or access fails.
+ */
+export function getLocalStorageString(key: string, defaultValue = ""): string {
+  try {
+    const value = localStorage.getItem(key);
+    return typeof value === "string" ? value : defaultValue;
+  } catch {
+    // localStorage access can fail in private browsing or when disabled
+    return defaultValue;
+  }
+}
+
+/**
+ * Safely write a string to localStorage.
+ * Fails silently if localStorage is unavailable.
+ */
+export function setLocalStorageString(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Fail silently - localStorage may be unavailable
+  }
+}
+
+// Usage:
+const savedView = getLocalStorageString('dashboard_view', 'grid');
+setLocalStorageString('dashboard_view', 'list');
+```
+
+**When to use**: Persisting user preferences (sidebar state, view mode, last visited tab). Always use these helpers instead of direct `localStorage` access to handle private browsing gracefully.
+
+---
+
+## Pattern F: Query Key Factories
+
+For custom TanStack Query hooks that bypass React Admin's data layer.
+
+```tsx
+// src/lib/queryKeys.ts
+
+/**
+ * Query Key Factory for Custom TanStack Query Hooks
+ *
+ * IMPORTANT: This file is for custom hooks that bypass React Admin's data layer.
+ *
+ * DO NOT use these keys with React Admin hooks (useGetList, useUpdate, etc.)
+ * React Admin auto-generates query keys internally following the pattern:
+ *   [resource, 'getList', { pagination, sort, filter, meta }]
+ */
+
+type FilterValue = string | number | boolean | null | undefined | Record<string, unknown>;
+
+export const queryKeys = {
+  activities: {
+    all: ["activities"] as const,
+    lists: () => [...queryKeys.activities.all, "list"] as const,
+    list: (filters?: FilterValue) => [...queryKeys.activities.lists(), { filters }] as const,
+    detail: (id: number | string) => [...queryKeys.activities.all, "detail", id] as const,
+  },
+
+  opportunities: {
+    all: ["opportunities"] as const,
+    byPrincipal: (principalId: number | string) =>
+      [...queryKeys.opportunities.all, "byPrincipal", principalId] as const,
+  },
+
+  dashboard: {
+    all: ["dashboard"] as const,
+    principalPipeline: (filters?: FilterValue) =>
+      [...queryKeys.dashboard.all, "principalPipeline", { filters }] as const,
+    teamActivities: (limit?: number) =>
+      [...queryKeys.dashboard.all, "teamActivities", limit] as const,
+  },
+
+  settings: {
+    all: ["settings"] as const,
+    digestPreference: () => [...queryKeys.settings.all, "digestPreference"] as const,
+  },
+} as const;
+
+// Usage for CUSTOM hooks (NOT React Admin):
+const { data } = useQuery({
+  queryKey: queryKeys.dashboard.principalPipeline({ principalId: 5 }),
+  queryFn: () => supabase.rpc('get_principal_pipeline_stats', { principal_id: 5 })
+});
+
+// Cache invalidation:
+queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all });
+```
+
+**When to use**: Dashboard aggregation queries, custom report generation, Edge Functions. Never use with React Admin hooks (useGetList, useUpdate, useCreate) - they auto-generate keys.
+
+---
+
+## Pattern G: Sanitization Utilities
 
 For rendering user-generated HTML content safely.
 
@@ -383,7 +487,7 @@ const emailBody = sanitizeEmailHtml(templateHtml);
 
 ---
 
-## Pattern F: Type Helpers
+## Pattern H: Type Helpers
 
 ### Semantic Color Types
 
@@ -522,12 +626,12 @@ export const MyField = genericMemo(MyFieldImpl);
 | **C: CSV Validation** | csvUploadValidator.ts | File upload security |
 | **D: Logger** | logger.ts | Production error tracking |
 | **D: DevLogger** | devLogger.ts | Dev-only debug output |
-| **E: Sanitization** | sanitization.ts | XSS prevention |
-| **F: Color Types** | color-types.ts | Design system tokens |
-| **F: FieldProps** | field.type.ts | React Admin field types |
-| **F: genericMemo** | genericMemo.ts | Generic component memoization |
-| **—** | i18nProvider.ts | React Admin i18n setup |
-| **—** | sanitizeInputRestProps.ts | Filter RA input props for DOM |
+| **E: Storage** | storage-utils.ts | localStorage abstraction |
+| **F: QueryKeys** | queryKeys.ts | Custom query cache keys |
+| **G: Sanitization** | sanitization.ts | XSS prevention |
+| **H: Color Types** | color-types.ts | Design system tokens |
+| **H: FieldProps** | field.type.ts | React Admin field types |
+| **H: genericMemo** | genericMemo.ts | Generic component memoization |
 
 ---
 
@@ -535,13 +639,14 @@ export const MyField = genericMemo(MyFieldImpl);
 
 | Anti-Pattern | Correct Approach |
 |--------------|------------------|
+| `localStorage.getItem(key)` directly | Use `getLocalStorageString(key, default)` |
 | `new Date(isoString)` | Use `parseDateSafely(isoString)` |
 | Hardcoded hex colors (`#ef4444`) | Use `SEMANTIC_COLORS[colorName]` |
 | Manual className strings | Use `cn()` for conflict resolution |
 | `console.log` in production code | Use `devLog()` with DEV guard |
+| `queryKeys` with React Admin hooks | Don't - RA auto-generates keys |
 | `dangerouslySetInnerHTML` without sanitization | Always use `sanitizeHtml()` first |
 | Direct file processing without size limits | Use `validateCsvFile()` with limits |
-| Passing RA input props to DOM elements | Use `sanitizeInputRestProps()` to filter |
 
 ---
 
