@@ -2,6 +2,8 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useGetList, useDataProvider } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
+
+import { taskKeys } from "@/atomic-crm/queryKeys";
 import { useCurrentSale } from "./useCurrentSale";
 import type { TaskItem, TaskStatus, TaskApiResponse } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
@@ -164,7 +166,7 @@ export function useMyTasks() {
         });
 
         // Invalidate tasks query to ensure fresh data on next fetch
-        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        queryClient.invalidateQueries({ queryKey: taskKeys.all });
       } catch (err) {
         console.error("Failed to complete task:", err);
         // Rollback optimistic update on failure
@@ -239,7 +241,7 @@ export function useMyTasks() {
 
         // Invalidate tasks query to ensure fresh data on next fetch
         // This ensures the UI stays in sync when optimistic update is cleared
-        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        queryClient.invalidateQueries({ queryKey: taskKeys.all });
       } catch (err) {
         console.error("Failed to snooze task:", err);
         // Rollback optimistic update on failure
@@ -285,7 +287,7 @@ export function useMyTasks() {
         });
 
         // Invalidate tasks query to ensure fresh data on next fetch
-        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        queryClient.invalidateQueries({ queryKey: taskKeys.all });
       } catch (err) {
         console.error("Failed to delete task:", err);
         // Rollback optimistic update on failure
@@ -348,7 +350,7 @@ export function useMyTasks() {
         });
 
         // Invalidate tasks query to ensure fresh data on next fetch
-        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        queryClient.invalidateQueries({ queryKey: taskKeys.all });
       } catch (err) {
         console.error("Failed to update task due date:", err);
         // Rollback optimistic update on failure

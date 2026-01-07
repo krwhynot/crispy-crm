@@ -7,7 +7,7 @@
  * @see PROVIDER_RULES.md - Rule 7 (No Magic, Just Handlers)
  */
 
-import type { DataProvider, RaRecord, Identifier } from "ra-core";
+import type { DataProvider, RaRecord } from "ra-core";
 import type { ExtendedDataProvider } from "./extensions/types";
 
 /**

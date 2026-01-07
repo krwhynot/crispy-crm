@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+
+import { orgDescendantKeys } from "@/atomic-crm/queryKeys";
 import { supabase } from "@/atomic-crm/providers/supabase/supabase";
 
 /**
@@ -20,7 +22,7 @@ export function useOrganizationDescendants(
   orgId: number | undefined
 ): UseOrganizationDescendantsReturn {
   const { data: descendants = [], isLoading, isFetched } = useQuery({
-    queryKey: ["org-descendants", orgId],
+    queryKey: orgDescendantKeys.detail(orgId!),
     queryFn: async () => {
       if (!orgId) return [];
       const { data, error } = await supabase.rpc("get_organization_descendants", {
