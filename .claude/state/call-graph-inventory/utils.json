@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-06T02:45:16.025Z",
+  "generated_at": "2026-01-07T23:40:47.398Z",
   "items": {
     "nodes": [
       {
@@ -454,46 +454,46 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
+        "id": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "name": "getStorageItem",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 54,
+        "line": 70,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
+        "id": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
         "name": "setStorageItem",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 123,
+        "line": 144,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:160:removeStorageItem",
+        "id": "src/atomic-crm/utils/secureStorage.ts:183:removeStorageItem",
         "name": "removeStorageItem",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 160,
+        "line": 183,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
+        "id": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
         "name": "clearStorageByPrefix",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 179,
+        "line": 203,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
+        "id": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
         "name": "getKeysByPrefix",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 212,
+        "line": 236,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -2202,232 +2202,277 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "target": "getItem",
         "targetName": "getItem",
         "edgeType": "call",
-        "line": 63,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 66,
+        "line": 82,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "target": "safeParse",
         "targetName": "safeParse",
-        "edgeType": "call",
-        "line": 68,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 70,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "flatten",
-        "targetName": "flatten",
-        "edgeType": "call",
-        "line": 70,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "getItem",
-        "targetName": "getItem",
-        "edgeType": "call",
-        "line": 80,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "parse",
-        "targetName": "parse",
         "edgeType": "call",
         "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "safeParse",
-        "targetName": "safeParse",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "stringify",
+        "targetName": "stringify",
         "edgeType": "call",
         "line": 86,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 88,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "target": "flatten",
         "targetName": "flatten",
         "edgeType": "call",
+        "line": 86,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "flatten",
+        "targetName": "flatten",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "onError",
+        "targetName": "onError",
+        "edgeType": "call",
         "line": 88,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "removeItem",
-        "targetName": "removeItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "getItem",
+        "targetName": "getItem",
         "edgeType": "call",
-        "line": 90,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "setStorageItem",
-        "targetName": "setStorageItem",
-        "edgeType": "call",
-        "line": 93,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "removeItem",
-        "targetName": "removeItem",
-        "edgeType": "call",
-        "line": 94,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "setStorageItem",
-        "targetName": "setStorageItem",
-        "edgeType": "call",
-        "line": 97,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "removeItem",
-        "targetName": "removeItem",
-        "edgeType": "call",
-        "line": 100,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:54:getStorageItem",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 105,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
-        "target": "setItem",
-        "targetName": "setItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "parse",
+        "targetName": "parse",
         "edgeType": "call",
-        "line": 132,
-        "conditional": false,
+        "line": 102,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "safeParse",
+        "targetName": "safeParse",
+        "edgeType": "call",
+        "line": 104,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "target": "stringify",
         "targetName": "stringify",
         "edgeType": "call",
-        "line": 132,
-        "conditional": false,
+        "line": 106,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "flatten",
+        "targetName": "flatten",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 135,
+        "line": 107,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "flatten",
+        "targetName": "flatten",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "onError",
+        "targetName": "onError",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "removeItem",
+        "targetName": "removeItem",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "setStorageItem",
+        "targetName": "setStorageItem",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "removeItem",
+        "targetName": "removeItem",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "setStorageItem",
+        "targetName": "setStorageItem",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "removeItem",
+        "targetName": "removeItem",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "onError",
+        "targetName": "onError",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
         "target": "setItem",
         "targetName": "setItem",
         "edgeType": "call",
-        "line": 140,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
         "target": "stringify",
         "targetName": "stringify",
         "edgeType": "call",
-        "line": 140,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
         "target": "warn",
         "targetName": "warn",
-        "edgeType": "call",
-        "line": 141,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:123:setStorageItem",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 144,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:160:removeStorageItem",
-        "target": "removeItem",
-        "targetName": "removeItem",
         "edgeType": "call",
         "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:160:removeStorageItem",
-        "target": "removeItem",
-        "targetName": "removeItem",
-        "edgeType": "call",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:160:removeStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
@@ -2436,137 +2481,200 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
-        "target": "key",
-        "targetName": "key",
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
+        "target": "onError",
+        "targetName": "onError",
         "edgeType": "call",
-        "line": 184,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
-        "target": "startsWith",
-        "targetName": "startsWith",
-        "edgeType": "call",
-        "line": 185,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 186,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 190,
+        "line": 166,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:144:setStorageItem",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 166,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:183:removeStorageItem",
         "target": "removeItem",
         "targetName": "removeItem",
         "edgeType": "call",
-        "line": 190,
+        "line": 185,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
-        "target": "clearFromStorage",
-        "targetName": "clearFromStorage",
+        "source": "src/atomic-crm/utils/secureStorage.ts:183:removeStorageItem",
+        "target": "removeItem",
+        "targetName": "removeItem",
         "edgeType": "call",
-        "line": 194,
+        "line": 186,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
-        "target": "clearFromStorage",
-        "targetName": "clearFromStorage",
-        "edgeType": "call",
-        "line": 195,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:179:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:183:removeStorageItem",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 197,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:183:removeStorageItem",
+        "target": "onError",
+        "targetName": "onError",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:183:removeStorageItem",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
         "target": "key",
         "targetName": "key",
         "edgeType": "call",
-        "line": 217,
+        "line": 208,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 218,
+        "line": 209,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
-        "target": "add",
-        "targetName": "add",
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 210,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 214,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
+        "target": "removeItem",
+        "targetName": "removeItem",
+        "edgeType": "call",
+        "line": 214,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
+        "target": "clearFromStorage",
+        "targetName": "clearFromStorage",
+        "edgeType": "call",
+        "line": 218,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
+        "target": "clearFromStorage",
+        "targetName": "clearFromStorage",
         "edgeType": "call",
         "line": 219,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
-        "target": "collectKeys",
-        "targetName": "collectKeys",
-        "edgeType": "call",
-        "line": 225,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
-        "target": "collectKeys",
-        "targetName": "collectKeys",
-        "edgeType": "call",
-        "line": 226,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:203:clearStorageByPrefix",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 228,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:212:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
+        "target": "key",
+        "targetName": "key",
+        "edgeType": "call",
+        "line": 241,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
+        "target": "startsWith",
+        "targetName": "startsWith",
+        "edgeType": "call",
+        "line": 242,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
+        "target": "add",
+        "targetName": "add",
+        "edgeType": "call",
+        "line": 243,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
+        "target": "collectKeys",
+        "targetName": "collectKeys",
+        "edgeType": "call",
+        "line": 249,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
+        "target": "collectKeys",
+        "targetName": "collectKeys",
+        "edgeType": "call",
+        "line": 250,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 252,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:236:getKeysByPrefix",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 231,
+        "line": 255,
         "conditional": false,
         "inLoop": false
       },

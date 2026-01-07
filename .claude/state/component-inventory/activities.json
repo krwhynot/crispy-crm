@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-06T02:44:57.676Z",
+  "generated_at": "2026-01-07T23:40:38.830Z",
   "item_count": 25,
   "items": [
     {
@@ -36,12 +36,13 @@
     {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/ActivityEdit.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
+        "../queryKeys",
         "../types",
         "./ActivityInputs",
         "@/atomic-crm/layout/FormToolbar",
@@ -60,12 +61,13 @@
     {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/ActivityEdit.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
+        "../queryKeys",
         "../types",
         "./ActivityInputs",
         "@/atomic-crm/layout/FormToolbar",
@@ -355,7 +357,7 @@
     {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"

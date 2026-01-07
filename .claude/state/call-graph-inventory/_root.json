@@ -1,0 +1,18 @@
+{
+  "chunk_name": "_root",
+  "generated_at": "2026-01-07T23:40:47.384Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/queryKeys.ts:15:createKeys",
+        "name": "createKeys",
+        "file": "src/atomic-crm/queryKeys.ts",
+        "line": 15,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      }
+    ],
+    "edges": []
+  }
+}

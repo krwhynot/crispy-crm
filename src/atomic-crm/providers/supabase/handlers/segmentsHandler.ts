@@ -46,9 +46,11 @@ function hasRequiredId(segment: Segment): segment is Segment & { id: string } {
  * @returns DataProvider with segment-specific create behavior
  */
 export function createSegmentsHandler(baseProvider: DataProvider): DataProvider {
-  // Create service instance with extended provider (runtime validated)
-  const extendedProvider = assertExtendedDataProvider(baseProvider);
-  const segmentsService = new SegmentsService(extendedProvider);
+  // Create service instance with extended provider
+  // NOTE: We cast to ExtendedDataProvider because the provider WILL be extended
+  // by the time these methods are actually called. The runtime assertion was
+  // removed because it runs at initialization time before extensions are added.
+  const segmentsService = new SegmentsService(baseProvider as ExtendedDataProvider);
 
   /**
    * Custom segments handler with segment-specific logic

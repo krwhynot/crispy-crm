@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-06T02:44:58.043Z",
+  "generated_at": "2026-01-07T23:40:38.852Z",
   "item_count": 28,
   "items": [
     {
@@ -45,7 +45,7 @@
     {
       "name": "Task",
       "file": "src/atomic-crm/tasks/Task.tsx",
-      "line": 31,
+      "line": 33,
       "type": "presentational",
       "hooks": [
         "useDeleteWithUndoController",
@@ -57,6 +57,7 @@
       ],
       "imports": [
         "../activities/QuickLogActivity",
+        "../queryKeys",
         "../types",
         "./TaskEdit",
         "@/components/admin/date-field",
@@ -132,13 +133,14 @@
     {
       "name": "TaskEdit",
       "file": "src/atomic-crm/tasks/TaskEdit.tsx",
-      "line": 16,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
         "../layout/FormToolbar",
+        "../queryKeys",
         "../types",
         "./TaskInputs",
         "@/atomic-crm/validation/task",
@@ -159,13 +161,14 @@
     {
       "name": "TaskEdit",
       "file": "src/atomic-crm/tasks/TaskEdit.tsx",
-      "line": 16,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
       ],
       "imports": [
         "../layout/FormToolbar",
+        "../queryKeys",
         "../types",
         "./TaskInputs",
         "@/atomic-crm/validation/task",

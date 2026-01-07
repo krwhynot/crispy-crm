@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-06T02:45:15.933Z",
+  "generated_at": "2026-01-07T23:40:47.352Z",
   "items": {
     "nodes": [
       {
@@ -265,6 +265,15 @@
         "async": false
       },
       {
+        "id": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "name": "useOrganizationDescendants",
+        "file": "src/hooks/useOrganizationDescendants.ts",
+        "line": 21,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
         "id": "src/hooks/useSlideOverState.ts:28:getHashParams",
         "name": "getHashParams",
         "file": "src/hooks/useSlideOverState.ts",
@@ -340,10 +349,19 @@
       },
       {
         "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 67,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
@@ -352,7 +370,7 @@
         "target": "getItem",
         "targetName": "getItem",
         "edgeType": "call",
-        "line": 72,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
@@ -361,7 +379,7 @@
         "target": "safeJsonParse",
         "targetName": "safeJsonParse",
         "edgeType": "call",
-        "line": 78,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
@@ -370,7 +388,7 @@
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 81,
+        "line": 82,
         "conditional": true,
         "inLoop": false
       },
@@ -379,25 +397,25 @@
         "target": "call",
         "targetName": "call",
         "edgeType": "call",
-        "line": 97,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "isValidFilterField",
-        "targetName": "isValidFilterField",
-        "edgeType": "call",
         "line": 98,
         "conditional": true,
         "inLoop": true
       },
       {
         "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "target": "isValidFilterField",
+        "targetName": "isValidFilterField",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 103,
+        "line": 104,
         "conditional": true,
         "inLoop": true
       },
@@ -405,15 +423,6 @@
         "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
         "target": "isValidFilterField",
         "targetName": "isValidFilterField",
-        "edgeType": "call",
-        "line": 116,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "warn",
-        "targetName": "warn",
         "edgeType": "call",
         "line": 117,
         "conditional": true,
@@ -421,19 +430,10 @@
       },
       {
         "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "setItem",
-        "targetName": "setItem",
+        "target": "warn",
+        "targetName": "warn",
         "edgeType": "call",
-        "line": 132,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "stringify",
-        "targetName": "stringify",
-        "edgeType": "call",
-        "line": 132,
+        "line": 118,
         "conditional": true,
         "inLoop": false
       },
@@ -448,10 +448,28 @@
       },
       {
         "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 134,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
         "target": "info",
         "targetName": "info",
         "edgeType": "call",
-        "line": 135,
+        "line": 136,
         "conditional": true,
         "inLoop": false
       },
@@ -460,7 +478,16 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 141,
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 146,
         "conditional": false,
         "inLoop": false
       },
@@ -2558,6 +2585,33 @@
         "targetName": "getAttribute",
         "edgeType": "call",
         "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "target": "useQuery",
+        "targetName": "useQuery",
+        "edgeType": "hook",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "target": "detail",
+        "targetName": "detail",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 28,
         "conditional": false,
         "inLoop": false
       },
