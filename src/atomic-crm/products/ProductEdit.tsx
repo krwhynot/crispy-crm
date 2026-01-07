@@ -1,6 +1,8 @@
 import { EditBase, Form, useRecordContext, useGetIdentity } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
+
+import { productKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { SaveButton } from "@/components/admin/form";
@@ -20,7 +22,7 @@ const ProductEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate products cache
-          queryClient.invalidateQueries({ queryKey: ["products"] });
+          queryClient.invalidateQueries({ queryKey: productKeys.all });
         },
       }}
     >

@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useQueryClient } from "@tanstack/react-query";
+
+import { taskKeys } from "../queryKeys";
 import {
   addDays,
   addWeeks,
@@ -104,7 +106,7 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
       return;
     }
 
-    queryClient.invalidateQueries({ queryKey: ["tasks", "getList"] });
+    queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
   }, [queryClient, isUpdatePending, isSuccess, variables]);
 
   const labelId = `checkbox-list-label-${task.id}`;

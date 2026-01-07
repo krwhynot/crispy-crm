@@ -42,7 +42,8 @@ describe("createOpportunitiesHandler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Create mock base provider
+    // Create mock base provider with ExtendedDataProvider methods
+    // (required by assertExtendedDataProvider type guard)
     mockBaseProvider = {
       getList: vi.fn().mockResolvedValue({ data: [], total: 0 }),
       getOne: vi.fn().mockResolvedValue({ data: { id: 1 } }),
@@ -53,6 +54,10 @@ describe("createOpportunitiesHandler", () => {
       updateMany: vi.fn().mockResolvedValue({ data: [1] }),
       delete: vi.fn().mockResolvedValue({ data: { id: 1 } }),
       deleteMany: vi.fn().mockResolvedValue({ data: [1, 2] }),
+      // ExtendedDataProvider methods (mocked)
+      rpc: vi.fn(),
+      storage: { upload: vi.fn(), download: vi.fn() },
+      invoke: vi.fn(),
     };
 
     // Create handler
