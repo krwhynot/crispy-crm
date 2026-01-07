@@ -2,11 +2,14 @@
  * Opportunities Handler - Composed DataProvider
  *
  * Composes all infrastructure pieces for the opportunities resource:
- * 1. Base provider → Raw Supabase operations
- * 2. withLifecycleCallbacks → Resource-specific logic (RPC archive, soft delete filter)
- * 3. withValidation → Zod schema validation
- * 4. withErrorLogging → Structured error handling
- * 5. Service delegation → OpportunitiesService for product sync
+ * 1. customHandler → Opportunities-specific logic (create/update with products)
+ * 2. withValidation → Zod schema validation
+ * 3. withLifecycleCallbacks → Resource-specific callbacks (RPC archive, soft delete filter)
+ * 4. withErrorLogging → Structured error handling (OUTERMOST)
+ *
+ * CRITICAL FIX (2025-01): Custom methods are now defined INSIDE the wrapper chain,
+ * not outside. This ensures withErrorLogging catches and reports all errors properly.
+ * Previously, create/update with products_to_sync bypassed error logging.
  *
  * Note: The RPC archive_opportunity_with_relations logic is encapsulated
  * in opportunitiesCallbacks. The handler composition remains identical.
@@ -20,6 +23,13 @@ import {
   type CreateParams,
   type UpdateParams,
   type RaRecord,
+  type GetListParams,
+  type GetOneParams,
+  type GetManyParams,
+  type GetManyReferenceParams,
+  type DeleteParams,
+  type DeleteManyParams,
+  type UpdateManyParams,
 } from "react-admin";
 import { z } from "zod";
 import { withErrorLogging, withValidation } from "../wrappers";

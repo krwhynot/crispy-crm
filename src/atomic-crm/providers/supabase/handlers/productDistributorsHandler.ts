@@ -11,7 +11,13 @@
  * 4. HARD DELETE (not soft delete) - junction records are truly removed
  *
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withErrorLogging → method interceptions
+ * customHandler → withValidation → withErrorLogging
+ *
+ * CRITICAL FIX (2024-01): Custom methods are now defined INSIDE the wrapper chain,
+ * not outside. This ensures withErrorLogging catches and reports all errors properly.
+ * Previously, service calls bypassed error logging causing silent failures.
+ *
+ * Note: No withLifecycleCallbacks needed - junction table uses hard delete.
  *
  * Engineering Constitution: Service layer for composite key orchestration
  */
@@ -23,6 +29,10 @@ import type {
   DeleteParams,
   CreateParams,
   GetListParams,
+  GetManyParams,
+  GetManyReferenceParams,
+  UpdateManyParams,
+  DeleteManyParams,
   RaRecord,
 } from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
