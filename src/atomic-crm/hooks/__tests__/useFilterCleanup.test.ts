@@ -17,12 +17,10 @@ import { renderHook } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { useFilterCleanup } from "../useFilterCleanup";
 
-// Mock ra-core's useStore and useNotify hooks
+// Mock ra-core's useStore hook
 const mockSetItem = vi.fn();
-const mockNotify = vi.fn();
 vi.mock("ra-core", () => ({
   useStore: () => [null, { setItem: mockSetItem }],
-  useNotify: () => mockNotify,
 }));
 
 // Mock the filterRegistry validation function

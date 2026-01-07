@@ -36,7 +36,6 @@ import {
 } from "./defaultConfiguration";
 import { i18nProvider } from "./i18nProvider";
 import { StartPage } from "@/atomic-crm/login/StartPage.tsx";
-import { RESOURCES } from "../../constants/resources";
 
 // Lazy load ReportsPage
 const ReportsPage = React.lazy(() => import("../reports/ReportsPage"));
@@ -219,20 +218,20 @@ export const CRM = ({
           <Route path="/organizations/:id/show" element={<OrganizationShowRedirect />} />
           <Route path="/opportunities/:id/show" element={<OpportunityShowRedirect />} />
         </CustomRoutes>
-        <Resource name={RESOURCES.OPPORTUNITIES} {...opportunities} />
-        <Resource name={RESOURCES.CONTACTS} {...contacts} />
-        <Resource name={RESOURCES.ORGANIZATIONS} {...organizations} />
-        <Resource name={RESOURCES.PRODUCTS} {...products} />
-        <Resource name={RESOURCES.PRODUCT_DISTRIBUTORS} {...productDistributors} />
-        <Resource name={RESOURCES.TASKS} {...tasks} />
-        <Resource name={RESOURCES.ACTIVITIES} {...activities} />
-        <Resource name={RESOURCES.CONTACT_NOTES} />
-        <Resource name={RESOURCES.OPPORTUNITY_NOTES} />
-        <Resource name={RESOURCES.ORGANIZATION_NOTES} />
-        <Resource name={RESOURCES.SALES} {...sales} />
-        <Resource name={RESOURCES.TAGS} />
-        <Resource name={RESOURCES.SEGMENTS} />
-        <Resource name={RESOURCES.NOTIFICATIONS} {...notifications} />
+        <Resource name="opportunities" {...opportunities} />
+        <Resource name="contacts" {...contacts} />
+        <Resource name="organizations" {...organizations} />
+        <Resource name="products" {...products} />
+        <Resource name="product_distributors" {...productDistributors} />
+        <Resource name="tasks" {...tasks} />
+        <Resource name="activities" {...activities} />
+        <Resource name="contactNotes" />
+        <Resource name="opportunityNotes" />
+        <Resource name="organizationNotes" />
+        <Resource name="sales" {...sales} />
+        <Resource name="tags" />
+        <Resource name="segments" />
+        <Resource name="notifications" {...notifications} />
       </Admin>
     </ConfigurationProvider>
   );

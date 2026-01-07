@@ -1,6 +1,6 @@
 {
   "chunk_name": "services",
-  "generated_at": "2026-01-07T04:23:20.719Z",
+  "generated_at": "2026-01-06T02:45:16.014Z",
   "items": {
     "nodes": [
       {
@@ -31,24 +31,6 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/services/productDistributors.service.ts:36:parseCompositeId",
-        "name": "parseCompositeId",
-        "file": "src/atomic-crm/services/productDistributors.service.ts",
-        "line": 36,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/services/productDistributors.service.ts:55:createCompositeId",
-        "name": "createCompositeId",
-        "file": "src/atomic-crm/services/productDistributors.service.ts",
-        "line": 55,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
         "id": "src/atomic-crm/services/utils/handleServiceError.ts:11:handleServiceError",
         "name": "handleServiceError",
         "file": "src/atomic-crm/services/utils/handleServiceError.ts",
@@ -75,60 +57,6 @@
         "edgeType": "call",
         "line": 62,
         "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/services/productDistributors.service.ts:36:parseCompositeId",
-        "target": "split",
-        "targetName": "split",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/services/productDistributors.service.ts:36:parseCompositeId",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/services/productDistributors.service.ts:36:parseCompositeId",
-        "target": "parseInt",
-        "targetName": "parseInt",
-        "edgeType": "call",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/services/productDistributors.service.ts:36:parseCompositeId",
-        "target": "parseInt",
-        "targetName": "parseInt",
-        "edgeType": "call",
-        "line": 43,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/services/productDistributors.service.ts:36:parseCompositeId",
-        "target": "isNaN",
-        "targetName": "isNaN",
-        "edgeType": "call",
-        "line": 45,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/services/productDistributors.service.ts:36:parseCompositeId",
-        "target": "isNaN",
-        "targetName": "isNaN",
-        "edgeType": "call",
-        "line": 45,
-        "conditional": true,
         "inLoop": false
       },
       {

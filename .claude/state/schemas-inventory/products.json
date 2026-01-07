@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-07T04:23:16.634Z",
+  "generated_at": "2026-01-06T02:45:11.758Z",
   "item_count": 3,
   "items": [
     {
@@ -74,8 +74,8 @@
             "trim()",
             "max(2000)"
           ],
-          "optional": false,
-          "nullable": true,
+          "optional": true,
+          "nullable": false,
           "hasTransform": false,
           "hasDefault": false
         },

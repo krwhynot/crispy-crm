@@ -228,25 +228,6 @@ export default tseslint.config(
     //   },
     // },
   },
-  // Provider override for as-casting ban (warn phase - will become error after cleanup)
-  // Goal: Eliminate unsafe `as unknown as X` double-casts, prefer type guards
-  {
-    files: ["**/providers/**/*.ts"],
-    ignores: ["**/providers/**/typeGuards.ts"], // Type guards need assertions internally
-    rules: {
-      "@typescript-eslint/consistent-type-assertions": [
-        "warn", // Non-blocking until all violations fixed
-        { assertionStyle: "never" },
-      ],
-    },
-  },
-  // Allow as-casting in tests (for mocking) and type guards (by design)
-  {
-    files: ["**/__tests__/**/*.ts", "**/*.test.ts", "**/typeGuards.ts"],
-    rules: {
-      "@typescript-eslint/consistent-type-assertions": "off",
-    },
-  },
   // JavaScript/MJS configuration (for scripts)
   {
     extends: [js.configs.recommended],

@@ -37,22 +37,6 @@ export interface StorageOptions<T = unknown> {
    * Invalid data returns null (fail-fast principle)
    */
   schema?: ZodSchema<T>;
-
-  /**
-   * Optional callback for error notification
-   * Called when storage operations fail, allowing components to show user-facing errors
-   *
-   * @param error - The error that occurred
-   * @param key - The storage key involved
-   * @param operation - The type of operation that failed
-   *
-   * @example
-   * // Components can handle storage errors:
-   * const { getItem } = useSecureStorage({
-   *   onError: (error, key, op) => notify(`Storage ${op} failed for ${key}`, { type: "error" })
-   * });
-   */
-  onError?: (error: Error, key: string, operation: "read" | "write" | "remove") => void;
 }
 
 /**
@@ -83,9 +67,7 @@ export function getStorageItem<T = unknown>(
       if (options.schema) {
         const result = options.schema.safeParse(parsed);
         if (!result.success) {
-          const validationError = new Error(`Validation failed: ${JSON.stringify(result.error.flatten())}`);
           console.error(`[Storage] Validation failed for key "${key}":`, result.error.flatten());
-          options.onError?.(validationError, key, "read");
           return null;
         }
         return result.data;
@@ -103,9 +85,7 @@ export function getStorageItem<T = unknown>(
       if (options.schema) {
         const result = options.schema.safeParse(parsed);
         if (!result.success) {
-          const validationError = new Error(`Validation failed: ${JSON.stringify(result.error.flatten())}`);
           console.error(`[Storage] Validation failed for key "${key}":`, result.error.flatten());
-          options.onError?.(validationError, key, "read");
           // Clean up invalid data from fallback storage
           fallbackStorage.removeItem(key);
           return null;
@@ -123,7 +103,6 @@ export function getStorageItem<T = unknown>(
     }
   } catch (e) {
     console.error(`[Storage] Error reading key "${key}":`, e);
-    options.onError?.(e instanceof Error ? e : new Error(String(e)), key, "read");
   }
 
   return null;
@@ -163,7 +142,6 @@ export function setStorageItem<T = any>(
       return true;
     } catch (e2) {
       console.error(`[Storage] Fallback storage also failed:`, e2);
-      options.onError?.(e2 instanceof Error ? e2 : new Error(String(e2)), key, "write");
       return false;
     }
   }
@@ -174,19 +152,17 @@ export function setStorageItem<T = any>(
  * Ensures complete cleanup regardless of where data was stored
  *
  * @param key - Storage key to remove
- * @param options - Storage options (only onError is used)
  *
  * @example
  * removeStorageItem('filter.opportunity_stages');
  * // Removes from both sessionStorage and localStorage
  */
-export function removeStorageItem(key: string, options: StorageOptions = {}): void {
+export function removeStorageItem(key: string): void {
   try {
     sessionStorage.removeItem(key);
     localStorage.removeItem(key);
   } catch (e) {
     console.error(`[Storage] Error removing key "${key}":`, e);
-    options.onError?.(e instanceof Error ? e : new Error(String(e)), key, "remove");
   }
 }
 

@@ -16,7 +16,7 @@ export const OpportunityActivityTab = () => {
       <Separator />
       <ReferenceManyField
         target="opportunity_id"
-        reference="opportunity_notes"
+        reference="opportunityNotes"
         sort={{ field: "created_at", order: "DESC" }}
       >
         <NotesIterator reference="opportunities" />

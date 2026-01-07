@@ -6,34 +6,16 @@
  * which looks up by name (no dynamic creation).
  *
  * Composition:
- * 1. customHandler → Segments-specific logic (create, getOne, getList, getMany)
- * 2. withErrorLogging → Structured error handling (OUTERMOST)
- *
- * Note: No withValidation needed (segments are fixed constants, not user input).
- * Note: No withLifecycleCallbacks needed (segments don't need lifecycle hooks).
+ * 1. Base provider → Raw Supabase operations for reads
+ * 2. Custom create → Delegates to SegmentsService.getOrCreateSegment()
  *
  * Engineering Constitution: Service Layer for business logic
  */
 
-import { z } from "zod";
 import type { DataProvider, CreateParams, RaRecord } from "react-admin";
 import { SegmentsService } from "../../../services/segments.service";
+import type { ExtendedDataProvider } from "../extensions/types";
 import type { Segment } from "../../../validation/segments";
-import { withErrorLogging } from "../wrappers";
-import { assertExtendedDataProvider } from "../typeGuards";
-
-/**
- * Schema for validating segment create data
- * Validates the minimal required shape for segment lookup
- */
-const segmentCreateDataSchema = z.object({ name: z.string().optional() }).passthrough();
-
-/**
- * Type guard to ensure segment has required id for RaRecord compatibility
- */
-function hasRequiredId(segment: Segment): segment is Segment & { id: string } {
-  return typeof segment.id === "string";
-}
 
 /**
  * Create a composed DataProvider for segments
@@ -46,17 +28,10 @@ function hasRequiredId(segment: Segment): segment is Segment & { id: string } {
  * @returns DataProvider with segment-specific create behavior
  */
 export function createSegmentsHandler(baseProvider: DataProvider): DataProvider {
-  // Create service instance with extended provider (runtime validated)
-  const extendedProvider = assertExtendedDataProvider(baseProvider);
-  const segmentsService = new SegmentsService(extendedProvider);
+  // Create service instance with extended provider
+  const segmentsService = new SegmentsService(baseProvider as ExtendedDataProvider);
 
-  /**
-   * Custom segments handler with segment-specific logic
-   *
-   * This handler is defined FIRST, then wrapped with withErrorLogging.
-   * This ensures all custom logic is INSIDE the "safety bubble" of error logging.
-   */
-  const customHandler: DataProvider = {
+  return {
     ...baseProvider,
 
     /**
@@ -75,17 +50,13 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       // Only intercept segments resource
       if (resource === "segments") {
-        const data = segmentCreateDataSchema.parse(params.data);
+        const data = params.data as unknown as { name?: string };
         const name = data.name || "Unknown";
 
         // Delegate to service - returns existing category or default
         const segment = await segmentsService.getOrCreateSegment(name);
 
-        // Return in React Admin format - service always returns segment with id
-        if (!hasRequiredId(segment)) {
-          throw new Error("Segment missing required id field");
-        }
-        // Type-safe: runtime guard ensures segment has required id
+        // Return in React Admin format
         return { data: segment as unknown as RecordType };
       }
 
@@ -108,10 +79,6 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
           throw new Error(`Segment not found: ${params.id}`);
         }
 
-        if (!hasRequiredId(segment)) {
-          throw new Error("Segment missing required id field");
-        }
-        // Type-safe: runtime guard ensures segment has required id
         return { data: segment as unknown as RecordType };
       }
 
@@ -128,7 +95,6 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       if (resource === "segments") {
         const categories = segmentsService.getAllCategories();
-        // Categories always have id and name - shape matches RaRecord requirements
         const data = categories.map((cat) => ({
           id: cat.id,
           name: cat.name,
@@ -154,24 +120,12 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
       if (resource === "segments") {
         const segments = params.ids
           .map((id) => segmentsService.getSegmentById(String(id)))
-          .filter((s): s is Segment & { id: string } => s !== undefined && hasRequiredId(s));
+          .filter((s): s is Segment => s !== undefined);
 
-        // Type-safe: runtime filter ensures all segments have required id
         return { data: segments as unknown as RecordType[] };
       }
 
       return baseProvider.getMany<RecordType>(resource, params);
     },
   };
-
-  /**
-   * Wrap the custom handler with error logging
-   *
-   * withErrorLogging is the ONLY wrapper needed for segments:
-   * - No withValidation (segments are fixed constants, not user input)
-   * - No withLifecycleCallbacks (segments don't need lifecycle hooks)
-   *
-   * This ensures ALL errors from segment operations are properly caught and logged.
-   */
-  return withErrorLogging(customHandler);
 }

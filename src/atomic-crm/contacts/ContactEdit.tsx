@@ -4,7 +4,6 @@ import { ResponsiveGrid } from "@/components/design-system";
 import { EditBase, Form, useEditContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { contactKeys, activityKeys, opportunityKeys } from "../queryKeys";
 import type { Contact } from "../types";
 import { ContactAside } from "./ContactAside";
 import { ContactInputs } from "./ContactInputs";
@@ -20,9 +19,9 @@ export const ContactEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate related caches to prevent stale data
-          queryClient.invalidateQueries({ queryKey: contactKeys.all });
-          queryClient.invalidateQueries({ queryKey: activityKeys.all });
-          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          queryClient.invalidateQueries({ queryKey: ["contacts"] });
+          queryClient.invalidateQueries({ queryKey: ["activities"] });
+          queryClient.invalidateQueries({ queryKey: ["opportunities"] });
         },
       }}
     >

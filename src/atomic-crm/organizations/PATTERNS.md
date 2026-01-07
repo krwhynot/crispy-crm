@@ -530,7 +530,7 @@ Lightweight inline creation with two paths.
 ```tsx
 // src/atomic-crm/organizations/QuickCreatePopover.tsx
 const quickCreateSchema = z.object({
-  name: z.string().trim().min(1).max(255),
+  name: z.string().min(1).max(255),
   organization_type: z.enum(["customer", "prospect", "principal", "distributor"]),
   priority: z.enum(["A", "B", "C", "D"]).default("C"),
   city: z.string().max(100).optional(),
@@ -630,9 +630,6 @@ export const OrganizationStatusSection = () => {
             <NumberInput source="credit_limit" label="Credit Limit" />
           </FormFieldWrapper>
         </CompactFormRow>
-        <FormFieldWrapper name="territory">
-          <TextInput source="territory" label="Territory" helperText="Geographic territory assignment" />
-        </FormFieldWrapper>
       </div>
     </FormSection>
   );
@@ -652,9 +649,6 @@ export const OrganizationAddressSection = () => {
           </FormFieldWrapper>
           <FormFieldWrapper name="shipping_state">
             <StateComboboxInput source="shipping_state" label="State" />
-          </FormFieldWrapper>
-          <FormFieldWrapper name="shipping_postal_code">
-            <TextInput source="shipping_postal_code" label="ZIP Code" helperText={false} />
           </FormFieldWrapper>
         </CompactFormRow>
       </div>
@@ -736,8 +730,7 @@ export const PrincipalAwareTypeInput = () => {
       />
       <PrincipalChangeWarning
         open={showWarning}
-        onClose={handleWarningClose}
-        onConfirm={handleWarningClose}
+        onClose={() => setShowWarning(false)}
         newType={attemptedType}
       />
     </>

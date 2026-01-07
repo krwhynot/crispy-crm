@@ -19,15 +19,12 @@ ContactCompactForm (smart defaults + email parsing)
     |
 contactBaseSchema (Zod validation)
 
-ContactSlideOver (40vw detail panel)
+ContactSlideOver (detail panel)
     |
-+-- ContactDetailsTab (view/edit mode, TagsListEdit inline)
++-- ContactDetailsTab (view/edit mode)
 +-- ActivitiesTab (timeline + quick-log)
-+-- ContactNotesTab (notes)
-
-ContactShow (full page view)
-    |
-+-- OpportunitiesTab (junction table + link modal)
++-- OpportunitiesTab (junction table + suggestions)
++-- TagsListEdit (editable tags)
 
 Badge System
 +-- ContactStatusBadge (cold/warm/hot/in-contract)
@@ -186,8 +183,6 @@ export function validateTransformedContacts(contacts: ContactImportSchema[]) {
 Smart defaults derived from Zod schema with sales context awareness.
 
 **When to use**: Creating/editing contacts with sensible defaults and auto-population.
-
-> **Note**: The actual implementation uses `useSmartDefaults()` hook which provides URL parameter pre-fill (`?organization_id=123`), navigation state defaults, and context-aware smart defaults.
 
 ### Schema-Driven Defaults
 
