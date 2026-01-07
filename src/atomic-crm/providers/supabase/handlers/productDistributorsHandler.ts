@@ -117,10 +117,32 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
       return { data: data as unknown as RecordType };
     },
 
-    getMany: <RecordType extends RaRecord = RaRecord>(
+    getMany: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: GetManyParams<RecordType>
-    ) => baseProvider.getMany<RecordType>(resource, params),
+    ) => {
+      if (resource !== "product_distributors") {
+        return baseProvider.getMany<RecordType>(resource, params);
+      }
+
+      const { ids } = params;
+
+      // Parse composite IDs and fetch each record via service
+      const results = await Promise.all(
+        ids.map(async (id) => {
+          const { product_id, distributor_id } = parseCompositeId(String(id));
+          return service.getOne(product_id, distributor_id);
+        })
+      );
+
+      // Re-attach composite IDs
+      const dataWithIds = results.map((record) => ({
+        ...record,
+        id: createCompositeId(record.product_id, record.distributor_id),
+      }));
+
+      return { data: dataWithIds as unknown as RecordType[] };
+    },
 
     getManyReference: <RecordType extends RaRecord = RaRecord>(
       resource: string,
