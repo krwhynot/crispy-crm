@@ -2,11 +2,14 @@
  * Products Handler - Composed DataProvider
  *
  * Composes all infrastructure pieces for the products resource:
- * 1. Base provider → Raw Supabase operations
- * 2. withLifecycleCallbacks → Resource-specific logic (soft delete only)
- * 3. withValidation → Zod schema validation
- * 4. withErrorLogging → Structured error handling
- * 5. Custom create interception → Atomic product + distributors via RPC
+ * 1. customProductsHandler → Products-specific logic (create, update, delete)
+ * 2. withValidation → Zod schema validation
+ * 3. withLifecycleCallbacks → Resource-specific callbacks
+ * 4. withErrorLogging → Structured error handling (OUTERMOST)
+ *
+ * CRITICAL FIX (2024-01): Custom methods are now defined INSIDE the wrapper chain,
+ * not outside. This ensures withErrorLogging catches and reports all errors properly.
+ * Previously, delete/deleteMany bypassed error logging causing "zombie delete" bugs.
  *
  * Note: productsCallbacks uses the createResourceCallbacks factory
  * with minimal configuration (soft delete only, no computed fields).
@@ -22,6 +25,11 @@ import {
   type DeleteParams,
   type DeleteManyParams,
   type RaRecord,
+  type GetListParams,
+  type GetOneParams,
+  type GetManyParams,
+  type GetManyReferenceParams,
+  type UpdateManyParams,
 } from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
 import { productsCallbacks } from "../callbacks";
@@ -29,7 +37,6 @@ import {
   productWithDistributorsSchema,
   distributorAssociationSchema,
   transformToRpcParams,
-  type ProductWithDistributors,
 } from "../../../validation/productWithDistributors";
 import { z } from "zod";
 import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
@@ -70,26 +77,44 @@ const productFieldStripSchema = z.object({
  * Create a fully composed DataProvider for products
  *
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ * customProductsHandler → withValidation → withLifecycleCallbacks → withErrorLogging
  *
- * CRITICAL: withLifecycleCallbacks MUST wrap withValidation so that beforeSave
- * can strip computed fields (from views) BEFORE Zod validation runs.
- *
- * ADDITION: Wraps create method to intercept products with distributors,
- * calling create_product_with_distributors RPC for atomic creation.
+ * CRITICAL: Custom logic is defined INSIDE the wrapper chain so that:
+ * - withErrorLogging catches and logs ALL errors (including from delete)
+ * - withValidation validates data at API boundary
+ * - withLifecycleCallbacks runs before/after hooks
  *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with all products-specific behavior
  */
 export function createProductsHandler(baseProvider: DataProvider): DataProvider {
-  // Create the standard composed handler
-  const composedHandler = withErrorLogging(
-    withLifecycleCallbacks(withValidation(baseProvider), [productsCallbacks])
-  );
+  /**
+   * Custom products handler with product-specific logic
+   *
+   * This handler is defined FIRST, then wrapped with the standard wrapper chain.
+   * This ensures all custom logic is INSIDE the "safety bubble" of withErrorLogging.
+   */
+  const customProductsHandler: DataProvider = {
+    // Pass through read operations directly to baseProvider
+    getList: <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: GetListParams
+    ) => baseProvider.getList<RecordType>(resource, params),
 
-  // Wrap create method to intercept products with distributors
-  return {
-    ...composedHandler,
+    getOne: <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: GetOneParams<RecordType>
+    ) => baseProvider.getOne<RecordType>(resource, params),
+
+    getMany: <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: GetManyParams<RecordType>
+    ) => baseProvider.getMany<RecordType>(resource, params),
+
+    getManyReference: <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: GetManyReferenceParams
+    ) => baseProvider.getManyReference<RecordType>(resource, params),
 
     /**
      * Intercept create for products with distributors
@@ -117,8 +142,8 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           // Transform to RPC parameters using validated data
           const { productData, distributors: distData } = transformToRpcParams(validatedData);
 
-          // Get RPC method from composed handler
-          const dpWithRpc = composedHandler as DataProviderWithRpc;
+          // Get RPC method from baseProvider (will be available after wrapping)
+          const dpWithRpc = baseProvider as DataProviderWithRpc;
           if (!dpWithRpc.rpc) {
             throw new Error(
               "Product creation with distributors failed: DataProvider does not support RPC"
@@ -145,14 +170,14 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           ...cleanData
         } = parsed;
 
-        return composedHandler.create<RecordType>(resource, {
+        return baseProvider.create<RecordType>(resource, {
           ...params,
           data: cleanData as RecordType,
         } as CreateParams<RecordType>);
       }
 
-      // Not products - delegate to composed handler
-      return composedHandler.create<RecordType>(resource, params);
+      // Not products - delegate to base provider
+      return baseProvider.create<RecordType>(resource, params);
     },
 
     /**
@@ -211,22 +236,32 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
         }
 
         // No distributors - cleanData already has distributor fields stripped
-
-        return composedHandler.update<RecordType>(resource, {
+        return baseProvider.update<RecordType>(resource, {
           ...params,
           data: cleanData as Partial<RecordType>,
         } as UpdateParams<RecordType>);
       }
 
-      // Not products - delegate to composed handler
-      return composedHandler.update<RecordType>(resource, params);
+      // Not products - delegate to base provider
+      return baseProvider.update<RecordType>(resource, params);
     },
+
+    /**
+     * Pass through updateMany to baseProvider
+     */
+    updateMany: <RecordType extends RaRecord = RaRecord>(
+      resource: string,
+      params: UpdateManyParams<RecordType>
+    ) => baseProvider.updateMany<RecordType>(resource, params),
 
     /**
      * Intercept delete for products
      *
      * Uses ProductsService.softDelete() via RPC to bypass RLS SELECT policy
      * that would otherwise prevent seeing the updated row after setting deleted_at.
+     *
+     * FIXED: This method is now INSIDE the wrapper chain, so errors are properly
+     * caught and logged by withErrorLogging.
      */
     delete: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
@@ -241,14 +276,17 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
         return { data: params.previousData as RecordType };
       }
 
-      // Not products - delegate to composed handler
-      return composedHandler.delete<RecordType>(resource, params);
+      // Not products - delegate to base provider
+      return baseProvider.delete<RecordType>(resource, params);
     },
 
     /**
      * Intercept deleteMany for products
      *
      * Uses ProductsService.softDeleteMany() via RPC to bypass RLS SELECT policy.
+     *
+     * FIXED: This method is now INSIDE the wrapper chain, so errors are properly
+     * caught and logged by withErrorLogging.
      */
     deleteMany: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
@@ -263,8 +301,26 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
         return { data: params.ids };
       }
 
-      // Not products - delegate to composed handler
-      return composedHandler.deleteMany<RecordType>(resource, params);
+      // Not products - delegate to base provider
+      return baseProvider.deleteMany<RecordType>(resource, params);
     },
   };
+
+  /**
+   * Wrap the custom handler with the standard wrapper chain
+   *
+   * Order (innermost to outermost):
+   * 1. customProductsHandler - Our product-specific logic
+   * 2. withValidation - Zod schema validation at API boundary
+   * 3. withLifecycleCallbacks - Before/after hooks for soft delete
+   * 4. withErrorLogging - Structured error logging (catches ALL errors)
+   *
+   * This ensures ALL custom logic is protected by error logging.
+   */
+  return withErrorLogging(
+    withLifecycleCallbacks(
+      withValidation(customProductsHandler),
+      [productsCallbacks]
+    )
+  );
 }
