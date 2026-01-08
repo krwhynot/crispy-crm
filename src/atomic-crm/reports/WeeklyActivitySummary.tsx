@@ -226,14 +226,14 @@ export default function WeeklyActivitySummary() {
             type="date"
             value={dateRange.start}
             onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-            className="px-3 py-2 border rounded text-sm"
+            className="h-11 px-3 py-2 border rounded text-sm"
           />
           <span className="text-muted-foreground">to</span>
           <input
             type="date"
             value={dateRange.end}
             onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-            className="px-3 py-2 border rounded text-sm"
+            className="h-11 px-3 py-2 border rounded text-sm"
           />
         </div>
       }
