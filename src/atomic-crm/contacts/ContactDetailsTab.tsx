@@ -17,6 +17,7 @@ import {
 import { SaleName } from "../sales/SaleName";
 import { ContactInputs } from "./ContactInputs";
 import { Avatar } from "./Avatar";
+import { formatName } from "../utils/formatName";
 import type { Contact } from "../types";
 
 interface ContactDetailsTabProps {
@@ -90,7 +91,7 @@ export function ContactDetailsTab({
               <Avatar />
               <div className="flex-1">
                 <h3 className="text-lg font-semibold">
-                  {record.first_name} {record.last_name}
+                  {formatName(record.first_name, record.last_name)}
                 </h3>
                 {record.gender && <p className="text-sm text-muted-foreground">{record.gender}</p>}
                 {record.title && <p className="text-sm text-muted-foreground">{record.title}</p>}
