@@ -7,7 +7,7 @@ import { OpportunitySlideOverDetailsTab } from "./slideOverTabs/OpportunitySlide
 import { OpportunityContactsTab } from "./slideOverTabs/OpportunityContactsTab";
 import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
 import { OpportunityNotesTab } from "./slideOverTabs/OpportunityNotesTab";
-import { QuickAddTaskButton } from "@/atomic-crm/components";
+import { QuickAddTaskButton, FavoriteToggleButton } from "@/atomic-crm/components";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { Opportunity } from "@/atomic-crm/types";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -98,9 +98,14 @@ export function OpportunitySlideOver({
       tabs={tabs}
       recordRepresentation={recordRepresentation}
       headerActions={(record) => (
-        // Note: FavoriteToggleButton blocked - requires FAVORITE_ENTITY_TYPES schema update
-        // to include "opportunities". See TODO 3.1 in ui-ux-consistency-audit.md
-        <QuickAddTaskButton opportunityId={Number(record.id)} />
+        <>
+          <FavoriteToggleButton
+            entityType="opportunities"
+            entityId={Number(record.id)}
+            displayName={record.name || `Opportunity #${record.id}`}
+          />
+          <QuickAddTaskButton opportunityId={Number(record.id)} />
+        </>
       )}
     />
   );
