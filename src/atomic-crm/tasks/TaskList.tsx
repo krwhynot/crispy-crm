@@ -45,8 +45,19 @@ import type { Task, Opportunity, Organization } from "../types";
 
 /**
  * TaskListActions - TopToolbar actions for Tasks list
+ *
+ * Includes SortButton + ExportButton following ContactList pattern.
+ * perPage=100 is intentional - shows all open/overdue tasks at once.
  */
-const TaskListActions = () => <TopToolbar></TopToolbar>;
+const TaskListActions = () => (
+  <TopToolbar>
+    <SortButton
+      fields={["title", "due_date", "priority", "type"]}
+      data-testid="task-sort-btn"
+    />
+    <ExportButton data-testid="task-export-btn" />
+  </TopToolbar>
+);
 
 /**
  * TaskList - Standard list page for Task records

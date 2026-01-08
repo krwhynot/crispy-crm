@@ -25,6 +25,9 @@ import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
 import { OpportunityListTutorial } from "./OpportunityListTutorial";
 import { ListNoResults } from "@/components/admin/ListNoResults";
+import { TopToolbar } from "../layout/TopToolbar";
+import { SortButton } from "@/components/admin/sort-button";
+import { ExportButton } from "@/components/admin/export-button";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -42,6 +45,22 @@ const saveViewPreference = (view: OpportunityView) => {
 
 // Valid view options (module-scoped for stable reference in useEffect deps)
 const validViews: OpportunityView[] = ["kanban", "list", "campaign", "principal"];
+
+/**
+ * OpportunityListActions - TopToolbar with sort and export actions
+ *
+ * Follows ContactList reference pattern with SortButton + ExportButton.
+ * Works across all view modes (kanban, list, campaign, principal).
+ */
+const OpportunityListActions = () => (
+  <TopToolbar>
+    <SortButton
+      fields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
+      data-testid="opportunity-sort-btn"
+    />
+    <ExportButton data-testid="opportunity-export-btn" />
+  </TopToolbar>
+);
 
 const OpportunityList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -92,7 +111,7 @@ const OpportunityList = () => {
           }}
           title={false}
           sort={{ field: "created_at", order: "DESC" }}
-          actions={false}
+          actions={<OpportunityListActions />}
           exporter={opportunityExporter}
           pagination={<ListPagination rowsPerPageOptions={[10, 25, 50]} />}
         >

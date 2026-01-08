@@ -14,10 +14,10 @@
 | Phase | Status | Issues Found | Fixed | Deferred |
 |-------|--------|--------------|-------|----------|
 | Phase 1: Create Forms | ✅ Verified | 6 | 3 | 3 |
-| Phase 2: List Views | ✅ Verified | 5 | 0 | 5 |
-| Phase 3: Slide-Overs | ✅ Verified | 5 | 2 | 3 |
+| Phase 2: List Views | ✅ Verified | 5 | 4 | 1 |
+| Phase 3: Slide-Overs | ✅ Verified | 5 | 3 | 2 |
 | Phase 4: Badge/Typography | ✅ Verified | 4 | 2 | 2 |
-| **TOTAL** | ✅ Complete | **20** | **7** | **13** |
+| **TOTAL** | ✅ Complete | **20** | **12** | **8** |
 
 ### ✅ Already Correct (Reference Implementations)
 
@@ -38,6 +38,11 @@
 | TaskGeneralTab double asterisk | `TaskGeneralTab.tsx:7,19` | Removed manual `*` from labels, use `isRequired` only | TODO 1.5 |
 | ProductCreate legacy layout | `ProductCreate.tsx:21` | Removed `lg:mr-72`, added `max-w-4xl mx-auto` | TODO 1.2 (partial) |
 | TaskSlideOver header actions | `TaskSlideOver.tsx:70` | Added `headerActions` with QuickAddTaskButton | TODO 3.2 |
+| TaskList toolbar actions | `TaskList.tsx:52-59` | Added SortButton + ExportButton to TopToolbar | TODO 2.1 |
+| ProductList toolbar actions | `ProductList.tsx:189-196` | Added SortButton + ExportButton to TopToolbar | TODO 2.2 |
+| ActivityList toolbar actions | `ActivityList.tsx:231-238` | Added SortButton + ExportButton to TopToolbar | TODO 2.3 |
+| OpportunityList toolbar actions | `OpportunityList.tsx:55-62,98` | Added OpportunityListActions, removed actions=false | TODO 2.4 |
+| OrganizationSlideOver verified | `OrganizationSlideOver.tsx:123-131` | Already has FavoriteToggleButton + QuickAddTaskButton | TODO 3.3 |
 
 ### ❌ Issues Confirmed (Implementation Required)
 
@@ -46,10 +51,10 @@
 | **CRITICAL** ActivityCreate old pattern | `ActivityCreate.tsx` | Uses FormToolbar | Use CreateFormFooter | ❌ Deferred |
 | **CRITICAL** ActivitySinglePage ALL CAPS | `ActivitySinglePage.tsx` | Uses FormSection | Use FormSectionWithProgress | ❌ Deferred |
 | ~~**CRITICAL** ProductCreate lg:mr-72~~ | `ProductCreate.tsx:21` | ~~Has legacy class~~ | ~~Remove lg:mr-72~~ | ✅ Fixed |
-| **CRITICAL** TaskList empty TopToolbar | `TaskList.tsx:47` | `<TopToolbar></TopToolbar>` | Add SortButton + ExportButton | ❌ Deferred |
-| **CRITICAL** ProductList empty TopToolbar | `ProductList.tsx:185` | `<TopToolbar></TopToolbar>` | Add SortButton + ExportButton | ❌ Deferred |
-| **CRITICAL** ActivityList empty TopToolbar | `ActivityList.tsx:226` | `<TopToolbar></TopToolbar>` | Add SortButton + ExportButton | ❌ Deferred |
-| **CRITICAL** OpportunityList actions=false | `OpportunityList.tsx:95` | `actions={false}` | Create OpportunityListActions | ❌ Deferred |
+| ~~**CRITICAL** TaskList empty TopToolbar~~ | `TaskList.tsx:47` | ~~`<TopToolbar></TopToolbar>`~~ | ~~Add SortButton + ExportButton~~ | ✅ Fixed |
+| ~~**CRITICAL** ProductList empty TopToolbar~~ | `ProductList.tsx:185` | ~~`<TopToolbar></TopToolbar>`~~ | ~~Add SortButton + ExportButton~~ | ✅ Fixed |
+| ~~**CRITICAL** ActivityList empty TopToolbar~~ | `ActivityList.tsx:226` | ~~`<TopToolbar></TopToolbar>`~~ | ~~Add SortButton + ExportButton~~ | ✅ Fixed |
+| ~~**CRITICAL** OpportunityList actions=false~~ | `OpportunityList.tsx:95` | ~~`actions={false}`~~ | ~~Create OpportunityListActions~~ | ✅ Fixed |
 | **MEDIUM** OpportunityCreate old pattern | `OpportunityCreate.tsx` | Uses FormToolbar | Use CreateFormFooter | ❌ Deferred |
 | **MEDIUM** OrganizationCreate old pattern | `OrganizationCreate.tsx` | Uses FormToolbar | Custom footer with duplicate check | ❌ Deferred |
 | ~~**MEDIUM** TaskGeneralTab double asterisk~~ | `TaskGeneralTab.tsx:7,19` | ~~manual `*` + `isRequired`~~ | ~~Remove manual `*`~~ | ✅ Fixed |

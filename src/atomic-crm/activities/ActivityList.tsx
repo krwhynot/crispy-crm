@@ -24,6 +24,8 @@ import { PageTutorialTrigger } from "../tutorial";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
+import { SortButton } from "@/components/admin/sort-button";
+import { ExportButton } from "@/components/admin/export-button";
 
 /**
  * ActivityList - Standard list page for Activity records
@@ -221,9 +223,20 @@ const ActivityListLayout = () => {
 };
 
 /**
- * ActivityListActions - TopToolbar with export and create actions
+ * ActivityListActions - TopToolbar with sort and export actions
+ *
+ * Follows ContactList reference pattern with SortButton + ExportButton.
+ * Exporter is already defined and connected via List props.
  */
-const ActivityListActions = () => <TopToolbar></TopToolbar>;
+const ActivityListActions = () => (
+  <TopToolbar>
+    <SortButton
+      fields={["type", "subject", "activity_date", "created_at"]}
+      data-testid="activity-sort-btn"
+    />
+    <ExportButton data-testid="activity-export-btn" />
+  </TopToolbar>
+);
 
 /**
  * CSV exporter for Activity records

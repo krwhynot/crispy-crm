@@ -97,7 +97,11 @@ export function OpportunitySlideOver({
       canEdit={canEdit}
       tabs={tabs}
       recordRepresentation={recordRepresentation}
-      headerActions={(record) => <QuickAddTaskButton opportunityId={Number(record.id)} />}
+      headerActions={(record) => (
+        // Note: FavoriteToggleButton blocked - requires FAVORITE_ENTITY_TYPES schema update
+        // to include "opportunities". See TODO 3.1 in ui-ux-consistency-audit.md
+        <QuickAddTaskButton opportunityId={Number(record.id)} />
+      )}
     />
   );
 }
