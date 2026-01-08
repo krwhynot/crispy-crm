@@ -1074,10 +1074,18 @@ export async function extractSchemas(onlyChunks?: Set<string>): Promise<void> {
     chunks.get(feature)!.push(schema);
   }
 
-  // Build file-to-chunk mapping for incremental updates (use ALL source files for manifest)
+  // Build file-to-chunk mapping for incremental updates (exclude test files)
   const fileToChunkMapping = new Map<string, string>();
   for (const sourceFile of sourceFiles) {
     const filePath = sourceFile.getFilePath();
+    // Skip test files - they're not extracted so shouldn't be in chunk mapping
+    if (
+      filePath.includes("__tests__") ||
+      filePath.includes(".test.") ||
+      filePath.includes(".spec.")
+    ) {
+      continue;
+    }
     const chunkName = extractFeatureName(filePath);
     fileToChunkMapping.set(filePath, chunkName);
   }
