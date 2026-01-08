@@ -8,7 +8,6 @@ import { BooleanInput } from "@/components/admin/boolean-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrayInput, SimpleFormIterator } from "react-admin";

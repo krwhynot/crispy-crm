@@ -98,7 +98,7 @@ function RecentItemsTabContent() {
           No recent items. Start browsing to see your history.
         </p>
       ) : (
-        <ul className="space-y-1" role="list">
+        <ul className="space-y-1">
           {recentItems.map((item) => (
             <RecentItemLink key={`${item.entityType}-${item.id}`} item={item} />
           ))}

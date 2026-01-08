@@ -84,7 +84,7 @@ type ViewColumns<T extends ViewName> = keyof Database["public"]["Views"][T]["Row
  * Virtual fields that exist in React Admin but not in the database.
  * These are transformed by the data provider layer.
  */
-type VirtualFilterField =
+type _VirtualFilterField =
   | "q" // Full-text search parameter
   | "stale" // Staleness filter (transformed to last_activity_date + stage)
   | "type" // Alias for organization_type/activity_type in some contexts

@@ -22,7 +22,7 @@ import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
  * - Created By: Me filter
  */
 export const ActivityListFilter = () => {
-  const { data: identity } = useGetIdentity();
+  const { data: _identity } = useGetIdentity();
 
   // Sample status badge colors for visual consistency
   const sampleStatusColors: Record<string, "outline" | "secondary" | "default" | "destructive"> = {

@@ -96,14 +96,14 @@ describe("Schema Drift Prevention: filterableFields", () => {
     };
 
     // Generate tests for each resource-table mapping
-    Object.entries(resourceToTable).forEach(([resource, tableName]) => {
+    Object.entries(resourceToTable).forEach(([resource, _tableName]) => {
       it(`${resource}: all filterable fields should exist in database or be virtual`, () => {
         const registryFields = filterableFields[resource as FilterableResource];
         expect(registryFields).toBeDefined();
 
         // Get actual database columns for this table
-        type CurrentTable = typeof tableName;
-        type DbColumns = TableColumns<CurrentTable>;
+        type _CurrentTable = typeof _tableName;
+        type _DbColumns = TableColumns<_CurrentTable>;
 
         // We can't iterate over a type at runtime, so we use a type assertion
         // to verify the structure. The actual column check happens via TypeScript.
@@ -148,7 +148,7 @@ describe("Schema Drift Prevention: filterableFields", () => {
     };
 
     // Generate tests for each resource-view mapping
-    Object.entries(resourceToView).forEach(([resource, viewName]) => {
+    Object.entries(resourceToView).forEach(([resource, _viewName]) => {
       it(`${resource}: all filterable fields should exist in view or be virtual`, () => {
         const registryFields = filterableFields[resource as FilterableResource];
         expect(registryFields).toBeDefined();

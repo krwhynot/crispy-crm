@@ -22,7 +22,7 @@ interface OpportunityNotesTabProps {
  *
  * Both view and edit modes allow activity and note creation.
  */
-export function OpportunityNotesTab({ record, mode }: OpportunityNotesTabProps) {
+export function OpportunityNotesTab({ record, mode: _mode }: OpportunityNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
       <ScrollArea className="h-full">
