@@ -56,8 +56,8 @@ describe("ActivitySinglePage", () => {
 
       expect(screen.getByText(/activity details/i)).toBeInTheDocument();
       expect(screen.getByText(/interaction type/i)).toBeVisible();
-      expect(screen.getByText(/^subject$/i)).toBeVisible();
-      expect(screen.getByText(/^date$/i)).toBeVisible();
+      expect(screen.getByText(/subject \*/i)).toBeVisible();
+      expect(screen.getByText(/date \*/i)).toBeVisible();
       expect(screen.getByText(/duration \(minutes\)/i)).toBeVisible();
       expect(screen.getByText(/^notes$/i)).toBeVisible();
     });
@@ -109,10 +109,10 @@ describe("ActivitySinglePage", () => {
         </TestWrapper>
       );
 
-      // Find the Outcome section header (h2 element)
+      // Find the Outcome section header (h3 element in FormSectionWithProgress)
       const outcomeHeaders = screen.getAllByText(/outcome/i);
       const sectionHeader = outcomeHeaders.find(
-        (el) => el.tagName === "H2" && el.textContent === "Outcome"
+        (el) => el.tagName === "H3" && el.textContent === "Outcome"
       );
       expect(sectionHeader).toBeInTheDocument();
 
@@ -176,14 +176,14 @@ describe("ActivitySinglePage", () => {
   });
 
   describe("Form Structure", () => {
-    test("uses FormSection for headers", () => {
+    test("uses FormSectionWithProgress for headers", () => {
       renderWithAdminContext(
         <TestWrapper>
           <ActivitySinglePage />
         </TestWrapper>
       );
 
-      const sections = document.querySelectorAll('[data-slot="form-section"]');
+      const sections = document.querySelectorAll('[data-slot="form-section-with-progress"]');
       expect(sections.length).toBeGreaterThanOrEqual(2);
     });
 
