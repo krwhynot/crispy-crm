@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-08T02:25:36.844Z",
-  "item_count": 76,
+  "generated_at": "2026-01-08T12:14:50.359Z",
+  "item_count": 77,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -523,7 +523,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 137,
+      "line": 57,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -541,13 +541,12 @@
       "imports": [
         "../validation/organizations",
         "./DuplicateOrgWarningDialog",
+        "./OrganizationCreateFormFooter",
         "./OrganizationInputs",
         "./types",
         "./useDuplicateOrgCheck",
         "@/atomic-crm/hooks/useSmartDefaults",
-        "@/components/admin/cancel-button",
         "@/components/admin/form",
-        "@/components/admin/simple-form",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
         "@/types/database.generated",
@@ -561,6 +560,7 @@
       "childComponents": [
         "OrganizationInputs",
         "DuplicateOrgWarningDialog",
+        "OrganizationCreateFormFooter",
         "OrganizationFormValues",
         "DuplicateCheckCallback"
       ],
@@ -570,7 +570,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 137,
+      "line": 57,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -588,13 +588,12 @@
       "imports": [
         "../validation/organizations",
         "./DuplicateOrgWarningDialog",
+        "./OrganizationCreateFormFooter",
         "./OrganizationInputs",
         "./types",
         "./useDuplicateOrgCheck",
         "@/atomic-crm/hooks/useSmartDefaults",
-        "@/components/admin/cancel-button",
         "@/components/admin/form",
-        "@/components/admin/simple-form",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
         "@/types/database.generated",
@@ -608,10 +607,45 @@
       "childComponents": [
         "OrganizationInputs",
         "DuplicateOrgWarningDialog",
+        "OrganizationCreateFormFooter",
         "OrganizationFormValues",
         "DuplicateCheckCallback"
       ],
       "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "OrganizationCreateFormFooter",
+      "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
+      "line": 29,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useCreate",
+        "useFormContext",
+        "useFormState",
+        "useNotify",
+        "useRedirect",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "./types",
+        "@/components/admin/form",
+        "@/components/ui/button",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationFormValues",
+        "DuplicateCheckCallback"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useFormState"
+      ],
       "componentRole": "wrapper"
     },
     {
@@ -1634,7 +1668,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 137,
+      "line": 57,
       "type": "presentational",
       "hooks": [
         "useCallback",

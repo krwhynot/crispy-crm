@@ -39,12 +39,25 @@ import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksData
 import { TopToolbar } from "../layout/TopToolbar";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { TaskActionMenu } from "./components/TaskActionMenu";
+import { SortButton } from "@/components/admin/sort-button";
+import { ExportButton } from "@/components/admin/export-button";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
  * TaskListActions - TopToolbar actions for Tasks list
+ *
+ * Includes SortButton + ExportButton following ContactList pattern.
+ * perPage=100 is intentional - shows all open/overdue tasks at once.
  */
-const TaskListActions = () => <TopToolbar></TopToolbar>;
+const TaskListActions = () => (
+  <TopToolbar>
+    <SortButton
+      fields={["title", "due_date", "priority", "type"]}
+      data-testid="task-sort-btn"
+    />
+    <ExportButton data-testid="task-export-btn" />
+  </TopToolbar>
+);
 
 /**
  * TaskList - Standard list page for Task records

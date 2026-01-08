@@ -1,20 +1,20 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-08T02:25:51.805Z",
+  "generated_at": "2026-01-08T12:15:01.841Z",
   "generator": "scripts/discover/extractors/call-graph.ts",
   "source_globs": [
     "src/atomic-crm/**/*.ts",
     "src/atomic-crm/**/*.tsx",
     "src/hooks/**/*.ts"
   ],
-  "checksum": "sha256:a7a2943c063c226d",
+  "checksum": "sha256:4f8c93ced038c1cb",
   "source_hashes": {
-    "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
+    "src/atomic-crm/activities/ActivityCreate.tsx": "87d9a6871909",
     "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
     "src/atomic-crm/activities/ActivityInputs.tsx": "ddf9ffb909b7",
-    "src/atomic-crm/activities/ActivityList.tsx": "9d6d3bbe7c98",
+    "src/atomic-crm/activities/ActivityList.tsx": "9dad2de36277",
     "src/atomic-crm/activities/ActivityListFilter.tsx": "faf137b38e0f",
-    "src/atomic-crm/activities/ActivitySinglePage.tsx": "8c85becaba8a",
+    "src/atomic-crm/activities/ActivitySinglePage.tsx": "5120c4d604ac",
     "src/atomic-crm/activities/QuickLogActivity.tsx": "d3cb95d8cce3",
     "src/atomic-crm/activities/QuickLogActivityDialog.tsx": "362053c00c49",
     "src/atomic-crm/activities/activityDraftSchema.ts": "fe17156bdf82",
@@ -37,7 +37,7 @@
     "src/atomic-crm/admin/index.tsx": "4f3ba73b9f6d",
     "src/atomic-crm/components/CreateFormFooter.tsx": "b79c2360c05c",
     "src/atomic-crm/components/FavoriteToggleButton.tsx": "b05fd85380d0",
-    "src/atomic-crm/components/QuickAddTaskButton.tsx": "be4dcaee4976",
+    "src/atomic-crm/components/QuickAddTaskButton.tsx": "6943d43c2d24",
     "src/atomic-crm/components/SampleStatusBadge.stories.tsx": "e75e0a22e3f2",
     "src/atomic-crm/components/SampleStatusBadge.tsx": "ae5d14c52513",
     "src/atomic-crm/components/TrackRecordView.tsx": "8ab2d8849b92",
@@ -167,7 +167,7 @@
     "src/atomic-crm/filters/types/resourceTypes.ts": "069986eab60b",
     "src/atomic-crm/filters/types.ts": "65608e159c7f",
     "src/atomic-crm/filters/useCategoryNames.ts": "71711542993b",
-    "src/atomic-crm/filters/useFilterChipBar.ts": "9b8102faecca",
+    "src/atomic-crm/filters/useFilterChipBar.ts": "75bcbf221f3f",
     "src/atomic-crm/filters/useFilterManagement.ts": "7d3d513d50d0",
     "src/atomic-crm/filters/useOrganizationNames.ts": "cb360e9ec334",
     "src/atomic-crm/filters/useSalesNames.ts": "e2e4e57643e3",
@@ -208,18 +208,18 @@
     "src/atomic-crm/opportunities/OnlyMineInput.tsx": "52d74f03869a",
     "src/atomic-crm/opportunities/OpportunityArchivedList.tsx": "c6a7ecd92d6e",
     "src/atomic-crm/opportunities/OpportunityAside.tsx": "0416c5178c68",
-    "src/atomic-crm/opportunities/OpportunityCreate.tsx": "8b795e133a89",
+    "src/atomic-crm/opportunities/OpportunityCreate.tsx": "2bcf8fb69bba",
     "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "9ad8403ba618",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "42b649677b41",
     "src/atomic-crm/opportunities/OpportunityEmpty.tsx": "52066759e15e",
     "src/atomic-crm/opportunities/OpportunityHeader.tsx": "9f1fbf95f9f6",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
-    "src/atomic-crm/opportunities/OpportunityList.tsx": "ddf551bc52cd",
+    "src/atomic-crm/opportunities/OpportunityList.tsx": "c3443b1f451a",
     "src/atomic-crm/opportunities/OpportunityListFilter.tsx": "fa70c75fefdd",
     "src/atomic-crm/opportunities/OpportunityListTutorial.tsx": "186c5dec0d6e",
     "src/atomic-crm/opportunities/OpportunityRowListView.tsx": "d95b9a33a212",
     "src/atomic-crm/opportunities/OpportunityShow.tsx": "7a7228e2c0a3",
-    "src/atomic-crm/opportunities/OpportunitySlideOver.tsx": "92271a7fd172",
+    "src/atomic-crm/opportunities/OpportunitySlideOver.tsx": "b9e4c2a6bc3d",
     "src/atomic-crm/opportunities/OpportunitySpeedDial.tsx": "1168bc024630",
     "src/atomic-crm/opportunities/OpportunityViewSwitcher.tsx": "1b1534e46337",
     "src/atomic-crm/opportunities/OrganizationInfoCard.tsx": "04875e2ea3eb",
@@ -237,6 +237,7 @@
     "src/atomic-crm/opportunities/components/MetadataRow.tsx": "1bb77b6cadad",
     "src/atomic-crm/opportunities/components/NextTaskBadge.tsx": "6f7ef066f1ae",
     "src/atomic-crm/opportunities/components/OpportunityActivitySection.tsx": "45e91e672175",
+    "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "84dd9ca054a3",
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
     "src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx": "4dfdfd5e0762",
     "src/atomic-crm/opportunities/components/index.ts": "7d7fdb5008f7",
@@ -309,7 +310,8 @@
     "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx": "dc94231e45be",
     "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx": "5b36a1529c6d",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "6074da481779",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "47163a7a8a08",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "debb8ae3e79b",
+    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "b44ca74125b6",
     "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx": "f889d060e4c7",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "235b3913db5b",
     "src/atomic-crm/organizations/OrganizationEmpty.tsx": "aa7d0d53115b",
@@ -363,7 +365,7 @@
     "src/atomic-crm/productDistributors/productDistributorsConfig.ts": "467ee2d76e84",
     "src/atomic-crm/productDistributors/resource.tsx": "3957610c89c9",
     "src/atomic-crm/products/ProductCard.tsx": "520e5b1e3ea8",
-    "src/atomic-crm/products/ProductCreate.tsx": "f6b417ed7273",
+    "src/atomic-crm/products/ProductCreate.tsx": "eb11b8cea84b",
     "src/atomic-crm/products/ProductDetailsInputTab.tsx": "85ab0411bd52",
     "src/atomic-crm/products/ProductDetailsTab.tsx": "bbc9b1e62983",
     "src/atomic-crm/products/ProductDistributionTab.tsx": "ab41d651eb59",
@@ -372,7 +374,7 @@
     "src/atomic-crm/products/ProductEmpty.tsx": "572ebb4b4fc0",
     "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
     "src/atomic-crm/products/ProductInputs.tsx": "7404ed9b661a",
-    "src/atomic-crm/products/ProductList.tsx": "1717f95544f6",
+    "src/atomic-crm/products/ProductList.tsx": "449b2fa68dce",
     "src/atomic-crm/products/ProductListContent.tsx": "a327ed041836",
     "src/atomic-crm/products/ProductListFilter.tsx": "531dbbc5a479",
     "src/atomic-crm/products/ProductRelationshipsTab.tsx": "7bdf7ff77bf5",
@@ -525,16 +527,16 @@
     "src/atomic-crm/tasks/AddTask.tsx": "aecb91ffaa3a",
     "src/atomic-crm/tasks/Task.tsx": "493ad701f17b",
     "src/atomic-crm/tasks/TaskCreate.tsx": "3286104d9b06",
-    "src/atomic-crm/tasks/TaskDetailsTab.tsx": "045efa13f39a",
+    "src/atomic-crm/tasks/TaskDetailsTab.tsx": "88def1a6a932",
     "src/atomic-crm/tasks/TaskEdit.tsx": "d45e3b0f25f5",
     "src/atomic-crm/tasks/TaskEmpty.tsx": "f2fd53456cea",
-    "src/atomic-crm/tasks/TaskGeneralTab.tsx": "126cd7c622b1",
+    "src/atomic-crm/tasks/TaskGeneralTab.tsx": "34215565596c",
     "src/atomic-crm/tasks/TaskInputs.tsx": "9c004edad5db",
-    "src/atomic-crm/tasks/TaskList.tsx": "213a5a549e87",
+    "src/atomic-crm/tasks/TaskList.tsx": "83a9c3f31322",
     "src/atomic-crm/tasks/TaskListFilter.tsx": "0fabc44f91fd",
     "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx": "ba829aac49dc",
     "src/atomic-crm/tasks/TaskShow.tsx": "c0b3862310d5",
-    "src/atomic-crm/tasks/TaskSlideOver.tsx": "607139b34afe",
+    "src/atomic-crm/tasks/TaskSlideOver.tsx": "4ed56477da82",
     "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx": "aac65ff08d2a",
     "src/atomic-crm/tasks/TasksDatagridHeader.tsx": "e1bf2bf3947f",
     "src/atomic-crm/tasks/TasksIterator.tsx": "31c4b87768af",
@@ -589,7 +591,7 @@
     "src/atomic-crm/validation/constants.ts": "b8985c2c0618",
     "src/atomic-crm/validation/contacts.ts": "ccc2c5afeb5e",
     "src/atomic-crm/validation/distributorAuthorizations.ts": "66445a74389a",
-    "src/atomic-crm/validation/favorites.ts": "474ad837d9e1",
+    "src/atomic-crm/validation/favorites.ts": "edba5823dc21",
     "src/atomic-crm/validation/index.ts": "5e4890c4d980",
     "src/atomic-crm/validation/notes.ts": "557ab89b53fd",
     "src/atomic-crm/validation/operatorSegments.ts": "b0f573acd197",
@@ -621,9 +623,9 @@
     "src/hooks/useUserRole.ts": "1dd0bdf28c95"
   },
   "summary": {
-    "total_items": 969,
-    "total_nodes": 969,
-    "total_edges": 11625,
+    "total_items": 971,
+    "total_nodes": 971,
+    "total_edges": 11737,
     "total_chunks": 31,
     "cycles_detected": 0
   },
@@ -631,7 +633,7 @@
     {
       "name": "_root",
       "file": "_root.json",
-      "checksum": "sha256:6d2f908595f7873b",
+      "checksum": "sha256:a37b46220590f648",
       "source_files": [
         "src/atomic-crm/constants.ts",
         "src/atomic-crm/consts.ts",
@@ -648,7 +650,7 @@
     {
       "name": "activities",
       "file": "activities.json",
-      "checksum": "sha256:b02f9e17799efef3",
+      "checksum": "sha256:87f72693db3dc975",
       "source_files": [
         "src/atomic-crm/activities/ActivityCreate.tsx",
         "src/atomic-crm/activities/ActivityEdit.tsx",
@@ -666,12 +668,12 @@
         "src/atomic-crm/activities/resource.tsx"
       ],
       "source_hashes": {
-        "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
+        "src/atomic-crm/activities/ActivityCreate.tsx": "87d9a6871909",
         "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
         "src/atomic-crm/activities/ActivityInputs.tsx": "ddf9ffb909b7",
-        "src/atomic-crm/activities/ActivityList.tsx": "9d6d3bbe7c98",
+        "src/atomic-crm/activities/ActivityList.tsx": "9dad2de36277",
         "src/atomic-crm/activities/ActivityListFilter.tsx": "faf137b38e0f",
-        "src/atomic-crm/activities/ActivitySinglePage.tsx": "8c85becaba8a",
+        "src/atomic-crm/activities/ActivitySinglePage.tsx": "5120c4d604ac",
         "src/atomic-crm/activities/QuickLogActivity.tsx": "d3cb95d8cce3",
         "src/atomic-crm/activities/QuickLogActivityDialog.tsx": "362053c00c49",
         "src/atomic-crm/activities/activityDraftSchema.ts": "fe17156bdf82",
@@ -685,7 +687,7 @@
     {
       "name": "activity-log",
       "file": "activity-log.json",
-      "checksum": "sha256:94f4f320013c0099",
+      "checksum": "sha256:644d180f9e91509b",
       "source_files": [
         "src/atomic-crm/activity-log/ActivityLog.tsx",
         "src/atomic-crm/activity-log/ActivityLogContactCreated.tsx",
@@ -714,7 +716,7 @@
     {
       "name": "admin",
       "file": "admin.json",
-      "checksum": "sha256:fb3afd1a78b0c4ca",
+      "checksum": "sha256:aa885d4adbfa44a5",
       "source_files": [
         "src/atomic-crm/admin/HealthDashboard.tsx",
         "src/atomic-crm/admin/index.tsx"
@@ -727,7 +729,7 @@
     {
       "name": "components",
       "file": "components.json",
-      "checksum": "sha256:aabc5ed761ea9f41",
+      "checksum": "sha256:a03ad1d33bf03145",
       "source_files": [
         "src/atomic-crm/components/CreateFormFooter.tsx",
         "src/atomic-crm/components/FavoriteToggleButton.tsx",
@@ -740,7 +742,7 @@
       "source_hashes": {
         "src/atomic-crm/components/CreateFormFooter.tsx": "b79c2360c05c",
         "src/atomic-crm/components/FavoriteToggleButton.tsx": "b05fd85380d0",
-        "src/atomic-crm/components/QuickAddTaskButton.tsx": "be4dcaee4976",
+        "src/atomic-crm/components/QuickAddTaskButton.tsx": "6943d43c2d24",
         "src/atomic-crm/components/SampleStatusBadge.stories.tsx": "e75e0a22e3f2",
         "src/atomic-crm/components/SampleStatusBadge.tsx": "ae5d14c52513",
         "src/atomic-crm/components/TrackRecordView.tsx": "8ab2d8849b92",
@@ -750,7 +752,7 @@
     {
       "name": "contacts",
       "file": "contacts.json",
-      "checksum": "sha256:5cbecf2acc3c5b1e",
+      "checksum": "sha256:e69f6a07818937aa",
       "source_files": [
         "src/atomic-crm/contacts/ActivitiesTab.tsx",
         "src/atomic-crm/contacts/AutocompleteContactInput.tsx",
@@ -869,7 +871,7 @@
     {
       "name": "contexts",
       "file": "contexts.json",
-      "checksum": "sha256:d92c3d5495aae052",
+      "checksum": "sha256:864c2d6c80caa225",
       "source_files": [
         "src/atomic-crm/contexts/AppBrandingContext.tsx",
         "src/atomic-crm/contexts/FormOptionsContext.tsx",
@@ -892,7 +894,7 @@
     {
       "name": "dashboard",
       "file": "dashboard.json",
-      "checksum": "sha256:56793b74c9cb6e5d",
+      "checksum": "sha256:3751199a32e0596e",
       "source_files": [
         "src/atomic-crm/dashboard/RecentItemsWidget.tsx",
         "src/atomic-crm/dashboard/index.ts",
@@ -989,7 +991,7 @@
     {
       "name": "filters",
       "file": "filters.json",
-      "checksum": "sha256:97c4d17d948304eb",
+      "checksum": "sha256:f516f00483e73cfa",
       "source_files": [
         "src/atomic-crm/filters/DateRangeFilterButton.tsx",
         "src/atomic-crm/filters/FilterCategory.tsx",
@@ -1033,7 +1035,7 @@
         "src/atomic-crm/filters/types/resourceTypes.ts": "069986eab60b",
         "src/atomic-crm/filters/types.ts": "65608e159c7f",
         "src/atomic-crm/filters/useCategoryNames.ts": "71711542993b",
-        "src/atomic-crm/filters/useFilterChipBar.ts": "9b8102faecca",
+        "src/atomic-crm/filters/useFilterChipBar.ts": "75bcbf221f3f",
         "src/atomic-crm/filters/useFilterManagement.ts": "7d3d513d50d0",
         "src/atomic-crm/filters/useOrganizationNames.ts": "cb360e9ec334",
         "src/atomic-crm/filters/useSalesNames.ts": "e2e4e57643e3",
@@ -1044,7 +1046,7 @@
     {
       "name": "hooks",
       "file": "hooks.json",
-      "checksum": "sha256:0cc8ce456bf78ba2",
+      "checksum": "sha256:20ec7e09b26779fd",
       "source_files": [
         "src/atomic-crm/hooks/index.ts",
         "src/atomic-crm/hooks/useAppBarHeight.ts",
@@ -1095,7 +1097,7 @@
     {
       "name": "layout",
       "file": "layout.json",
-      "checksum": "sha256:d077b814e3a7f9ce",
+      "checksum": "sha256:1fed181713a8eb2e",
       "source_files": [
         "src/atomic-crm/layout/FormToolbar.tsx",
         "src/atomic-crm/layout/Header.tsx",
@@ -1114,7 +1116,7 @@
     {
       "name": "login",
       "file": "login.json",
-      "checksum": "sha256:41e82a29ae25ad2b",
+      "checksum": "sha256:d206ab8855343494",
       "source_files": [
         "src/atomic-crm/login/LoginSkeleton.tsx",
         "src/atomic-crm/login/StartPage.tsx",
@@ -1129,7 +1131,7 @@
     {
       "name": "notes",
       "file": "notes.json",
-      "checksum": "sha256:e9ead32d31bbdee5",
+      "checksum": "sha256:18754fa6dd2c35f0",
       "source_files": [
         "src/atomic-crm/notes/Note.tsx",
         "src/atomic-crm/notes/NoteCreate.tsx",
@@ -1150,7 +1152,7 @@
     {
       "name": "notifications",
       "file": "notifications.json",
-      "checksum": "sha256:0364d4c1c051657f",
+      "checksum": "sha256:f3d11aae05b547e6",
       "source_files": [
         "src/atomic-crm/notifications/NotificationsList.tsx",
         "src/atomic-crm/notifications/index.tsx",
@@ -1165,7 +1167,7 @@
     {
       "name": "opportunities",
       "file": "opportunities.json",
-      "checksum": "sha256:53a8fdaecad8f718",
+      "checksum": "sha256:44e7ef1ce422b10a",
       "source_files": [
         "src/atomic-crm/opportunities/ActivitiesList.tsx",
         "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
@@ -1207,6 +1209,7 @@
         "src/atomic-crm/opportunities/components/MetadataRow.tsx",
         "src/atomic-crm/opportunities/components/NextTaskBadge.tsx",
         "src/atomic-crm/opportunities/components/OpportunityActivitySection.tsx",
+        "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx",
         "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx",
         "src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx",
         "src/atomic-crm/opportunities/components/index.ts",
@@ -1279,18 +1282,18 @@
         "src/atomic-crm/opportunities/OnlyMineInput.tsx": "52d74f03869a",
         "src/atomic-crm/opportunities/OpportunityArchivedList.tsx": "c6a7ecd92d6e",
         "src/atomic-crm/opportunities/OpportunityAside.tsx": "0416c5178c68",
-        "src/atomic-crm/opportunities/OpportunityCreate.tsx": "8b795e133a89",
+        "src/atomic-crm/opportunities/OpportunityCreate.tsx": "2bcf8fb69bba",
         "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "9ad8403ba618",
         "src/atomic-crm/opportunities/OpportunityEdit.tsx": "42b649677b41",
         "src/atomic-crm/opportunities/OpportunityEmpty.tsx": "52066759e15e",
         "src/atomic-crm/opportunities/OpportunityHeader.tsx": "9f1fbf95f9f6",
         "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
-        "src/atomic-crm/opportunities/OpportunityList.tsx": "ddf551bc52cd",
+        "src/atomic-crm/opportunities/OpportunityList.tsx": "c3443b1f451a",
         "src/atomic-crm/opportunities/OpportunityListFilter.tsx": "fa70c75fefdd",
         "src/atomic-crm/opportunities/OpportunityListTutorial.tsx": "186c5dec0d6e",
         "src/atomic-crm/opportunities/OpportunityRowListView.tsx": "d95b9a33a212",
         "src/atomic-crm/opportunities/OpportunityShow.tsx": "7a7228e2c0a3",
-        "src/atomic-crm/opportunities/OpportunitySlideOver.tsx": "92271a7fd172",
+        "src/atomic-crm/opportunities/OpportunitySlideOver.tsx": "b9e4c2a6bc3d",
         "src/atomic-crm/opportunities/OpportunitySpeedDial.tsx": "1168bc024630",
         "src/atomic-crm/opportunities/OpportunityViewSwitcher.tsx": "1b1534e46337",
         "src/atomic-crm/opportunities/OrganizationInfoCard.tsx": "04875e2ea3eb",
@@ -1308,6 +1311,7 @@
         "src/atomic-crm/opportunities/components/MetadataRow.tsx": "1bb77b6cadad",
         "src/atomic-crm/opportunities/components/NextTaskBadge.tsx": "6f7ef066f1ae",
         "src/atomic-crm/opportunities/components/OpportunityActivitySection.tsx": "45e91e672175",
+        "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "84dd9ca054a3",
         "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
         "src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx": "4dfdfd5e0762",
         "src/atomic-crm/opportunities/components/index.ts": "7d7fdb5008f7",
@@ -1372,7 +1376,7 @@
     {
       "name": "organizations",
       "file": "organizations.json",
-      "checksum": "sha256:ff148eb345381a13",
+      "checksum": "sha256:8dc53d2faddeee0c",
       "source_files": [
         "src/atomic-crm/organizations/ActivitiesTab.tsx",
         "src/atomic-crm/organizations/AuthorizationsTab.tsx",
@@ -1388,6 +1392,7 @@
         "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
         "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
         "src/atomic-crm/organizations/OrganizationCreate.tsx",
+        "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
         "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
         "src/atomic-crm/organizations/OrganizationEdit.tsx",
         "src/atomic-crm/organizations/OrganizationEmpty.tsx",
@@ -1446,7 +1451,8 @@
         "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx": "dc94231e45be",
         "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx": "5b36a1529c6d",
         "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "6074da481779",
-        "src/atomic-crm/organizations/OrganizationCreate.tsx": "47163a7a8a08",
+        "src/atomic-crm/organizations/OrganizationCreate.tsx": "debb8ae3e79b",
+        "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "b44ca74125b6",
         "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx": "f889d060e4c7",
         "src/atomic-crm/organizations/OrganizationEdit.tsx": "235b3913db5b",
         "src/atomic-crm/organizations/OrganizationEmpty.tsx": "aa7d0d53115b",
@@ -1495,7 +1501,7 @@
     {
       "name": "pages",
       "file": "pages.json",
-      "checksum": "sha256:47e83febdc5b7295",
+      "checksum": "sha256:141e50d0b592359d",
       "source_files": [
         "src/atomic-crm/pages/WhatsNew.tsx",
         "src/atomic-crm/pages/index.ts"
@@ -1508,7 +1514,7 @@
     {
       "name": "productDistributors",
       "file": "productDistributors.json",
-      "checksum": "sha256:7555535c25fb6a96",
+      "checksum": "sha256:ecd35b9c35cec027",
       "source_files": [
         "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
         "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
@@ -1531,7 +1537,7 @@
     {
       "name": "products",
       "file": "products.json",
-      "checksum": "sha256:9a0de180a2e7286d",
+      "checksum": "sha256:6f001d9281aacf54",
       "source_files": [
         "src/atomic-crm/products/ProductCard.tsx",
         "src/atomic-crm/products/ProductCreate.tsx",
@@ -1557,7 +1563,7 @@
       ],
       "source_hashes": {
         "src/atomic-crm/products/ProductCard.tsx": "520e5b1e3ea8",
-        "src/atomic-crm/products/ProductCreate.tsx": "f6b417ed7273",
+        "src/atomic-crm/products/ProductCreate.tsx": "eb11b8cea84b",
         "src/atomic-crm/products/ProductDetailsInputTab.tsx": "85ab0411bd52",
         "src/atomic-crm/products/ProductDetailsTab.tsx": "bbc9b1e62983",
         "src/atomic-crm/products/ProductDistributionTab.tsx": "ab41d651eb59",
@@ -1566,7 +1572,7 @@
         "src/atomic-crm/products/ProductEmpty.tsx": "572ebb4b4fc0",
         "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
         "src/atomic-crm/products/ProductInputs.tsx": "7404ed9b661a",
-        "src/atomic-crm/products/ProductList.tsx": "1717f95544f6",
+        "src/atomic-crm/products/ProductList.tsx": "449b2fa68dce",
         "src/atomic-crm/products/ProductListContent.tsx": "a327ed041836",
         "src/atomic-crm/products/ProductListFilter.tsx": "531dbbc5a479",
         "src/atomic-crm/products/ProductRelationshipsTab.tsx": "7bdf7ff77bf5",
@@ -1582,7 +1588,7 @@
     {
       "name": "providers",
       "file": "providers.json",
-      "checksum": "sha256:a8c62a2d19a78c81",
+      "checksum": "sha256:814ce35de8bc3b55",
       "source_files": [
         "src/atomic-crm/providers/commons/activity.ts",
         "src/atomic-crm/providers/commons/canAccess.ts",
@@ -1691,7 +1697,7 @@
     {
       "name": "reports",
       "file": "reports.json",
-      "checksum": "sha256:28e223e383a76b14",
+      "checksum": "sha256:9ca989a062965087",
       "source_files": [
         "src/atomic-crm/reports/CampaignActivity/ActivityTypeCard.tsx",
         "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
@@ -1762,7 +1768,7 @@
     {
       "name": "root",
       "file": "root.json",
-      "checksum": "sha256:1086b528be655dd4",
+      "checksum": "sha256:f042cf91f578bc42",
       "source_files": [
         "src/atomic-crm/root/CRM.tsx",
         "src/atomic-crm/root/ConfigurationContext.tsx",
@@ -1781,7 +1787,7 @@
     {
       "name": "sales",
       "file": "sales.json",
-      "checksum": "sha256:3d57ac5f471a31c0",
+      "checksum": "sha256:03484b67f7bb60eb",
       "source_files": [
         "src/atomic-crm/sales/SaleAvatar.tsx",
         "src/atomic-crm/sales/SaleName.tsx",
@@ -1822,7 +1828,7 @@
     {
       "name": "services",
       "file": "services.json",
-      "checksum": "sha256:c807d3a1bc5b8c23",
+      "checksum": "sha256:824944bf9e06f250",
       "source_files": [
         "src/atomic-crm/services/activities.service.ts",
         "src/atomic-crm/services/digest.service.ts",
@@ -1853,7 +1859,7 @@
     {
       "name": "settings",
       "file": "settings.json",
-      "checksum": "sha256:dae6feefd3a7aced",
+      "checksum": "sha256:07c46d7526c0396b",
       "source_files": [
         "src/atomic-crm/settings/DigestPreferences.tsx",
         "src/atomic-crm/settings/RolePermissionsMatrix.tsx",
@@ -1888,7 +1894,7 @@
     {
       "name": "shared",
       "file": "shared.json",
-      "checksum": "sha256:6817e28e46dfe1b2",
+      "checksum": "sha256:7cb80715a4c4ae03",
       "source_files": [
         "src/atomic-crm/shared/components/Status.tsx"
       ],
@@ -1899,7 +1905,7 @@
     {
       "name": "tags",
       "file": "tags.json",
-      "checksum": "sha256:33ee1c7455839829",
+      "checksum": "sha256:e95fa8605424bd4f",
       "source_files": [
         "src/atomic-crm/tags/RoundButton.tsx",
         "src/atomic-crm/tags/TagChip.tsx",
@@ -1930,7 +1936,7 @@
     {
       "name": "tasks",
       "file": "tasks.json",
-      "checksum": "sha256:35b8a882ca05e1d7",
+      "checksum": "sha256:049fb629fd70fab9",
       "source_files": [
         "src/atomic-crm/tasks/AddTask.tsx",
         "src/atomic-crm/tasks/Task.tsx",
@@ -1959,16 +1965,16 @@
         "src/atomic-crm/tasks/AddTask.tsx": "aecb91ffaa3a",
         "src/atomic-crm/tasks/Task.tsx": "493ad701f17b",
         "src/atomic-crm/tasks/TaskCreate.tsx": "3286104d9b06",
-        "src/atomic-crm/tasks/TaskDetailsTab.tsx": "045efa13f39a",
+        "src/atomic-crm/tasks/TaskDetailsTab.tsx": "88def1a6a932",
         "src/atomic-crm/tasks/TaskEdit.tsx": "d45e3b0f25f5",
         "src/atomic-crm/tasks/TaskEmpty.tsx": "f2fd53456cea",
-        "src/atomic-crm/tasks/TaskGeneralTab.tsx": "126cd7c622b1",
+        "src/atomic-crm/tasks/TaskGeneralTab.tsx": "34215565596c",
         "src/atomic-crm/tasks/TaskInputs.tsx": "9c004edad5db",
-        "src/atomic-crm/tasks/TaskList.tsx": "213a5a549e87",
+        "src/atomic-crm/tasks/TaskList.tsx": "83a9c3f31322",
         "src/atomic-crm/tasks/TaskListFilter.tsx": "0fabc44f91fd",
         "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx": "ba829aac49dc",
         "src/atomic-crm/tasks/TaskShow.tsx": "c0b3862310d5",
-        "src/atomic-crm/tasks/TaskSlideOver.tsx": "607139b34afe",
+        "src/atomic-crm/tasks/TaskSlideOver.tsx": "4ed56477da82",
         "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx": "aac65ff08d2a",
         "src/atomic-crm/tasks/TasksDatagridHeader.tsx": "e1bf2bf3947f",
         "src/atomic-crm/tasks/TasksIterator.tsx": "31c4b87768af",
@@ -1983,7 +1989,7 @@
     {
       "name": "tutorial",
       "file": "tutorial.json",
-      "checksum": "sha256:b33cf62dadd80cb1",
+      "checksum": "sha256:62acac93ecbc6a9b",
       "source_files": [
         "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx",
         "src/atomic-crm/tutorial/PageTutorialTrigger.tsx",
@@ -2028,7 +2034,7 @@
     {
       "name": "utils",
       "file": "utils.json",
-      "checksum": "sha256:751f248e34ead739",
+      "checksum": "sha256:6ee0409a13feca36",
       "source_files": [
         "src/atomic-crm/utils/autocompleteDefaults.ts",
         "src/atomic-crm/utils/avatar.utils.ts",
@@ -2079,7 +2085,7 @@
     {
       "name": "validation",
       "file": "validation.json",
-      "checksum": "sha256:dad1738b9288b210",
+      "checksum": "sha256:9ba3efc3dac40ed2",
       "source_files": [
         "src/atomic-crm/validation/activities.ts",
         "src/atomic-crm/validation/categories.ts",
@@ -2109,7 +2115,7 @@
         "src/atomic-crm/validation/constants.ts": "b8985c2c0618",
         "src/atomic-crm/validation/contacts.ts": "ccc2c5afeb5e",
         "src/atomic-crm/validation/distributorAuthorizations.ts": "66445a74389a",
-        "src/atomic-crm/validation/favorites.ts": "474ad837d9e1",
+        "src/atomic-crm/validation/favorites.ts": "edba5823dc21",
         "src/atomic-crm/validation/index.ts": "5e4890c4d980",
         "src/atomic-crm/validation/notes.ts": "557ab89b53fd",
         "src/atomic-crm/validation/operatorSegments.ts": "b0f573acd197",
@@ -2813,6 +2819,9 @@
     "src/atomic-crm/opportunities/components/OpportunityActivitySection.tsx": [
       "opportunities"
     ],
+    "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": [
+      "opportunities"
+    ],
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": [
       "opportunities"
     ],
@@ -3030,6 +3039,9 @@
       "organizations"
     ],
     "src/atomic-crm/organizations/OrganizationCreate.tsx": [
+      "organizations"
+    ],
+    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": [
       "organizations"
     ],
     "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx": [

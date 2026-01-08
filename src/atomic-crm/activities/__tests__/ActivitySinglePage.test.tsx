@@ -87,10 +87,10 @@ describe("ActivitySinglePage", () => {
         </TestWrapper>
       );
 
-      // Find the Follow-up section header using a more specific query
+      // Find the Follow-up section header using a more specific query (h3 in FormSectionWithProgress)
       const followUpHeaders = screen.getAllByText(/follow-up/i);
       const sectionHeader = followUpHeaders.find(
-        (el) => el.tagName === "H2" && el.textContent === "Follow-up"
+        (el) => el.tagName === "H3" && el.textContent === "Follow-up"
       );
       expect(sectionHeader).toBeInTheDocument();
 
@@ -109,10 +109,10 @@ describe("ActivitySinglePage", () => {
         </TestWrapper>
       );
 
-      // Find the Outcome section header (h2 element)
+      // Find the Outcome section header (h3 element in FormSectionWithProgress)
       const outcomeHeaders = screen.getAllByText(/outcome/i);
       const sectionHeader = outcomeHeaders.find(
-        (el) => el.tagName === "H2" && el.textContent === "Outcome"
+        (el) => el.tagName === "H3" && el.textContent === "Outcome"
       );
       expect(sectionHeader).toBeInTheDocument();
 
@@ -176,14 +176,14 @@ describe("ActivitySinglePage", () => {
   });
 
   describe("Form Structure", () => {
-    test("uses FormSection for headers", () => {
+    test("uses FormSectionWithProgress for headers", () => {
       renderWithAdminContext(
         <TestWrapper>
           <ActivitySinglePage />
         </TestWrapper>
       );
 
-      const sections = document.querySelectorAll('[data-slot="form-section"]');
+      const sections = document.querySelectorAll('[data-slot="form-section-with-progress"]');
       expect(sections.length).toBeGreaterThanOrEqual(2);
     });
 

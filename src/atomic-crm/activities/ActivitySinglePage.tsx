@@ -2,7 +2,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { FormGrid, FormSection, FormFieldWrapper } from "@/components/admin/form";
+import { FormGrid, FormSectionWithProgress, FormFieldWrapper } from "@/components/admin/form";
 import { contactOptionText } from "../contacts/ContactOption";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { getAutocompleteProps, getQSearchAutocompleteProps } from "../utils/autocompleteDefaults";
@@ -16,13 +16,13 @@ const sentimentChoices = [
 export default function ActivitySinglePage() {
   return (
     <div className="space-y-6">
-      <FormSection title="Activity Details">
+      <FormSectionWithProgress id="activity-details" title="Activity Details" requiredFields={["type", "subject", "activity_date"]}>
         <FormGrid>
           <div data-tutorial="activity-type">
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
               <SelectInput
                 source="type"
-                label="Interaction Type *"
+                label="Interaction Type"
                 choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
                   id: option.value,
                   name: option.label,
@@ -37,7 +37,7 @@ export default function ActivitySinglePage() {
         <FormFieldWrapper name="subject" isRequired>
           <TextInput
             source="subject"
-            label="Subject *"
+            label="Subject"
             isRequired
             helperText="Summarize the outcome or topic"
           />
@@ -45,7 +45,7 @@ export default function ActivitySinglePage() {
 
         <FormGrid>
           <FormFieldWrapper name="activity_date" isRequired countDefaultAsFilled>
-            <TextInput source="activity_date" label="Date *" type="date" isRequired />
+            <TextInput source="activity_date" label="Date" type="date" isRequired />
           </FormFieldWrapper>
           <FormFieldWrapper name="duration_minutes">
             <TextInput
@@ -68,9 +68,9 @@ export default function ActivitySinglePage() {
             />
           </FormFieldWrapper>
         </div>
-      </FormSection>
+      </FormSectionWithProgress>
 
-      <FormSection title="Relationships">
+      <FormSectionWithProgress id="relationships" title="Relationships" requiredFields={[]}>
         <FormGrid>
           <div data-tutorial="activity-opportunity">
             <FormFieldWrapper name="opportunity_id">
@@ -109,9 +109,9 @@ export default function ActivitySinglePage() {
             />
           </ReferenceInput>
         </FormFieldWrapper>
-      </FormSection>
+      </FormSectionWithProgress>
 
-      <FormSection title="Follow-up">
+      <FormSectionWithProgress id="follow-up" title="Follow-up" requiredFields={[]}>
         <FormGrid>
           <FormFieldWrapper name="sentiment">
             <SelectInput
@@ -137,9 +137,9 @@ export default function ActivitySinglePage() {
             />
           </FormFieldWrapper>
         </FormGrid>
-      </FormSection>
+      </FormSectionWithProgress>
 
-      <FormSection title="Outcome">
+      <FormSectionWithProgress id="outcome" title="Outcome" requiredFields={[]}>
         <FormGrid>
           <FormFieldWrapper name="location">
             <TextInput source="location" label="Location" helperText="Where did this occur?" />
@@ -148,7 +148,7 @@ export default function ActivitySinglePage() {
             <TextInput source="outcome" label="Outcome" helperText="Optional result summary" />
           </FormFieldWrapper>
         </FormGrid>
-      </FormSection>
+      </FormSectionWithProgress>
     </div>
   );
 }

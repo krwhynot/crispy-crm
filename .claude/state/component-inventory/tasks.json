@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-08T02:25:36.855Z",
+  "generated_at": "2026-01-08T12:14:50.377Z",
   "item_count": 28,
   "items": [
     {
@@ -112,7 +112,7 @@
     {
       "name": "TaskDetailsTab",
       "file": "src/atomic-crm/tasks/TaskDetailsTab.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useFormOptions"
@@ -122,6 +122,7 @@
         "../root/ConfigurationContext",
         "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
+        "@/components/admin/form",
         "@/components/admin/reference-input",
         "@/components/admin/select-input"
       ],
@@ -206,10 +207,11 @@
     {
       "name": "TaskGeneralTab",
       "file": "src/atomic-crm/tasks/TaskGeneralTab.tsx",
-      "line": 3,
+      "line": 4,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/components/admin/form",
         "@/components/admin/text-input"
       ],
       "isDefaultExport": false,
@@ -239,7 +241,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 62,
+      "line": 75,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -266,9 +268,11 @@
         "@/components/admin/PremiumDatagrid",
         "@/components/admin/bulk-actions-toolbar",
         "@/components/admin/date-field",
+        "@/components/admin/export-button",
         "@/components/admin/list",
         "@/components/admin/list-pagination",
         "@/components/admin/reference-field",
+        "@/components/admin/sort-button",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/badge",
@@ -375,13 +379,14 @@
     {
       "name": "TaskSlideOver",
       "file": "src/atomic-crm/tasks/TaskSlideOver.tsx",
-      "line": 31,
+      "line": 32,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "./TaskRelatedItemsTab",
         "./TaskSlideOverDetailsTab",
+        "@/atomic-crm/components",
         "@/components/layouts/ResourceSlideOver",
         "lucide-react"
       ],

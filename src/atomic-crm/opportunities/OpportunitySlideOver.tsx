@@ -7,7 +7,7 @@ import { OpportunitySlideOverDetailsTab } from "./slideOverTabs/OpportunitySlide
 import { OpportunityContactsTab } from "./slideOverTabs/OpportunityContactsTab";
 import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
 import { OpportunityNotesTab } from "./slideOverTabs/OpportunityNotesTab";
-import { QuickAddTaskButton } from "@/atomic-crm/components";
+import { QuickAddTaskButton, FavoriteToggleButton } from "@/atomic-crm/components";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { Opportunity } from "@/atomic-crm/types";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -97,7 +97,16 @@ export function OpportunitySlideOver({
       canEdit={canEdit}
       tabs={tabs}
       recordRepresentation={recordRepresentation}
-      headerActions={(record) => <QuickAddTaskButton opportunityId={record.id} />}
+      headerActions={(record) => (
+        <>
+          <FavoriteToggleButton
+            entityType="opportunities"
+            entityId={Number(record.id)}
+            displayName={record.name || `Opportunity #${record.id}`}
+          />
+          <QuickAddTaskButton opportunityId={Number(record.id)} />
+        </>
+      )}
     />
   );
 }
