@@ -6,6 +6,7 @@ import { DateField } from "@/components/admin/date-field";
 import { EditButton } from "@/components/admin/edit-button";
 import { ShowButton } from "@/components/admin/show-button";
 import { Badge } from "@/components/ui/badge";
+import { getPriorityVariant } from "@/components/ui/priority-badge";
 import { AsideSection } from "@/components/ui";
 import { TasksIterator } from "../tasks/TasksIterator";
 import { SaleName } from "../sales/SaleName";
@@ -25,12 +26,6 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
     return "secondary";
   };
 
-  const getPriorityBadgeVariant = (priority: string) => {
-    if (priority === "critical") return "destructive";
-    if (priority === "high") return "default";
-    if (priority === "medium") return "secondary";
-    return "outline";
-  };
 
   return (
     <div className="hidden sm:block w-64 min-w-64 text-sm">
@@ -55,7 +50,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
           <div>
             <span className="text-xs text-muted-foreground">Priority</span>
             <div className="mt-1">
-              <Badge variant={getPriorityBadgeVariant(record.priority ?? "low")}>
+              <Badge variant={getPriorityVariant(record.priority ?? "low")}>
                 {record.priority
                   ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
                   : "Unknown"}
