@@ -22,7 +22,7 @@ export default function ActivitySinglePage() {
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
               <SelectInput
                 source="type"
-                label="Interaction Type *"
+                label="Interaction Type"
                 choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
                   id: option.value,
                   name: option.label,
