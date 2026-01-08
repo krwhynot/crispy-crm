@@ -635,10 +635,11 @@
 
   /* ========================================
      SIDEPANE WIDTH SYSTEM
+     Responsive 40vw with min/max constraints
      ======================================== */
-  --sidepane-width: 540px;
+  --sidepane-width: 40vw;
   --sidepane-width-min: 480px;
-  --sidepane-width-max: 600px;
+  --sidepane-width-max: 720px;
 
   /* === AESTHETIC POLISH TOKENS === */
 

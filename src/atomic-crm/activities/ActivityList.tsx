@@ -134,7 +134,7 @@ const ActivityListLayout = () => {
           />
 
           {/* Column 2: Subject - Primary identifier (sortable) - always visible */}
-          <TextField source="subject" label="Subject" {...COLUMN_VISIBILITY.alwaysVisible} />
+          <TextField source="subject" label="Subject" className="max-w-[300px] truncate" {...COLUMN_VISIBILITY.alwaysVisible} />
 
           {/* Column 3: Activity Date - Time field (sortable) - always visible */}
           <DateField
@@ -153,7 +153,7 @@ const ActivityListLayout = () => {
               if (record.type !== "sample" || !record.sample_status) {
                 return <span className="text-muted-foreground">—</span>;
               }
-              return <SampleStatusBadge status={record.sample_status} readonly />;
+              return <SampleStatusBadge status={record.sample_status} />;
             }}
             {...COLUMN_VISIBILITY.desktopOnly}
           />

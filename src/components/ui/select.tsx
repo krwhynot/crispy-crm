@@ -22,14 +22,23 @@ function SelectTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: "sm" | "default";
+  size?: "sm" | "default" | "lg";
 }) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "border-input data-[placeholder]:text-foreground/70 [&_svg:not([class*='text-'])]:text-foreground/70 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background flex w-fit items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:min-h-[48px] data-[size=sm]:min-h-[48px] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Base styles
+        "border-input data-[placeholder]:text-foreground/70 [&_svg:not([class*='text-'])]:text-foreground/70 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background flex w-fit items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Size variants - default: 32px visual with 44px touch expansion (matches Input)
+        "data-[size=default]:h-8 data-[size=default]:px-2 data-[size=default]:py-1 data-[size=default]:text-[0.8125rem] data-[size=default]:leading-[1.35] data-[size=default]:rounded-sm",
+        // Touch target expansion via pseudo-element (44px hit area, 32px visual)
+        "data-[size=default]:relative data-[size=default]:before:content-[''] data-[size=default]:before:absolute data-[size=default]:before:top-[calc((44px-100%)/-2)] data-[size=default]:before:bottom-[calc((44px-100%)/-2)] data-[size=default]:before:left-0 data-[size=default]:before:right-0",
+        // Small variant - same as default
+        "data-[size=sm]:h-8 data-[size=sm]:px-2 data-[size=sm]:py-1 data-[size=sm]:text-[0.8125rem] data-[size=sm]:rounded-sm",
+        // Large variant - legacy 48px for backward compatibility
+        "data-[size=lg]:min-h-[48px] data-[size=lg]:px-3 data-[size=lg]:py-2 data-[size=lg]:text-sm",
         className
       )}
       {...props}
