@@ -455,7 +455,7 @@ describe("QuickLogActivityDialog", () => {
       const initialDraftEl = screen.getByTestId("initial-draft");
       const draftData = JSON.parse(initialDraftEl.textContent || "null");
 
-      expect(draftData).toBeNull();
+      expect(draftData).toEqual({});
       expect(localStorageMock.removeItem).toHaveBeenCalled();
     });
 

@@ -184,7 +184,7 @@ describe("useFilterChipBar", () => {
 
       const { result } = renderHook(() => useFilterChipBar(REFERENCE_CONFIG), { wrapper });
 
-      expect(result.current.chips[0].label).toBe("Org org-123");
+      expect(result.current.chips[0]?.label).toBe("Org org-123");
     });
 
     test("resolves sales rep names", () => {
@@ -192,7 +192,7 @@ describe("useFilterChipBar", () => {
 
       const { result } = renderHook(() => useFilterChipBar(REFERENCE_CONFIG), { wrapper });
 
-      expect(result.current.chips[0].label).toBe("User user-456");
+      expect(result.current.chips[0]?.label).toBe("User user-456");
     });
 
     test("resolves segment names", () => {
@@ -200,7 +200,7 @@ describe("useFilterChipBar", () => {
 
       const { result } = renderHook(() => useFilterChipBar(REFERENCE_CONFIG), { wrapper });
 
-      expect(result.current.chips[0].label).toBe("Playbook seg-789");
+      expect(result.current.chips[0]?.label).toBe("Playbook seg-789");
     });
   });
 
@@ -252,8 +252,8 @@ describe("useFilterChipBar", () => {
 
       // Should be ONE combined chip, not two
       expect(result.current.chips).toHaveLength(1);
-      expect(result.current.chips[0].label).toContain("After");
-      expect(result.current.chips[0].label).toContain("Before");
+      // Date format is "MMM d, yyyy" with dates separated by " – "
+      expect(result.current.chips[0].label).toMatch(/\w+ \d+, \d+ – \w+ \d+, \d+/);
     });
 
     test("removal group chips use group name as key", () => {

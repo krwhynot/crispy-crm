@@ -185,6 +185,7 @@ describe("authProvider", () => {
 
       expect(identity).toEqual({
         id: 2,
+        user_id: "user-456",
         fullName: "Jane Smith",
         avatar: "https://example.com/avatar.jpg",
         role: "rep",

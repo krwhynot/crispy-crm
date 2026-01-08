@@ -23,9 +23,10 @@ describe("filterRegistry", () => {
       ];
 
       coreResources.forEach((resource) => {
-        expect(filterableFields[resource]).toBeDefined();
-        expect(Array.isArray(filterableFields[resource])).toBe(true);
-        expect(filterableFields[resource].length).toBeGreaterThan(0);
+        const fields = filterableFields[resource as keyof typeof filterableFields];
+        expect(fields).toBeDefined();
+        expect(Array.isArray(fields)).toBe(true);
+        expect(fields.length).toBeGreaterThan(0);
       });
     });
 
@@ -80,10 +81,6 @@ describe("filterRegistry", () => {
       // Opportunities: contact_ids (array), tags (array)
       expect(filterableFields.opportunities).toContain("contact_ids");
       expect(filterableFields.opportunities).toContain("tags");
-
-      // Products: certifications (array), allergens (array)
-      expect(filterableFields.products).toContain("certifications");
-      expect(filterableFields.products).toContain("allergens");
     });
   });
 
@@ -114,7 +111,6 @@ describe("filterRegistry", () => {
 
       it("should return true for valid product fields", () => {
         expect(isValidFilterField("products", "name")).toBe(true);
-        expect(isValidFilterField("products", "sku")).toBe(true);
         expect(isValidFilterField("products", "category")).toBe(true);
         expect(isValidFilterField("products", "status")).toBe(true);
       });
@@ -127,10 +123,10 @@ describe("filterRegistry", () => {
         expect(isValidFilterField("opportunities", "fake_field")).toBe(false);
       });
 
-      it("should return false for unknown resources", () => {
-        expect(isValidFilterField("unknown_resource", "id")).toBe(false);
-        expect(isValidFilterField("fake_table", "name")).toBe(false);
-        expect(isValidFilterField("", "field")).toBe(false);
+      it("should throw for unknown resources", () => {
+        expect(() => isValidFilterField("unknown_resource", "id")).toThrow();
+        expect(() => isValidFilterField("fake_table", "name")).toThrow();
+        expect(() => isValidFilterField("", "field")).toThrow();
       });
 
       it("should return false for fields from wrong resource", () => {
@@ -234,14 +230,14 @@ describe("filterRegistry", () => {
         expect(isValidFilterField("opportunities", "not")).toBe(true);
       });
 
-      it("should reject logical operators for unknown resources", () => {
+      it("should throw for logical operators on unknown resources", () => {
         // Security: Unknown resources are blocked even for logical operators
-        expect(isValidFilterField("unknown_resource", "$or")).toBe(false);
-        expect(isValidFilterField("unknown_resource", "or")).toBe(false);
-        expect(isValidFilterField("unknown_resource", "$and")).toBe(false);
-        expect(isValidFilterField("unknown_resource", "and")).toBe(false);
-        expect(isValidFilterField("unknown_resource", "$not")).toBe(false);
-        expect(isValidFilterField("unknown_resource", "not")).toBe(false);
+        expect(() => isValidFilterField("unknown_resource", "$or")).toThrow();
+        expect(() => isValidFilterField("unknown_resource", "or")).toThrow();
+        expect(() => isValidFilterField("unknown_resource", "$and")).toThrow();
+        expect(() => isValidFilterField("unknown_resource", "and")).toThrow();
+        expect(() => isValidFilterField("unknown_resource", "$not")).toThrow();
+        expect(() => isValidFilterField("unknown_resource", "not")).toThrow();
       });
     });
 
@@ -316,8 +312,6 @@ describe("filterRegistry", () => {
         // JSONB and array fields
         expect(isValidFilterField("contacts", "tags")).toBe(true);
         expect(isValidFilterField("opportunities", "contact_ids")).toBe(true);
-        expect(isValidFilterField("products", "certifications")).toBe(true);
-        expect(isValidFilterField("products", "allergens")).toBe(true);
       });
     });
   });

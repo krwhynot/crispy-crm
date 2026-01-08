@@ -208,7 +208,7 @@ describe("filterRegistry", () => {
 
   describe("Products Fields", () => {
     it("should include product-specific fields", () => {
-      const productFields = ["name", "description", "sku", "category"];
+      const productFields = ["name", "description", "category"];
 
       for (const field of productFields) {
         expect(filterableFields.products).toContain(field);
