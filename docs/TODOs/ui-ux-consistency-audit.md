@@ -1,8 +1,86 @@
 # UI/UX Consistency Audit - Detailed Implementation Todos
 
 > **Created:** 2026-01-07
+> **Last Verified:** 2026-01-07
 > **Source:** UI/UX Consistency Audit Report
 > **Total Issues:** 23 | **Critical:** 4 | **Medium:** 11 | **Minor:** 8
+
+---
+
+## 🔍 AUDIT STATUS (2026-01-07)
+
+### Overall Progress: **Audit Complete - Implementation Pending**
+
+| Phase | Status | Issues Found | Fixed | Deferred |
+|-------|--------|--------------|-------|----------|
+| Phase 1: Create Forms | ✅ Verified | 6 | 2 | 4 |
+| Phase 2: List Views | ✅ Verified | 5 | 0 | 5 |
+| Phase 3: Slide-Overs | ✅ Verified | 5 | 2 | 3 |
+| Phase 4: Badge/Typography | ✅ Verified | 4 | 2 | 2 |
+| **TOTAL** | ✅ Complete | **20** | **6** | **14** |
+
+### ✅ Already Correct (Reference Implementations)
+
+| Component | Pattern | Status |
+|-----------|---------|--------|
+| `ContactCreate.tsx` | CreateFormFooter + FormProgressProvider | ✅ Reference |
+| `TaskCreate.tsx` | CreateFormFooter + FormProgressProvider | ✅ Reference |
+| `ContactList.tsx` | TopToolbar + SortButton + ExportButton | ✅ Reference |
+| `ContactSlideOver.tsx` | FavoriteToggleButton + QuickAddTaskButton | ✅ Reference |
+| `OrganizationSlideOver.tsx` | FavoriteToggleButton + QuickAddTaskButton | ✅ Reference |
+| `PriorityBadge.tsx` | Consistent variant mapping | ✅ Reference |
+
+### ❌ Issues Confirmed (Implementation Required)
+
+| Issue | File | Current State | Required Fix |
+|-------|------|--------------|--------------|
+| **CRITICAL** ActivityCreate old pattern | `ActivityCreate.tsx` | Uses FormToolbar | Use CreateFormFooter |
+| **CRITICAL** ActivitySinglePage ALL CAPS | `ActivitySinglePage.tsx` | Uses FormSection | Use FormSectionWithProgress |
+| **CRITICAL** ProductCreate lg:mr-72 | `ProductCreate.tsx:21` | Has legacy class | Remove lg:mr-72 |
+| **CRITICAL** TaskList empty TopToolbar | `TaskList.tsx:47` | `<TopToolbar></TopToolbar>` | Add SortButton + ExportButton |
+| **CRITICAL** ProductList empty TopToolbar | `ProductList.tsx:185` | `<TopToolbar></TopToolbar>` | Add SortButton + ExportButton |
+| **CRITICAL** ActivityList empty TopToolbar | `ActivityList.tsx:226` | `<TopToolbar></TopToolbar>` | Add SortButton + ExportButton |
+| **CRITICAL** OpportunityList actions=false | `OpportunityList.tsx:95` | `actions={false}` | Create OpportunityListActions |
+| **MEDIUM** OpportunityCreate old pattern | `OpportunityCreate.tsx` | Uses FormToolbar | Use CreateFormFooter |
+| **MEDIUM** OrganizationCreate old pattern | `OrganizationCreate.tsx` | Uses FormToolbar | Custom footer with duplicate check |
+| **MEDIUM** TaskGeneralTab double asterisk | `TaskGeneralTab.tsx:19` | `label="Due Date *"` + `isRequired` | Remove manual `*` |
+| **MEDIUM** OpportunitySlideOver missing Star | `OpportunitySlideOver.tsx:100` | Only QuickAddTaskButton | Add FavoriteToggleButton |
+| **MEDIUM** TaskSlideOver no header actions | `TaskSlideOver.tsx` | No headerActions prop | Add both buttons |
+| **MINOR** QuickAddTaskButton text wrap | `QuickAddTaskButton.tsx:34` | No whitespace-nowrap | Add whitespace-nowrap |
+
+### 📊 Detailed Findings by Component
+
+#### Create Forms Analysis
+
+| Component | FormProgressProvider | CreateFormFooter | FormSectionWithProgress | Status |
+|-----------|---------------------|------------------|------------------------|--------|
+| ContactCreate | ✅ Yes | ✅ Yes | ✅ Via ContactInputs | ✅ Reference |
+| TaskCreate | ✅ Yes | ✅ Yes | N/A (tabbed) | ✅ Good |
+| ProductCreate | ✅ Yes | ✅ Yes | N/A (tabbed) | ⚠️ Has lg:mr-72 |
+| ActivityCreate | ✅ Yes | ❌ No | ❌ Uses FormSection | ❌ Fix needed |
+| OpportunityCreate | ❌ No | ❌ No | N/A | ❌ Fix needed |
+| OrganizationCreate | ✅ Yes | ❌ No | N/A | ❌ Fix needed |
+
+#### List Views Analysis
+
+| Component | TopToolbar | SortButton | ExportButton | exporter | Status |
+|-----------|-----------|------------|--------------|----------|--------|
+| ContactList | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Reference |
+| TaskList | ✅ Yes | ❌ Empty | ❌ Missing | ✅ Yes | ❌ Fix needed |
+| ProductList | ✅ Yes | ❌ Empty | ❌ Missing | ❌ None | ❌ Fix needed |
+| ActivityList | ✅ Yes | ❌ Empty | ❌ Missing | ✅ Yes | ❌ Fix needed |
+| OpportunityList | ❌ actions=false | ❌ N/A | ❌ N/A | ✅ Yes | ❌ Fix needed |
+
+#### Slide-Over Header Actions Analysis
+
+| Component | FavoriteToggleButton | QuickAddTaskButton | Status |
+|-----------|---------------------|-------------------|--------|
+| ContactSlideOver | ✅ Yes | ✅ Yes | ✅ Reference |
+| OrganizationSlideOver | ✅ Yes | ✅ Yes | ✅ Good |
+| OpportunitySlideOver | ❌ Missing | ✅ Yes | ⚠️ Add Star |
+| TaskSlideOver | ❌ Missing | ❌ Missing | ❌ Add both |
+
+---
 
 ## Canonical Patterns (Approved)
 
@@ -70,6 +148,382 @@ Our canonical patterns have been validated against industry documentation:
    ```
 
 4. **Non-modal slide-overs** - MUI and Nielsen Norman Group confirm side panels showing detail views should be non-modal (users can still interact with the list behind).
+
+---
+
+## TDD TESTING STRATEGY
+
+### Philosophy: Red → Green → Refactor
+
+For each TODO, write **failing tests FIRST** that describe expected behavior, then implement until tests pass.
+
+### Test Utilities Available
+
+```tsx
+// Located in src/tests/utils/
+import { renderWithAdminContext, waitForMutation } from "@/tests/utils/render-admin";
+import { createMockDataProvider } from "@/tests/utils/mock-providers";
+```
+
+| Utility | Purpose |
+|---------|---------|
+| `renderWithAdminContext` | Render React Admin components with providers |
+| `renderWithRecordContext` | Render with record data (slide-overs) |
+| `waitForMutation` | Wait for async mutations to complete |
+| `createMockDataProvider` | Create mock data provider with overrides |
+
+### Test File Organization
+
+```
+src/atomic-crm/{feature}/__tests__/
+├── {Feature}Create.test.tsx      # Create form tests
+├── {Feature}List.test.tsx        # List view tests
+├── {Feature}SlideOver.test.tsx   # Slide-over tests
+└── {Feature}.integration.test.tsx # Full flow tests
+```
+
+---
+
+### PHASE 1 TESTS: Create Form Patterns
+
+#### Test 1.1: ActivityCreate Form Sections (Write BEFORE TODO 1.1)
+
+**File:** `src/atomic-crm/activities/__tests__/ActivityCreate.sections.test.tsx`
+
+```tsx
+import { describe, test, expect } from "vitest";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { ActivityCreate } from "../ActivityCreate";
+
+describe("ActivityCreate - Sectioned Scroll Pattern", () => {
+  test("renders FormSectionWithProgress components (not old FormSection)", async () => {
+    renderWithAdminContext(<ActivityCreate />);
+
+    // Should have Title Case section headers
+    expect(screen.getByText("Activity Details")).toBeInTheDocument();
+    expect(screen.queryByText("ACTIVITY DETAILS")).not.toBeInTheDocument(); // ALL CAPS = fail
+  });
+
+  test("shows progress indicator with correct required field count", async () => {
+    renderWithAdminContext(<ActivityCreate />);
+
+    // Progress should show actual counts, not "0 of 0"
+    const progress = screen.getByTestId("form-progress");
+    expect(progress).not.toHaveTextContent("0 of 0");
+  });
+
+  test("renders CreateFormFooter with three buttons", async () => {
+    renderWithAdminContext(<ActivityCreate />);
+
+    expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /save & close/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /save & add another/i })).toBeInTheDocument();
+  });
+
+  test("Cancel button uses outline variant", async () => {
+    renderWithAdminContext(<ActivityCreate />);
+
+    const cancelBtn = screen.getByRole("button", { name: /cancel/i });
+    expect(cancelBtn).toHaveClass("variant-outline"); // or check data attribute
+  });
+});
+```
+
+#### Test 1.2: ProductCreate Sectioned Scroll (Write BEFORE TODO 1.2)
+
+**File:** `src/atomic-crm/products/__tests__/ProductCreate.sections.test.tsx`
+
+```tsx
+describe("ProductCreate - Sectioned Scroll Pattern (No Tabs)", () => {
+  test("renders single scrollable page without tabs", async () => {
+    renderWithAdminContext(<ProductCreate />);
+
+    // Should NOT have tab navigation
+    expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+
+    // Should have section headers visible without clicking
+    expect(screen.getByText("Product Details")).toBeInTheDocument();
+    expect(screen.getByText("Distribution")).toBeInTheDocument();
+  });
+
+  test("does not have lg:mr-72 layout class", async () => {
+    const { container } = renderWithAdminContext(<ProductCreate />);
+
+    // Legacy layout class should be removed
+    expect(container.querySelector(".lg\\:mr-72")).not.toBeInTheDocument();
+  });
+
+  test("renders all fields without tab switching", async () => {
+    renderWithAdminContext(<ProductCreate />);
+
+    // All required fields visible immediately
+    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/category/i)).toBeInTheDocument();
+  });
+});
+```
+
+#### Test 1.5: Tasks Create Double Asterisk Fix (Write BEFORE TODO 1.5)
+
+**File:** `src/atomic-crm/tasks/__tests__/TaskCreate.asterisk.test.tsx`
+
+```tsx
+describe("TaskCreate - Required Field Indicators", () => {
+  test("Due Date shows single asterisk, not double", async () => {
+    renderWithAdminContext(<TaskCreate />);
+
+    const dueDateLabel = screen.getByText(/due date/i);
+    // Count asterisks - should be exactly 1
+    const asteriskCount = (dueDateLabel.textContent?.match(/\*/g) || []).length;
+    expect(asteriskCount).toBeLessThanOrEqual(1);
+  });
+
+  test("all required fields have single asterisk indicator", async () => {
+    renderWithAdminContext(<TaskCreate />);
+
+    const requiredFields = ["Title", "Due Date"];
+    requiredFields.forEach(field => {
+      const label = screen.getByText(new RegExp(field, 'i'));
+      const asterisks = (label.textContent?.match(/\*/g) || []).length;
+      expect(asterisks).toBeLessThanOrEqual(1);
+    });
+  });
+});
+```
+
+---
+
+### PHASE 2 TESTS: List View Actions
+
+#### Test 2.1: TaskList Sort + Export (Write BEFORE TODO 2.1)
+
+**File:** `src/atomic-crm/tasks/__tests__/TaskList.actions.test.tsx`
+
+```tsx
+describe("TaskList - TopToolbar Actions", () => {
+  test("renders SortButton in toolbar", async () => {
+    renderWithAdminContext(<TaskList />);
+
+    expect(screen.getByTestId("task-sort-btn")).toBeInTheDocument();
+  });
+
+  test("SortButton includes correct sort fields", async () => {
+    renderWithAdminContext(<TaskList />);
+
+    const sortBtn = screen.getByTestId("task-sort-btn");
+    await userEvent.click(sortBtn);
+
+    // Verify sort options
+    expect(screen.getByText(/title/i)).toBeInTheDocument();
+    expect(screen.getByText(/due date/i)).toBeInTheDocument();
+    expect(screen.getByText(/priority/i)).toBeInTheDocument();
+    expect(screen.getByText(/type/i)).toBeInTheDocument();
+  });
+
+  test("renders ExportButton in toolbar", async () => {
+    renderWithAdminContext(<TaskList />);
+
+    expect(screen.getByTestId("task-export-btn")).toBeInTheDocument();
+  });
+
+  test("perPage is 100 (documented intentional)", async () => {
+    const { container } = renderWithAdminContext(<TaskList />);
+
+    // Component should be configured with perPage=100
+    // This is intentional per design decision - do not change
+    expect(container).toHaveAttribute("data-per-page", "100");
+  });
+});
+```
+
+#### Test 2.4: OpportunityList Actions (Write BEFORE TODO 2.4)
+
+**File:** `src/atomic-crm/opportunities/__tests__/OpportunityList.actions.test.tsx`
+
+```tsx
+describe("OpportunityList - TopToolbar Actions", () => {
+  test("does NOT have actions={false}", async () => {
+    renderWithAdminContext(<OpportunityList />);
+
+    // actions={false} hides toolbar - should NOT happen
+    const toolbar = screen.queryByRole("toolbar");
+    expect(toolbar).toBeInTheDocument();
+  });
+
+  test("renders SortButton with opportunity-specific fields", async () => {
+    renderWithAdminContext(<OpportunityList />);
+
+    const sortBtn = screen.getByTestId("opportunity-sort-btn");
+    await userEvent.click(sortBtn);
+
+    expect(screen.getByText(/name/i)).toBeInTheDocument();
+    expect(screen.getByText(/stage/i)).toBeInTheDocument();
+    expect(screen.getByText(/priority/i)).toBeInTheDocument();
+    expect(screen.getByText(/estimated close/i)).toBeInTheDocument();
+  });
+});
+```
+
+#### Test 2.5: Filter Chip Display (Write BEFORE TODO 2.5)
+
+**File:** `src/atomic-crm/filters/__tests__/FilterChipBar.display.test.tsx`
+
+```tsx
+describe("FilterChipBar - Value Display", () => {
+  test("does not display literal 'true' for boolean filters", async () => {
+    renderWithAdminContext(
+      <FilterChipBar filters={{ active: true }} />
+    );
+
+    // Should NOT show literal "true"
+    expect(screen.queryByText("true")).not.toBeInTheDocument();
+    // Should show human-readable label
+    expect(screen.getByText(/active/i)).toBeInTheDocument();
+  });
+
+  test("does not display 'null' for deleted_at filter", async () => {
+    renderWithAdminContext(
+      <FilterChipBar filters={{ "deleted_at@is": null }} />
+    );
+
+    expect(screen.queryByText("null")).not.toBeInTheDocument();
+  });
+});
+```
+
+---
+
+### PHASE 3 TESTS: Slide-Over Header Actions
+
+#### Test 3.1: OpportunitySlideOver FavoriteButton (Write BEFORE TODO 3.1)
+
+**File:** `src/atomic-crm/opportunities/__tests__/OpportunitySlideOver.header.test.tsx`
+
+```tsx
+describe("OpportunitySlideOver - Header Actions", () => {
+  const mockOpportunity = {
+    id: 1,
+    name: "Test Opportunity",
+    stage: "new_lead",
+  };
+
+  test("renders FavoriteToggleButton in header", async () => {
+    renderWithRecordContext(<OpportunitySlideOver />, {
+      record: mockOpportunity,
+      resource: "opportunities",
+    });
+
+    expect(screen.getByTestId("favorite-toggle-btn")).toBeInTheDocument();
+  });
+
+  test("FavoriteToggleButton appears BEFORE QuickAddTaskButton", async () => {
+    renderWithRecordContext(<OpportunitySlideOver />, {
+      record: mockOpportunity,
+      resource: "opportunities",
+    });
+
+    const buttons = screen.getAllByRole("button");
+    const favoriteIdx = buttons.findIndex(b => b.dataset.testid === "favorite-toggle-btn");
+    const addTaskIdx = buttons.findIndex(b => b.dataset.testid === "quick-add-task-btn");
+
+    expect(favoriteIdx).toBeLessThan(addTaskIdx);
+  });
+});
+```
+
+#### Test 3.4: QuickAddTaskButton Text Wrapping (Write BEFORE TODO 3.4)
+
+**File:** `src/atomic-crm/components/__tests__/QuickAddTaskButton.layout.test.tsx`
+
+```tsx
+describe("QuickAddTaskButton - Layout", () => {
+  test("has whitespace-nowrap class to prevent text wrapping", async () => {
+    render(<QuickAddTaskButton />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("whitespace-nowrap");
+  });
+
+  test("button text stays on single line", async () => {
+    render(<QuickAddTaskButton />);
+
+    const button = screen.getByRole("button");
+    // Text should be "Add Task" not split across lines
+    expect(button.textContent).toBe("Add Task");
+  });
+});
+```
+
+---
+
+### PHASE 4 TESTS: Badge Consistency
+
+#### Test 4.1: Priority Badge Styling (Write BEFORE TODO 4.1)
+
+**File:** `src/components/ui/__tests__/PriorityBadge.test.tsx`
+
+```tsx
+describe("PriorityBadge - Consistent Styling", () => {
+  test("A-High uses destructive color", async () => {
+    render(<PriorityBadge priority="A-High" />);
+
+    const badge = screen.getByText("A-High");
+    expect(badge).toHaveClass("bg-destructive");
+  });
+
+  test("B-Medium uses warning color", async () => {
+    render(<PriorityBadge priority="B-Medium" />);
+
+    const badge = screen.getByText("B-Medium");
+    expect(badge).toHaveClass("bg-warning");
+  });
+
+  test("all badges use filled variant (not outline)", async () => {
+    const priorities = ["A-High", "B-Medium", "C-Low"];
+
+    priorities.forEach(p => {
+      const { unmount } = render(<PriorityBadge priority={p} />);
+      const badge = screen.getByText(p);
+
+      // Filled badges have solid background
+      expect(badge).not.toHaveClass("border");
+      expect(badge).toHaveClass(/^bg-/);
+
+      unmount();
+    });
+  });
+});
+```
+
+---
+
+### Running TDD Tests
+
+```bash
+# Run specific test file (during development)
+just test src/atomic-crm/activities/__tests__/ActivityCreate.sections.test.tsx
+
+# Run all tests for a phase
+just test --grep "Sectioned Scroll"
+
+# Run in watch mode for TDD cycle
+just test --watch src/atomic-crm/activities/
+
+# Full test suite (after implementation)
+just test
+```
+
+### TDD Workflow Per TODO
+
+| Step | Command | Expected |
+|------|---------|----------|
+| 1. Write test | Create test file | - |
+| 2. Run test | `just test {file}` | ❌ RED (fail) |
+| 3. Implement | Edit component | - |
+| 4. Run test | `just test {file}` | ✅ GREEN (pass) |
+| 5. Refactor | Clean up code | ✅ GREEN (still pass) |
+| 6. Move on | Next TODO | - |
 
 ---
 
