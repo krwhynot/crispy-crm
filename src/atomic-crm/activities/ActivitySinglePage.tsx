@@ -2,7 +2,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { FormGrid, FormSection, FormFieldWrapper } from "@/components/admin/form";
+import { FormGrid, FormSectionWithProgress, FormFieldWrapper } from "@/components/admin/form";
 import { contactOptionText } from "../contacts/ContactOption";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { getAutocompleteProps, getQSearchAutocompleteProps } from "../utils/autocompleteDefaults";

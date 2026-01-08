@@ -75,7 +75,12 @@ const ActivityFormContent = () => {
       <FormErrorSummary errors={errors} />
       <HiddenActivityTypeField />
       <ActivitySinglePage />
-      <FormToolbar dataTutorial="activity-save-btn" />
+      <CreateFormFooter
+        resourceName="activity"
+        redirectPath="/activities"
+        tutorialAttribute="activity-save-btn"
+        preserveFields={["contact_id", "organization_id", "opportunity_id"]}
+      />
     </>
   );
 };

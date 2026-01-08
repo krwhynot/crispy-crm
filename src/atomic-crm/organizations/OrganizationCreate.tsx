@@ -11,26 +11,23 @@
  * case-insensitive search before save. If a potential duplicate is found,
  * DuplicateOrgWarningDialog appears to let the user confirm or change the name.
  */
-import { useState, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
-import { CancelButton } from "@/components/admin/cancel-button";
 import {
-  SaveButton,
   FormLoadingSkeleton,
   FormProgressProvider,
   FormProgressBar,
 } from "@/components/admin/form";
-import { FormToolbar } from "@/components/admin/simple-form";
 import { useLocation } from "react-router-dom";
-import { useFormContext } from "react-hook-form";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { organizationSchema } from "../validation/organizations";
 import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
 import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
+import { OrganizationCreateFormFooter } from "./OrganizationCreateFormFooter";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Database } from "@/types/database.generated";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
@@ -39,88 +36,11 @@ import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
 /**
- * Custom save button that checks for duplicates before saving
- *
- * IMPORTANT: Uses a controlled submission pattern:
- * 1. Prevents Enter key from bypassing duplicate check (onKeyDown at form level)
- * 2. Visible button checks for duplicates on click
- * 3. If no duplicate, triggers hidden submit button to perform actual save
- * 4. Hidden button has type="submit" which triggers React Admin's form submission
- */
-interface DuplicateCheckSaveButtonProps {
-  onDuplicateFound: DuplicateCheckCallback;
-  checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
-  isChecking: boolean;
-}
-
-const DuplicateCheckSaveButton = ({
-  onDuplicateFound,
-  checkForDuplicate,
-  isChecking,
-}: DuplicateCheckSaveButtonProps) => {
-  const form = useFormContext();
-  // Ref to the hidden submit button
-  const hiddenSubmitRef = useRef<HTMLButtonElement>(null);
-
-  const handleClick = useCallback(
-    async (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-
-      // Validate ALL form fields first (not just name)
-      // This ensures errors display in FormErrorSummary before any other checks
-      const isValid = await form.trigger();
-      if (!isValid) {
-        // Form has validation errors - they're now set and will display
-        return;
-      }
-
-      // Get current form values (we know name is valid now)
-      const values = form.getValues();
-      const name = values.name?.trim();
-
-      // Check for duplicates
-      const duplicate = await checkForDuplicate(name);
-      if (duplicate) {
-        // Duplicate found - trigger the dialog instead of saving
-        onDuplicateFound(duplicate.name, values);
-        return;
-      }
-
-      // No duplicate - trigger the hidden submit button
-      hiddenSubmitRef.current?.click();
-    },
-    [form, checkForDuplicate, onDuplicateFound]
-  );
-
-  return (
-    <>
-      {/* Hidden native submit button that triggers React Admin form submission */}
-      <button
-        ref={hiddenSubmitRef}
-        type="submit"
-        style={{ display: "none" }}
-        aria-hidden="true"
-        tabIndex={-1}
-      />
-      {/* Visible button that checks for duplicates first */}
-      <SaveButton
-        label={isChecking ? "Checking..." : "Create Organization"}
-        type="button"
-        onClick={handleClick}
-        disabled={isChecking}
-        alwaysEnable={true}
-        data-tutorial="org-save-btn"
-      />
-    </>
-  );
-};
-
-/**
  * Prevents Enter key in form inputs from triggering form submission
  *
  * This is critical for the duplicate check pattern: without this, pressing Enter
- * in any text field would trigger the hidden submit button directly, completely
- * bypassing the DuplicateCheckSaveButton's duplicate detection logic.
+ * in any text field would trigger form submission directly, completely
+ * bypassing the duplicate detection logic.
  *
  * Only blocks Enter in INPUT elements (not TEXTAREA for multi-line input).
  */
@@ -285,6 +205,8 @@ const OrganizationCreate = () => {
                       onDuplicateFound={handleDuplicateFound}
                       checkForDuplicate={checkForDuplicate}
                       isChecking={isChecking}
+                      transformValues={transformValues}
+                      bypassDuplicate={bypassDuplicate}
                     />
                   </CardContent>
                 </Card>
@@ -308,30 +230,35 @@ const OrganizationCreate = () => {
   );
 };
 
+interface OrganizationFormContentProps {
+  onDuplicateFound: DuplicateCheckCallback;
+  checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
+  isChecking: boolean;
+  transformValues: (values: OrganizationFormValues) => OrganizationFormValues;
+  bypassDuplicate: () => void;
+}
+
 const OrganizationFormContent = ({
   onDuplicateFound,
   checkForDuplicate,
   isChecking,
-}: {
-  onDuplicateFound: DuplicateCheckCallback;
-  checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
-  isChecking: boolean;
-}) => {
+  transformValues,
+  bypassDuplicate,
+}: OrganizationFormContentProps) => {
   useUnsavedChangesWarning();
 
   return (
     <>
       <OrganizationInputs />
-      <FormToolbar>
-        <div className="flex flex-row gap-2 justify-end">
-          <CancelButton />
-          <DuplicateCheckSaveButton
-            onDuplicateFound={onDuplicateFound}
-            checkForDuplicate={checkForDuplicate}
-            isChecking={isChecking}
-          />
-        </div>
-      </FormToolbar>
+      <OrganizationCreateFormFooter
+        onDuplicateFound={onDuplicateFound}
+        checkForDuplicate={checkForDuplicate}
+        isChecking={isChecking}
+        redirectPath="/organizations"
+        preserveFields={["parent_organization_id", "organization_type", "segment_id", "sales_id"]}
+        transformValues={transformValues}
+        bypassDuplicate={bypassDuplicate}
+      />
     </>
   );
 };

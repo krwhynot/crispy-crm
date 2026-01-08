@@ -2,18 +2,20 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
-import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
-import { CancelButton } from "@/components/admin/cancel-button";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
-import { FormToolbar } from "../layout/FormToolbar";
+import {
+  FormProgressProvider,
+  FormProgressBar,
+} from "@/components/admin/form";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
-import { OpportunityCreateSaveButton } from "./components/OpportunityCreateSaveButton";
+import { OpportunityCreateFormFooter } from "./components/OpportunityCreateFormFooter";
 import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
 import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
 import { OpportunityCreateFormTutorial } from "../tutorial/OpportunityCreateFormTutorial";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
+import { useFormState } from "react-hook-form";
 
 const OpportunityCreate = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -67,17 +69,20 @@ const OpportunityCreate = () => {
     <CreateBase redirect={redirect}>
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
-          <Form defaultValues={formDefaults}>
-            <Card>
-              <CardContent>
-                <OpportunityFormContent
-                  checkForSimilar={checkForSimilar}
-                  hasConfirmed={hasConfirmed}
-                  resetConfirmation={resetConfirmation}
-                />
-              </CardContent>
-            </Card>
-          </Form>
+          <FormProgressProvider initialProgress={10}>
+            <FormProgressBar className="mb-6" />
+            <Form defaultValues={formDefaults}>
+              <Card>
+                <CardContent>
+                  <OpportunityFormContent
+                    checkForSimilar={checkForSimilar}
+                    hasConfirmed={hasConfirmed}
+                    resetConfirmation={resetConfirmation}
+                  />
+                </CardContent>
+              </Card>
+            </Form>
+          </FormProgressProvider>
         </div>
       </div>
 
