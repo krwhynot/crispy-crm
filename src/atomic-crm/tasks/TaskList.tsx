@@ -39,6 +39,8 @@ import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksData
 import { TopToolbar } from "../layout/TopToolbar";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { TaskActionMenu } from "./components/TaskActionMenu";
+import { SortButton } from "@/components/admin/sort-button";
+import { ExportButton } from "@/components/admin/export-button";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**

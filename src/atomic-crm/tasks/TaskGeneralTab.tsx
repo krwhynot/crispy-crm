@@ -4,7 +4,7 @@ export const TaskGeneralTab = () => {
   return (
     <div className="space-y-2">
       <div data-tutorial="task-title">
-        <TextInput source="title" label="Task Title *" helperText="Required field" />
+        <TextInput source="title" label="Task Title" isRequired helperText="Required field" />
       </div>
       <TextInput
         source="description"
@@ -16,7 +16,7 @@ export const TaskGeneralTab = () => {
       <div data-tutorial="task-due-date">
         <TextInput
           source="due_date"
-          label="Due Date *"
+          label="Due Date"
           type="date"
           isRequired
           helperText="When is this due?"

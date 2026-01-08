@@ -33,7 +33,7 @@ export function QuickAddTaskButton({
         onClick={handleClick}
         className="inline-flex items-center gap-1.5 px-3 h-11 rounded-full
                    bg-primary/10 text-primary text-sm font-medium
-                   hover:bg-primary/20 transition-colors"
+                   hover:bg-primary/20 transition-colors whitespace-nowrap"
         aria-label="Add task"
       >
         <Plus className="h-4 w-4" />

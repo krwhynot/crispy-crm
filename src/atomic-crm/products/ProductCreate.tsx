@@ -18,8 +18,8 @@ const ProductCreate = () => {
 
   return (
     <CreateBase redirect="show">
-      <div className="bg-muted mt-2 flex lg:mr-72 px-6 py-6">
-        <div className="flex-1">
+      <div className="bg-muted mt-2 px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar className="mb-6" />
             <Form defaultValues={defaultValues} mode="onBlur">

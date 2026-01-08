@@ -97,7 +97,7 @@ export function OpportunitySlideOver({
       canEdit={canEdit}
       tabs={tabs}
       recordRepresentation={recordRepresentation}
-      headerActions={(record) => <QuickAddTaskButton opportunityId={record.id} />}
+      headerActions={(record) => <QuickAddTaskButton opportunityId={Number(record.id)} />}
     />
   );
 }
