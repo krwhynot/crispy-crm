@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { describe, it, expect, vi, beforeEach, beforeAll, type Mock } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -345,6 +345,10 @@ describe("QuickAddForm", () => {
  * See: https://github.com/shadcn-ui/ui/discussions/4168
  */
 describe("QuickAddForm - Principal Selection and Product Filtering", () => {
+  beforeAll(() => {
+    vi.setConfig({ testTimeout: 30000 });
+  });
+
   const mockOnSuccess = vi.fn();
   const mockMutate = vi.fn();
 

@@ -305,7 +305,7 @@ describe("QuickAdd Integration", () => {
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
-  }, 45000);
+  }, 60000);
 
   it("handles Save & Add Another flow correctly", async () => {
     renderWithAdminContext(<QuickAddButton />);

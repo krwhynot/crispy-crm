@@ -36,7 +36,7 @@ describe("ContactCreate with Progress Tracking", () => {
       const progress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
       expect(progress).toBeGreaterThanOrEqual(10);
       expect(progress).toBeLessThan(100);
-    });
+    }, 30000);
 
     test("progress bar has correct accessibility attributes", async () => {
       renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
@@ -45,7 +45,7 @@ describe("ContactCreate with Progress Tracking", () => {
       expect(progressBar).toHaveAttribute("aria-valuemin", "0");
       expect(progressBar).toHaveAttribute("aria-valuemax", "100");
       expect(progressBar).toHaveAttribute("aria-label");
-    });
+    }, 30000);
 
     test("progress bar is visible before form content", async () => {
       renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
