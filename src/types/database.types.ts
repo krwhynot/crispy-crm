@@ -1,5 +1,3 @@
-WARN: no SMS provider is enabled. Disabling phone login
-Connecting to db 5432
 export type Json =
   | string
   | number
@@ -4735,6 +4733,13 @@ export type Database = {
           result_user_id: string
         }[]
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
+      soft_delete_product: { Args: { product_id: number }; Returns: undefined }
+      soft_delete_products: {
+        Args: { product_ids: number[] }
+        Returns: number[]
+      }
       sync_contact_organizations: {
         Args: { p_contact_id: number; p_organizations: Json }
         Returns: undefined
@@ -5285,5 +5290,3 @@ export const Constants = {
   },
 } as const
 
-A new version of Supabase CLI is available: v2.67.1 (currently installed v2.63.1)
-We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
