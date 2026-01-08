@@ -404,10 +404,10 @@
     @apply focus-within:ring-2 focus-within:ring-ring/40 focus-within:ring-offset-1;
   }
 
-  /* Consistent row height for all datagrid tables - 52px (40px content + 12px padding) */
+  /* Consistent row height for all datagrid tables - 56px (matches shadcn TableRow) */
   /* Note: height on tr is more reliable than min-height on td for enforcing row height */
   .table-row-premium {
-    height: 52px;
+    height: 56px;
   }
 
   .table-row-premium td {
