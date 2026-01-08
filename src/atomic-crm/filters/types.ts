@@ -45,15 +45,21 @@ export interface FilterChoice {
  * - 'reference': Reference to another resource (organizations, contacts, etc.)
  * - 'search': Text search input
  * - 'toggle': Boolean toggle or single-value toggle button
+ * - 'date-range': Date filter (typically paired with @gte/@lte suffixes)
+ * - 'boolean': Boolean filter with custom labels
  */
 export interface FilterConfig {
   key: string;
   label: string;
-  type: "select" | "multiselect" | "reference" | "search" | "toggle";
-  choices?: FilterChoice[];
+  type: "select" | "multiselect" | "reference" | "search" | "toggle" | "date-range" | "boolean";
+  choices?: FilterChoice[] | ((context: unknown) => FilterChoice[]);
   defaultValue?: FilterValue;
   dynamicChoices?: boolean;
   reference?: string;
+  /** Custom formatter function to transform filter value into chip label */
+  formatLabel?: (value: unknown) => string;
+  /** Group related filters for removal (e.g., date ranges) */
+  removalGroup?: string;
 }
 
 /**

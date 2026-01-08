@@ -12,8 +12,8 @@ interface ListSearchBarProps {
   placeholder?: string;
   /** Filter source field name (default: "q") */
   source?: string;
-  /** Filter configuration for chip bar labels (optional for search-only views) */
-  filterConfig?: FilterConfig;
+  /** Filter configuration array for chip bar labels (optional for search-only views) */
+  filterConfig?: FilterConfig[];
   /** Enable recent searches dropdown (default: false for backward compatibility) */
   enableRecentSearches?: boolean;
 }
