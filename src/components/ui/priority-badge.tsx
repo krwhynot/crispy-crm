@@ -28,6 +28,17 @@ const priorityVariants = {
 
 type PriorityLevel = keyof typeof priorityVariants;
 
+/**
+ * Get badge variant for a task priority level
+ * Exported for reuse in components that render priority without the full PriorityBadge
+ * (e.g., OpportunityAside, OpportunitySlideOverDetailsTab)
+ */
+export function getPriorityVariant(
+  priority: string
+): "outline" | "secondary" | "default" | "destructive" {
+  return priorityVariants[priority as PriorityLevel] || "outline";
+}
+
 interface PriorityBadgeProps {
   priority: string;
   className?: string;
