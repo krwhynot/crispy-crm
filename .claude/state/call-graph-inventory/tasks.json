@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-08T02:25:51.796Z",
+  "generated_at": "2026-01-08T12:15:01.816Z",
   "items": {
     "nodes": [
       {
@@ -31,10 +31,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "id": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "name": "TaskDetailsTab",
         "file": "src/atomic-crm/tasks/TaskDetailsTab.tsx",
-        "line": 12,
+        "line": 13,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -67,10 +67,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskGeneralTab.tsx:3:TaskGeneralTab",
+        "id": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
         "name": "TaskGeneralTab",
         "file": "src/atomic-crm/tasks/TaskGeneralTab.tsx",
-        "line": 3,
+        "line": 4,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -85,37 +85,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
+        "id": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
         "name": "TaskList",
         "file": "src/atomic-crm/tasks/TaskList.tsx",
-        "line": 62,
+        "line": 75,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskList.tsx:47:TaskListActions",
+        "id": "src/atomic-crm/tasks/TaskList.tsx:52:TaskListActions",
         "name": "TaskListActions",
         "file": "src/atomic-crm/tasks/TaskList.tsx",
-        "line": 47,
+        "line": 52,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "id": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "name": "TaskListLayout",
         "file": "src/atomic-crm/tasks/TaskList.tsx",
-        "line": 108,
+        "line": 121,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "id": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "name": "exporter",
         "file": "src/atomic-crm/tasks/TaskList.tsx",
-        "line": 310,
+        "line": 323,
         "nodeType": "arrow",
         "exported": false,
         "async": true
@@ -148,10 +148,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskSlideOver.tsx:31:TaskSlideOver",
+        "id": "src/atomic-crm/tasks/TaskSlideOver.tsx:32:TaskSlideOver",
         "name": "TaskSlideOver",
         "file": "src/atomic-crm/tasks/TaskSlideOver.tsx",
-        "line": 31,
+        "line": 32,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1329,146 +1329,209 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "useFormOptions",
         "targetName": "useFormOptions",
         "edgeType": "hook",
-        "line": 13,
+        "line": 14,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 31,
+        "line": 39,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "getAutocompleteProps",
         "targetName": "getAutocompleteProps",
         "edgeType": "call",
-        "line": 41,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "getAutocompleteProps",
         "targetName": "getAutocompleteProps",
         "edgeType": "call",
-        "line": 53,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "getQSearchAutocompleteProps",
         "targetName": "getQSearchAutocompleteProps",
         "edgeType": "call",
-        "line": 65,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "getQSearchAutocompleteProps",
         "targetName": "getQSearchAutocompleteProps",
         "edgeType": "call",
-        "line": 73,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 59,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 71,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "SelectInput",
-        "targetName": "SelectInput",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
         "edgeType": "render",
         "line": 17,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 28,
+        "line": 23,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "AutocompleteInput",
-        "targetName": "AutocompleteInput",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "SelectInput",
+        "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 40,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 52,
+        "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 64,
+        "line": 63,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 72,
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:13:TaskDetailsTab",
+        "target": "AutocompleteInput",
+        "targetName": "AutocompleteInput",
+        "edgeType": "render",
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
@@ -1617,25 +1680,61 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:3:TaskGeneralTab",
-        "target": "TextInput",
-        "targetName": "TextInput",
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
         "edgeType": "render",
-        "line": 7,
+        "line": 6,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:3:TaskGeneralTab",
-        "target": "TextInput",
-        "targetName": "TextInput",
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 9,
+        "line": 12,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:3:TaskGeneralTab",
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 16,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 13,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
@@ -1644,11 +1743,20 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:3:TaskGeneralTab",
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 25,
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskGeneralTab.tsx:4:TaskGeneralTab",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
@@ -1680,529 +1788,511 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 63,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
         "target": "useSlideOverState",
         "targetName": "useSlideOverState",
         "edgeType": "hook",
-        "line": 65,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
         "target": "useFilterCleanup",
         "targetName": "useFilterCleanup",
         "edgeType": "hook",
-        "line": 68,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
         "target": "List",
         "targetName": "List",
-        "edgeType": "render",
-        "line": 80,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
-        "target": "TaskListSkeleton",
-        "targetName": "TaskListSkeleton",
-        "edgeType": "render",
-        "line": 71,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
-        "target": "TaskListActions",
-        "targetName": "TaskListActions",
-        "edgeType": "render",
-        "line": 82,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
-        "target": "ListPagination",
-        "targetName": "ListPagination",
-        "edgeType": "render",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
-        "target": "TaskListLayout",
-        "targetName": "TaskListLayout",
-        "edgeType": "render",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
-        "target": "FloatingCreateButton",
-        "targetName": "FloatingCreateButton",
-        "edgeType": "render",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
-        "target": "TaskSlideOver",
-        "targetName": "TaskSlideOver",
         "edgeType": "render",
         "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:62:TaskList",
-        "target": "PageTutorialTrigger",
-        "targetName": "PageTutorialTrigger",
-        "edgeType": "render",
-        "line": 100,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:47:TaskListActions",
-        "target": "TopToolbar",
-        "targetName": "TopToolbar",
-        "edgeType": "render",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "useListContext",
-        "targetName": "useListContext",
-        "edgeType": "hook",
-        "line": 115,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "useListKeyboardNavigation",
-        "targetName": "useListKeyboardNavigation",
-        "edgeType": "hook",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "openSlideOver",
-        "targetName": "openSlideOver",
-        "edgeType": "call",
-        "line": 120,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 120,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "keys",
-        "targetName": "keys",
-        "edgeType": "call",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "openSlideOver",
-        "targetName": "openSlideOver",
-        "edgeType": "call",
-        "line": 144,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 144,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "openSlideOver",
-        "targetName": "openSlideOver",
-        "edgeType": "call",
-        "line": 245,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "openSlideOver",
-        "targetName": "openSlideOver",
-        "edgeType": "call",
-        "line": 246,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "StandardListLayout",
-        "targetName": "StandardListLayout",
-        "edgeType": "render",
-        "line": 129,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "StandardListLayout",
-        "targetName": "StandardListLayout",
-        "edgeType": "render",
-        "line": 141,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "PremiumDatagrid",
-        "targetName": "PremiumDatagrid",
-        "edgeType": "render",
-        "line": 143,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "TruncatedText",
-        "targetName": "TruncatedText",
-        "edgeType": "render",
-        "line": 160,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "FilterableBadge",
-        "targetName": "FilterableBadge",
-        "edgeType": "render",
-        "line": 179,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "FilterableBadge",
-        "targetName": "FilterableBadge",
-        "edgeType": "render",
-        "line": 193,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 194,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 202,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 214,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 226,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "TaskListFilter",
-        "targetName": "TaskListFilter",
-        "edgeType": "render",
-        "line": 129,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
         "target": "TaskListSkeleton",
         "targetName": "TaskListSkeleton",
         "edgeType": "render",
-        "line": 130,
+        "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "TaskEmpty",
-        "targetName": "TaskEmpty",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
+        "target": "TaskListActions",
+        "targetName": "TaskListActions",
         "edgeType": "render",
-        "line": 136,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "TaskListFilter",
-        "targetName": "TaskListFilter",
-        "edgeType": "render",
-        "line": 141,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "ListSearchBar",
-        "targetName": "ListSearchBar",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
+        "target": "ListPagination",
+        "targetName": "ListPagination",
+        "edgeType": "render",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
+        "target": "TaskListLayout",
+        "targetName": "TaskListLayout",
+        "edgeType": "render",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
+        "target": "FloatingCreateButton",
+        "targetName": "FloatingCreateButton",
+        "edgeType": "render",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
+        "target": "TaskSlideOver",
+        "targetName": "TaskSlideOver",
+        "edgeType": "render",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:75:TaskList",
+        "target": "PageTutorialTrigger",
+        "targetName": "PageTutorialTrigger",
+        "edgeType": "render",
+        "line": 113,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:52:TaskListActions",
+        "target": "TopToolbar",
+        "targetName": "TopToolbar",
+        "edgeType": "render",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:52:TaskListActions",
+        "target": "SortButton",
+        "targetName": "SortButton",
+        "edgeType": "render",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:52:TaskListActions",
+        "target": "ExportButton",
+        "targetName": "ExportButton",
+        "edgeType": "render",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 128,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "useListKeyboardNavigation",
+        "targetName": "useListKeyboardNavigation",
+        "edgeType": "hook",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "openSlideOver",
+        "targetName": "openSlideOver",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "openSlideOver",
+        "targetName": "openSlideOver",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "openSlideOver",
+        "targetName": "openSlideOver",
+        "edgeType": "call",
+        "line": 258,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "openSlideOver",
+        "targetName": "openSlideOver",
+        "edgeType": "call",
+        "line": 259,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "StandardListLayout",
+        "targetName": "StandardListLayout",
         "edgeType": "render",
         "line": 142,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "StandardListLayout",
+        "targetName": "StandardListLayout",
         "edgeType": "render",
-        "line": 148,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "CompletionCheckbox",
-        "targetName": "CompletionCheckbox",
-        "edgeType": "render",
-        "line": 151,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "PremiumDatagrid",
+        "targetName": "PremiumDatagrid",
         "edgeType": "render",
         "line": 156,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TruncatedText",
+        "targetName": "TruncatedText",
+        "edgeType": "render",
+        "line": 173,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "FilterableBadge",
+        "targetName": "FilterableBadge",
+        "edgeType": "render",
+        "line": 192,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "FilterableBadge",
+        "targetName": "FilterableBadge",
+        "edgeType": "render",
+        "line": 206,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 207,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 227,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 239,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TaskListFilter",
+        "targetName": "TaskListFilter",
+        "edgeType": "render",
+        "line": 142,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TaskListSkeleton",
+        "targetName": "TaskListSkeleton",
+        "edgeType": "render",
+        "line": 143,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TaskEmpty",
+        "targetName": "TaskEmpty",
+        "edgeType": "render",
+        "line": 149,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TaskListFilter",
+        "targetName": "TaskListFilter",
+        "edgeType": "render",
+        "line": 154,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "ListSearchBar",
+        "targetName": "ListSearchBar",
+        "edgeType": "render",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 161,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "CompletionCheckbox",
+        "targetName": "CompletionCheckbox",
+        "edgeType": "render",
+        "line": 164,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 169,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "target": "TaskTitleHeader",
         "targetName": "TaskTitleHeader",
         "edgeType": "render",
-        "line": 157,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "target": "DateField",
         "targetName": "DateField",
         "edgeType": "render",
-        "line": 166,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 174,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "target": "TaskPriorityHeader",
         "targetName": "TaskPriorityHeader",
-        "edgeType": "render",
-        "line": 175,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "PriorityBadge",
-        "targetName": "PriorityBadge",
-        "edgeType": "render",
-        "line": 180,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
         "edgeType": "render",
         "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "TaskTypeHeader",
-        "targetName": "TaskTypeHeader",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "PriorityBadge",
+        "targetName": "PriorityBadge",
         "edgeType": "render",
-        "line": 189,
+        "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "SaleName",
-        "targetName": "SaleName",
-        "edgeType": "render",
-        "line": 210,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "TextField",
-        "targetName": "TextField",
-        "edgeType": "render",
-        "line": 222,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
-        "target": "TextField",
-        "targetName": "TextField",
-        "edgeType": "render",
-        "line": 234,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 238,
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TaskTypeHeader",
+        "targetName": "TaskTypeHeader",
+        "edgeType": "render",
+        "line": 202,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "SaleName",
+        "targetName": "SaleName",
+        "edgeType": "render",
+        "line": 223,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 235,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 247,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "target": "TaskActionMenu",
         "targetName": "TaskActionMenu",
         "edgeType": "render",
-        "line": 243,
+        "line": 256,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:108:TaskListLayout",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:121:TaskListLayout",
         "target": "BulkActionsToolbar",
         "targetName": "BulkActionsToolbar",
         "edgeType": "render",
-        "line": 254,
+        "line": 267,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "fetchRelatedRecords",
         "targetName": "fetchRelatedRecords",
         "edgeType": "call",
-        "line": 311,
+        "line": 324,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 317,
+        "line": 330,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 319,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 319,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
-        "target": "fetchRelatedRecords",
-        "targetName": "fetchRelatedRecords",
-        "edgeType": "call",
-        "line": 325,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 326,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
@@ -2211,56 +2301,92 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
+        "target": "filter",
+        "targetName": "filter",
         "edgeType": "call",
-        "line": 333,
+        "line": 332,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
+        "target": "fetchRelatedRecords",
+        "targetName": "fetchRelatedRecords",
+        "edgeType": "call",
+        "line": 338,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 335,
+        "line": 339,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 345,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 346,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 348,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 336,
+        "line": 349,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 337,
+        "line": 350,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "jsonExport",
         "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 355,
+        "line": 368,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskList.tsx:310:exporter",
+        "source": "src/atomic-crm/tasks/TaskList.tsx:323:exporter",
         "target": "downloadCSV",
         "targetName": "downloadCSV",
         "edgeType": "call",
-        "line": 377,
+        "line": 390,
         "conditional": false,
         "inLoop": false
       },
@@ -2850,29 +2976,38 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskSlideOver.tsx:31:TaskSlideOver",
+        "source": "src/atomic-crm/tasks/TaskSlideOver.tsx:32:TaskSlideOver",
         "target": "ResourceSlideOver",
         "targetName": "ResourceSlideOver",
         "edgeType": "render",
-        "line": 60,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskSlideOver.tsx:31:TaskSlideOver",
+        "source": "src/atomic-crm/tasks/TaskSlideOver.tsx:32:TaskSlideOver",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 64,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskSlideOver.tsx:31:TaskSlideOver",
+        "source": "src/atomic-crm/tasks/TaskSlideOver.tsx:32:TaskSlideOver",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "callback",
-        "line": 66,
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskSlideOver.tsx:32:TaskSlideOver",
+        "target": "QuickAddTaskButton",
+        "targetName": "QuickAddTaskButton",
+        "edgeType": "render",
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },

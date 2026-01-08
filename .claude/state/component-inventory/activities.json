@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-08T02:25:36.830Z",
+  "generated_at": "2026-01-08T12:14:50.333Z",
   "item_count": 25,
   "items": [
     {
@@ -16,7 +16,7 @@
       "imports": [
         "../validation/activities",
         "./ActivitySinglePage",
-        "@/atomic-crm/layout/FormToolbar",
+        "@/atomic-crm/components",
         "@/components/admin/FormErrorSummary",
         "@/components/admin/form",
         "@/components/ui/card",
@@ -130,7 +130,7 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/ActivityList.tsx",
-      "line": 47,
+      "line": 49,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -152,8 +152,10 @@
         "@/components/admin/PremiumDatagrid",
         "@/components/admin/bulk-actions-toolbar",
         "@/components/admin/date-field",
+        "@/components/admin/export-button",
         "@/components/admin/list",
         "@/components/admin/reference-field",
+        "@/components/admin/sort-button",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/badge",
@@ -326,7 +328,7 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 47,
+      "line": 49,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",

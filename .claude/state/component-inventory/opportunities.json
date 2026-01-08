@@ -1,7 +1,7 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-08T02:25:36.839Z",
-  "item_count": 78,
+  "generated_at": "2026-01-08T12:14:50.356Z",
+  "item_count": 79,
   "items": [
     {
       "name": "ActivitiesList",
@@ -337,7 +337,7 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 18,
+      "line": 20,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -346,16 +346,15 @@
         "useSimilarOpportunityCheck"
       ],
       "imports": [
-        "../layout/FormToolbar",
         "../tutorial/OpportunityCreateFormTutorial",
         "../validation/opportunities",
         "./OpportunityInputs",
-        "./components/OpportunityCreateSaveButton",
+        "./components/OpportunityCreateFormFooter",
         "./components/SimilarOpportunitiesDialog",
         "./hooks/useSimilarOpportunityCheck",
         "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/admin/FormErrorSummary",
-        "@/components/admin/cancel-button",
+        "@/components/admin/form",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
         "ra-core",
@@ -365,9 +364,8 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "FormToolbar",
         "OpportunityInputs",
-        "OpportunityCreateSaveButton",
+        "OpportunityCreateFormFooter",
         "SimilarOpportunitiesDialog",
         "OpportunityCreateFormTutorial"
       ],
@@ -377,7 +375,7 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 18,
+      "line": 20,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -386,16 +384,15 @@
         "useSimilarOpportunityCheck"
       ],
       "imports": [
-        "../layout/FormToolbar",
         "../tutorial/OpportunityCreateFormTutorial",
         "../validation/opportunities",
         "./OpportunityInputs",
-        "./components/OpportunityCreateSaveButton",
+        "./components/OpportunityCreateFormFooter",
         "./components/SimilarOpportunitiesDialog",
         "./hooks/useSimilarOpportunityCheck",
         "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/admin/FormErrorSummary",
-        "@/components/admin/cancel-button",
+        "@/components/admin/form",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
         "ra-core",
@@ -405,9 +402,8 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "FormToolbar",
         "OpportunityInputs",
-        "OpportunityCreateSaveButton",
+        "OpportunityCreateFormFooter",
         "SimilarOpportunitiesDialog",
         "OpportunityCreateFormTutorial"
       ],
@@ -653,7 +649,7 @@
     {
       "name": "OpportunityList",
       "file": "src/atomic-crm/opportunities/OpportunityList.tsx",
-      "line": 46,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -666,6 +662,7 @@
       "imports": [
         "../filters/opportunityStagePreferences",
         "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
         "./CampaignGroupedList",
         "./OpportunityArchivedList",
         "./OpportunityEmpty",
@@ -681,8 +678,10 @@
         "./opportunityFilterConfig",
         "@/components/admin/ListNoResults",
         "@/components/admin/ListSearchBar",
+        "@/components/admin/export-button",
         "@/components/admin/list",
         "@/components/admin/list-pagination",
+        "@/components/admin/sort-button",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/hooks/useSlideOverState",
@@ -704,7 +703,8 @@
         "OpportunitySlideOver",
         "OpportunityListFilter",
         "OPPORTUNITY_FILTER_CONFIG",
-        "OpportunityListTutorial"
+        "OpportunityListTutorial",
+        "TopToolbar"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -1444,6 +1444,43 @@
       ],
       "contextDependencies": [
         "useRecordContext"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "OpportunityCreateFormFooter",
+      "file": "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useFormContext",
+        "useFormState",
+        "useNotify",
+        "useRedirect",
+        "useRef",
+        "useSaveContext",
+        "useTranslate",
+        "useWatch"
+      ],
+      "imports": [
+        "../../utils/levenshtein",
+        "@/components/ui/button",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "SimilarityCheckResult"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useFormState",
+        "useWatch"
       ],
       "componentRole": "wrapper"
     },

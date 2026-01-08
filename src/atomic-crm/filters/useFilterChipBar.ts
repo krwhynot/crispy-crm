@@ -239,6 +239,17 @@ export function useFilterChipBar(
 
         if (config?.formatLabel) {
           label = config.formatLabel(v);
+        } else if (config?.type === "boolean" && config?.choices) {
+          // Boolean filters with choices: map boolean value to corresponding choice
+          // e.g., disabled: false → { id: "active", name: "Active" }
+          //       disabled: true  → { id: "disabled", name: "Disabled" }
+          const resolvedChoices = resolveChoices(config);
+          // Convention: first choice is for false, second is for true
+          const choiceIndex = v === true ? 1 : 0;
+          label = resolvedChoices?.[choiceIndex]?.name ?? (v ? "Yes" : "No");
+        } else if (config?.type === "boolean" || config?.type === "toggle") {
+          // Boolean/toggle filters without choices: use default labels
+          label = v === true ? "Yes" : "No";
         } else if (config?.choices) {
           // Resolve callback choices before calling .find()
           const resolvedChoices = resolveChoices(config);

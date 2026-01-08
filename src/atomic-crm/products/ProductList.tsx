@@ -26,6 +26,8 @@ import {
   ProductCategoryHeader,
   ProductStatusHeader,
 } from "./ProductsDatagridHeader";
+import { SortButton } from "@/components/admin/sort-button";
+import { ExportButton } from "@/components/admin/export-button";
 import type { Product } from "../types";
 
 /**
@@ -180,9 +182,19 @@ const ProductListLayout = ({
 };
 
 /**
- * ProductListActions - TopToolbar with create action
+ * ProductListActions - TopToolbar with sort and export actions
+ *
+ * Follows ContactList reference pattern with SortButton + ExportButton.
  */
-const ProductListActions = () => <TopToolbar></TopToolbar>;
+const ProductListActions = () => (
+  <TopToolbar>
+    <SortButton
+      fields={["name", "category", "status", "created_at"]}
+      data-testid="product-sort-btn"
+    />
+    <ExportButton data-testid="product-export-btn" />
+  </TopToolbar>
+);
 
 /**
  * CategoryBadge - Display product category with proper formatting

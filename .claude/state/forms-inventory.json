@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-08T02:25:47.471Z",
+  "generated_at": "2026-01-08T12:14:58.070Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,9 +8,9 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:f5ef0b102d159cee",
+  "checksum": "sha256:6e0d099de9f34359",
   "source_hashes": {
-    "src/atomic-crm/activities/ActivityCreate.tsx": "b933abbbe234",
+    "src/atomic-crm/activities/ActivityCreate.tsx": "87d9a6871909",
     "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
     "src/atomic-crm/activities/ActivityInputs.tsx": "ddf9ffb909b7",
     "src/atomic-crm/activity-log/ActivityLogContactCreated.tsx": "2bf2a909a4af",
@@ -32,22 +32,24 @@
     "src/atomic-crm/notes/NoteCreate.tsx": "870a953cb9ea",
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "449fd353b4c9",
-    "src/atomic-crm/opportunities/OpportunityCreate.tsx": "8b795e133a89",
+    "src/atomic-crm/opportunities/OpportunityCreate.tsx": "2bcf8fb69bba",
     "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "9ad8403ba618",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "42b649677b41",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
+    "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "84dd9ca054a3",
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
     "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "f3d00d00722d",
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
     "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "20cfe20d671a",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "6074da481779",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "47163a7a8a08",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "debb8ae3e79b",
+    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "b44ca74125b6",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "235b3913db5b",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "a22f8f2b9cb9",
     "src/atomic-crm/organizations/QuickCreatePopover.tsx": "b89bd6e129e4",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "7256c9c602e6",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "694c8f64dffa",
-    "src/atomic-crm/products/ProductCreate.tsx": "f6b417ed7273",
+    "src/atomic-crm/products/ProductCreate.tsx": "eb11b8cea84b",
     "src/atomic-crm/products/ProductEdit.tsx": "b612c4d44714",
     "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
     "src/atomic-crm/products/ProductInputs.tsx": "7404ed9b661a",
@@ -64,13 +66,13 @@
     "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "1ea16822a0ca"
   },
   "summary": {
-    "total_items": 42,
+    "total_items": 44,
     "react_admin_forms": 31,
     "react19_action_forms": 0,
     "react_hook_form_direct": 6,
     "with_zod_resolver": 10,
     "with_tabs": 0,
-    "with_progress": 7
+    "with_progress": 9
   },
   "forms": [
     {
@@ -450,7 +452,7 @@
     {
       "componentName": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 18,
+      "line": 20,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -463,12 +465,12 @@
       "features": {
         "hasTabs": false,
         "hasWizard": false,
-        "hasProgress": false
+        "hasProgress": true
       },
       "componentChain": [
         "OpportunityCreate",
-        "FormToolbar",
         "OpportunityInputs",
+        "OpportunityCreateFormFooter",
         "OpportunityCreateFormTutorial"
       ],
       "inputComponentsDeep": [],
@@ -479,7 +481,7 @@
     {
       "componentName": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 18,
+      "line": 20,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -492,12 +494,12 @@
       "features": {
         "hasTabs": false,
         "hasWizard": false,
-        "hasProgress": false
+        "hasProgress": true
       },
       "componentChain": [
         "OpportunityCreate",
-        "FormToolbar",
         "OpportunityInputs",
+        "OpportunityCreateFormFooter",
         "OpportunityCreateFormTutorial"
       ],
       "inputComponentsDeep": [],
@@ -606,6 +608,33 @@
       ],
       "inputComponentsDeep": [],
       "formContextWrappers": []
+    },
+    {
+      "componentName": "OpportunityCreateFormFooter",
+      "file": "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx",
+      "line": 31,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": [
+          "useFormState",
+          "useWatch"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "componentChain": [
+        "OpportunityCreateFormFooter"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OpportunityCreateFormFooter"
+      ]
     },
     {
       "componentName": "OpportunityCreateSaveButton",
@@ -711,7 +740,7 @@
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 137,
+      "line": 57,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -730,18 +759,17 @@
       "componentChain": [
         "OrganizationCreate",
         "OrganizationInputs",
+        "OrganizationCreateFormFooter",
         "OrganizationFormValues"
       ],
       "inputComponentsDeep": [],
-      "formContextWrappers": [
-        "OrganizationCreate"
-      ],
+      "formContextWrappers": [],
       "validationSchemaRef": "organizationSchema"
     },
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 137,
+      "line": 57,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -760,13 +788,39 @@
       "componentChain": [
         "OrganizationCreate",
         "OrganizationInputs",
+        "OrganizationCreateFormFooter",
+        "OrganizationFormValues"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [],
+      "validationSchemaRef": "organizationSchema"
+    },
+    {
+      "componentName": "OrganizationCreateFormFooter",
+      "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
+      "line": 29,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": [
+          "useFormState"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "componentChain": [
+        "OrganizationCreateFormFooter",
         "OrganizationFormValues"
       ],
       "inputComponentsDeep": [],
       "formContextWrappers": [
-        "OrganizationCreate"
-      ],
-      "validationSchemaRef": "organizationSchema"
+        "OrganizationCreateFormFooter"
+      ]
     },
     {
       "componentName": "OrganizationEdit",

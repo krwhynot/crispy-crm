@@ -12,9 +12,9 @@ import { z } from "zod";
 
 /**
  * Allowed entity types for favorites
- * Currently supports contacts and organizations
+ * Supports contacts, organizations, and opportunities
  */
-export const FAVORITE_ENTITY_TYPES = ["contacts", "organizations"] as const;
+export const FAVORITE_ENTITY_TYPES = ["contacts", "organizations", "opportunities"] as const;
 export type FavoriteEntityType = (typeof FAVORITE_ENTITY_TYPES)[number];
 
 /**

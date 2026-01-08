@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-08T02:25:51.735Z",
+  "generated_at": "2026-01-08T12:15:01.707Z",
   "items": {
     "nodes": [
       {
@@ -2980,7 +2980,16 @@
         "target": "resolveChoices",
         "targetName": "resolveChoices",
         "edgeType": "call",
-        "line": 244,
+        "line": 246,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "resolveChoices",
+        "targetName": "resolveChoices",
+        "edgeType": "call",
+        "line": 255,
         "conditional": true,
         "inLoop": false
       },
@@ -2989,7 +2998,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 245,
+        "line": 256,
         "conditional": true,
         "inLoop": false
       },
@@ -2998,7 +3007,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 246,
+        "line": 257,
         "conditional": true,
         "inLoop": false
       },
@@ -3007,7 +3016,7 @@
         "target": "getOrganizationName",
         "targetName": "getOrganizationName",
         "edgeType": "call",
-        "line": 248,
+        "line": 259,
         "conditional": true,
         "inLoop": false
       },
@@ -3016,7 +3025,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 248,
+        "line": 259,
         "conditional": true,
         "inLoop": false
       },
@@ -3025,7 +3034,7 @@
         "target": "getSalesName",
         "targetName": "getSalesName",
         "edgeType": "call",
-        "line": 252,
+        "line": 263,
         "conditional": true,
         "inLoop": false
       },
@@ -3034,7 +3043,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 252,
+        "line": 263,
         "conditional": true,
         "inLoop": false
       },
@@ -3043,7 +3052,7 @@
         "target": "getTagName",
         "targetName": "getTagName",
         "edgeType": "call",
-        "line": 254,
+        "line": 265,
         "conditional": true,
         "inLoop": false
       },
@@ -3052,7 +3061,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 254,
+        "line": 265,
         "conditional": true,
         "inLoop": false
       },
@@ -3061,7 +3070,7 @@
         "target": "getSegmentName",
         "targetName": "getSegmentName",
         "edgeType": "call",
-        "line": 256,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
@@ -3070,7 +3079,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 256,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
@@ -3079,7 +3088,7 @@
         "target": "getCategoryName",
         "targetName": "getCategoryName",
         "edgeType": "call",
-        "line": 258,
+        "line": 269,
         "conditional": true,
         "inLoop": false
       },
@@ -3088,7 +3097,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 258,
+        "line": 269,
         "conditional": true,
         "inLoop": false
       },
@@ -3097,7 +3106,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 260,
+        "line": 271,
         "conditional": true,
         "inLoop": false
       },
@@ -3106,7 +3115,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 263,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
@@ -3115,7 +3124,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 279,
+        "line": 290,
         "conditional": false,
         "inLoop": false
       },
@@ -3124,7 +3133,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 282,
+        "line": 293,
         "conditional": false,
         "inLoop": false
       },
@@ -3133,7 +3142,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 287,
+        "line": 298,
         "conditional": true,
         "inLoop": false
       },
@@ -3142,7 +3151,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 289,
+        "line": 300,
         "conditional": true,
         "inLoop": false
       },
@@ -3151,7 +3160,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 292,
+        "line": 303,
         "conditional": true,
         "inLoop": false
       },
@@ -3160,7 +3169,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 300,
+        "line": 311,
         "conditional": true,
         "inLoop": false
       },
@@ -3169,7 +3178,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 302,
+        "line": 313,
         "conditional": true,
         "inLoop": false
       },
@@ -3178,7 +3187,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 303,
+        "line": 314,
         "conditional": true,
         "inLoop": false
       },
@@ -3187,62 +3196,8 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 310,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "setFilters",
-        "targetName": "setFilters",
-        "edgeType": "call",
-        "line": 313,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 319,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "fromEntries",
-        "targetName": "fromEntries",
-        "edgeType": "call",
         "line": 321,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 322,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "entries",
-        "targetName": "entries",
-        "edgeType": "call",
-        "line": 322,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 322,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -3251,6 +3206,60 @@
         "targetName": "setFilters",
         "edgeType": "call",
         "line": 324,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 330,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "fromEntries",
+        "targetName": "fromEntries",
+        "edgeType": "call",
+        "line": 332,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 333,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 333,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 333,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 335,
         "conditional": false,
         "inLoop": false
       },
