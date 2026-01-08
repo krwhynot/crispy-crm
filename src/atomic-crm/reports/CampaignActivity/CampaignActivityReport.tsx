@@ -692,7 +692,7 @@ export default function CampaignActivityReport() {
                             setDateRange({ start: newStart, end: endDate });
                           }
                         }}
-                        className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
+                        className="h-11 w-full mt-1 px-3 py-2 border rounded-md text-sm"
                       />
                     </div>
                     <div className="flex-1">
@@ -712,7 +712,7 @@ export default function CampaignActivityReport() {
                             setDateRange({ start: startDate, end: newEnd });
                           }
                         }}
-                        className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
+                        className="h-11 w-full mt-1 px-3 py-2 border rounded-md text-sm"
                       />
                     </div>
                   </div>

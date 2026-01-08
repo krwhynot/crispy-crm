@@ -404,11 +404,15 @@
     @apply focus-within:ring-2 focus-within:ring-ring/40 focus-within:ring-offset-1;
   }
 
-  /* Consistent row height for all datagrid tables - matches Contact list (40px avatar + padding) */
+  /* Consistent row height for all datagrid tables - 52px (40px content + 12px padding) */
+  /* Note: height on tr is more reliable than min-height on td for enforcing row height */
+  .table-row-premium {
+    height: 52px;
+  }
+
   .table-row-premium td {
     @apply py-3;
-    min-height: 52px; /* 40px content + 12px padding (py-3 * 2) */
-    height: 52px;
+    vertical-align: middle;
   }
 
   /* Standard card container */

@@ -102,7 +102,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="w-full py-2 px-3 text-sm text-primary hover:bg-primary/10 rounded transition-colors border border-dashed border-border"
+        className="w-full h-11 px-3 text-sm text-primary hover:bg-primary/10 rounded transition-colors border border-dashed border-border flex items-center justify-center"
       >
         + New Opportunity
       </button>

@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-08T00:13:36.326Z",
+  "generated_at": "2026-01-08T02:25:51.759Z",
   "items": {
     "nodes": [
       {
@@ -10312,6 +10312,24 @@
       },
       {
         "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
         "target": "ResourceSlideOver",
         "targetName": "ResourceSlideOver",
         "edgeType": "render",
@@ -10342,7 +10360,16 @@
         "target": "FavoriteToggleButton",
         "targetName": "FavoriteToggleButton",
         "edgeType": "render",
-        "line": 124,
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationSlideOver.tsx:35:OrganizationSlideOver",
+        "target": "QuickAddTaskButton",
+        "targetName": "QuickAddTaskButton",
+        "edgeType": "render",
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
