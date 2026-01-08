@@ -11,12 +11,14 @@ import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 const HiddenActivityTypeField = () => {
+  // Use "engagement" as default - doesn't require opportunity_id like "interaction" does
+  // This prevents validation errors on form mount when no opportunity is pre-selected
   const { field } = useInput({
     source: "activity_type",
-    defaultValue: "interaction",
+    defaultValue: "engagement",
   });
 
-  return <input type="hidden" {...field} value={field.value ?? "interaction"} />;
+  return <input type="hidden" {...field} value={field.value ?? "engagement"} />;
 };
 
 export default function ActivityCreate() {
