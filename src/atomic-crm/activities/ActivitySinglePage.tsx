@@ -16,7 +16,11 @@ const sentimentChoices = [
 export default function ActivitySinglePage() {
   return (
     <div className="space-y-6">
-      <FormSectionWithProgress id="activity-details" title="Activity Details" requiredFields={["type", "subject", "activity_date"]}>
+      <FormSectionWithProgress
+        id="activity-details"
+        title="Activity Details"
+        requiredFields={["type", "subject", "activity_date"]}
+      >
         <FormGrid>
           <div data-tutorial="activity-type">
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>

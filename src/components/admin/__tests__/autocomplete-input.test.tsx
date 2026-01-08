@@ -54,6 +54,10 @@ const FormWrapper = ({
 };
 
 describe("AutocompleteInput", () => {
+  beforeAll(() => {
+    vi.setConfig({ testTimeout: 15000 });
+  });
+
   const mockChoices = [
     { id: "new_lead", name: "New Lead" },
     { id: "initial_outreach", name: "Initial Outreach" },

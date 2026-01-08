@@ -51,10 +51,7 @@ import type { Task, Opportunity, Organization } from "../types";
  */
 const TaskListActions = () => (
   <TopToolbar>
-    <SortButton
-      fields={["title", "due_date", "priority", "type"]}
-      data-testid="task-sort-btn"
-    />
+    <SortButton fields={["title", "due_date", "priority", "type"]} data-testid="task-sort-btn" />
     <ExportButton data-testid="task-export-btn" />
   </TopToolbar>
 );

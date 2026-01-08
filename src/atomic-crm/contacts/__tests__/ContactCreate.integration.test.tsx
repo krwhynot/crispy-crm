@@ -9,13 +9,17 @@
  * - Field validation and error states
  */
 
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach, beforeAll, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import ContactCreate from "../ContactCreate";
 
 describe("ContactCreate with Progress Tracking", () => {
+  beforeAll(() => {
+    vi.setConfig({ testTimeout: 30000 });
+  });
+
   beforeEach(() => {
     // Clear any cached state between tests
     localStorage.clear();

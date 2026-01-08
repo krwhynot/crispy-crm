@@ -57,7 +57,7 @@ export function OrganizationSlideOver({
         entityType: "organizations",
       });
     }
-  }, [organization?.id, addRecent]);
+  }, [organization, addRecent]);
 
   const isDistributor = organization?.organization_type === "distributor";
 

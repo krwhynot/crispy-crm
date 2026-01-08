@@ -71,7 +71,7 @@ describe("useCurrentSale", () => {
     // Verify it used data provider
     expect(mockDataProvider.getList).toHaveBeenCalledWith("sales", {
       filter: {
-        or: [`user_id.eq.${mockUser.id}`, `email.eq.${mockUser.email}`],
+        "or@": `(user_id.eq.${mockUser.id},email.eq.${mockUser.email})`,
       },
       sort: { field: "id", order: "ASC" },
       pagination: { page: 1, perPage: 1 },
