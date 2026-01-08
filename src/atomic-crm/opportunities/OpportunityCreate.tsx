@@ -106,7 +106,7 @@ const OpportunityFormContent = ({
   hasConfirmed,
   resetConfirmation,
 }: {
-  checkForSimilar: (name: string) => Promise<void>;
+  checkForSimilar: ReturnType<typeof useSimilarOpportunityCheck>["checkForSimilar"];
   hasConfirmed: boolean;
   resetConfirmation: () => void;
 }) => {
@@ -117,18 +117,14 @@ const OpportunityFormContent = ({
     <>
       <FormErrorSummary errors={errors} />
       <OpportunityInputs mode="create" />
-      <FormToolbar>
-        <div className="flex flex-row gap-2 justify-end">
-          <CancelButton />
-          <div data-tutorial="opp-save-btn">
-            <OpportunityCreateSaveButton
-              checkForSimilar={checkForSimilar}
-              hasConfirmed={hasConfirmed}
-              resetConfirmation={resetConfirmation}
-            />
-          </div>
-        </div>
-      </FormToolbar>
+      <OpportunityCreateFormFooter
+        checkForSimilar={checkForSimilar}
+        hasConfirmed={hasConfirmed}
+        resetConfirmation={resetConfirmation}
+        redirectPath="/opportunities"
+        preserveFields={["customer_organization_id", "principal_id"]}
+        tutorialAttribute="opp-save-btn"
+      />
     </>
   );
 };

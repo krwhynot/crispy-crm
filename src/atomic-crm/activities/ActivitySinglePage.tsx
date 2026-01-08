@@ -16,7 +16,7 @@ const sentimentChoices = [
 export default function ActivitySinglePage() {
   return (
     <div className="space-y-6">
-      <FormSection title="Activity Details">
+      <FormSectionWithProgress id="activity-details" title="Activity Details" requiredFields={["type", "subject", "activity_date"]}>
         <FormGrid>
           <div data-tutorial="activity-type">
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
@@ -68,9 +68,9 @@ export default function ActivitySinglePage() {
             />
           </FormFieldWrapper>
         </div>
-      </FormSection>
+      </FormSectionWithProgress>
 
-      <FormSection title="Relationships">
+      <FormSectionWithProgress id="relationships" title="Relationships" requiredFields={[]}>
         <FormGrid>
           <div data-tutorial="activity-opportunity">
             <FormFieldWrapper name="opportunity_id">
@@ -109,9 +109,9 @@ export default function ActivitySinglePage() {
             />
           </ReferenceInput>
         </FormFieldWrapper>
-      </FormSection>
+      </FormSectionWithProgress>
 
-      <FormSection title="Follow-up">
+      <FormSectionWithProgress id="follow-up" title="Follow-up" requiredFields={[]}>
         <FormGrid>
           <FormFieldWrapper name="sentiment">
             <SelectInput
@@ -137,9 +137,9 @@ export default function ActivitySinglePage() {
             />
           </FormFieldWrapper>
         </FormGrid>
-      </FormSection>
+      </FormSectionWithProgress>
 
-      <FormSection title="Outcome">
+      <FormSectionWithProgress id="outcome" title="Outcome" requiredFields={[]}>
         <FormGrid>
           <FormFieldWrapper name="location">
             <TextInput source="location" label="Location" helperText="Where did this occur?" />
@@ -148,7 +148,7 @@ export default function ActivitySinglePage() {
             <TextInput source="outcome" label="Outcome" helperText="Optional result summary" />
           </FormFieldWrapper>
         </FormGrid>
-      </FormSection>
+      </FormSectionWithProgress>
     </div>
   );
 }
