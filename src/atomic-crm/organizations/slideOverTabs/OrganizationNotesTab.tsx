@@ -17,7 +17,7 @@ interface OrganizationNotesTabProps {
  *
  * Both view and edit modes allow note creation and editing.
  */
-export function OrganizationNotesTab({ record, mode }: OrganizationNotesTabProps) {
+export function OrganizationNotesTab({ record, mode: _mode }: OrganizationNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
       <ScrollArea className="h-full">

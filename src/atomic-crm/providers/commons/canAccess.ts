@@ -44,7 +44,7 @@ export const canAccess = <RecordType extends Record<string, any> = Record<string
   role: string,
   params: CanAccessParams<RecordType>
 ): boolean => {
-  const { action, resource } = params;
+  const { action: _action, resource } = params;
   const userRole = role as UserRole;
 
   // Admin has full access to everything

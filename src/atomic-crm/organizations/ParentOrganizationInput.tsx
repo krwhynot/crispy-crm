@@ -34,8 +34,8 @@ export const ParentOrganizationInput = () => {
   if (!isReady) {
     return (
       <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">Parent Organization</label>
-        <div className="h-10 bg-muted animate-pulse rounded-md flex items-center px-3">
+        <span className="text-sm font-medium text-foreground">Parent Organization</span>
+        <div className="h-10 bg-muted animate-pulse rounded-md flex items-center px-3" aria-label="Loading parent organization options">
           <span className="text-sm text-muted-foreground">Loading hierarchy...</span>
         </div>
         <p className="text-sm text-muted-foreground">

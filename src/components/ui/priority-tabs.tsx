@@ -154,7 +154,7 @@ export function PriorityTabsList({
         aria-label="Resource tabs"
       >
         {/* Visible tabs */}
-        {visibleTabs.map((tab, index) => {
+        {visibleTabs.map((tab, _index) => {
           const count = tabCounts[tabs.indexOf(tab)];
           const showBadge = count != null && count > 0;
 

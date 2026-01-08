@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { useFormState } from "react-hook-form";

@@ -16,7 +16,7 @@ interface ContactNotesTabProps {
  *
  * Both view and edit modes allow note creation and editing.
  */
-export function ContactNotesTab({ record, mode }: ContactNotesTabProps) {
+export function ContactNotesTab({ record, mode: _mode }: ContactNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
       <div className="space-y-4" data-tutorial="contact-notes-section">

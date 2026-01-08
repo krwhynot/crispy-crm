@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod";
-import { quickAddSchema, type QuickAddInput } from "../quickAdd";
+import { quickAddSchema } from "../quickAdd";
 
 describe("QuickAdd Schema Validation", () => {
   describe("Optional Fields", () => {
