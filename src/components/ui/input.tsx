@@ -5,15 +5,15 @@ import { cn } from "@/lib/utils";
 // =============================================================================
 // INPUT COMPONENT
 // =============================================================================
-// High-density variant (32px) with 44px touch target
+// Touch-friendly input with 44px height (h-11) per project standard
 // Hybrid border: subtle on desktop, visible on touch devices
 // All styles inline - no external CSS utility dependencies
 // =============================================================================
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**
    * Size variant:
-   * - "default": 32px compact (high-density, new default)
+   * - "default": 44px touch-friendly (h-11, per CLAUDE.md standard)
    * - "lg": 48px legacy (backward compatibility)
    */
   size?: "default" | "lg";
@@ -51,25 +51,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           // SIZE VARIANTS
           // ===========================================
           size === "default" && [
-            // Compact visual height: 32px
-            "h-8 px-2 py-1",
+            // Touch-friendly height: 44px (h-11) per CLAUDE.md standard
+            "h-11 px-3 py-2",
 
-            // High-density typography: 13px (matches table cells)
-            "text-[0.8125rem] leading-[1.35]",
+            // Standard typography for 44px height
+            "text-sm leading-normal",
 
-            // TOUCH TARGET EXPANSION (44px)
-            // Pseudo-element extends hit area without affecting layout
-            // Safe for isolated inputs (not stacked like table rows)
-            "relative",
-            "before:content-['']",
-            "before:absolute",
-            "before:top-[calc((44px-100%)/-2)]",
-            "before:bottom-[calc((44px-100%)/-2)]",
-            "before:left-0",
-            "before:right-0",
-
-            // Compact border radius
-            "rounded-sm",
+            // Standard border radius
+            "rounded-md",
           ],
 
           size === "lg" && [

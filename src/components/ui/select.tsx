@@ -31,10 +31,8 @@ function SelectTrigger({
       className={cn(
         // Base styles
         "border-input data-[placeholder]:text-foreground/70 [&_svg:not([class*='text-'])]:text-foreground/70 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background flex w-fit items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        // Size variants - default: 32px visual with 44px touch expansion (matches Input)
-        "data-[size=default]:h-8 data-[size=default]:px-2 data-[size=default]:py-1 data-[size=default]:text-[0.8125rem] data-[size=default]:leading-[1.35] data-[size=default]:rounded-sm",
-        // Touch target expansion via pseudo-element (44px hit area, 32px visual)
-        "data-[size=default]:relative data-[size=default]:before:content-[''] data-[size=default]:before:absolute data-[size=default]:before:top-[calc((44px-100%)/-2)] data-[size=default]:before:bottom-[calc((44px-100%)/-2)] data-[size=default]:before:left-0 data-[size=default]:before:right-0",
+        // Size variants - default: 44px touch-friendly (h-11, per CLAUDE.md standard)
+        "data-[size=default]:h-11 data-[size=default]:px-3 data-[size=default]:py-2 data-[size=default]:text-sm data-[size=default]:leading-normal data-[size=default]:rounded-md",
         // Small variant - same as default
         "data-[size=sm]:h-8 data-[size=sm]:px-2 data-[size=sm]:py-1 data-[size=sm]:text-[0.8125rem] data-[size=sm]:rounded-sm",
         // Large variant - legacy 48px for backward compatibility
