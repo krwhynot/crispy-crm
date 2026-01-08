@@ -45,15 +45,13 @@ export const useRecentItems = () => {
       setRecentItems((prev) => {
         // Remove existing entry for same record (by id + resource combo)
         // This allows same ID across different resources (e.g., contact #5 vs org #5)
-        const filtered = prev.filter(
-          (i) => !(i.id === item.id && i.resource === item.resource)
-        );
+        const filtered = prev.filter((i) => !(i.id === item.id && i.resource === item.resource));
 
         // Add to front with current timestamp, limit to max items
-        return [
-          { ...item, viewedAt: new Date().toISOString() },
-          ...filtered,
-        ].slice(0, MAX_RECENT_ITEMS);
+        return [{ ...item, viewedAt: new Date().toISOString() }, ...filtered].slice(
+          0,
+          MAX_RECENT_ITEMS
+        );
       });
     },
     [setRecentItems]

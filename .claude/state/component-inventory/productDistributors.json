@@ -1,12 +1,12 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-07T23:40:38.845Z",
+  "generated_at": "2026-01-08T00:13:24.362Z",
   "item_count": 16,
   "items": [
     {
       "name": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 31,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useMemo"
@@ -39,7 +39,7 @@
     {
       "name": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 31,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useMemo"
@@ -110,7 +110,7 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 47,
+      "line": 44,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -133,7 +133,7 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 47,
+      "line": 44,
       "type": "presentational",
       "hooks": [],
       "imports": [

@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-07T23:40:47.337Z",
+  "generated_at": "2026-01-08T00:13:36.288Z",
   "items": {
     "nodes": [
       {
@@ -121,10 +121,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactCreate.tsx:87:ContactFormContent",
+        "id": "src/atomic-crm/contacts/ContactCreate.tsx:88:ContactFormContent",
         "name": "ContactFormContent",
         "file": "src/atomic-crm/contacts/ContactCreate.tsx",
-        "line": 87,
+        "line": 88,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -274,10 +274,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactList.tsx:203:ContactListActions",
+        "id": "src/atomic-crm/contacts/ContactList.tsx:211:ContactListActions",
         "name": "ContactListActions",
         "file": "src/atomic-crm/contacts/ContactList.tsx",
-        "line": 203,
+        "line": 211,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -2080,7 +2080,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 178,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
@@ -2089,7 +2089,7 @@
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "call",
-        "line": 180,
+        "line": 177,
         "conditional": true,
         "inLoop": false
       },
@@ -2098,7 +2098,7 @@
         "target": "onUnselectItems",
         "targetName": "onUnselectItems",
         "edgeType": "call",
-        "line": 182,
+        "line": 179,
         "conditional": true,
         "inLoop": false
       },
@@ -2107,7 +2107,7 @@
         "target": "handleCloseDialog",
         "targetName": "handleCloseDialog",
         "edgeType": "call",
-        "line": 184,
+        "line": 181,
         "conditional": false,
         "inLoop": false
       },
@@ -2116,7 +2116,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 190,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
@@ -2125,7 +2125,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 191,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
@@ -2134,7 +2134,7 @@
         "target": "setIsProcessing",
         "targetName": "setIsProcessing",
         "edgeType": "call",
-        "line": 193,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
@@ -2143,7 +2143,7 @@
         "target": "handleCloseDialog",
         "targetName": "handleCloseDialog",
         "edgeType": "call",
-        "line": 213,
+        "line": 210,
         "conditional": false,
         "inLoop": false
       },
@@ -2152,7 +2152,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 230,
+        "line": 227,
         "conditional": false,
         "inLoop": false
       },
@@ -2161,7 +2161,7 @@
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 233,
+        "line": 230,
         "conditional": false,
         "inLoop": false
       },
@@ -2170,7 +2170,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 257,
+        "line": 254,
         "conditional": false,
         "inLoop": false
       },
@@ -2179,7 +2179,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 258,
+        "line": 255,
         "conditional": false,
         "inLoop": false
       },
@@ -2188,7 +2188,7 @@
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 259,
+        "line": 256,
         "conditional": false,
         "inLoop": false
       },
@@ -2197,7 +2197,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 203,
+        "line": 200,
         "conditional": false,
         "inLoop": false
       },
@@ -2206,7 +2206,7 @@
         "target": "handleOpenDialog",
         "targetName": "handleOpenDialog",
         "edgeType": "callback",
-        "line": 205,
+        "line": 202,
         "conditional": false,
         "inLoop": false
       },
@@ -2215,7 +2215,7 @@
         "target": "Dialog",
         "targetName": "Dialog",
         "edgeType": "render",
-        "line": 213,
+        "line": 210,
         "conditional": false,
         "inLoop": false
       },
@@ -2224,7 +2224,7 @@
         "target": "DialogContent",
         "targetName": "DialogContent",
         "edgeType": "render",
-        "line": 214,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
@@ -2233,7 +2233,7 @@
         "target": "DialogHeader",
         "targetName": "DialogHeader",
         "edgeType": "render",
-        "line": 215,
+        "line": 212,
         "conditional": false,
         "inLoop": false
       },
@@ -2242,7 +2242,7 @@
         "target": "DialogTitle",
         "targetName": "DialogTitle",
         "edgeType": "render",
-        "line": 216,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
@@ -2251,7 +2251,7 @@
         "target": "DialogDescription",
         "targetName": "DialogDescription",
         "edgeType": "render",
-        "line": 217,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
@@ -2260,7 +2260,7 @@
         "target": "Select",
         "targetName": "Select",
         "edgeType": "render",
-        "line": 248,
+        "line": 245,
         "conditional": false,
         "inLoop": false
       },
@@ -2269,7 +2269,7 @@
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 253,
+        "line": 250,
         "conditional": false,
         "inLoop": false
       },
@@ -2278,7 +2278,7 @@
         "target": "SelectContent",
         "targetName": "SelectContent",
         "edgeType": "render",
-        "line": 256,
+        "line": 253,
         "conditional": false,
         "inLoop": false
       },
@@ -2287,7 +2287,7 @@
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 258,
+        "line": 255,
         "conditional": false,
         "inLoop": false
       },
@@ -2296,7 +2296,7 @@
         "target": "DialogFooter",
         "targetName": "DialogFooter",
         "edgeType": "render",
-        "line": 267,
+        "line": 264,
         "conditional": false,
         "inLoop": false
       },
@@ -2305,7 +2305,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 270,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
@@ -2314,6 +2314,15 @@
         "target": "handleCancelOperation",
         "targetName": "handleCancelOperation",
         "edgeType": "callback",
+        "line": 267,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
         "line": 270,
         "conditional": true,
         "inLoop": false
@@ -2323,16 +2332,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 273,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx:42:ContactBulkReassignButton",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 277,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },
@@ -2341,7 +2341,7 @@
         "target": "handleCloseDialog",
         "targetName": "handleCloseDialog",
         "edgeType": "callback",
-        "line": 277,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },
@@ -2350,7 +2350,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 280,
+        "line": 277,
         "conditional": true,
         "inLoop": false
       },
@@ -2359,7 +2359,7 @@
         "target": "handleExecuteReassign",
         "targetName": "handleExecuteReassign",
         "edgeType": "callback",
-        "line": 280,
+        "line": 277,
         "conditional": true,
         "inLoop": false
       },
@@ -2368,7 +2368,7 @@
         "target": "UserPlus",
         "targetName": "UserPlus",
         "edgeType": "render",
-        "line": 209,
+        "line": 206,
         "conditional": false,
         "inLoop": false
       },
@@ -2377,7 +2377,7 @@
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 254,
+        "line": 251,
         "conditional": false,
         "inLoop": false
       },
@@ -2854,16 +2854,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 44,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 51,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
@@ -2878,10 +2869,19 @@
       },
       {
         "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:19:ContactCreate",
         "target": "CreateBase",
         "targetName": "CreateBase",
         "edgeType": "render",
-        "line": 67,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
@@ -2890,7 +2890,7 @@
         "target": "FormProgressProvider",
         "targetName": "FormProgressProvider",
         "edgeType": "render",
-        "line": 70,
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },
@@ -2899,7 +2899,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 72,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
@@ -2908,7 +2908,7 @@
         "target": "FormLoadingSkeleton",
         "targetName": "FormLoadingSkeleton",
         "edgeType": "render",
-        "line": 60,
+        "line": 61,
         "conditional": true,
         "inLoop": false
       },
@@ -2917,7 +2917,7 @@
         "target": "FormProgressBar",
         "targetName": "FormProgressBar",
         "edgeType": "render",
-        "line": 71,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
@@ -2926,7 +2926,7 @@
         "target": "ContactFormContent",
         "targetName": "ContactFormContent",
         "edgeType": "render",
-        "line": 73,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
@@ -2935,25 +2935,25 @@
         "target": "ContactFormTutorial",
         "targetName": "ContactFormTutorial",
         "edgeType": "render",
-        "line": 78,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:87:ContactFormContent",
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:88:ContactFormContent",
         "target": "ContactInputs",
         "targetName": "ContactInputs",
         "edgeType": "render",
-        "line": 90,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:87:ContactFormContent",
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:88:ContactFormContent",
         "target": "CreateFormFooter",
         "targetName": "CreateFormFooter",
         "edgeType": "render",
-        "line": 91,
+        "line": 92,
         "conditional": false,
         "inLoop": false
       },
@@ -8056,7 +8056,7 @@
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 123,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
@@ -8065,7 +8065,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 123,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
@@ -8074,7 +8074,7 @@
         "target": "formatFullName",
         "targetName": "formatFullName",
         "edgeType": "call",
-        "line": 141,
+        "line": 149,
         "conditional": false,
         "inLoop": false
       },
@@ -8083,7 +8083,7 @@
         "target": "formatRoleAndDept",
         "targetName": "formatRoleAndDept",
         "edgeType": "call",
-        "line": 150,
+        "line": 158,
         "conditional": false,
         "inLoop": false
       },
@@ -8110,7 +8110,7 @@
         "target": "StandardListLayout",
         "targetName": "StandardListLayout",
         "edgeType": "render",
-        "line": 120,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
@@ -8119,7 +8119,7 @@
         "target": "PremiumDatagrid",
         "targetName": "PremiumDatagrid",
         "edgeType": "render",
-        "line": 122,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
@@ -8128,7 +8128,7 @@
         "target": "TruncatedText",
         "targetName": "TruncatedText",
         "edgeType": "render",
-        "line": 140,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
@@ -8137,7 +8137,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 156,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
@@ -8146,7 +8146,7 @@
         "target": "FilterableBadge",
         "targetName": "FilterableBadge",
         "edgeType": "render",
-        "line": 171,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
@@ -8200,7 +8200,7 @@
         "target": "ListNoResults",
         "targetName": "ListNoResults",
         "edgeType": "render",
-        "line": 113,
+        "line": 117,
         "conditional": true,
         "inLoop": false
       },
@@ -8209,7 +8209,7 @@
         "target": "ContactListFilter",
         "targetName": "ContactListFilter",
         "edgeType": "render",
-        "line": 120,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
@@ -8218,7 +8218,7 @@
         "target": "ListSearchBar",
         "targetName": "ListSearchBar",
         "edgeType": "render",
-        "line": 121,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
@@ -8227,7 +8227,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 127,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
@@ -8236,7 +8236,7 @@
         "target": "Avatar",
         "targetName": "Avatar",
         "edgeType": "render",
-        "line": 130,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
@@ -8245,7 +8245,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 136,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
@@ -8254,7 +8254,7 @@
         "target": "ContactNameHeader",
         "targetName": "ContactNameHeader",
         "edgeType": "render",
-        "line": 137,
+        "line": 145,
         "conditional": false,
         "inLoop": false
       },
@@ -8263,7 +8263,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 147,
+        "line": 155,
         "conditional": false,
         "inLoop": false
       },
@@ -8272,7 +8272,7 @@
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 163,
+        "line": 171,
         "conditional": false,
         "inLoop": false
       },
@@ -8281,7 +8281,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 167,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
@@ -8290,7 +8290,7 @@
         "target": "ContactStatusHeader",
         "targetName": "ContactStatusHeader",
         "edgeType": "render",
-        "line": 168,
+        "line": 176,
         "conditional": false,
         "inLoop": false
       },
@@ -8299,7 +8299,7 @@
         "target": "ContactStatusBadge",
         "targetName": "ContactStatusBadge",
         "edgeType": "render",
-        "line": 172,
+        "line": 180,
         "conditional": false,
         "inLoop": false
       },
@@ -8308,7 +8308,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 178,
+        "line": 186,
         "conditional": false,
         "inLoop": false
       },
@@ -8317,7 +8317,7 @@
         "target": "DateField",
         "targetName": "DateField",
         "edgeType": "render",
-        "line": 188,
+        "line": 196,
         "conditional": false,
         "inLoop": false
       },
@@ -8326,43 +8326,43 @@
         "target": "ContactBulkActionsToolbar",
         "targetName": "ContactBulkActionsToolbar",
         "edgeType": "render",
-        "line": 198,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:203:ContactListActions",
-        "target": "useListContext",
-        "targetName": "useListContext",
-        "edgeType": "hook",
-        "line": 204,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:203:ContactListActions",
-        "target": "TopToolbar",
-        "targetName": "TopToolbar",
-        "edgeType": "render",
         "line": 206,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:203:ContactListActions",
-        "target": "SortButton",
-        "targetName": "SortButton",
-        "edgeType": "render",
-        "line": 207,
+        "source": "src/atomic-crm/contacts/ContactList.tsx:211:ContactListActions",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 212,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:203:ContactListActions",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:211:ContactListActions",
+        "target": "TopToolbar",
+        "targetName": "TopToolbar",
+        "edgeType": "render",
+        "line": 214,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:211:ContactListActions",
+        "target": "SortButton",
+        "targetName": "SortButton",
+        "edgeType": "render",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:211:ContactListActions",
         "target": "ExportButton",
         "targetName": "ExportButton",
         "edgeType": "render",
-        "line": 208,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
@@ -8767,7 +8767,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 53,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
@@ -8776,7 +8776,7 @@
         "target": "Tabs",
         "targetName": "Tabs",
         "edgeType": "render",
-        "line": 65,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
@@ -8785,43 +8785,43 @@
         "target": "TabsList",
         "targetName": "TabsList",
         "edgeType": "render",
-        "line": 66,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
-        "target": "TabsTrigger",
-        "targetName": "TabsTrigger",
-        "edgeType": "render",
-        "line": 67,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
-        "target": "TabsTrigger",
-        "targetName": "TabsTrigger",
-        "edgeType": "render",
-        "line": 68,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
-        "target": "TabsTrigger",
-        "targetName": "TabsTrigger",
-        "edgeType": "render",
-        "line": 69,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
-        "target": "TabsTrigger",
-        "targetName": "TabsTrigger",
-        "edgeType": "render",
         "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
+        "target": "TabsTrigger",
+        "targetName": "TabsTrigger",
+        "edgeType": "render",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
+        "target": "TabsTrigger",
+        "targetName": "TabsTrigger",
+        "edgeType": "render",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
+        "target": "TabsTrigger",
+        "targetName": "TabsTrigger",
+        "edgeType": "render",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
+        "target": "TabsTrigger",
+        "targetName": "TabsTrigger",
+        "edgeType": "render",
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
@@ -8830,7 +8830,7 @@
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 73,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
@@ -8839,7 +8839,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 80,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
@@ -8848,7 +8848,7 @@
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 94,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
@@ -8857,16 +8857,7 @@
         "target": "ReferenceManyField",
         "targetName": "ReferenceManyField",
         "edgeType": "render",
-        "line": 95,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
-        "target": "TabsContent",
-        "targetName": "TabsContent",
-        "edgeType": "render",
-        "line": 105,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
@@ -8876,6 +8867,15 @@
         "targetName": "TabsContent",
         "edgeType": "render",
         "line": 109,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactShow.tsx:23:ContactShowContent",
+        "target": "TabsContent",
+        "targetName": "TabsContent",
+        "edgeType": "render",
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
@@ -8902,7 +8902,7 @@
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 46,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
@@ -8911,7 +8911,7 @@
         "target": "OrganizationAvatar",
         "targetName": "OrganizationAvatar",
         "edgeType": "render",
-        "line": 59,
+        "line": 63,
         "conditional": false,
         "inLoop": false
       },
@@ -8920,7 +8920,7 @@
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 86,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
@@ -8929,7 +8929,7 @@
         "target": "NoteCreate",
         "targetName": "NoteCreate",
         "edgeType": "render",
-        "line": 99,
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
@@ -8938,7 +8938,7 @@
         "target": "NotesIterator",
         "targetName": "NotesIterator",
         "edgeType": "render",
-        "line": 101,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
@@ -8947,7 +8947,7 @@
         "target": "ActivitiesTab",
         "targetName": "ActivitiesTab",
         "edgeType": "render",
-        "line": 106,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
@@ -8956,7 +8956,7 @@
         "target": "OpportunitiesTab",
         "targetName": "OpportunitiesTab",
         "edgeType": "render",
-        "line": 110,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
@@ -8965,7 +8965,7 @@
         "target": "ContactAside",
         "targetName": "ContactAside",
         "edgeType": "render",
-        "line": 118,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
@@ -9019,7 +9019,7 @@
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 103,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
@@ -9073,7 +9073,7 @@
         "target": "QuickAddTaskButton",
         "targetName": "QuickAddTaskButton",
         "edgeType": "render",
-        "line": 105,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },

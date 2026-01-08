@@ -54,10 +54,7 @@ export function ListSearchBar({
 
   // Show dropdown when: enabled + open + empty search + has items
   const shouldShowDropdown =
-    enableRecentSearches &&
-    dropdownOpen &&
-    !searchValue &&
-    recentItems.length > 0;
+    enableRecentSearches && dropdownOpen && !searchValue && recentItems.length > 0;
 
   const handleFocus = useCallback(() => {
     if (enableRecentSearches && !searchValue && recentItems.length > 0) {
@@ -80,12 +77,7 @@ export function ListSearchBar({
   // Render search input - onFocus attached directly to input element
   const searchInputContent = (
     <FilterLiveForm>
-      <SearchInput
-        source={source}
-        placeholder={placeholder}
-        alwaysOn
-        onFocus={handleFocus}
-      />
+      <SearchInput source={source} placeholder={placeholder} alwaysOn onFocus={handleFocus} />
     </FilterLiveForm>
   );
 

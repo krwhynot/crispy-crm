@@ -19,7 +19,12 @@ import {
 import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { ContextLink } from "../types";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, STATUS_CHOICES, ORG_SCOPE_CHOICES } from "../constants";
+import {
+  ORGANIZATION_TYPE_CHOICES,
+  PRIORITY_CHOICES,
+  STATUS_CHOICES,
+  ORG_SCOPE_CHOICES,
+} from "../constants";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { OrganizationTypeBadge, PriorityBadge } from "../OrganizationBadges";
 import { ParentOrganizationInput } from "../ParentOrganizationInput";

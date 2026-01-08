@@ -13,21 +13,23 @@ export const activityTypeSchema = z.enum([
 ]);
 
 // Interaction type enum - the specific type of activity (13 types per PRD v1.18)
-export const interactionTypeSchema = z.enum([
-  "call",
-  "email",
-  "meeting",
-  "demo",
-  "proposal",
-  "follow_up",
-  "trade_show",
-  "site_visit",
-  "contract_review",
-  "check_in",
-  "social",
-  "note",
-  "sample", // Added for sample tracking workflow (PRD §4.4)
-]).default("call");
+export const interactionTypeSchema = z
+  .enum([
+    "call",
+    "email",
+    "meeting",
+    "demo",
+    "proposal",
+    "follow_up",
+    "trade_show",
+    "site_visit",
+    "contract_review",
+    "check_in",
+    "social",
+    "note",
+    "sample", // Added for sample tracking workflow (PRD §4.4)
+  ])
+  .default("call");
 
 // Sample status enum - workflow states for sample activities
 // Workflow: sent → received → feedback_pending → feedback_received

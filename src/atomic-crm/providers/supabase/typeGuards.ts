@@ -23,14 +23,8 @@ export function hasRpcMethod(
  * Type guard to check if DataProvider is ExtendedDataProvider
  * Checks for all custom methods added by extendWithCustomMethods
  */
-export function isExtendedDataProvider(
-  provider: DataProvider
-): provider is ExtendedDataProvider {
-  return (
-    hasRpcMethod(provider) &&
-    "storage" in provider &&
-    "invoke" in provider
-  );
+export function isExtendedDataProvider(provider: DataProvider): provider is ExtendedDataProvider {
+  return hasRpcMethod(provider) && "storage" in provider && "invoke" in provider;
 }
 
 /**
@@ -47,9 +41,7 @@ export function isExtendedDataProvider(
  * const extendedProvider = assertExtendedDataProvider(baseProvider);
  * const service = new Service(extendedProvider);
  */
-export function assertExtendedDataProvider(
-  provider: DataProvider
-): ExtendedDataProvider {
+export function assertExtendedDataProvider(provider: DataProvider): ExtendedDataProvider {
   if (!isExtendedDataProvider(provider)) {
     throw new Error(
       "DataProvider is not an ExtendedDataProvider. Missing required custom methods (rpc, storage, invoke)."

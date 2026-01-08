@@ -11,14 +11,7 @@
  * @module filters/dateFilterLabels
  */
 
-import {
-  startOfWeek,
-  startOfMonth,
-  subDays,
-  endOfYesterday,
-  isSameDay,
-  format,
-} from "date-fns";
+import { startOfWeek, startOfMonth, subDays, endOfYesterday, isSameDay, format } from "date-fns";
 
 /**
  * Detect which sidebar date preset was selected based on filter values.
@@ -60,10 +53,7 @@ export function detectDatePresetLabel(
   // Both @gte and @lte set - range filters
   if (gteDate && lteDate) {
     // Last week: 7 days ago to yesterday
-    if (
-      isSameDay(gteDate, subDays(now, 7)) &&
-      isSameDay(lteDate, endOfYesterday())
-    ) {
+    if (isSameDay(gteDate, subDays(now, 7)) && isSameDay(lteDate, endOfYesterday())) {
       return "Last week";
     }
     // Custom range: fall through to formatted dates

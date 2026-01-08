@@ -111,7 +111,9 @@ describe("productsHandler", () => {
       // Create a mock provider with RPC that throws
       const mockProviderWithRpc = {
         ...mockBaseProvider,
-        rpc: vi.fn().mockRejectedValue(new Error("RPC soft_delete_product failed: Product not found")),
+        rpc: vi
+          .fn()
+          .mockRejectedValue(new Error("RPC soft_delete_product failed: Product not found")),
       };
 
       const handler = createProductsHandler(mockProviderWithRpc);
@@ -144,9 +146,7 @@ describe("productsHandler", () => {
 
       const handler = createProductsHandler(mockProviderWithRpc);
 
-      await expect(
-        handler.deleteMany("products", { ids: [997, 998, 999] })
-      ).rejects.toThrow();
+      await expect(handler.deleteMany("products", { ids: [997, 998, 999] })).rejects.toThrow();
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         expect.stringContaining("[DataProvider Error]"),

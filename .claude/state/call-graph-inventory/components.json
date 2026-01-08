@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-07T23:40:47.336Z",
+  "generated_at": "2026-01-08T00:13:36.287Z",
   "items": {
     "nodes": [
       {
@@ -67,10 +67,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
+        "id": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
         "name": "TrackRecordView",
         "file": "src/atomic-crm/components/TrackRecordView.tsx",
-        "line": 21,
+        "line": 17,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -280,7 +280,7 @@
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 88,
+        "line": 91,
         "conditional": true,
         "inLoop": false
       },
@@ -289,7 +289,7 @@
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 90,
+        "line": 93,
         "conditional": true,
         "inLoop": false
       },
@@ -370,7 +370,7 @@
         "target": "getTooltipMessage",
         "targetName": "getTooltipMessage",
         "edgeType": "call",
-        "line": 61,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
@@ -415,7 +415,7 @@
         "target": "TooltipContent",
         "targetName": "TooltipContent",
         "edgeType": "render",
-        "line": 60,
+        "line": 58,
         "conditional": false,
         "inLoop": false
       },
@@ -636,74 +636,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 22,
+        "line": 18,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
         "target": "useResourceContext",
         "targetName": "useResourceContext",
         "edgeType": "hook",
-        "line": 23,
+        "line": 19,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
         "target": "useGetRecordRepresentation",
         "targetName": "useGetRecordRepresentation",
+        "edgeType": "hook",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "target": "useRecentItems",
+        "targetName": "useRecentItems",
+        "edgeType": "hook",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "target": "useRef",
+        "targetName": "useRef",
         "edgeType": "hook",
         "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
-        "target": "useRecentItems",
-        "targetName": "useRecentItems",
-        "edgeType": "hook",
-        "line": 25,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
-        "target": "useRef",
-        "targetName": "useRef",
-        "edgeType": "hook",
-        "line": 28,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 30,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
         "target": "getRecordRepresentation",
         "targetName": "getRecordRepresentation",
         "edgeType": "call",
-        "line": 38,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:21:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
         "target": "addRecentItem",
         "targetName": "addRecentItem",
         "edgeType": "call",
-        "line": 40,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       }

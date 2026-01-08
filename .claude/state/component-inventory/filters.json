@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-07T23:40:38.837Z",
+  "generated_at": "2026-01-08T00:13:24.353Z",
   "item_count": 7,
   "items": [
     {
@@ -141,7 +141,7 @@
     {
       "name": "StarredFilterToggle",
       "file": "src/atomic-crm/filters/StarredFilterToggle.tsx",
-      "line": 32,
+      "line": 27,
       "type": "presentational",
       "hooks": [
         "useEffect",

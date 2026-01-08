@@ -3,12 +3,7 @@ import { Star } from "lucide-react";
 import { useListContext } from "ra-core";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/hooks/useFavorites";
 import type { FavoriteEntityType } from "@/atomic-crm/validation/favorites";
@@ -29,18 +24,13 @@ interface StarredFilterToggleProps {
  * - Active: Secondary button with filled star
  * - No favorites: Disabled with tooltip
  */
-export function StarredFilterToggle({
-  entityType,
-  className,
-}: StarredFilterToggleProps) {
+export function StarredFilterToggle({ entityType, className }: StarredFilterToggleProps) {
   const { filterValues, setFilters } = useListContext();
   const { favorites, isLoading } = useFavorites();
 
   // Get favorite IDs for this entity type
   const favoriteIds = useMemo(() => {
-    return favorites
-      .filter((fav) => fav.entity_type === entityType)
-      .map((fav) => fav.entity_id);
+    return favorites.filter((fav) => fav.entity_type === entityType).map((fav) => fav.entity_id);
   }, [favorites, entityType]);
 
   const hasFavorites = favoriteIds.length > 0;
@@ -51,8 +41,7 @@ export function StarredFilterToggle({
     if (!currentIdFilter || !Array.isArray(currentIdFilter)) return false;
     // Active if the id filter matches our favorite IDs
     return (
-      currentIdFilter.length > 0 &&
-      currentIdFilter.every((id: number) => favoriteIds.includes(id))
+      currentIdFilter.length > 0 && currentIdFilter.every((id: number) => favoriteIds.includes(id))
     );
   }, [filterValues?.id, favoriteIds]);
 
@@ -70,8 +59,7 @@ export function StarredFilterToggle({
       const currentIdFilter = filterValues?.id;
       if (
         Array.isArray(currentIdFilter) &&
-        JSON.stringify([...currentIdFilter].sort()) !==
-          JSON.stringify([...favoriteIds].sort())
+        JSON.stringify([...currentIdFilter].sort()) !== JSON.stringify([...favoriteIds].sort())
       ) {
         setFilters({ ...filterValues, id: favoriteIds });
       }
@@ -105,16 +93,11 @@ export function StarredFilterToggle({
       )}
     >
       <Star
-        className={cn(
-          "h-4 w-4",
-          isActive ? "fill-primary text-primary" : "text-muted-foreground"
-        )}
+        className={cn("h-4 w-4", isActive ? "fill-primary text-primary" : "text-muted-foreground")}
       />
       <span>Starred</span>
       {hasFavorites && (
-        <span className="ml-auto text-xs text-muted-foreground">
-          {favoriteIds.length}
-        </span>
+        <span className="ml-auto text-xs text-muted-foreground">{favoriteIds.length}</span>
       )}
     </Button>
   );

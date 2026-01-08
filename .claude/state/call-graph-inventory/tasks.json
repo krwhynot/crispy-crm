@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-07T23:40:47.395Z",
+  "generated_at": "2026-01-08T00:13:36.367Z",
   "items": {
     "nodes": [
       {
@@ -1351,7 +1351,7 @@
         "target": "getAutocompleteProps",
         "targetName": "getAutocompleteProps",
         "edgeType": "call",
-        "line": 37,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
@@ -1359,15 +1359,6 @@
         "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
         "target": "getAutocompleteProps",
         "targetName": "getAutocompleteProps",
-        "edgeType": "call",
-        "line": 45,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "getQSearchAutocompleteProps",
-        "targetName": "getQSearchAutocompleteProps",
         "edgeType": "call",
         "line": 53,
         "conditional": false,
@@ -1378,7 +1369,16 @@
         "target": "getQSearchAutocompleteProps",
         "targetName": "getQSearchAutocompleteProps",
         "edgeType": "call",
-        "line": 61,
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "target": "getQSearchAutocompleteProps",
+        "targetName": "getQSearchAutocompleteProps",
+        "edgeType": "call",
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
@@ -1396,16 +1396,7 @@
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 43,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 51,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
@@ -1415,6 +1406,15 @@
         "targetName": "ReferenceInput",
         "edgeType": "render",
         "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },
@@ -1441,16 +1441,7 @@
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
-        "target": "AutocompleteInput",
-        "targetName": "AutocompleteInput",
-        "edgeType": "render",
-        "line": 44,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
@@ -1468,7 +1459,16 @@
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 60,
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskDetailsTab.tsx:12:TaskDetailsTab",
+        "target": "AutocompleteInput",
+        "targetName": "AutocompleteInput",
+        "edgeType": "render",
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
@@ -2485,7 +2485,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 42,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
@@ -2494,7 +2494,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 43,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
@@ -2503,7 +2503,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 44,
+        "line": 42,
         "conditional": false,
         "inLoop": false
       },
@@ -2512,7 +2512,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 47,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
@@ -2520,6 +2520,24 @@
         "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
         "line": 58,
         "conditional": false,
@@ -2527,28 +2545,10 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 59,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 60,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 63,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
@@ -2556,6 +2556,24 @@
         "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
         "line": 74,
         "conditional": false,
@@ -2563,28 +2581,10 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 75,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 76,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx:27:TaskRelatedItemsTab",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 79,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
@@ -2593,7 +2593,7 @@
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 90,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
@@ -2602,7 +2602,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 91,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
@@ -2611,7 +2611,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 92,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
@@ -2620,7 +2620,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 95,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
@@ -2638,7 +2638,7 @@
         "target": "Building2",
         "targetName": "Building2",
         "edgeType": "render",
-        "line": 46,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
@@ -2647,7 +2647,7 @@
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 48,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
@@ -2656,7 +2656,7 @@
         "target": "UserCircle",
         "targetName": "UserCircle",
         "edgeType": "render",
-        "line": 62,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
@@ -2665,7 +2665,7 @@
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 64,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
@@ -2674,7 +2674,7 @@
         "target": "Target",
         "targetName": "Target",
         "edgeType": "render",
-        "line": 78,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
@@ -2683,7 +2683,7 @@
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 80,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
@@ -2692,7 +2692,7 @@
         "target": "Building2",
         "targetName": "Building2",
         "edgeType": "render",
-        "line": 94,
+        "line": 92,
         "conditional": false,
         "inLoop": false
       },
@@ -2701,7 +2701,7 @@
         "target": "SaleName",
         "targetName": "SaleName",
         "edgeType": "render",
-        "line": 96,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },

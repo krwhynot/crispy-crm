@@ -587,7 +587,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
             logError("storage.remove", bucket, { paths }, error);
             throw new Error(`Remove failed: ${error.message}`);
           }
-
         } catch (error) {
           logError("storage.remove", bucket, { paths }, error);
           throw error;

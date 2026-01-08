@@ -33,10 +33,15 @@ export interface ProductDistributorUpdateInput {
  * Parse a composite ID into product_id and distributor_id
  * Format: `${product_id}-${distributor_id}`
  */
-export function parseCompositeId(compositeId: string): { product_id: number; distributor_id: number } {
+export function parseCompositeId(compositeId: string): {
+  product_id: number;
+  distributor_id: number;
+} {
   const parts = String(compositeId).split("-");
   if (parts.length !== 2) {
-    throw new Error(`Invalid composite ID format: ${compositeId}. Expected format: product_id-distributor_id`);
+    throw new Error(
+      `Invalid composite ID format: ${compositeId}. Expected format: product_id-distributor_id`
+    );
   }
 
   const product_id = parseInt(parts[0], 10);

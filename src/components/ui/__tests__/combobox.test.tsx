@@ -23,9 +23,7 @@ describe("Combobox", () => {
     });
 
     it("displays selected option label", () => {
-      render(
-        <Combobox options={defaultOptions} value="chicago" placeholder="Select city..." />
-      );
+      render(<Combobox options={defaultOptions} value="chicago" placeholder="Select city..." />);
       expect(screen.getByRole("combobox")).toHaveTextContent("Chicago");
     });
 
@@ -71,9 +69,7 @@ describe("Combobox", () => {
 
     it("deselects option when same option is selected again", async () => {
       const mockOnChange = vi.fn();
-      render(
-        <Combobox options={defaultOptions} value="chicago" onValueChange={mockOnChange} />
-      );
+      render(<Combobox options={defaultOptions} value="chicago" onValueChange={mockOnChange} />);
 
       await user.click(screen.getByRole("combobox"));
       // Use role="option" to specifically target the dropdown item, not the trigger button

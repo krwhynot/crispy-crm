@@ -18,12 +18,7 @@ import {
 describe("Organization Validation Schemas (organizations.ts)", () => {
   describe("organizationTypeSchema", () => {
     it("should accept all valid organization types", () => {
-      const validTypes: OrganizationType[] = [
-        "customer",
-        "prospect",
-        "principal",
-        "distributor",
-      ];
+      const validTypes: OrganizationType[] = ["customer", "prospect", "principal", "distributor"];
 
       validTypes.forEach((type) => {
         const result = organizationTypeSchema.safeParse(type);

@@ -23,7 +23,7 @@ export type PriorityLevel = "A" | "B" | "C" | "D";
  * Uses id/name format for compatibility with SelectInput component
  */
 export const ORGANIZATION_TYPE_CHOICES = [
-  { id: "prospect", name: "Prospect" },    // Most common (80%) - show first
+  { id: "prospect", name: "Prospect" }, // Most common (80%) - show first
   { id: "customer", name: "Customer" },
   { id: "principal", name: "Principal" },
   { id: "distributor", name: "Distributor" },

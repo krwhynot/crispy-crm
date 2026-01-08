@@ -50,9 +50,7 @@ export function FavoriteToggleButton({
           <Star
             className={cn(
               "size-5 transition-colors",
-              favorited
-                ? "fill-primary text-primary"
-                : "text-muted-foreground hover:text-primary"
+              favorited ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"
             )}
           />
         </Button>

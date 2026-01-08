@@ -83,7 +83,9 @@ export function getStorageItem<T = unknown>(
       if (options.schema) {
         const result = options.schema.safeParse(parsed);
         if (!result.success) {
-          const validationError = new Error(`Validation failed: ${JSON.stringify(result.error.flatten())}`);
+          const validationError = new Error(
+            `Validation failed: ${JSON.stringify(result.error.flatten())}`
+          );
           console.error(`[Storage] Validation failed for key "${key}":`, result.error.flatten());
           options.onError?.(validationError, key, "read");
           return null;
@@ -103,7 +105,9 @@ export function getStorageItem<T = unknown>(
       if (options.schema) {
         const result = options.schema.safeParse(parsed);
         if (!result.success) {
-          const validationError = new Error(`Validation failed: ${JSON.stringify(result.error.flatten())}`);
+          const validationError = new Error(
+            `Validation failed: ${JSON.stringify(result.error.flatten())}`
+          );
           console.error(`[Storage] Validation failed for key "${key}":`, result.error.flatten());
           options.onError?.(validationError, key, "read");
           // Clean up invalid data from fallback storage

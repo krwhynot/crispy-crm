@@ -12,10 +12,7 @@ import { FormToolbar } from "@/components/admin/simple-form";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { productDistributorSchema } from "../validation/productDistributors";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
-import {
-  AUTOCOMPLETE_DEBOUNCE_MS,
-  shouldRenderSuggestions,
-} from "../utils/autocompleteDefaults";
+import { AUTOCOMPLETE_DEBOUNCE_MS, shouldRenderSuggestions } from "../utils/autocompleteDefaults";
 
 // Human-readable field labels for error messages
 const FIELD_LABELS: Record<string, string> = {

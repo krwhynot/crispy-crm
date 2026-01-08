@@ -1,9 +1,5 @@
 import { useEffect, useRef } from "react";
-import {
-  useRecordContext,
-  useResourceContext,
-  useGetRecordRepresentation,
-} from "react-admin";
+import { useRecordContext, useResourceContext, useGetRecordRepresentation } from "react-admin";
 import { useRecentItems } from "../hooks/useRecentItems";
 
 /**
@@ -34,8 +30,7 @@ export const TrackRecordView = () => {
     const trackingKey = `${resource}-${record.id}`;
     if (hasTracked.current === trackingKey) return;
 
-    const title =
-      getRecordRepresentation(record) || `${resource} #${record.id}`;
+    const title = getRecordRepresentation(record) || `${resource} #${record.id}`;
 
     addRecentItem({
       id: record.id,

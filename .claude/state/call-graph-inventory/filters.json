@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-07T23:40:47.350Z",
+  "generated_at": "2026-01-08T00:13:36.305Z",
   "items": {
     "nodes": [
       {
@@ -76,28 +76,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "id": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "name": "StarredFilterToggle",
         "file": "src/atomic-crm/filters/StarredFilterToggle.tsx",
-        "line": 32,
+        "line": 27,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "id": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "name": "detectDatePresetLabel",
         "file": "src/atomic-crm/filters/dateFilterLabels.ts",
-        "line": 39,
+        "line": 32,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/filters/dateFilterLabels.ts:82:formatDateValue",
+        "id": "src/atomic-crm/filters/dateFilterLabels.ts:72:formatDateValue",
         "name": "formatDateValue",
         "file": "src/atomic-crm/filters/dateFilterLabels.ts",
-        "line": 82,
+        "line": 72,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -415,7 +415,7 @@
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 54,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
@@ -424,7 +424,7 @@
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 55,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
@@ -433,7 +433,7 @@
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 69,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
@@ -442,7 +442,7 @@
         "target": "toInputDate",
         "targetName": "toInputDate",
         "edgeType": "call",
-        "line": 69,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
@@ -451,7 +451,7 @@
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 70,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -460,7 +460,7 @@
         "target": "toInputDate",
         "targetName": "toInputDate",
         "edgeType": "call",
-        "line": 70,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -469,7 +469,7 @@
         "target": "setSelectedFrom",
         "targetName": "setSelectedFrom",
         "edgeType": "call",
-        "line": 75,
+        "line": 72,
         "conditional": true,
         "inLoop": false
       },
@@ -478,7 +478,7 @@
         "target": "toInputDate",
         "targetName": "toInputDate",
         "edgeType": "call",
-        "line": 75,
+        "line": 72,
         "conditional": true,
         "inLoop": false
       },
@@ -487,7 +487,7 @@
         "target": "setSelectedTo",
         "targetName": "setSelectedTo",
         "edgeType": "call",
-        "line": 76,
+        "line": 73,
         "conditional": true,
         "inLoop": false
       },
@@ -496,7 +496,7 @@
         "target": "toInputDate",
         "targetName": "toInputDate",
         "edgeType": "call",
-        "line": 76,
+        "line": 73,
         "conditional": true,
         "inLoop": false
       },
@@ -505,7 +505,7 @@
         "target": "setOpen",
         "targetName": "setOpen",
         "edgeType": "call",
-        "line": 78,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
@@ -514,7 +514,7 @@
         "target": "fromInputDate",
         "targetName": "fromInputDate",
         "edgeType": "call",
-        "line": 84,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
@@ -523,7 +523,7 @@
         "target": "fromInputDate",
         "targetName": "fromInputDate",
         "edgeType": "call",
-        "line": 85,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
@@ -532,7 +532,7 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 88,
+        "line": 85,
         "conditional": true,
         "inLoop": false
       },
@@ -541,7 +541,7 @@
         "target": "startOfDay",
         "targetName": "startOfDay",
         "edgeType": "call",
-        "line": 88,
+        "line": 85,
         "conditional": true,
         "inLoop": false
       },
@@ -550,7 +550,7 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 94,
+        "line": 91,
         "conditional": true,
         "inLoop": false
       },
@@ -559,7 +559,7 @@
         "target": "endOfDay",
         "targetName": "endOfDay",
         "edgeType": "call",
-        "line": 94,
+        "line": 91,
         "conditional": true,
         "inLoop": false
       },
@@ -568,7 +568,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 99,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
@@ -577,7 +577,7 @@
         "target": "setOpen",
         "targetName": "setOpen",
         "edgeType": "call",
-        "line": 100,
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },
@@ -586,7 +586,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 108,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
@@ -595,7 +595,7 @@
         "target": "setSelectedFrom",
         "targetName": "setSelectedFrom",
         "edgeType": "call",
-        "line": 109,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
@@ -604,7 +604,7 @@
         "target": "setSelectedTo",
         "targetName": "setSelectedTo",
         "edgeType": "call",
-        "line": 110,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
@@ -613,7 +613,7 @@
         "target": "setOpen",
         "targetName": "setOpen",
         "edgeType": "call",
-        "line": 111,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -622,7 +622,16 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 120,
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 117,
         "conditional": true,
         "inLoop": false
       },
@@ -646,19 +655,10 @@
       },
       {
         "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 126,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 139,
+        "line": 136,
         "conditional": false,
         "inLoop": false
       },
@@ -667,7 +667,7 @@
         "target": "getButtonLabel",
         "targetName": "getButtonLabel",
         "edgeType": "call",
-        "line": 147,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
@@ -676,7 +676,7 @@
         "target": "setSelectedFrom",
         "targetName": "setSelectedFrom",
         "edgeType": "call",
-        "line": 162,
+        "line": 159,
         "conditional": false,
         "inLoop": false
       },
@@ -685,7 +685,7 @@
         "target": "setSelectedTo",
         "targetName": "setSelectedTo",
         "edgeType": "call",
-        "line": 177,
+        "line": 174,
         "conditional": false,
         "inLoop": false
       },
@@ -694,7 +694,7 @@
         "target": "Popover",
         "targetName": "Popover",
         "edgeType": "render",
-        "line": 135,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
@@ -703,7 +703,7 @@
         "target": "handleOpenChange",
         "targetName": "handleOpenChange",
         "edgeType": "callback",
-        "line": 135,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
@@ -712,7 +712,7 @@
         "target": "PopoverTrigger",
         "targetName": "PopoverTrigger",
         "edgeType": "render",
-        "line": 136,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
@@ -721,7 +721,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 137,
+        "line": 134,
         "conditional": false,
         "inLoop": false
       },
@@ -730,7 +730,7 @@
         "target": "PopoverContent",
         "targetName": "PopoverContent",
         "edgeType": "render",
-        "line": 151,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
@@ -739,7 +739,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 155,
+        "line": 152,
         "conditional": false,
         "inLoop": false
       },
@@ -748,7 +748,25 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 170,
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
+        "target": "handleClear",
+        "targetName": "handleClear",
+        "edgeType": "callback",
+        "line": 182,
         "conditional": false,
         "inLoop": false
       },
@@ -763,28 +781,10 @@
       },
       {
         "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
-        "target": "handleClear",
-        "targetName": "handleClear",
-        "edgeType": "callback",
-        "line": 189,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 193,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
         "target": "handleApply",
         "targetName": "handleApply",
         "edgeType": "callback",
-        "line": 196,
+        "line": 185,
         "conditional": false,
         "inLoop": false
       },
@@ -793,7 +793,7 @@
         "target": "CalendarIcon",
         "targetName": "CalendarIcon",
         "edgeType": "render",
-        "line": 146,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
@@ -802,7 +802,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 158,
+        "line": 155,
         "conditional": false,
         "inLoop": false
       },
@@ -811,7 +811,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 173,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
@@ -1374,416 +1374,416 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 36,
+        "line": 28,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "useFavorites",
         "targetName": "useFavorites",
         "edgeType": "hook",
-        "line": 37,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 40,
+        "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 41,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 41,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "useMemo",
         "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 41,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "every",
+        "targetName": "every",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "useEffect",
+        "targetName": "useEffect",
         "edgeType": "hook",
         "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "isArray",
-        "targetName": "isArray",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "setFilters",
+        "targetName": "setFilters",
         "edgeType": "call",
-        "line": 51,
+        "line": 52,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "every",
-        "targetName": "every",
-        "edgeType": "call",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 60,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "setFilters",
-        "targetName": "setFilters",
-        "edgeType": "call",
-        "line": 63,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 68,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 72,
+        "line": 61,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "stringify",
         "targetName": "stringify",
         "edgeType": "call",
-        "line": 73,
+        "line": 62,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 73,
+        "line": 62,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "stringify",
         "targetName": "stringify",
         "edgeType": "call",
-        "line": 74,
+        "line": 62,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 74,
+        "line": 62,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 76,
+        "line": 64,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 87,
+        "line": 75,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 90,
+        "line": 78,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 101,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 108,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
         "target": "Button",
         "targetName": "Button",
+        "edgeType": "render",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "handleClick",
+        "targetName": "handleClick",
+        "edgeType": "callback",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "TooltipProvider",
+        "targetName": "TooltipProvider",
+        "edgeType": "render",
+        "line": 108,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "Tooltip",
+        "targetName": "Tooltip",
+        "edgeType": "render",
+        "line": 109,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "TooltipTrigger",
+        "targetName": "TooltipTrigger",
+        "edgeType": "render",
+        "line": 110,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "TooltipContent",
+        "targetName": "TooltipContent",
+        "edgeType": "render",
+        "line": 111,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
+        "target": "Star",
+        "targetName": "Star",
         "edgeType": "render",
         "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "handleClick",
-        "targetName": "handleClick",
-        "edgeType": "callback",
-        "line": 98,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "TooltipProvider",
-        "targetName": "TooltipProvider",
-        "edgeType": "render",
-        "line": 125,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "Tooltip",
-        "targetName": "Tooltip",
-        "edgeType": "render",
-        "line": 126,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "TooltipTrigger",
-        "targetName": "TooltipTrigger",
-        "edgeType": "render",
-        "line": 127,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "TooltipContent",
-        "targetName": "TooltipContent",
-        "edgeType": "render",
-        "line": 128,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:32:StarredFilterToggle",
-        "target": "Star",
-        "targetName": "Star",
-        "edgeType": "render",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "isNaN",
         "targetName": "isNaN",
         "edgeType": "call",
-        "line": 50,
+        "line": 43,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 50,
+        "line": 43,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "isNaN",
         "targetName": "isNaN",
         "edgeType": "call",
-        "line": 51,
+        "line": 44,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 51,
+        "line": 44,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "isSameDay",
         "targetName": "isSameDay",
         "edgeType": "call",
-        "line": 55,
+        "line": 48,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "endOfYesterday",
         "targetName": "endOfYesterday",
         "edgeType": "call",
-        "line": 55,
+        "line": 48,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "isSameDay",
         "targetName": "isSameDay",
         "edgeType": "call",
-        "line": 56,
+        "line": 49,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "startOfWeek",
         "targetName": "startOfWeek",
         "edgeType": "call",
+        "line": 49,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
+        "target": "isSameDay",
+        "targetName": "isSameDay",
+        "edgeType": "call",
+        "line": 50,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
+        "target": "startOfMonth",
+        "targetName": "startOfMonth",
+        "edgeType": "call",
+        "line": 50,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
+        "target": "isSameDay",
+        "targetName": "isSameDay",
+        "edgeType": "call",
         "line": 56,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
-        "target": "isSameDay",
-        "targetName": "isSameDay",
-        "edgeType": "call",
-        "line": 57,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
-        "target": "startOfMonth",
-        "targetName": "startOfMonth",
-        "edgeType": "call",
-        "line": 57,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
-        "target": "isSameDay",
-        "targetName": "isSameDay",
-        "edgeType": "call",
-        "line": 64,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "subDays",
         "targetName": "subDays",
         "edgeType": "call",
-        "line": 64,
+        "line": 56,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "isSameDay",
         "targetName": "isSameDay",
         "edgeType": "call",
-        "line": 65,
+        "line": 56,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:39:detectDatePresetLabel",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:32:detectDatePresetLabel",
         "target": "endOfYesterday",
         "targetName": "endOfYesterday",
         "edgeType": "call",
-        "line": 65,
+        "line": 56,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:82:formatDateValue",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:72:formatDateValue",
         "target": "isNaN",
         "targetName": "isNaN",
         "edgeType": "call",
-        "line": 84,
+        "line": 74,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:82:formatDateValue",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:72:formatDateValue",
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 84,
+        "line": 74,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/dateFilterLabels.ts:82:formatDateValue",
+        "source": "src/atomic-crm/filters/dateFilterLabels.ts:72:formatDateValue",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 85,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },

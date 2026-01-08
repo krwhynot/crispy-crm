@@ -119,9 +119,9 @@ describe("Opportunity Delete Cascade", () => {
       mockRpc.mockResolvedValueOnce({ error: rpcError });
 
       // Act & Assert - should throw, not silently fail
-      await expect(
-        opportunitiesCallbacks.beforeDelete!(params, mockDataProvider)
-      ).rejects.toThrow("Archive opportunity failed: RPC function failed: permission denied");
+      await expect(opportunitiesCallbacks.beforeDelete!(params, mockDataProvider)).rejects.toThrow(
+        "Archive opportunity failed: RPC function failed: permission denied"
+      );
 
       // Verify RPC was called
       expect(mockRpc).toHaveBeenCalledTimes(1);

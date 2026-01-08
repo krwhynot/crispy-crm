@@ -47,10 +47,7 @@ function fromInputDate(value: string): Date | undefined {
  * A filter button that opens a date range picker popover.
  * Shows "Select dates" when no range is active, or the formatted date range when active.
  */
-export function DateRangeFilterButton({
-  filterKeyPrefix,
-  className,
-}: DateRangeFilterButtonProps) {
+export function DateRangeFilterButton({ filterKeyPrefix, className }: DateRangeFilterButtonProps) {
   const { filterValues, setFilters, displayedFilters } = useListContext();
   const [open, setOpen] = useState(false);
 
@@ -182,20 +179,10 @@ export function DateRangeFilterButton({
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2 border-t">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 h-10"
-              onClick={handleClear}
-            >
+            <Button variant="outline" size="sm" className="flex-1 h-10" onClick={handleClear}>
               Clear
             </Button>
-            <Button
-              size="sm"
-              className="flex-1 h-10"
-              onClick={handleApply}
-              disabled={!canApply}
-            >
+            <Button size="sm" className="flex-1 h-10" onClick={handleApply} disabled={!canApply}>
               Apply
             </Button>
           </div>

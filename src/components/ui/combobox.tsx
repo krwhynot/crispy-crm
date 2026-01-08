@@ -97,8 +97,7 @@ export function Combobox({
               {creatable &&
                 searchValue.trim() &&
                 !options.some(
-                  (opt) =>
-                    opt.label.toLowerCase() === searchValue.trim().toLowerCase()
+                  (opt) => opt.label.toLowerCase() === searchValue.trim().toLowerCase()
                 ) && (
                   <CommandItem
                     value={`__create__${searchValue.trim()}`}

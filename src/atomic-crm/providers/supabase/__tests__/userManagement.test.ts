@@ -60,7 +60,8 @@ async function inviteUser(params: {
     let errorMessage: string;
     try {
       const errorData = await response.json();
-      errorMessage = errorData.message || errorData.error?.message || `Invite failed (${response.status})`;
+      errorMessage =
+        errorData.message || errorData.error?.message || `Invite failed (${response.status})`;
     } catch {
       errorMessage = `Invite failed (${response.status})`;
     }
@@ -97,7 +98,8 @@ async function updateUser(params: {
     let errorMessage: string;
     try {
       const errorData = await response.json();
-      errorMessage = errorData.message || errorData.error?.message || `Update failed (${response.status})`;
+      errorMessage =
+        errorData.message || errorData.error?.message || `Update failed (${response.status})`;
     } catch {
       errorMessage = `Update failed (${response.status})`;
     }
@@ -225,9 +227,7 @@ describe("User Management Data Provider", () => {
         json: () => Promise.resolve({ message: "Not authorized" }),
       });
 
-      await expect(updateUser({ sales_id: 1, role: "admin" })).rejects.toThrow(
-        "Not authorized"
-      );
+      await expect(updateUser({ sales_id: 1, role: "admin" })).rejects.toThrow("Not authorized");
     });
 
     it("sends optional fields when provided", async () => {

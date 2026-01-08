@@ -28,7 +28,11 @@ export function StageStatusDot({
 }: StageStatusDotProps) {
   // Override to warning when no activity recorded - signals attention needed
   const effectiveStatus = daysSinceLastActivity === null ? "warning" : status;
-  const { colorClass, label } = getStatusConfig(effectiveStatus, daysInStage ?? 0, daysSinceLastActivity === null);
+  const { colorClass, label } = getStatusConfig(
+    effectiveStatus,
+    daysInStage ?? 0,
+    daysSinceLastActivity === null
+  );
 
   // Display "X days" for last activity, "No activity" when null
   const displayText =

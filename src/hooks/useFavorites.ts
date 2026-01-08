@@ -8,7 +8,11 @@ export interface UseFavoritesReturn {
   favorites: Favorite[];
   isLoading: boolean;
   isFavorite: (entityType: FavoriteEntityType, entityId: number) => boolean;
-  toggleFavorite: (entityType: FavoriteEntityType, entityId: number, displayName: string) => Promise<void>;
+  toggleFavorite: (
+    entityType: FavoriteEntityType,
+    entityId: number,
+    displayName: string
+  ) => Promise<void>;
   canAddMore: boolean;
   favoritesCount: number;
 }
@@ -55,15 +59,17 @@ export function useFavorites(): UseFavoritesReturn {
         return optimisticValue;
       }
 
-      return favorites.some(
-        (fav) => fav.entity_type === entityType && fav.entity_id === entityId
-      );
+      return favorites.some((fav) => fav.entity_type === entityType && fav.entity_id === entityId);
     },
     [favorites, optimisticState]
   );
 
   const toggleFavorite = useCallback(
-    async (entityType: FavoriteEntityType, entityId: number, displayName: string): Promise<void> => {
+    async (
+      entityType: FavoriteEntityType,
+      entityId: number,
+      displayName: string
+    ): Promise<void> => {
       if (!userId) {
         notify("You must be logged in to manage favorites", { type: "error" });
         return;
@@ -73,7 +79,9 @@ export function useFavorites(): UseFavoritesReturn {
       const currentlyFavorited = isFavorite(entityType, entityId);
 
       if (!currentlyFavorited && !canAddMore) {
-        notify(`Maximum ${MAX_FAVORITES} favorites reached. Remove one to add another.`, { type: "warning" });
+        notify(`Maximum ${MAX_FAVORITES} favorites reached. Remove one to add another.`, {
+          type: "warning",
+        });
         return;
       }
 
@@ -108,7 +116,8 @@ export function useFavorites(): UseFavoritesReturn {
                     next.delete(key);
                     return next;
                   });
-                  const errorMessage = error instanceof Error ? error.message : "Failed to remove favorite";
+                  const errorMessage =
+                    error instanceof Error ? error.message : "Failed to remove favorite";
                   notify(errorMessage, { type: "error" });
                 },
               }
@@ -140,7 +149,8 @@ export function useFavorites(): UseFavoritesReturn {
                   next.delete(key);
                   return next;
                 });
-                const errorMessage = error instanceof Error ? error.message : "Failed to add favorite";
+                const errorMessage =
+                  error instanceof Error ? error.message : "Failed to add favorite";
                 notify(errorMessage, { type: "error" });
               },
             }

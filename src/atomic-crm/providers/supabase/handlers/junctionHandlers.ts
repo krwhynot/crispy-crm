@@ -22,8 +22,8 @@ import { createResourceCallbacks } from "../callbacks/createResourceCallbacks";
 if (process.env.NODE_ENV === "development") {
   console.warn(
     "⚠️ Junction table handlers: getMany operations on composite-key tables " +
-    "(product_distributors, opportunity_products) require custom implementation. " +
-    "These simple handlers only support single-column primary keys."
+      "(product_distributors, opportunity_products) require custom implementation. " +
+      "These simple handlers only support single-column primary keys."
   );
 }
 

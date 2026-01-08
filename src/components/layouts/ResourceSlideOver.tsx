@@ -244,7 +244,10 @@ export function ResourceSlideOver({
 
               {/* Title and actions row */}
               <div className="flex flex-row items-center justify-between min-h-[28px] pr-14">
-                <SheetTitle id="slide-over-title" className="text-base font-semibold flex items-center gap-2">
+                <SheetTitle
+                  id="slide-over-title"
+                  className="text-base font-semibold flex items-center gap-2"
+                >
                   {getRecordTitle()}
                   {isDirty && (
                     <span

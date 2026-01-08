@@ -288,7 +288,10 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         const failures = insertResults.filter((result) => result.status === "rejected");
         if (failures.length > 0) {
           devWarn("OrgImport", "Some account managers failed to insert:", failures);
-          notify(`${failures.length} account manager(s) could not be created. Import will continue.`, { type: "warning" });
+          notify(
+            `${failures.length} account manager(s) could not be created. Import will continue.`,
+            { type: "warning" }
+          );
         }
 
         devLog("OrgImport", "Successfully inserted account managers:", inserted);
@@ -413,7 +416,9 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         const failures = insertResults.filter((result) => result.status === "rejected");
         if (failures.length > 0) {
           devWarn("OrgImport", "Some segments failed to insert:", failures);
-          notify(`${failures.length} segment(s) could not be created. Import will continue.`, { type: "warning" });
+          notify(`${failures.length} segment(s) could not be created. Import will continue.`, {
+            type: "warning",
+          });
         }
 
         devLog("OrgImport", "Successfully inserted segments:", inserted);

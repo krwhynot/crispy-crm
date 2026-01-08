@@ -1,11 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useRecentSearches, type RecentSearchItem } from "../hooks/useRecentSearches";
 import { Building2, User, Target, ListTodo, Clock } from "lucide-react";
 
@@ -43,11 +38,7 @@ const formatRelativeTime = (timestamp: number): string => {
  * Memoized list item component for rendering a single recent item.
  * Performance: Prevents re-renders when other items change.
  */
-const RecentItemLink = memo(function RecentItemLink({
-  item,
-}: {
-  item: RecentSearchItem;
-}) {
+const RecentItemLink = memo(function RecentItemLink({ item }: { item: RecentSearchItem }) {
   const Icon = RESOURCE_ICONS[item.entityType] || Building2;
 
   return (
@@ -59,9 +50,7 @@ const RecentItemLink = memo(function RecentItemLink({
         <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium truncate">{item.label}</p>
-          <p className="text-xs text-muted-foreground">
-            {formatRelativeTime(item.timestamp)}
-          </p>
+          <p className="text-xs text-muted-foreground">{formatRelativeTime(item.timestamp)}</p>
         </div>
       </Link>
     </li>
@@ -104,10 +93,7 @@ export function RecentItemsWidget() {
         ) : (
           <ul className="space-y-1">
             {displayItems.map((item) => (
-              <RecentItemLink
-                key={`${item.entityType}-${item.id}`}
-                item={item}
-              />
+              <RecentItemLink key={`${item.entityType}-${item.id}`} item={item} />
             ))}
           </ul>
         )}

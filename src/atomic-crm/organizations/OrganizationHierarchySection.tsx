@@ -7,31 +7,30 @@ export const OrganizationHierarchySection = () => {
   return (
     <CollapsibleSection title="Organization Hierarchy">
       <CompactFormRow>
-          <FormFieldWrapper name="org_scope">
-            <SelectInput
-              source="org_scope"
-              label="Scope"
-              choices={ORG_SCOPE_CHOICES}
-              helperText="National = brand/HQ, Regional = operating company"
-              emptyText="Select scope"
-              parse={(v) => v || null}
+        <FormFieldWrapper name="org_scope">
+          <SelectInput
+            source="org_scope"
+            label="Scope"
+            choices={ORG_SCOPE_CHOICES}
+            helperText="National = brand/HQ, Regional = operating company"
+            emptyText="Select scope"
+            parse={(v) => v || null}
+          />
+        </FormFieldWrapper>
+        <div className="space-y-1">
+          <FormFieldWrapper name="is_operating_entity">
+            <BooleanInput
+              source="is_operating_entity"
+              label="This location processes orders"
+              helperText={false}
             />
           </FormFieldWrapper>
-          <div className="space-y-1">
-            <FormFieldWrapper name="is_operating_entity">
-              <BooleanInput
-                source="is_operating_entity"
-                label="This location processes orders"
-                helperText={false}
-              />
-            </FormFieldWrapper>
-            <p className="text-sm text-muted-foreground ml-11">
-              <strong>ON:</strong> Orders and invoices happen here (e.g., Sysco Chicago)
-              <br />
-              <strong>OFF:</strong> Corporate brand or holding company only (e.g., Sysco
-              Corporation)
-            </p>
-          </div>
+          <p className="text-sm text-muted-foreground ml-11">
+            <strong>ON:</strong> Orders and invoices happen here (e.g., Sysco Chicago)
+            <br />
+            <strong>OFF:</strong> Corporate brand or holding company only (e.g., Sysco Corporation)
+          </p>
+        </div>
       </CompactFormRow>
     </CollapsibleSection>
   );

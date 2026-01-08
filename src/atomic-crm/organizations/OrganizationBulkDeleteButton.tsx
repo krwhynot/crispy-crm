@@ -25,19 +25,15 @@ import type { OrganizationWithHierarchy } from "../types";
  */
 export const OrganizationBulkDeleteButton = () => {
   const [showConfirm, setShowConfirm] = useState(false);
-  const { selectedIds, data, onUnselectItems } =
-    useListContext<OrganizationWithHierarchy>();
+  const { selectedIds, data, onUnselectItems } = useListContext<OrganizationWithHierarchy>();
   const [deleteMany, { isPending }] = useDeleteMany();
   const notify = useNotify();
   const refresh = useRefresh();
   const resource = useResourceContext();
 
   // Find parent organizations (orgs with children)
-  const selectedOrgs =
-    data?.filter((org) => selectedIds?.includes(org.id)) ?? [];
-  const parentOrgs = selectedOrgs.filter(
-    (org) => (org.child_branch_count ?? 0) > 0
-  );
+  const selectedOrgs = data?.filter((org) => selectedIds?.includes(org.id)) ?? [];
+  const parentOrgs = selectedOrgs.filter((org) => (org.child_branch_count ?? 0) > 0);
   const hasParentOrgs = parentOrgs.length > 0;
 
   const handleClick = (e: React.MouseEvent) => {

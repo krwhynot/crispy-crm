@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-07T23:40:38.840Z",
+  "generated_at": "2026-01-08T00:13:24.356Z",
   "item_count": 78,
   "items": [
     {
@@ -341,7 +341,6 @@
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
-        "useLocation",
         "useMemo",
         "useSearchParams",
         "useSimilarOpportunityCheck"
@@ -382,7 +381,6 @@
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
-        "useLocation",
         "useMemo",
         "useSearchParams",
         "useSimilarOpportunityCheck"

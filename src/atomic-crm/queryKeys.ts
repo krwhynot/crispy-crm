@@ -14,44 +14,44 @@
 // Factory pattern for each resource
 const createKeys = <T extends string>(resource: T) => ({
   all: [resource] as const,
-  lists: () => [resource, 'list'] as const,
-  list: (filters?: Record<string, unknown>) => [resource, 'list', filters] as const,
-  details: () => [resource, 'detail'] as const,
-  detail: (id: number | string) => [resource, 'detail', id] as const,
+  lists: () => [resource, "list"] as const,
+  list: (filters?: Record<string, unknown>) => [resource, "list", filters] as const,
+  details: () => [resource, "detail"] as const,
+  detail: (id: number | string) => [resource, "detail", id] as const,
 });
 
 // Core CRM Resources
-export const contactKeys = createKeys('contacts');
-export const organizationKeys = createKeys('organizations');
-export const opportunityKeys = createKeys('opportunities');
-export const activityKeys = createKeys('activities');
-export const taskKeys = createKeys('tasks');
-export const productKeys = createKeys('products');
+export const contactKeys = createKeys("contacts");
+export const organizationKeys = createKeys("organizations");
+export const opportunityKeys = createKeys("opportunities");
+export const activityKeys = createKeys("activities");
+export const taskKeys = createKeys("tasks");
+export const productKeys = createKeys("products");
 
 // Notes (polymorphic)
-export const contactNoteKeys = createKeys('contact_notes');
-export const opportunityNoteKeys = createKeys('opportunity_notes');
-export const organizationNoteKeys = createKeys('organization_notes');
+export const contactNoteKeys = createKeys("contact_notes");
+export const opportunityNoteKeys = createKeys("opportunity_notes");
+export const organizationNoteKeys = createKeys("organization_notes");
 
 // Supporting Resources
-export const tagKeys = createKeys('tags');
-export const saleKeys = createKeys('sales');
-export const segmentKeys = createKeys('segments');
+export const tagKeys = createKeys("tags");
+export const saleKeys = createKeys("sales");
+export const segmentKeys = createKeys("segments");
 
 // Junction Tables
-export const opportunityParticipantKeys = createKeys('opportunity_participants');
-export const opportunityContactKeys = createKeys('opportunity_contacts');
-export const userFavoriteKeys = createKeys('user_favorites');
+export const opportunityParticipantKeys = createKeys("opportunity_participants");
+export const opportunityContactKeys = createKeys("opportunity_contacts");
+export const userFavoriteKeys = createKeys("user_favorites");
 
 // Custom / Non-CRUD Keys
 export const orgDescendantKeys = {
-  all: ['org-descendants'] as const,
-  detail: (orgId: number) => ['org-descendants', orgId] as const,
+  all: ["org-descendants"] as const,
+  detail: (orgId: number) => ["org-descendants", orgId] as const,
 };
 
 export const digestKeys = {
-  all: ['digestPreference'] as const,
-  preference: () => ['digestPreference'] as const,
+  all: ["digestPreference"] as const,
+  preference: () => ["digestPreference"] as const,
 };
 
 // Aggregate export for convenience

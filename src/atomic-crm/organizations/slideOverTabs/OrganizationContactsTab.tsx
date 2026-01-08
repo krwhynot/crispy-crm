@@ -124,44 +124,44 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
         <ScrollArea className="flex-1">
           <div className="px-6 py-4 space-y-3">
             {contacts.map((contact) => (
-            <div
-              key={contact.id}
-              className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
-            >
-              {contact.avatar?.src ? (
-                <img
-                  src={contact.avatar.src}
-                  alt={getContactDisplayName(contact)}
-                  className="size-10 rounded-full object-cover"
-                />
-              ) : (
-                <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-sm font-semibold text-primary">
-                    {getContactInitials(contact)}
-                  </span>
-                </div>
-              )}
+              <div
+                key={contact.id}
+                className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+              >
+                {contact.avatar?.src ? (
+                  <img
+                    src={contact.avatar.src}
+                    alt={getContactDisplayName(contact)}
+                    className="size-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-primary">
+                      {getContactInitials(contact)}
+                    </span>
+                  </div>
+                )}
 
-              <div className="flex-1 min-w-0">
-                <button
-                  type="button"
-                  onClick={() => navigate(`/contacts?view=${contact.id}`)}
-                  className="text-sm font-medium text-primary hover:underline block truncate text-left"
-                >
-                  {getContactDisplayName(contact)}
-                </button>
-                {contact.title && (
-                  <p className="text-xs text-muted-foreground truncate">{contact.title}</p>
-                )}
-                {contact.email && Array.isArray(contact.email) && contact.email.length > 0 && (
-                  <p className="text-xs text-muted-foreground truncate">
-                    {contact.email[0]?.value || ""}
-                  </p>
-                )}
+                <div className="flex-1 min-w-0">
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/contacts?view=${contact.id}`)}
+                    className="text-sm font-medium text-primary hover:underline block truncate text-left"
+                  >
+                    {getContactDisplayName(contact)}
+                  </button>
+                  {contact.title && (
+                    <p className="text-xs text-muted-foreground truncate">{contact.title}</p>
+                  )}
+                  {contact.email && Array.isArray(contact.email) && contact.email.length > 0 && (
+                    <p className="text-xs text-muted-foreground truncate">
+                      {contact.email[0]?.value || ""}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         </ScrollArea>
       </div>
     </RecordContextProvider>

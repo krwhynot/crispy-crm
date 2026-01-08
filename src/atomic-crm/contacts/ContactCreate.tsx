@@ -41,7 +41,8 @@ const ContactCreate = () => {
       sales_id: defaults.sales_id,
       // US2 + US3: organization context (URL param > state > undefined)
       ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
-      ...(!urlOrganizationId && stateOrganizationId && { organization_id: Number(stateOrganizationId) }),
+      ...(!urlOrganizationId &&
+        stateOrganizationId && { organization_id: Number(stateOrganizationId) }),
     }),
     [defaults.sales_id, urlOrganizationId, stateOrganizationId]
   );

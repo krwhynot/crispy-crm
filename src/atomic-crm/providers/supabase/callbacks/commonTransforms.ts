@@ -178,9 +178,7 @@ export function createQToIlikeTransformer(
       const needsQuoting = /[,."':() ]/.test(escaped);
       const wildcardValue = needsQuoting ? `"*${escaped}*"` : `*${escaped}*`;
 
-      const orConditions = searchFields
-        .map((field) => `${field}.ilike.${wildcardValue}`)
-        .join(",");
+      const orConditions = searchFields.map((field) => `${field}.ilike.${wildcardValue}`).join(",");
 
       return {
         ...params,

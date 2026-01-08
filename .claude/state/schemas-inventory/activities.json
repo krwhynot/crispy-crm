@@ -1,7 +1,7 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-07T23:40:44.242Z",
-  "item_count": 11,
+  "generated_at": "2026-01-08T00:13:32.796Z",
+  "item_count": 10,
   "items": [
     {
       "name": "activityTypeSchema",
@@ -19,35 +19,9 @@
       "hasSuperRefine": false
     },
     {
-      "name": "interactionTypeSchema",
-      "file": "src/atomic-crm/validation/activities.ts",
-      "line": 16,
-      "schemaType": "enum",
-      "fields": [],
-      "enumValues": [
-        "call",
-        "email",
-        "meeting",
-        "demo",
-        "proposal",
-        "follow_up",
-        "trade_show",
-        "site_visit",
-        "contract_review",
-        "check_in",
-        "social",
-        "note",
-        "sample"
-      ],
-      "relatedSchemas": [],
-      "validationFunctions": [],
-      "hasTransforms": false,
-      "hasSuperRefine": false
-    },
-    {
       "name": "sampleStatusSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 34,
+      "line": 36,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -64,7 +38,7 @@
     {
       "name": "sentimentSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 42,
+      "line": 44,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -80,7 +54,7 @@
     {
       "name": "activitiesSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 133,
+      "line": 135,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -93,7 +67,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 196,
+      "line": 198,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -106,7 +80,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 249,
+      "line": 251,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -119,7 +93,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 427,
+      "line": 429,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -182,7 +156,7 @@
     {
       "name": "activityDisplayTypeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 463,
+      "line": 465,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [],
@@ -193,7 +167,7 @@
     {
       "name": "activityOutcomeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 511,
+      "line": 513,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -211,7 +185,7 @@
     {
       "name": "quickLogFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 529,
+      "line": 531,
       "schemaType": "object",
       "fields": [
         {

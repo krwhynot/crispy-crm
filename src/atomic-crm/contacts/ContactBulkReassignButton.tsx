@@ -165,12 +165,9 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
           );
         }
         if (failureCount > 0) {
-          notify(
-            `Failed to reassign ${failureCount} contact${failureCount === 1 ? "" : "s"}`,
-            {
-              type: "error",
-            }
-          );
+          notify(`Failed to reassign ${failureCount} contact${failureCount === 1 ? "" : "s"}`, {
+            type: "error",
+          });
         }
       }
 

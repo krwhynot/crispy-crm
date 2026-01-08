@@ -21,7 +21,11 @@ export interface UseOrganizationDescendantsReturn {
 export function useOrganizationDescendants(
   orgId: number | undefined
 ): UseOrganizationDescendantsReturn {
-  const { data: descendants = [], isLoading, isFetched } = useQuery({
+  const {
+    data: descendants = [],
+    isLoading,
+    isFetched,
+  } = useQuery({
     queryKey: orgDescendantKeys.detail(orgId!),
     queryFn: async () => {
       if (!orgId) return [];

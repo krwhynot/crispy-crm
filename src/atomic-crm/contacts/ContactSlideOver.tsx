@@ -100,7 +100,10 @@ export function ContactSlideOver({
           <FavoriteToggleButton
             entityType="contacts"
             entityId={record.id}
-            displayName={`${record.first_name || ""} ${record.last_name || ""}`.trim() || `Contact #${record.id}`}
+            displayName={
+              `${record.first_name || ""} ${record.last_name || ""}`.trim() ||
+              `Contact #${record.id}`
+            }
           />
           <QuickAddTaskButton contactId={record.id} />
         </>

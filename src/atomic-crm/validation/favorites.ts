@@ -33,7 +33,11 @@ export const favoriteSchema = z.strictObject({
   entity_id: z.coerce.number().int().positive(),
 
   // Cached display name for sidebar rendering (avoids joins)
-  display_name: z.string().trim().min(1, "Display name is required").max(255, "Display name too long"),
+  display_name: z
+    .string()
+    .trim()
+    .min(1, "Display name is required")
+    .max(255, "Display name too long"),
 
   // Timestamps
   created_at: z.string().max(50).optional(),

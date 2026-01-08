@@ -67,10 +67,7 @@ function createExtendedDataProvider(): DataProvider {
  * Logs startup for debugging and monitoring.
  */
 export const dataProvider: DataProvider = (() => {
-  devLog(
-    "DataProvider",
-    "🚀 Using COMPOSED provider architecture (handler-based with extensions)"
-  );
+  devLog("DataProvider", "🚀 Using COMPOSED provider architecture (handler-based with extensions)");
   return createExtendedDataProvider();
 })();
 
