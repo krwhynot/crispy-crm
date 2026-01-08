@@ -647,9 +647,8 @@ describe("ContactListFilter", () => {
 
     expect(screen.getByText("Today")).toBeInTheDocument();
     expect(screen.getByText("This week")).toBeInTheDocument();
-    expect(screen.getByText("Before this week")).toBeInTheDocument();
-    expect(screen.getByText("Before this month")).toBeInTheDocument();
-    expect(screen.getByText("Before last month")).toBeInTheDocument();
+    expect(screen.getByText("Last week")).toBeInTheDocument();
+    expect(screen.getByText("This month")).toBeInTheDocument();
   });
 
   test("renders account manager filter", () => {
@@ -664,9 +663,8 @@ describe("ContactListFilter", () => {
 
     expect(screen.getByText("Today")).toBeInTheDocument();
     expect(screen.getByText("This week")).toBeInTheDocument();
-    expect(screen.getByText("Before this week")).toBeInTheDocument();
-    expect(screen.getByText("Before this month")).toBeInTheDocument();
-    expect(screen.getByText("Before last month")).toBeInTheDocument();
+    expect(screen.getByText("Last week")).toBeInTheDocument();
+    expect(screen.getByText("This month")).toBeInTheDocument();
   });
 });
 
