@@ -18,6 +18,7 @@ import { SampleStatusBadge } from "../components/SampleStatusBadge";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
+import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { PageTutorialTrigger } from "../tutorial";
@@ -26,6 +27,7 @@ import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
 import { SortButton } from "@/components/admin/sort-button";
 import { ExportButton } from "@/components/admin/export-button";
+import { ActivitySlideOver } from "./ActivitySlideOver";
 
 /**
  * ActivityList - Standard list page for Activity records
@@ -48,6 +50,8 @@ import { ExportButton } from "@/components/admin/export-button";
  */
 export default function ActivityList() {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
+    useSlideOverState();
 
   // Clean up stale cached filters from localStorage
   useFilterCleanup("activities");
@@ -68,10 +72,18 @@ export default function ActivityList() {
           }}
           actions={<ActivityListActions />}
         >
-          <ActivityListLayout />
+          <ActivityListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
           <FloatingCreateButton />
         </List>
       </div>
+
+      <ActivitySlideOver
+        recordId={slideOverId}
+        isOpen={isOpen}
+        mode={mode}
+        onClose={closeSlideOver}
+        onModeToggle={toggleMode}
+      />
       <PageTutorialTrigger chapter="activities" position="bottom-left" />
     </>
   );
@@ -80,14 +92,20 @@ export default function ActivityList() {
 /**
  * ActivityListLayout - Handles loading, empty states, and datagrid rendering
  */
-const ActivityListLayout = () => {
+const ActivityListLayout = ({
+  openSlideOver,
+  isSlideOverOpen,
+}: {
+  openSlideOver: (id: number, mode: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
+}) => {
   const { data, isPending, filterValues } = useListContext();
 
   // Keyboard navigation for list rows
-  // Note: Activities don't use slide-over pattern, so no enabled toggle needed
+  // Disabled when slide-over is open to prevent conflicts
   const { focusedIndex } = useListKeyboardNavigation({
-    onSelect: () => {}, // Activities use inline editing or modal
-    enabled: true,
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isSlideOverOpen,
   });
 
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
@@ -117,7 +135,10 @@ const ActivityListLayout = () => {
     <>
       <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
         <ListSearchBar placeholder="Search activities..." filterConfig={ACTIVITY_FILTER_CONFIG} />
-        <PremiumDatagrid focusedIndex={focusedIndex}>
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), "view")}
+          focusedIndex={focusedIndex}
+        >
           {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}
           <FunctionField
             label="Type"
