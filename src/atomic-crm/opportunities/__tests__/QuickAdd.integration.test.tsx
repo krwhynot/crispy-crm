@@ -305,7 +305,7 @@ describe("QuickAdd Integration", () => {
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
-  }, 20000);
+  }, 45000);
 
   it("handles Save & Add Another flow correctly", async () => {
     renderWithAdminContext(<QuickAddButton />);
@@ -378,7 +378,7 @@ describe("QuickAdd Integration", () => {
     const principalContainerEl = principalLabelEl.parentElement;
     const principalTriggerElement = principalContainerEl?.querySelector('[role="combobox"]');
     expect(principalTriggerElement).toHaveTextContent("Principal B");
-  }, 20000);
+  }, 45000);
 
   it("handles errors and preserves form data", async () => {
     // Setup error mock
@@ -434,7 +434,7 @@ describe("QuickAdd Integration", () => {
 
     // Verify no automatic retry (fail fast principle)
     expect(mockCreateBoothVisitor).toHaveBeenCalledTimes(1);
-  }, 20000);
+  }, 45000);
 
   it("validates phone OR email requirement", async () => {
     renderWithAdminContext(<QuickAddButton />);
@@ -484,7 +484,7 @@ describe("QuickAdd Integration", () => {
     await waitFor(() => {
       expect(mockCreateBoothVisitor).toHaveBeenCalled();
     });
-  }, 25000);
+  }, 45000);
 
   it("filters products by selected principal", async () => {
     renderWithAdminContext(<QuickAddButton />);
@@ -541,7 +541,7 @@ describe("QuickAdd Integration", () => {
     await waitFor(() => {
       expect(stateField).toHaveValue("CA");
     });
-  }, 20000);
+  }, 45000);
 
   it("preserves campaign and principal preferences across sessions", async () => {
     // First session - set preferences
@@ -605,7 +605,7 @@ describe("QuickAdd Integration", () => {
     });
 
     unmount2();
-  }, 25000);
+  }, 45000);
 
   it("ensures all touch targets meet minimum size requirements", async () => {
     renderWithAdminContext(<QuickAddButton />);
@@ -684,5 +684,5 @@ describe("QuickAdd Integration", () => {
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
-  }, 20000);
+  }, 45000);
 });

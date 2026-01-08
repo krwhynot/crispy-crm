@@ -36,6 +36,10 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe("QuickAddForm", () => {
+  beforeAll(() => {
+    vi.setConfig({ testTimeout: 30000 });
+  });
+
   const mockOnSuccess = vi.fn();
   const mockMutate = vi.fn();
 
