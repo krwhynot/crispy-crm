@@ -22,6 +22,7 @@ import { AuthorizationsTab } from "./AuthorizationsTab";
 import { useGetOne } from "react-admin";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import { FavoriteToggleButton, QuickAddTaskButton } from "@/atomic-crm/components";
+import { OrganizationHierarchyBreadcrumb } from "./OrganizationHierarchyBreadcrumb";
 import type { OrganizationRecord } from "./types";
 
 interface OrganizationSlideOverProps {
@@ -120,6 +121,7 @@ export function OrganizationSlideOver({
       tabs={tabs}
       recordRepresentation={recordRepresentation}
       loadingSkeleton={OrganizationDetailSkeleton}
+      breadcrumbComponent={OrganizationHierarchyBreadcrumb}
       headerActions={(record) => (
         <>
           <FavoriteToggleButton
