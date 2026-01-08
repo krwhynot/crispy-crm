@@ -84,10 +84,10 @@
 | Component | TopToolbar | SortButton | ExportButton | exporter | Status |
 |-----------|-----------|------------|--------------|----------|--------|
 | ContactList | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Reference |
-| TaskList | ✅ Yes | ❌ Empty | ❌ Missing | ✅ Yes | ❌ Fix needed |
-| ProductList | ✅ Yes | ❌ Empty | ❌ Missing | ❌ None | ❌ Fix needed |
-| ActivityList | ✅ Yes | ❌ Empty | ❌ Missing | ✅ Yes | ❌ Fix needed |
-| OpportunityList | ❌ actions=false | ❌ N/A | ❌ N/A | ✅ Yes | ❌ Fix needed |
+| TaskList | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Fixed |
+| ProductList | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Fixed |
+| ActivityList | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Fixed |
+| OpportunityList | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Fixed |
 
 #### Slide-Over Header Actions Analysis
 
@@ -95,8 +95,8 @@
 |-----------|---------------------|-------------------|--------|
 | ContactSlideOver | ✅ Yes | ✅ Yes | ✅ Reference |
 | OrganizationSlideOver | ✅ Yes | ✅ Yes | ✅ Good |
-| OpportunitySlideOver | ❌ Missing | ✅ Yes | ⚠️ Add Star |
-| TaskSlideOver | N/A (entity not supported) | ✅ Added | ✅ Fixed (partial) |
+| OpportunitySlideOver | ✅ Yes | ✅ Yes | ✅ Fixed |
+| TaskSlideOver | N/A (entity not supported) | ✅ Yes | ✅ Fixed |
 
 ---
 

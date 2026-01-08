@@ -87,10 +87,10 @@ describe("ActivitySinglePage", () => {
         </TestWrapper>
       );
 
-      // Find the Follow-up section header using a more specific query
+      // Find the Follow-up section header using a more specific query (h3 in FormSectionWithProgress)
       const followUpHeaders = screen.getAllByText(/follow-up/i);
       const sectionHeader = followUpHeaders.find(
-        (el) => el.tagName === "H2" && el.textContent === "Follow-up"
+        (el) => el.tagName === "H3" && el.textContent === "Follow-up"
       );
       expect(sectionHeader).toBeInTheDocument();
 
