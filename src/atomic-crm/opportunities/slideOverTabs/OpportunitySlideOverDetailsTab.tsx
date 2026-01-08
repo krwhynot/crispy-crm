@@ -12,6 +12,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { Badge } from "@/components/ui/badge";
+import { getPriorityVariant } from "@/components/ui/priority-badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
@@ -434,12 +435,6 @@ export function OpportunitySlideOverDetailsTab({
     return "secondary";
   };
 
-  const getPriorityBadgeVariant = (priority: string) => {
-    if (priority === "critical") return "destructive";
-    if (priority === "high") return "default";
-    if (priority === "medium") return "secondary";
-    return "outline";
-  };
 
   const stageName =
     OPPORTUNITY_STAGE_CHOICES.find((choice) => choice.id === record.stage)?.name || record.stage;
@@ -494,7 +489,7 @@ export function OpportunitySlideOverDetailsTab({
             <div>
               <span className="text-xs text-muted-foreground">Priority</span>
               <div className="mt-1">
-                <Badge variant={getPriorityBadgeVariant(record.priority || "low")}>
+                <Badge variant={getPriorityVariant(record.priority || "low")}>
                   {record.priority
                     ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
                     : "Low"}
