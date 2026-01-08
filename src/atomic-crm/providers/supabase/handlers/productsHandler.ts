@@ -46,24 +46,27 @@ import { hasRpcMethod, assertExtendedDataProvider } from "../typeGuards";
  * Schema for product update data with optional distributor associations
  * Uses .passthrough() to allow additional fields from the form that we strip later
  */
-const productUpdateWithDistributorsSchema = z.object({
-  distributors: z.array(distributorAssociationSchema).optional(),
-  distributor_ids: z.array(z.coerce.number().int().positive()).optional(),
-  product_distributors: z.record(
-    z.coerce.number(),
-    z.object({ vendor_item_number: z.string().nullable() })
-  ).optional(),
-}).passthrough();
+const productUpdateWithDistributorsSchema = z
+  .object({
+    distributors: z.array(distributorAssociationSchema).optional(),
+    distributor_ids: z.array(z.coerce.number().int().positive()).optional(),
+    product_distributors: z
+      .record(z.coerce.number(), z.object({ vendor_item_number: z.string().nullable() }))
+      .optional(),
+  })
+  .passthrough();
 
 /**
  * Schema for stripping distributor fields from product data
  * Used when productWithDistributorsSchema validation fails (no distributors case)
  */
-const productFieldStripSchema = z.object({
-  distributors: z.unknown().optional(),
-  distributor_ids: z.unknown().optional(),
-  product_distributors: z.unknown().optional(),
-}).passthrough();
+const productFieldStripSchema = z
+  .object({
+    distributors: z.unknown().optional(),
+    distributor_ids: z.unknown().optional(),
+    product_distributors: z.unknown().optional(),
+  })
+  .passthrough();
 
 /**
  * Create a fully composed DataProvider for products
@@ -88,10 +91,8 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
    */
   const customProductsHandler: DataProvider = {
     // Pass through read operations directly to baseProvider
-    getList: <RecordType extends RaRecord = RaRecord>(
-      resource: string,
-      params: GetListParams
-    ) => baseProvider.getList<RecordType>(resource, params),
+    getList: <RecordType extends RaRecord = RaRecord>(resource: string, params: GetListParams) =>
+      baseProvider.getList<RecordType>(resource, params),
 
     getOne: <RecordType extends RaRecord = RaRecord>(
       resource: string,
@@ -312,9 +313,6 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
    * This ensures ALL custom logic is protected by error logging.
    */
   return withErrorLogging(
-    withLifecycleCallbacks(
-      withValidation(customProductsHandler),
-      [productsCallbacks]
-    )
+    withLifecycleCallbacks(withValidation(customProductsHandler), [productsCallbacks])
   );
 }

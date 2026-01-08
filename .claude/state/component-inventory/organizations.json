@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-07T23:40:38.843Z",
+  "generated_at": "2026-01-08T00:13:24.359Z",
   "item_count": 76,
   "items": [
     {
@@ -1914,7 +1914,7 @@
     {
       "name": "OrganizationDetailsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
-      "line": 61,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -1931,7 +1931,6 @@
         "../types",
         "@/components/admin/SegmentComboboxInput",
         "@/components/admin/autocomplete-array-input",
-        "@/components/admin/autocomplete-input",
         "@/components/admin/boolean-input",
         "@/components/admin/reference-array-input",
         "@/components/admin/reference-input",

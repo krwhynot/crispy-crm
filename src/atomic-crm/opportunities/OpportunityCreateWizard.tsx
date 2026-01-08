@@ -132,7 +132,11 @@ const OpportunityCreateWizard = () => {
     <CreateBase redirect={redirect}>
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
-          <Form defaultValues={formDefaults} mode="onBlur" key={urlSourceParam?.customer_organization_id ?? "no-prefill"}>
+          <Form
+            defaultValues={formDefaults}
+            mode="onBlur"
+            key={urlSourceParam?.customer_organization_id ?? "no-prefill"}
+          >
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl">Create Opportunity</CardTitle>

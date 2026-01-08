@@ -116,9 +116,7 @@ export function PriorityTabsList({
       // Reserve space for "More" button if we'll need overflow
       const remainingTabs = tabs.length - i - 1;
       const reserveMoreButton = remainingTabs > 0;
-      const maxWidth = reserveMoreButton
-        ? availableWidth - MORE_BUTTON_WIDTH
-        : availableWidth;
+      const maxWidth = reserveMoreButton ? availableWidth - MORE_BUTTON_WIDTH : availableWidth;
 
       if (usedWidth + tabWidth <= maxWidth) {
         visible.push(tab);
@@ -166,14 +164,9 @@ export function PriorityTabsList({
               aria-label={showBadge ? `${tab.label} (${count})` : tab.label}
             >
               {tab.icon && <tab.icon className="h-4 w-4 shrink-0" />}
-              <span className="text-sm font-medium whitespace-nowrap">
-                {tab.label}
-              </span>
+              <span className="text-sm font-medium whitespace-nowrap">{tab.label}</span>
               {showBadge && (
-                <Badge
-                  variant="secondary"
-                  className="ml-1 h-5 min-w-[20px] px-1.5 text-xs"
-                >
+                <Badge variant="secondary" className="ml-1 h-5 min-w-[20px] px-1.5 text-xs">
                   {count > 99 ? "99+" : count}
                 </Badge>
               )}
@@ -222,10 +215,7 @@ export function PriorityTabsList({
                     {tab.icon && <tab.icon className="h-4 w-4 shrink-0" />}
                     <span className="flex-1">{tab.label}</span>
                     {showBadge && (
-                      <Badge
-                        variant="secondary"
-                        className="h-5 min-w-[20px] px-1.5 text-xs"
-                      >
+                      <Badge variant="secondary" className="h-5 min-w-[20px] px-1.5 text-xs">
                         {count > 99 ? "99+" : count}
                       </Badge>
                     )}

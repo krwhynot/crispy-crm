@@ -8,10 +8,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import type {
-  SearchableEntityType,
-  RecentSearchItem,
-} from "@/atomic-crm/hooks/useRecentSearches";
+import type { SearchableEntityType, RecentSearchItem } from "@/atomic-crm/hooks/useRecentSearches";
 
 const ENTITY_CONFIG: Record<
   SearchableEntityType,

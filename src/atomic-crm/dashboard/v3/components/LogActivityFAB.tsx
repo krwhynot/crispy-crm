@@ -171,8 +171,8 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
 
   // Derive smart defaults from recently viewed contacts/orgs
   const recentDefaults = useMemo(() => {
-    const recentContact = recentItems.find(item => item.entityType === "contacts");
-    const recentOrg = recentItems.find(item => item.entityType === "organizations");
+    const recentContact = recentItems.find((item) => item.entityType === "contacts");
+    const recentOrg = recentItems.find((item) => item.entityType === "organizations");
 
     return {
       ...(recentContact && { contactId: Number(recentContact.id) }),

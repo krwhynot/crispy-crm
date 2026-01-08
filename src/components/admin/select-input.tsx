@@ -243,12 +243,11 @@ export const SelectInput = (props: SelectInputProps) => {
             >
               <SelectTrigger className={cn("w-full transition-all hover:bg-accent")}>
                 <SelectValue placeholder={renderEmptyItemOption()}>
-                  {selectedChoice
-                    ? renderMenuItemOption(selectedChoice)
-                    : field.value && field.value !== emptyValue
-                      ? <span className="text-muted-foreground animate-pulse">Loading...</span>
-                      : null
-                  }
+                  {selectedChoice ? (
+                    renderMenuItemOption(selectedChoice)
+                  ) : field.value && field.value !== emptyValue ? (
+                    <span className="text-muted-foreground animate-pulse">Loading...</span>
+                  ) : null}
                 </SelectValue>
 
                 {field.value && field.value !== emptyValue ? (

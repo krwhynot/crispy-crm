@@ -91,10 +91,12 @@ describe("createOpportunitiesHandler", () => {
 
       const result = await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockCreateWithProducts).toHaveBeenCalledWith(expect.objectContaining({
-        name: "Test Opportunity",
-        products_to_sync: products,
-      }));
+      expect(mockCreateWithProducts).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "Test Opportunity",
+          products_to_sync: products,
+        })
+      );
       expect(result).toEqual({ data: createdOpportunity });
     });
 
@@ -129,10 +131,12 @@ describe("createOpportunitiesHandler", () => {
 
       await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockCreateWithProducts).toHaveBeenCalledWith(expect.objectContaining({
-        name: "Test Opportunity",
-        products_to_sync: [],
-      }));
+      expect(mockCreateWithProducts).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "Test Opportunity",
+          products_to_sync: [],
+        })
+      );
     });
 
     it("should pass through non-opportunities resources to base provider", async () => {
@@ -149,12 +153,8 @@ describe("createOpportunitiesHandler", () => {
     it("should delegate to OpportunitiesService.updateWithProducts when products_to_sync is present", async () => {
       // products_to_sync shape must match updateOpportunitySchema (API boundary)
       // Schema: { product_id_reference: string|number (optional), notes: string (optional) }
-      const products = [
-        { product_id_reference: "101", notes: "Updated notes" },
-      ];
-      const previousProducts = [
-        { product_id_reference: "101", product_name: "Product A" },
-      ];
+      const products = [{ product_id_reference: "101", notes: "Updated notes" }];
+      const previousProducts = [{ product_id_reference: "101", product_name: "Product A" }];
       const updateData = {
         id: 123,
         name: "Updated Opportunity",
@@ -170,11 +170,7 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123, products: previousProducts } as RaRecord,
       });
 
-      expect(mockUpdateWithProducts).toHaveBeenCalledWith(
-        123,
-        updateData,
-        previousProducts
-      );
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, previousProducts);
       expect(result).toEqual({ data: updatedOpportunity });
     });
 
@@ -217,9 +213,7 @@ describe("createOpportunitiesHandler", () => {
 
     it("should pass empty array when previousData.products is missing", async () => {
       // products_to_sync shape must match updateOpportunitySchema (API boundary)
-      const products = [
-        { product_id_reference: "101" },
-      ];
+      const products = [{ product_id_reference: "101" }];
       const updateData = {
         id: 123,
         products_to_sync: products,

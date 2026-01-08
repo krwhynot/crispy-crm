@@ -8,7 +8,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { useTaskCount } from "../hooks/useTaskCount";
 import { useRecentSearches, type RecentSearchItem } from "../../../hooks/useRecentSearches";
-import { LayoutGrid, CheckSquare, TrendingUp, Users, Clock, Building2, User, Target, ListTodo } from "lucide-react";
+import {
+  LayoutGrid,
+  CheckSquare,
+  TrendingUp,
+  Users,
+  Clock,
+  Building2,
+  User,
+  Target,
+  ListTodo,
+} from "lucide-react";
 
 // Lazy load tab content for performance
 const PrincipalPipelineTable = lazy(() => import("./PrincipalPipelineTable"));
@@ -55,11 +65,7 @@ const formatRelativeTime = (timestamp: number): string => {
 /**
  * Memoized list item component for rendering a single recent item.
  */
-const RecentItemLink = memo(function RecentItemLink({
-  item,
-}: {
-  item: RecentSearchItem;
-}) {
+const RecentItemLink = memo(function RecentItemLink({ item }: { item: RecentSearchItem }) {
   const Icon = RESOURCE_ICONS[item.entityType] || Building2;
 
   return (
@@ -71,9 +77,7 @@ const RecentItemLink = memo(function RecentItemLink({
         <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium truncate">{item.label}</p>
-          <p className="text-xs text-muted-foreground">
-            {formatRelativeTime(item.timestamp)}
-          </p>
+          <p className="text-xs text-muted-foreground">{formatRelativeTime(item.timestamp)}</p>
         </div>
       </Link>
     </li>

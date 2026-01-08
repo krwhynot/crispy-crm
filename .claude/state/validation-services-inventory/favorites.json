@@ -1,18 +1,18 @@
 {
   "chunk_name": "favorites",
-  "generated_at": "2026-01-07T23:40:44.803Z",
+  "generated_at": "2026-01-08T00:13:33.314Z",
   "item_count": 2,
   "items": [
     {
       "name": "validateCreateFavorite",
       "file": "src/atomic-crm/validation/favorites.ts",
-      "line": 72,
+      "line": 76,
       "pattern": "date"
     },
     {
       "name": "validateUpdateFavorite",
       "file": "src/atomic-crm/validation/favorites.ts",
-      "line": 82,
+      "line": 86,
       "pattern": "date"
     }
   ]

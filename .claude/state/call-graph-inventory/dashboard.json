@@ -1,22 +1,22 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-07T23:40:47.345Z",
+  "generated_at": "2026-01-08T00:13:36.299Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
+        "id": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
         "name": "RecentItemsWidget",
         "file": "src/atomic-crm/dashboard/RecentItemsWidget.tsx",
-        "line": 87,
+        "line": 76,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
+        "id": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
         "name": "formatRelativeTime",
         "file": "src/atomic-crm/dashboard/RecentItemsWidget.tsx",
-        "line": 30,
+        "line": 25,
         "nodeType": "arrow",
         "exported": false,
         "async": false
@@ -94,37 +94,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:19:TabSkeleton",
+        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:29:TabSkeleton",
         "name": "TabSkeleton",
         "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
-        "line": 19,
+        "line": 29,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:87:RecentItemsTabContent",
+        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:91:RecentItemsTabContent",
         "name": "RecentItemsTabContent",
         "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
-        "line": 87,
+        "line": 91,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "name": "DashboardTabPanel",
         "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
-        "line": 129,
+        "line": 133,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "id": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "name": "formatRelativeTime",
         "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
-        "line": 43,
+        "line": 53,
         "nodeType": "arrow",
         "exported": false,
         "async": false
@@ -582,146 +582,146 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
         "target": "useRecentSearches",
         "targetName": "useRecentSearches",
         "edgeType": "hook",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 95,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
         "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
-        "target": "slice",
-        "targetName": "slice",
-        "edgeType": "call",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 106,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 92,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 93,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 94,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 99,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
         "target": "Clock",
         "targetName": "Clock",
         "edgeType": "render",
-        "line": 95,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:87:RecentItemsWidget",
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:76:RecentItemsWidget",
         "target": "RecentItemLink",
         "targetName": "RecentItemLink",
         "edgeType": "render",
-        "line": 107,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
         "target": "now",
         "targetName": "now",
         "edgeType": "call",
-        "line": 31,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
         "target": "floor",
         "targetName": "floor",
+        "edgeType": "call",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
         "line": 32,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
+        "target": "floor",
+        "targetName": "floor",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 38,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:25:formatRelativeTime",
         "target": "floor",
         "targetName": "floor",
         "edgeType": "call",
-        "line": 38,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/RecentItemsWidget.tsx:30:formatRelativeTime",
-        "target": "floor",
-        "targetName": "floor",
-        "edgeType": "call",
-        "line": 39,
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
@@ -1878,434 +1878,434 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:19:TabSkeleton",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:29:TabSkeleton",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 22,
+        "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:19:TabSkeleton",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:29:TabSkeleton",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 23,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:19:TabSkeleton",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:29:TabSkeleton",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 24,
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:87:RecentItemsTabContent",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:91:RecentItemsTabContent",
         "target": "useRecentSearches",
         "targetName": "useRecentSearches",
         "edgeType": "hook",
-        "line": 88,
+        "line": 92,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:87:RecentItemsTabContent",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:91:RecentItemsTabContent",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 102,
+        "line": 106,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:87:RecentItemsTabContent",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:91:RecentItemsTabContent",
         "target": "Clock",
         "targetName": "Clock",
         "edgeType": "render",
-        "line": 93,
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:87:RecentItemsTabContent",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:91:RecentItemsTabContent",
         "target": "RecentItemLink",
         "targetName": "RecentItemLink",
         "edgeType": "render",
-        "line": 103,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "useTaskCount",
         "targetName": "useTaskCount",
         "edgeType": "hook",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "Tabs",
-        "targetName": "Tabs",
-        "edgeType": "render",
         "line": 134,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "Tabs",
+        "targetName": "Tabs",
+        "edgeType": "render",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsList",
         "targetName": "TabsList",
         "edgeType": "render",
-        "line": 136,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsTrigger",
         "targetName": "TabsTrigger",
         "edgeType": "render",
-        "line": 141,
+        "line": 145,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsTrigger",
         "targetName": "TabsTrigger",
         "edgeType": "render",
-        "line": 151,
+        "line": 155,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 159,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsTrigger",
         "targetName": "TabsTrigger",
         "edgeType": "render",
-        "line": 166,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsTrigger",
         "targetName": "TabsTrigger",
         "edgeType": "render",
-        "line": 176,
+        "line": 180,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsTrigger",
         "targetName": "TabsTrigger",
         "edgeType": "render",
-        "line": 186,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 197,
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 199,
+        "line": 203,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "Suspense",
         "targetName": "Suspense",
         "edgeType": "render",
-        "line": 204,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 210,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "Suspense",
         "targetName": "Suspense",
         "edgeType": "render",
-        "line": 215,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 221,
+        "line": 225,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "Suspense",
         "targetName": "Suspense",
         "edgeType": "render",
-        "line": 226,
+        "line": 230,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 232,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "Suspense",
         "targetName": "Suspense",
         "edgeType": "render",
-        "line": 237,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
         "target": "TabsContent",
         "targetName": "TabsContent",
-        "edgeType": "render",
-        "line": 243,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "LayoutGrid",
-        "targetName": "LayoutGrid",
-        "edgeType": "render",
-        "line": 146,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "CheckSquare",
-        "targetName": "CheckSquare",
-        "edgeType": "render",
-        "line": 156,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "TrendingUp",
-        "targetName": "TrendingUp",
-        "edgeType": "render",
-        "line": 171,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "Users",
-        "targetName": "Users",
-        "edgeType": "render",
-        "line": 181,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "Clock",
-        "targetName": "Clock",
-        "edgeType": "render",
-        "line": 191,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "TabSkeleton",
-        "targetName": "TabSkeleton",
-        "edgeType": "render",
-        "line": 204,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "PrincipalPipelineTable",
-        "targetName": "PrincipalPipelineTable",
-        "edgeType": "render",
-        "line": 205,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "TabSkeleton",
-        "targetName": "TabSkeleton",
-        "edgeType": "render",
-        "line": 215,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "TasksKanbanPanel",
-        "targetName": "TasksKanbanPanel",
-        "edgeType": "render",
-        "line": 216,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "TabSkeleton",
-        "targetName": "TabSkeleton",
-        "edgeType": "render",
-        "line": 226,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "MyPerformanceWidget",
-        "targetName": "MyPerformanceWidget",
-        "edgeType": "render",
-        "line": 227,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "TabSkeleton",
-        "targetName": "TabSkeleton",
-        "edgeType": "render",
-        "line": 237,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "ActivityFeedPanel",
-        "targetName": "ActivityFeedPanel",
-        "edgeType": "render",
-        "line": 238,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:129:DashboardTabPanel",
-        "target": "RecentItemsTabContent",
-        "targetName": "RecentItemsTabContent",
         "edgeType": "render",
         "line": 247,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "LayoutGrid",
+        "targetName": "LayoutGrid",
+        "edgeType": "render",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "CheckSquare",
+        "targetName": "CheckSquare",
+        "edgeType": "render",
+        "line": 160,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "TrendingUp",
+        "targetName": "TrendingUp",
+        "edgeType": "render",
+        "line": 175,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "Users",
+        "targetName": "Users",
+        "edgeType": "render",
+        "line": 185,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "Clock",
+        "targetName": "Clock",
+        "edgeType": "render",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "TabSkeleton",
+        "targetName": "TabSkeleton",
+        "edgeType": "render",
+        "line": 208,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "PrincipalPipelineTable",
+        "targetName": "PrincipalPipelineTable",
+        "edgeType": "render",
+        "line": 209,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "TabSkeleton",
+        "targetName": "TabSkeleton",
+        "edgeType": "render",
+        "line": 219,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "TasksKanbanPanel",
+        "targetName": "TasksKanbanPanel",
+        "edgeType": "render",
+        "line": 220,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "TabSkeleton",
+        "targetName": "TabSkeleton",
+        "edgeType": "render",
+        "line": 230,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "MyPerformanceWidget",
+        "targetName": "MyPerformanceWidget",
+        "edgeType": "render",
+        "line": 231,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "TabSkeleton",
+        "targetName": "TabSkeleton",
+        "edgeType": "render",
+        "line": 241,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "ActivityFeedPanel",
+        "targetName": "ActivityFeedPanel",
+        "edgeType": "render",
+        "line": 242,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:133:DashboardTabPanel",
+        "target": "RecentItemsTabContent",
+        "targetName": "RecentItemsTabContent",
+        "edgeType": "render",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "target": "now",
         "targetName": "now",
         "edgeType": "call",
-        "line": 44,
+        "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "target": "floor",
         "targetName": "floor",
         "edgeType": "call",
-        "line": 45,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 50,
+        "line": 60,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 51,
+        "line": 61,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "target": "floor",
         "targetName": "floor",
         "edgeType": "call",
-        "line": 51,
+        "line": 61,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 52,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:43:formatRelativeTime",
+        "source": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx:53:formatRelativeTime",
         "target": "floor",
         "targetName": "floor",
         "edgeType": "call",
-        "line": 52,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },

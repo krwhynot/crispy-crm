@@ -4,10 +4,7 @@ import { z } from "zod";
 /**
  * Entity types that support recent searches
  */
-export type SearchableEntityType =
-  | "organizations"
-  | "contacts"
-  | "opportunities";
+export type SearchableEntityType = "organizations" | "contacts" | "opportunities";
 
 /**
  * A recently searched/viewed item
@@ -61,10 +58,7 @@ function loadFromStorage(): RecentSearchItem[] {
     const result = recentSearchesSchema.safeParse(parsed);
 
     if (!result.success) {
-      console.error(
-        "[RecentSearches] Validation failed:",
-        result.error.flatten()
-      );
+      console.error("[RecentSearches] Validation failed:", result.error.flatten());
       return [];
     }
 
@@ -162,34 +156,30 @@ export function useRecentSearches(): UseRecentSearchesReturn {
     () => [] // Server snapshot for SSR (returns empty array)
   );
 
-  const addRecent = useCallback(
-    (item: Omit<RecentSearchItem, "timestamp">) => {
-      // Read current items from cached snapshot
-      const current = cachedSnapshot;
+  const addRecent = useCallback((item: Omit<RecentSearchItem, "timestamp">) => {
+    // Read current items from cached snapshot
+    const current = cachedSnapshot;
 
-      // Remove existing item with same ID AND entityType (deduplicate)
-      const filtered = current.filter(
-        (existing) =>
-          !(existing.id === item.id && existing.entityType === item.entityType)
-      );
+    // Remove existing item with same ID AND entityType (deduplicate)
+    const filtered = current.filter(
+      (existing) => !(existing.id === item.id && existing.entityType === item.entityType)
+    );
 
-      // Create new item with timestamp
-      const newItem: RecentSearchItem = {
-        ...item,
-        timestamp: Date.now(),
-      };
+    // Create new item with timestamp
+    const newItem: RecentSearchItem = {
+      ...item,
+      timestamp: Date.now(),
+    };
 
-      // Add new item to front, limit to max items
-      const updated = [newItem, ...filtered].slice(0, MAX_RECENT_ITEMS);
+    // Add new item to front, limit to max items
+    const updated = [newItem, ...filtered].slice(0, MAX_RECENT_ITEMS);
 
-      // Persist to localStorage
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    // Persist to localStorage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 
-      // Update cache and trigger re-render in all subscribers
-      recentSearchesStore.refreshCache();
-    },
-    []
-  );
+    // Update cache and trigger re-render in all subscribers
+    recentSearchesStore.refreshCache();
+  }, []);
 
   const clearRecent = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);

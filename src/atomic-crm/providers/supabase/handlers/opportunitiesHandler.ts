@@ -97,10 +97,8 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
    */
   const customOpportunitiesHandler: DataProvider = {
     // Pass through read operations directly to baseProvider
-    getList: <RecordType extends RaRecord = RaRecord>(
-      resource: string,
-      params: GetListParams
-    ) => baseProvider.getList<RecordType>(resource, params),
+    getList: <RecordType extends RaRecord = RaRecord>(resource: string, params: GetListParams) =>
+      baseProvider.getList<RecordType>(resource, params),
 
     getOne: <RecordType extends RaRecord = RaRecord>(
       resource: string,
@@ -172,7 +170,11 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
           // Service is instantiated here to ensure it uses the wrapped provider
           const extendedProvider = assertExtendedDataProvider(baseProvider);
           const service = new OpportunitiesService(extendedProvider);
-          const result = await service.updateWithProducts(params.id, validatedData, previousProducts);
+          const result = await service.updateWithProducts(
+            params.id,
+            validatedData,
+            previousProducts
+          );
           return { data: result } as { data: RecordType };
         }
       }
@@ -218,9 +220,6 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
    * This ensures ALL custom logic is protected by error logging.
    */
   return withErrorLogging(
-    withLifecycleCallbacks(
-      withValidation(customOpportunitiesHandler),
-      [opportunitiesCallbacks]
-    )
+    withLifecycleCallbacks(withValidation(customOpportunitiesHandler), [opportunitiesCallbacks])
   );
 }

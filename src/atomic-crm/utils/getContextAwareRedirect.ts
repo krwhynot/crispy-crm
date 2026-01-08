@@ -52,9 +52,7 @@ const parseSourceParam = (searchParams: URLSearchParams): SourceContext => {
  * @param searchParams - URLSearchParams from useSearchParams() hook
  * @returns Redirect function compatible with React Admin's redirect prop
  */
-export const getContextAwareRedirect = (
-  searchParams: URLSearchParams
-): RedirectTo => {
+export const getContextAwareRedirect = (searchParams: URLSearchParams): RedirectTo => {
   // Parse JSON source param (used by some navigation flows)
   const sourceContext = parseSourceParam(searchParams);
 
@@ -66,18 +64,12 @@ export const getContextAwareRedirect = (
     sourceContext.organization_id ||
     sourceContext.customer_organization_id;
 
-  const opportunityId =
-    searchParams.get("opportunity_id") || sourceContext.opportunity_id;
+  const opportunityId = searchParams.get("opportunity_id") || sourceContext.opportunity_id;
 
-  const contactId =
-    searchParams.get("contact_id") || sourceContext.contact_id;
+  const contactId = searchParams.get("contact_id") || sourceContext.contact_id;
 
   // Return redirect function with React Admin's expected signature
-  return (
-    resource: string,
-    id?: string | number,
-    _data?: Partial<RaRecord>
-  ): string => {
+  return (resource: string, id?: string | number, _data?: Partial<RaRecord>): string => {
     // 1. Parent Context Redirects (Go back to where we started)
     if (organizationId) return `/organizations?view=${organizationId}`;
     if (opportunityId) return `/opportunities?view=${opportunityId}`;

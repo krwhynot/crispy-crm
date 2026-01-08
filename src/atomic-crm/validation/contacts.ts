@@ -311,17 +311,20 @@ export const importContactSchema = z
         z.literal(""),
         z.literal(null),
         z.undefined(),
-        z.string().max(2048, "URL too long").refine(
-          (url) => {
-            try {
-              const parsedUrl = new URL(url);
-              return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
-            } catch {
-              return false;
-            }
-          },
-          { message: "LinkedIn URL must be a valid URL from linkedin.com" }
-        ),
+        z
+          .string()
+          .max(2048, "URL too long")
+          .refine(
+            (url) => {
+              try {
+                const parsedUrl = new URL(url);
+                return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
+              } catch {
+                return false;
+              }
+            },
+            { message: "LinkedIn URL must be a valid URL from linkedin.com" }
+          ),
       ])
       .optional()
       .nullable(),
@@ -425,7 +428,7 @@ export async function validateContactForm(data: unknown): Promise<void> {
   // Create a schema that includes the email entry validation
   const formSchema = contactBaseSchema.transform(transformContactData).superRefine((data, ctx) => {
     // Reject whitespace-only first_name (after .trim() in schema, becomes empty string)
-    if (typeof data.first_name === 'string' && data.first_name === '') {
+    if (typeof data.first_name === "string" && data.first_name === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["first_name"],
@@ -434,7 +437,7 @@ export async function validateContactForm(data: unknown): Promise<void> {
     }
 
     // Reject whitespace-only last_name (after .trim() in schema, becomes empty string)
-    if (typeof data.last_name === 'string' && data.last_name === '') {
+    if (typeof data.last_name === "string" && data.last_name === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["last_name"],
@@ -529,7 +532,7 @@ export const createContactSchema = contactBaseSchema
   .superRefine((data, ctx) => {
     // Reject whitespace-only first_name (after .trim() in schema, becomes empty string)
     // Must check BEFORE the name computation fallback logic
-    if (typeof data.first_name === 'string' && data.first_name === '') {
+    if (typeof data.first_name === "string" && data.first_name === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["first_name"],
@@ -538,7 +541,7 @@ export const createContactSchema = contactBaseSchema
     }
 
     // Reject whitespace-only last_name (after .trim() in schema, becomes empty string)
-    if (typeof data.last_name === 'string' && data.last_name === '') {
+    if (typeof data.last_name === "string" && data.last_name === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["last_name"],
@@ -619,7 +622,7 @@ export async function validateCreateContact(data: unknown): Promise<void> {
     .superRefine((data, ctx) => {
       // Reject whitespace-only first_name (after .trim() in schema, becomes empty string)
       // Must check BEFORE the name computation fallback logic
-      if (typeof data.first_name === 'string' && data.first_name === '') {
+      if (typeof data.first_name === "string" && data.first_name === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["first_name"],
@@ -629,7 +632,7 @@ export async function validateCreateContact(data: unknown): Promise<void> {
 
       // Reject whitespace-only last_name (after .trim() in schema, becomes empty string)
       // Only for non-quick-create (quick create allows empty last_name)
-      if (!isQuickCreate && typeof data.last_name === 'string' && data.last_name === '') {
+      if (!isQuickCreate && typeof data.last_name === "string" && data.last_name === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["last_name"],

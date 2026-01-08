@@ -1,6 +1,6 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2026-01-07T23:40:43.897Z",
+  "generated_at": "2026-01-08T00:13:32.451Z",
   "item_count": 22,
   "items": [
     {
@@ -138,7 +138,7 @@
     {
       "name": "useFavorites",
       "file": "src/hooks/useFavorites.ts",
-      "line": 20,
+      "line": 24,
       "parameters": [],
       "returnType": "UseFavoritesReturn",
       "dependencies": [

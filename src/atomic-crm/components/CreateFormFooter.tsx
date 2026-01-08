@@ -79,12 +79,15 @@ export const CreateFormFooter = ({
               // Preserve specified fields for rapid entry (e.g., organization_id)
               if (preserveFields.length > 0) {
                 const currentValues = getValues();
-                const valuesToPreserve = preserveFields.reduce<Record<string, unknown>>((acc, field) => {
-                  if (currentValues[field] !== undefined) {
-                    acc[field] = currentValues[field];
-                  }
-                  return acc;
-                }, {});
+                const valuesToPreserve = preserveFields.reduce<Record<string, unknown>>(
+                  (acc, field) => {
+                    if (currentValues[field] !== undefined) {
+                      acc[field] = currentValues[field];
+                    }
+                    return acc;
+                  },
+                  {}
+                );
                 reset(valuesToPreserve);
               } else {
                 reset();

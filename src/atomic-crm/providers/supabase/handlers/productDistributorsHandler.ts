@@ -101,7 +101,11 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
         data: dataWithIds,
         total: result.total,
         pageInfo: result.pageInfo,
-      } as { data: RecordType[]; total?: number; pageInfo?: { hasNextPage?: boolean; hasPreviousPage?: boolean } };
+      } as {
+        data: RecordType[];
+        total?: number;
+        pageInfo?: { hasNextPage?: boolean; hasPreviousPage?: boolean };
+      };
     },
 
     /**
@@ -183,16 +187,18 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
         createData.status = validatedData.status;
       }
       if (validatedData.valid_from !== undefined) {
-        createData.valid_from = validatedData.valid_from instanceof Date
-          ? validatedData.valid_from.toISOString()
-          : String(validatedData.valid_from);
+        createData.valid_from =
+          validatedData.valid_from instanceof Date
+            ? validatedData.valid_from.toISOString()
+            : String(validatedData.valid_from);
       }
       if (validatedData.valid_to !== undefined) {
-        createData.valid_to = validatedData.valid_to instanceof Date
-          ? validatedData.valid_to.toISOString()
-          : validatedData.valid_to === null
-            ? null
-            : String(validatedData.valid_to);
+        createData.valid_to =
+          validatedData.valid_to instanceof Date
+            ? validatedData.valid_to.toISOString()
+            : validatedData.valid_to === null
+              ? null
+              : String(validatedData.valid_to);
       }
 
       const createdData = await service.create(productId, distributorId, createData);
@@ -226,16 +232,18 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
         updateData.status = validatedData.status;
       }
       if (validatedData.valid_from !== undefined) {
-        updateData.valid_from = validatedData.valid_from instanceof Date
-          ? validatedData.valid_from.toISOString()
-          : String(validatedData.valid_from);
+        updateData.valid_from =
+          validatedData.valid_from instanceof Date
+            ? validatedData.valid_from.toISOString()
+            : String(validatedData.valid_from);
       }
       if (validatedData.valid_to !== undefined) {
-        updateData.valid_to = validatedData.valid_to instanceof Date
-          ? validatedData.valid_to.toISOString()
-          : validatedData.valid_to === null
-            ? null
-            : String(validatedData.valid_to);
+        updateData.valid_to =
+          validatedData.valid_to instanceof Date
+            ? validatedData.valid_to.toISOString()
+            : validatedData.valid_to === null
+              ? null
+              : String(validatedData.valid_to);
       }
 
       const updatedData = await service.update(product_id, distributor_id, updateData);

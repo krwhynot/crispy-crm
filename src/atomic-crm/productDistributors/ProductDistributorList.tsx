@@ -4,10 +4,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
-import {
-  AUTOCOMPLETE_DEBOUNCE_MS,
-  shouldRenderSuggestions,
-} from "../utils/autocompleteDefaults";
+import { AUTOCOMPLETE_DEBOUNCE_MS, shouldRenderSuggestions } from "../utils/autocompleteDefaults";
 
 const productDistributorFilters = [
   <TextInput

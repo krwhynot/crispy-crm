@@ -119,9 +119,12 @@ export class ProductsService {
       });
 
       // Create the product first
-      const { data: product } = await this.dataProvider.create<ProductWithDistributors>("products", {
-        data: productData,
-      });
+      const { data: product } = await this.dataProvider.create<ProductWithDistributors>(
+        "products",
+        {
+          data: productData,
+        }
+      );
 
       // If distributors provided, create junction records
       if (distributors.length > 0) {
@@ -191,21 +194,27 @@ export class ProductsService {
       });
 
       // Update the product
-      const { data: product } = await this.dataProvider.update<ProductWithDistributors>("products", {
-        id,
-        data: productData,
-        previousData: { id } as ProductWithDistributors,
-      });
+      const { data: product } = await this.dataProvider.update<ProductWithDistributors>(
+        "products",
+        {
+          id,
+          data: productData,
+          previousData: { id } as ProductWithDistributors,
+        }
+      );
 
       // Sync distributors if provided
       if (distributors !== undefined) {
         // Delete existing junction records via deleteMany
         // Note: This is a simplification - in production, use RPC for atomicity
-        const { data: existingDistributors } = await this.dataProvider.getList("product_distributors", {
-          filter: { product_id: id },
-          pagination: { page: 1, perPage: 100 },
-          sort: { field: "id", order: "ASC" },
-        });
+        const { data: existingDistributors } = await this.dataProvider.getList(
+          "product_distributors",
+          {
+            filter: { product_id: id },
+            pagination: { page: 1, perPage: 100 },
+            sort: { field: "id", order: "ASC" },
+          }
+        );
 
         // Delete each existing record
         for (const dist of existingDistributors) {
@@ -238,13 +247,14 @@ export class ProductsService {
 
       // Return with distributor info
       const distributor_ids = distributors?.map((d) => d.distributor_id) ?? [];
-      const product_distributors = distributors?.reduce(
-        (acc, d) => {
-          acc[d.distributor_id] = { vendor_item_number: d.vendor_item_number || null };
-          return acc;
-        },
-        {} as Record<number, { vendor_item_number: string | null }>
-      ) ?? {};
+      const product_distributors =
+        distributors?.reduce(
+          (acc, d) => {
+            acc[d.distributor_id] = { vendor_item_number: d.vendor_item_number || null };
+            return acc;
+          },
+          {} as Record<number, { vendor_item_number: string | null }>
+        ) ?? {};
 
       return {
         ...product,

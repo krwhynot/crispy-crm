@@ -63,7 +63,6 @@ const OpportunityCreate = () => {
     return <Loading />;
   }
 
-
   return (
     <CreateBase redirect={redirect}>
       <div className="bg-muted px-6 py-6">

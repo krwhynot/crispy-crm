@@ -375,8 +375,8 @@ export function QuickLogActivityDialog({
       return {};
     }
 
-    const recentContact = recentItems.find(item => item.entityType === "contacts");
-    const recentOrg = recentItems.find(item => item.entityType === "organizations");
+    const recentContact = recentItems.find((item) => item.entityType === "contacts");
+    const recentOrg = recentItems.find((item) => item.entityType === "organizations");
 
     return {
       contactId: recentContact ? Number(recentContact.id) : undefined,
@@ -458,7 +458,14 @@ export function QuickLogActivityDialog({
     // Merge order: recentDefaults (lowest) < draft < contextValues (highest)
     const merged = { ...recentDefaults, ...(draft || {}), ...contextValues };
     return Object.keys(merged).length > 0 ? merged : null;
-  }, [open, enableDraftPersistence, draftStorageKey, entityContext, activityTypePreset, recentDefaults]);
+  }, [
+    open,
+    enableDraftPersistence,
+    draftStorageKey,
+    entityContext,
+    activityTypePreset,
+    recentDefaults,
+  ]);
 
   // ═══════════════════════════════════════════════════════════════════
   // Dialog description based on context

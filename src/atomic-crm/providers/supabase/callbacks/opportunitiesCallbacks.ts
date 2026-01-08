@@ -91,10 +91,7 @@ const VIEW_ONLY_FIELDS = [
 /**
  * Combined computed fields for stripping - includes both typed and view-only fields
  */
-const COMPUTED_FIELDS = [
-  ...TYPED_COMPUTED_FIELDS,
-  ...VIEW_ONLY_FIELDS,
-] as const;
+const COMPUTED_FIELDS = [...TYPED_COMPUTED_FIELDS, ...VIEW_ONLY_FIELDS] as const;
 
 /**
  * Virtual fields that should be stripped before database save

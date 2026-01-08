@@ -94,7 +94,5 @@ export function createSalesHandler(baseProvider: DataProviderWithInvoke): DataPr
    *
    * This ensures ALL custom logic is protected by error logging.
    */
-  return withErrorLogging(
-    withLifecycleCallbacks(withValidation(customHandler), [salesCallbacks])
-  );
+  return withErrorLogging(withLifecycleCallbacks(withValidation(customHandler), [salesCallbacks]));
 }

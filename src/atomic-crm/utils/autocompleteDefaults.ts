@@ -24,8 +24,7 @@ export const enableGetChoices = ({ q }: { q?: string }) =>
  * Standard shouldRenderSuggestions function
  * Requires minimum 2 characters before triggering search
  */
-export const shouldRenderSuggestions = (val: string) =>
-  val.trim().length >= AUTOCOMPLETE_MIN_CHARS;
+export const shouldRenderSuggestions = (val: string) => val.trim().length >= AUTOCOMPLETE_MIN_CHARS;
 
 /**
  * Get standard autocomplete props for single-field ILIKE search

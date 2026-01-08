@@ -74,95 +74,97 @@ const OrganizationShowContent = () => {
     <>
       <TrackRecordView />
       <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
-      <main role="main" aria-label="Organization details">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex mb-3">
-              <OrganizationAvatar />
-              <h2 className="text-xl ml-2 flex-1">{record.name}</h2>
-            </div>
-            <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
-              <TabsList className={`grid w-full ${tabGridCols}`}>
-                <TabsTrigger value="activity">Activity</TabsTrigger>
-                <TabsTrigger value="contacts">
-                  {record.nb_contacts
-                    ? record.nb_contacts === 1
-                      ? "1 Contact"
-                      : `${record.nb_contacts} Contacts`
-                    : "No Contacts"}
-                </TabsTrigger>
-                <TabsTrigger value="opportunities">
-                  {record.nb_opportunities
-                    ? record.nb_opportunities === 1
-                      ? "1 opportunity"
-                      : `${record.nb_opportunities} opportunities`
-                    : "No Opportunities"}
-                </TabsTrigger>
-                <TabsTrigger value="activities">Activities</TabsTrigger>
-                {isDistributor && <TabsTrigger value="authorizations">Authorizations</TabsTrigger>}
-              </TabsList>
-              <TabsContent value="activity" className="pt-2">
-                <ActivityLog organizationId={record.id} context="organization" />
-              </TabsContent>
-              <TabsContent value="activities" className="pt-2">
-                <ActivitiesTab organizationId={record.id} />
-              </TabsContent>
-              <TabsContent value="contacts">
-                {record.nb_contacts ? (
-                  <ReferenceManyField
-                    reference="contacts_summary"
-                    target="organization_id"
-                    sort={{ field: "last_name", order: "ASC" }}
-                  >
+        <main role="main" aria-label="Organization details">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex mb-3">
+                <OrganizationAvatar />
+                <h2 className="text-xl ml-2 flex-1">{record.name}</h2>
+              </div>
+              <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
+                <TabsList className={`grid w-full ${tabGridCols}`}>
+                  <TabsTrigger value="activity">Activity</TabsTrigger>
+                  <TabsTrigger value="contacts">
+                    {record.nb_contacts
+                      ? record.nb_contacts === 1
+                        ? "1 Contact"
+                        : `${record.nb_contacts} Contacts`
+                      : "No Contacts"}
+                  </TabsTrigger>
+                  <TabsTrigger value="opportunities">
+                    {record.nb_opportunities
+                      ? record.nb_opportunities === 1
+                        ? "1 opportunity"
+                        : `${record.nb_opportunities} opportunities`
+                      : "No Opportunities"}
+                  </TabsTrigger>
+                  <TabsTrigger value="activities">Activities</TabsTrigger>
+                  {isDistributor && (
+                    <TabsTrigger value="authorizations">Authorizations</TabsTrigger>
+                  )}
+                </TabsList>
+                <TabsContent value="activity" className="pt-2">
+                  <ActivityLog organizationId={record.id} context="organization" />
+                </TabsContent>
+                <TabsContent value="activities" className="pt-2">
+                  <ActivitiesTab organizationId={record.id} />
+                </TabsContent>
+                <TabsContent value="contacts">
+                  {record.nb_contacts ? (
+                    <ReferenceManyField
+                      reference="contacts_summary"
+                      target="organization_id"
+                      sort={{ field: "last_name", order: "ASC" }}
+                    >
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-row justify-end space-x-2 mt-1">
+                          {!!record.nb_contacts && (
+                            <SortButton fields={["last_name", "first_name", "last_seen"]} />
+                          )}
+                          <CreateRelatedContactButton />
+                        </div>
+                        <ContactsIterator />
+                      </div>
+                    </ReferenceManyField>
+                  ) : (
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-row justify-end space-x-2 mt-1">
-                        {!!record.nb_contacts && (
-                          <SortButton fields={["last_name", "first_name", "last_seen"]} />
-                        )}
                         <CreateRelatedContactButton />
                       </div>
-                      <ContactsIterator />
                     </div>
-                  </ReferenceManyField>
-                ) : (
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-row justify-end space-x-2 mt-1">
-                      <CreateRelatedContactButton />
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-              <TabsContent value="opportunities">
-                {record.nb_opportunities ? (
-                  <ReferenceManyField
-                    reference="opportunities"
-                    target="customer_organization_id"
-                    sort={{ field: "name", order: "ASC" }}
-                  >
-                    <OpportunitiesIterator />
-                  </ReferenceManyField>
-                ) : (
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-row justify-end space-x-2 mt-1">
-                      <CreateRelatedOpportunityButton />
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-              {isDistributor && (
-                <TabsContent value="authorizations" className="pt-2">
-                  <AuthorizationsTab distributorId={record.id} />
+                  )}
                 </TabsContent>
-              )}
-            </Tabs>
-          </CardContent>
-        </Card>
-      </main>
+                <TabsContent value="opportunities">
+                  {record.nb_opportunities ? (
+                    <ReferenceManyField
+                      reference="opportunities"
+                      target="customer_organization_id"
+                      sort={{ field: "name", order: "ASC" }}
+                    >
+                      <OpportunitiesIterator />
+                    </ReferenceManyField>
+                  ) : (
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-row justify-end space-x-2 mt-1">
+                        <CreateRelatedOpportunityButton />
+                      </div>
+                    </div>
+                  )}
+                </TabsContent>
+                {isDistributor && (
+                  <TabsContent value="authorizations" className="pt-2">
+                    <AuthorizationsTab distributorId={record.id} />
+                  </TabsContent>
+                )}
+              </Tabs>
+            </CardContent>
+          </Card>
+        </main>
 
-      <aside aria-label="Organization information">
-        <OrganizationAside />
-      </aside>
-    </ResponsiveGrid>
+        <aside aria-label="Organization information">
+          <OrganizationAside />
+        </aside>
+      </ResponsiveGrid>
     </>
   );
 };

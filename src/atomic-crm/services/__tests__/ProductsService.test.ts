@@ -13,7 +13,11 @@
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { ProductsService } from "../products.service";
-import type { ProductWithDistributors, ProductCreateInput, ProductDistributorInput } from "../products.service";
+import type {
+  ProductWithDistributors,
+  ProductCreateInput,
+  ProductDistributorInput,
+} from "../products.service";
 import { createMockDataProvider, createMockProduct } from "@/tests/utils/mock-providers";
 
 describe("ProductsService", () => {

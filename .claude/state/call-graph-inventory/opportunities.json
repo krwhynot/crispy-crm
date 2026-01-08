@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-07T23:40:47.357Z",
+  "generated_at": "2026-01-08T00:13:36.313Z",
   "items": {
     "nodes": [
       {
@@ -130,10 +130,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
+        "id": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
         "name": "OpportunityFormContent",
         "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-        "line": 102,
+        "line": 99,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -148,10 +148,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "id": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "name": "OpportunityWizardContent",
         "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-        "line": 175,
+        "line": 179,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -967,10 +967,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx:54:getStatusConfig",
+        "id": "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx:58:getStatusConfig",
         "name": "getStatusConfig",
         "file": "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx",
-        "line": 54,
+        "line": 58,
         "nodeType": "function",
         "exported": false,
         "async": false
@@ -5659,19 +5659,10 @@
       },
       {
         "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:18:OpportunityCreate",
-        "target": "useLocation",
-        "targetName": "useLocation",
-        "edgeType": "hook",
-        "line": 20,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:18:OpportunityCreate",
         "target": "useSearchParams",
         "targetName": "useSearchParams",
         "edgeType": "hook",
-        "line": 21,
+        "line": 20,
         "conditional": false,
         "inLoop": false
       },
@@ -5680,7 +5671,7 @@
         "target": "getContextAwareRedirect",
         "targetName": "getContextAwareRedirect",
         "edgeType": "call",
-        "line": 22,
+        "line": 21,
         "conditional": false,
         "inLoop": false
       },
@@ -5689,7 +5680,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 25,
+        "line": 24,
         "conditional": false,
         "inLoop": false
       },
@@ -5698,7 +5689,7 @@
         "target": "useSimilarOpportunityCheck",
         "targetName": "useSimilarOpportunityCheck",
         "edgeType": "hook",
-        "line": 38,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
@@ -5707,7 +5698,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 55,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
@@ -5716,7 +5707,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 57,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
@@ -5725,7 +5716,7 @@
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 57,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
@@ -5734,7 +5725,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 63,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
@@ -5743,7 +5734,7 @@
         "target": "CreateBase",
         "targetName": "CreateBase",
         "edgeType": "render",
-        "line": 70,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -5752,7 +5743,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 73,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
@@ -5761,7 +5752,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 74,
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },
@@ -5770,7 +5761,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 75,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
@@ -5779,7 +5770,7 @@
         "target": "Loading",
         "targetName": "Loading",
         "edgeType": "render",
-        "line": 45,
+        "line": 63,
         "conditional": true,
         "inLoop": false
       },
@@ -5788,7 +5779,7 @@
         "target": "OpportunityFormContent",
         "targetName": "OpportunityFormContent",
         "edgeType": "render",
-        "line": 76,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
@@ -5797,7 +5788,7 @@
         "target": "SimilarOpportunitiesDialog",
         "targetName": "SimilarOpportunitiesDialog",
         "edgeType": "render",
-        "line": 88,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
@@ -5806,70 +5797,70 @@
         "target": "OpportunityCreateFormTutorial",
         "targetName": "OpportunityCreateFormTutorial",
         "edgeType": "render",
-        "line": 97,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
         "target": "useFormState",
         "targetName": "useFormState",
         "edgeType": "hook",
-        "line": 111,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
         "target": "useUnsavedChangesWarning",
         "targetName": "useUnsavedChangesWarning",
         "edgeType": "hook",
-        "line": 112,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
         "target": "FormToolbar",
         "targetName": "FormToolbar",
         "edgeType": "render",
-        "line": 118,
+        "line": 115,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
         "target": "FormErrorSummary",
         "targetName": "FormErrorSummary",
         "edgeType": "render",
-        "line": 116,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
         "target": "OpportunityInputs",
         "targetName": "OpportunityInputs",
+        "edgeType": "render",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
+        "target": "CancelButton",
+        "targetName": "CancelButton",
         "edgeType": "render",
         "line": 117,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
-        "target": "CancelButton",
-        "targetName": "CancelButton",
-        "edgeType": "render",
-        "line": 120,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:102:OpportunityFormContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreate.tsx:99:OpportunityFormContent",
         "target": "OpportunityCreateSaveButton",
         "targetName": "OpportunityCreateSaveButton",
         "edgeType": "render",
-        "line": 122,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
@@ -6004,7 +5995,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 136,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
@@ -6013,7 +6004,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 137,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
@@ -6022,7 +6013,7 @@
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 138,
+        "line": 142,
         "conditional": false,
         "inLoop": false
       },
@@ -6031,7 +6022,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 140,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
@@ -6040,7 +6031,7 @@
         "target": "OpportunityWizardContent",
         "targetName": "OpportunityWizardContent",
         "edgeType": "render",
-        "line": 141,
+        "line": 145,
         "conditional": false,
         "inLoop": false
       },
@@ -6049,7 +6040,7 @@
         "target": "SimilarOpportunitiesDialog",
         "targetName": "SimilarOpportunitiesDialog",
         "edgeType": "render",
-        "line": 154,
+        "line": 158,
         "conditional": false,
         "inLoop": false
       },
@@ -6058,174 +6049,165 @@
         "target": "OpportunityCreateFormTutorial",
         "targetName": "OpportunityCreateFormTutorial",
         "edgeType": "render",
-        "line": 163,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "useFormState",
         "targetName": "useFormState",
-        "edgeType": "hook",
-        "line": 181,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "useFormContext",
-        "targetName": "useFormContext",
-        "edgeType": "hook",
-        "line": 182,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 183,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
-        "edgeType": "hook",
-        "line": 184,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "useCreate",
-        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 185,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "useInAppUnsavedChanges",
-        "targetName": "useInAppUnsavedChanges",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "useFormContext",
+        "targetName": "useFormContext",
+        "edgeType": "hook",
+        "line": 186,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 187,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
         "edgeType": "hook",
         "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "useCreate",
+        "targetName": "useCreate",
+        "edgeType": "hook",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "useInAppUnsavedChanges",
+        "targetName": "useInAppUnsavedChanges",
+        "edgeType": "hook",
+        "line": 192,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "checkForSimilar",
         "targetName": "checkForSimilar",
         "edgeType": "call",
-        "line": 194,
+        "line": 198,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 199,
+        "line": 203,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 204,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "contextAwareRedirect",
         "targetName": "contextAwareRedirect",
         "edgeType": "call",
-        "line": 206,
+        "line": 210,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 207,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 212,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 218,
+        "line": 222,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 218,
+        "line": 222,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 219,
+        "line": 223,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "handlePotentialDiscard",
         "targetName": "handlePotentialDiscard",
         "edgeType": "call",
-        "line": 231,
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 231,
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "keys",
-        "targetName": "keys",
-        "edgeType": "call",
-        "line": 237,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
@@ -6234,155 +6216,164 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 245,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "FormProgressProvider",
         "targetName": "FormProgressProvider",
         "edgeType": "render",
-        "line": 235,
+        "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "FormWizard",
         "targetName": "FormWizard",
-        "edgeType": "render",
-        "line": 249,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "handleSubmit",
-        "targetName": "handleSubmit",
-        "edgeType": "callback",
-        "line": 249,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "WizardStep",
-        "targetName": "WizardStep",
         "edgeType": "render",
         "line": 253,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "handleSubmit",
+        "targetName": "handleSubmit",
+        "edgeType": "callback",
+        "line": 253,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "WizardStep",
         "targetName": "WizardStep",
+        "edgeType": "render",
+        "line": 257,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "WizardStep",
+        "targetName": "WizardStep",
+        "edgeType": "render",
+        "line": 262,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "WizardStep",
+        "targetName": "WizardStep",
+        "edgeType": "render",
+        "line": 267,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "WizardStep",
+        "targetName": "WizardStep",
+        "edgeType": "render",
+        "line": 272,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "FormErrorSummary",
+        "targetName": "FormErrorSummary",
+        "edgeType": "render",
+        "line": 242,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "FormProgressBar",
+        "targetName": "FormProgressBar",
+        "edgeType": "render",
+        "line": 250,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "StepIndicator",
+        "targetName": "StepIndicator",
+        "edgeType": "render",
+        "line": 255,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "OpportunityWizardStep1",
+        "targetName": "OpportunityWizardStep1",
         "edgeType": "render",
         "line": 258,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "WizardStep",
-        "targetName": "WizardStep",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "OpportunityWizardStep2",
+        "targetName": "OpportunityWizardStep2",
         "edgeType": "render",
         "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "WizardStep",
-        "targetName": "WizardStep",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "OpportunityWizardStep3",
+        "targetName": "OpportunityWizardStep3",
         "edgeType": "render",
         "line": 268,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "FormErrorSummary",
-        "targetName": "FormErrorSummary",
-        "edgeType": "render",
-        "line": 238,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "FormProgressBar",
-        "targetName": "FormProgressBar",
-        "edgeType": "render",
-        "line": 246,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "StepIndicator",
-        "targetName": "StepIndicator",
-        "edgeType": "render",
-        "line": 251,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "OpportunityWizardStep1",
-        "targetName": "OpportunityWizardStep1",
-        "edgeType": "render",
-        "line": 254,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "OpportunityWizardStep2",
-        "targetName": "OpportunityWizardStep2",
-        "edgeType": "render",
-        "line": 259,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
-        "target": "OpportunityWizardStep3",
-        "targetName": "OpportunityWizardStep3",
-        "edgeType": "render",
-        "line": 264,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "OpportunityWizardStep4",
         "targetName": "OpportunityWizardStep4",
         "edgeType": "render",
-        "line": 269,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "WizardNavigation",
         "targetName": "WizardNavigation",
         "edgeType": "render",
-        "line": 273,
+        "line": 277,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 273,
+        "line": 277,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:175:OpportunityWizardContent",
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "UnsavedChangesDialog",
         "targetName": "UnsavedChangesDialog",
         "edgeType": "render",
-        "line": 277,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
@@ -9001,7 +8992,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 131,
+        "line": 132,
         "conditional": true,
         "inLoop": false
       },
@@ -9010,7 +9001,7 @@
         "target": "formatDistanceToNow",
         "targetName": "formatDistanceToNow",
         "edgeType": "call",
-        "line": 140,
+        "line": 143,
         "conditional": true,
         "inLoop": false
       },
@@ -9019,7 +9010,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 140,
+        "line": 144,
         "conditional": true,
         "inLoop": false
       },
@@ -9028,7 +9019,7 @@
         "target": "findOpportunityLabel",
         "targetName": "findOpportunityLabel",
         "edgeType": "call",
-        "line": 155,
+        "line": 161,
         "conditional": false,
         "inLoop": false
       },
@@ -9037,7 +9028,7 @@
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 229,
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
@@ -9046,7 +9037,7 @@
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 229,
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
@@ -9055,7 +9046,7 @@
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 231,
+        "line": 237,
         "conditional": false,
         "inLoop": false
       },
@@ -9064,7 +9055,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 258,
+        "line": 264,
         "conditional": true,
         "inLoop": false
       },
@@ -9073,7 +9064,7 @@
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 259,
+        "line": 265,
         "conditional": true,
         "inLoop": false
       },
@@ -9082,7 +9073,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 259,
+        "line": 265,
         "conditional": true,
         "inLoop": false
       },
@@ -9091,7 +9082,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 263,
+        "line": 269,
         "conditional": false,
         "inLoop": false
       },
@@ -9100,7 +9091,7 @@
         "target": "formatDistanceToNow",
         "targetName": "formatDistanceToNow",
         "edgeType": "call",
-        "line": 264,
+        "line": 270,
         "conditional": false,
         "inLoop": false
       },
@@ -9109,7 +9100,7 @@
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 264,
+        "line": 270,
         "conditional": false,
         "inLoop": false
       },
@@ -9217,7 +9208,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 136,
+        "line": 139,
         "conditional": true,
         "inLoop": false
       },
@@ -9226,7 +9217,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 163,
+        "line": 169,
         "conditional": false,
         "inLoop": false
       },
@@ -9235,7 +9226,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 194,
+        "line": 200,
         "conditional": false,
         "inLoop": false
       },
@@ -9244,7 +9235,7 @@
         "target": "ReferenceArrayField",
         "targetName": "ReferenceArrayField",
         "edgeType": "render",
-        "line": 244,
+        "line": 250,
         "conditional": false,
         "inLoop": false
       },
@@ -9253,7 +9244,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 276,
+        "line": 282,
         "conditional": false,
         "inLoop": false
       },
@@ -9262,7 +9253,7 @@
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 305,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
@@ -9271,7 +9262,7 @@
         "target": "ReferenceManyField",
         "targetName": "ReferenceManyField",
         "edgeType": "render",
-        "line": 321,
+        "line": 327,
         "conditional": false,
         "inLoop": false
       },
@@ -9280,7 +9271,7 @@
         "target": "ReferenceManyField",
         "targetName": "ReferenceManyField",
         "edgeType": "render",
-        "line": 334,
+        "line": 340,
         "conditional": false,
         "inLoop": false
       },
@@ -9289,7 +9280,7 @@
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 347,
+        "line": 353,
         "conditional": false,
         "inLoop": false
       },
@@ -9352,7 +9343,7 @@
         "target": "SaleAvatar",
         "targetName": "SaleAvatar",
         "edgeType": "render",
-        "line": 199,
+        "line": 205,
         "conditional": false,
         "inLoop": false
       },
@@ -9361,7 +9352,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 201,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
@@ -9370,7 +9361,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 215,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
@@ -9379,7 +9370,7 @@
         "target": "ContactList",
         "targetName": "ContactList",
         "edgeType": "render",
-        "line": 245,
+        "line": 251,
         "conditional": false,
         "inLoop": false
       },
@@ -9388,7 +9379,7 @@
         "target": "SaleAvatar",
         "targetName": "SaleAvatar",
         "edgeType": "render",
-        "line": 277,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
@@ -9397,7 +9388,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 279,
+        "line": 285,
         "conditional": false,
         "inLoop": false
       },
@@ -9406,7 +9397,7 @@
         "target": "ProductsTable",
         "targetName": "ProductsTable",
         "edgeType": "render",
-        "line": 299,
+        "line": 305,
         "conditional": false,
         "inLoop": false
       },
@@ -9415,7 +9406,7 @@
         "target": "ActivityNoteForm",
         "targetName": "ActivityNoteForm",
         "edgeType": "render",
-        "line": 314,
+        "line": 320,
         "conditional": false,
         "inLoop": false
       },
@@ -9424,7 +9415,7 @@
         "target": "ActivityTimelineFilters",
         "targetName": "ActivityTimelineFilters",
         "edgeType": "render",
-        "line": 318,
+        "line": 324,
         "conditional": false,
         "inLoop": false
       },
@@ -9433,7 +9424,7 @@
         "target": "ActivitiesList",
         "targetName": "ActivitiesList",
         "edgeType": "render",
-        "line": 327,
+        "line": 333,
         "conditional": false,
         "inLoop": false
       },
@@ -9442,7 +9433,7 @@
         "target": "NoteCreate",
         "targetName": "NoteCreate",
         "edgeType": "render",
-        "line": 338,
+        "line": 344,
         "conditional": false,
         "inLoop": false
       },
@@ -9451,7 +9442,7 @@
         "target": "NotesIterator",
         "targetName": "NotesIterator",
         "edgeType": "render",
-        "line": 340,
+        "line": 346,
         "conditional": false,
         "inLoop": false
       },
@@ -9460,7 +9451,7 @@
         "target": "ChangeLogTab",
         "targetName": "ChangeLogTab",
         "edgeType": "render",
-        "line": 348,
+        "line": 354,
         "conditional": false,
         "inLoop": false
       },
@@ -9469,7 +9460,7 @@
         "target": "OpportunityAside",
         "targetName": "OpportunityAside",
         "edgeType": "render",
-        "line": 356,
+        "line": 362,
         "conditional": false,
         "inLoop": false
       },
@@ -20305,7 +20296,25 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
+        "line": 290,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
         "line": 294,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
@@ -20323,25 +20332,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 306,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "register",
-        "targetName": "register",
-        "edgeType": "call",
-        "line": 310,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "register",
-        "targetName": "register",
-        "edgeType": "call",
-        "line": 330,
+        "line": 322,
         "conditional": false,
         "inLoop": false
       },
@@ -20350,7 +20341,7 @@
         "target": "handleCitySelect",
         "targetName": "handleCitySelect",
         "edgeType": "call",
-        "line": 340,
+        "line": 332,
         "conditional": false,
         "inLoop": false
       },
@@ -20359,7 +20350,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 356,
+        "line": 348,
         "conditional": false,
         "inLoop": false
       },
@@ -20368,7 +20359,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 358,
+        "line": 350,
         "conditional": false,
         "inLoop": false
       },
@@ -20377,7 +20368,7 @@
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 359,
+        "line": 351,
         "conditional": false,
         "inLoop": false
       },
@@ -20386,7 +20377,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 359,
+        "line": 351,
         "conditional": false,
         "inLoop": false
       },
@@ -20395,7 +20386,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 373,
+        "line": 365,
         "conditional": false,
         "inLoop": false
       },
@@ -20404,7 +20395,7 @@
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 388,
+        "line": 380,
         "conditional": false,
         "inLoop": false
       },
@@ -20413,7 +20404,7 @@
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "call",
-        "line": 388,
+        "line": 380,
         "conditional": false,
         "inLoop": false
       },
@@ -20422,7 +20413,7 @@
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 397,
+        "line": 389,
         "conditional": false,
         "inLoop": false
       },
@@ -20431,7 +20422,7 @@
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "call",
-        "line": 397,
+        "line": 389,
         "conditional": false,
         "inLoop": false
       },
@@ -20512,6 +20503,15 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
+        "line": 293,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "target": "AccessibleField",
+        "targetName": "AccessibleField",
+        "edgeType": "render",
         "line": 297,
         "conditional": false,
         "inLoop": false
@@ -20521,7 +20521,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 305,
+        "line": 301,
         "conditional": false,
         "inLoop": false
       },
@@ -20530,16 +20530,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 309,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "AccessibleField",
-        "targetName": "AccessibleField",
-        "edgeType": "render",
-        "line": 324,
+        "line": 316,
         "conditional": false,
         "inLoop": false
       },
@@ -20548,7 +20539,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 335,
+        "line": 327,
         "conditional": false,
         "inLoop": false
       },
@@ -20557,7 +20548,7 @@
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 354,
+        "line": 346,
         "conditional": false,
         "inLoop": false
       },
@@ -20566,7 +20557,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 370,
+        "line": 362,
         "conditional": false,
         "inLoop": false
       },
@@ -20575,7 +20566,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 381,
+        "line": 373,
         "conditional": false,
         "inLoop": false
       },
@@ -20584,7 +20575,16 @@
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "callback",
-        "line": 381,
+        "line": 373,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 378,
         "conditional": false,
         "inLoop": false
       },
@@ -20594,15 +20594,6 @@
         "targetName": "Button",
         "edgeType": "render",
         "line": 386,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 394,
         "conditional": false,
         "inLoop": false
       },
@@ -20638,7 +20629,25 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
+        "line": 290,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "target": "Input",
+        "targetName": "Input",
+        "edgeType": "render",
         "line": 294,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "target": "Input",
+        "targetName": "Input",
+        "edgeType": "render",
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
@@ -20656,25 +20665,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 306,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "Input",
-        "targetName": "Input",
-        "edgeType": "render",
-        "line": 310,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "Input",
-        "targetName": "Input",
-        "edgeType": "render",
-        "line": 330,
+        "line": 322,
         "conditional": false,
         "inLoop": false
       },
@@ -20683,7 +20674,7 @@
         "target": "Combobox",
         "targetName": "Combobox",
         "edgeType": "render",
-        "line": 336,
+        "line": 328,
         "conditional": false,
         "inLoop": false
       },
@@ -20692,7 +20683,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 355,
+        "line": 347,
         "conditional": false,
         "inLoop": false
       },
@@ -20701,7 +20692,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 371,
+        "line": 363,
         "conditional": false,
         "inLoop": false
       },

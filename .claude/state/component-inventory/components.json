@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-07T23:40:38.833Z",
+  "generated_at": "2026-01-08T00:13:24.351Z",
   "item_count": 25,
   "items": [
     {
@@ -523,7 +523,7 @@
     {
       "name": "TrackRecordView",
       "file": "src/atomic-crm/components/TrackRecordView.tsx",
-      "line": 21,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useEffect",

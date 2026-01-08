@@ -22,8 +22,7 @@ export const ParentOrganizationInput = () => {
   // Build filter: exclude self + all descendants
   // Use @not.in with pre-formatted PostgREST syntax for reliable filtering
   const excludeIds = [record?.id, ...descendants].filter(Boolean) as number[];
-  const filter =
-    excludeIds.length > 0 ? { "id@not.in": `(${excludeIds.join(",")})` } : {};
+  const filter = excludeIds.length > 0 ? { "id@not.in": `(${excludeIds.join(",")})` } : {};
 
   // Force ReferenceInput to refetch when descendants change
   // This prevents stale results from before descendants query completed
@@ -35,7 +34,10 @@ export const ParentOrganizationInput = () => {
     return (
       <div className="space-y-2">
         <span className="text-sm font-medium text-foreground">Parent Organization</span>
-        <div className="h-10 bg-muted animate-pulse rounded-md flex items-center px-3" aria-label="Loading parent organization options">
+        <div
+          className="h-10 bg-muted animate-pulse rounded-md flex items-center px-3"
+          aria-label="Loading parent organization options"
+        >
           <span className="text-sm text-muted-foreground">Loading hierarchy...</span>
         </div>
         <p className="text-sm text-muted-foreground">
@@ -59,9 +61,7 @@ export const ParentOrganizationInput = () => {
         helperText="Select a parent organization if this is a branch location"
         optionText="name"
         filterToQuery={(searchText) =>
-          searchText
-            ? { "name@ilike": `%${searchText}%` }
-            : { "parent_organization_id@is": "null" }
+          searchText ? { "name@ilike": `%${searchText}%` } : { "parent_organization_id@is": "null" }
         }
       />
     </ReferenceInput>

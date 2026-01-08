@@ -32,7 +32,11 @@ export const TaskDetailsTab = () => {
         helperText="Category of task"
         isRequired
       />
-      <ReferenceInput source="organization_id" reference="organizations" enableGetChoices={enableGetChoices}>
+      <ReferenceInput
+        source="organization_id"
+        reference="organizations"
+        enableGetChoices={enableGetChoices}
+      >
         <AutocompleteInput
           {...getAutocompleteProps("name")}
           label="Organization"
@@ -40,7 +44,11 @@ export const TaskDetailsTab = () => {
           helperText="Link to organization"
         />
       </ReferenceInput>
-      <ReferenceInput source="opportunity_id" reference="opportunities" enableGetChoices={enableGetChoices}>
+      <ReferenceInput
+        source="opportunity_id"
+        reference="opportunities"
+        enableGetChoices={enableGetChoices}
+      >
         <AutocompleteInput
           {...getAutocompleteProps("title")}
           label="Opportunity"
@@ -48,7 +56,11 @@ export const TaskDetailsTab = () => {
           helperText="Link to opportunity"
         />
       </ReferenceInput>
-      <ReferenceInput source="contact_id" reference="contacts_summary" enableGetChoices={enableGetChoices}>
+      <ReferenceInput
+        source="contact_id"
+        reference="contacts_summary"
+        enableGetChoices={enableGetChoices}
+      >
         <AutocompleteInput
           {...getQSearchAutocompleteProps()}
           label="Contact"
