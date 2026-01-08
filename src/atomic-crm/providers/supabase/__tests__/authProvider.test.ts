@@ -181,7 +181,7 @@ describe("authProvider", () => {
         }),
       } as any);
 
-      const identity = await authProvider.getIdentity();
+      const identity = await authProvider.getIdentity!();
 
       expect(identity).toEqual({
         id: 2,
@@ -216,7 +216,7 @@ describe("authProvider", () => {
         }),
       } as any);
 
-      await expect(authProvider.getIdentity()).rejects.toThrow();
+      await expect(authProvider.getIdentity!()).rejects.toThrow();
     });
 
     it("should throw error when sales query fails", async () => {
@@ -243,7 +243,7 @@ describe("authProvider", () => {
         }),
       } as any);
 
-      await expect(authProvider.getIdentity()).rejects.toThrow();
+      await expect(authProvider.getIdentity!()).rejects.toThrow();
     });
   });
 
@@ -276,7 +276,7 @@ describe("authProvider", () => {
         }),
       } as any);
 
-      const canAccessContacts = await authProvider.canAccess({
+      const canAccessContacts = await authProvider.canAccess!({
         resource: "contacts",
         action: "delete",
       });
@@ -312,7 +312,7 @@ describe("authProvider", () => {
         }),
       } as any);
 
-      const canDelete = await authProvider.canAccess({
+      const canDelete = await authProvider.canAccess!({
         resource: "contacts",
         action: "delete",
       });
@@ -345,7 +345,7 @@ describe("authProvider", () => {
         }),
       } as any);
 
-      const canAccess = await authProvider.canAccess({
+      const canAccess = await authProvider.canAccess!({
         resource: "contacts",
         action: "read",
       });
@@ -411,10 +411,10 @@ describe("authProvider", () => {
       } as any);
 
       // First call
-      const identity1 = await authProvider.getIdentity();
+      const identity1 = await authProvider.getIdentity!();
 
       // Second call - should return same result (from cache or same mock)
-      const identity2 = await authProvider.getIdentity();
+      const identity2 = await authProvider.getIdentity!();
 
       // Verify identity structure has required fields
       expect(identity1).toHaveProperty("id");

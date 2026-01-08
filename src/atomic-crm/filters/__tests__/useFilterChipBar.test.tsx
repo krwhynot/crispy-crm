@@ -214,7 +214,7 @@ describe("useFilterChipBar", () => {
       const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(1);
-      expect(result.current.chips[0].key).toBe("status");
+      expect(result.current.chips[0]?.key).toBe("status");
     });
 
     test("excludes deleted_at@is from chips", () => {
@@ -236,8 +236,8 @@ describe("useFilterChipBar", () => {
       const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(1);
-      expect(result.current.chips[0].label).toBe('Search: "test query"');
-      expect(result.current.chips[0].category).toBe("Search");
+      expect(result.current.chips[0]?.label).toBe('Search: "test query"');
+      expect(result.current.chips[0]?.category).toBe("Search");
     });
   });
 
@@ -253,7 +253,7 @@ describe("useFilterChipBar", () => {
       // Should be ONE combined chip, not two
       expect(result.current.chips).toHaveLength(1);
       // Date format is "MMM d, yyyy" with dates separated by " – "
-      expect(result.current.chips[0].label).toMatch(/\w+ \d+, \d+ – \w+ \d+, \d+/);
+      expect(result.current.chips[0]?.label).toMatch(/\w+ \d+, \d+ – \w+ \d+, \d+/);
     });
 
     test("removal group chips use group name as key", () => {
@@ -264,7 +264,7 @@ describe("useFilterChipBar", () => {
 
       const { result } = renderHook(() => useFilterChipBar(DATE_RANGE_CONFIG), { wrapper });
 
-      expect(result.current.chips[0].key).toBe("created_at_range");
+      expect(result.current.chips[0]?.key).toBe("created_at_range");
     });
   });
 
