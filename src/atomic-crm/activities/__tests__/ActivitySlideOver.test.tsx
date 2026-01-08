@@ -27,13 +27,14 @@ function createActivityTabs(): TabConfig[] {
     {
       key: "details",
       label: "Details",
-      component: ActivityDetailsTab,
+      // Type assertion needed because ActivityDetailsTab has stricter record type
+      component: ActivityDetailsTab as TabConfig["component"],
       icon: InfoIcon,
     },
     {
       key: "related",
       label: "Related",
-      component: ActivityRelatedTab,
+      component: ActivityRelatedTab as TabConfig["component"],
       icon: LinkIcon,
     },
   ];
