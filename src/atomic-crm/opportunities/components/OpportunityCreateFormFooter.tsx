@@ -81,7 +81,10 @@ export function OpportunityCreateFormFooter({
    * Base submit handler that goes through React Admin's save context
    */
   const handleSubmit = useCallback(
-    async (values: Record<string, unknown>, onSuccessCallback?: (data: { id: string | number }) => void) => {
+    async (
+      values: Record<string, unknown>,
+      onSuccessCallback?: (data: { id: string | number }) => void
+    ) => {
       let errors;
       if (saveContext?.save) {
         errors = await saveContext.save(values, {
@@ -181,7 +184,16 @@ export function OpportunityCreateFormFooter({
         });
       })(event);
     },
-    [checkBeforeSubmit, form, handleSubmit, notify, preserveFields, getValues, reset, resetConfirmation]
+    [
+      checkBeforeSubmit,
+      form,
+      handleSubmit,
+      notify,
+      preserveFields,
+      getValues,
+      reset,
+      resetConfirmation,
+    ]
   );
 
   return (

@@ -39,7 +39,7 @@ export const TrackRecordView = () => {
     });
 
     hasTracked.current = trackingKey;
-  }, [record?.id, resource, getRecordRepresentation, addRecentItem]);
+  }, [record, resource, getRecordRepresentation, addRecentItem]);
 
   return null; // Invisible
 };

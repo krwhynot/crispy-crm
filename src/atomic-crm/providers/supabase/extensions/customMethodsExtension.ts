@@ -495,6 +495,8 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
           validatedParams = validationResult.data as Record<string, unknown>;
         }
 
+        console.log(`[DataProvider RPC] Calling ${functionName}`, validatedParams);
+
         const { data, error } = await supabaseClient.rpc(functionName, validatedParams);
 
         if (error) {

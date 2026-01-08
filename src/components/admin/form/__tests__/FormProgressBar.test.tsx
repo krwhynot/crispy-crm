@@ -2,7 +2,7 @@ import { describe, test, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { FormProgressBar } from "../FormProgressBar";
 
-vi.mock("../FormProgressProvider", () => ({
+vi.mock("../formProgressUtils", () => ({
   useFormProgress: vi.fn(() => ({
     percentage: 50,
     completedRequired: 2,

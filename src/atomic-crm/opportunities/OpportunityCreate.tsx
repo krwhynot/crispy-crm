@@ -4,10 +4,7 @@ import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
-import {
-  FormProgressProvider,
-  FormProgressBar,
-} from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
 import { OpportunityCreateFormFooter } from "./components/OpportunityCreateFormFooter";

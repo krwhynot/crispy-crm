@@ -311,7 +311,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         devWarn("OrgImport", "Unexpected error resolving account managers:", error);
       }
     },
-    [dataProvider]
+    [dataProvider, notify]
   );
 
   /**
@@ -437,7 +437,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         devWarn("OrgImport", "Unexpected error resolving segments:", error);
       }
     },
-    [dataProvider]
+    [dataProvider, notify]
   );
 
   // Derive final mappings by merging auto-detection with user overrides
@@ -622,7 +622,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         rowOffsetRef.current += batch.length;
       }
     },
-    [processBatchHook]
+    [processBatchHook, notify]
   );
 
   const handlePreviewContinue = useCallback(
