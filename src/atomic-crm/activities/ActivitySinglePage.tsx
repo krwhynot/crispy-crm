@@ -37,7 +37,7 @@ export default function ActivitySinglePage() {
         <FormFieldWrapper name="subject" isRequired>
           <TextInput
             source="subject"
-            label="Subject *"
+            label="Subject"
             isRequired
             helperText="Summarize the outcome or topic"
           />
@@ -45,7 +45,7 @@ export default function ActivitySinglePage() {
 
         <FormGrid>
           <FormFieldWrapper name="activity_date" isRequired countDefaultAsFilled>
-            <TextInput source="activity_date" label="Date *" type="date" isRequired />
+            <TextInput source="activity_date" label="Date" type="date" isRequired />
           </FormFieldWrapper>
           <FormFieldWrapper name="duration_minutes">
             <TextInput

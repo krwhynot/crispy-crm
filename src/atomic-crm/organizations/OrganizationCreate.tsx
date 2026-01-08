@@ -11,7 +11,7 @@
  * case-insensitive search before save. If a potential duplicate is found,
  * DuplicateOrgWarningDialog appears to let the user confirm or change the name.
  */
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

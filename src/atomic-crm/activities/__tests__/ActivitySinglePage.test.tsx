@@ -56,8 +56,8 @@ describe("ActivitySinglePage", () => {
 
       expect(screen.getByText(/activity details/i)).toBeInTheDocument();
       expect(screen.getByText(/interaction type/i)).toBeVisible();
-      expect(screen.getByText(/subject \*/i)).toBeVisible();
-      expect(screen.getByText(/date \*/i)).toBeVisible();
+      expect(screen.getByText(/^subject$/i)).toBeVisible();
+      expect(screen.getByText(/^date$/i)).toBeVisible();
       expect(screen.getByText(/duration \(minutes\)/i)).toBeVisible();
       expect(screen.getByText(/^notes$/i)).toBeVisible();
     });
