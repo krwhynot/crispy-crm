@@ -128,7 +128,7 @@ import { PriorityBadge } from "@/components/ui/priority-badge";
 <PriorityBadge priority="low" />       // Outline badge "Low"
 ```
 
-### Constants
+### Constants & Utilities
 
 **File:** `/src/components/ui/priority-badge.tsx`
 
@@ -151,7 +151,28 @@ export const priorityChoices = [
   { id: "high", name: "High" },
   { id: "critical", name: "Critical" },
 ] as const;
+
+// Utility function to get badge variant (for use with <Badge> directly)
+export function getPriorityVariant(priority: string): BadgeVariant {
+  return priorityVariants[priority as PriorityLevel] ?? "outline";
+}
 ```
+
+### Using `getPriorityVariant` Directly
+
+When you need to render a custom badge (not using `<PriorityBadge>`), use the exported utility:
+
+```typescript
+import { Badge } from "@/components/ui/badge";
+import { getPriorityVariant } from "@/components/ui/priority-badge";
+
+// Render a badge with custom content but consistent priority styling
+<Badge variant={getPriorityVariant(record.priority ?? "low")}>
+  {record.priority?.toUpperCase()}
+</Badge>
+```
+
+This ensures all priority-based badges share the same color mapping without duplicating logic.
 
 ### Usage Examples
 
