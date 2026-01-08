@@ -1094,9 +1094,7 @@ export async function extractSchemas(onlyChunks?: Set<string>): Promise<void> {
   // Filter out test files from source paths (they're skipped during extraction, must also be excluded from manifest)
   const allSourceFilePaths = sourceFiles
     .map((sf) => sf.getFilePath())
-    .filter(
-      (p) => !p.includes("__tests__") && !p.includes(".test.") && !p.includes(".spec.")
-    );
+    .filter((p) => !p.includes("__tests__") && !p.includes(".test.") && !p.includes(".spec."));
 
   if (onlyChunks) {
     // Incremental mode: merge with existing manifest
