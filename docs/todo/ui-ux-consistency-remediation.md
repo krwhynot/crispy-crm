@@ -1,0 +1,118 @@
+# UI/UX Consistency Remediation Checklist
+
+**Created:** January 8, 2026
+**Source:** UI/UX Consistency Audit Report
+**Plan:** `.claude/plans/cached-meandering-liskov.md`
+
+---
+
+## Phase 1: Critical Issues
+
+### 1.1 TaskCreate Form → Single-Page with Sections
+- [ ] Create `src/atomic-crm/tasks/TaskCompactForm.tsx`
+- [ ] Migrate fields from `TaskGeneralTab.tsx` (title, description, due_date, reminder_date)
+- [ ] Migrate fields from `TaskDetailsTab.tsx` (priority, type, sales_id, organization_id, opportunity_id, contact_id)
+- [ ] Update `TaskCreate.tsx` to use `TaskCompactForm` instead of `TaskInputs`
+- [ ] Delete `TaskInputs.tsx` (tabbed wrapper)
+- [ ] Delete `TaskGeneralTab.tsx`
+- [ ] Delete `TaskDetailsTab.tsx`
+- [ ] Verify form validation still works
+- [ ] Verify progress bar updates correctly
+
+### 1.2 OpportunityCompactForm → Add Section Headers
+- [ ] Wrap "Opportunity Details" fields (name, customer, principal) in `FormSectionWithProgress`
+- [ ] Wrap "Pipeline" fields (stage, priority, close_date, account_manager, distributor) in `FormSectionWithProgress`
+- [ ] Keep existing `CollapsibleSection` components for optional groups
+- [ ] Verify progress tracking works with new sections
+
+### 1.3 Issues Closed (No Changes Needed)
+- [x] Row heights - Already consistent at 52px via `table-row-premium`
+- [x] Input heights - Already correct at 44px (h-11)
+- [x] List layouts - All use `StandardListLayout` consistently
+
+---
+
+## Phase 2: Medium Issues
+
+### 2.1 Slide-Over Header Actions
+- [ ] Remove broken `<QuickAddTaskButton />` from `TaskSlideOver.tsx:70` (has no params)
+- [ ] Verify `QuickAddTaskButton` renders correctly in `OrganizationSlideOver.tsx`
+
+### 2.2 Breadcrumbs for Slide-Overs
+- [ ] Create `OrganizationHierarchyBreadcrumb.tsx`
+- [ ] Add breadcrumb prop to `OrganizationSlideOver.tsx`
+- [ ] Create `TaskHierarchyBreadcrumb.tsx` (show parent opportunity/contact)
+- [ ] Add breadcrumb prop to `TaskSlideOver.tsx`
+
+### 2.3 Edit Button Positioning
+- [ ] Review `ResourceSlideOver.tsx` edit button placement
+- [ ] Move button to header actions row if overlapping tabs
+
+### 2.4 Badge Styling System
+- [ ] Document badge semantic system (filled vs outline)
+- [ ] Audit status badges for consistency
+- [ ] Audit priority badges for consistency
+- [ ] Audit type/category badges for consistency
+
+### 2.5 Dropdown Background Consistency
+- [ ] Audit `OrganizationCompactForm.tsx` dropdown styling
+- [ ] Ensure consistent background colors across all dropdowns
+
+---
+
+## Phase 3: Minor Issues
+
+### 3.1 Products Header Height
+- [ ] Investigate 4px height difference in Products list header
+- [ ] Align with standard header height if needed
+
+### 3.2 "Yu null" Display Bug
+- [ ] Find null value display in Contact slide-over
+- [ ] Add null check to prevent "null" text
+
+### 3.3 Progress Bar Edge Case
+- [ ] Review `FormProgressProvider.tsx` initial progress logic
+- [ ] Fix or document 10% default with 0 required fields
+
+---
+
+## Verification
+
+### Automated
+- [ ] `just typecheck` passes
+- [ ] `just test src/atomic-crm/tasks` passes
+- [ ] `just test src/atomic-crm/opportunities` passes
+- [ ] `just build` succeeds
+
+### Manual (Claude Chrome)
+- [ ] Run through `docs/tests/e2e/ui-ux-consistency-manual-test.md`
+- [ ] Verify all create forms use consistent section pattern
+- [ ] Verify slide-over header actions are consistent
+- [ ] Verify breadcrumb navigation works
+
+---
+
+## Files Reference
+
+### To Modify
+| File | Change |
+|------|--------|
+| `src/atomic-crm/tasks/TaskCreate.tsx` | Use TaskCompactForm |
+| `src/atomic-crm/opportunities/OpportunityCompactForm.tsx` | Add section headers |
+| `src/atomic-crm/tasks/TaskSlideOver.tsx` | Remove broken button, add breadcrumb |
+| `src/atomic-crm/organizations/OrganizationSlideOver.tsx` | Add breadcrumb |
+| `src/components/layouts/ResourceSlideOver.tsx` | Fix edit button position |
+
+### To Create
+| File | Purpose |
+|------|---------|
+| `src/atomic-crm/tasks/TaskCompactForm.tsx` | Single-page task form |
+| `src/atomic-crm/organizations/OrganizationHierarchyBreadcrumb.tsx` | Org breadcrumb |
+| `src/atomic-crm/tasks/TaskHierarchyBreadcrumb.tsx` | Task breadcrumb |
+
+### To Delete
+| File | Reason |
+|------|--------|
+| `src/atomic-crm/tasks/TaskInputs.tsx` | Replaced by TaskCompactForm |
+| `src/atomic-crm/tasks/TaskGeneralTab.tsx` | Merged into TaskCompactForm |
+| `src/atomic-crm/tasks/TaskDetailsTab.tsx` | Merged into TaskCompactForm |
