@@ -13,7 +13,6 @@ import {
   SidepaneMetadata,
   DirtyStateTracker,
 } from "@/components/layouts/sidepane";
-import type { TabComponentProps } from "@/components/layouts/ResourceSlideOver";
 import { contactOptionText } from "../../contacts/ContactOption";
 import {
   INTERACTION_TYPE_OPTIONS,
@@ -43,8 +42,12 @@ const SAMPLE_STATUS_CHOICES = SAMPLE_STATUS_OPTIONS.map((option) => ({
   name: option.label,
 }));
 
-interface ActivityDetailsTabProps extends TabComponentProps {
+interface ActivityDetailsTabProps {
   record: ActivityRecord;
+  mode: "view" | "edit";
+  onModeToggle?: () => void;
+  isActiveTab?: boolean;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 export function ActivityDetailsTab({

@@ -32,6 +32,9 @@ export { QuickLogActivity } from "./QuickLogActivity";
 // Export shared components
 export { ActivityTimelineEntry } from "./components/ActivityTimelineEntry";
 
+// Export slide-over component
+export { ActivitySlideOver } from "./ActivitySlideOver";
+
 // Export shared constants
 export { ACTIVITY_PAGE_SIZE } from "./constants";
 

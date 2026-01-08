@@ -8,10 +8,10 @@ import { SidepaneSection, SidepaneEmptyState } from "@/components/layouts/sidepa
 import type { RaRecord } from "react-admin";
 import type { TabComponentProps } from "@/components/layouts/ResourceSlideOver";
 import type { ActivityRecord, Contact, Organization, Opportunity } from "../../types";
+import { getOpportunityStageLabel } from "../../opportunities/constants/stageConstants";
 
 // Helper type to ensure id is required for useGetOne compatibility
 type WithRequiredId<T> = T & RaRecord;
-import { getOpportunityStageLabel } from "../../opportunities/constants/stageConstants";
 
 interface RelatedEntityCardProps {
   icon: React.ComponentType<{ className?: string }>;
@@ -117,7 +117,7 @@ function OrganizationCard({
   organizationId: number;
   onNavigate: (path: string) => void;
 }) {
-  const { data: organization, isLoading } = useGetOne<Organization>(
+  const { data: organization, isLoading } = useGetOne<WithRequiredId<Organization>>(
     "organizations",
     { id: organizationId },
     { enabled: !!organizationId }
