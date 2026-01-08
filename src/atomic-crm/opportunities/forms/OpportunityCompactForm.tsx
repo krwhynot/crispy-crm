@@ -10,6 +10,7 @@ import {
   CompactFormRow,
   CollapsibleSection,
   CompactFormFieldWithButton,
+  FormSectionWithProgress,
 } from "@/components/admin/form";
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 import { Button } from "@/components/ui/button";
@@ -89,223 +90,233 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
   };
 
   return (
-    <div className="space-y-4">
-      {/* Row 1: Name (full width) with regenerate button in edit mode */}
-      <div className="relative">
-        <div data-tutorial="opp-name">
-          <TextInput
-            source="name"
-            label="Opportunity Name *"
-            helperText={false}
-            InputProps={
-              mode === "edit"
-                ? {
-                    endAdornment: (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={regenerate}
-                              disabled={!canGenerate || isLoading}
-                            >
-                              <RefreshCw className="w-4 h-4" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Generate name from customer and principal</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    ),
+    <div className="space-y-6">
+      {/* Opportunity Details Section */}
+      <FormSectionWithProgress
+        id="opportunity-details"
+        title="Opportunity Details"
+        requiredFields={["name", "customer_organization_id", "principal_organization_id"]}
+      >
+        {/* Row 1: Name (full width) with regenerate button in edit mode */}
+        <div className="relative">
+          <div data-tutorial="opp-name">
+            <TextInput
+              source="name"
+              label="Opportunity Name *"
+              helperText={false}
+            />
+          </div>
+          {mode === "edit" && (
+            <div className="absolute right-2 top-1/2 -translate-y-1/2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={regenerate}
+                      disabled={!canGenerate || isLoading}
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Generate name from customer and principal</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )}
+          <div className="mt-2">
+            <NamingConventionHelp />
+          </div>
+        </div>
+
+        {/* Row 2: Customer | Principal with inline create buttons */}
+        <CompactFormRow>
+          <CompactFormFieldWithButton
+            button={
+              <CreateInDialogButton
+                resource="organizations"
+                label="New Customer"
+                title="Create new Customer Organization"
+                description="Create a new customer organization and select it automatically"
+                defaultValues={{
+                  ...organizationDefaults,
+                  organization_type: "customer",
+                  sales_id: identity?.id,
+                  segment_id: DEFAULT_SEGMENT_ID,
+                }}
+                onSave={(record) => {
+                  setValue("customer_organization_id", record.id);
+                }}
+                transform={(values) => {
+                  if (values.website && !values.website.startsWith("http")) {
+                    values.website = `https://${values.website}`;
                   }
-                : undefined
+                  return values;
+                }}
+              >
+                <OrganizationInputs />
+              </CreateInDialogButton>
             }
-          />
-        </div>
-        <div className="mt-2">
-          <NamingConventionHelp />
-        </div>
-      </div>
+          >
+            <div data-tutorial="opp-customer">
+              <ReferenceInput
+                source="customer_organization_id"
+                reference="organizations"
+                filter={{ "organization_type@in": "(prospect,customer)" }}
+                enableGetChoices={enableGetChoices}
+              >
+                <AutocompleteOrganizationInput
+                  label="Customer Organization *"
+                  organizationType="customer"
+                />
+              </ReferenceInput>
+            </div>
+          </CompactFormFieldWithButton>
+          <CompactFormFieldWithButton
+            button={
+              <CreateInDialogButton
+                resource="organizations"
+                label="New Principal"
+                title="Create new Principal Organization"
+                description="Create a new principal organization and select it automatically"
+                defaultValues={{
+                  ...organizationDefaults,
+                  organization_type: "principal",
+                  sales_id: identity?.id,
+                  segment_id: DEFAULT_SEGMENT_ID,
+                }}
+                onSave={(record) => {
+                  setValue("principal_organization_id", record.id);
+                }}
+                transform={(values) => {
+                  if (values.website && !values.website.startsWith("http")) {
+                    values.website = `https://${values.website}`;
+                  }
+                  return values;
+                }}
+              >
+                <OrganizationInputs />
+              </CreateInDialogButton>
+            }
+          >
+            <div data-tutorial="opp-principal">
+              <ReferenceInput
+                source="principal_organization_id"
+                reference="organizations"
+                filter={{ organization_type: "principal" }}
+                enableGetChoices={enableGetChoices}
+              >
+                <AutocompleteOrganizationInput
+                  label="Principal Organization *"
+                  organizationType="principal"
+                />
+              </ReferenceInput>
+            </div>
+          </CompactFormFieldWithButton>
+        </CompactFormRow>
+      </FormSectionWithProgress>
 
-      {/* Row 2: Customer | Principal with inline create buttons */}
-      <CompactFormRow>
-        <CompactFormFieldWithButton
-          button={
-            <CreateInDialogButton
-              resource="organizations"
-              label="New Customer"
-              title="Create new Customer Organization"
-              description="Create a new customer organization and select it automatically"
-              defaultValues={{
-                ...organizationDefaults,
-                organization_type: "customer",
-                sales_id: identity?.id,
-                segment_id: DEFAULT_SEGMENT_ID,
-              }}
-              onSave={(record) => {
-                setValue("customer_organization_id", record.id);
-              }}
-              transform={(values) => {
-                if (values.website && !values.website.startsWith("http")) {
-                  values.website = `https://${values.website}`;
-                }
-                return values;
-              }}
-            >
-              <OrganizationInputs />
-            </CreateInDialogButton>
-          }
-        >
-          <div data-tutorial="opp-customer">
-            <ReferenceInput
-              source="customer_organization_id"
-              reference="organizations"
-              filter={{ "organization_type@in": "(prospect,customer)" }}
-              enableGetChoices={enableGetChoices}
-            >
-              <AutocompleteOrganizationInput
-                label="Customer Organization *"
-                organizationType="customer"
-              />
-            </ReferenceInput>
+      {/* Pipeline Section */}
+      <FormSectionWithProgress
+        id="pipeline-section"
+        title="Pipeline"
+        requiredFields={["stage", "priority", "estimated_close_date"]}
+      >
+        {/* Row 3: Stage | Priority | Close Date */}
+        <CompactFormRow columns="md:grid-cols-3">
+          <div data-tutorial="opp-stage">
+            <SelectInput
+              source="stage"
+              label="Stage *"
+              choices={OPPORTUNITY_STAGE_CHOICES}
+              helperText={false}
+            />
           </div>
-        </CompactFormFieldWithButton>
-        <CompactFormFieldWithButton
-          button={
-            <CreateInDialogButton
-              resource="organizations"
-              label="New Principal"
-              title="Create new Principal Organization"
-              description="Create a new principal organization and select it automatically"
-              defaultValues={{
-                ...organizationDefaults,
-                organization_type: "principal",
-                sales_id: identity?.id,
-                segment_id: DEFAULT_SEGMENT_ID,
-              }}
-              onSave={(record) => {
-                setValue("principal_organization_id", record.id);
-              }}
-              transform={(values) => {
-                if (values.website && !values.website.startsWith("http")) {
-                  values.website = `https://${values.website}`;
-                }
-                return values;
-              }}
-            >
-              <OrganizationInputs />
-            </CreateInDialogButton>
-          }
-        >
-          <div data-tutorial="opp-principal">
-            <ReferenceInput
-              source="principal_organization_id"
-              reference="organizations"
-              filter={{ organization_type: "principal" }}
-              enableGetChoices={enableGetChoices}
-            >
-              <AutocompleteOrganizationInput
-                label="Principal Organization *"
-                organizationType="principal"
-              />
-            </ReferenceInput>
+          <div data-tutorial="opp-priority">
+            <SelectInput
+              source="priority"
+              label="Priority *"
+              choices={priorityChoices}
+              helperText={false}
+            />
           </div>
-        </CompactFormFieldWithButton>
-      </CompactFormRow>
+          <div data-tutorial="opp-close-date">
+            <TextInput
+              source="estimated_close_date"
+              label="Est. Close Date *"
+              helperText={false}
+              type="date"
+            />
+          </div>
+        </CompactFormRow>
 
-      {/* Row 3: Stage | Priority | Close Date */}
-      <CompactFormRow columns="md:grid-cols-3">
-        <div data-tutorial="opp-stage">
-          <SelectInput
-            source="stage"
-            label="Stage *"
-            choices={OPPORTUNITY_STAGE_CHOICES}
-            helperText={false}
-          />
-        </div>
-        <div data-tutorial="opp-priority">
-          <SelectInput
-            source="priority"
-            label="Priority *"
-            choices={priorityChoices}
-            helperText={false}
-          />
-        </div>
-        <div data-tutorial="opp-close-date">
-          <TextInput
-            source="estimated_close_date"
-            label="Est. Close Date *"
-            helperText={false}
-            type="date"
-          />
-        </div>
-      </CompactFormRow>
-
-      {/* Row 4: Account Manager | Distributor with inline create button */}
-      <CompactFormRow>
-        <CompactFormFieldWithButton>
-          {/* No button prop = auto placeholder for alignment */}
-          <div data-tutorial="opp-account-manager">
-            <ReferenceInput
-              source="account_manager_id"
-              reference="sales"
-              sort={{ field: "last_name", order: "ASC" }}
-              filter={{ "disabled@neq": true }}
-            >
-              <SelectInput
-                label="Account Manager"
-                optionText={saleOptionRenderer}
-                helperText={false}
-              />
-            </ReferenceInput>
-          </div>
-        </CompactFormFieldWithButton>
-        <CompactFormFieldWithButton
-          button={
-            <CreateInDialogButton
-              resource="organizations"
-              label="New Distributor"
-              title="Create new Distributor Organization"
-              description="Create a new distributor organization and select it automatically"
-              defaultValues={{
-                ...organizationDefaults,
-                organization_type: "distributor",
-                sales_id: identity?.id,
-                segment_id: DEFAULT_SEGMENT_ID,
-              }}
-              onSave={(record) => {
-                setValue("distributor_organization_id", record.id);
-              }}
-              transform={(values) => {
-                if (values.website && !values.website.startsWith("http")) {
-                  values.website = `https://${values.website}`;
-                }
-                return values;
-              }}
-            >
-              <OrganizationInputs />
-            </CreateInDialogButton>
-          }
-          footer={<DistributorAuthorizationWarning />}
-        >
-          <div data-tutorial="opp-distributor">
-            <ReferenceInput
-              source="distributor_organization_id"
-              reference="organizations"
-              filter={{ organization_type: "distributor" }}
-              enableGetChoices={enableGetChoices}
-            >
-              <AutocompleteOrganizationInput
-                label="Distributor Organization"
-                organizationType="distributor"
-              />
-            </ReferenceInput>
-          </div>
-        </CompactFormFieldWithButton>
-      </CompactFormRow>
+        {/* Row 4: Account Manager | Distributor with inline create button */}
+        <CompactFormRow>
+          <CompactFormFieldWithButton>
+            {/* No button prop = auto placeholder for alignment */}
+            <div data-tutorial="opp-account-manager">
+              <ReferenceInput
+                source="account_manager_id"
+                reference="sales"
+                sort={{ field: "last_name", order: "ASC" }}
+                filter={{ "disabled@neq": true }}
+              >
+                <SelectInput
+                  label="Account Manager"
+                  optionText={saleOptionRenderer}
+                  helperText={false}
+                />
+              </ReferenceInput>
+            </div>
+          </CompactFormFieldWithButton>
+          <CompactFormFieldWithButton
+            button={
+              <CreateInDialogButton
+                resource="organizations"
+                label="New Distributor"
+                title="Create new Distributor Organization"
+                description="Create a new distributor organization and select it automatically"
+                defaultValues={{
+                  ...organizationDefaults,
+                  organization_type: "distributor",
+                  sales_id: identity?.id,
+                  segment_id: DEFAULT_SEGMENT_ID,
+                }}
+                onSave={(record) => {
+                  setValue("distributor_organization_id", record.id);
+                }}
+                transform={(values) => {
+                  if (values.website && !values.website.startsWith("http")) {
+                    values.website = `https://${values.website}`;
+                  }
+                  return values;
+                }}
+              >
+                <OrganizationInputs />
+              </CreateInDialogButton>
+            }
+            footer={<DistributorAuthorizationWarning />}
+          >
+            <div data-tutorial="opp-distributor">
+              <ReferenceInput
+                source="distributor_organization_id"
+                reference="organizations"
+                filter={{ organization_type: "distributor" }}
+                enableGetChoices={enableGetChoices}
+              >
+                <AutocompleteOrganizationInput
+                  label="Distributor Organization"
+                  organizationType="distributor"
+                />
+              </ReferenceInput>
+            </div>
+          </CompactFormFieldWithButton>
+        </CompactFormRow>
+      </FormSectionWithProgress>
 
       {/* Collapsible: Contacts & Products (always open - contains required fields) */}
       <CollapsibleSection title="Contacts & Products" defaultOpen>

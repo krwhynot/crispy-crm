@@ -13,12 +13,12 @@ Task Lifecycle Flow:
 │  TaskCreate ──────► TaskList ──────► TaskSlideOver ──────► TaskEdit     │
 │       │                 │                   │                   │        │
 │       ▼                 ▼                   ▼                   ▼        │
-│  TaskInputs        TasksIterator    ┌──────────────┐      TaskInputs    │
-│  (Tabbed)          (Filtered)       │  Details Tab │      (Tabbed)      │
+│  TaskCompactForm   TasksIterator    ┌──────────────┐     TaskCompactForm│
+│  (Single-page)     (Filtered)       │  Details Tab │     (Single-page)  │
 │       │                 │           │  Related Tab │           │        │
 │       ▼                 ▼           └──────────────┘           ▼        │
-│  TaskGeneralTab    Task.tsx                              TaskGeneralTab │
-│  TaskDetailsTab    (Row + Menu)                          TaskDetailsTab │
+│  FormSection       Task.tsx                              FormSection    │
+│  WithProgress      (Row + Menu)                          WithProgress   │
 │                         │                                               │
 │                         ▼                                               │
 │               QuickLogActivity                                          │

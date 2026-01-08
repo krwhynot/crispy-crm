@@ -9,21 +9,21 @@
 ## Phase 1: Critical Issues
 
 ### 1.1 TaskCreate Form → Single-Page with Sections
-- [ ] Create `src/atomic-crm/tasks/TaskCompactForm.tsx`
-- [ ] Migrate fields from `TaskGeneralTab.tsx` (title, description, due_date, reminder_date)
-- [ ] Migrate fields from `TaskDetailsTab.tsx` (priority, type, sales_id, organization_id, opportunity_id, contact_id)
-- [ ] Update `TaskCreate.tsx` to use `TaskCompactForm` instead of `TaskInputs`
-- [ ] Delete `TaskInputs.tsx` (tabbed wrapper)
-- [ ] Delete `TaskGeneralTab.tsx`
-- [ ] Delete `TaskDetailsTab.tsx`
-- [ ] Verify form validation still works
-- [ ] Verify progress bar updates correctly
+- [x] Create `src/atomic-crm/tasks/TaskCompactForm.tsx`
+- [x] Migrate fields from `TaskGeneralTab.tsx` (title, description, due_date, reminder_date)
+- [x] Migrate fields from `TaskDetailsTab.tsx` (priority, type, sales_id, organization_id, opportunity_id, contact_id)
+- [x] Update `TaskCreate.tsx` to use `TaskCompactForm` instead of `TaskInputs`
+- [x] Delete `TaskInputs.tsx` (tabbed wrapper)
+- [x] Delete `TaskGeneralTab.tsx`
+- [x] Delete `TaskDetailsTab.tsx`
+- [x] Verify form validation still works (typecheck passes)
+- [ ] Verify progress bar updates correctly (requires manual test)
 
 ### 1.2 OpportunityCompactForm → Add Section Headers
-- [ ] Wrap "Opportunity Details" fields (name, customer, principal) in `FormSectionWithProgress`
-- [ ] Wrap "Pipeline" fields (stage, priority, close_date, account_manager, distributor) in `FormSectionWithProgress`
-- [ ] Keep existing `CollapsibleSection` components for optional groups
-- [ ] Verify progress tracking works with new sections
+- [x] Wrap "Opportunity Details" fields (name, customer, principal) in `FormSectionWithProgress`
+- [x] Wrap "Pipeline" fields (stage, priority, close_date, account_manager, distributor) in `FormSectionWithProgress`
+- [x] Keep existing `CollapsibleSection` components for optional groups
+- [ ] Verify progress tracking works with new sections (requires manual test)
 
 ### 1.3 Issues Closed (No Changes Needed)
 - [x] Row heights - Already consistent at 52px via `table-row-premium`
@@ -35,8 +35,8 @@
 ## Phase 2: Medium Issues
 
 ### 2.1 Slide-Over Header Actions
-- [ ] Remove broken `<QuickAddTaskButton />` from `TaskSlideOver.tsx:70` (has no params)
-- [ ] Verify `QuickAddTaskButton` renders correctly in `OrganizationSlideOver.tsx`
+- [x] Remove broken `<QuickAddTaskButton />` from `TaskSlideOver.tsx` (had no params)
+- [x] Verify `QuickAddTaskButton` renders correctly in `OrganizationSlideOver.tsx` (passes organizationId)
 
 ### 2.2 Breadcrumbs for Slide-Overs
 - [ ] Create `OrganizationHierarchyBreadcrumb.tsx`
