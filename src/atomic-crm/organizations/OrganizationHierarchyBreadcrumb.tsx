@@ -1,11 +1,18 @@
 import { useGetOne } from "react-admin";
+import type { RaRecord } from "react-admin";
 import { Building2, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { OrganizationRecord } from "./types";
-import type { Organization } from "../types";
+
+// Use RaRecord-compatible type for the parent fetch
+interface ParentOrganizationRecord extends RaRecord {
+  name?: string;
+}
 
 interface OrganizationHierarchyBreadcrumbProps {
-  record: OrganizationRecord;
+  record: RaRecord & {
+    parent_organization_id?: number | string | null;
+    name?: string;
+  };
 }
 
 /**
@@ -17,7 +24,7 @@ interface OrganizationHierarchyBreadcrumbProps {
  */
 export function OrganizationHierarchyBreadcrumb({ record }: OrganizationHierarchyBreadcrumbProps) {
   // Fetch the parent organization if this org has one
-  const { data: parentOrg, isLoading } = useGetOne<Organization>(
+  const { data: parentOrg, isLoading } = useGetOne<ParentOrganizationRecord>(
     "organizations",
     { id: record.parent_organization_id! },
     { enabled: !!record.parent_organization_id }

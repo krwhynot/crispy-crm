@@ -39,14 +39,14 @@
 - [x] Verify `QuickAddTaskButton` renders correctly in `OrganizationSlideOver.tsx` (passes organizationId)
 
 ### 2.2 Breadcrumbs for Slide-Overs
-- [ ] Create `OrganizationHierarchyBreadcrumb.tsx`
-- [ ] Add breadcrumb prop to `OrganizationSlideOver.tsx`
-- [ ] Create `TaskHierarchyBreadcrumb.tsx` (show parent opportunity/contact)
-- [ ] Add breadcrumb prop to `TaskSlideOver.tsx`
+- [x] Create `OrganizationHierarchyBreadcrumb.tsx`
+- [x] Add breadcrumb prop to `OrganizationSlideOver.tsx`
+- [x] Create `TaskHierarchyBreadcrumb.tsx` (show parent opportunity/organization)
+- [x] Add breadcrumb prop to `TaskSlideOver.tsx`
 
 ### 2.3 Edit Button Positioning
-- [ ] Review `ResourceSlideOver.tsx` edit button placement
-- [ ] Move button to header actions row if overlapping tabs
+- [x] Review `ResourceSlideOver.tsx` edit button placement (already correct - in header actions row line 265-296)
+- [x] Move button to header actions row if overlapping tabs (N/A - already correctly positioned)
 
 ### 2.4 Badge Styling System
 - [ ] Document badge semantic system (filled vs outline)

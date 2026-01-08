@@ -3,6 +3,7 @@ import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { TaskSlideOverDetailsTab } from "./TaskSlideOverDetailsTab";
 import { TaskRelatedItemsTab } from "./TaskRelatedItemsTab";
+import { TaskHierarchyBreadcrumb } from "./TaskHierarchyBreadcrumb";
 import type { Task } from "../types";
 
 interface TaskSlideOverProps {
@@ -66,6 +67,7 @@ export function TaskSlideOver({
       onModeToggle={onModeToggle}
       tabs={tabs}
       recordRepresentation={recordRepresentation}
+      breadcrumbComponent={TaskHierarchyBreadcrumb}
     />
   );
 }
