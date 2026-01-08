@@ -4,7 +4,7 @@ import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedir
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
-import { TaskInputs } from "./TaskInputs";
+import { TaskCompactForm } from "./TaskCompactForm";
 import { getTaskDefaultValues, taskCreateSchema } from "../validation/task";
 
 // Map URL param values to task type enum values
@@ -24,7 +24,7 @@ const URL_TYPE_MAP: Record<string, string> = {
  * Full-page create form following unified design system:
  * - bg-muted page background
  * - Centered card with create-form-card styling
- * - Tabbed form layout (General/Details) via TaskInputs
+ * - Single-page form with sections via TaskCompactForm
  * - Sticky footer with Cancel, Save & Close, Save & Add Another
  * - Dirty state confirmation on cancel
  *
@@ -66,7 +66,7 @@ export default function TaskCreate() {
               mode="onBlur"
               resolver={zodResolver(taskCreateSchema)}
             >
-              <TaskInputs />
+              <TaskCompactForm />
               <CreateFormFooter
                 resourceName="task"
                 redirectPath="/tasks"
