@@ -93,115 +93,138 @@ interface ResourceTypeMap {
  *
  * This service consolidates all validation logic previously scattered
  * in the monolithic unifiedDataProvider (was ~100 lines)
+ *
+ * NOTE: Notes resources are registered under BOTH camelCase and snake_case keys
+ * because composedDataProvider uses snake_case (contact_notes) but some legacy
+ * code may use camelCase (contactNotes). This prevents silent validation bypass.
+ * See: docs/PROVIDER_AUDIT_REPORT.md [CRITICAL-001]
  */
 export class ValidationService {
-  private validationRegistry: Record<string, ValidationHandlers<unknown>> = {
-    contacts: {
-      create: async (data: unknown) => validateContactForm(data),
-      update: async (data: unknown) => validateUpdateContact(data),
-    },
-    organizations: {
-      create: async (data: unknown) => validateOrganizationForSubmission(data),
-      update: async (data: unknown) => validateUpdateOrganization(data),
-    },
-    opportunities: {
-      create: async (data: unknown) => validateCreateOpportunity(data),
-      update: async (data: unknown) => validateUpdateOpportunity(data),
-    },
-    products: {
-      create: async (data: unknown) => validateProductForm(data),
-      update: async (data: unknown) => validateProductUpdate(data),
-    },
-    product_distributors: {
-      create: async (data: unknown) => validateCreateProductDistributor(data),
-      update: async (data: unknown) => validateUpdateProductDistributor(data),
-    },
-    organization_distributors: {
-      create: async (data: unknown) => validateCreateOrganizationDistributor(data),
-      update: async (data: unknown) => validateOrganizationDistributor(data),
-    },
-    tags: {
-      create: async (data: unknown) => {
-        // validateCreateTag returns parsed data, but we only need validation
-        validateCreateTag(data);
-      },
-      update: async (data: unknown) => {
-        // validateUpdateTag returns parsed data, but we only need validation
-        validateUpdateTag(data);
-      },
-    },
-    contactNotes: {
+  private validationRegistry: Record<string, ValidationHandlers<unknown>>;
+
+  constructor() {
+    // Shared validators - defined once, used for both casing variants
+    const contactNotesValidators: ValidationHandlers<unknown> = {
       create: async (data: unknown) => {
         validateCreateContactNote(data);
       },
       update: async (data: unknown) => {
         validateUpdateContactNote(data);
       },
-    },
-    opportunityNotes: {
+    };
+
+    const opportunityNotesValidators: ValidationHandlers<unknown> = {
       create: async (data: unknown) => {
         validateCreateOpportunityNote(data);
       },
       update: async (data: unknown) => {
         validateUpdateOpportunityNote(data);
       },
-    },
-    organizationNotes: {
+    };
+
+    const organizationNotesValidators: ValidationHandlers<unknown> = {
       create: async (data: unknown) => {
         validateCreateOrganizationNote(data);
       },
       update: async (data: unknown) => {
         validateUpdateOrganizationNote(data);
       },
-    },
-    tasks: {
-      create: async (data: unknown) => {
-        await validateTaskForSubmission(data, false);
+    };
+
+    this.validationRegistry = {
+      contacts: {
+        create: async (data: unknown) => validateContactForm(data),
+        update: async (data: unknown) => validateUpdateContact(data),
       },
-      update: async (data: unknown) => {
-        await validateTaskForSubmission(data, true);
+      organizations: {
+        create: async (data: unknown) => validateOrganizationForSubmission(data),
+        update: async (data: unknown) => validateUpdateOrganization(data),
       },
-    },
-    sales: {
-      create: async (data: unknown) => validateSalesForm(data),
-      // INTENTIONALLY NO UPDATE VALIDATION - Edge Function handles it
-      // Bug fix (2025-12-12): updateSalesSchema (and salesSchema.partial()) rejects
-      // empty strings like avatar_url: "" because .url() validator runs on any string.
-      // The data flow is: form → unifiedDataProvider → salesService → Edge Function.
-      // salesService.salesUpdate() filters out empty strings with truthy checks.
-      // Edge Function /users PATCH does final Zod validation.
-      // Duplicate validation here was causing 400 errors before salesService could filter.
-      // update: undefined (intentionally omitted)
-    },
-    activities: {
-      create: async (data: unknown) => validateActivitiesForm(data),
-      update: async (data: unknown) => validateActivitiesForm(data),
-    },
-    engagements: {
-      create: async (data: unknown) => validateEngagementsForm(data),
-      update: async (data: unknown) => validateEngagementsForm(data),
-    },
-    interactions: {
-      create: async (data: unknown) => validateInteractionsForm(data),
-      update: async (data: unknown) => validateInteractionsForm(data),
-    },
-    segments: {
-      create: async (data: unknown) => {
-        validateCreateSegment(data);
+      opportunities: {
+        create: async (data: unknown) => validateCreateOpportunity(data),
+        update: async (data: unknown) => validateUpdateOpportunity(data),
       },
-      update: async (data: unknown) => {
-        validateUpdateSegment(data);
+      products: {
+        create: async (data: unknown) => validateProductForm(data),
+        update: async (data: unknown) => validateProductUpdate(data),
       },
-    },
-    user_favorites: {
-      create: async (data: unknown) => {
-        validateCreateFavorite(data);
+      product_distributors: {
+        create: async (data: unknown) => validateCreateProductDistributor(data),
+        update: async (data: unknown) => validateUpdateProductDistributor(data),
       },
-      update: async (data: unknown) => {
-        validateUpdateFavorite(data);
+      organization_distributors: {
+        create: async (data: unknown) => validateCreateOrganizationDistributor(data),
+        update: async (data: unknown) => validateOrganizationDistributor(data),
       },
-    },
-  };
+      tags: {
+        create: async (data: unknown) => {
+          // validateCreateTag returns parsed data, but we only need validation
+          validateCreateTag(data);
+        },
+        update: async (data: unknown) => {
+          // validateUpdateTag returns parsed data, but we only need validation
+          validateUpdateTag(data);
+        },
+      },
+      // Notes resources - registered under BOTH camelCase and snake_case
+      // camelCase (legacy compatibility)
+      contactNotes: contactNotesValidators,
+      opportunityNotes: opportunityNotesValidators,
+      organizationNotes: organizationNotesValidators,
+      // snake_case (actual resource names from composedDataProvider)
+      contact_notes: contactNotesValidators,
+      opportunity_notes: opportunityNotesValidators,
+      organization_notes: organizationNotesValidators,
+
+      tasks: {
+        create: async (data: unknown) => {
+          await validateTaskForSubmission(data, false);
+        },
+        update: async (data: unknown) => {
+          await validateTaskForSubmission(data, true);
+        },
+      },
+      sales: {
+        create: async (data: unknown) => validateSalesForm(data),
+        // INTENTIONALLY NO UPDATE VALIDATION - Edge Function handles it
+        // Bug fix (2025-12-12): updateSalesSchema (and salesSchema.partial()) rejects
+        // empty strings like avatar_url: "" because .url() validator runs on any string.
+        // The data flow is: form → unifiedDataProvider → salesService → Edge Function.
+        // salesService.salesUpdate() filters out empty strings with truthy checks.
+        // Edge Function /users PATCH does final Zod validation.
+        // Duplicate validation here was causing 400 errors before salesService could filter.
+        // update: undefined (intentionally omitted)
+      },
+      activities: {
+        create: async (data: unknown) => validateActivitiesForm(data),
+        update: async (data: unknown) => validateActivitiesForm(data),
+      },
+      engagements: {
+        create: async (data: unknown) => validateEngagementsForm(data),
+        update: async (data: unknown) => validateEngagementsForm(data),
+      },
+      interactions: {
+        create: async (data: unknown) => validateInteractionsForm(data),
+        update: async (data: unknown) => validateInteractionsForm(data),
+      },
+      segments: {
+        create: async (data: unknown) => {
+          validateCreateSegment(data);
+        },
+        update: async (data: unknown) => {
+          validateUpdateSegment(data);
+        },
+      },
+      user_favorites: {
+        create: async (data: unknown) => {
+          validateCreateFavorite(data);
+        },
+        update: async (data: unknown) => {
+          validateUpdateFavorite(data);
+        },
+      },
+    };
+  }
 
   /**
    * Validate data for a specific resource and method

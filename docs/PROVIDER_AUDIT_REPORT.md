@@ -29,18 +29,40 @@
 
 ## Findings by Category
 
+### 0. CRITICAL Issues (Active Bugs)
+
+#### [CRITICAL-001] Active Validation Bypass - Notes Resources
+- **File:** `src/atomic-crm/providers/supabase/services/ValidationService.ts`
+- **Lines:** 98-204 (validationRegistry), 218-222 (validate method)
+- **Issue:** ValidationService registry uses camelCase keys but composedDataProvider passes snake_case resource names, causing validation to be **silently skipped**.
+- **Affected Resources:**
+  - `contact_notes` → registry has `contactNotes` → **NO VALIDATION**
+  - `opportunity_notes` → registry has `opportunityNotes` → **NO VALIDATION**
+  - `organization_notes` → registry has `organizationNotes` → **NO VALIDATION**
+- **Root Cause:** Line 220-222 returns silently when no validator found:
+  ```typescript
+  if (!validator) {
+    return;  // Silent bypass - no error thrown!
+  }
+  ```
+- **Impact:** Malformed note data (missing required fields, invalid types) can reach the database
+- **Fix approach:** Add snake_case aliases to validationRegistry:
+  ```typescript
+  // Add these lines to validationRegistry:
+  contact_notes: { /* same as contactNotes */ },
+  opportunity_notes: { /* same as opportunityNotes */ },
+  organization_notes: { /* same as organizationNotes */ },
+  ```
+
+---
+
 ### 1. CONSISTENCY Issues
 
-#### [C-001] [HIGH] Resource Name Casing Mismatch
-- **File:** `src/atomic-crm/providers/supabase/services/ValidationService.ts`
-- **Line:** 98-204
-- **Issue:** ValidationService registry uses camelCase (`contactNotes`, `opportunityNotes`) but composedDataProvider uses snake_case (`contact_notes`, `opportunity_notes`).
-- **Expected:** Consistent casing across all registries
-- **Actual:**
-  - ValidationService: `contactNotes`, `opportunityNotes`, `organizationNotes`
-  - composedDataProvider HANDLED_RESOURCES: `contact_notes`, `opportunity_notes`, `organization_notes`
-- **Risk:** Validation silently bypassed when snake_case resource name doesn't match camelCase registry key
-- **Fix approach:** Add snake_case aliases to ValidationService registry OR normalize resource names before lookup
+#### [C-001] [MEDIUM] filterRegistry Also Has Casing Mismatch
+- **File:** `src/atomic-crm/providers/supabase/filterRegistry.ts`
+- **Issue:** Same casing problem as ValidationService - `contactNotes` vs `contact_notes`
+- **Risk:** Filter validation throws UnregisteredResourceError for snake_case resources
+- **Fix approach:** Add snake_case aliases to filterableFields
 
 #### [C-002] [MEDIUM] DRY Violation: stripComputedFields Duplicated
 - **Files:**
@@ -212,7 +234,7 @@
 
 | ID | Description | Effort | Priority | Dependencies |
 |----|-------------|--------|----------|--------------|
-| TD-001 | Add snake_case aliases to ValidationService registry | S | P1 | None |
+| **TD-001** | **FIX CRITICAL: Add snake_case aliases to ValidationService** | S | **P0** | None - IMMEDIATE |
 | TD-002 | Add snake_case aliases to filterRegistry | S | P1 | None |
 | TD-003 | Add notifications validation schema | S | P1 | Create notificationsSchema |
 | TD-004 | Extract stripComputedFields to commonTransforms | M | P2 | None |
@@ -282,8 +304,18 @@
 
 ## Recommendations Summary
 
+### CRITICAL - Fix Now (P0)
+**TD-001: Add snake_case aliases to ValidationService**
+```typescript
+// In ValidationService.ts validationRegistry, add after each camelCase entry:
+contact_notes: this.validationRegistry.contactNotes,
+opportunity_notes: this.validationRegistry.opportunityNotes,
+organization_notes: this.validationRegistry.organizationNotes,
+```
+Or normalize resource names in the `validate()` method before lookup.
+
 ### Immediate Actions (P1)
-1. Fix resource name casing mismatch - add snake_case aliases to ValidationService and filterRegistry
+1. Add snake_case aliases to filterRegistry for consistency
 2. Add notifications validation to prevent malformed data
 
 ### Short-term (P2)
