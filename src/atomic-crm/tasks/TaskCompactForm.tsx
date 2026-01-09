@@ -2,11 +2,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import {
-  FormFieldWrapper,
-  FormSectionWithProgress,
-  CompactFormRow,
-} from "@/components/admin/form";
+import { FormFieldWrapper, FormSectionWithProgress, CompactFormRow } from "@/components/admin/form";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
 import {

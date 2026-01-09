@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 // All styles inline - no external CSS utility dependencies
 // =============================================================================
 
-export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   /**
    * Size variant:
    * - "default": 44px touch-friendly (h-11, per CLAUDE.md standard)

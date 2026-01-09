@@ -123,7 +123,9 @@ describe("ActivityRelatedTab", () => {
 
       expect(screen.getByText("No linked entities")).toBeInTheDocument();
       expect(
-        screen.getByText("This activity is not linked to any contact, organization, or opportunity.")
+        screen.getByText(
+          "This activity is not linked to any contact, organization, or opportunity."
+        )
       ).toBeInTheDocument();
     });
   });

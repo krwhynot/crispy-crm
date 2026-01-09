@@ -46,7 +46,7 @@ export function OpportunitySlideOver({
         entityType: "opportunities",
       });
     }
-  }, [record, addRecent]);
+  }, [record?.id, record?.name, addRecent]);
 
   const canEdit = !record
     ? false
