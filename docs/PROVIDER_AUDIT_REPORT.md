@@ -2,13 +2,13 @@
 
 ## Executive Summary
 
-### Complete Audit Statistics (11 Checks)
+### Complete Audit Statistics (18 Checks)
 
-- **Total findings:** 38
-- **Critical:** 10 | **High:** 13 | **Medium:** 8 | **Low:** 7
-- **Audit Scope:** Application Layer, Database Layer, RPC Layer, Storage Layer, Type System
+- **Total findings:** 56
+- **Critical:** 22 | **High:** 18 | **Medium:** 8 | **Low:** 8
+- **Audit Scope:** Application Layer, Database Layer, RPC Layer, Storage Layer, Type System, Workflow Layer
 
-### Top 5 Issues Requiring Immediate Attention (P0)
+### Top 10 Issues Requiring Immediate Attention (P0)
 
 | Priority | Issue | Type | Fix Effort |
 |----------|-------|------|------------|
@@ -17,12 +17,19 @@
 | 3 | **[SF-C08]** 20 CASCADE constraints conflict with soft-delete pattern | Data Loss | Medium |
 | 4 | **[SF-C09]** getMany/getManyReference allow cross-tenant ID fetching (IDOR) | Security | Medium |
 | 5 | **[SF-C10]** No storage cleanup - orphaned files accumulate forever | Data Leak | Medium |
+| 6 | **[WF-C01]** Contacts have NO cascade delete - child records orphaned | Data Integrity | Medium |
+| 7 | **[WF-C02]** Organizations have NO cascade delete - child records orphaned | Data Integrity | Medium |
+| 8 | **[WF-C03]** Tasks can be assigned to disabled users | Data Integrity | Small |
+| 9 | **[WF-C08]** Contacts can be linked to mismatched opportunities | Data Integrity | Small |
+| 10 | **[WF-C09]** Products can be linked to mismatched opportunities | Data Integrity | Small |
 
 ### Audit Parts
 
 - **Part 1:** Original Provider Audit (15 findings)
 - **Part 2:** Silent Fallback Anti-Pattern Audit (8 checks, 23 findings)
 - **Part 3:** System-Level Audit - RPC, Storage, TypeScript (3 checks)
+- **Part 4:** Concurrency & Async Safety Audit (2 checks)
+- **Part 5:** Workflow Gap Audit (5 checks, 15 findings)
 
 ### CRITICAL: Active Validation Bypass
 
@@ -1142,4 +1149,420 @@ dataProvider.update|create|delete
 
 ---
 
-*Complete Provider Audit (13 checks) completed by Claude Code - 2026-01-08*
+---
+
+## Part 5: Workflow Gap Audit (Checks 14-18)
+
+*Added 2026-01-08 - Business logic layer audit for data integrity gaps*
+
+This section documents workflow-level gaps that cause orphaned records, inaccessible data, or silent data corruption in multi-user CRM scenarios.
+
+---
+
+### Summary Matrix (Part 5)
+
+| Check | Area | Critical | High | Medium | Low |
+|-------|------|----------|------|--------|-----|
+| **14** | Cascade Completeness | 2 | 0 | 0 | 0 |
+| **15** | Ownership Transfer | 3 | 0 | 0 | 0 |
+| **16** | Orphan Prevention UI | 2 | 1 | 0 | 0 |
+| **17** | Cross-Resource Validation | 2 | 1 | 0 | 0 |
+| **18** | State Machine Gaps | 1 | 3 | 0 | 0 |
+| **SUBTOTAL** | | **10** | **5** | **0** | **0** |
+
+---
+
+### Check 14: Cascade Completeness
+
+**Question:** Which resources leave orphan records when parent is deleted?
+
+#### [WF-C01] CRITICAL: Contacts Have NO Cascade Delete
+
+**Finding:** Opportunities have full RPC cascade (`archive_opportunity_with_relations`), but Contacts have **no equivalent function**.
+
+**Evidence:**
+- Opportunities cascade: `supabase/migrations/20251028213032_add_soft_delete_cascade_functions.sql:56-95`
+- Search for `archive_contact`: **0 matches**
+- `opportunitiesCallbacks.ts:182` calls RPC cascade
+- `contactsCallbacks` uses generic `beforeDelete` → only sets `deleted_at` on parent
+
+**Orphan Resources When Contact Deleted:**
+
+| Child Table | FK Column | Cascade? | Impact |
+|-------------|-----------|----------|--------|
+| `activities` | `contact_id` | ❌ **ORPHANED** | Activities remain with deleted contact |
+| `contact_notes` | `contact_id` | ❌ **ORPHANED** | Notes remain accessible |
+| `tasks` | `contact_id` | ❌ **ORPHANED** | Tasks remain with deleted assignee |
+| `opportunity_contacts` | `contact_id` | ❌ **ORPHANED** | Junction records remain |
+| `interaction_participants` | `contact_id` | ❌ **ORPHANED** | Participants remain |
+
+**Impact:**
+- Users see activities for "deleted" contacts
+- Search returns orphaned records
+- Data integrity compromised
+
+#### [WF-C02] CRITICAL: Organizations Have NO Cascade Delete
+
+**Finding:** Similar to contacts - no cascade RPC function exists.
+
+**Evidence:**
+- Search for `archive_organization`: **0 matches**
+- `organizationsCallbacks` uses generic `beforeDelete`
+
+**Orphan Resources When Organization Deleted:**
+
+| Child Table | FK Column | Cascade? | Impact |
+|-------------|-----------|----------|--------|
+| `contacts` | `organization_id` | ❌ **ORPHANED** | Contacts point to deleted org |
+| `opportunities` | `customer_organization_id` | ❌ **ORPHANED** | Opportunities orphaned |
+| `opportunities` | `principal_organization_id` | ❌ **ORPHANED** | Pipeline broken |
+| `organization_notes` | `organization_id` | ❌ **ORPHANED** | Notes remain |
+| `organization_distributors` | `organization_id` | ❌ **ORPHANED** | Junction records |
+| `distributor_principal_authorizations` | multiple FKs | ❌ **ORPHANED** | Auth records |
+
+**Impact:**
+- Contacts show "Company: [deleted]" or null
+- Opportunities lose customer/principal links
+- Dashboard filters break
+
+---
+
+### Check 15: Ownership Transfer on Rep Disable
+
+**Question:** When a sales rep is disabled, what happens to their records?
+
+#### [WF-C03] CRITICAL: Tasks Can Be Assigned to Disabled Users
+
+**File:** `src/atomic-crm/tasks/TaskCompactForm.tsx:100-108`
+
+**Code:**
+```tsx
+<ReferenceInput source="sales_id" reference="sales" enableGetChoices={enableGetChoices}>
+  <AutocompleteInput
+    {...getQSearchAutocompleteProps()}
+    label="Assigned To *"
+    helperText={false}
+  />
+</ReferenceInput>
+// ❌ MISSING: filter={{ "disabled@neq": true }}
+```
+
+**Issue:** Users can assign tasks to disabled sales reps. Other forms (opportunities, activities) have the filter.
+
+**Impact:** Tasks assigned to disabled users become orphaned - no one can complete them.
+
+#### [WF-C04] CRITICAL: No Reassignment Workflow When Rep Disabled
+
+**File:** `src/atomic-crm/admin/SalesPermissionsTab.tsx:286-320`
+
+**Finding:** When admin disables a user:
+1. `disabled` flag set to `true`
+2. **No prompt to reassign owned records**
+3. **No automatic transfer of ownership**
+4. Records become "orphaned" to a disabled user
+
+**SQL to Find Orphaned Records:**
+```sql
+SELECT o.id, o.name, s.first_name, s.disabled
+FROM opportunities o
+JOIN sales s ON o.account_manager_id = s.id
+WHERE s.disabled = true;
+```
+
+**Impact:**
+- Opportunities owned by disabled reps appear in limbo
+- Tasks, activities remain assigned to inaccessible users
+- No bulk reassignment tool exists
+
+#### [WF-C05] CRITICAL: RLS May Block Access to Disabled User's Data
+
+**Finding:** If RLS policies use `auth.uid()` ownership checks:
+- Disabled user can't access their records
+- Other users can't access either (no reassignment)
+- Data becomes inaccessible until admin manually reassigns
+
+**Current RLS (from Check 1):** Policies are permissive (`deleted_at IS NULL` only), so data IS accessible, but ownership is still broken.
+
+---
+
+### Check 16: Orphan Prevention UI
+
+**Question:** Does the UI warn users before creating orphans?
+
+#### [WF-C06] CRITICAL: Delete Confirmation Shows No Child Counts
+
+**File:** `src/components/admin/delete-confirm-dialog.tsx`
+
+**Current Dialog Text:**
+```
+Delete [count] [resourceName]? This action cannot be undone.
+```
+
+**Missing Information:**
+- No count of activities that will be orphaned
+- No count of notes that will be orphaned
+- No count of tasks that will be orphaned
+- No warning about cascade effects
+
+**Compare to Best Practice:**
+```
+Delete Contact "John Smith"?
+⚠️ This will orphan:
+- 12 activities
+- 5 notes
+- 3 tasks
+This action cannot be undone.
+```
+
+#### [WF-C07] CRITICAL: No BulkReassignButton for Ownership Transfer
+
+**Finding:** Searched for `BulkReassignButton` or `reassign` components - **0 matches**.
+
+**Missing UI Elements:**
+- No "Reassign to another rep" bulk action
+- No ownership transfer on user disable
+- No "Transfer all records" button in user management
+
+#### [WF-H01] HIGH: SlideOvers Show Counts But No Delete Warning
+
+**Files Examined:**
+- `ContactSlideOver.tsx` - shows activity/note counts
+- `OrganizationSlideOver.tsx` - shows contact/opportunity counts
+- `OpportunitySlideOver.tsx` - shows activity/note counts
+
+**Issue:** These counts are visible when viewing, but NOT shown in delete confirmation.
+
+---
+
+### Check 17: Cross-Resource Validation
+
+**Question:** Can invalid FK combinations be created?
+
+#### [WF-C08] CRITICAL: Contacts Can Be Linked to Mismatched Opportunities
+
+**File:** `supabase/migrations/20251231120000_add_sync_opportunity_contacts_rpc.sql`
+
+**RPC Signature:**
+```sql
+CREATE OR REPLACE FUNCTION sync_opportunity_contacts_rpc(
+  p_opportunity_id BIGINT,
+  p_contact_ids BIGINT[]
+)
+```
+
+**Missing Validation:**
+```sql
+-- ❌ Should validate:
+-- All contacts belong to opportunity's customer_organization_id
+-- OR opportunity allows external contacts
+```
+
+**Attack Scenario:**
+1. Opportunity for Customer Org A (e.g., "Restaurant ABC")
+2. User selects contacts from Org B (competitor "Restaurant XYZ")
+3. RPC accepts the contacts
+4. Opportunity now shows contacts from wrong organization
+
+**Impact:** Data integrity breach - opportunities linked to unrelated contacts
+
+#### [WF-C09] CRITICAL: Products Can Be Linked to Mismatched Opportunities
+
+**File:** `supabase/migrations/...sync_opportunity_with_products.sql`
+
+**Missing Validation:**
+```sql
+-- ❌ Should validate:
+-- All products belong to opportunity's principal_organization_id
+```
+
+**Issue:** Products from Principal A can be added to Opportunity for Principal B.
+
+**Impact:** Pipeline reports show incorrect product mix per principal.
+
+#### [WF-H02] HIGH: opportunity_participants No Role Validation
+
+**Finding:** Junction table allows any combination of:
+- `opportunity_id` - any opportunity
+- `sales_id` - any sales rep
+- `role` - any string (no enum validation)
+
+**Issue:** Any rep can be added to any opportunity with any role string.
+
+---
+
+### Check 18: State Machine Gaps
+
+**Question:** Which enum/status transitions are silently corrected?
+
+#### [WF-C10] CRITICAL: Stage Grouping Mutates Invalid Stages (Repeat of SF-C04)
+
+**File:** `src/atomic-crm/opportunities/constants/stages.ts:80-90`
+
+**Code:**
+```typescript
+console.warn("[Stage Grouping] Invalid stage detected:", {
+  opportunityId: opportunity.id,
+  stage: opportunity.stage
+});
+if (acc["new_lead"]) {
+  acc["new_lead"].push({ ...opportunity, stage: "new_lead" as Opportunity["stage"] });
+}
+```
+
+**Issue:** Invalid stages silently moved to `new_lead` with mutation.
+
+**Why CRITICAL in Workflow Context:**
+- User drags opportunity in Kanban
+- Invalid stage stored in DB (schema allows any string)
+- Next page load: opportunity appears in "New Lead" column
+- User confused: "I moved this to Closed Won yesterday"
+
+#### [WF-H03] HIGH: getOpportunityStageLabel Falls Back Silently
+
+**File:** `src/atomic-crm/opportunities/constants/stageConstants.ts:137-141`
+
+**Code:**
+```typescript
+export function getOpportunityStageLabel(stage: OpportunityStage | string): string {
+  const found = OPPORTUNITY_STAGES.find(s => s.value === stage);
+  return found?.label ?? stage; // ❌ Returns raw enum value as label
+}
+```
+
+**Impact:** Unknown stages show raw database values (e.g., `"awaiting_response"` instead of proper label).
+
+#### [WF-H04] HIGH: Contact Status No Enum Validation
+
+**File:** `src/atomic-crm/validation/contacts.ts:162`
+
+**Code:**
+```typescript
+status: z.string().trim().max(50, "Status too long").optional().nullable(),
+```
+
+**Compare to Proper Pattern:**
+```typescript
+// Should use:
+status: z.enum(CONTACT_STATUS_VALUES).optional().nullable(),
+```
+
+**Impact:** Any arbitrary string can be stored as contact status.
+
+#### [WF-H05] HIGH: Organization Type No Enum Enforcement
+
+**Finding:** Similar pattern - `organization_type` accepts any string.
+
+**Evidence:**
+- Database stores: `customer`, `principal`, `distributor`, etc.
+- Zod schema: `z.string()` with no `.enum()` constraint
+- UI dropdown shows valid options, but API accepts anything
+
+---
+
+### Updated Summary Matrix (All 18 Checks)
+
+| Check | Area | Critical | High | Medium | Low |
+|-------|------|----------|------|--------|-----|
+| **1** | Auth Default Allow | 1 | 0 | 1 | 0 |
+| **2** | API Error Swallowing | 0 | 0 | 1 | 2 |
+| **3** | Zod safeParse Misuse | 2 | 0 | 0 | 0 |
+| **4** | Switch Fall-Through | 1 | 5 | 3 | 1 |
+| **5** | Env Var Fallbacks | 1 | 1 | 0 | 0 |
+| **6** | Filter Over-Fetch | 2 | 1 | 1 | 0 |
+| **7** | Zombie Child CASCADE | 1 | 6 | 1 | 2 |
+| **8** | IDOR in getMany | 1 | 0 | 0 | 0 |
+| **9** | Swallowed RPC Exceptions | 0 | 0 | 1 | 0 |
+| **10** | Orphaned File Leak | 1 | 0 | 0 | 0 |
+| **11** | Any Type Virus | 0 | 0 | 0 | 2 |
+| **12** | Last Write Wins (Race) | 2 | 0 | 0 | 0 |
+| **13** | Floating Promise | 0 | 0 | 0 | 1 |
+| **14** | Cascade Completeness | 2 | 0 | 0 | 0 |
+| **15** | Ownership Transfer | 3 | 0 | 0 | 0 |
+| **16** | Orphan Prevention UI | 2 | 1 | 0 | 0 |
+| **17** | Cross-Resource Validation | 2 | 1 | 0 | 0 |
+| **18** | State Machine Gaps | 1 | 3 | 0 | 0 |
+| **TOTAL** | | **22** | **18** | **8** | **8** |
+
+---
+
+### Final Priority Matrix (Complete - 18 Checks)
+
+#### P0 - SECURITY/DATA LOSS (Fix Before Production)
+| ID | Issue | Effort | Type |
+|----|-------|--------|------|
+| SF-C01 | SECURITY DEFINER views → SECURITY INVOKER | S | Security |
+| SF-C08 | CASCADE → RESTRICT on soft-delete tables | M | Data Loss |
+| SF-C09 | Add ownership RLS or tenancy filter to getMany | M | Security |
+| SF-C10 | Add storage cleanup on record deletion | M | Data Leak |
+| SF-C12 | Pass version to service for optimistic locking | S | Data Loss |
+| SF-C13 | Add version columns to contacts/organizations | M | Data Loss |
+| **WF-C01** | **Add `archive_contact_with_relations` RPC** | M | Data Integrity |
+| **WF-C02** | **Add `archive_organization_with_relations` RPC** | M | Data Integrity |
+| **WF-C08** | **Add org validation to sync_opportunity_contacts** | S | Data Integrity |
+| **WF-C09** | **Add principal validation to sync_opportunity_products** | S | Data Integrity |
+| CRITICAL-001 | ValidationService casing mismatch | S | Correctness |
+
+#### P0.5 - Data Integrity (Same Sprint)
+| ID | Issue | Effort |
+|----|-------|--------|
+| SF-C02/C03 | DigestService unsafe casts → throw on failure | S |
+| SF-C04/WF-C10 | Stage reclassification → throw instead of silent move | S |
+| **WF-C03** | **Add disabled filter to TaskCompactForm sales_id** | S |
+| **WF-C04/C05** | **Add reassignment workflow on user disable** | M |
+| **WF-C06** | **Add child counts to delete confirmation dialog** | M |
+
+#### P1 - Fix This Sprint
+| ID | Issue | Effort |
+|----|-------|--------|
+| SF-C05 | Sentry release fallback → throw if not set in prod | S |
+| SF-H06 | Test file production URL → require explicit env | S |
+| SF-C06/C07 | getMany/getManyReference filter bypass | M |
+| **WF-C07** | **Create BulkReassignButton for ownership transfer** | M |
+| **WF-H02** | **Add role enum validation to opportunity_participants** | S |
+| **WF-H03-H05** | **Add enum validation for status/type fields** | M |
+
+---
+
+### Technical Debt Added (Part 5)
+
+| ID | Description | Effort | Priority |
+|----|-------------|--------|----------|
+| TD-012 | Create `archive_contact_with_relations` RPC function | M | P0 |
+| TD-013 | Create `archive_organization_with_relations` RPC function | M | P0 |
+| TD-014 | Add child counts to DeleteConfirmDialog | M | P0.5 |
+| TD-015 | Add disabled user filter to TaskCompactForm | S | P0.5 |
+| TD-016 | Create user disable reassignment workflow | M | P0.5 |
+| TD-017 | Add org validation to junction table RPCs | S | P0 |
+| TD-018 | Add enum validation to status/type fields | M | P1 |
+
+---
+
+### Verification SQL Queries
+
+```sql
+-- Check 14: Find orphan activities (contact deleted but activities remain)
+SELECT a.id, a.type, c.deleted_at as contact_deleted
+FROM activities a
+JOIN contacts c ON a.contact_id = c.id
+WHERE c.deleted_at IS NOT NULL AND a.deleted_at IS NULL;
+
+-- Check 15: Find records owned by disabled users
+SELECT o.id, o.name, s.first_name || ' ' || s.last_name as rep, s.disabled
+FROM opportunities o
+JOIN sales s ON o.account_manager_id = s.id
+WHERE s.disabled = true;
+
+-- Check 17: Find contacts linked to wrong organization's opportunities
+SELECT oc.opportunity_id, oc.contact_id,
+       o.customer_organization_id as opp_org,
+       c.organization_id as contact_org
+FROM opportunity_contacts oc
+JOIN opportunities o ON oc.opportunity_id = o.id
+JOIN contacts c ON oc.contact_id = c.id
+WHERE c.organization_id != o.customer_organization_id
+  AND c.deleted_at IS NULL AND o.deleted_at IS NULL;
+```
+
+---
+
+*Complete Provider Audit (18 checks) completed by Claude Code - 2026-01-08*
