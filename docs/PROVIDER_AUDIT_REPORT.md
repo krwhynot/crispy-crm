@@ -3,11 +3,27 @@
 ## Executive Summary
 
 - **Total findings:** 15
-- **Critical:** 0 | **High:** 2 | **Medium:** 8 | **Low:** 5
+- **Critical:** 1 | **High:** 1 | **Medium:** 8 | **Low:** 5
 - **Top 3 issues requiring immediate attention:**
-  1. **[H-001]** Resource name casing inconsistency between ValidationService and composedDataProvider (validation bypass risk)
-  2. **[H-002]** Missing validation for `notifications` resource in ValidationService
+  1. **[CRITICAL-001]** **ACTIVE VALIDATION BYPASS** - Resource name casing mismatch causes silent validation skip for notes resources
+  2. **[H-001]** Missing validation for `notifications` resource in ValidationService
   3. **[M-001]** DRY violation: `stripComputedFields` duplicated in 3 callbacks files
+
+### CRITICAL: Active Validation Bypass
+
+**3 resources are currently bypassing Zod validation due to casing mismatch:**
+
+| Resource (Router) | Registry Key | Validation Status |
+|-------------------|--------------|-------------------|
+| `contact_notes` | `contactNotes` | ❌ **BYPASSED** |
+| `opportunity_notes` | `opportunityNotes` | ❌ **BYPASSED** |
+| `organization_notes` | `organizationNotes` | ❌ **BYPASSED** |
+
+**Flow:**
+1. `composedDataProvider.create("contact_notes", ...)` - snake_case
+2. `withValidation` calls `validationService.validate("contact_notes", ...)`
+3. `ValidationService` line 218: `validationRegistry["contact_notes"]` → undefined
+4. Line 220-222: `if (!validator) { return; }` → **Silent bypass, no error**
 
 ---
 
