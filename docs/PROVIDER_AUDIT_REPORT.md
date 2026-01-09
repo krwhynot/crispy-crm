@@ -1100,7 +1100,9 @@ dataProvider.update|create|delete
 | **9** | Swallowed RPC Exceptions | 0 | 0 | 1 | 0 |
 | **10** | Orphaned File Leak | 1 | 0 | 0 | 0 |
 | **11** | Any Type Virus | 0 | 0 | 0 | 2 |
-| **TOTAL** | | **10** | **13** | **8** | **7** |
+| **12** | Last Write Wins (Race) | 2 | 0 | 0 | 0 |
+| **13** | Floating Promise | 0 | 0 | 0 | 1 |
+| **TOTAL** | | **12** | **13** | **8** | **8** |
 
 ---
 
@@ -1113,6 +1115,8 @@ dataProvider.update|create|delete
 | SF-C08 | CASCADE → RESTRICT on soft-delete tables | M | Data Loss |
 | SF-C09 | Add ownership RLS or tenancy filter to getMany | M | Security |
 | SF-C10 | Add storage cleanup on record deletion | M | Data Leak |
+| SF-C12 | **Pass version to service for optimistic locking** | S | Data Loss |
+| SF-C13 | **Add version columns to contacts/organizations** | M | Data Loss |
 | CRITICAL-001 | ValidationService casing mismatch | S | Correctness |
 
 #### P0.5 - Data Integrity
@@ -1134,7 +1138,8 @@ dataProvider.update|create|delete
 | SF-H01-H05 | Stage helper fallbacks → add exhaustive guards | M |
 | SF-M06 | process_digest_opt_out → narrow exception catch | S |
 | Low risk `any` | Replace `Record<string, any>` with specific types | S |
+| SF-L13 | Audit remaining .then()/.catch() patterns | S |
 
 ---
 
-*Complete Provider Audit (11 checks) completed by Claude Code - 2026-01-08*
+*Complete Provider Audit (13 checks) completed by Claude Code - 2026-01-08*
