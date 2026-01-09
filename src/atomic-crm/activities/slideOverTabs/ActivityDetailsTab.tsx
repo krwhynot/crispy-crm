@@ -96,19 +96,11 @@ export function ActivityDetailsTab({
 
               <TextInput source="activity_date" label="Activity Date" type="date" />
 
-              <TextInput
-                source="duration_minutes"
-                label="Duration (minutes)"
-                type="number"
-              />
+              <TextInput source="duration_minutes" label="Duration (minutes)" type="number" />
 
               <TextInput source="description" label="Description" multiline rows={4} />
 
-              <SelectInput
-                source="sentiment"
-                label="Sentiment"
-                choices={SENTIMENT_CHOICES}
-              />
+              <SelectInput source="sentiment" label="Sentiment" choices={SENTIMENT_CHOICES} />
 
               <TextInput source="outcome" label="Outcome" />
 
@@ -118,12 +110,7 @@ export function ActivityDetailsTab({
 
               <TextInput source="follow_up_date" label="Follow-up Date" type="date" />
 
-              <TextInput
-                source="follow_up_notes"
-                label="Follow-up Notes"
-                multiline
-                rows={3}
-              />
+              <TextInput source="follow_up_notes" label="Follow-up Notes" multiline rows={3} />
 
               {record.type === "sample" && (
                 <SelectInput

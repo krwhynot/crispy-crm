@@ -26,7 +26,6 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
     return "secondary";
   };
 
-
   return (
     <div className="hidden sm:block w-64 min-w-64 text-sm">
       <div className="mb-4 -ml-1">

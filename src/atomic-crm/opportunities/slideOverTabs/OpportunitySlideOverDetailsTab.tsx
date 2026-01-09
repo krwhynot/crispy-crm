@@ -435,7 +435,6 @@ export function OpportunitySlideOverDetailsTab({
     return "secondary";
   };
 
-
   const stageName =
     OPPORTUNITY_STAGE_CHOICES.find((choice) => choice.id === record.stage)?.name || record.stage;
 

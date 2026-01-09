@@ -155,7 +155,12 @@ const ActivityListLayout = ({
           />
 
           {/* Column 2: Subject - Primary identifier (sortable) - always visible */}
-          <TextField source="subject" label="Subject" className="max-w-[300px] truncate" {...COLUMN_VISIBILITY.alwaysVisible} />
+          <TextField
+            source="subject"
+            label="Subject"
+            className="max-w-[300px] truncate"
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
 
           {/* Column 3: Activity Date - Time field (sortable) - always visible */}
           <DateField

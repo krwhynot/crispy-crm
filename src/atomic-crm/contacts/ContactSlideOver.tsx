@@ -52,7 +52,7 @@ export function ContactSlideOver({
         entityType: "contacts",
       });
     }
-  }, [record, addRecent]);
+  }, [record?.id, record?.first_name, record?.last_name, addRecent]);
 
   // Tab configuration with count badges
   const contactTabs: TabConfig[] = [

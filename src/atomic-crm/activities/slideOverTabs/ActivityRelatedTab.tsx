@@ -51,7 +51,9 @@ function RelatedEntityCard({
             >
               {name}
             </button>
-            {subtitle && <p className="text-xs text-muted-foreground mt-0.5 truncate">{subtitle}</p>}
+            {subtitle && (
+              <p className="text-xs text-muted-foreground mt-0.5 truncate">{subtitle}</p>
+            )}
           </div>
         </div>
       </CardContent>
@@ -181,9 +183,7 @@ export function ActivityRelatedTab({ record, isActiveTab }: TabComponentProps) {
   const activityRecord = record as ActivityRecord;
 
   const hasRelationships =
-    activityRecord.contact_id ||
-    activityRecord.organization_id ||
-    activityRecord.opportunity_id;
+    activityRecord.contact_id || activityRecord.organization_id || activityRecord.opportunity_id;
 
   if (!isActiveTab) {
     return null;
@@ -203,10 +203,7 @@ export function ActivityRelatedTab({ record, isActiveTab }: TabComponentProps) {
       <SidepaneSection label="Related Entities">
         <div className="space-y-3">
           {activityRecord.contact_id && (
-            <ContactCard
-              contactId={activityRecord.contact_id as number}
-              onNavigate={navigate}
-            />
+            <ContactCard contactId={activityRecord.contact_id as number} onNavigate={navigate} />
           )}
 
           {activityRecord.organization_id && (

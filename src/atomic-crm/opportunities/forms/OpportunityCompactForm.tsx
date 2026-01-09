@@ -100,11 +100,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
         {/* Row 1: Name (full width) with regenerate button in edit mode */}
         <div className="relative">
           <div data-tutorial="opp-name">
-            <TextInput
-              source="name"
-              label="Opportunity Name *"
-              helperText={false}
-            />
+            <TextInput source="name" label="Opportunity Name *" helperText={false} />
           </div>
           {mode === "edit" && (
             <div className="absolute right-2 top-1/2 -translate-y-1/2">
