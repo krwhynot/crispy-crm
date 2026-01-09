@@ -2,12 +2,27 @@
 
 ## Executive Summary
 
-- **Total findings:** 15
-- **Critical:** 1 | **High:** 1 | **Medium:** 8 | **Low:** 5
-- **Top 3 issues requiring immediate attention:**
-  1. **[CRITICAL-001]** **ACTIVE VALIDATION BYPASS** - Resource name casing mismatch causes silent validation skip for notes resources
-  2. **[H-001]** Missing validation for `notifications` resource in ValidationService
-  3. **[M-001]** DRY violation: `stripComputedFields` duplicated in 3 callbacks files
+### Complete Audit Statistics (11 Checks)
+
+- **Total findings:** 38
+- **Critical:** 10 | **High:** 13 | **Medium:** 8 | **Low:** 7
+- **Audit Scope:** Application Layer, Database Layer, RPC Layer, Storage Layer, Type System
+
+### Top 5 Issues Requiring Immediate Attention (P0)
+
+| Priority | Issue | Type | Fix Effort |
+|----------|-------|------|------------|
+| 1 | **[CRITICAL-001]** ValidationService casing mismatch - silent validation bypass | Correctness | Small |
+| 2 | **[SF-C01]** SECURITY DEFINER views bypass RLS (6 views affected) | Security | Small |
+| 3 | **[SF-C08]** 20 CASCADE constraints conflict with soft-delete pattern | Data Loss | Medium |
+| 4 | **[SF-C09]** getMany/getManyReference allow cross-tenant ID fetching (IDOR) | Security | Medium |
+| 5 | **[SF-C10]** No storage cleanup - orphaned files accumulate forever | Data Leak | Medium |
+
+### Audit Parts
+
+- **Part 1:** Original Provider Audit (15 findings)
+- **Part 2:** Silent Fallback Anti-Pattern Audit (8 checks, 23 findings)
+- **Part 3:** System-Level Audit - RPC, Storage, TypeScript (3 checks)
 
 ### CRITICAL: Active Validation Bypass
 
@@ -913,7 +928,164 @@ The audit confirms:
 
 ---
 
-### Updated Summary Matrix (All 11 Checks)
+## Part 4: Concurrency & Async Safety Audit (Checks 12-13)
+
+### Check 12: "Last Write Wins" (Race Conditions)
+
+**Purpose:** Detect missing optimistic locking that causes silent data overwrites when two users edit the same record simultaneously.
+
+**Search Pattern Used:**
+```
+version|expected_version|optimistic.*lock|concurrent
+```
+
+#### [SF-C12] CRITICAL: Optimistic Locking EXISTS But NOT ENFORCED
+
+**Finding:** The `opportunities` table has version-based concurrency protection, but it is **never activated** due to a missing parameter in the handler chain.
+
+**The Complete Version Checking Infrastructure:**
+
+| Component | Status | Location |
+|-----------|--------|----------|
+| `version` column on opportunities | ✅ Exists | Migration 20251222034729 |
+| Auto-increment trigger | ✅ Exists | `increment_opportunity_version` trigger |
+| RPC `expected_version` parameter | ✅ Exists | `sync_opportunity_with_products` RPC |
+| CONFLICT exception on mismatch | ✅ Exists | RAISE EXCEPTION in RPC line 179 |
+| UI conflict error handler | ✅ Exists | `OpportunityEdit.tsx:34-39` |
+| **Handler passes version to service** | ❌ **MISSING** | `opportunitiesHandler.ts:173` |
+
+**Root Cause - Handler Never Passes Version:**
+
+```typescript
+// opportunitiesHandler.ts:173-176
+const result = await service.updateWithProducts(
+  params.id,
+  validatedData,
+  previousProducts
+  // ❌ MISSING: previousVersion = params.previousData?.version
+);
+```
+
+**Service Signature Shows Optional 4th Param:**
+
+```typescript
+// opportunities.service.ts:140-144
+async updateWithProducts(
+  id: Identifier,
+  data: Partial<OpportunityUpdateInput>,
+  previousProducts: Product[] = [],
+  previousVersion?: number  // ← This is NEVER passed!
+)
+```
+
+**Why Version Check Never Triggers:**
+
+```typescript
+// opportunities.service.ts:153
+if (productsToSync.length === 0 && previousVersion === undefined) {
+  // ← ALWAYS TRUE when previousVersion is undefined!
+  // Uses standard update WITHOUT version check
+}
+```
+
+**Race Condition Scenario:**
+1. User A opens Opportunity #123 (version=5)
+2. User B opens Opportunity #123 (version=5)
+3. User A saves changes → version becomes 6
+4. User B saves changes → **SHOULD raise CONFLICT** but doesn't
+5. User B's changes silently overwrite User A's → **DATA LOSS**
+
+**Impact:** Critical - silent data loss in multi-user scenarios
+
+**Fix Required:**
+
+```typescript
+// opportunitiesHandler.ts - Add version pass-through
+const result = await service.updateWithProducts(
+  params.id,
+  validatedData,
+  previousProducts,
+  (params.previousData as { version?: number })?.version  // Pass version!
+);
+```
+
+---
+
+#### [SF-C13] CRITICAL: Other Resources Have ZERO Concurrency Protection
+
+**Finding:** Only `opportunities` has version infrastructure. All other resources allow unrestricted "last write wins":
+
+| Resource | Has `version` Column | Impact |
+|----------|---------------------|--------|
+| opportunities | ✅ (but not enforced) | Critical |
+| **contacts** | ❌ NONE | Critical - customer data overwritten |
+| **organizations** | ❌ NONE | Critical - company data overwritten |
+| **tasks** | ❌ NONE | High - work items lost |
+| **activities** | ❌ NONE | High - activity log corrupted |
+| **products** | ❌ NONE | Medium - catalog inconsistency |
+| **sales** | ❌ NONE | Medium - user profiles overwritten |
+
+**Impact:** Any resource edited simultaneously by two users will silently lose one user's changes.
+
+---
+
+### Check 13: "Floating Promise" (Fire-and-Forget)
+
+**Purpose:** Detect async operations that aren't awaited, causing errors to be silently swallowed while the caller assumes success.
+
+**Search Patterns Used:**
+```
+.then(|.catch(
+void\s+\w+\(
+mutate(
+dataProvider.update|create|delete
+```
+
+#### [SF-L13] LOW: Floating Promise Audit Results
+
+**Finding:** The codebase has GOOD async hygiene overall.
+
+**Evidence of Proper Patterns:**
+
+1. **DataProvider calls properly awaited:**
+   ```typescript
+   // All 35+ dataProvider.create/update calls use await + try/catch
+   const result = await dataProvider.create("organizations", { data });
+   ```
+
+2. **Optimistic updates have rollback:**
+   ```typescript
+   // useMyTasks.ts:154-178 - Exemplary pattern
+   try {
+     await dataProvider.update("tasks", {...});
+     setOptimisticUpdates(prev => ...); // Clear on success
+   } catch (err) {
+     setOptimisticUpdates(prev => ...); // Rollback on failure
+     throw err;  // Re-throw for caller awareness
+   }
+   ```
+
+3. **setTimeout usage is UI-only:**
+   - Focus management delays
+   - Accessibility announcements
+   - Debouncing - no data operations
+
+4. **refresh() returns void:**
+   - React Admin's `refresh()` is designed as fire-and-forget
+   - Triggers background refetch, UI eventually syncs
+
+**Minor Concerns:**
+
+| Pattern | Location | Risk |
+|---------|----------|------|
+| `.then().catch()` in hooks | `useReportData.ts:110-116` | ⚠️ Low - properly chained |
+| `fetch().then()` for blobs | `StorageService.ts:45` | ⚠️ Low - inside await |
+
+**Conclusion:** No critical floating promise issues found. The codebase demonstrates defensive async patterns with proper error propagation.
+
+---
+
+### Updated Summary Matrix (All 13 Checks)
 
 | Check | Area | Critical | High | Medium | Low |
 |-------|------|----------|------|--------|-----|
