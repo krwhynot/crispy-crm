@@ -30,6 +30,7 @@
 - **Part 3:** System-Level Audit - RPC, Storage, TypeScript (3 checks)
 - **Part 4:** Concurrency & Async Safety Audit (2 checks)
 - **Part 5:** Workflow Gap Audit (5 checks, 15 findings)
+- **Part 6:** Remediation Strategy (Impact Analysis, Testing Strategy, Phased Rollout)
 
 ### CRITICAL: Active Validation Bypass
 
@@ -1565,4 +1566,129 @@ WHERE c.organization_id != o.customer_organization_id
 
 ---
 
-*Complete Provider Audit (18 checks) completed by Claude Code - 2026-01-08*
+---
+
+## Part 6: Remediation Strategy
+
+*Added 2026-01-08 - Execution guidance for the 56-finding audit*
+
+This is a massive remediation effort. With **56 findings** and **22 Critical issues**, you are effectively performing a "heart transplant" on the system's data integrity layer while the patient is still alive.
+
+Because so many of these issues involve **Silent Failures** (where the system lied about being successful), the biggest risk during remediation is not "breaking the app," but rather "revealing how broken it already was," which users might perceive as new bugs.
+
+Here is the breakdown of impacted areas and the recommended testing strategy.
+
+---
+
+### 1. Impact Analysis: The "Blast Radius" of Fixes
+
+Fixing these issues will ripple through four distinct layers of your stack. Here is what will be impacted:
+
+#### A. The Database Layer (High Risk)
+
+**Fixing [SF-C08] (CASCADE to RESTRICT):**
+- **Impact:** Admin tools that previously "worked" (by silently deleting massive amounts of data) will suddenly start throwing SQL Foreign Key errors.
+- **Dependency:** You must update the UI (Delete Dialogs) *before* or *simultaneously* with this DB change, or the app will become unusable for admins trying to delete records.
+
+**Fixing [SF-C01] (Security Views):**
+- **Impact:** Dashboards or lists that rely on these views might suddenly show *zero data* for non-admin users if the underlying RLS policies aren't permissive enough. You are moving from "Open to All" to "Checked Access."
+
+#### B. The API & Provider Layer (Medium Risk)
+
+**Fixing [SF-C09] (IDOR in getMany):**
+- **Impact:** Any part of the app relying on "lazy loading" data that the user technically shouldn't see (e.g., referencing a competitor's contact in a dropdown) will stop working.
+
+**Fixing [CRITICAL-001] (Validation Casing):**
+- **Impact:** `Notes` creation might start failing immediately. Previously, the system accepted *anything*. Now, it will reject invalid inputs. Expect "Form Submission Failed" errors to spike until the UI sends the correct shape.
+
+#### C. The Workflow & UI Layer (Visible Risk)
+
+**Fixing [WF-C04] (Disabled Users):**
+- **Impact:** The "Disable User" workflow changes from a 1-second toggle to a multi-step "Reassign Records" wizard. This increases operational friction but saves data.
+
+**Fixing [SF-C12] (Optimistic Locking):**
+- **Impact:** Users who are used to overwriting each other's work without knowing it will suddenly see "Conflict Errors" or "Record was updated by another user." This is a feature, not a bug, but it requires user education.
+
+---
+
+### 2. Testing Strategy: Is TDD Ideal Here?
+
+For this specific audit, **Pure TDD (Test Driven Development) is ideal for 40% of the issues, but insufficient for the rest.**
+
+Since the core problem is "Silent Failure," your testing strategy must shift from "Checking Success" to "Asserting Failure."
+
+#### Where to Use TDD (The "Red-Green-Refactor" Loop)
+
+Use TDD for logic that lives inside the TypeScript Application Layer. You want to write a failing test that proves the bug exists, then fix it.
+
+| Issue | TDD Test Approach |
+|-------|-------------------|
+| **[CRITICAL-001]** ValidationService | Write a unit test that passes `contact_notes` and asserts that the validator *runs*. Currently, it returns void/undefined. The test should fail until you add the alias. |
+| **[SF-C04]** Stage Defaults | Write a test that passes an invalid stage string and asserts that it *throws* an error, rather than silently mutating to "New Lead." |
+| **[SF-C02]** DigestService | Write a test with malformed JSON and assert that the service throws/rejects, rather than casting to `as UserDigestSummarySchema`. |
+
+#### Where to Use Integration/Migration Testing
+
+TDD is difficult for Database constraints and RLS. Use **Integration Tests** instead.
+
+| Issue | Integration Test Approach |
+|-------|---------------------------|
+| **[SF-C08]** Cascade Delete | 1. Create a Contact with 1 Activity in a test DB. 2. Attempt to DELETE the Contact via SQL/RPC. 3. Expect a `Foreign Key Violation` error. (Currently, this test would fail because the delete succeeds). |
+| **[SF-C01]** Security Views | 1. Create a View. 2. Query it as a standard user (not admin). 3. Expect only *your* rows. (Currently, you see all rows). |
+
+---
+
+### 3. Recommended Remediation Order
+
+To minimize chaos, apply fixes in this order. This ensures you don't block users before the UI is ready to guide them.
+
+#### Phase 1: The "Invisible" Hardening (Low User Impact)
+
+| Fix | Why First |
+|-----|-----------|
+| **[SF-C09]** IDOR in getMany | Patch `getMany` in the provider. No UI changes needed. |
+| **[CRITICAL-001]** Validation Casing | Fix the casing. Valid forms will keep working; only broken bots/scripts will fail. |
+| **[SF-C10]** Storage Cleanup | Add the cleanup logic. Users won't notice, but your AWS bill will stop growing. |
+
+#### Phase 2: The "Loud" Logic (Medium User Impact)
+
+| Fix | Expected User Reaction |
+|-----|------------------------|
+| **[SF-C12]** Concurrency | Enable the version check. Users might see conflict errors. |
+| **[SF-C04]** Stage Validation | Stop the silent reclassification. Bad data imports will now fail loudly. |
+
+#### Phase 3: The "Structural" Changes (High User Impact)
+
+| Fix | Coordination Required |
+|-----|-----------------------|
+| **[SF-C08] & [WF-C01]** Cascades | **Step 1:** Update UI to warn "This will orphan X records" or "Cannot delete while X exists." **Step 2:** *Then* apply the DB constraint change (`RESTRICT`). |
+
+**Reason:** If you flip the DB switch first, the UI delete button will just crash without telling the user why.
+
+---
+
+### 4. Pre-Fix Checklist
+
+Before touching code, ensure you have:
+
+| Requirement | Why |
+|-------------|-----|
+| **A Database Snapshot** | You are about to mess with Foreign Keys and Deletes. One bad migration script can wipe data. |
+| **A "Test User" Account** | Do not test RLS fixes ([SF-C01]) as a Super Admin. You must use a standard token to verify the fix works. |
+| **Access to Production Logs** | When you enable validation, you need to watch Sentry/Logs to see if legitimate users are getting blocked by stricter rules. |
+
+---
+
+### 5. Risk Summary Table
+
+| Fix Category | Risk Level | User Visible? | Coordination |
+|--------------|------------|---------------|--------------|
+| Validation fixes | Low | Only invalid data rejected | None |
+| IDOR/Security fixes | Low | Unauthorized data hidden | None |
+| Concurrency fixes | Medium | Conflict errors shown | User education |
+| Cascade/FK fixes | High | Delete operations may fail | UI must update first |
+| RLS view fixes | High | Data visibility changes | Test as non-admin |
+
+---
+
+*Complete Provider Audit (18 checks) + Remediation Strategy completed by Claude Code - 2026-01-08*
