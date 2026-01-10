@@ -292,7 +292,7 @@ const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { ta
         previousData: task,
       });
       notify(checked ? "Task completed" : "Task reopened", { type: "success" });
-    } catch (error) {
+    } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
       throw new Error(`Failed to update task ${task.id}: ${error}`);
     }

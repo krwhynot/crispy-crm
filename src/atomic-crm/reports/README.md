@@ -156,7 +156,7 @@ tests/
 - **Hook**: `useGetList<T>(resource, options)`
 - **Files**: All report components
 - **Usage**: Fetch opportunities, activities, sales, organizations
-- **Pattern**: High pagination limit (10,000) for complete datasets
+- **Pattern**: Large pagination limit (1,000) for aggregation datasets
 - **Status**: ✅ **Core data fetching mechanism**
 
 **Example**:
@@ -164,7 +164,7 @@ tests/
 const { data: opportunities, isPending } = useGetList<Opportunity>(
   "opportunities_summary",
   {
-    pagination: { page: 1, perPage: 10000 },
+    pagination: { page: 1, perPage: 1000 },
     filter: { "deleted_at@is": null, status: "active" },
     sort: { field: "estimated_close_date", order: "ASC" },
   }
@@ -407,7 +407,7 @@ All reports use the same pattern:
 const { data, isPending } = useGetList<Type>(
   "resource_name",
   {
-    pagination: { page: 1, perPage: 10000 },  // High limit for complete dataset
+    pagination: { page: 1, perPage: 1000 },  // Large limit for aggregation (PERF-001)
     filter: { /* PostgREST filters */ },
     sort: { field: "fieldName", order: "ASC" | "DESC" },
   }

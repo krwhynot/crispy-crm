@@ -138,7 +138,7 @@ export const useFilterCleanup = (resource: string) => {
             `localStorage and React Admin store updated.`
         );
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(
         `[useFilterCleanup] Error parsing localStorage for resource "${resource}":`,
         error

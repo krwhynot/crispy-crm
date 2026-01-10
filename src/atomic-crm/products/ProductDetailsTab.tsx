@@ -118,7 +118,7 @@ export function ProductDetailsTab({
       });
       notify("Product updated successfully", { type: "success" });
       onModeToggle?.();
-    } catch (error) {
+    } catch (error: unknown) {
       notify("Error updating product", { type: "error" });
       console.error("Save error:", error);
     }

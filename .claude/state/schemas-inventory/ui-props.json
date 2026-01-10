@@ -1,0 +1,255 @@
+{
+  "chunk_name": "ui-props",
+  "generated_at": "2026-01-10T23:36:08.410Z",
+  "item_count": 5,
+  "items": [
+    {
+      "name": "slideOverPropsSchema",
+      "file": "src/atomic-crm/validation/ui-props.ts",
+      "line": 64,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "recordId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "isOpen",
+          "zodType": "boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "onClose",
+          "zodType": "ref:voidCallbackSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "mode",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true,
+          "enumValues": [
+            "view",
+            "edit"
+          ]
+        },
+        {
+          "name": "onModeToggle",
+          "zodType": "ref:voidCallbackSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "slideOverPropsWithCanEditSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "slideOverPropsWithCanEditSchema",
+      "file": "src/atomic-crm/validation/ui-props.ts",
+      "line": 76,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "slideOverPropsSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "tabComponentPropsSchema",
+      "file": "src/atomic-crm/validation/ui-props.ts",
+      "line": 88,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "record",
+          "zodType": "record",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "mode",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false,
+          "enumValues": [
+            "view",
+            "edit"
+          ]
+        },
+        {
+          "name": "onModeToggle",
+          "zodType": "ref:voidCallbackSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "isActiveTab",
+          "zodType": "boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "onDirtyChange",
+          "zodType": "ref:booleanCallbackSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "quickLogFormPropsSchema",
+      "file": "src/atomic-crm/validation/ui-props.ts",
+      "line": 104,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "onComplete",
+          "zodType": "ref:voidCallbackSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "onRefresh",
+          "zodType": "ref:voidCallbackSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "initialDraft",
+          "zodType": "record",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "onDraftChange",
+          "zodType": "ref:recordCallbackSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "initialContactId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "initialOrganizationId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "initialOpportunityId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "quickLogFormSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "contactListLayoutPropsSchema",
+      "file": "src/atomic-crm/validation/ui-props.ts",
+      "line": 122,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "openSlideOver",
+          "zodType": "ref:numberCallbackSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "isSlideOverOpen",
+          "zodType": "boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "createContactSchema",
+        "importContactSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

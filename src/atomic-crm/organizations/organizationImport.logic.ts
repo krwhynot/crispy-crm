@@ -8,6 +8,7 @@
  */
 
 import { organizationSchema } from "../validation/organizations";
+import { devLog } from "@/lib/devLogger";
 
 /**
  * Organization import schema type - matches the structure we'll receive from CSV
@@ -154,8 +155,9 @@ export function applyDataQualityTransformations(
 
     // Normalize invalid priority values to "C" (medium priority)
     if (transformed.priority && !validPriorities.includes(transformed.priority)) {
-      console.log(
-        `[Import] Normalizing invalid priority "${transformed.priority}" to "C" for row ${index + 2}`
+      devLog(
+        "Import",
+        `Normalizing invalid priority "${transformed.priority}" to "C" for row ${index + 2}`
       );
       transformed.priority = "C";
       transformedSet.add(index);
@@ -181,15 +183,17 @@ export function applyDataQualityTransformations(
       const linkedinRegex = /^https?:\/\/(?:www\.)?linkedin\.com\//i;
       if (!linkedinRegex.test(correctedUrl)) {
         // Not a LinkedIn URL - set to null instead of failing validation
-        console.log(
-          `[Import] Removing invalid LinkedIn URL "${originalUrl}" for row ${index + 2} (not a linkedin.com URL)`
+        devLog(
+          "Import",
+          `Removing invalid LinkedIn URL "${originalUrl}" for row ${index + 2} (not a linkedin.com URL)`
         );
         transformed.linkedin_url = null;
         transformedSet.add(index);
       } else if (correctedUrl !== originalUrl) {
         // URL was corrected
-        console.log(
-          `[Import] Auto-corrected LinkedIn URL for row ${index + 2}: "${originalUrl}" -> "${correctedUrl}"`
+        devLog(
+          "Import",
+          `Auto-corrected LinkedIn URL for row ${index + 2}: "${originalUrl}" -> "${correctedUrl}"`
         );
         transformed.linkedin_url = correctedUrl;
         transformedSet.add(index);

@@ -61,7 +61,7 @@ export interface FilterSelectUIProps {
  *
  * Pattern G component for React Admin list filtering.
  * Optimized for filter use cases with:
- * - Compact trigger (h-9 vs h-11 for forms)
+ * - WCAG 2.1 AA compliant touch targets (h-11 = 44px)
  * - Badge showing selected count
  * - Clear button always visible when has selection
  * - Multi-select toggle behavior with checkboxes
@@ -131,7 +131,7 @@ export function FilterSelectUI({
 
   if (isLoading) {
     return (
-      <Button variant="outline" size="sm" disabled className={cn("h-9 gap-1", className)}>
+      <Button variant="outline" size="sm" disabled className={cn("h-11 gap-1", className)}>
         <span className="text-sm font-medium">{label}</span>
         <span className="h-4 w-4 animate-pulse rounded-full bg-muted" />
       </Button>
@@ -150,7 +150,11 @@ export function FilterSelectUI({
             aria-expanded={open}
             // TODO: Add aria-controls={popoverId} linking to PopoverContent id for screen readers
             aria-label={`Filter by ${label}`}
-            className={cn("h-9 justify-between gap-1", hasSelection && "border-primary", className)}
+            className={cn(
+              "h-11 justify-between gap-1",
+              hasSelection && "border-primary",
+              className
+            )}
             disabled={isDisabled}
           >
             <span className="text-sm font-medium">{label}</span>
@@ -186,7 +190,7 @@ export function FilterSelectUI({
                       key={option.id}
                       value={option.label}
                       onSelect={() => handleToggle(option.id)}
-                      className="h-9 cursor-pointer"
+                      className="h-11 cursor-pointer"
                     >
                       <div
                         className={cn(

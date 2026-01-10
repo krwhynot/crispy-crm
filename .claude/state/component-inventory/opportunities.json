@@ -1,7 +1,7 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-08T12:14:50.356Z",
-  "item_count": 79,
+  "generated_at": "2026-01-10T23:35:59.777Z",
+  "item_count": 81,
   "items": [
     {
       "name": "ActivitiesList",
@@ -30,7 +30,7 @@
     {
       "name": "ActivityNoteForm",
       "file": "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
-      "line": 30,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -38,18 +38,22 @@
         "useGetList",
         "useNotify",
         "usePipelineConfig",
+        "useQueryClient",
         "useRefresh"
       ],
       "imports": [
         "../root/ConfigurationContext",
         "../types",
         "../validation/activities",
+        "./constants/stageConstants",
+        "@/atomic-crm/queryKeys",
         "@/components/ui/button",
         "@/components/ui/input",
         "@/components/ui/select",
         "@/components/ui/select-ui",
         "@/components/ui/textarea",
         "@hookform/resolvers/zod",
+        "@tanstack/react-query",
         "ra-core",
         "react-hook-form"
       ],
@@ -300,7 +304,7 @@
     {
       "name": "OpportunityAside",
       "file": "src/atomic-crm/opportunities/OpportunityAside.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useRecordContext"
@@ -318,6 +322,7 @@
         "@/components/admin/show-button",
         "@/components/ui",
         "@/components/ui/badge",
+        "@/components/ui/priority-badge",
         "@/lib/date-utils",
         "date-fns",
         "react-admin"
@@ -337,7 +342,7 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 20,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -375,7 +380,7 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 20,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -1562,7 +1567,7 @@
     {
       "name": "OpportunityCompactForm",
       "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
-      "line": 47,
+      "line": 48,
       "type": "presentational",
       "hooks": [
         "useAutoGenerateName",
@@ -2003,10 +2008,11 @@
     {
       "name": "OpportunityCardActions",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
-      "line": 21,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useDataProvider",
         "useDelete",
         "useNavigate",
         "useNotify",
@@ -2031,6 +2037,7 @@
         "Opportunity"
       ],
       "contextDependencies": [
+        "useDataProvider",
         "useRecordContext"
       ],
       "componentRole": "wrapper"
@@ -2069,14 +2076,16 @@
     {
       "name": "OpportunityListContent",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
-      "line": 80,
+      "line": 82,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useColumnPreferences",
+        "useDataProvider",
         "useEffect",
         "useListContext",
         "useNotify",
+        "useQueryClient",
         "useRefresh",
         "useSensor",
         "useSensors",
@@ -2092,9 +2101,11 @@
         "./ColumnCustomizationMenu",
         "./OpportunityCard",
         "./OpportunityColumn",
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/opportunities",
         "@dnd-kit/core",
         "@dnd-kit/sortable",
+        "@tanstack/react-query",
         "es-toolkit",
         "ra-core",
         "react"
@@ -2110,6 +2121,7 @@
         "OpportunityCard"
       ],
       "contextDependencies": [
+        "useDataProvider",
         "useListContext"
       ],
       "componentRole": "wrapper"
@@ -2332,6 +2344,73 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "OpportunityDetailsFormSection",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useFormContext",
+        "useFormState"
+      ],
+      "imports": [
+        "../../organizations/AutocompleteOrganizationInput",
+        "../LeadSourceInput",
+        "../components/CloseOpportunityModal",
+        "../constants/stageConstants",
+        "@/atomic-crm/types",
+        "@/atomic-crm/utils/saleOptionRenderer",
+        "@/atomic-crm/validation/opportunities",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/array-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/layouts/sidepane",
+        "react",
+        "react-admin",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "AutocompleteOrganizationInput",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "LeadSourceInput",
+        "CloseOpportunityModal"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "OpportunityDetailsViewSection",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsViewSection.tsx",
+      "line": 81,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../constants/stageConstants",
+        "@/atomic-crm/types",
+        "@/atomic-crm/validation/opportunities",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/priority-badge",
+        "@/components/ui/scroll-area",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "OPPORTUNITY_STAGE_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
       "name": "OpportunityNotesTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityNotesTab.tsx",
       "line": 25,
@@ -2390,7 +2469,7 @@
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 296,
+      "line": 23,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2400,36 +2479,17 @@
         "useUpdate"
       ],
       "imports": [
-        "../../organizations/AutocompleteOrganizationInput",
-        "../LeadSourceInput",
-        "../components/CloseOpportunityModal",
-        "../constants/stageConstants",
+        "./OpportunityDetailsFormSection",
+        "./OpportunityDetailsViewSection",
         "@/atomic-crm/types",
-        "@/atomic-crm/utils/saleOptionRenderer",
         "@/atomic-crm/validation/opportunities",
-        "@/components/admin/FormErrorSummary",
-        "@/components/admin/array-input",
-        "@/components/admin/select-input",
-        "@/components/admin/simple-form-iterator",
-        "@/components/admin/text-input",
-        "@/components/layouts/sidepane",
-        "@/components/ui/badge",
-        "@/components/ui/card",
-        "@/components/ui/scroll-area",
-        "@/lib/date-utils",
-        "date-fns",
-        "lucide-react",
         "react",
-        "react-admin",
-        "react-hook-form",
-        "react-router-dom"
+        "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "AutocompleteOrganizationInput",
-        "OPPORTUNITY_STAGE_CHOICES",
-        "LeadSourceInput",
-        "CloseOpportunityModal"
+        "OpportunityDetailsFormSection",
+        "OpportunityDetailsViewSection"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

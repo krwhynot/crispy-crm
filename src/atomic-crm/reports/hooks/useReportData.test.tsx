@@ -42,14 +42,14 @@ describe("useReportData", () => {
     });
   });
 
-  it("passes pagination with perPage: 10000", async () => {
+  it("passes pagination with perPage: 1000", async () => {
     renderHook(() => useReportData("opportunities"));
 
     await waitFor(() => {
       expect(mockGetList).toHaveBeenCalledWith(
         "opportunities",
         expect.objectContaining({
-          pagination: { page: 1, perPage: 10000 },
+          pagination: { page: 1, perPage: 1000 },
         })
       );
     });

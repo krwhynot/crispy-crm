@@ -5,6 +5,9 @@
  * This function is idempotent - it checks if migration was already performed
  * before cleaning up keys, avoiding unnecessary localStorage operations.
  */
+
+import { devLog } from "@/lib/devLogger";
+
 export function cleanupOldReportKeys(): void {
   // Skip if migration already completed
   if (localStorage.getItem("reports.migration.completed") === "true") {
@@ -26,6 +29,6 @@ export function cleanupOldReportKeys(): void {
   localStorage.setItem("reports.migration.completed", "true");
 
   if (process.env.NODE_ENV === "development") {
-    console.log("[Reports Migration] Cleaned up old localStorage keys");
+    devLog("Reports Migration", "Cleaned up old localStorage keys");
   }
 }

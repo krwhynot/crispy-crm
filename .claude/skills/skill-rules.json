@@ -52,7 +52,13 @@
           "pull request",
           "push",
           "merge",
-          "deploy"
+          "deploy",
+          "implement",
+          "create",
+          "build",
+          "add feature",
+          "new component",
+          "new handler"
         ],
         "intentPatterns": [
           "(tests?|build|types?).*?(pass|passes|passing|succeed|succeeds|work|works)",
@@ -64,7 +70,9 @@
           "ship.*?it",
           "all.*?(good|done|set|ready)",
           "(create|make|open).*?(commit|PR|pull request)",
-          "(push|merge|deploy).*?(changes|code|branch)"
+          "(push|merge|deploy).*?(changes|code|branch)",
+          "(implement|create|build|add).*?(feature|component|handler|schema|form)",
+          "(new|add).*?(component|hook|handler|schema|validation)"
         ]
       },
       "verificationCommands": {
@@ -94,7 +102,7 @@
       "type": "guardrail",
       "enforcement": "hybrid",
       "priority": "critical",
-      "description": "Engineering Constitution enforcement - BLOCKS anti-patterns (retry logic, circuit breakers), SUGGESTS best practices (fail-fast, Zod validation, form defaults from schema). NEW: Zod security (strictObject, string limits, coercion), form performance (onSubmit/onBlur mode, useWatch).",
+      "description": "Engineering Constitution enforcement - BLOCKS anti-patterns (retry logic, circuit breakers, TypeScript escape hatches), SUGGESTS best practices (fail-fast, Zod validation, form defaults from schema). Includes Zod security (strictObject, string limits, coercion), form performance (onSubmit/onBlur mode, useWatch), and TypeScript strictness.",
       "promptTriggers": {
         "keywords": [
           "implement",
@@ -133,7 +141,13 @@
           "form mode",
           "mass assignment",
           "DoS",
-          "OWASP"
+          "OWASP",
+          "as any",
+          "ts-ignore",
+          "ts-nocheck",
+          "type safety",
+          "any type",
+          "typescript strict"
         ],
         "intentPatterns": [
           "(implement|create|build|add).*?(feature|form|validation|migration)",
@@ -178,7 +192,11 @@
           "z\\.enum\\(",
           "useWatch\\(",
           "mode:\\s*['\"]onChange['\"]",
-          "watch\\(\\)"
+          "watch\\(\\)",
+          "as any",
+          "@ts-ignore",
+          "@ts-nocheck",
+          "as unknown as"
         ]
       },
       "blockPatterns": {
@@ -190,6 +208,22 @@
           "Math\\.pow\\(2,.*\\).*\\*.*1000",
           "catch.*\\{[^}]*return.*cached",
           "state:\\s*['\"]OPEN['\"]\\s*\\|\\s*['\"]CLOSED['\"]"
+        ]
+      },
+      "warnPatterns": {
+        "description": "Patterns that trigger a warning but don't block - require justification",
+        "patterns": [
+          "as\\s+any",
+          "@ts-ignore",
+          "@ts-nocheck",
+          "as\\s+unknown\\s+as",
+          "\\!\\s*$",
+          ": any[,;\\)\\s]"
+        ],
+        "allowedContexts": [
+          "test files",
+          "type definition files (.d.ts)",
+          "third-party library wrappers"
         ]
       }
     },
@@ -540,20 +574,18 @@
         ]
       },
       "blockPatterns": {
-        "description": "Anti-patterns that should BLOCK and require root cause tracing first",
+        "description": "Anti-patterns that indicate symptom-fixing without root cause investigation. NOTE: Optional chaining (?.) is valid TypeScript - only block when combined with suspicious fallbacks.",
         "patterns": [
-          "\\?\\.",
+          "catch\\s*\\([^)]*\\)\\s*\\{[^}]*\\?\\.",
           "\\|\\|\\s*\\{\\}",
           "\\|\\|\\s*\\[\\]",
           "\\|\\|\\s*''",
-          "\\|\\|\\s*null",
-          "\\|\\|\\s*undefined",
+          "\\?\\?\\s*\\{\\}",
+          "\\?\\?\\s*\\[\\]",
           "catch\\s*\\([^)]*\\)\\s*\\{[^}]*console",
-          "try\\s*\\{[^}]*\\}\\s*catch\\s*\\{[^}]*\\}",
-          "if\\s*\\(!\\w+\\)\\s*return",
-          "if\\s*\\(\\w+\\s*===?\\s*null\\)",
-          "if\\s*\\(\\w+\\s*===?\\s*undefined\\)",
-          "typeof\\s+\\w+\\s*!==?\\s*['\"]undefined['\"]"
+          "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}",
+          "catch\\s*\\{\\s*\\}",
+          "if\\s*\\(!\\w+\\)\\s*return\\s*;?\\s*$"
         ]
       },
       "integrations": {
@@ -1343,6 +1375,314 @@
         "Soft delete used (not hard delete)?",
         "Handler composition is explicit?"
       ]
+    },
+    "testing-patterns": {
+      "type": "domain",
+      "enforcement": "contextual",
+      "priority": "high",
+      "description": "TDD and unit testing guidance for Crispy CRM. Covers Vitest patterns, React Admin component testing with renderWithAdminContext, Zod schema validation testing, Supabase mocking, and E2E with Playwright. Integrates with verification-before-completion.",
+      "requiredSkills": ["verification-before-completion"],
+      "contextualEnforcement": {
+        "block": {
+          "pathPatterns": [
+            "src/atomic-crm/**/*.tsx",
+            "src/atomic-crm/**/*.ts"
+          ],
+          "excludePatterns": [
+            "**/*.test.ts",
+            "**/*.test.tsx",
+            "**/*.spec.ts",
+            "**/__tests__/**"
+          ],
+          "reason": "Production code in atomic-crm requires test coverage - TDD enforcement"
+        },
+        "suggest": {
+          "pathPatterns": [
+            "src/**/__tests__/**/*.ts",
+            "src/**/__tests__/**/*.tsx",
+            "src/**/*.test.ts",
+            "src/**/*.test.tsx",
+            "src/**/*.spec.ts",
+            "tests/**/*.ts"
+          ],
+          "reason": "Test files - guidance available but not enforced"
+        }
+      },
+      "promptTriggers": {
+        "keywords": [
+          "test",
+          "tests",
+          "testing",
+          "TDD",
+          "test-driven",
+          "unit test",
+          "integration test",
+          "e2e",
+          "end-to-end",
+          "vitest",
+          "playwright",
+          "jest",
+          "coverage",
+          "mock",
+          "mocking",
+          "stub",
+          "spy",
+          "assertion",
+          "expect",
+          "describe",
+          "it",
+          "beforeEach",
+          "afterEach",
+          "test failure",
+          "test failing",
+          "test passes",
+          "red-green-refactor",
+          "pgTAP",
+          "database test",
+          "component test",
+          "render test",
+          "snapshot",
+          "test file",
+          "spec file",
+          "__tests__",
+          ".test.ts",
+          ".test.tsx",
+          ".spec.ts"
+        ],
+        "intentPatterns": [
+          "(write|create|add|implement).*?test",
+          "(test|testing).*?(component|hook|schema|validation|form|feature)",
+          "(run|execute|debug).*?test",
+          "(fix|debug|investigate).*?(test|spec).*?(fail|error|broken)",
+          "(mock|stub|spy).*?(supabase|api|service|provider)",
+          "(setup|configure).*?(test|vitest|playwright|jest)",
+          "TDD.*?(workflow|cycle|approach)",
+          "(red|green|refactor).*?(cycle|phase)",
+          "(coverage|cover).*?(code|test|report)",
+          "how.*?(test|mock|assert)",
+          "(renderWithAdminContext|render.*?admin)",
+          "(e2e|end-to-end|playwright).*?(test|scenario|journey)",
+          "(pgTAP|database).*?test",
+          "why.*?test.*?(fail|broken|error)",
+          "(implement|create|build).*?(without|skip|later).*?test",
+          "test.*?later",
+          "skip.*?test"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/**/__tests__/**/*.ts",
+          "src/**/__tests__/**/*.tsx",
+          "src/**/*.test.ts",
+          "src/**/*.test.tsx",
+          "src/**/*.spec.ts",
+          "tests/**/*.ts",
+          "tests/**/*.spec.ts",
+          "supabase/tests/**/*.sql"
+        ],
+        "contentPatterns": [
+          "describe\\(",
+          "it\\(",
+          "test\\(",
+          "expect\\(",
+          "vi\\.mock",
+          "vi\\.fn",
+          "vi\\.spyOn",
+          "renderWithAdminContext",
+          "@testing-library",
+          "@playwright",
+          "SELECT plan\\(",
+          "SELECT ok\\(",
+          "beforeEach",
+          "afterEach"
+        ]
+      },
+      "testCommands": {
+        "unit": "just test",
+        "watch": "just test:watch",
+        "coverage": "just test:coverage",
+        "e2e": "npx playwright test",
+        "database": "npx supabase test db"
+      }
+    },
+    "writing-plans": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Plan authoring skill with quality gates and AI estimation. Creates implementation plans that zero-context agents can execute. Integrates with mcp__zen__consensus for effort/risk estimation.",
+      "requiredSkills": ["enforcing-principles", "verification-before-completion"],
+      "promptTriggers": {
+        "keywords": [
+          "write-plan",
+          "write plan",
+          "implementation plan",
+          "design plan",
+          "feature plan",
+          "create plan",
+          "plan for",
+          "planning",
+          "break down",
+          "task breakdown"
+        ],
+        "intentPatterns": [
+          "(write|create|draft|design).*?plan",
+          "plan.*?(for|to).*?(implement|build|add|create)",
+          "(break|split).*?(down|into).*?tasks?",
+          "how.*?(would|should).*?(implement|build|approach)"
+        ]
+      }
+    },
+    "executing-plans": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Plan execution skill with intelligent agent routing, subagent parallelization, checkpoint/rollback, and TodoWrite tracking. Routes tasks to specialized agents (test-fixer, form-builder, etc.) based on keywords.",
+      "requiredSkills": ["verification-before-completion", "enforcing-principles"],
+      "promptTriggers": {
+        "keywords": [
+          "execute-plan",
+          "execute plan",
+          "run plan",
+          "implement plan",
+          "start plan",
+          "begin plan",
+          "parallel execution",
+          "subagent",
+          "task swarm",
+          "agent routing"
+        ],
+        "intentPatterns": [
+          "(execute|run|start|begin|implement).*?plan",
+          "plan.*?(execute|run|start|begin|implement)",
+          "(dispatch|launch|spawn).*?(agent|task|subagent)",
+          "parallel.*?(execution|implementation|tasks?)"
+        ]
+      }
+    },
+    "audit:rls-soft-delete": {
+      "type": "audit",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Audit RLS policies for soft-delete filtering. Use when checking security policies, debugging 'deleted records visible' issues, or reviewing migrations.",
+      "promptTriggers": {
+        "keywords": [
+          "rls audit",
+          "policy audit",
+          "soft delete audit",
+          "deleted records visible",
+          "security audit rls",
+          "check rls",
+          "audit policies"
+        ],
+        "intentPatterns": [
+          "(audit|check|review).*?(rls|policy|policies)",
+          "(deleted|soft.?delete).*?(visible|showing|appearing)",
+          "rls.*?(soft.?delete|deleted_at)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "CREATE POLICY.*SELECT",
+          "deleted_at"
+        ]
+      }
+    },
+    "audit:summary-views": {
+      "type": "audit",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Audit *_summary views for required columns and consistency. Use when creating views, debugging 'column not found' errors, or reviewing schema.",
+      "promptTriggers": {
+        "keywords": [
+          "view audit",
+          "summary view",
+          "column not found",
+          "missing column",
+          "schema audit views",
+          "view columns",
+          "sync view"
+        ],
+        "intentPatterns": [
+          "(audit|check|review).*?(view|views|summary)",
+          "(column|field).*?(not found|missing)",
+          "(view|summary).*?(out of sync|missing|columns)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "CREATE.*VIEW.*_summary",
+          "information_schema.columns"
+        ]
+      }
+    },
+    "validate:props": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Enforce Zod props validation for UI components. Use when creating forms, SlideOvers, or high-churn components.",
+      "promptTriggers": {
+        "keywords": [
+          "props validation",
+          "component props",
+          "SlideOver props",
+          "form props",
+          "validate props",
+          "props schema",
+          "ui-props"
+        ],
+        "intentPatterns": [
+          "(validate|check|define).*?props",
+          "(component|form|slideover).*?props.*?(type|schema|validation)",
+          "props.*?(zod|schema|validation)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/**/*SlideOver*.tsx",
+          "src/atomic-crm/validation/ui-props.ts"
+        ],
+        "contentPatterns": [
+          "slideOverPropsSchema",
+          "z\\.infer.*Props"
+        ]
+      }
+    }
+  },
+  "keywordOwnership": {
+    "_comment": "Defines primary skill when multiple skills share keywords. Format: keyword -> primary skill",
+    "schema": {
+      "primary": "discovery-first",
+      "context": {
+        "migration": "supabase-crm",
+        "zod": "enforcing-principles",
+        "data provider": "crispy-data-provider"
+      }
+    },
+    "validation": {
+      "primary": "enforcing-principles",
+      "context": {
+        "data": "data-integrity-guards",
+        "props": "validate:props"
+      }
+    },
+    "edge function": {
+      "primary": "supabase-crm",
+      "context": {
+        "cli": "supabase-cli",
+        "deploy": "troubleshooting"
+      }
+    },
+    "trace": {
+      "primary": "root-cause-tracing",
+      "context": {
+        "comprehensive": "comprehensive-tracing"
+      }
     }
   }
 }

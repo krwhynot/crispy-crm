@@ -389,20 +389,78 @@ describe("RPC Validation Schemas", () => {
       expect(result.success).toBe(true);
     });
 
-    it("should accept null for optional arrays", () => {
+    it("should reject when both arrays are null (no criteria provided)", () => {
       const result = checkAuthorizationBatchParamsSchema.safeParse({
         _distributor_id: 100,
         _product_ids: null,
         _principal_ids: null,
       });
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain(
+          "At least one of _product_ids or _principal_ids must be provided"
+        );
+      }
     });
 
-    it("should accept empty arrays", () => {
+    it("should reject when both arrays are empty (no criteria provided)", () => {
       const result = checkAuthorizationBatchParamsSchema.safeParse({
         _distributor_id: 100,
         _product_ids: [],
         _principal_ids: [],
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain(
+          "At least one of _product_ids or _principal_ids must be provided"
+        );
+      }
+    });
+
+    it("should reject when neither array is provided (omitted)", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain(
+          "At least one of _product_ids or _principal_ids must be provided"
+        );
+      }
+    });
+
+    it("should accept when only product_ids provided (principal_ids null)", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: [1, 2, 3],
+        _principal_ids: null,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept when only principal_ids provided (product_ids null)", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: null,
+        _principal_ids: [200, 201],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept when product_ids has values and principal_ids is empty", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: [1],
+        _principal_ids: [],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept when principal_ids has values and product_ids is empty", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: [],
+        _principal_ids: [200],
       });
       expect(result.success).toBe(true);
     });

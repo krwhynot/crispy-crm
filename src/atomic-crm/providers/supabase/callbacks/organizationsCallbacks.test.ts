@@ -15,6 +15,19 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
 import { organizationsCallbacks } from "./organizationsCallbacks";
 
+// Mock supabase for RPC cascade delete tests
+vi.mock("../supabase", () => ({
+  supabase: {
+    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
+  },
+}));
+
+// Mock storage cleanup utilities
+vi.mock("../utils/storageCleanup", () => ({
+  collectOrganizationFilePaths: vi.fn().mockResolvedValue([]),
+  deleteStorageFiles: vi.fn().mockResolvedValue(undefined),
+}));
+
 describe("organizationsCallbacks", () => {
   let mockDataProvider: DataProvider;
 
@@ -38,8 +51,11 @@ describe("organizationsCallbacks", () => {
     });
   });
 
-  describe("beforeDelete - soft delete", () => {
-    it("should convert delete to soft delete by setting deleted_at", async () => {
+  describe("beforeDelete - cascade soft delete via RPC", () => {
+    it("should call archive_organization_with_relations RPC for cascade soft delete", async () => {
+      // Import mocked supabase to verify RPC call
+      const { supabase } = await import("../supabase");
+
       const params = {
         id: 1,
         previousData: { id: 1, name: "Acme Corp" } as RaRecord,
@@ -47,11 +63,9 @@ describe("organizationsCallbacks", () => {
 
       const result = await organizationsCallbacks.beforeDelete!(params, mockDataProvider);
 
-      // Should call update instead of delete
-      expect(mockDataProvider.update).toHaveBeenCalledWith("organizations", {
-        id: 1,
-        data: { deleted_at: expect.any(String) },
-        previousData: params.previousData,
+      // Should call RPC for cascade soft delete (FIX [WF-C02])
+      expect(supabase.rpc).toHaveBeenCalledWith("archive_organization_with_relations", {
+        org_id: 1,
       });
 
       // Should return modified params that prevent actual delete
@@ -59,7 +73,7 @@ describe("organizationsCallbacks", () => {
       expect((result as any).meta.skipDelete).toBe(true);
     });
 
-    it("should set deleted_at to ISO timestamp", async () => {
+    it("should not call dataProvider.update (uses RPC instead)", async () => {
       const params = {
         id: 1,
         previousData: { id: 1, name: "Acme Corp" } as RaRecord,
@@ -67,11 +81,8 @@ describe("organizationsCallbacks", () => {
 
       await organizationsCallbacks.beforeDelete!(params, mockDataProvider);
 
-      const updateCall = (mockDataProvider.update as any).mock.calls[0];
-      const deletedAt = updateCall[1].data.deleted_at;
-
-      // Should be a valid ISO timestamp
-      expect(new Date(deletedAt).toISOString()).toBe(deletedAt);
+      // Should NOT call dataProvider.update - uses RPC instead
+      expect(mockDataProvider.update).not.toHaveBeenCalled();
     });
   });
 

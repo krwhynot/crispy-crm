@@ -157,7 +157,7 @@ function composeTransforms(
         try {
           const fn = isTransform(transform) ? transform.apply : transform;
           result = fn(result);
-        } catch (error) {
+        } catch (error: unknown) {
           const err = error instanceof Error ? error : new Error(String(error));
           if (errorHandler) {
             errorHandler(transform, err);

@@ -1,89 +1,71 @@
 import { describe, it, expect } from "vitest";
-import type { Organization, Sale } from "../../types";
 
 /**
  * BulkReassignButton Component Tests
  *
  * Note: Full UI interaction testing is deferred to E2E tests (post-MVP).
  * These unit tests verify core business logic and data handling
- * following the pattern from opportunities/BulkActionsToolbar.test.tsx
+ * for the generic bulk reassign button component.
  */
 
-describe("BulkReassignButton", () => {
-  const mockOrganizations: Organization[] = [
-    {
-      id: 1,
-      name: "Acme Restaurant",
-      organization_type: "customer",
-      priority: "high",
-      sales_id: 10,
-      created_at: "2025-01-01",
-      updated_at: "2025-01-01",
-    },
-    {
-      id: 2,
-      name: "Best Foods Distributor",
-      organization_type: "distributor",
-      priority: "medium",
-      sales_id: 10,
-      created_at: "2025-01-02",
-      updated_at: "2025-01-02",
-    },
-    {
-      id: 3,
-      name: "Fresh Farms Principal",
-      organization_type: "principal",
-      priority: "low",
-      sales_id: null,
-      created_at: "2025-01-03",
-      updated_at: "2025-01-03",
-    },
+describe("BulkReassignButton - Generic Logic", () => {
+  interface MockItem {
+    id: number;
+    name: string;
+    type: string;
+    sales_id: number | null;
+  }
+
+  interface MockSale {
+    id: number;
+    first_name: string;
+    last_name: string;
+    disabled: boolean;
+    user_id: string | null;
+  }
+
+  const mockItems: MockItem[] = [
+    { id: 1, name: "Item One", type: "type_a", sales_id: 10 },
+    { id: 2, name: "Item Two", type: "type_b", sales_id: 10 },
+    { id: 3, name: "Item Three", type: "type_a", sales_id: null },
   ];
 
-  const mockSalesList: Sale[] = [
+  const mockSalesList: MockSale[] = [
     { id: 10, first_name: "John", last_name: "Doe", disabled: false, user_id: "user-1" },
     { id: 20, first_name: "Jane", last_name: "Smith", disabled: false, user_id: "user-2" },
     { id: 30, first_name: "Bob", last_name: "Johnson", disabled: true, user_id: "user-3" },
   ];
 
   describe("Data Filtering Logic", () => {
-    it("should filter selected organizations from full list", () => {
+    it("should filter selected items from full list", () => {
       const selectedIds = [1];
-      const selectedOrganizations = mockOrganizations.filter((org) =>
-        selectedIds.includes(org.id as number)
-      );
+      const selectedItems = mockItems.filter((item) => selectedIds.includes(item.id));
 
-      expect(selectedOrganizations).toHaveLength(1);
-      expect(selectedOrganizations[0].id).toBe(1);
-      expect(selectedOrganizations[0].name).toBe("Acme Restaurant");
+      expect(selectedItems).toHaveLength(1);
+      expect(selectedItems[0].id).toBe(1);
+      expect(selectedItems[0].name).toBe("Item One");
     });
 
-    it("should handle multiple selected organizations", () => {
+    it("should handle multiple selected items", () => {
       const selectedIds = [1, 2, 3];
-      const selectedOrganizations = mockOrganizations.filter((org) =>
-        selectedIds.includes(org.id as number)
-      );
+      const selectedItems = mockItems.filter((item) => selectedIds.includes(item.id));
 
-      expect(selectedOrganizations).toHaveLength(3);
-      expect(selectedOrganizations.map((o) => o.id)).toEqual([1, 2, 3]);
+      expect(selectedItems).toHaveLength(3);
+      expect(selectedItems.map((i) => i.id)).toEqual([1, 2, 3]);
     });
 
     it("should return empty array when no items selected", () => {
       const selectedIds: number[] = [];
-      const selectedOrganizations = mockOrganizations.filter((org) =>
-        selectedIds.includes(org.id as number)
-      );
+      const selectedItems = mockItems.filter((item) => selectedIds.includes(item.id));
 
-      expect(selectedOrganizations).toHaveLength(0);
+      expect(selectedItems).toHaveLength(0);
     });
 
     it("should handle non-existent IDs gracefully", () => {
       const selectedIds = [999, 1000];
-      const selectedOrganizations = mockOrganizations.filter((org) =>
-        selectedIds.includes(org.id as number)
-      );
+      const selectedItems = mockItems.filter((item) => selectedIds.includes(item.id));
 
-      expect(selectedOrganizations).toHaveLength(0);
+      expect(selectedItems).toHaveLength(0);
     });
   });
 
@@ -132,7 +114,6 @@ describe("BulkReassignButton", () => {
     });
 
     it("should handle edge case of sales_id being 0", () => {
-      // This shouldn't happen in practice but testing edge case
       const updateData = {
         sales_id: 0,
       };
@@ -142,67 +123,74 @@ describe("BulkReassignButton", () => {
   });
 
   describe("Pluralization Logic", () => {
-    it("should use singular form for 1 organization", () => {
+    it("should use singular form for 1 item", () => {
       const count = 1;
-      const text = `${count} organization${count === 1 ? "" : "s"}`;
+      const text = `${count} item${count === 1 ? "" : "s"}`;
 
-      expect(text).toBe("1 organization");
+      expect(text).toBe("1 item");
     });
 
-    it("should use plural form for multiple organizations", () => {
+    it("should use plural form for multiple items", () => {
       const count = 5;
-      const text = `${count} organization${count === 1 ? "" : "s"}`;
+      const text = `${count} item${count === 1 ? "" : "s"}`;
 
-      expect(text).toBe("5 organizations");
+      expect(text).toBe("5 items");
     });
 
-    it("should use plural form for zero organizations", () => {
+    it("should use plural form for zero items", () => {
       const count = 0;
-      const text = `${count} organization${count === 1 ? "" : "s"}`;
+      const text = `${count} item${count === 1 ? "" : "s"}`;
 
-      expect(text).toBe("0 organizations");
+      expect(text).toBe("0 items");
     });
   });
 
   describe("Success Message Generation", () => {
     it("should generate correct success message with sales rep name", () => {
       const count = 3;
+      const resourceLabel = "organization";
       const salesRepName = "Jane Smith";
-      const message = `Successfully reassigned ${count} organization${count === 1 ? "" : "s"} to ${salesRepName}`;
+      const message = `Successfully reassigned ${count} ${resourceLabel}${count === 1 ? "" : "s"} to ${salesRepName}`;
 
       expect(message).toBe("Successfully reassigned 3 organizations to Jane Smith");
     });
 
-    it("should generate correct message for single organization", () => {
+    it("should generate correct message for single item", () => {
       const count = 1;
+      const resourceLabel = "contact";
       const salesRepName = "John Doe";
-      const message = `Successfully reassigned ${count} organization${count === 1 ? "" : "s"} to ${salesRepName}`;
+      const message = `Successfully reassigned ${count} ${resourceLabel}${count === 1 ? "" : "s"} to ${salesRepName}`;
 
-      expect(message).toBe("Successfully reassigned 1 organization to John Doe");
+      expect(message).toBe("Successfully reassigned 1 contact to John Doe");
     });
 
     it("should handle fallback when sales rep name unavailable", () => {
       const count = 2;
-      const salesRepName = "selected rep"; // fallback
-      const message = `Successfully reassigned ${count} organization${count === 1 ? "" : "s"} to ${salesRepName}`;
+      // Note: Using "contact" instead of "opportunity" since naive +s pluralization
+      // doesn't handle irregular plurals (opportunity -> opportunities)
+      const resourceLabel = "contact";
+      const salesRepName = "selected rep";
+      const message = `Successfully reassigned ${count} ${resourceLabel}${count === 1 ? "" : "s"} to ${salesRepName}`;
 
-      expect(message).toBe("Successfully reassigned 2 organizations to selected rep");
+      expect(message).toBe("Successfully reassigned 2 contacts to selected rep");
     });
   });
 
   describe("Error Message Generation", () => {
     it("should generate correct failure message for single item", () => {
       const count = 1;
-      const message = `Failed to reassign ${count} organization${count === 1 ? "" : "s"}`;
+      const resourceLabel = "organization";
+      const message = `Failed to reassign ${count} ${resourceLabel}${count === 1 ? "" : "s"}`;
 
       expect(message).toBe("Failed to reassign 1 organization");
     });
 
     it("should generate correct failure message for multiple items", () => {
       const count = 3;
-      const message = `Failed to reassign ${count} organization${count === 1 ? "" : "s"}`;
+      const resourceLabel = "contact";
+      const message = `Failed to reassign ${count} ${resourceLabel}${count === 1 ? "" : "s"}`;
 
-      expect(message).toBe("Failed to reassign 3 organizations");
+      expect(message).toBe("Failed to reassign 3 contacts");
     });
   });
 
@@ -237,23 +225,8 @@ describe("BulkReassignButton", () => {
     });
   });
 
-  describe("Organization Type Display", () => {
-    it("should preserve organization type in preview", () => {
-      const org = mockOrganizations[0];
-      expect(org.organization_type).toBe("customer");
-    });
-
-    it("should handle all organization types", () => {
-      const types = mockOrganizations.map((org) => org.organization_type);
-      expect(types).toContain("customer");
-      expect(types).toContain("distributor");
-      expect(types).toContain("principal");
-    });
-  });
-
   describe("Bulk Update Loop Logic", () => {
     it("should track success and failure counts", () => {
-      // Simulate mixed results
       const results = [
         { id: 1, success: true },
         { id: 2, success: true },
@@ -280,7 +253,6 @@ describe("BulkReassignButton", () => {
       let successCount = 0;
       const failureCount = 0;
 
-      // Simulate all successes
       for (const _id of selectedIds) {
         successCount++;
       }
@@ -294,7 +266,6 @@ describe("BulkReassignButton", () => {
       const successCount = 0;
       let failureCount = 0;
 
-      // Simulate all failures
       for (const _id of selectedIds) {
         failureCount++;
       }
@@ -305,25 +276,48 @@ describe("BulkReassignButton", () => {
   });
 
   describe("Current Assignment Tracking", () => {
-    it("should identify organizations with existing sales assignment", () => {
-      const assignedOrgs = mockOrganizations.filter((org) => org.sales_id != null);
-      expect(assignedOrgs).toHaveLength(2);
+    it("should identify items with existing sales assignment", () => {
+      const assignedItems = mockItems.filter((item) => item.sales_id != null);
+      expect(assignedItems).toHaveLength(2);
     });
 
-    it("should identify organizations without sales assignment", () => {
-      const unassignedOrgs = mockOrganizations.filter((org) => org.sales_id == null);
-      expect(unassignedOrgs).toHaveLength(1);
-      expect(unassignedOrgs[0].name).toBe("Fresh Farms Principal");
+    it("should identify items without sales assignment", () => {
+      const unassignedItems = mockItems.filter((item) => item.sales_id == null);
+      expect(unassignedItems).toHaveLength(1);
+      expect(unassignedItems[0].name).toBe("Item Three");
     });
 
     it("should handle reassignment to same sales rep", () => {
-      // Business logic: reassignment to same rep should still work
-      const org = mockOrganizations[0]; // sales_id: 10
+      const item = mockItems[0];
       const newSalesId = 10;
-      const isSameRep = org.sales_id === newSalesId;
+      const isSameRep = item.sales_id === newSalesId;
 
       expect(isSameRep).toBe(true);
-      // Note: Component doesn't prevent this - it's valid to "refresh" assignment
+    });
+  });
+
+  describe("Resource Label Formatting", () => {
+    it("should convert underscored resource names to readable labels", () => {
+      const resource = "contact_organizations";
+      const resourceLabel = resource.replace(/_/g, " ");
+
+      expect(resourceLabel).toBe("contact organizations");
+    });
+
+    it("should capitalize first letter of resource label", () => {
+      const resourceLabel = "organizations";
+      const capitalizedResource = resourceLabel.charAt(0).toUpperCase() + resourceLabel.slice(1);
+
+      expect(capitalizedResource).toBe("Organizations");
+    });
+
+    it("should handle single word resources", () => {
+      const resource = "contacts";
+      const resourceLabel = resource.replace(/_/g, " ");
+      const capitalizedResource = resourceLabel.charAt(0).toUpperCase() + resourceLabel.slice(1);
+
+      expect(resourceLabel).toBe("contacts");
+      expect(capitalizedResource).toBe("Contacts");
     });
   });
 });

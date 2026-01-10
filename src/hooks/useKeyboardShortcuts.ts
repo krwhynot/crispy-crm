@@ -1,59 +1,11 @@
 import { useEffect, useCallback } from "react";
-
-/**
- * Detect if running on Mac for Cmd vs Ctrl
- */
-const isMac = () => {
-  return typeof window !== "undefined" && /Mac|iPhone|iPod|iPad/.test(navigator.platform);
-};
-
-/**
- * Check if the modifier key (Cmd on Mac, Ctrl elsewhere) is pressed
- */
-const isModifierPressed = (event: KeyboardEvent): boolean => {
-  return isMac() ? event.metaKey : event.ctrlKey;
-};
-
-/**
- * Check if target element should prevent shortcuts
- * Returns true if shortcuts should be blocked
- */
-const shouldPreventShortcut = (target: EventTarget | null): boolean => {
-  if (!(target instanceof HTMLElement)) return false;
-
-  const tagName = target.tagName.toLowerCase();
-  const isContentEditable = target.isContentEditable;
-
-  // Block shortcuts in inputs, textareas, and contenteditable elements
-  if (tagName === "input" || tagName === "textarea" || isContentEditable) {
-    return true;
-  }
-
-  // Check if inside a contenteditable parent
-  let element: HTMLElement | null = target;
-  while (element) {
-    if (element.isContentEditable) return true;
-    element = element.parentElement;
-  }
-
-  return false;
-};
-
-/**
- * Check if element is a textarea or contenteditable
- */
-const isTextarea = (target: EventTarget | null): boolean => {
-  if (!(target instanceof HTMLElement)) return false;
-  return target.tagName.toLowerCase() === "textarea" || target.isContentEditable;
-};
-
-/**
- * Check if an element is a form
- */
-const isInForm = (target: EventTarget | null): boolean => {
-  if (!(target instanceof HTMLElement)) return false;
-  return target.closest("form") !== null;
-};
+import {
+  isMac,
+  isModifierPressed,
+  shouldPreventShortcut,
+  isTextarea,
+  isInForm,
+} from "@/utils/keyboard";
 
 export interface KeyboardShortcutHandlers {
   onSave?: () => void;

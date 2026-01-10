@@ -180,6 +180,112 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: Props) => (
 
 ---
 
+## Pattern B.1: Dynamic Select Performance Optimizations
+
+Performance patterns for dependent dropdowns (ReferenceInput + AutocompleteInput) that filter based on other field values.
+
+**When to use:** Autocomplete inputs that filter choices based on parent field selections (e.g., contacts filtered by customer, products filtered by principal).
+
+### Memoized Filter Objects
+
+Prevents unnecessary ReferenceInput refetches by maintaining stable filter object references.
+
+```tsx
+// src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx
+const customerOrganizationId = useWatch({ name: "customer_organization_id" });
+const principalOrganizationId = useWatch({ name: "principal_organization_id" });
+
+// GOOD: useMemo prevents filter object reference changes on unrelated re-renders
+const contactFilter = useMemo(
+  () => (customerOrganizationId ? { organization_id: customerOrganizationId } : {}),
+  [customerOrganizationId]
+);
+
+const productFilter = useMemo(
+  () => (principalOrganizationId ? { principal_id: principalOrganizationId } : {}),
+  [principalOrganizationId]
+);
+
+// Usage - filter object only changes when dependency changes
+<ReferenceArrayInput source="contact_ids" reference="contacts_summary" filter={contactFilter}>
+  <AutocompleteArrayInput ... />
+</ReferenceArrayInput>
+```
+
+### Debounced API Calls
+
+Standard 300ms debounce prevents excessive API calls during typing.
+
+```tsx
+// src/atomic-crm/utils/autocompleteDefaults.ts
+export const AUTOCOMPLETE_DEBOUNCE_MS = 300;
+
+// Usage in slide-over tabs
+<AutocompleteArrayInput
+  debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+  shouldRenderSuggestions={shouldRenderSuggestions}
+  ...
+/>
+```
+
+### Minimum Character Threshold
+
+Prevents overly broad searches by requiring 2+ characters before API calls.
+
+```tsx
+// src/atomic-crm/utils/autocompleteDefaults.ts
+export const AUTOCOMPLETE_MIN_CHARS = 2;
+
+// enableGetChoices blocks ReferenceInput fetch entirely until threshold met
+// (shouldRenderSuggestions only hides dropdown, doesn't block fetch)
+export const enableGetChoices = ({ q }: { q?: string }) =>
+  !!(q && q.length >= AUTOCOMPLETE_MIN_CHARS);
+
+export const shouldRenderSuggestions = (val: string) =>
+  val.trim().length >= AUTOCOMPLETE_MIN_CHARS;
+
+// Usage - both props for complete optimization
+<ReferenceInput
+  source="customer_organization_id"
+  reference="organizations"
+  enableGetChoices={enableGetChoices}  // Blocks API call
+>
+  <AutocompleteInput
+    shouldRenderSuggestions={shouldRenderSuggestions}  // Hides dropdown
+    debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+    ...
+  />
+</ReferenceInput>
+```
+
+**Key points:**
+- `useMemo` on filter objects prevents React Admin from refetching on every render
+- `useWatch()` for isolated re-renders when watching parent field values (not `watch()`)
+- `enableGetChoices` on ReferenceInput blocks API calls until threshold met
+- `shouldRenderSuggestions` on AutocompleteInput hides dropdown until threshold met
+- 300ms debounce balances responsiveness with API efficiency
+- 2-character minimum prevents overly broad result sets
+
+**Anti-pattern:**
+
+```tsx
+// BAD: Inline filter object creates new reference every render
+<ReferenceArrayInput
+  source="contact_ids"
+  reference="contacts_summary"
+  filter={{ organization_id: customerOrganizationId }}  // New object each render!
+>
+
+// GOOD: Memoized filter maintains stable reference
+const contactFilter = useMemo(
+  () => ({ organization_id: customerOrganizationId }),
+  [customerOrganizationId]
+);
+<ReferenceArrayInput filter={contactFilter}>
+```
+
+---
+
 ## Pattern C: Multi-Step Wizard (Miller's Law)
 
 4-step form wizard adhering to Miller's Law (7 plus or minus 2 items per cognitive chunk). Uses `useMemo` on form defaults to prevent reset on re-render.

@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { useDataProvider, useNotify } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useEffect, useCallback } from "react";
+import { activityKeys, opportunityKeys, taskKeys } from "@/atomic-crm/queryKeys";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -73,6 +75,7 @@ export function QuickLogForm({
 }: QuickLogFormProps) {
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
 
   // Form initialization with schema-derived defaults (Constitution compliant)
@@ -176,7 +179,11 @@ export function QuickLogForm({
             taskData.opportunity_id = data.opportunityId;
           }
           await dataProvider.create("tasks", { data: taskData });
+          queryClient.invalidateQueries({ queryKey: taskKeys.all });
         }
+
+        queryClient.invalidateQueries({ queryKey: activityKeys.all });
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
 
         notify("Activity logged successfully", { type: "success" });
         form.reset();
@@ -188,12 +195,12 @@ export function QuickLogForm({
         if (onRefresh) {
           onRefresh();
         }
-      } catch (error) {
+      } catch (error: unknown) {
         notify("Failed to log activity", { type: "error" });
         console.error("Activity log error:", error);
       }
     },
-    [salesId, dataProvider, notify, form, onComplete, onRefresh]
+    [salesId, dataProvider, notify, queryClient, form, onComplete, onRefresh]
   );
 
   // Handle contact selection - auto-fill organization

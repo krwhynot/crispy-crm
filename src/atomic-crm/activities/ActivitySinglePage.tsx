@@ -1,11 +1,19 @@
+import { useWatch } from "react-hook-form";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { BooleanInput } from "@/components/admin/boolean-input";
 import { FormGrid, FormSectionWithProgress, FormFieldWrapper } from "@/components/admin/form";
 import { contactOptionText } from "../contacts/ContactOption";
-import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
+import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
 import { getAutocompleteProps, getQSearchAutocompleteProps } from "../utils/autocompleteDefaults";
+
+// Convert to React Admin choice format
+const SAMPLE_STATUS_CHOICES = SAMPLE_STATUS_OPTIONS.map((option) => ({
+  id: option.value,
+  name: option.label,
+}));
 
 const sentimentChoices = [
   { id: "positive", name: "Positive" },
@@ -14,6 +22,10 @@ const sentimentChoices = [
 ];
 
 export default function ActivitySinglePage() {
+  // Watch the type field to conditionally show sample-specific fields
+  const activityType = useWatch({ name: "type" });
+  const isSampleActivity = activityType === "sample";
+
   return (
     <div className="space-y-6">
       <FormSectionWithProgress
@@ -36,6 +48,19 @@ export default function ActivitySinglePage() {
               />
             </FormFieldWrapper>
           </div>
+
+          {/* WG-001: Sample Status field - only shown when type="sample" */}
+          {isSampleActivity && (
+            <FormFieldWrapper name="sample_status" isRequired>
+              <SelectInput
+                source="sample_status"
+                label="Sample Status"
+                choices={SAMPLE_STATUS_CHOICES}
+                helperText="Current status of the sample workflow"
+                isRequired
+              />
+            </FormFieldWrapper>
+          )}
         </FormGrid>
 
         <FormFieldWrapper name="subject" isRequired>
@@ -123,6 +148,19 @@ export default function ActivitySinglePage() {
               label="Sentiment"
               choices={sentimentChoices}
               helperText="How did the contact respond?"
+            />
+          </FormFieldWrapper>
+
+          {/* WG-001: Follow-up Required checkbox - required for sample activities with active status */}
+          <FormFieldWrapper name="follow_up_required">
+            <BooleanInput
+              source="follow_up_required"
+              label="Follow-up Required"
+              helperText={
+                isSampleActivity
+                  ? "Required for samples with active status (sent, received, feedback_pending)"
+                  : "Schedule a follow-up for this activity"
+              }
             />
           </FormFieldWrapper>
         </FormGrid>

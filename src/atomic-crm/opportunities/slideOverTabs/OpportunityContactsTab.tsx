@@ -141,7 +141,7 @@ export function OpportunityContactsTab({
       if (onModeToggle) {
         onModeToggle();
       }
-    } catch (error) {
+    } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Failed to update contacts";
       notify(errorMessage, { type: "error" });
     } finally {

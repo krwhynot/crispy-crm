@@ -603,7 +603,7 @@ When extending notes to a new entity type (e.g., `principals`):
 - [ ] Add case for `resource === "principalNotes"`
 - [ ] Create or import appropriate avatar component
 
-### 4. Type Definitions (`types.ts`)
+### 4. Type Definitions (`validation/notes.ts`)
 
 - [ ] Add `PrincipalNote` to union type in Note component props
 - [ ] Update `reference` union type to include `"principals"`

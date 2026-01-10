@@ -167,15 +167,18 @@ export function useMyTasks() {
 
         // Invalidate tasks query to ensure fresh data on next fetch
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      } catch (err) {
-        console.error("Failed to complete task:", err);
+      } catch (error: unknown) {
+        console.error(
+          "Failed to complete task:",
+          error instanceof Error ? error.message : String(error)
+        );
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);
           next.delete(taskId);
           return next;
         });
-        throw err;
+        throw error;
       }
     },
     [dataProvider, queryClient]
@@ -242,15 +245,18 @@ export function useMyTasks() {
         // Invalidate tasks query to ensure fresh data on next fetch
         // This ensures the UI stays in sync when optimistic update is cleared
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      } catch (err) {
-        console.error("Failed to snooze task:", err);
+      } catch (error: unknown) {
+        console.error(
+          "Failed to snooze task:",
+          error instanceof Error ? error.message : String(error)
+        );
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);
           next.delete(taskId);
           return next;
         });
-        throw err;
+        throw error;
       }
     },
     [dataProvider, calculateStatus, queryClient]
@@ -288,15 +294,18 @@ export function useMyTasks() {
 
         // Invalidate tasks query to ensure fresh data on next fetch
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      } catch (err) {
-        console.error("Failed to delete task:", err);
+      } catch (error: unknown) {
+        console.error(
+          "Failed to delete task:",
+          error instanceof Error ? error.message : String(error)
+        );
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);
           next.delete(taskId);
           return next;
         });
-        throw err;
+        throw error;
       }
     },
     [dataProvider, queryClient]
@@ -351,15 +360,18 @@ export function useMyTasks() {
 
         // Invalidate tasks query to ensure fresh data on next fetch
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      } catch (err) {
-        console.error("Failed to update task due date:", err);
+      } catch (error: unknown) {
+        console.error(
+          "Failed to update task due date:",
+          error instanceof Error ? error.message : String(error)
+        );
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);
           next.delete(taskId);
           return next;
         });
-        throw err;
+        throw error;
       }
     },
     [dataProvider, calculateStatus, queryClient]

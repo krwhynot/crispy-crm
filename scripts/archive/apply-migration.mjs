@@ -33,9 +33,11 @@ async function applyMigration(fileName) {
     console.log(`⚙️  Applying migration...`);
 
     // Use Supabase's SQL function to execute the migration
-    const { error } = await supabase.rpc('exec_sql', {
-      sql_query: sqlContent
-    }).single();
+    const { error } = await supabase
+      .rpc("exec_sql", {
+        sql_query: sqlContent,
+      })
+      .single();
 
     if (error) {
       // If RPC doesn't exist, we'll need to use a different approach
@@ -58,7 +60,7 @@ async function main() {
   const migrationFile = process.argv[2] || "20250926230000_comprehensive_rls_policies.sql";
 
   console.log("🚀 Supabase Migration Tool");
-  console.log("=" .repeat(60));
+  console.log("=".repeat(60));
 
   const success = await applyMigration(migrationFile);
 

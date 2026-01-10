@@ -1,6 +1,6 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-08T12:14:57.309Z",
+  "generated_at": "2026-01-10T23:36:08.406Z",
   "item_count": 10,
   "items": [
     {
@@ -413,7 +413,7 @@
     {
       "name": "checkAuthorizationBatchResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 132,
+      "line": 145,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -461,7 +461,7 @@
     {
       "name": "edgeFunctionSchemas",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 162,
+      "line": 175,
       "schemaType": "object",
       "fields": [],
       "relatedSchemas": [],

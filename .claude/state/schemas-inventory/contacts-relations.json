@@ -1,0 +1,95 @@
+{
+  "chunk_name": "contacts-relations",
+  "generated_at": "2026-01-10T23:36:08.399Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "contactOrganizationSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-relations.ts",
+      "line": 8,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "contact_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "is_primary",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "createContactSchema",
+        "importContactSchema",
+        "organizationSchema"
+      ],
+      "validationFunctions": [
+        "validateContactOrganization"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": true
+    }
+  ]
+}

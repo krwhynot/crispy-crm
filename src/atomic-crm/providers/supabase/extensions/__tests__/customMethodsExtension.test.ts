@@ -523,7 +523,8 @@ describe("extendWithCustomMethods", () => {
       });
       expect(result).toEqual(mockData);
       expect(consoleLogSpy).toHaveBeenCalledWith(
-        "[DataProvider RPC] Calling get_or_create_segment",
+        "[DataProvider RPC]",
+        "Calling get_or_create_segment",
         { p_name: "Enterprise" }
       );
     });

@@ -70,7 +70,7 @@ export const AddTask = ({
       });
 
       notify("Task added");
-    } catch (error) {
+    } catch (error: unknown) {
       // Task was created successfully, but contact update failed
       // This is non-critical - notify user but don't fail the operation
       console.error("Failed to update contact last_seen:", error);

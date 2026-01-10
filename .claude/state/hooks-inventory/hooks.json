@@ -1,7 +1,7 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-08T12:14:56.913Z",
-  "item_count": 6,
+  "generated_at": "2026-01-10T23:36:07.973Z",
+  "item_count": 7,
   "items": [
     {
       "name": "useAppBarHeight",
@@ -43,7 +43,7 @@
     {
       "name": "useRecentSearches",
       "file": "src/atomic-crm/hooks/useRecentSearches.ts",
-      "line": 152,
+      "line": 155,
       "parameters": [],
       "returnType": "UseRecentSearchesReturn",
       "dependencies": [
@@ -62,6 +62,21 @@
       "returnType": "UseRecentSelectionsReturn",
       "dependencies": [
         "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useRelatedRecordCounts",
+      "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
+      "line": 81,
+      "parameters": [
+        "{\n  resource,\n  ids,\n  enabled = true,\n}"
+      ],
+      "returnType": "UseRelatedRecordCountsResult",
+      "dependencies": [
+        "useDataProvider",
+        "useEffect",
+        "useState"
       ],
       "isReact19Action": false
     },

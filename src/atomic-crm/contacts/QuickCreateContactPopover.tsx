@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from "@/components/ui/popover";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCreateSuggestionContext } from "@/hooks/useSupportCreateSuggestion";
+import { contactKeys } from "@/atomic-crm/queryKeys";
 
 const quickCreateContactSchema = z.object({
   first_name: z.string().min(1, "First name required").max(100),
@@ -38,6 +40,7 @@ export function QuickCreateContactPopover({
   const [isPending, setIsPending] = useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const methods = useForm<QuickCreateContactInput>({
     resolver: zodResolver(quickCreateContactSchema),
@@ -64,6 +67,7 @@ export function QuickCreateContactPopover({
             last_seen: now,
           },
         });
+        queryClient.invalidateQueries({ queryKey: contactKeys.all });
         notify("Contact created", { type: "success" });
         onCreated(result.data as { id: number; first_name: string; last_name: string });
         setOpen(false);
@@ -97,10 +101,11 @@ export function QuickCreateContactPopover({
           quickCreate: true, // Bypass last_name and email validation for "Just use name" flow
         },
       });
+      queryClient.invalidateQueries({ queryKey: contactKeys.all });
       notify("Contact created", { type: "success" });
       onCreated(result.data as { id: number; first_name: string; last_name: string });
       setOpen(false);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("[QuickCreateContact] Failed:", error);
       const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Failed to create contact: ${message}`, { type: "error" });
@@ -215,6 +220,7 @@ export function QuickCreateContactRA({
   const [isPending, setIsPending] = useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const methods = useForm<QuickCreateContactInput>({
     resolver: zodResolver(quickCreateContactSchema),
@@ -241,9 +247,10 @@ export function QuickCreateContactRA({
             last_seen: now,
           },
         });
+        queryClient.invalidateQueries({ queryKey: contactKeys.all });
         notify("Contact created", { type: "success" });
         onCreate(result.data); // KEY FIX: Pass real record back to RA
-      } catch (error) {
+      } catch (error: unknown) {
         notify("Failed to create contact", { type: "error" });
         throw error; // Fail-fast
       } finally {
@@ -274,9 +281,10 @@ export function QuickCreateContactRA({
           quickCreate: true,
         },
       });
+      queryClient.invalidateQueries({ queryKey: contactKeys.all });
       notify("Contact created", { type: "success" });
       onCreate(result.data); // KEY FIX: Pass real record back to RA
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("[QuickCreateContact] Failed:", error);
       const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Failed to create contact: ${message}`, { type: "error" });

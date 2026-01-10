@@ -1,0 +1,17 @@
+{
+  "chunk_name": "contacts-relations",
+  "generated_at": "2026-01-10T23:36:09.105Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "validateContactOrganization",
+      "file": "src/atomic-crm/validation/contacts/contacts-relations.ts",
+      "line": 33,
+      "type": "formatter",
+      "schemaReference": "contactOrganizationSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    }
+  ]
+}

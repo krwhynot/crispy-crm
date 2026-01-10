@@ -77,17 +77,14 @@ export const getOpportunitiesByStage = (
         if (acc[opportunity.stage]) {
           acc[opportunity.stage].push(opportunity);
         } else {
-          // Fallback: Add to new_lead if stage is invalid/null/undefined
-          // Log warning to help debug stage mismatch issues
-          console.warn("[Stage Grouping] Invalid stage detected:", {
-            opportunityId: opportunity.id,
-            stage: opportunity.stage,
-            expectedStages: Object.keys(acc),
-          });
-          // Push to new_lead as fallback so cards aren't lost
-          if (acc["new_lead"]) {
-            acc["new_lead"].push({ ...opportunity, stage: "new_lead" as Opportunity["stage"] });
-          }
+          // FIX [SF-C04]: Fail fast on invalid stage instead of silent mutation
+          // Invalid stages indicate data corruption (bad import, RLS issue, schema drift)
+          const validStages = Object.keys(acc).join(", ");
+          throw new Error(
+            `Invalid opportunity stage: Opportunity ID ${opportunity.id} has stage "${opportunity.stage}", ` +
+              `which is not a valid pipeline stage. Expected one of: ${validStages}. ` +
+              `This may indicate a data import error or database corruption. Please audit the data and fix manually.`
+          );
         }
         return acc;
       },

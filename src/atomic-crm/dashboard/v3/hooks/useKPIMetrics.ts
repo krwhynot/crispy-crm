@@ -211,11 +211,14 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
             staleDealsCount,
           });
         }
-      } catch (err) {
+      } catch (error: unknown) {
         // Don't log or set error if aborted
         if (abortController.signal.aborted) return;
-        console.error("Failed to fetch KPI metrics:", err);
-        if (isMounted) setError(err as Error);
+        console.error(
+          "Failed to fetch KPI metrics:",
+          error instanceof Error ? error.message : String(error)
+        );
+        if (isMounted) setError(error instanceof Error ? error : new Error(String(error)));
       } finally {
         if (isMounted) setLoading(false);
       }

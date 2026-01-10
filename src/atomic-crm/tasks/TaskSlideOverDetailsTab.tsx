@@ -61,8 +61,9 @@ export function TaskSlideOverDetailsTab({
       });
       notify("Task updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
-    } catch (_error) {
+    } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
+      console.error("Error updating task:", error instanceof Error ? error.message : String(error));
     }
   };
 
@@ -78,7 +79,7 @@ export function TaskSlideOverDetailsTab({
         previousData: record,
       });
       notify(checked ? "Task marked complete" : "Task marked incomplete", { type: "success" });
-    } catch (error) {
+    } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
       console.error("Completion toggle error:", error);
     }

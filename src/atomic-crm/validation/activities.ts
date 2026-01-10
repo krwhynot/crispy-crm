@@ -191,6 +191,35 @@ export const activitiesSchema = baseActivitiesSchema.superRefine((data, ctx) => 
       message: "Sample status should only be set for sample activities",
     });
   }
+
+  // WG-001: Sample activities with active workflow status REQUIRE follow-up
+  // Per PRD §4.4: "Samples require follow-up activities"
+  // Active statuses: sent, received, feedback_pending (not feedback_received - workflow complete)
+  const SAMPLE_ACTIVE_STATUSES = ["sent", "received", "feedback_pending"];
+
+  if (
+    data.type === "sample" &&
+    data.sample_status &&
+    SAMPLE_ACTIVE_STATUSES.includes(data.sample_status)
+  ) {
+    // Enforce follow_up_required = true
+    if (!data.follow_up_required) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["follow_up_required"],
+        message: "Sample activities require follow-up when status is active",
+      });
+    }
+
+    // Enforce follow_up_date is set
+    if (!data.follow_up_date) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["follow_up_date"],
+        message: "Follow-up date is required for active sample activities",
+      });
+    }
+  }
 });
 
 // Engagement-specific schema (activity_type = "engagement")
@@ -243,6 +272,35 @@ export const engagementsSchema = baseActivitiesSchema
         path: ["sample_status"],
         message: "Sample status should only be set for sample activities",
       });
+    }
+
+    // WG-001: Sample activities with active workflow status REQUIRE follow-up
+    // Per PRD §4.4: "Samples require follow-up activities"
+    // Active statuses: sent, received, feedback_pending (not feedback_received - workflow complete)
+    const SAMPLE_ACTIVE_STATUSES = ["sent", "received", "feedback_pending"];
+
+    if (
+      data.type === "sample" &&
+      data.sample_status &&
+      SAMPLE_ACTIVE_STATUSES.includes(data.sample_status)
+    ) {
+      // Enforce follow_up_required = true
+      if (!data.follow_up_required) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["follow_up_required"],
+          message: "Sample activities require follow-up when status is active",
+        });
+      }
+
+      // Enforce follow_up_date is set
+      if (!data.follow_up_date) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["follow_up_date"],
+          message: "Follow-up date is required for active sample activities",
+        });
+      }
     }
   });
 
@@ -298,6 +356,35 @@ export const interactionsSchema = baseActivitiesSchema
         message: "Sample status should only be set for sample activities",
       });
     }
+
+    // WG-001: Sample activities with active workflow status REQUIRE follow-up
+    // Per PRD §4.4: "Samples require follow-up activities"
+    // Active statuses: sent, received, feedback_pending (not feedback_received - workflow complete)
+    const SAMPLE_ACTIVE_STATUSES = ["sent", "received", "feedback_pending"];
+
+    if (
+      data.type === "sample" &&
+      data.sample_status &&
+      SAMPLE_ACTIVE_STATUSES.includes(data.sample_status)
+    ) {
+      // Enforce follow_up_required = true
+      if (!data.follow_up_required) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["follow_up_required"],
+          message: "Sample activities require follow-up when status is active",
+        });
+      }
+
+      // Enforce follow_up_date is set
+      if (!data.follow_up_date) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["follow_up_date"],
+          message: "Follow-up date is required for active sample activities",
+        });
+      }
+    }
   });
 
 // Type inference
@@ -321,7 +408,7 @@ export async function validateActivitiesForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     activitiesSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
@@ -357,7 +444,7 @@ export async function validateEngagementsForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     engagementsSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
@@ -393,7 +480,7 @@ export async function validateInteractionsForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     interactionsSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};

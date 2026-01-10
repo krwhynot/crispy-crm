@@ -100,7 +100,7 @@ export async function validateSalesForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     salesSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
@@ -153,7 +153,7 @@ export const updateSalesSchema = salesSchema.partial().required({
 export async function validateCreateSales(data: unknown): Promise<void> {
   try {
     createSalesSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
@@ -172,7 +172,7 @@ export async function validateCreateSales(data: unknown): Promise<void> {
 export async function validateUpdateSales(data: unknown): Promise<void> {
   try {
     updateSalesSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {

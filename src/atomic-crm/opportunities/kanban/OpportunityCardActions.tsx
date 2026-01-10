@@ -1,6 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUpdate, useDelete, useNotify, useRefresh, useRecordContext } from "react-admin";
+import {
+  useUpdate,
+  useDelete,
+  useNotify,
+  useRefresh,
+  useRecordContext,
+  useDataProvider,
+} from "react-admin";
 import { MoreVertical, Eye, Pencil, Trophy, XCircle, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -22,6 +29,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   const navigate = useNavigate();
   const [update] = useUpdate();
   const [deleteOne] = useDelete();
+  const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
   const record = useRecordContext<Opportunity>();
@@ -66,6 +74,17 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
           },
           previousData: record || {},
         });
+
+        await dataProvider.create("activities", {
+          data: {
+            activity_type: "interaction",
+            type: "note",
+            subject: `Opportunity ${closeTargetStage === "closed_won" ? "won" : "lost"}`,
+            opportunity_id: opportunityId,
+            organization_id: record?.customer_organization_id,
+          },
+        });
+
         notify(
           closeTargetStage === "closed_won"
             ? "Opportunity marked as won"
@@ -74,7 +93,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         );
         refresh();
         setShowCloseModal(false);
-      } catch (error) {
+      } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "";
         if (message.includes("CONFLICT")) {
           notify("This opportunity was modified by another user. Refreshing.", { type: "warning" });
@@ -86,7 +105,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         setIsClosing(false);
       }
     },
-    [opportunityId, closeTargetStage, update, notify, refresh, record]
+    [opportunityId, closeTargetStage, update, dataProvider, notify, refresh, record]
   );
 
   /**

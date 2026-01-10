@@ -1,0 +1,299 @@
+{
+  "chunk_name": "opportunities-operations",
+  "generated_at": "2026-01-10T23:36:08.402Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "createOpportunitySchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "line": 127,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "version",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "opportunityNoteSchema",
+        "opportunityStageSchema",
+        "opportunityPrioritySchema",
+        "quickCreateOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema",
+        "opportunityProductSchema",
+        "archiveOpportunityWithRelationsParamsSchema",
+        "unarchiveOpportunityWithRelationsParamsSchema",
+        "syncOpportunityWithProductsParamsSchema"
+      ],
+      "validationFunctions": [
+        "validateCreateOpportunity"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "quickCreateOpportunitySchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "line": 187,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "name",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "min(1, \"Opportunity name is required\")",
+            "max(255, \"Opportunity name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "stage",
+          "zodType": "ref:opportunityStageSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "customer_organization_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "principal_organization_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "status",
+          "zodType": "literal",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "priority",
+          "zodType": "ref:opportunityPrioritySchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "opportunity_owner_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "account_manager_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "estimated_close_date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "updateOpportunitySchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "line": 223,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "contact_ids",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "products_to_sync",
+          "zodType": "strictObject",
+          "constraints": [
+            "max(2000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "opportunityNoteSchema",
+        "opportunityStageSchema",
+        "opportunityPrioritySchema",
+        "createOpportunitySchema",
+        "quickCreateOpportunitySchema",
+        "closeOpportunitySchema",
+        "opportunityProductSchema",
+        "archiveOpportunityWithRelationsParamsSchema",
+        "unarchiveOpportunityWithRelationsParamsSchema",
+        "syncOpportunityWithProductsParamsSchema"
+      ],
+      "validationFunctions": [
+        "validateUpdateOpportunity"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "closeOpportunitySchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "line": 343,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "stage",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false,
+          "enumValues": [
+            "closed_won",
+            "closed_lost"
+          ]
+        },
+        {
+          "name": "win_reason",
+          "zodType": "ref:winReasonSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "loss_reason",
+          "zodType": "ref:lossReasonSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "close_reason_notes",
+          "zodType": "unknown",
+          "constraints": [
+            "max(500, \"Close reason notes must be 500 characters or less\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "opportunityNoteSchema",
+        "opportunityStageSchema",
+        "opportunityPrioritySchema",
+        "createOpportunitySchema",
+        "quickCreateOpportunitySchema",
+        "updateOpportunitySchema",
+        "opportunityProductSchema",
+        "archiveOpportunityWithRelationsParamsSchema",
+        "unarchiveOpportunityWithRelationsParamsSchema",
+        "syncOpportunityWithProductsParamsSchema"
+      ],
+      "validationFunctions": [
+        "validateCloseOpportunity"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

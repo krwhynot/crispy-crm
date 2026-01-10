@@ -151,8 +151,11 @@ export class ClientRateLimiter {
   private setState(state: RateLimitState): void {
     try {
       sessionStorage.setItem(this.config.storageKey, JSON.stringify(state));
-    } catch (e) {
-      console.error("[Rate Limiter] Failed to save state:", e);
+    } catch (error: unknown) {
+      console.error(
+        "[Rate Limiter] Failed to save state:",
+        error instanceof Error ? error.message : String(error)
+      );
     }
   }
 }

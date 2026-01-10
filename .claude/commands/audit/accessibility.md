@@ -217,6 +217,14 @@ Save to: `docs/audits/YYYY-MM-DD-accessibility.md`
 | Medium | X | Y | +Z/-W |
 | **Total** | X | Y | +Z/-W |
 
+### What This Means for Users
+
+| Severity | User Impact |
+|----------|-------------|
+| **Critical** | Users may lose data, see incorrect information, or have their accounts compromised. The app may crash or behave unpredictably. These issues directly harm the user experience. |
+| **High** | Users may encounter frustrating bugs, slow performance, or inconsistent behavior. Features may not work as expected, leading to confusion or wasted time. |
+| **Medium** | Users won't notice these immediately, but they make the app harder to improve. Future features will take longer to build and may introduce new bugs. |
+
 **Status:** [PASS if 0 Critical, WARN if Critical exists]
 
 ---

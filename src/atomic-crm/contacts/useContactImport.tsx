@@ -10,6 +10,40 @@ import {
 } from "./contactImport.logic";
 import { parseDateSafely } from "@/lib/date-utils";
 
+/**
+ * PERF-002 FIX: Simple concurrency limiter
+ * Prevents 100+ simultaneous requests that overwhelm the backend
+ */
+async function withConcurrencyLimit<T>(
+  tasks: (() => Promise<T>)[],
+  limit: number = 10
+): Promise<PromiseSettledResult<T>[]> {
+  const results: PromiseSettledResult<T>[] = [];
+  const executing: Promise<void>[] = [];
+
+  for (const task of tasks) {
+    const p = task()
+      .then((value) => {
+        results.push({ status: "fulfilled", value });
+      })
+      .catch((reason) => {
+        results.push({ status: "rejected", reason });
+      })
+      .finally(() => {
+        executing.splice(executing.indexOf(p), 1);
+      });
+
+    executing.push(p);
+
+    if (executing.length >= limit) {
+      await Promise.race(executing);
+    }
+  }
+
+  await Promise.all(executing);
+  return results;
+}
+
 // Re-export types from centralized types file for backward compatibility
 export type {
   ContactImportSchema,
@@ -136,131 +170,128 @@ export function useContactImport() {
         ),
       ]);
 
-      // 4. Process all valid contacts with Promise.allSettled
-      const results = await Promise.allSettled(
-        contactsToProcess.map(async (contactData, index) => {
-          const rowNumber = startingRow + contactData.originalIndex;
-          const rowErrors: FieldError[] = [];
+      // 4. Process all valid contacts with concurrency limit (PERF-002 FIX)
+      const contactTasks = contactsToProcess.map((contactData, index) => async () => {
+        const rowNumber = startingRow + contactData.originalIndex;
+        const rowErrors: FieldError[] = [];
 
-          const {
+        const {
+          first_name,
+          last_name,
+          gender,
+          title,
+          email_work,
+          email_home,
+          email_other,
+          phone_work,
+          phone_home,
+          phone_other,
+          first_seen,
+          last_seen,
+          organization_name,
+          tags: tagNames,
+          linkedin_url,
+          notes,
+        } = contactData;
+
+        // Organization logic check
+        const trimmedOrgName = String(organization_name || "").trim();
+        const organization = organizations.get(trimmedOrgName);
+        if (trimmedOrgName && !organization?.id && !preview) {
+          rowErrors.push({
+            field: "organization_name",
+            message: `Failed to find or create organization "${trimmedOrgName}"`,
+            value: trimmedOrgName,
+          });
+        }
+
+        if (rowErrors.length > 0) {
+          return {
+            rowNumber,
+            success: false,
+            errors: rowErrors,
+            data: contactData,
+          };
+        }
+
+        try {
+          const email = [
+            { value: email_work, type: "work" as const },
+            { value: email_home, type: "home" as const },
+            { value: email_other, type: "other" as const },
+          ].filter(({ value }) => value);
+
+          const phone = [
+            { value: phone_work, type: "work" as const },
+            { value: phone_home, type: "home" as const },
+            { value: phone_other, type: "other" as const },
+          ].filter(({ value }) => value);
+
+          const tagList = parseTags(tagNames)
+            .map((name) => tags.get(name))
+            .filter((tag): tag is Tag => !!tag);
+
+          const contactPayload = {
             first_name,
             last_name,
             gender,
             title,
-            email_work,
-            email_home,
-            email_other,
-            phone_work,
-            phone_home,
-            phone_other,
-            first_seen,
-            last_seen,
-            organization_name,
-            tags: tagNames,
+            email,
+            phone,
+            first_seen: first_seen ? (parseDateSafely(first_seen)?.toISOString() ?? today) : today,
+            last_seen: last_seen ? (parseDateSafely(last_seen)?.toISOString() ?? today) : today,
+            tags: preview ? [] : tagList.map((tag) => tag.id),
+            sales_id: identity?.id,
             linkedin_url,
             notes,
-          } = contactData;
+            organization_id: organization?.id,
+            avatar: undefined,
+          };
 
-          // Organization logic check
-          const trimmedOrgName = String(organization_name || "").trim();
-          const organization = organizations.get(trimmedOrgName);
-          if (trimmedOrgName && !organization?.id && !preview) {
-            rowErrors.push({
-              field: "organization_name",
-              message: `Failed to find or create organization "${trimmedOrgName}"`,
-              value: trimmedOrgName,
+          if (preview) {
+            await dataProvider.create("contacts", {
+              data: contactPayload,
+              meta: { dryRun: true },
+            });
+          } else {
+            await dataProvider.create("contacts", {
+              data: contactPayload,
             });
           }
 
-          if (rowErrors.length > 0) {
-            return {
-              rowNumber,
-              success: false,
-              errors: rowErrors,
-              data: contactData,
-            };
-          }
-
-          try {
-            const email = [
-              { value: email_work, type: "work" as const },
-              { value: email_home, type: "home" as const },
-              { value: email_other, type: "other" as const },
-            ].filter(({ value }) => value);
-
-            const phone = [
-              { value: phone_work, type: "work" as const },
-              { value: phone_home, type: "home" as const },
-              { value: phone_other, type: "other" as const },
-            ].filter(({ value }) => value);
-
-            const tagList = parseTags(tagNames)
-              .map((name) => tags.get(name))
-              .filter((tag): tag is Tag => !!tag);
-
-            const contactPayload = {
-              first_name,
-              last_name,
-              gender,
-              title,
-              email,
-              phone,
-              first_seen: first_seen
-                ? (parseDateSafely(first_seen)?.toISOString() ?? today)
-                : today,
-              last_seen: last_seen ? (parseDateSafely(last_seen)?.toISOString() ?? today) : today,
-              tags: preview ? [] : tagList.map((tag) => tag.id),
-              sales_id: identity?.id,
-              linkedin_url,
-              notes,
-              organization_id: organization?.id,
-              avatar: undefined,
-            };
-
-            if (preview) {
-              await dataProvider.create("contacts", {
-                data: contactPayload,
-                meta: { dryRun: true },
-              });
-            } else {
-              await dataProvider.create("contacts", {
-                data: contactPayload,
-              });
-            }
-
-            return { rowNumber, success: true };
-          } catch (error: unknown) {
-            // Catch errors from dataProvider (e.g., unique constraints)
-            const finalErrors: FieldError[] = [];
-            if (error instanceof ZodError) {
-              error.issues.forEach((issue) => {
-                finalErrors.push({
-                  field: issue.path.join("."),
-                  message: issue.message,
-                });
-              });
-            } else if (typeof error === "object" && error !== null && "body" in error) {
-              const errorBody = error.body as Record<string, unknown> | undefined;
-              if (errorBody?.errors && typeof errorBody.errors === "object") {
-                for (const [field, message] of Object.entries(errorBody.errors)) {
-                  finalErrors.push({ field, message: String(message) });
-                }
-              }
-            } else {
+          return { rowNumber, success: true };
+        } catch (error: unknown) {
+          // Catch errors from dataProvider (e.g., unique constraints)
+          const finalErrors: FieldError[] = [];
+          if (error instanceof ZodError) {
+            error.issues.forEach((issue) => {
               finalErrors.push({
-                field: "general",
-                message:
-                  error instanceof Error ? error.message : "Unknown error during record creation",
+                field: issue.path.join("."),
+                message: issue.message,
               });
+            });
+          } else if (typeof error === "object" && error !== null && "body" in error) {
+            const errorBody = error.body as Record<string, unknown> | undefined;
+            if (errorBody?.errors && typeof errorBody.errors === "object") {
+              for (const [field, message] of Object.entries(errorBody.errors)) {
+                finalErrors.push({ field, message: String(message) });
+              }
             }
-            return { rowNumber, success: false, errors: finalErrors, data: contactData };
-          } finally {
-            if (onProgress) {
-              onProgress(index + 1 + failed.length, totalProcessed);
-            }
+          } else {
+            finalErrors.push({
+              field: "general",
+              message:
+                error instanceof Error ? error.message : "Unknown error during record creation",
+            });
           }
-        })
-      );
+          return { rowNumber, success: false, errors: finalErrors, data: contactData };
+        } finally {
+          if (onProgress) {
+            onProgress(index + 1 + failed.length, totalProcessed);
+          }
+        }
+      });
+      const results = await withConcurrencyLimit(contactTasks, 10); // Max 10 concurrent
 
       // 5. Tally results
       results.forEach((result) => {
@@ -336,17 +367,23 @@ const fetchRecordsWithCache = async function <T extends RaRecord>(
   }
 
   // Create missing records - fail-fast on any error
+  // PERF-002 FIX: Use concurrency limit to prevent overwhelming backend
   try {
-    await Promise.all(
-      uncachedRecordNames.map(async (name) => {
-        if (cache.has(name)) return;
+    const tasks = uncachedRecordNames
+      .filter((name) => !cache.has(name))
+      .map((name) => async () => {
         const response = await dataProvider.create(resource, {
           data: getCreateData(name),
         });
         cache.set(name, response.data);
-      })
-    );
-  } catch (error) {
+      });
+    const results = await withConcurrencyLimit(tasks, 10);
+    // Check for any failures and re-throw the first error for fail-fast behavior
+    const firstFailure = results.find((r) => r.status === "rejected");
+    if (firstFailure && firstFailure.status === "rejected") {
+      throw firstFailure.reason;
+    }
+  } catch (error: unknown) {
     console.error(`Failed to create ${resource} records:`, error);
     throw error; // Re-throw for fail-fast behavior
   }

@@ -1,38 +1,48 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-08T12:14:57.313Z",
+  "generated_at": "2026-01-10T23:36:08.411Z",
   "generator": "scripts/discover/extractors/schemas.ts",
   "source_globs": [
     "src/atomic-crm/validation/**/*.ts"
   ],
-  "checksum": "sha256:fccef54052bbe689",
+  "checksum": "sha256:42cfbbf8cbeba034",
   "source_hashes": {
-    "src/atomic-crm/validation/activities.ts": "7c78744ea6a4",
+    "src/atomic-crm/validation/activities.ts": "a30e221951be",
     "src/atomic-crm/validation/categories.ts": "0f7d9f25b8f8",
     "src/atomic-crm/validation/constants.ts": "b8985c2c0618",
-    "src/atomic-crm/validation/contacts.ts": "ccc2c5afeb5e",
+    "src/atomic-crm/validation/contacts/contacts-communication.ts": "28dc9fce76b6",
+    "src/atomic-crm/validation/contacts/contacts-core.ts": "56d81c183b00",
+    "src/atomic-crm/validation/contacts/contacts-department.ts": "97d0f18ce928",
+    "src/atomic-crm/validation/contacts/contacts-import.ts": "9f07cec96677",
+    "src/atomic-crm/validation/contacts/contacts-quick-create.ts": "998ee8cbdc6e",
+    "src/atomic-crm/validation/contacts/contacts-relations.ts": "268acacf7d7f",
+    "src/atomic-crm/validation/contacts/index.ts": "335c7d5bac66",
     "src/atomic-crm/validation/distributorAuthorizations.ts": "66445a74389a",
     "src/atomic-crm/validation/favorites.ts": "edba5823dc21",
     "src/atomic-crm/validation/index.ts": "5e4890c4d980",
     "src/atomic-crm/validation/notes.ts": "557ab89b53fd",
     "src/atomic-crm/validation/operatorSegments.ts": "b0f573acd197",
-    "src/atomic-crm/validation/opportunities.ts": "5d0186efcad7",
+    "src/atomic-crm/validation/opportunities/index.ts": "8b03549e3f83",
+    "src/atomic-crm/validation/opportunities/opportunities-core.ts": "e683c293c5d7",
+    "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts": "1f233d01e04e",
+    "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "7844035b8d1d",
     "src/atomic-crm/validation/organizationDistributors.ts": "95da3604b4fe",
-    "src/atomic-crm/validation/organizations.ts": "0cc4c8388a6e",
+    "src/atomic-crm/validation/organizations.ts": "b16d1044f4cf",
     "src/atomic-crm/validation/productDistributors.ts": "8f6ec7e2789f",
     "src/atomic-crm/validation/productWithDistributors.ts": "e3555f83e18c",
-    "src/atomic-crm/validation/products.ts": "b8d6f72dd940",
+    "src/atomic-crm/validation/products.ts": "b38d4fd4e464",
     "src/atomic-crm/validation/quickAdd.ts": "0c46d7c69d32",
-    "src/atomic-crm/validation/rpc.ts": "13a03b9b60d9",
-    "src/atomic-crm/validation/sales.ts": "36ebfce58d3a",
+    "src/atomic-crm/validation/rpc.ts": "26e1fbcaf199",
+    "src/atomic-crm/validation/sales.ts": "c5c41d826867",
     "src/atomic-crm/validation/segments.ts": "da962e0c20cb",
     "src/atomic-crm/validation/tags.ts": "37fca914c5a4",
-    "src/atomic-crm/validation/task.ts": "a2308ee4d54a"
+    "src/atomic-crm/validation/task.ts": "a2308ee4d54a",
+    "src/atomic-crm/validation/ui-props.ts": "a7ad870c0454"
   },
   "summary": {
-    "total_items": 82,
-    "total_chunks": 19,
-    "strict_objects": 42,
+    "total_items": 87,
+    "total_chunks": 26,
+    "strict_objects": 46,
     "objects": 4,
     "enums": 26,
     "with_transforms": 8,
@@ -43,19 +53,19 @@
       "name": "activities",
       "file": "activities.json",
       "item_count": 10,
-      "checksum": "sha256:8edbd39e0f061d41",
+      "checksum": "sha256:65a4389b8cc26c32",
       "source_files": [
         "src/atomic-crm/validation/activities.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/activities.ts": "7c78744ea6a4"
+        "src/atomic-crm/validation/activities.ts": "a30e221951be"
       }
     },
     {
       "name": "categories",
       "file": "categories.json",
       "item_count": 1,
-      "checksum": "sha256:4f4259582e04523a",
+      "checksum": "sha256:7761e7cf965cefe2",
       "source_files": [
         "src/atomic-crm/validation/categories.ts"
       ],
@@ -64,22 +74,82 @@
       }
     },
     {
-      "name": "contacts",
-      "file": "contacts.json",
-      "item_count": 10,
-      "checksum": "sha256:ad7be40f89197c9d",
+      "name": "contacts-communication",
+      "file": "contacts-communication.json",
+      "item_count": 3,
+      "checksum": "sha256:646ac48a369db054",
       "source_files": [
-        "src/atomic-crm/validation/contacts.ts"
+        "src/atomic-crm/validation/contacts/contacts-communication.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/contacts.ts": "ccc2c5afeb5e"
+        "src/atomic-crm/validation/contacts/contacts-communication.ts": "28dc9fce76b6"
+      }
+    },
+    {
+      "name": "contacts-core",
+      "file": "contacts-core.json",
+      "item_count": 3,
+      "checksum": "sha256:64a00449da864fd6",
+      "source_files": [
+        "src/atomic-crm/validation/contacts/contacts-core.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/validation/contacts/contacts-core.ts": "56d81c183b00"
+      }
+    },
+    {
+      "name": "contacts-department",
+      "file": "contacts-department.json",
+      "item_count": 1,
+      "checksum": "sha256:0b35c1751bdc4b44",
+      "source_files": [
+        "src/atomic-crm/validation/contacts/contacts-department.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/validation/contacts/contacts-department.ts": "97d0f18ce928"
+      }
+    },
+    {
+      "name": "contacts-import",
+      "file": "contacts-import.json",
+      "item_count": 1,
+      "checksum": "sha256:ba9c3cf3b21c44e4",
+      "source_files": [
+        "src/atomic-crm/validation/contacts/contacts-import.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/validation/contacts/contacts-import.ts": "9f07cec96677"
+      }
+    },
+    {
+      "name": "contacts-quick-create",
+      "file": "contacts-quick-create.json",
+      "item_count": 1,
+      "checksum": "sha256:ffd11f1652a32194",
+      "source_files": [
+        "src/atomic-crm/validation/contacts/contacts-quick-create.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/validation/contacts/contacts-quick-create.ts": "998ee8cbdc6e"
+      }
+    },
+    {
+      "name": "contacts-relations",
+      "file": "contacts-relations.json",
+      "item_count": 1,
+      "checksum": "sha256:6d6348dfa30333a9",
+      "source_files": [
+        "src/atomic-crm/validation/contacts/contacts-relations.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/validation/contacts/contacts-relations.ts": "268acacf7d7f"
       }
     },
     {
       "name": "distributorAuthorizations",
       "file": "distributorAuthorizations.json",
       "item_count": 3,
-      "checksum": "sha256:9a9f1f04d3f4f0f1",
+      "checksum": "sha256:c543e495ffa7bf49",
       "source_files": [
         "src/atomic-crm/validation/distributorAuthorizations.ts"
       ],
@@ -91,7 +161,7 @@
       "name": "favorites",
       "file": "favorites.json",
       "item_count": 1,
-      "checksum": "sha256:583a606d2aea454e",
+      "checksum": "sha256:0a4ef5c9f2be1824",
       "source_files": [
         "src/atomic-crm/validation/favorites.ts"
       ],
@@ -103,7 +173,7 @@
       "name": "notes",
       "file": "notes.json",
       "item_count": 4,
-      "checksum": "sha256:2161ad441778526d",
+      "checksum": "sha256:d8fb90507db1c690",
       "source_files": [
         "src/atomic-crm/validation/notes.ts"
       ],
@@ -115,7 +185,7 @@
       "name": "operatorSegments",
       "file": "operatorSegments.json",
       "item_count": 4,
-      "checksum": "sha256:82196c0ba7aa00f4",
+      "checksum": "sha256:fdd437cca0eaadb4",
       "source_files": [
         "src/atomic-crm/validation/operatorSegments.ts"
       ],
@@ -124,22 +194,34 @@
       }
     },
     {
-      "name": "opportunities",
-      "file": "opportunities.json",
-      "item_count": 9,
-      "checksum": "sha256:5bd510a378803bc0",
+      "name": "opportunities-core",
+      "file": "opportunities-core.json",
+      "item_count": 5,
+      "checksum": "sha256:5ffd8a52e17def3f",
       "source_files": [
-        "src/atomic-crm/validation/opportunities.ts"
+        "src/atomic-crm/validation/opportunities/opportunities-core.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/opportunities.ts": "5d0186efcad7"
+        "src/atomic-crm/validation/opportunities/opportunities-core.ts": "e683c293c5d7"
+      }
+    },
+    {
+      "name": "opportunities-operations",
+      "file": "opportunities-operations.json",
+      "item_count": 4,
+      "checksum": "sha256:840aafe3503de6a6",
+      "source_files": [
+        "src/atomic-crm/validation/opportunities/opportunities-operations.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "7844035b8d1d"
       }
     },
     {
       "name": "organizationDistributors",
       "file": "organizationDistributors.json",
       "item_count": 1,
-      "checksum": "sha256:af30b48bd865b2d3",
+      "checksum": "sha256:6772d00d84323f64",
       "source_files": [
         "src/atomic-crm/validation/organizationDistributors.ts"
       ],
@@ -151,19 +233,19 @@
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 7,
-      "checksum": "sha256:4e13edf61e966d88",
+      "checksum": "sha256:c5f4cd179471c7bc",
       "source_files": [
         "src/atomic-crm/validation/organizations.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/organizations.ts": "0cc4c8388a6e"
+        "src/atomic-crm/validation/organizations.ts": "b16d1044f4cf"
       }
     },
     {
       "name": "productDistributors",
       "file": "productDistributors.json",
       "item_count": 2,
-      "checksum": "sha256:e95a5094bb8ac165",
+      "checksum": "sha256:02360a887a91bc9a",
       "source_files": [
         "src/atomic-crm/validation/productDistributors.ts"
       ],
@@ -175,19 +257,19 @@
       "name": "products",
       "file": "products.json",
       "item_count": 3,
-      "checksum": "sha256:16039dd9ba1a88ac",
+      "checksum": "sha256:9d2cfb2a702636a5",
       "source_files": [
         "src/atomic-crm/validation/products.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/products.ts": "b8d6f72dd940"
+        "src/atomic-crm/validation/products.ts": "b38d4fd4e464"
       }
     },
     {
       "name": "productWithDistributors",
       "file": "productWithDistributors.json",
       "item_count": 2,
-      "checksum": "sha256:f977e417ede9218c",
+      "checksum": "sha256:068a2ef774b54e02",
       "source_files": [
         "src/atomic-crm/validation/productWithDistributors.ts"
       ],
@@ -199,7 +281,7 @@
       "name": "quickAdd",
       "file": "quickAdd.json",
       "item_count": 1,
-      "checksum": "sha256:16fe36d8aa6d0c76",
+      "checksum": "sha256:e69e1b405c1043c3",
       "source_files": [
         "src/atomic-crm/validation/quickAdd.ts"
       ],
@@ -211,31 +293,31 @@
       "name": "rpc",
       "file": "rpc.json",
       "item_count": 10,
-      "checksum": "sha256:4b7f0c6c769953d5",
+      "checksum": "sha256:5f1975bcda3abb51",
       "source_files": [
         "src/atomic-crm/validation/rpc.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/rpc.ts": "13a03b9b60d9"
+        "src/atomic-crm/validation/rpc.ts": "26e1fbcaf199"
       }
     },
     {
       "name": "sales",
       "file": "sales.json",
       "item_count": 5,
-      "checksum": "sha256:9f050c902dce3c9b",
+      "checksum": "sha256:bd271d0260c9f6f7",
       "source_files": [
         "src/atomic-crm/validation/sales.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/sales.ts": "36ebfce58d3a"
+        "src/atomic-crm/validation/sales.ts": "c5c41d826867"
       }
     },
     {
       "name": "segments",
       "file": "segments.json",
       "item_count": 3,
-      "checksum": "sha256:2a797de0e1db2eea",
+      "checksum": "sha256:43198725ca913a44",
       "source_files": [
         "src/atomic-crm/validation/segments.ts"
       ],
@@ -247,7 +329,7 @@
       "name": "tags",
       "file": "tags.json",
       "item_count": 3,
-      "checksum": "sha256:ce4e5bf2500e9548",
+      "checksum": "sha256:72f2a38ac1442d79",
       "source_files": [
         "src/atomic-crm/validation/tags.ts"
       ],
@@ -259,12 +341,24 @@
       "name": "task",
       "file": "task.json",
       "item_count": 3,
-      "checksum": "sha256:627018323f6d8904",
+      "checksum": "sha256:b9ebb7ab9156867a",
       "source_files": [
         "src/atomic-crm/validation/task.ts"
       ],
       "source_hashes": {
         "src/atomic-crm/validation/task.ts": "a2308ee4d54a"
+      }
+    },
+    {
+      "name": "ui-props",
+      "file": "ui-props.json",
+      "item_count": 5,
+      "checksum": "sha256:1c477e12b05756b6",
+      "source_files": [
+        "src/atomic-crm/validation/ui-props.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/validation/ui-props.ts": "a7ad870c0454"
       }
     }
   ],
@@ -278,8 +372,26 @@
     "src/atomic-crm/validation/constants.ts": [
       "constants"
     ],
-    "src/atomic-crm/validation/contacts.ts": [
-      "contacts"
+    "src/atomic-crm/validation/contacts/contacts-communication.ts": [
+      "contacts-communication"
+    ],
+    "src/atomic-crm/validation/contacts/contacts-core.ts": [
+      "contacts-core"
+    ],
+    "src/atomic-crm/validation/contacts/contacts-department.ts": [
+      "contacts-department"
+    ],
+    "src/atomic-crm/validation/contacts/contacts-import.ts": [
+      "contacts-import"
+    ],
+    "src/atomic-crm/validation/contacts/contacts-quick-create.ts": [
+      "contacts-quick-create"
+    ],
+    "src/atomic-crm/validation/contacts/contacts-relations.ts": [
+      "contacts-relations"
+    ],
+    "src/atomic-crm/validation/contacts/index.ts": [
+      "index"
     ],
     "src/atomic-crm/validation/distributorAuthorizations.ts": [
       "distributorAuthorizations"
@@ -296,8 +408,17 @@
     "src/atomic-crm/validation/operatorSegments.ts": [
       "operatorSegments"
     ],
-    "src/atomic-crm/validation/opportunities.ts": [
-      "opportunities"
+    "src/atomic-crm/validation/opportunities/index.ts": [
+      "index"
+    ],
+    "src/atomic-crm/validation/opportunities/opportunities-core.ts": [
+      "opportunities-core"
+    ],
+    "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts": [
+      "opportunities-duplicates"
+    ],
+    "src/atomic-crm/validation/opportunities/opportunities-operations.ts": [
+      "opportunities-operations"
     ],
     "src/atomic-crm/validation/organizationDistributors.ts": [
       "organizationDistributors"
@@ -331,6 +452,9 @@
     ],
     "src/atomic-crm/validation/task.ts": [
       "task"
+    ],
+    "src/atomic-crm/validation/ui-props.ts": [
+      "ui-props"
     ]
   }
 }

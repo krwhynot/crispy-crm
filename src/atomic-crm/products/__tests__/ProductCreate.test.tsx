@@ -144,9 +144,9 @@ describe("ProductCreate", () => {
             category: "beverages",
           },
         });
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toEqual(serverError);
-        expect(error.message).toBe("Database connection failed");
+        expect((error as Error).message).toBe("Database connection failed");
       }
 
       expect(mockCreate).toHaveBeenCalledTimes(1);
@@ -168,10 +168,10 @@ describe("ProductCreate", () => {
             category: "beverages",
           },
         });
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toEqual(validationErrors);
-        expect(error.errors).toHaveProperty("name");
-        expect(error.errors).toHaveProperty("principal_id");
+        expect((error as Record<string, unknown>).errors).toHaveProperty("name");
+        expect((error as Record<string, unknown>).errors).toHaveProperty("principal_id");
       }
 
       expect(mockCreate).toHaveBeenCalledTimes(1);
@@ -189,9 +189,9 @@ describe("ProductCreate", () => {
             category: "dairy",
           },
         });
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toBe(networkError);
-        expect(error.message).toBe("Network timeout");
+        expect((error as Error).message).toBe("Network timeout");
       }
 
       expect(mockCreate).toHaveBeenCalledTimes(1);

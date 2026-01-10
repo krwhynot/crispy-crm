@@ -467,15 +467,193 @@ async function executeSearch(args: SearchInput): Promise<SearchResponse> {
 
 ---
 
+## Pattern E: Logging Wrapper
+
+Higher-order function that wraps MCP tool executors with automatic logging to `.claude/state/usage.log`. Tracks invocations, timing, and result counts.
+
+**When to use**: When registering MCP tools to track usage patterns and diagnose issues.
+
+### Logging Wrapper
+
+```typescript
+// scripts/mcp/logger.ts
+
+import { appendFileSync, mkdirSync, existsSync } from "node:fs";
+import { join, dirname } from "node:path";
+
+const LOG_FILE = join(process.cwd(), ".claude", "state", "usage.log");
+
+// Ensure directory exists at module load
+const logDir = dirname(LOG_FILE);
+if (!existsSync(logDir)) {
+  mkdirSync(logDir, { recursive: true });
+}
+
+interface LogEntry {
+  tool: string;
+  query?: string;
+  params?: Record<string, unknown>;
+  resultCount?: number;
+  duration?: number;
+  error?: string;
+}
+
+export function logToolCall(entry: LogEntry): void {
+  const timestamp = new Date().toISOString();
+  const icon = entry.error ? "❌" : "✓";
+
+  let line = `[${timestamp}] ${icon} ${entry.tool}`;
+
+  if (entry.query) {
+    line += ` | query: "${entry.query}"`;
+  }
+
+  if (entry.params && Object.keys(entry.params).length > 0) {
+    const params = Object.entries(entry.params)
+      .filter(([k]) => k !== "query") // Don't duplicate query
+      .map(([k, v]) => `${k}=${JSON.stringify(v)}`)
+      .join(", ");
+    if (params) {
+      line += ` | ${params}`;
+    }
+  }
+
+  if (entry.resultCount !== undefined) {
+    line += ` | results: ${entry.resultCount}`;
+  }
+
+  if (entry.duration !== undefined) {
+    line += ` | ${entry.duration}ms`;
+  }
+
+  if (entry.error) {
+    line += ` | error: ${entry.error}`;
+  }
+
+  line += "\n";
+
+  try {
+    appendFileSync(LOG_FILE, line);
+  } catch {
+    // Silent fail - logging shouldn't break the MCP server
+  }
+}
+
+/**
+ * Create a wrapped tool executor with automatic logging
+ */
+export function withLogging<T>(
+  toolName: string,
+  fn: (args: T) => Promise<string>
+): (args: T) => Promise<string> {
+  return async (args: T) => {
+    const start = Date.now();
+
+    try {
+      const result = await fn(args);
+      const duration = Date.now() - start;
+
+      // Parse result to get count
+      let resultCount: number | undefined;
+      try {
+        const parsed = JSON.parse(result);
+        if (Array.isArray(parsed)) {
+          resultCount = parsed.length;
+        } else if (parsed.results && Array.isArray(parsed.results)) {
+          resultCount = parsed.results.length;
+        } else if (parsed.references && Array.isArray(parsed.references)) {
+          resultCount = parsed.references.length;
+        }
+      } catch {
+        // Not JSON or unexpected format
+      }
+
+      logToolCall({
+        tool: toolName,
+        query: (args as Record<string, unknown>).query as string | undefined,
+        params: args as Record<string, unknown>,
+        resultCount,
+        duration,
+      });
+
+      return result;
+    } catch (error) {
+      const duration = Date.now() - start;
+
+      logToolCall({
+        tool: toolName,
+        query: (args as Record<string, unknown>).query as string | undefined,
+        params: args as Record<string, unknown>,
+        duration,
+        error: error instanceof Error ? error.message : String(error),
+      });
+
+      throw error;
+    }
+  };
+}
+```
+
+### Usage in Server Registration
+
+```typescript
+// scripts/mcp/server.ts
+
+import { withLogging } from "./logger.js";
+
+// Register all tools with logging wrappers
+server.addTool({
+  ...searchCodeTool,
+  execute: withLogging("search_code", searchCodeTool.execute),
+});
+
+server.addTool({
+  ...goToDefinitionTool,
+  execute: withLogging("go_to_definition", goToDefinitionTool.execute),
+});
+
+server.addTool({
+  ...findReferencesTool,
+  execute: withLogging("find_references", findReferencesTool.execute),
+});
+```
+
+### Log Output Format
+
+```
+[2024-01-15T10:23:45.123Z] ✓ search_code | query: "form validation" | limit=20, type="all" | results: 15 | 234ms
+[2024-01-15T10:23:46.789Z] ✓ go_to_definition | query: "useForm" | symbolName="useForm", kind="any" | results: 1 | 45ms
+[2024-01-15T10:23:47.456Z] ❌ find_references | query: "NonExistent" | symbolName="NonExistent" | 12ms | error: Symbol not found
+```
+
+**Key points:**
+- Wrap tool executors at registration time, not at definition time
+- Silent failure in `logToolCall()` prevents logging from breaking the MCP server
+- Result count extraction handles multiple response formats (array, `.results`, `.references`)
+- Duration tracking helps identify slow queries
+- Error indicator (❌) makes failures visible in log output
+- Log file location: `.claude/state/usage.log`
+
+**Viewing logs:**
+```bash
+# Real-time monitoring
+tail -f .claude/state/usage.log
+
+# Recent activity
+tail -20 .claude/state/usage.log
+```
+
+---
+
 ## Pattern Comparison Table
 
-| Aspect | Tool Definition | Search Ranking | Database Queries | Error Handling |
-|--------|-----------------|----------------|------------------|----------------|
-| **Purpose** | Define MCP tools | Combine search sources | Query symbol data | Handle failures |
-| **Key file** | tools/*.ts | ranking.ts | db.ts | All tools |
-| **Zod usage** | Parameters | N/A | N/A | Error types |
-| **Returns** | JSON string | RankedResult[] | Query rows | Error object |
-| **Key pattern** | safeParse | RRF formula | Parameterized SQL | try/catch + JSON |
+| Aspect | Tool Definition | Search Ranking | Database Queries | Error Handling | Logging Wrapper |
+|--------|-----------------|----------------|------------------|----------------|-----------------|
+| **Purpose** | Define MCP tools | Combine search sources | Query symbol data | Handle failures | Track usage |
+| **Key file** | tools/*.ts | ranking.ts | db.ts | All tools | logger.ts |
+| **Zod usage** | Parameters | N/A | N/A | Error types | N/A |
+| **Returns** | JSON string | RankedResult[] | Query rows | Error object | Wrapped function |
+| **Key pattern** | safeParse | RRF formula | Parameterized SQL | try/catch + JSON | Higher-order function |
 
 ---
 
@@ -587,3 +765,4 @@ When adding a new MCP tool:
 | **B: RRF Ranking** | `ranking.ts` |
 | **C: Database Queries** | `db.ts`, `tools/*.ts` |
 | **D: Error Handling** | All tool files |
+| **E: Logging Wrapper** | `logger.ts`, `server.ts` |

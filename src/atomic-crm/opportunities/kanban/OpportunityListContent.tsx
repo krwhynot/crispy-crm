@@ -1,7 +1,8 @@
 // es-toolkit: Deep object equality comparison
 import { isEqual } from "es-toolkit";
-import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
+import { useListContext, useUpdate, useNotify, useRefresh, useDataProvider } from "ra-core";
 import { useEffect, useState, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   DndContext,
   DragOverlay,
@@ -23,6 +24,7 @@ import type { Opportunity } from "../../types";
 import { OpportunityColumn } from "./OpportunityColumn";
 import { OPPORTUNITY_STAGES_LEGACY, getOpportunityStageLabel } from "../constants/stageConstants";
 import type { OpportunitiesByStage } from "../constants/stages";
+import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 import { getOpportunitiesByStage } from "../constants/stages";
 import { useColumnPreferences } from "../hooks/useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
@@ -89,6 +91,8 @@ export const OpportunityListContent = ({
   const [update] = useUpdate();
   const notify = useNotify();
   const refresh = useRefresh();
+  const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
 
   // State for CloseOpportunityModal
   const [showCloseModal, setShowCloseModal] = useState(false);
@@ -157,6 +161,8 @@ export const OpportunityListContent = ({
       draggedItem: Opportunity,
       additionalData?: Partial<CloseOpportunityInput>
     ) => {
+      const oldStage = draggedItem.stage;
+
       update(
         "opportunities",
         {
@@ -165,10 +171,28 @@ export const OpportunityListContent = ({
           previousData: draggedItem,
         },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             notify(`Moved to ${getOpportunityStageLabel(newStage)}`, {
               type: "success",
             });
+
+            try {
+              await dataProvider.create("activities", {
+                data: {
+                  activity_type: "engagement",
+                  type: "note",
+                  subject: `Stage changed from ${getOpportunityStageLabel(oldStage)} to ${getOpportunityStageLabel(newStage)}`,
+                  activity_date: new Date().toISOString(),
+                  opportunity_id: opportunityId,
+                  organization_id: draggedItem.customer_organization_id,
+                },
+              });
+
+              queryClient.invalidateQueries({ queryKey: activityKeys.all });
+              queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+            } catch (error: unknown) {
+              console.error("Failed to create stage change activity:", error);
+            }
           },
           onError: () => {
             notify("Error: Could not move opportunity. Reverting.", {
@@ -179,7 +203,7 @@ export const OpportunityListContent = ({
         }
       );
     },
-    [update, notify]
+    [update, notify, dataProvider, queryClient]
   );
 
   /**

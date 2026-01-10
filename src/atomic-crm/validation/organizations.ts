@@ -202,7 +202,7 @@ export async function validateOrganizationForSubmission(data: unknown): Promise<
   try {
     // Parse and validate the data
     organizationSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
@@ -248,7 +248,7 @@ export const updateOrganizationSchema = organizationSchema.partial().required({
 export async function validateCreateOrganization(data: unknown): Promise<void> {
   try {
     createOrganizationSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
@@ -267,7 +267,7 @@ export async function validateCreateOrganization(data: unknown): Promise<void> {
 export async function validateUpdateOrganization(data: unknown): Promise<void> {
   try {
     updateOrganizationSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {

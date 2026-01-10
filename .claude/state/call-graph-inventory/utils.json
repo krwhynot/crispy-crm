@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-08T12:15:01.827Z",
+  "generated_at": "2026-01-10T23:36:12.281Z",
   "items": {
     "nodes": [
       {
@@ -166,82 +166,82 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "name": "validateCsvFile",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 51,
+        "line": 53,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:137:isBinaryFile",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:139:isBinaryFile",
         "name": "isBinaryFile",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 137,
+        "line": 139,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "name": "getSecurePapaParseConfig",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 166,
+        "line": 168,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:221:sanitizeCsvValue",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:223:sanitizeCsvValue",
         "name": "sanitizeCsvValue",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 221,
+        "line": 223,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:254:formatBytes",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:256:formatBytes",
         "name": "formatBytes",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 254,
+        "line": 256,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:314:normalizeName",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:316:normalizeName",
         "name": "normalizeName",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 314,
+        "line": 316,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:323:createDuplicateKey",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:325:createDuplicateKey",
         "name": "createDuplicateKey",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 323,
+        "line": 325,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "name": "detectDuplicates",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 347,
+        "line": 349,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
+        "id": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
         "name": "formatDuplicateSummary",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
-        "line": 457,
+        "line": 459,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -283,19 +283,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatName.ts:4:formatName",
+        "id": "src/atomic-crm/utils/formatName.ts:5:formatName",
         "name": "formatName",
         "file": "src/atomic-crm/utils/formatName.ts",
-        "line": 4,
+        "line": 5,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatName.ts:22:formatFullName",
+        "id": "src/atomic-crm/utils/formatName.ts:26:formatFullName",
         "name": "formatFullName",
         "file": "src/atomic-crm/utils/formatName.ts",
-        "line": 22,
+        "line": 26,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -391,10 +391,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "id": "src/atomic-crm/utils/getContextAwareRedirect.ts:58:getContextAwareRedirect",
         "name": "getContextAwareRedirect",
         "file": "src/atomic-crm/utils/getContextAwareRedirect.ts",
-        "line": 55,
+        "line": 58,
         "nodeType": "arrow",
         "exported": true,
         "async": false
@@ -463,37 +463,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
+        "id": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "name": "setStorageItem",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 148,
+        "line": 151,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:187:removeStorageItem",
+        "id": "src/atomic-crm/utils/secureStorage.ts:200:removeStorageItem",
         "name": "removeStorageItem",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 187,
+        "line": 200,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "id": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "name": "clearStorageByPrefix",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 207,
+        "line": 223,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "id": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "name": "getKeysByPrefix",
         "file": "src/atomic-crm/utils/secureStorage.ts",
-        "line": 240,
+        "line": 259,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -870,673 +870,655 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
-        "edgeType": "call",
-        "line": 57,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
-        "target": "formatBytes",
-        "targetName": "formatBytes",
         "edgeType": "call",
         "line": 59,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "formatBytes",
         "targetName": "formatBytes",
         "edgeType": "call",
-        "line": 59,
+        "line": 61,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
+        "target": "formatBytes",
+        "targetName": "formatBytes",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 65,
+        "line": 67,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 73,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "endsWith",
         "targetName": "endsWith",
         "edgeType": "call",
-        "line": 74,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 74,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 78,
+        "line": 80,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 86,
+        "line": 88,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 87,
+        "line": 89,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "text",
         "targetName": "text",
         "edgeType": "call",
-        "line": 92,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 92,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "isBinaryFile",
         "targetName": "isBinaryFile",
         "edgeType": "call",
-        "line": 95,
+        "line": 97,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 96,
+        "line": 98,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "test",
         "targetName": "test",
         "edgeType": "call",
-        "line": 104,
+        "line": 106,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 105,
+        "line": 107,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "test",
         "targetName": "test",
         "edgeType": "call",
-        "line": 113,
+        "line": 115,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 114,
+        "line": 116,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:51:validateCsvFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:53:validateCsvFile",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 117,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:137:isBinaryFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:139:isBinaryFile",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 152,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:137:isBinaryFile",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:139:isBinaryFile",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 152,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "target": "substring",
         "targetName": "substring",
         "edgeType": "call",
-        "line": 175,
+        "line": 177,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 175,
+        "line": 177,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 175,
+        "line": 177,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 175,
+        "line": 177,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 187,
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "target": "test",
         "targetName": "test",
         "edgeType": "call",
-        "line": 188,
+        "line": 190,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
         "target": "substring",
         "targetName": "substring",
         "edgeType": "call",
-        "line": 195,
+        "line": 197,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:166:getSecurePapaParseConfig",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:168:getSecurePapaParseConfig",
+        "target": "devLog",
+        "targetName": "devLog",
         "edgeType": "call",
-        "line": 204,
+        "line": 206,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:221:sanitizeCsvValue",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:223:sanitizeCsvValue",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 226,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:221:sanitizeCsvValue",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:223:sanitizeCsvValue",
         "target": "test",
         "targetName": "test",
         "edgeType": "call",
-        "line": 229,
+        "line": 231,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:221:sanitizeCsvValue",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:223:sanitizeCsvValue",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 235,
+        "line": 237,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:221:sanitizeCsvValue",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:223:sanitizeCsvValue",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 238,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:221:sanitizeCsvValue",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:223:sanitizeCsvValue",
         "target": "substring",
         "targetName": "substring",
         "edgeType": "call",
-        "line": 242,
+        "line": 244,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:254:formatBytes",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:256:formatBytes",
         "target": "floor",
         "targetName": "floor",
         "edgeType": "call",
-        "line": 258,
+        "line": 260,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:254:formatBytes",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:256:formatBytes",
         "target": "log",
         "targetName": "log",
         "edgeType": "call",
-        "line": 258,
+        "line": 260,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:254:formatBytes",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:256:formatBytes",
         "target": "log",
         "targetName": "log",
         "edgeType": "call",
-        "line": 258,
+        "line": 260,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:254:formatBytes",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:256:formatBytes",
         "target": "round",
         "targetName": "round",
         "edgeType": "call",
-        "line": 259,
+        "line": 261,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:254:formatBytes",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:256:formatBytes",
         "target": "pow",
         "targetName": "pow",
         "edgeType": "call",
-        "line": 259,
+        "line": 261,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:314:normalizeName",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:316:normalizeName",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 316,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:314:normalizeName",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:316:normalizeName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 316,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:314:normalizeName",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:316:normalizeName",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 316,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:323:createDuplicateKey",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:325:createDuplicateKey",
         "target": "normalizeName",
         "targetName": "normalizeName",
-        "edgeType": "call",
-        "line": 328,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:323:createDuplicateKey",
-        "target": "normalizeName",
-        "targetName": "normalizeName",
-        "edgeType": "call",
-        "line": 329,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:323:createDuplicateKey",
-        "target": "trim",
-        "targetName": "trim",
         "edgeType": "call",
         "line": 330,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:325:createDuplicateKey",
+        "target": "normalizeName",
+        "targetName": "normalizeName",
+        "edgeType": "call",
+        "line": 331,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:325:createDuplicateKey",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 332,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "createDuplicateKey",
         "targetName": "createDuplicateKey",
         "edgeType": "call",
-        "line": 361,
+        "line": 363,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 366,
+        "line": 368,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 367,
+        "line": 369,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 369,
+        "line": 371,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 369,
+        "line": 371,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "createDuplicateKey",
         "targetName": "createDuplicateKey",
-        "edgeType": "call",
-        "line": 372,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 373,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
-        "target": "set",
-        "targetName": "set",
         "edgeType": "call",
         "line": 374,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 375,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 376,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 376,
+        "line": 378,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 376,
+        "line": 378,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 383,
+        "line": 385,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "createDuplicateKey",
         "targetName": "createDuplicateKey",
         "edgeType": "call",
-        "line": 384,
+        "line": 386,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "createDuplicateKey",
         "targetName": "createDuplicateKey",
         "edgeType": "call",
-        "line": 389,
+        "line": 391,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 392,
+        "line": 394,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 393,
+        "line": 395,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 395,
+        "line": 397,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 395,
+        "line": 397,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "get",
         "targetName": "get",
-        "edgeType": "call",
-        "line": 398,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
-        "target": "push",
-        "targetName": "push",
         "edgeType": "call",
         "line": 400,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 410,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 402,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 412,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 413,
+        "line": 415,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 417,
+        "line": 419,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 424,
+        "line": 426,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 430,
+        "line": 432,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 435,
+        "line": 437,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 437,
+        "line": 439,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:347:detectDuplicates",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:349:detectDuplicates",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 438,
+        "line": 440,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 460,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 461,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
@@ -1545,7 +1527,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
@@ -1554,7 +1536,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
@@ -1563,20 +1545,38 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 467,
+        "line": 465,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 466,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 469,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/csvUploadValidator.ts:457:formatDuplicateSummary",
+        "source": "src/atomic-crm/utils/csvUploadValidator.ts:459:formatDuplicateSummary",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 470,
+        "line": 472,
         "conditional": false,
         "inLoop": false
       },
@@ -1653,29 +1653,47 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:4:formatName",
+        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 5,
+        "line": 7,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:4:formatName",
+        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 6,
+        "line": 8,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:22:formatFullName",
+        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 9,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 10,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatName.ts:26:formatFullName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 23,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
@@ -1959,47 +1977,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:18:parseSourceParam",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 27,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:58:getContextAwareRedirect",
         "target": "parseSourceParam",
         "targetName": "parseSourceParam",
         "edgeType": "call",
-        "line": 57,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:58:getContextAwareRedirect",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 62,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:58:getContextAwareRedirect",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 63,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:58:getContextAwareRedirect",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 67,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:55:getContextAwareRedirect",
+        "source": "src/atomic-crm/utils/getContextAwareRedirect.ts:58:getContextAwareRedirect",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 69,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
@@ -2401,10 +2428,19 @@
       },
       {
         "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:70:getStorageItem",
         "target": "onError",
         "targetName": "onError",
         "edgeType": "call",
-        "line": 130,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
@@ -2413,268 +2449,313 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 130,
+        "line": 133,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "target": "setItem",
         "targetName": "setItem",
-        "edgeType": "call",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
-        "target": "stringify",
-        "targetName": "stringify",
-        "edgeType": "call",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
-        "target": "error",
-        "targetName": "error",
         "edgeType": "call",
         "line": 160,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
-        "target": "setItem",
-        "targetName": "setItem",
-        "edgeType": "call",
-        "line": 165,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "target": "stringify",
         "targetName": "stringify",
         "edgeType": "call",
-        "line": 165,
+        "line": 160,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 163,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 165,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 171,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 171,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 166,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 169,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
-        "target": "onError",
-        "targetName": "onError",
-        "edgeType": "call",
-        "line": 170,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:148:setStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 170,
+        "line": 177,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:187:removeStorageItem",
-        "target": "removeItem",
-        "targetName": "removeItem",
-        "edgeType": "call",
-        "line": 189,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:187:removeStorageItem",
-        "target": "removeItem",
-        "targetName": "removeItem",
-        "edgeType": "call",
-        "line": 190,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:187:removeStorageItem",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 192,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/secureStorage.ts:187:removeStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "target": "onError",
         "targetName": "onError",
         "edgeType": "call",
-        "line": 193,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:187:removeStorageItem",
+        "source": "src/atomic-crm/utils/secureStorage.ts:151:setStorageItem",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 193,
+        "line": 180,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:200:removeStorageItem",
+        "target": "removeItem",
+        "targetName": "removeItem",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:200:removeStorageItem",
+        "target": "removeItem",
+        "targetName": "removeItem",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:200:removeStorageItem",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 205,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:200:removeStorageItem",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 207,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:200:removeStorageItem",
+        "target": "onError",
+        "targetName": "onError",
+        "edgeType": "call",
+        "line": 209,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:200:removeStorageItem",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 209,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "key",
         "targetName": "key",
         "edgeType": "call",
-        "line": 212,
+        "line": 228,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 213,
+        "line": 229,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 214,
+        "line": 230,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 218,
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "removeItem",
         "targetName": "removeItem",
         "edgeType": "call",
-        "line": 218,
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "clearFromStorage",
         "targetName": "clearFromStorage",
         "edgeType": "call",
-        "line": 222,
+        "line": 238,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "clearFromStorage",
         "targetName": "clearFromStorage",
         "edgeType": "call",
-        "line": 223,
+        "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:207:clearStorageByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 225,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:223:clearStorageByPrefix",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 243,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "target": "key",
         "targetName": "key",
         "edgeType": "call",
-        "line": 245,
+        "line": 264,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 246,
+        "line": 265,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "target": "add",
         "targetName": "add",
         "edgeType": "call",
-        "line": 247,
+        "line": 266,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "target": "collectKeys",
         "targetName": "collectKeys",
         "edgeType": "call",
-        "line": 253,
+        "line": 272,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "target": "collectKeys",
         "targetName": "collectKeys",
         "edgeType": "call",
-        "line": 254,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 256,
+        "line": 275,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/secureStorage.ts:240:getKeysByPrefix",
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 277,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/secureStorage.ts:259:getKeysByPrefix",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 259,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },

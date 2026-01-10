@@ -1,10 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useDataProvider, useNotify, useGetList, useRefresh } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { getOpportunityStageLabel } from "./constants/stageConstants";
 import {
   Select,
   SelectContent,
@@ -31,6 +35,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
+  const queryClient = useQueryClient();
   const { opportunityStages } = usePipelineConfig();
 
   // Pattern H: Cascading contact selection filtered by opportunity's organization
@@ -68,15 +73,31 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
   });
 
   const handleStageChange = async (newStage: string) => {
+    const oldStage = opportunity.stage;
+
     try {
       await dataProvider.update("opportunities", {
         id: opportunity.id,
         data: { stage: newStage },
         previousData: opportunity,
       });
+
+      await dataProvider.create("activities", {
+        data: {
+          activity_type: "engagement",
+          type: "note",
+          subject: `Stage changed from ${getOpportunityStageLabel(oldStage)} to ${getOpportunityStageLabel(newStage)}`,
+          activity_date: new Date().toISOString(),
+          opportunity_id: opportunity.id,
+          organization_id: opportunity.customer_organization_id,
+        },
+      });
+
       setValue("stage", newStage);
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
       notify("Stage updated successfully", { type: "success" });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Stage update failed:", error);
       const message = error instanceof Error ? error.message : "Unknown error";
       if (message.includes("CONFLICT")) {
@@ -102,10 +123,12 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
         },
       });
 
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       notify("Activity created successfully", { type: "success" });
       reset();
       onSuccess?.();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Activity creation failed:", error);
       const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Error creating activity: ${message}`, { type: "error" });

@@ -1,0 +1,43 @@
+-- ============================================================================
+-- Migration: move_pg_trgm_to_extensions.sql
+-- ============================================================================
+-- PURPOSE: Move pg_trgm extension from public schema to extensions schema
+--
+-- SECURITY RATIONALE:
+-- Extensions should not be installed in the public schema because:
+-- 1. Public schema is exposed to application code and RLS policies
+-- 2. Extension functions could be targets for privilege escalation
+-- 3. Supabase recommends extensions in dedicated 'extensions' schema
+--
+-- AFFECTED OBJECTS:
+-- - pg_trgm extension and all its functions/operators
+-- - Indexes using gin_trgm_ops (remain valid after move)
+--
+-- VERIFICATION:
+-- The following indexes use pg_trgm and will continue to work:
+--   - idx_contacts_name_trgm
+--   - idx_contacts_first_name_trgm
+--   - idx_contacts_last_name_trgm
+--   - idx_organizations_name_trgm
+--
+-- REFERENCES:
+--   - Supabase Security Best Practices
+--   - PostgreSQL ALTER EXTENSION docs
+-- ============================================================================
+
+-- Move pg_trgm from public to extensions schema
+-- This also moves all functions, operators, and operator classes
+ALTER EXTENSION pg_trgm SET SCHEMA extensions;
+
+-- ============================================================================
+-- VERIFICATION (run after migration):
+-- ============================================================================
+-- SELECT extnamespace::regnamespace FROM pg_extension WHERE extname = 'pg_trgm';
+-- Expected: 'extensions'
+--
+-- SELECT indexname, indisvalid FROM pg_indexes i
+-- JOIN pg_class c ON c.relname = i.indexname
+-- JOIN pg_index idx ON idx.indexrelid = c.oid
+-- WHERE i.indexname LIKE '%trgm%';
+-- Expected: All indexes should have indisvalid = true
+-- ============================================================================

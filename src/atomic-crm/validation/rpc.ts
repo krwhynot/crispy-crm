@@ -119,11 +119,24 @@ export type CheckAuthorizationResponse = z.infer<typeof checkAuthorizationRespon
  * ) RETURNS JSONB
  * Batch authorization check for multiple products or principals.
  */
-export const checkAuthorizationBatchParamsSchema = z.strictObject({
-  _distributor_id: z.number().int().positive("Distributor ID must be a positive integer"),
-  _product_ids: z.array(z.number().int().positive()).optional().nullable(),
-  _principal_ids: z.array(z.number().int().positive()).optional().nullable(),
-});
+export const checkAuthorizationBatchParamsSchema = z
+  .strictObject({
+    _distributor_id: z.number().int().positive("Distributor ID must be a positive integer"),
+    _product_ids: z.array(z.number().int().positive()).optional().nullable(),
+    _principal_ids: z.array(z.number().int().positive()).optional().nullable(),
+  })
+  .refine(
+    (data) => {
+      const hasProducts = data._product_ids && data._product_ids.length > 0;
+      const hasPrincipals = data._principal_ids && data._principal_ids.length > 0;
+      return hasProducts || hasPrincipals;
+    },
+    {
+      message:
+        "At least one of _product_ids or _principal_ids must be provided with non-empty values",
+      path: ["_product_ids"],
+    }
+  );
 
 /**
  * Response schema for check_authorization_batch RPC

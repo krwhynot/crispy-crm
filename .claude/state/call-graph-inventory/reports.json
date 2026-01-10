@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-08T12:15:01.774Z",
+  "generated_at": "2026-01-10T23:36:12.259Z",
   "items": {
     "nodes": [
       {
@@ -22,10 +22,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "id": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "name": "CampaignActivityFilters",
+        "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx",
+        "line": 41,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "name": "CampaignActivityReport",
         "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
-        "line": 55,
+        "line": 51,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "name": "CampaignActivitySummaryCards",
+        "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx",
+        "line": 12,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -36,6 +54,42 @@
         "file": "src/atomic-crm/reports/CampaignActivity/StaleLeadsView.tsx",
         "line": 32,
         "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "name": "useCampaignActivityData",
+        "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts",
+        "line": 40,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "name": "useCampaignActivityExport",
+        "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts",
+        "line": 49,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "name": "getLastActivityForOpportunity",
+        "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts",
+        "line": 36,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "name": "useCampaignActivityMetrics",
+        "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts",
+        "line": 53,
+        "nodeType": "hook",
         "exported": true,
         "async": false
       },
@@ -292,10 +346,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/utils/cleanupMigration.ts:8:cleanupOldReportKeys",
+        "id": "src/atomic-crm/reports/utils/cleanupMigration.ts:11:cleanupOldReportKeys",
         "name": "cleanupOldReportKeys",
         "file": "src/atomic-crm/reports/utils/cleanupMigration.ts",
-        "line": 8,
+        "line": 11,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -555,34 +609,421 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDatePresetHandler",
+        "targetName": "setDatePresetHandler",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDatePresetHandler",
+        "targetName": "setDatePresetHandler",
+        "edgeType": "call",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDatePresetHandler",
+        "targetName": "setDatePresetHandler",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDatePresetHandler",
+        "targetName": "setDatePresetHandler",
+        "edgeType": "call",
+        "line": 92,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDatePreset",
+        "targetName": "setDatePreset",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 109,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDatePreset",
+        "targetName": "setDatePreset",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "toggleActivityType",
+        "targetName": "toggleActivityType",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 179,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setSelectedSalesRep",
+        "targetName": "setSelectedSalesRep",
+        "edgeType": "call",
+        "line": 181,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "parseInt",
+        "targetName": "parseInt",
+        "edgeType": "call",
+        "line": 181,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "setShowStaleLeads",
+        "targetName": "setShowStaleLeads",
+        "edgeType": "call",
+        "line": 205,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 89,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 118,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 164,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 178,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 187,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 188,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 190,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 207,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Checkbox",
+        "targetName": "Checkbox",
+        "edgeType": "render",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 185,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx:41:CampaignActivityFilters",
+        "target": "Checkbox",
+        "targetName": "Checkbox",
+        "edgeType": "render",
+        "line": 202,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
         "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
         "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 58,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -591,7 +1032,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -600,2352 +1041,1308 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 63,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 65,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 66,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 67,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 71,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "useRef",
         "targetName": "useRef",
         "edgeType": "hook",
-        "line": 74,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useGetList",
-        "targetName": "useGetList",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useCampaignActivityData",
+        "targetName": "useCampaignActivityData",
         "edgeType": "hook",
         "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useCampaignActivityExport",
+        "targetName": "useCampaignActivityExport",
         "edgeType": "hook",
         "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 93,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 89,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 91,
+        "line": 103,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 91,
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "values",
+        "targetName": "values",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 123,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 125,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 95,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 95,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 95,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 95,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useGetList",
-        "targetName": "useGetList",
-        "edgeType": "hook",
-        "line": 102,
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "round",
+        "targetName": "round",
+        "edgeType": "call",
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 112,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 125,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useReportData",
-        "targetName": "useReportData",
-        "edgeType": "hook",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
         "line": 147,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 148,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 148,
+        "line": 155,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 148,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useGetList",
-        "targetName": "useGetList",
-        "edgeType": "hook",
-        "line": 152,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "sort",
+        "targetName": "sort",
         "edgeType": "call",
         "line": 158,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 160,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 163,
+        "line": 171,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 164,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 169,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 172,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "set",
-        "targetName": "set",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "filter",
+        "targetName": "filter",
         "edgeType": "call",
         "line": 174,
-        "conditional": true,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 174,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 178,
+        "line": 180,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 180,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 178,
+        "line": 180,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "from",
-        "targetName": "from",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "filter",
+        "targetName": "filter",
         "edgeType": "call",
-        "line": 178,
+        "line": 180,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "entries",
-        "targetName": "entries",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
-        "line": 178,
-        "conditional": false,
+        "line": 183,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "getLastActivityForOpportunity",
+        "targetName": "getLastActivityForOpportunity",
         "edgeType": "call",
-        "line": 181,
+        "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 188,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
         "edgeType": "call",
         "line": 194,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "floor",
+        "targetName": "floor",
+        "edgeType": "call",
+        "line": 196,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 196,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 196,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "getStaleThreshold",
+        "targetName": "getStaleThreshold",
+        "edgeType": "call",
+        "line": 202,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 197,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "set",
-        "targetName": "set",
-        "edgeType": "call",
-        "line": 198,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "isOpportunityStale",
+        "targetName": "isOpportunityStale",
         "edgeType": "call",
         "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 210,
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 225,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 215,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 215,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "values",
-        "targetName": "values",
-        "edgeType": "call",
-        "line": 215,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 218,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 220,
+        "line": 227,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "set",
-        "targetName": "set",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "slice",
+        "targetName": "slice",
         "edgeType": "call",
-        "line": 221,
+        "line": 227,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setExpandedTypes",
+        "targetName": "setExpandedTypes",
         "edgeType": "call",
-        "line": 226,
+        "line": 228,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sort",
-        "targetName": "sort",
-        "edgeType": "call",
-        "line": 230,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 230,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "entries",
-        "targetName": "entries",
-        "edgeType": "call",
-        "line": 230,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "round",
-        "targetName": "round",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setAriaLiveMessage",
+        "targetName": "setAriaLiveMessage",
         "edgeType": "call",
         "line": 236,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sort",
-        "targetName": "sort",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setAriaLiveMessage",
+        "targetName": "setAriaLiveMessage",
         "edgeType": "call",
-        "line": 242,
+        "line": 240,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setTimeout",
+        "targetName": "setTimeout",
+        "edgeType": "call",
+        "line": 245,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setAriaLiveMessage",
+        "targetName": "setAriaLiveMessage",
+        "edgeType": "call",
+        "line": 245,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "clearTimeout",
+        "targetName": "clearTimeout",
+        "edgeType": "call",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "filter",
         "targetName": "filter",
-        "edgeType": "call",
-        "line": 250,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sort",
-        "targetName": "sort",
         "edgeType": "call",
         "line": 253,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 254,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "round",
+        "targetName": "round",
         "edgeType": "call",
         "line": 255,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "getTime",
-        "targetName": "getTime",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "toFixed",
+        "targetName": "toFixed",
         "edgeType": "call",
         "line": 257,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "getTime",
-        "targetName": "getTime",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "has",
+        "targetName": "has",
         "edgeType": "call",
-        "line": 257,
-        "conditional": false,
+        "line": 261,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 265,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "filter",
-        "targetName": "filter",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "delete",
+        "targetName": "delete",
         "edgeType": "call",
-        "line": 268,
-        "conditional": false,
+        "line": 262,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sort",
-        "targetName": "sort",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "add",
+        "targetName": "add",
         "edgeType": "call",
-        "line": 274,
-        "conditional": false,
+        "line": 264,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "filter",
-        "targetName": "filter",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setExpandedTypes",
+        "targetName": "setExpandedTypes",
         "edgeType": "call",
-        "line": 274,
+        "line": 266,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDatePreset",
+        "targetName": "setDatePreset",
         "edgeType": "call",
-        "line": 274,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "getLastActivityForOpportunity",
-        "targetName": "getLastActivityForOpportunity",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
+        "edgeType": "call",
+        "line": 275,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
         "line": 276,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "subDays",
+        "targetName": "subDays",
+        "edgeType": "call",
+        "line": 276,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
         "line": 277,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "floor",
-        "targetName": "floor",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 279,
+        "line": 281,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "getTime",
-        "targetName": "getTime",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
-        "line": 279,
+        "line": 282,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "getTime",
-        "targetName": "getTime",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "subDays",
+        "targetName": "subDays",
         "edgeType": "call",
-        "line": 279,
+        "line": 282,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "getStaleThreshold",
-        "targetName": "getStaleThreshold",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
-        "line": 284,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "isOpportunityStale",
-        "targetName": "isOpportunityStale",
-        "edgeType": "call",
-        "line": 291,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 307,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 309,
+        "line": 283,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "slice",
-        "targetName": "slice",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 309,
+        "line": 287,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setExpandedTypes",
-        "targetName": "setExpandedTypes",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
-        "line": 310,
+        "line": 288,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 316,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setAriaLiveMessage",
-        "targetName": "setAriaLiveMessage",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "startOfMonth",
+        "targetName": "startOfMonth",
         "edgeType": "call",
-        "line": 318,
+        "line": 288,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setAriaLiveMessage",
-        "targetName": "setAriaLiveMessage",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
-        "line": 322,
+        "line": 289,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setTimeout",
-        "targetName": "setTimeout",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 327,
-        "conditional": false,
+        "line": 294,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setAriaLiveMessage",
-        "targetName": "setAriaLiveMessage",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
-        "line": 327,
-        "conditional": false,
+        "line": 301,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "clearTimeout",
-        "targetName": "clearTimeout",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedActivityTypes",
+        "targetName": "setSelectedActivityTypes",
         "edgeType": "call",
-        "line": 328,
-        "conditional": false,
+        "line": 304,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 333,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 335,
+        "line": 304,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedActivityTypes",
+        "targetName": "setSelectedActivityTypes",
+        "edgeType": "call",
+        "line": 307,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedActivityTypes",
+        "targetName": "setSelectedActivityTypes",
+        "edgeType": "call",
+        "line": 314,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedActivityTypes",
+        "targetName": "setSelectedActivityTypes",
+        "edgeType": "call",
+        "line": 316,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 316,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
+        "edgeType": "call",
+        "line": 322,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "round",
-        "targetName": "round",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedActivityTypes",
+        "targetName": "setSelectedActivityTypes",
         "edgeType": "call",
-        "line": 337,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toFixed",
-        "targetName": "toFixed",
-        "edgeType": "call",
-        "line": 339,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 343,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "delete",
-        "targetName": "delete",
-        "edgeType": "call",
-        "line": 344,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "add",
-        "targetName": "add",
-        "edgeType": "call",
-        "line": 346,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setExpandedTypes",
-        "targetName": "setExpandedTypes",
-        "edgeType": "call",
-        "line": 348,
+        "line": 323,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 323,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "setDatePreset",
         "targetName": "setDatePreset",
+        "edgeType": "call",
+        "line": 324,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedSalesRep",
+        "targetName": "setSelectedSalesRep",
+        "edgeType": "call",
+        "line": 325,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setShowStaleLeads",
+        "targetName": "setShowStaleLeads",
+        "edgeType": "call",
+        "line": 326,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 337,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 341,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 349,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
         "edgeType": "call",
         "line": 353,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setDatePreset",
+        "targetName": "setDatePreset",
         "edgeType": "call",
-        "line": 357,
+        "line": 354,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 361,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 358,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "subDays",
-        "targetName": "subDays",
-        "edgeType": "call",
-        "line": 358,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 359,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 363,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedActivityTypes",
+        "targetName": "setSelectedActivityTypes",
         "edgeType": "call",
         "line": 364,
-        "conditional": true,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "subDays",
-        "targetName": "subDays",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "map",
+        "targetName": "map",
         "edgeType": "call",
         "line": 364,
-        "conditional": true,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 365,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 369,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "push",
+        "targetName": "push",
         "edgeType": "call",
         "line": 370,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "startOfMonth",
-        "targetName": "startOfMonth",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "get",
+        "targetName": "get",
         "edgeType": "call",
-        "line": 370,
+        "line": 372,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setSelectedSalesRep",
+        "targetName": "setSelectedSalesRep",
         "edgeType": "call",
-        "line": 371,
+        "line": 373,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 379,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "setShowStaleLeads",
+        "targetName": "setShowStaleLeads",
         "edgeType": "call",
-        "line": 376,
-        "conditional": true,
+        "line": 382,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 383,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedActivityTypes",
-        "targetName": "setSelectedActivityTypes",
-        "edgeType": "call",
-        "line": 386,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 386,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedActivityTypes",
-        "targetName": "setSelectedActivityTypes",
-        "edgeType": "call",
-        "line": 389,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedActivityTypes",
-        "targetName": "setSelectedActivityTypes",
-        "edgeType": "call",
-        "line": 396,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedActivityTypes",
-        "targetName": "setSelectedActivityTypes",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "exportStaleLeads",
+        "targetName": "exportStaleLeads",
         "edgeType": "call",
         "line": 398,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "exportActivities",
+        "targetName": "exportActivities",
+        "edgeType": "call",
+        "line": 400,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 398,
+        "line": 430,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 404,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedActivityTypes",
-        "targetName": "setSelectedActivityTypes",
-        "edgeType": "call",
-        "line": 405,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 405,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePreset",
-        "targetName": "setDatePreset",
-        "edgeType": "call",
-        "line": 406,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedSalesRep",
-        "targetName": "setSelectedSalesRep",
-        "edgeType": "call",
-        "line": 407,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setShowStaleLeads",
-        "targetName": "setShowStaleLeads",
-        "edgeType": "call",
-        "line": 408,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 419,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 423,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 431,
+        "line": 509,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 435,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePreset",
-        "targetName": "setDatePreset",
-        "edgeType": "call",
-        "line": 436,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 443,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedActivityTypes",
-        "targetName": "setSelectedActivityTypes",
-        "edgeType": "call",
-        "line": 446,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 446,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 452,
+        "line": 536,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 454,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedSalesRep",
-        "targetName": "setSelectedSalesRep",
-        "edgeType": "call",
-        "line": 455,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 461,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setShowStaleLeads",
-        "targetName": "setShowStaleLeads",
-        "edgeType": "call",
-        "line": 464,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 483,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 485,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "set",
-        "targetName": "set",
-        "edgeType": "call",
-        "line": 487,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 487,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 497,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 501,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 503,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 506,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 507,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 508,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 510,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toString",
-        "targetName": "toString",
-        "edgeType": "call",
-        "line": 513,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "jsonExport",
-        "targetName": "jsonExport",
-        "edgeType": "call",
-        "line": 518,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 520,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 521,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 524,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 524,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 524,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 528,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "downloadCSV",
-        "targetName": "downloadCSV",
-        "edgeType": "call",
-        "line": 529,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 530,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 537,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "flatMap",
-        "targetName": "flatMap",
-        "edgeType": "call",
-        "line": 541,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 542,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 544,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 546,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "floor",
-        "targetName": "floor",
-        "edgeType": "call",
-        "line": 548,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "now",
-        "targetName": "now",
-        "edgeType": "call",
-        "line": 548,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 548,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 552,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 553,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 554,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 555,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 556,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 557,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 558,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 559,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 559,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 561,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 562,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "jsonExport",
-        "targetName": "jsonExport",
-        "edgeType": "call",
-        "line": 567,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 569,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 570,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 573,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 573,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 573,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 577,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "downloadCSV",
-        "targetName": "downloadCSV",
-        "edgeType": "call",
-        "line": 578,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 579,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 610,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePresetHandler",
-        "targetName": "setDatePresetHandler",
-        "edgeType": "call",
-        "line": 651,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePresetHandler",
-        "targetName": "setDatePresetHandler",
-        "edgeType": "call",
-        "line": 658,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePresetHandler",
-        "targetName": "setDatePresetHandler",
-        "edgeType": "call",
-        "line": 665,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePresetHandler",
-        "targetName": "setDatePresetHandler",
-        "edgeType": "call",
-        "line": 672,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePreset",
-        "targetName": "setDatePreset",
-        "edgeType": "call",
-        "line": 688,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 689,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 692,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDatePreset",
-        "targetName": "setDatePreset",
-        "edgeType": "call",
-        "line": 708,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 709,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 712,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 738,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 739,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 744,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toggleActivityType",
-        "targetName": "toggleActivityType",
-        "edgeType": "call",
-        "line": 745,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toString",
-        "targetName": "toString",
-        "edgeType": "call",
-        "line": 763,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setSelectedSalesRep",
-        "targetName": "setSelectedSalesRep",
-        "edgeType": "call",
-        "line": 765,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "parseInt",
-        "targetName": "parseInt",
-        "edgeType": "call",
-        "line": 765,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 773,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "toString",
-        "targetName": "toString",
-        "edgeType": "call",
-        "line": 774,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "setShowStaleLeads",
-        "targetName": "setShowStaleLeads",
-        "edgeType": "call",
-        "line": 790,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 841,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 905,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 932,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 936,
+        "line": 540,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "handleToggle",
         "targetName": "handleToggle",
         "edgeType": "call",
-        "line": 937,
+        "line": 541,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 585,
+        "line": 405,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 595,
+        "line": 415,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "Select",
         "targetName": "Select",
         "edgeType": "render",
-        "line": 605,
+        "line": 425,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 606,
+        "line": 426,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "SelectContent",
         "targetName": "SelectContent",
         "edgeType": "render",
-        "line": 609,
+        "line": 429,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 611,
+        "line": 431,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 621,
+        "line": 441,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 625,
+        "line": 445,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "handleExport",
         "targetName": "handleExport",
         "edgeType": "callback",
-        "line": 627,
+        "line": 447,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 640,
+        "line": 510,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 641,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 648,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 655,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 662,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 669,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 679,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 699,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 726,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 747,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 762,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 768,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 771,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 772,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 774,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 792,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 842,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 843,
+        "line": 511,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 846,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 854,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 855,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 856,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 860,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 865,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 866,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 867,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 871,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 876,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 877,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 878,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 882,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 887,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 888,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 889,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 893,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 906,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 907,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 607,
+        "line": 427,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Checkbox",
-        "targetName": "Checkbox",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "CampaignActivityFilters",
+        "targetName": "CampaignActivityFilters",
         "edgeType": "render",
-        "line": 742,
+        "line": 459,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
-        "edgeType": "render",
-        "line": 769,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
-        "target": "Checkbox",
-        "targetName": "Checkbox",
-        "edgeType": "render",
-        "line": 787,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "AppliedFiltersBar",
         "targetName": "AppliedFiltersBar",
         "edgeType": "render",
-        "line": 823,
+        "line": 481,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
+        "target": "CampaignActivitySummaryCards",
+        "targetName": "CampaignActivitySummaryCards",
+        "edgeType": "render",
+        "line": 496,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 921,
+        "line": 525,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "StaleLeadsView",
         "targetName": "StaleLeadsView",
         "edgeType": "render",
-        "line": 927,
+        "line": 531,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "ActivityTypeCard",
         "targetName": "ActivityTypeCard",
         "edgeType": "render",
-        "line": 933,
+        "line": 537,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:55:CampaignActivityReport",
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:51:CampaignActivityReport",
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 944,
+        "line": 548,
         "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 22,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx:12:CampaignActivitySummaryCards",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 75,
+        "conditional": false,
         "inLoop": false
       },
       {
@@ -3162,6 +2559,1131 @@
         "edgeType": "render",
         "line": 158,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useReportData",
+        "targetName": "useReportData",
+        "edgeType": "hook",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 135,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 135,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 148,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:40:useCampaignActivityData",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 75,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "jsonExport",
+        "targetName": "jsonExport",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 83,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "downloadCSV",
+        "targetName": "downloadCSV",
+        "edgeType": "call",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 92,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 103,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "flatMap",
+        "targetName": "flatMap",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "floor",
+        "targetName": "floor",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 123,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "jsonExport",
+        "targetName": "jsonExport",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 135,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 136,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "downloadCSV",
+        "targetName": "downloadCSV",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:49:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "values",
+        "targetName": "values",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 89,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 91,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 92,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "round",
+        "targetName": "round",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "getLastActivityForOpportunity",
+        "targetName": "getLastActivityForOpportunity",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "floor",
+        "targetName": "floor",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "getStaleThreshold",
+        "targetName": "getStaleThreshold",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "isOpportunityStale",
+        "targetName": "isOpportunityStale",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 164,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "round",
+        "targetName": "round",
+        "edgeType": "call",
+        "line": 168,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "target": "toFixed",
+        "targetName": "toFixed",
+        "edgeType": "call",
+        "line": 170,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -6838,10 +7360,19 @@
       },
       {
         "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
         "target": "setData",
         "targetName": "setData",
         "edgeType": "call",
-        "line": 112,
+        "line": 123,
         "conditional": true,
         "inLoop": false
       },
@@ -6850,7 +7381,7 @@
         "target": "setIsLoading",
         "targetName": "setIsLoading",
         "edgeType": "call",
-        "line": 113,
+        "line": 124,
         "conditional": true,
         "inLoop": false
       },
@@ -6859,7 +7390,7 @@
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 120,
+        "line": 131,
         "conditional": true,
         "inLoop": false
       },
@@ -6868,7 +7399,7 @@
         "target": "setIsLoading",
         "targetName": "setIsLoading",
         "edgeType": "call",
-        "line": 121,
+        "line": 132,
         "conditional": true,
         "inLoop": false
       },
@@ -6877,7 +7408,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 122,
+        "line": 133,
         "conditional": true,
         "inLoop": false
       },
@@ -6886,7 +7417,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 131,
+        "line": 142,
         "conditional": false,
         "inLoop": false
       },
@@ -6895,7 +7426,7 @@
         "target": "setRefetchTrigger",
         "targetName": "setRefetchTrigger",
         "edgeType": "call",
-        "line": 132,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
@@ -8187,47 +8718,47 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:8:cleanupOldReportKeys",
+        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:11:cleanupOldReportKeys",
         "target": "getItem",
         "targetName": "getItem",
         "edgeType": "call",
-        "line": 10,
+        "line": 13,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:8:cleanupOldReportKeys",
+        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:11:cleanupOldReportKeys",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 21,
+        "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:8:cleanupOldReportKeys",
+        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:11:cleanupOldReportKeys",
         "target": "removeItem",
         "targetName": "removeItem",
         "edgeType": "call",
-        "line": 22,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:8:cleanupOldReportKeys",
+        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:11:cleanupOldReportKeys",
         "target": "setItem",
         "targetName": "setItem",
         "edgeType": "call",
-        "line": 26,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:8:cleanupOldReportKeys",
-        "target": "log",
-        "targetName": "log",
+        "source": "src/atomic-crm/reports/utils/cleanupMigration.ts:11:cleanupOldReportKeys",
+        "target": "devLog",
+        "targetName": "devLog",
         "edgeType": "call",
-        "line": 29,
+        "line": 32,
         "conditional": true,
         "inLoop": false
       }

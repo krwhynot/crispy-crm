@@ -2,22 +2,36 @@
  * Contacts Resource Lifecycle Callbacks
  *
  * Resource-specific logic for contacts using React Admin's withLifecycleCallbacks pattern.
- * Uses the createResourceCallbacks factory for standard soft-delete behavior.
+ * Uses the createResourceCallbacks factory with custom cascade delete.
  *
  * Key behaviors:
- * 1. Soft delete - Sets deleted_at instead of hard delete
+ * 1. CASCADE SOFT DELETE - FIX [WF-C01]: Uses RPC to archive contact AND related records
  * 2. JSONB normalization - Ensures email/phone/tags are always arrays
  * 3. Name field computation - Combines first_name + last_name → name (required by DB NOT NULL constraint)
  * 4. Filter cleaning - Adds soft delete filter by default
  * 5. Data transformation - Strips computed fields before save
  * 6. Search transformation - Transforms q filter into ILIKE search on name fields
  *
+ * WHY CASCADE DELETE VIA RPC:
+ * --------------------------
+ * Standard soft delete only sets `deleted_at` on ONE record. Contacts have related data
+ * that must be archived atomically:
+ * - activities (calls, emails, meetings linked to contact)
+ * - tasks (assigned to contact)
+ * - contact_notes
+ * - interaction_participants
+ * - opportunity_contacts (junction table)
+ *
+ * The `archive_contact_with_relations` RPC handles this in a single transaction.
+ *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { RaRecord, GetListParams, DataProvider } from "ra-core";
+import type { RaRecord, GetListParams, DataProvider, DeleteParams } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 import { normalizeJsonbArrays, createQToIlikeTransformer } from "./commonTransforms";
+import { supabase } from "../supabase";
+import { collectContactFilePaths, deleteStorageFiles } from "../utils/storageCleanup";
 
 /**
  * Computed fields that should be stripped before saving to database
@@ -102,13 +116,69 @@ export function computeNameField(data: Partial<RaRecord>): Partial<RaRecord> {
   return data;
 }
 
+// ============================================================================
+// CUSTOM CALLBACKS (Override factory defaults)
+// ============================================================================
+
 /**
- * Base callbacks from factory (soft delete, computed fields, transforms)
- * We extract this so we can override beforeGetList with search support
+ * Custom beforeDelete: Use archive RPC for cascading soft delete
+ *
+ * FIX [WF-C01]: Standard soft delete only sets `deleted_at` on ONE record.
+ * Contacts have related data that must be archived atomically:
+ * - activities, tasks, contact_notes, interaction_participants, opportunity_contacts
+ *
+ * FIX [SF-C10]: Clean up storage files after archive.
+ * Files in activities.attachments and contact_notes.attachments are deleted.
+ *
+ * The `archive_contact_with_relations` RPC handles this in a single transaction.
+ */
+async function contactsBeforeDelete(
+  params: DeleteParams,
+  _dataProvider: DataProvider
+): Promise<DeleteParams & { meta?: { skipDelete?: boolean } }> {
+  // Validate ID before RPC call (fail-fast)
+  const numericId = Number(params.id);
+  if (!Number.isInteger(numericId) || numericId <= 0) {
+    throw new Error(`Invalid contact ID: ${params.id}`);
+  }
+
+  // FIX [SF-C10]: Collect file paths BEFORE archiving (records will be soft-deleted)
+  const filePaths = await collectContactFilePaths(numericId);
+
+  // Use Supabase client directly - bypasses DataProvider abstraction
+  // This is the React Admin recommended pattern for lifecycle callbacks
+  const { error: rpcError } = await supabase.rpc("archive_contact_with_relations", {
+    contact_id: numericId,
+  });
+
+  if (rpcError) {
+    throw new Error(`Archive contact failed: ${rpcError.message}`);
+  }
+
+  // FIX [SF-C10]: Clean up storage files after successful archive
+  // Cleanup is best-effort - log failures but don't block the archive
+  if (filePaths.length > 0) {
+    try {
+      await deleteStorageFiles(filePaths);
+    } catch (error: unknown) {
+      console.error("[ContactsCallbacks] Storage cleanup failed:", { id: numericId, error });
+    }
+  }
+
+  // Return params with meta flag to skip actual delete (RPC already archived)
+  return {
+    ...params,
+    meta: { ...params.meta, skipDelete: true },
+  };
+}
+
+/**
+ * Base callbacks from factory (computed fields, transforms)
+ * We DON'T use soft delete from factory because we need custom RPC cascade delete
  */
 const baseCallbacks = createResourceCallbacks({
   resource: "contacts",
-  supportsSoftDelete: true,
+  supportsSoftDelete: false, // FIX [WF-C01]: We handle soft delete via custom RPC
   computedFields: COMPUTED_FIELDS,
   afterReadTransform: normalizeJsonbArrays,
   writeTransforms: [computeNameField],
@@ -117,29 +187,36 @@ const baseCallbacks = createResourceCallbacks({
 /**
  * Custom beforeGetList that chains:
  * 1. q filter → ILIKE search transformation
- * 2. Soft delete filter (from base callbacks)
+ * 2. Soft delete filter (manual since we disabled factory soft delete)
  *
- * This matches the unified data provider's search behavior while preserving
- * the factory's soft-delete filtering.
+ * This matches the unified data provider's search behavior while applying
+ * soft-delete filtering.
  */
 async function contactsBeforeGetList(
   params: GetListParams,
-  dataProvider: DataProvider
+  _dataProvider: DataProvider
 ): Promise<GetListParams> {
   // Step 1: Transform q filter to ILIKE search (removes q from filter)
   const searchTransformedParams = transformQToIlikeSearch(params);
 
-  // Step 2: Apply soft delete filter from base callbacks
-  // The base callback will add deleted_at@is: null unless includeDeleted is true
-  if (baseCallbacks.beforeGetList) {
-    return baseCallbacks.beforeGetList(searchTransformedParams, dataProvider);
-  }
+  // Step 2: Apply soft delete filter manually (since factory soft delete is disabled)
+  const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
+  const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
 
-  return searchTransformedParams;
+  return {
+    ...searchTransformedParams,
+    filter: {
+      ...otherFilters,
+      ...softDeleteFilter,
+    },
+  };
 }
 
 /**
  * Contacts lifecycle callbacks for React Admin withLifecycleCallbacks
+ *
+ * FIX [WF-C01]: Uses custom beforeDelete that calls archive_contact_with_relations RPC
+ * for atomic cascade soft delete of contact and all related records.
  *
  * Usage:
  * ```typescript
@@ -153,6 +230,7 @@ async function contactsBeforeGetList(
  */
 export const contactsCallbacks: ResourceCallbacks = {
   ...baseCallbacks,
+  beforeDelete: contactsBeforeDelete, // FIX [WF-C01]: Cascade via RPC
   beforeGetList: contactsBeforeGetList,
 };
 

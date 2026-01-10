@@ -17,6 +17,19 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider } from "ra-core";
 import { createComposedDataProvider, HANDLED_RESOURCES } from "./composedDataProvider";
 
+// Mock supabase for RPC cascade delete tests
+vi.mock("./supabase", () => ({
+  supabase: {
+    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
+  },
+}));
+
+// Mock storage cleanup utilities
+vi.mock("./utils/storageCleanup", () => ({
+  collectContactFilePaths: vi.fn().mockResolvedValue([]),
+  deleteStorageFiles: vi.fn().mockResolvedValue(undefined),
+}));
+
 describe("composedDataProvider", () => {
   let mockBaseProvider: DataProvider;
 
@@ -198,12 +211,13 @@ describe("composedDataProvider", () => {
       expect(mockBaseProvider.getOne).toHaveBeenCalledWith("contacts", { id: 1 });
     });
 
-    it("should route getMany to handler for contacts", async () => {
+    it("should route getMany to handler for contacts (uses contacts_summary view for soft delete filtering)", async () => {
       const provider = createComposedDataProvider(mockBaseProvider);
 
       await provider.getMany("contacts", { ids: [1, 2, 3] });
 
-      expect(mockBaseProvider.getMany).toHaveBeenCalledWith("contacts", { ids: [1, 2, 3] });
+      // FIX [SF-C09]: getMany now uses contacts_summary view to ensure soft-deleted records are filtered
+      expect(mockBaseProvider.getMany).toHaveBeenCalledWith("contacts_summary", { ids: [1, 2, 3] });
     });
 
     it("should route create to handler for contacts", async () => {
@@ -226,7 +240,10 @@ describe("composedDataProvider", () => {
       expect(mockBaseProvider.update).toHaveBeenCalled();
     });
 
-    it("should route delete to handler for contacts", async () => {
+    it("should route delete to handler for contacts (uses RPC for cascade soft delete)", async () => {
+      // Import mocked supabase to verify RPC call
+      const { supabase } = await import("./supabase");
+
       const provider = createComposedDataProvider(mockBaseProvider);
 
       await provider.delete("contacts", {
@@ -234,16 +251,11 @@ describe("composedDataProvider", () => {
         previousData: { id: 1, first_name: "John" },
       });
 
-      // Composed handler performs soft delete via update
-      expect(mockBaseProvider.update).toHaveBeenCalledWith(
-        "contacts",
-        expect.objectContaining({
-          id: 1,
-          data: expect.objectContaining({
-            deleted_at: expect.any(String),
-          }),
-        })
-      );
+      // Composed handler now performs cascade soft delete via RPC (FIX [WF-C01])
+      // This ensures related records (activities, notes, etc.) are also archived
+      expect(supabase.rpc).toHaveBeenCalledWith("archive_contact_with_relations", {
+        contact_id: 1,
+      });
     });
   });
 

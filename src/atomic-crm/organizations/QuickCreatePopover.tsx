@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
+import { organizationKeys } from "@/atomic-crm/queryKeys";
 
 const quickCreateSchema = z.object({
   name: z.string().trim().min(1).max(255),
@@ -26,6 +28,61 @@ const quickCreateSchema = z.object({
 });
 
 type QuickCreateInput = z.infer<typeof quickCreateSchema>;
+
+/**
+ * P5: Isolated sub-components using useWatch for performance
+ * These only re-render when their specific field changes, NOT on every keystroke
+ */
+interface SelectFieldProps {
+  control: ReturnType<typeof useForm<QuickCreateInput>>["control"];
+  setValue: ReturnType<typeof useForm<QuickCreateInput>>["setValue"];
+  id: string;
+}
+
+function OrganizationTypeSelect({ control, setValue, id }: SelectFieldProps) {
+  const value = useWatch({ name: "organization_type", control });
+  return (
+    <div className="space-y-1">
+      <Label htmlFor={id}>Type</Label>
+      <Select
+        value={value}
+        onValueChange={(v) =>
+          setValue("organization_type", v as "customer" | "prospect" | "principal" | "distributor")
+        }
+      >
+        <SelectTrigger id={id} className="h-11">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="customer">Customer</SelectItem>
+          <SelectItem value="prospect">Prospect</SelectItem>
+          <SelectItem value="principal">Principal</SelectItem>
+          <SelectItem value="distributor">Distributor</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
+function PrioritySelect({ control, setValue, id }: SelectFieldProps) {
+  const value = useWatch({ name: "priority", control });
+  return (
+    <div className="space-y-1">
+      <Label htmlFor={id}>Priority</Label>
+      <Select value={value} onValueChange={(v) => setValue("priority", v as "A" | "B" | "C" | "D")}>
+        <SelectTrigger id={id} className="h-11">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="A">A</SelectItem>
+          <SelectItem value="B">B</SelectItem>
+          <SelectItem value="C">C</SelectItem>
+          <SelectItem value="D">D</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
 
 interface QuickCreatePopoverProps {
   name: string;
@@ -46,6 +103,7 @@ export function QuickCreatePopover({
   const [isPending, setIsPending] = useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const methods = useForm<QuickCreateInput>({
     resolver: zodResolver(quickCreateSchema),
@@ -63,6 +121,7 @@ export function QuickCreatePopover({
         const result = await dataProvider.create("organizations", {
           data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
         });
+        queryClient.invalidateQueries({ queryKey: organizationKeys.all });
         notify("Organization created", { type: "success" });
         onCreated(result.data as { id: number; name: string });
         setOpen(false);
@@ -92,6 +151,7 @@ export function QuickCreatePopover({
           segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
         },
       });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
       notify("Organization created", { type: "success" });
       onCreated(result.data as { id: number; name: string });
       setOpen(false);
@@ -127,49 +187,18 @@ export function QuickCreatePopover({
 
           <div className="grid grid-cols-2 gap-2">
             {/* Organization Type - uses native Select instead of React Admin SelectInput */}
-            <div className="space-y-1">
-              <Label htmlFor="org-type">Type</Label>
-              <Select
-                value={methods.watch("organization_type")}
-                onValueChange={(value) =>
-                  methods.setValue(
-                    "organization_type",
-                    value as "customer" | "prospect" | "principal" | "distributor"
-                  )
-                }
-              >
-                <SelectTrigger id="org-type" className="h-11">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="customer">Customer</SelectItem>
-                  <SelectItem value="prospect">Prospect</SelectItem>
-                  <SelectItem value="principal">Principal</SelectItem>
-                  <SelectItem value="distributor">Distributor</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <OrganizationTypeSelect
+              control={methods.control}
+              setValue={methods.setValue}
+              id="org-type"
+            />
 
             {/* Priority - uses native Select */}
-            <div className="space-y-1">
-              <Label htmlFor="org-priority">Priority</Label>
-              <Select
-                value={methods.watch("priority")}
-                onValueChange={(value) =>
-                  methods.setValue("priority", value as "A" | "B" | "C" | "D")
-                }
-              >
-                <SelectTrigger id="org-priority" className="h-11">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="A">A</SelectItem>
-                  <SelectItem value="B">B</SelectItem>
-                  <SelectItem value="C">C</SelectItem>
-                  <SelectItem value="D">D</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <PrioritySelect
+              control={methods.control}
+              setValue={methods.setValue}
+              id="org-priority"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
@@ -252,6 +281,7 @@ export function QuickCreateOrganizationRA({
   const [isPending, setIsPending] = useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const name = filter || "";
 
@@ -271,9 +301,10 @@ export function QuickCreateOrganizationRA({
         const result = await dataProvider.create("organizations", {
           data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
         });
+        queryClient.invalidateQueries({ queryKey: organizationKeys.all });
         notify("Organization created", { type: "success" });
         onCreate(result.data);
-      } catch (error) {
+      } catch (error: unknown) {
         notify("Failed to create organization", { type: "error" });
         throw error;
       } finally {
@@ -299,9 +330,10 @@ export function QuickCreateOrganizationRA({
           segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
         },
       });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
       notify("Organization created", { type: "success" });
       onCreate(result.data);
-    } catch (error) {
+    } catch (error: unknown) {
       notify("Failed to create organization", { type: "error" });
       throw error;
     } finally {
@@ -332,48 +364,16 @@ export function QuickCreateOrganizationRA({
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1">
-              <Label htmlFor="ra-org-type">Type</Label>
-              <Select
-                value={methods.watch("organization_type")}
-                onValueChange={(value) =>
-                  methods.setValue(
-                    "organization_type",
-                    value as "customer" | "prospect" | "principal" | "distributor"
-                  )
-                }
-              >
-                <SelectTrigger id="ra-org-type" className="h-11">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="customer">Customer</SelectItem>
-                  <SelectItem value="prospect">Prospect</SelectItem>
-                  <SelectItem value="principal">Principal</SelectItem>
-                  <SelectItem value="distributor">Distributor</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-1">
-              <Label htmlFor="ra-org-priority">Priority</Label>
-              <Select
-                value={methods.watch("priority")}
-                onValueChange={(value) =>
-                  methods.setValue("priority", value as "A" | "B" | "C" | "D")
-                }
-              >
-                <SelectTrigger id="ra-org-priority" className="h-11">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="A">A</SelectItem>
-                  <SelectItem value="B">B</SelectItem>
-                  <SelectItem value="C">C</SelectItem>
-                  <SelectItem value="D">D</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <OrganizationTypeSelect
+              control={methods.control}
+              setValue={methods.setValue}
+              id="ra-org-type"
+            />
+            <PrioritySelect
+              control={methods.control}
+              setValue={methods.setValue}
+              id="ra-org-priority"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-2">

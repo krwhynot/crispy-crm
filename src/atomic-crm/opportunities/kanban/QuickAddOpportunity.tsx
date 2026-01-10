@@ -78,7 +78,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       setName("");
       setCustomerId("");
       refresh(); // Still refresh to sync with server (gets full computed fields)
-    } catch (error) {
+    } catch (error: unknown) {
       // Fail-fast: show actual validation error for debugging
       const message = error instanceof Error ? error.message : "Error creating opportunity";
       notify(message, { type: "error" });

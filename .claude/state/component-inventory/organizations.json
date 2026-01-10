@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-08T12:14:50.359Z",
-  "item_count": 77,
+  "generated_at": "2026-01-10T23:35:59.779Z",
+  "item_count": 76,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -183,78 +183,6 @@
       "componentRole": "wrapper"
     },
     {
-      "name": "BulkReassignButton",
-      "file": "src/atomic-crm/organizations/BulkReassignButton.tsx",
-      "line": 42,
-      "type": "presentational",
-      "hooks": [
-        "useDataProvider",
-        "useEffect",
-        "useGetList",
-        "useListContext",
-        "useNotify",
-        "useRef",
-        "useRefresh",
-        "useState"
-      ],
-      "imports": [
-        "../types",
-        "../utils/formatName",
-        "@/components/ui/button",
-        "@/components/ui/dialog",
-        "@/components/ui/select",
-        "lucide-react",
-        "ra-core",
-        "react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "Organization",
-        "Sale"
-      ],
-      "contextDependencies": [
-        "useDataProvider",
-        "useListContext"
-      ],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "BulkReassignButton",
-      "file": "src/atomic-crm/organizations/BulkReassignButton.tsx",
-      "line": 42,
-      "type": "presentational",
-      "hooks": [
-        "useDataProvider",
-        "useEffect",
-        "useGetList",
-        "useListContext",
-        "useNotify",
-        "useRef",
-        "useRefresh",
-        "useState"
-      ],
-      "imports": [
-        "../types",
-        "../utils/formatName",
-        "@/components/ui/button",
-        "@/components/ui/dialog",
-        "@/components/ui/select",
-        "lucide-react",
-        "ra-core",
-        "react"
-      ],
-      "isDefaultExport": true,
-      "childComponents": [
-        "Organization",
-        "Sale"
-      ],
-      "contextDependencies": [
-        "useDataProvider",
-        "useListContext"
-      ],
-      "componentRole": "wrapper"
-    },
-    {
       "name": "DuplicateOrgWarningDialog",
       "file": "src/atomic-crm/organizations/DuplicateOrgWarningDialog.tsx",
       "line": 53,
@@ -391,19 +319,21 @@
     {
       "name": "OrganizationBulkActionsToolbar",
       "file": "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx",
-      "line": 17,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "./BulkReassignButton",
+        "../queryKeys",
+        "../types",
         "./OrganizationBulkDeleteButton",
         "@/components/admin/bulk-actions-toolbar",
-        "@/components/admin/bulk-export-button"
+        "@/components/admin/bulk-export-button",
+        "@/components/admin/bulk-reassign-button"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "BulkReassignButton",
-        "OrganizationBulkDeleteButton"
+        "OrganizationBulkDeleteButton",
+        "Organization"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -411,19 +341,21 @@
     {
       "name": "OrganizationBulkActionsToolbar",
       "file": "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx",
-      "line": 17,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "./BulkReassignButton",
+        "../queryKeys",
+        "../types",
         "./OrganizationBulkDeleteButton",
         "@/components/admin/bulk-actions-toolbar",
-        "@/components/admin/bulk-export-button"
+        "@/components/admin/bulk-export-button",
+        "@/components/admin/bulk-reassign-button"
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "BulkReassignButton",
-        "OrganizationBulkDeleteButton"
+        "OrganizationBulkDeleteButton",
+        "Organization"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -431,17 +363,19 @@
     {
       "name": "OrganizationBulkDeleteButton",
       "file": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
-      "line": 26,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useDeleteMany",
         "useListContext",
         "useNotify",
         "useRefresh",
+        "useRelatedRecordCounts",
         "useResourceContext",
         "useState"
       ],
       "imports": [
+        "../hooks/useRelatedRecordCounts",
         "../types",
         "@/components/admin/delete-confirm-dialog",
         "@/components/ui/button",
@@ -461,17 +395,19 @@
     {
       "name": "OrganizationBulkDeleteButton",
       "file": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
-      "line": 26,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useDeleteMany",
         "useListContext",
         "useNotify",
         "useRefresh",
+        "useRelatedRecordCounts",
         "useResourceContext",
         "useState"
       ],
       "imports": [
+        "../hooks/useRelatedRecordCounts",
         "../types",
         "@/components/admin/delete-confirm-dialog",
         "@/components/ui/button",
@@ -801,6 +737,24 @@
       "componentRole": "leaf"
     },
     {
+      "name": "OrganizationHierarchyBreadcrumb",
+      "file": "src/atomic-crm/organizations/OrganizationHierarchyBreadcrumb.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useGetOne"
+      ],
+      "imports": [
+        "lucide-react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "OrganizationHierarchySection",
       "file": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx",
       "line": 6,
@@ -843,54 +797,44 @@
     {
       "name": "OrganizationImportDialog",
       "file": "src/atomic-crm/organizations/OrganizationImportDialog.tsx",
-      "line": 45,
+      "line": 29,
       "type": "presentational",
       "hooks": [
         "useCallback",
-        "useDataProvider",
         "useEffect",
         "useMemo",
-        "useNotify",
-        "useOrganizationImport",
-        "useRef",
-        "useRefresh",
+        "useOrganizationImportExecution",
+        "useOrganizationImportMapper",
+        "useOrganizationImportParser",
+        "useOrganizationImportPreview",
+        "useOrganizationImportUpload",
         "useState"
       ],
       "imports": [
-        "../utils/csvUploadValidator",
-        "../utils/formatName",
         "./OrganizationImportPreview",
-        "./organizationColumnAliases",
-        "./organizationImport.logic",
         "./types",
         "./useOrganizationImport",
+        "./useOrganizationImportExecution",
+        "./useOrganizationImportMapper",
+        "./useOrganizationImportParser",
+        "./useOrganizationImportPreview",
+        "./useOrganizationImportUpload",
         "@/components/ui/alert",
         "@/components/ui/button",
         "@/components/ui/dialog",
         "@/components/ui/progress",
-        "@/lib/devLogger",
         "lucide-react",
-        "papaparse",
-        "ra-core",
         "react"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "ImportResult",
-        "ImportError",
-        "PreviewData",
         "DataQualityDecisions",
-        "ColumnMapping",
-        "DuplicateGroup",
         "OrganizationImportPreview",
-        "CsvValidationError",
         "RawCSVRow",
         "MappedCSVRow",
-        "OrganizationImportSchema"
+        "ImportResult"
       ],
-      "contextDependencies": [
-        "useDataProvider"
-      ],
+      "contextDependencies": [],
       "componentRole": "wrapper"
     },
     {
@@ -1256,7 +1200,7 @@
     {
       "name": "OrganizationSlideOver",
       "file": "src/atomic-crm/organizations/OrganizationSlideOver.tsx",
-      "line": 35,
+      "line": 36,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -1265,6 +1209,7 @@
       ],
       "imports": [
         "./AuthorizationsTab",
+        "./OrganizationHierarchyBreadcrumb",
         "./slideOverTabs/OrganizationContactsTab",
         "./slideOverTabs/OrganizationDetailsTab",
         "./slideOverTabs/OrganizationNotesTab",
@@ -1285,6 +1230,7 @@
         "OrganizationOpportunitiesTab",
         "OrganizationNotesTab",
         "AuthorizationsTab",
+        "OrganizationHierarchyBreadcrumb",
         "OrganizationRecord"
       ],
       "contextDependencies": [],
@@ -1432,15 +1378,17 @@
     {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 38,
+      "line": 95,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
         "useForm",
         "useNotify",
+        "useQueryClient",
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/segments",
         "@/components/ui/button",
         "@/components/ui/input",
@@ -1449,6 +1397,7 @@
         "@/components/ui/select",
         "@/hooks/useSupportCreateSuggestion",
         "@hookform/resolvers/zod",
+        "@tanstack/react-query",
         "ra-core",
         "react",
         "react-hook-form",
@@ -1464,16 +1413,18 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 248,
+      "line": 277,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
         "useDataProvider",
         "useForm",
         "useNotify",
+        "useQueryClient",
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/segments",
         "@/components/ui/button",
         "@/components/ui/input",
@@ -1482,6 +1433,7 @@
         "@/components/ui/select",
         "@/hooks/useSupportCreateSuggestion",
         "@hookform/resolvers/zod",
+        "@tanstack/react-query",
         "ra-core",
         "react",
         "react-hook-form",

@@ -139,7 +139,7 @@ export type OpportunityProduct = z.infer<typeof opportunityProductSchema>;
 export async function validateOpportunityProduct(data: unknown): Promise<void> {
   try {
     opportunityProductSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {

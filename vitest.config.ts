@@ -7,6 +7,9 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["@testing-library/jest-dom", "./src/tests/setup.ts"],
     timeout: 10000,
+    // Clear mock call history after each test to prevent test pollution
+    // Using clearMocks instead of restoreMocks to preserve module-level mocks
+    clearMocks: true,
     env: {
       // Test environment variables (for unit tests only)
       // Integration tests in tests/integration/ use .env.test instead

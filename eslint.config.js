@@ -3,10 +3,15 @@
 
 // NOTE: eslint-plugin-tailwindcss does not support Tailwind CSS v4 yet
 // The plugin is installed for future use when v4 support is added
-// For now, we document the banned patterns and rely on code reviews
+// REPLACED WITH: Custom local rule that enforces semantic colors (see below)
 // import tailwindcss from "eslint-plugin-tailwindcss";
 
 import jsxA11y from "eslint-plugin-jsx-a11y";
+
+// Local ESLint rule for semantic color enforcement (P0 - addresses 243 fix commits)
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const noLegacyTailwindColors = require("./eslint-local-rules/no-legacy-tailwind-colors.cjs");
 
 import js from "@eslint/js";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -88,8 +93,14 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
-      // "tailwindcss": tailwindcss, // Disabled until v4 support
+      // "tailwindcss": tailwindcss, // Disabled - replaced with local-rules
       "jsx-a11y": jsxA11y,
+      // Local rules for semantic color enforcement (P0 - 243 fix commits addressed)
+      "local-rules": {
+        rules: {
+          "no-legacy-tailwind-colors": noLegacyTailwindColors,
+        },
+      },
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -109,11 +120,10 @@ export default tseslint.config(
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
 
       // Tailwind CSS rules for color system enforcement
-      // NOTE: eslint-plugin-tailwindcss does not support Tailwind v4 yet
-      // These rules are documented for when v4 support is added
-      // For now, rely on code reviews and the validate-colors script
+      // Custom local rule enforces semantic colors (P0 - addresses 243 fix commits)
+      "local-rules/no-legacy-tailwind-colors": "error",
 
-      // Future rules when Tailwind v4 is supported:
+      // Future rules when official eslint-plugin-tailwindcss supports Tailwind v4:
       // "tailwindcss/no-custom-classname": [
       //   "error",
       //   {
@@ -227,6 +237,33 @@ export default tseslint.config(
     //     classRegex: "^(class(Name)?|tw)$",
     //   },
     // },
+  },
+  // Test file configuration - enforces test isolation patterns (P0 - addresses 189 testing commits)
+  {
+    files: ["**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        // Inherit the form validation rule from main config
+        {
+          selector: "JSXAttribute[name.name='validate']",
+          message:
+            "[VALIDATION] Form-level validation is forbidden per Engineering Constitution. All validation must occur at the API boundary (data provider) using Zod schemas. Use helper text and asterisks for visual cues instead.",
+        },
+        // Test isolation rule: prefer resetAllMocks over clearAllMocks
+        {
+          selector: "CallExpression[callee.object.name='vi'][callee.property.name='clearAllMocks']",
+          message:
+            "[TEST ISOLATION] Use vi.resetAllMocks() instead of vi.clearAllMocks(). resetAllMocks clears mock state AND implementation, preventing test pollution.",
+        },
+        // Test context rule: require renderWithAdminContext wrapper
+        {
+          selector: "CallExpression[callee.name='render'][arguments.0.type='JSXElement']",
+          message:
+            "[TEST CONTEXT] Use renderWithAdminContext() from 'src/tests/utils/render-admin.tsx' instead of bare render(). This ensures proper React Admin context.",
+        },
+      ],
+    },
   },
   // JavaScript/MJS configuration (for scripts)
   {

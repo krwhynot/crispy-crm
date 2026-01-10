@@ -579,7 +579,7 @@ export const colors: TagColorName[] = VALID_TAG_COLORS;
 // src/atomic-crm/tags/index.ts
 export type { Tag, CreateTagInput, UpdateTagInput, TagWithCount, TagSelection, TagFilterOptions } from "./types";
 export { TAG_COLORS } from "./colors";
-export { tagColors, getTagColor } from "./tag-colors";
+export { getTagColorClass, normalizeColorToSemantic, validateTagColor } from "./tag-colors";
 export { RoundButton } from "./RoundButton";
 export { TagChip } from "./TagChip";
 export { TagCreateModal } from "./TagCreateModal";

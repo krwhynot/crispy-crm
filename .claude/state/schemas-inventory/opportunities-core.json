@@ -1,0 +1,112 @@
+{
+  "chunk_name": "opportunities-core",
+  "generated_at": "2026-01-10T23:36:08.402Z",
+  "item_count": 5,
+  "items": [
+    {
+      "name": "opportunityStageSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "line": 10,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "new_lead",
+        "initial_outreach",
+        "sample_visit_offered",
+        "feedback_logged",
+        "demo_scheduled",
+        "closed_won",
+        "closed_lost"
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema",
+        "tagSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "opportunityPrioritySchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "line": 20,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "leadSourceSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "line": 22,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "referral",
+        "trade_show",
+        "website",
+        "cold_call",
+        "email_campaign",
+        "social_media",
+        "partner",
+        "existing_customer"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "winReasonSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "line": 40,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "relationship",
+        "product_quality",
+        "price_competitive",
+        "timing",
+        "other"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "lossReasonSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "line": 49,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "price_too_high",
+        "no_authorization",
+        "competitor_relationship",
+        "product_fit",
+        "timing",
+        "no_response",
+        "other"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

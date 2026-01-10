@@ -411,7 +411,6 @@ export const PriorityBadge = memo(function PriorityBadge({ priority }) {
 | prospect | `tag-sage` | Olive Green - growth potential |
 | principal | `tag-purple` | Eggplant - important/primary |
 | distributor | `tag-teal` | Active/connected in supply chain |
-| operator | `tag-warm` | Clay Orange - end customer |
 
 **Priority Variant Mapping:**
 

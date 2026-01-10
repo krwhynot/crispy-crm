@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDataProvider, useNotify } from "ra-core";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { setStorageItem } from "@/atomic-crm/utils/secureStorage";
+import { organizationKeys, contactKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 
 /**
  * Quick Add Hook for Booth Visitor Creation
@@ -11,6 +12,7 @@ import { setStorageItem } from "@/atomic-crm/utils/secureStorage";
  *
  * Features:
  * - Creates booth visitor via data provider RPC call
+ * - Invalidates cache for organizations, contacts, and opportunities
  * - Persists last campaign and principal to localStorage for next use
  * - Shows success toast with created contact/org details
  * - Shows error toast on failure, preserves form data
@@ -21,12 +23,18 @@ import { setStorageItem } from "@/atomic-crm/utils/secureStorage";
 export const useQuickAdd = () => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (formData: QuickAddInput) => {
       return await dataProvider.createBoothVisitor(formData);
     },
     onSuccess: (result, formData) => {
+      // Invalidate all affected resource caches
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+      queryClient.invalidateQueries({ queryKey: contactKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+
       // Update localStorage with last used campaign and principal
       setStorageItem("last_campaign", formData.campaign, { type: "local" });
       setStorageItem("last_principal", formData.principal_id.toString(), { type: "local" });

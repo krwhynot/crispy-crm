@@ -4,49 +4,49 @@
  * Tests the import validation logic locally without browser/database
  */
 
-import fs from 'fs';
-import Papa from 'papaparse';
-import { z } from 'zod';
+import fs from "fs";
+import Papa from "papaparse";
+import { z } from "zod";
 
 // Column alias mapping (from columnAliases.ts)
 const COLUMN_ALIASES = {
   // Organization field
-  'Organizations': 'organization_name',
-  'Organizations (DropDown)': 'organization_name',
-  'Company': 'organization_name',
-  'Organization': 'organization_name',
+  Organizations: "organization_name",
+  "Organizations (DropDown)": "organization_name",
+  Company: "organization_name",
+  Organization: "organization_name",
 
   // Full name field (will be split)
-  'FULL NAME (FIRST, LAST)': '_full_name_source_',
-  'Full Name': '_full_name_source_',
-  'Name': '_full_name_source_',
+  "FULL NAME (FIRST, LAST)": "_full_name_source_",
+  "Full Name": "_full_name_source_",
+  Name: "_full_name_source_",
 
   // Email fields
-  'EMAIL': 'email_work',
-  'Email': 'email_work',
-  'Work Email': 'email_work',
-  'Email (Work)': 'email_work',
+  EMAIL: "email_work",
+  Email: "email_work",
+  "Work Email": "email_work",
+  "Email (Work)": "email_work",
 
   // Phone fields
-  'PHONE': 'phone_work',
-  'Phone': 'phone_work',
-  'Work Phone': 'phone_work',
-  'Phone (Work)': 'phone_work',
+  PHONE: "phone_work",
+  Phone: "phone_work",
+  "Work Phone": "phone_work",
+  "Phone (Work)": "phone_work",
 
   // Title/Position
-  'POSITION': 'title',
-  'POSITION (DropDown)': 'title',
-  'Position': 'title',
-  'Title': 'title',
+  POSITION: "title",
+  "POSITION (DropDown)": "title",
+  Position: "title",
+  Title: "title",
 
   // LinkedIn
-  'LINKEDIN': 'linkedin_url',
-  'LinkedIn': 'linkedin_url',
-  'LinkedIn URL': 'linkedin_url',
+  LINKEDIN: "linkedin_url",
+  LinkedIn: "linkedin_url",
+  "LinkedIn URL": "linkedin_url",
 
   // Notes
-  'NOTES': 'notes',
-  'Notes': 'notes',
+  NOTES: "notes",
+  Notes: "notes",
 };
 
 // Validation schema (from contacts.ts)
@@ -60,47 +60,47 @@ const importContactSchema = z
       .string({ error: "Organization name is required" })
       .trim()
       .min(1, { message: "Organization name is required" }),
-    email_work: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string().trim(),
-    ]).optional().nullable(),
-    phone_work: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-      z.number().transform(String),
-    ]).optional().nullable(),
-    linkedin_url: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string().refine(
-        (url) => {
-          try {
-            const parsedUrl = new URL(url);
-            return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
-          } catch {
-            return false;
-          }
-        },
-        { message: "LinkedIn URL must be a valid URL from linkedin.com" },
-      ),
-    ]).optional().nullable(),
-    title: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
-    notes: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
+    email_work: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim()])
+      .optional()
+      .nullable(),
+    phone_work: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string(),
+        z.number().transform(String),
+      ])
+      .optional()
+      .nullable(),
+    linkedin_url: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string().refine(
+          (url) => {
+            try {
+              const parsedUrl = new URL(url);
+              return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
+            } catch {
+              return false;
+            }
+          },
+          { message: "LinkedIn URL must be a valid URL from linkedin.com" }
+        ),
+      ])
+      .optional()
+      .nullable(),
+    title: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
+    notes: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
   })
   .superRefine((data, ctx) => {
     // Require at least first name or last name
@@ -115,17 +115,17 @@ const importContactSchema = z
 
 function mapHeadersToFields(headers) {
   const mapped = {};
-  headers.forEach(header => {
+  headers.forEach((header) => {
     if (!header) return; // Skip null/undefined headers
     const normalized = String(header).trim();
-    mapped[header] = COLUMN_ALIASES[normalized] || normalized.toLowerCase().replace(/\s+/g, '_');
+    mapped[header] = COLUMN_ALIASES[normalized] || normalized.toLowerCase().replace(/\s+/g, "_");
   });
   return mapped;
 }
 
 function transformHeaders(headers) {
   const mappings = mapHeadersToFields(headers);
-  return headers.map(header => {
+  return headers.map((header) => {
     if (!header) return header; // Keep null/undefined as-is
     return mappings[header] || header;
   });
@@ -134,30 +134,30 @@ function transformHeaders(headers) {
 function transformData(rawData) {
   // Skip first 3 rows (instructions, empty, headers)
   if (rawData.length < 4) {
-    throw new Error('CSV file too short');
+    throw new Error("CSV file too short");
   }
 
   const headers = rawData[2];
   const transformedHeaders = transformHeaders(headers);
   const dataRows = rawData.slice(3);
 
-  return dataRows.map(row => {
+  return dataRows.map((row) => {
     const obj = {};
     transformedHeaders.forEach((header, index) => {
       // Handle full name splitting
-      if (header === '_full_name_source_') {
-        const fullName = row[index] || '';
+      if (header === "_full_name_source_") {
+        const fullName = row[index] || "";
         const nameParts = fullName.trim().split(/\s+/);
 
-        if (nameParts.length === 0 || fullName.trim() === '') {
-          obj.first_name = '';
-          obj.last_name = '';
+        if (nameParts.length === 0 || fullName.trim() === "") {
+          obj.first_name = "";
+          obj.last_name = "";
         } else if (nameParts.length === 1) {
-          obj.first_name = '';
+          obj.first_name = "";
           obj.last_name = nameParts[0];
         } else {
           obj.first_name = nameParts[0];
-          obj.last_name = nameParts.slice(1).join(' ');
+          obj.last_name = nameParts.slice(1).join(" ");
         }
       } else {
         obj[header] = row[index];
@@ -197,29 +197,32 @@ function findContactsWithoutContactInfo(contacts) {
     const hasName = hasFirstName || hasLastName;
 
     // Check all email fields
-    const hasEmail = (
+    const hasEmail =
       (contact.email_work && String(contact.email_work).trim()) ||
       (contact.email_home && String(contact.email_home).trim()) ||
-      (contact.email_other && String(contact.email_other).trim())
-    );
+      (contact.email_other && String(contact.email_other).trim());
 
     // Check all phone fields
-    const hasPhone = (
+    const hasPhone =
       (contact.phone_work && String(contact.phone_work).trim()) ||
       (contact.phone_home && String(contact.phone_home).trim()) ||
-      (contact.phone_other && String(contact.phone_other).trim())
-    );
+      (contact.phone_other && String(contact.phone_other).trim());
 
     // If has name but NO email AND NO phone
     if (hasName && !hasEmail && !hasPhone) {
-      const name = [
-        hasFirstName ? String(contact.first_name).trim() : '',
-        hasLastName ? String(contact.last_name).trim() : ''
-      ].filter(Boolean).join(' ') || 'Unknown';
+      const name =
+        [
+          hasFirstName ? String(contact.first_name).trim() : "",
+          hasLastName ? String(contact.last_name).trim() : "",
+        ]
+          .filter(Boolean)
+          .join(" ") || "Unknown";
 
       contactsWithoutInfo.push({
         name,
-        organization_name: contact.organization_name ? String(contact.organization_name).trim() : '',
+        organization_name: contact.organization_name
+          ? String(contact.organization_name).trim()
+          : "",
         row: index + 4,
       });
     }
@@ -250,11 +253,10 @@ function validateContacts(contacts, options = {}) {
     let transformedContact = { ...contact };
 
     // Check if this is an organization-only entry
-    const isOrgOnlyEntry = (
+    const isOrgOnlyEntry =
       transformedContact.organization_name &&
       !transformedContact.first_name?.toString().trim() &&
-      !transformedContact.last_name?.toString().trim()
-    );
+      !transformedContact.last_name?.toString().trim();
 
     // Auto-fill placeholder contact if user approved
     if (isOrgOnlyEntry && importOrganizationsWithoutContacts) {
@@ -269,12 +271,11 @@ function validateContacts(contacts, options = {}) {
       results.success++;
     } else {
       // Filter errors based on data quality decisions
-      const relevantErrors = validationResult.error.issues.filter(issue => {
-        const fieldPath = issue.path.join('.');
-        const isMissingNameError = (
+      const relevantErrors = validationResult.error.issues.filter((issue) => {
+        const fieldPath = issue.path.join(".");
+        const isMissingNameError =
           (fieldPath === "first_name" || fieldPath === "last_name") &&
-          issue.message.includes("Either first name or last name must be provided")
-        );
+          issue.message.includes("Either first name or last name must be provided");
 
         // Skip this error if user approved org-only entries
         if (isMissingNameError && isOrgOnlyEntry && importOrganizationsWithoutContacts) {
@@ -289,16 +290,18 @@ function validateContacts(contacts, options = {}) {
         results.success++;
       } else {
         results.failed++;
-        const errorReasons = relevantErrors.map(issue => {
-          const field = issue.path.join('.');
-          const message = issue.message;
+        const errorReasons = relevantErrors
+          .map((issue) => {
+            const field = issue.path.join(".");
+            const message = issue.message;
 
-          // Track error types
-          const errorKey = `${field}: ${message}`;
-          results.errorTypes[errorKey] = (results.errorTypes[errorKey] || 0) + 1;
+            // Track error types
+            const errorKey = `${field}: ${message}`;
+            results.errorTypes[errorKey] = (results.errorTypes[errorKey] || 0) + 1;
 
-          return `${field}: ${message}`;
-        }).join('; ');
+            return `${field}: ${message}`;
+          })
+          .join("; ");
 
         results.errors.push({
           row: rowNumber,
@@ -314,12 +317,15 @@ function validateContacts(contacts, options = {}) {
 
 // Main test function
 async function runTest() {
-  console.log('🧪 Starting CSV Import Validation Test with Data Quality Analysis\n');
+  console.log("🧪 Starting CSV Import Validation Test with Data Quality Analysis\n");
 
-  const csvContent = fs.readFileSync('/home/krwhynot/projects/crispy-crm/data/new-contacts.csv', 'utf-8');
+  const csvContent = fs.readFileSync(
+    "/home/krwhynot/projects/crispy-crm/data/new-contacts.csv",
+    "utf-8"
+  );
 
   // Parse CSV
-  console.log('📄 Parsing CSV...');
+  console.log("📄 Parsing CSV...");
   const parseResult = Papa.parse(csvContent, {
     header: false,
     skipEmptyLines: true,
@@ -329,44 +335,46 @@ async function runTest() {
   console.log(`   Parsed ${parseResult.data.length} total rows\n`);
 
   // Transform data
-  console.log('🔄 Transforming data...');
+  console.log("🔄 Transforming data...");
   const contacts = transformData(parseResult.data);
   console.log(`   Transformed ${contacts.length} contact rows\n`);
 
   // ═══════════════════════════════════════════════════════
   // STEP 1: Data Quality Analysis
   // ═══════════════════════════════════════════════════════
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('🔍 DATA QUALITY ANALYSIS');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("🔍 DATA QUALITY ANALYSIS");
+  console.log("═══════════════════════════════════════════════════════\n");
 
   const organizationsWithoutContacts = findOrganizationsWithoutContacts(contacts);
   const contactsWithoutContactInfo = findContactsWithoutContactInfo(contacts);
 
   console.log(`📊 Organizations Without Contact Person: ${organizationsWithoutContacts.length}`);
   if (organizationsWithoutContacts.length > 0) {
-    console.log('   Examples (first 5):');
-    organizationsWithoutContacts.slice(0, 5).forEach(org => {
+    console.log("   Examples (first 5):");
+    organizationsWithoutContacts.slice(0, 5).forEach((org) => {
       console.log(`     - "${org.organization_name}" (Row ${org.row})`);
     });
   }
-  console.log('');
+  console.log("");
 
   console.log(`📊 Contacts Without Email or Phone: ${contactsWithoutContactInfo.length}`);
   if (contactsWithoutContactInfo.length > 0) {
-    console.log('   Examples (first 5):');
-    contactsWithoutContactInfo.slice(0, 5).forEach(contact => {
-      console.log(`     - "${contact.name}" at ${contact.organization_name || 'N/A'} (Row ${contact.row})`);
+    console.log("   Examples (first 5):");
+    contactsWithoutContactInfo.slice(0, 5).forEach((contact) => {
+      console.log(
+        `     - "${contact.name}" at ${contact.organization_name || "N/A"} (Row ${contact.row})`
+      );
     });
   }
-  console.log('\n');
+  console.log("\n");
 
   // ═══════════════════════════════════════════════════════
   // STEP 2: Test Scenario 1 - Strict Mode (both unchecked)
   // ═══════════════════════════════════════════════════════
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('📊 SCENARIO 1: Strict Mode (Both Checkboxes Unchecked)');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("📊 SCENARIO 1: Strict Mode (Both Checkboxes Unchecked)");
+  console.log("═══════════════════════════════════════════════════════\n");
 
   const strictResults = validateContacts(contacts, {
     importOrganizationsWithoutContacts: false,
@@ -376,15 +384,17 @@ async function runTest() {
   const strictSuccessRate = ((strictResults.success / strictResults.total) * 100).toFixed(2);
   console.log(`Total Contacts:    ${strictResults.total}`);
   console.log(`✅ Successful:     ${strictResults.success} (${strictSuccessRate}%)`);
-  console.log(`❌ Failed:         ${strictResults.failed} (${(100 - strictSuccessRate).toFixed(2)}%)\n`);
+  console.log(
+    `❌ Failed:         ${strictResults.failed} (${(100 - strictSuccessRate).toFixed(2)}%)\n`
+  );
 
   // ═══════════════════════════════════════════════════════
   // STEP 3: Test Scenario 2 - Import Org-Only Entries
   // ═══════════════════════════════════════════════════════
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('📊 SCENARIO 2: Import Organizations Without Contacts');
-  console.log('    (First checkbox CHECKED, second unchecked)');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("📊 SCENARIO 2: Import Organizations Without Contacts");
+  console.log("    (First checkbox CHECKED, second unchecked)");
+  console.log("═══════════════════════════════════════════════════════\n");
 
   const orgOnlyResults = validateContacts(contacts, {
     importOrganizationsWithoutContacts: true,
@@ -394,16 +404,22 @@ async function runTest() {
   const orgOnlySuccessRate = ((orgOnlyResults.success / orgOnlyResults.total) * 100).toFixed(2);
   console.log(`Total Contacts:      ${orgOnlyResults.total}`);
   console.log(`✅ Successful:       ${orgOnlyResults.success} (${orgOnlySuccessRate}%)`);
-  console.log(`   └─ Auto-filled:   ${orgOnlyResults.transformations.orgOnlyAutoFilled} (with "General Contact")`);
-  console.log(`❌ Failed:           ${orgOnlyResults.failed} (${(100 - orgOnlySuccessRate).toFixed(2)}%)\n`);
-  console.log(`📈 Improvement:      +${(parseFloat(orgOnlySuccessRate) - parseFloat(strictSuccessRate)).toFixed(2)}% (${orgOnlyResults.success - strictResults.success} more contacts)\n`);
+  console.log(
+    `   └─ Auto-filled:   ${orgOnlyResults.transformations.orgOnlyAutoFilled} (with "General Contact")`
+  );
+  console.log(
+    `❌ Failed:           ${orgOnlyResults.failed} (${(100 - orgOnlySuccessRate).toFixed(2)}%)\n`
+  );
+  console.log(
+    `📈 Improvement:      +${(parseFloat(orgOnlySuccessRate) - parseFloat(strictSuccessRate)).toFixed(2)}% (${orgOnlyResults.success - strictResults.success} more contacts)\n`
+  );
 
   // ═══════════════════════════════════════════════════════
   // STEP 4: Test Scenario 3 - Maximum Leniency (both checked)
   // ═══════════════════════════════════════════════════════
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('📊 SCENARIO 3: Maximum Leniency (Both Checkboxes CHECKED)');
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════");
+  console.log("📊 SCENARIO 3: Maximum Leniency (Both Checkboxes CHECKED)");
+  console.log("═══════════════════════════════════════════════════════\n");
 
   const lenientResults = validateContacts(contacts, {
     importOrganizationsWithoutContacts: true,
@@ -413,18 +429,24 @@ async function runTest() {
   const lenientSuccessRate = ((lenientResults.success / lenientResults.total) * 100).toFixed(2);
   console.log(`Total Contacts:      ${lenientResults.total}`);
   console.log(`✅ Successful:       ${lenientResults.success} (${lenientSuccessRate}%)`);
-  console.log(`   └─ Auto-filled:   ${lenientResults.transformations.orgOnlyAutoFilled} (with "General Contact")`);
-  console.log(`❌ Failed:           ${lenientResults.failed} (${(100 - lenientSuccessRate).toFixed(2)}%)\n`);
-  console.log(`📈 Improvement:      +${(parseFloat(lenientSuccessRate) - parseFloat(strictSuccessRate)).toFixed(2)}% (${lenientResults.success - strictResults.success} more contacts)\n`);
+  console.log(
+    `   └─ Auto-filled:   ${lenientResults.transformations.orgOnlyAutoFilled} (with "General Contact")`
+  );
+  console.log(
+    `❌ Failed:           ${lenientResults.failed} (${(100 - lenientSuccessRate).toFixed(2)}%)\n`
+  );
+  console.log(
+    `📈 Improvement:      +${(parseFloat(lenientSuccessRate) - parseFloat(strictSuccessRate)).toFixed(2)}% (${lenientResults.success - strictResults.success} more contacts)\n`
+  );
 
   // Use strict mode results for error analysis
   const results = strictResults;
 
   // Error breakdown
   if (results.failed > 0) {
-    console.log('═══════════════════════════════════════════════════════');
-    console.log('📋 ERROR BREAKDOWN (By Type)');
-    console.log('═══════════════════════════════════════════════════════\n');
+    console.log("═══════════════════════════════════════════════════════");
+    console.log("📋 ERROR BREAKDOWN (By Type)");
+    console.log("═══════════════════════════════════════════════════════\n");
 
     const sortedErrors = Object.entries(results.errorTypes)
       .sort((a, b) => b[1] - a[1])
@@ -434,57 +456,69 @@ async function runTest() {
       console.log(`  ${count.toString().padStart(4)} × ${error}`);
     });
 
-    console.log('\n═══════════════════════════════════════════════════════');
-    console.log('🔍 FIRST 10 FAILED ROWS');
-    console.log('═══════════════════════════════════════════════════════\n');
+    console.log("\n═══════════════════════════════════════════════════════");
+    console.log("🔍 FIRST 10 FAILED ROWS");
+    console.log("═══════════════════════════════════════════════════════\n");
 
-    results.errors.slice(0, 10).forEach(error => {
+    results.errors.slice(0, 10).forEach((error) => {
       console.log(`Row ${error.row}: ${error.reasons}`);
       console.log(`  Data: ${JSON.stringify(error.data).substring(0, 100)}...`);
-      console.log('');
+      console.log("");
     });
   }
 
-  console.log('═══════════════════════════════════════════════════════\n');
+  console.log("═══════════════════════════════════════════════════════\n");
 
   // Write detailed error report
   if (results.failed > 0) {
     const errorCsv = [
-      ['Row', 'Error Reasons', 'First Name', 'Last Name', 'Organization', 'Title', 'Email (Work)', 'Phone (Work)', 'Notes'],
-      ...results.errors.map(e => [
+      [
+        "Row",
+        "Error Reasons",
+        "First Name",
+        "Last Name",
+        "Organization",
+        "Title",
+        "Email (Work)",
+        "Phone (Work)",
+        "Notes",
+      ],
+      ...results.errors.map((e) => [
         e.row,
         e.reasons,
-        e.data.first_name || '',
-        e.data.last_name || '',
-        e.data.organization_name || '',
-        e.data.title || '',
-        e.data.email_work || '',
-        e.data.phone_work || '',
-        e.data.notes || '',
-      ])
+        e.data.first_name || "",
+        e.data.last_name || "",
+        e.data.organization_name || "",
+        e.data.title || "",
+        e.data.email_work || "",
+        e.data.phone_work || "",
+        e.data.notes || "",
+      ]),
     ];
 
-    const errorCsvContent = errorCsv.map(row =>
-      row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
-    ).join('\n');
+    const errorCsvContent = errorCsv
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
 
-    fs.writeFileSync('test-import-errors.csv', errorCsvContent);
-    console.log('📄 Detailed error report written to: test-import-errors.csv\n');
+    fs.writeFileSync("test-import-errors.csv", errorCsvContent);
+    console.log("📄 Detailed error report written to: test-import-errors.csv\n");
   }
 }
 
 // Run the test
 runTest()
   .then(() => {
-    console.log('═══════════════════════════════════════════════════════');
-    console.log('🏁 TEST COMPLETE');
-    console.log('═══════════════════════════════════════════════════════\n');
-    console.log('✅ Data quality analysis and validation complete!');
-    console.log('💡 Recommendation: Use Scenario 2 (import org-only entries) for 82%+ success rate');
-    console.log('');
+    console.log("═══════════════════════════════════════════════════════");
+    console.log("🏁 TEST COMPLETE");
+    console.log("═══════════════════════════════════════════════════════\n");
+    console.log("✅ Data quality analysis and validation complete!");
+    console.log(
+      "💡 Recommendation: Use Scenario 2 (import org-only entries) for 82%+ success rate"
+    );
+    console.log("");
     process.exit(0);
   })
-  .catch(error => {
-    console.error('❌ Test failed:', error);
+  .catch((error) => {
+    console.error("❌ Test failed:", error);
     process.exit(1);
   });

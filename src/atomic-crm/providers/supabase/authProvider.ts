@@ -3,6 +3,7 @@ import { supabaseAuthProvider } from "ra-supabase-core";
 import { canAccess } from "../commons/canAccess";
 import { supabase } from "./supabase";
 import { escapeCacheManager } from "./dataProviderCache";
+import { devLog } from "@/lib/devLogger";
 
 const baseAuthProvider = supabaseAuthProvider(supabase, {
   getIdentity: async () => {
@@ -186,5 +187,5 @@ const getSaleFromCache = async () => {
 export const invalidateIdentityCache = () => {
   cachedSale = undefined;
   cacheTimestamp = 0;
-  console.log("[authProvider] Identity cache cleared - next getIdentity will fetch fresh data");
+  devLog("authProvider", "Identity cache cleared - next getIdentity will fetch fresh data");
 };

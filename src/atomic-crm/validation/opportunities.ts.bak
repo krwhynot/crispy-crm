@@ -114,8 +114,10 @@ const opportunityBaseSchema = z.strictObject({
     }),
 
   // OpportunityClassificationInputs fields
-  stage: opportunityStageSchema.nullable().default("new_lead"),
-  priority: opportunityPrioritySchema.nullable().default("medium"),
+  // Stage is REQUIRED - no silent default. Forms must explicitly select a stage.
+  // This prevents workflow corruption from missing/null stage values.
+  stage: opportunityStageSchema,
+  priority: opportunityPrioritySchema,
   lead_source: leadSourceSchema.optional().nullable(),
 
   // OpportunityOrganizationInputs fields
@@ -207,7 +209,7 @@ export type OpportunityPriority = z.infer<typeof opportunityPrioritySchema>;
 export async function validateOpportunityForm(data: unknown): Promise<void> {
   try {
     opportunitySchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
@@ -270,8 +272,9 @@ export const createOpportunitySchema = opportunityBaseSchema
 
     // Customer REQUIRED (Salesforce standard + business rule Q12)
     customer_organization_id: z.union([z.string(), z.number()]),
-    // Principal optional (can be enriched later)
-    principal_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
+    // Principal REQUIRED (MFB business rule: every opportunity represents a principal's product)
+    // Note: Inherits from opportunityBaseSchema which already requires this field
+    principal_organization_id: z.union([z.string(), z.number()]),
 
     // Fields used by quick-create but not in UI forms
     // These are set programmatically (status=active, owner=current user)
@@ -291,11 +294,11 @@ export const createOpportunitySchema = opportunityBaseSchema
  * Per industry research (2025-12):
  * - Salesforce: Opportunities REQUIRE an Account (hard requirement)
  *
- * Required: name + customer + stage (matches Salesforce pattern)
- * Optional: principal, contacts (can be enriched later via slide-over)
+ * Required: name + customer + principal + stage (matches Salesforce pattern + MFB rule)
+ * Optional: contacts (can be enriched later via slide-over)
  */
 export const quickCreateOpportunitySchema = z.strictObject({
-  // Required fields (Salesforce standard)
+  // Required fields (Salesforce standard + MFB business rule)
   name: z
     .string()
     .trim()
@@ -303,6 +306,7 @@ export const quickCreateOpportunitySchema = z.strictObject({
     .max(255, "Opportunity name too long"),
   stage: opportunityStageSchema,
   customer_organization_id: z.union([z.string(), z.number()]), // Business rule Q12
+  principal_organization_id: z.union([z.string(), z.number()]), // MFB: every opp has a principal
 
   // Auto-populated fields
   status: z.literal("active").default("active"),
@@ -493,7 +497,7 @@ export type CloseOpportunityInput = z.infer<typeof closeOpportunitySchema>;
 export async function validateCreateOpportunity(data: unknown): Promise<void> {
   try {
     createOpportunitySchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
@@ -512,7 +516,7 @@ export async function validateCreateOpportunity(data: unknown): Promise<void> {
 export async function validateUpdateOpportunity(data: unknown): Promise<void> {
   try {
     updateOpportunitySchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
@@ -535,7 +539,7 @@ export async function validateUpdateOpportunity(data: unknown): Promise<void> {
 export async function validateCloseOpportunity(data: unknown): Promise<void> {
   try {
     closeOpportunitySchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
@@ -712,7 +716,7 @@ export async function validateNoDuplicate(
 ): Promise<void> {
   try {
     await checkExactDuplicate(dataProvider, params);
-  } catch (error) {
+  } catch (error: unknown) {
     if (
       error instanceof Error &&
       "code" in error &&

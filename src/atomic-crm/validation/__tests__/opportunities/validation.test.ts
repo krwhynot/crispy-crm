@@ -31,17 +31,31 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
       expect(result.stage).toBe("new_lead");
     });
 
-    it("should apply default values for stage and priority", () => {
+    it("should require stage explicitly (no silent default after WG-003)", () => {
       const minimalOpportunity = {
         name: "Minimal Opportunity",
         customer_organization_id: "1",
         principal_organization_id: "2",
         contact_ids: ["1"],
+        // stage intentionally omitted - should fail
       };
 
-      const result = opportunitySchema.parse(minimalOpportunity);
-      expect(result.stage).toBe("new_lead");
-      expect(result.priority).toBe("medium");
+      // WG-003 fix: stage is now required, no silent default
+      expect(() => opportunitySchema.parse(minimalOpportunity)).toThrow(z.ZodError);
+    });
+
+    it("should require priority explicitly (no silent default after WG-002)", () => {
+      const opportunityWithoutPriority = {
+        name: "Opportunity without Priority",
+        customer_organization_id: "1",
+        principal_organization_id: "2",
+        contact_ids: ["1"],
+        stage: "new_lead",
+        // priority intentionally omitted - should fail
+      };
+
+      // WG-002 fix: priority is now required, no silent default
+      expect(() => opportunitySchema.parse(opportunityWithoutPriority)).toThrow(z.ZodError);
     });
 
     it("should require name field", () => {
@@ -58,6 +72,8 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
         customer_organization_id: "1",
         principal_organization_id: "2",
         contact_ids: [],
+        stage: "new_lead", // Required after WG-003 fix
+        priority: "medium", // Required after WG-002 fix
       };
 
       // Contacts are optional for quick-add (can be enriched later via slide-over)
@@ -67,13 +83,15 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
   });
 
   describe("createOpportunitySchema", () => {
-    it("should require name, contact_ids, and estimated_close_date", () => {
+    it("should require name, contact_ids, stage, and estimated_close_date", () => {
       const validData = {
         name: "New Opportunity",
         customer_organization_id: "1",
         principal_organization_id: "2",
         contact_ids: ["1"],
         estimated_close_date: "2025-12-31",
+        stage: "new_lead", // Required after WG-003 fix
+        priority: "medium", // Required after WG-002 fix
       };
 
       expect(() => createOpportunitySchema.parse(validData)).not.toThrow();

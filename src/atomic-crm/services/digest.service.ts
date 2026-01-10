@@ -278,14 +278,13 @@ export class DigestService {
         return null;
       }
 
-      // Validate and parse response
+      // Validate and parse response - FIX [SF-C02]: Fail fast on invalid data
       const parsed = UserDigestSummarySchema.safeParse(data);
       if (!parsed.success) {
-        console.warn("[DigestService] Digest summary validation warning", {
-          salesId,
-          errors: parsed.error.errors,
-        });
-        return data as UserDigestSummary;
+        const errorDetails = parsed.error.issues
+          .map((e) => `${e.path.join(".")}: ${e.message}`)
+          .join(", ");
+        throw new Error(`Digest summary validation failed for salesId ${salesId}: ${errorDetails}`);
       }
 
       return parsed.data;
@@ -309,13 +308,13 @@ export class DigestService {
     try {
       const data = await this.dataProvider.rpc("generate_daily_digest_v2", {});
 
-      // Validate response
+      // Validate response - FIX [SF-C02]: Fail fast on invalid data
       const parsed = DigestGenerationResultSchema.safeParse(data);
       if (!parsed.success) {
-        console.warn("[DigestService] Digest generation result validation warning", {
-          errors: parsed.error.errors,
-        });
-        return data as DigestGenerationResult;
+        const errorDetails = parsed.error.issues
+          .map((e) => `${e.path.join(".")}: ${e.message}`)
+          .join(", ");
+        throw new Error(`Digest generation result validation failed: ${errorDetails}`);
       }
 
       return parsed.data;

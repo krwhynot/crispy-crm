@@ -1,7 +1,7 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-08T12:14:50.366Z",
-  "item_count": 23,
+  "generated_at": "2026-01-10T23:35:59.784Z",
+  "item_count": 25,
   "items": [
     {
       "name": "ActivityTypeCard",
@@ -25,49 +25,81 @@
       "componentRole": "wrapper"
     },
     {
-      "name": "CampaignActivityReport",
-      "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
-      "line": 55,
+      "name": "CampaignActivityFilters",
+      "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx",
+      "line": 41,
       "type": "presentational",
-      "hooks": [
-        "useGetList",
-        "useMemo",
-        "useNotify",
-        "useReportData",
-        "useState"
-      ],
+      "hooks": [],
       "imports": [
-        "../types",
-        "./ActivityTypeCard",
-        "./StaleLeadsView",
-        "@/atomic-crm/reports/ReportLayout",
-        "@/atomic-crm/reports/components",
-        "@/atomic-crm/reports/hooks",
-        "@/atomic-crm/utils/csvUploadValidator",
         "@/atomic-crm/utils/stalenessCalculation",
-        "@/atomic-crm/validation/activities",
         "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/checkbox",
         "@/components/ui/label",
         "@/components/ui/select",
+        "date-fns",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "CampaignActivityReport",
+      "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
+      "line": 51,
+      "type": "presentational",
+      "hooks": [
+        "useCampaignActivityData",
+        "useCampaignActivityExport",
+        "useMemo",
+        "useState"
+      ],
+      "imports": [
+        "./ActivityTypeCard",
+        "./CampaignActivityFilters",
+        "./CampaignActivitySummaryCards",
+        "./StaleLeadsView",
+        "./useCampaignActivityData",
+        "./useCampaignActivityExport",
+        "@/atomic-crm/reports/ReportLayout",
+        "@/atomic-crm/reports/components",
+        "@/atomic-crm/utils/stalenessCalculation",
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/label",
+        "@/components/ui/select",
         "@/lib/date-utils",
         "date-fns",
-        "jsonexport/dist",
         "lucide-react",
-        "ra-core",
         "react"
       ],
       "isDefaultExport": true,
       "childComponents": [
         "ActivityTypeCard",
         "StaleLeadsView",
-        "Sale",
-        "Activity",
-        "ActivityGroup"
+        "CampaignActivityFilters",
+        "CampaignActivitySummaryCards"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "CampaignActivitySummaryCards",
+      "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/card",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "StaleLeadsView",

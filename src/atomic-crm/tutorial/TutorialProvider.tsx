@@ -124,7 +124,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         smoothScroll: true,
         allowClose: true,
         allowKeyboardControl: true,
-        overlayColor: "hsl(var(--overlay))",
+        overlayColor: "var(--overlay)",
         popoverClass: "tutorial-popover",
         showButtons: ["next", "previous", "close"],
         nextBtnText: "Next →",
@@ -235,7 +235,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         driverRef.current = driver(config);
         setIsActive(true);
         driverRef.current.drive();
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to initialize tutorial:", error);
         setIsActive(false);
         driverRef.current = null;

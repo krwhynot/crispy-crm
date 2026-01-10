@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDataProvider, useNotify, useGetOne } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 import type { Task, Opportunity } from "../types";
 
 interface QuickLogActivityProps {
@@ -95,6 +97,7 @@ const inferActivityTypeFromTitle = (title: string): string => {
 export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClose, task }) => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   // Determine initial activity type
   const getInitialActivityType = () => {
@@ -143,9 +146,12 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
         },
       });
 
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+
       notify("Activity logged successfully", { type: "success" });
       onClose();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error logging activity:", error);
       notify("Failed to log activity", { type: "error" });
     } finally {

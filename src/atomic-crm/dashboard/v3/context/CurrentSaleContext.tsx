@@ -18,6 +18,7 @@
 import { type ReactNode, useMemo, useCallback } from "react";
 import { useGetIdentity } from "react-admin";
 import { CurrentSaleContext } from "../hooks/useCurrentSale";
+import { devLog } from "@/lib/devLogger";
 
 interface CurrentSaleProviderProps {
   children: ReactNode;
@@ -51,7 +52,7 @@ export function CurrentSaleProvider({ children }: CurrentSaleProviderProps) {
 
   // Debug logging for development
   if (import.meta.env.DEV && identity) {
-    console.log("[CurrentSaleProvider] Using cached identity from authProvider:", {
+    devLog("CurrentSaleProvider", "Using cached identity from authProvider", {
       salesId,
       hasIdentity: !!identity,
     });
@@ -61,7 +62,7 @@ export function CurrentSaleProvider({ children }: CurrentSaleProviderProps) {
   // Identity cache is cleared on login/logout via authProvider
   const refetch = useCallback(() => {
     if (import.meta.env.DEV) {
-      console.log("[CurrentSaleProvider] refetch called but no-op (managed by authProvider)");
+      devLog("CurrentSaleProvider", "refetch called but no-op (managed by authProvider)");
     }
   }, []);
 

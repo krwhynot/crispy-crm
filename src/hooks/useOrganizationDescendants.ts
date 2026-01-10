@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { useDataProvider } from "ra-core";
 
 import { orgDescendantKeys } from "@/atomic-crm/queryKeys";
-import { supabase } from "@/atomic-crm/providers/supabase/supabase";
 
 /**
  * Hook to fetch all descendant organization IDs for hierarchy cycle prevention.
@@ -21,6 +21,8 @@ export interface UseOrganizationDescendantsReturn {
 export function useOrganizationDescendants(
   orgId: number | undefined
 ): UseOrganizationDescendantsReturn {
+  const dataProvider = useDataProvider();
+
   const {
     data: descendants = [],
     isLoading,
@@ -29,11 +31,10 @@ export function useOrganizationDescendants(
     queryKey: orgDescendantKeys.detail(orgId!),
     queryFn: async () => {
       if (!orgId) return [];
-      const { data, error } = await supabase.rpc("get_organization_descendants", {
+      const result = await dataProvider.invoke("get_organization_descendants", {
         org_id: orgId,
       });
-      if (error) throw error;
-      return (data as number[]) || [];
+      return (result.data as number[]) || [];
     },
     enabled: !!orgId,
     staleTime: 30000, // Cache for 30s - hierarchy doesn't change often

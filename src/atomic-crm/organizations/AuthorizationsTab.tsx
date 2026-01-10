@@ -117,7 +117,12 @@ export function AuthorizationsTab({
           },
         }
       );
-    } catch {
+    } catch (error: unknown) {
+      // ERR-002 FIX: Log error with context before notifying user
+      console.error(
+        "[AuthorizationsTab] Failed to remove authorization:",
+        error instanceof Error ? error.message : String(error)
+      );
       notify("Failed to remove authorization. Please try again.", { type: "error" });
     }
   };

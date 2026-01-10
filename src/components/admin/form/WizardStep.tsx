@@ -37,13 +37,12 @@ function WizardStep({ step, children, className }: WizardStepProps) {
       role="tabpanel"
       aria-labelledby={`wizard-step-${step}-trigger`}
       aria-hidden={!isActive}
-      // @ts-expect-error - inert is valid HTML attribute, React 19 types lagging
-      inert={!isActive ? "" : undefined}
+      inert={!isActive ? true : undefined}
       className={cn("space-y-6", !isActive && "hidden", className)}
     >
       {/* Step heading for accessibility */}
       <h2 className="text-lg font-semibold text-foreground">
-        Step {step}: {stepConfig.title}
+        Step {step}: {stepConfig?.title}
       </h2>
 
       {children}

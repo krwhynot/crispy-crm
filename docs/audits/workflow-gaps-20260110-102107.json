@@ -1,0 +1,80 @@
+{
+  "audit_timestamp": "2026-01-10T16:21:07.455518+00:00",
+  "audit_type": "workflow_gaps",
+  "database_overview": {
+    "total_opportunities": 372,
+    "total_contacts": 1849,
+    "total_activities": 125,
+    "total_tasks": 6,
+    "deleted_contacts": 158
+  },
+  "critical_gaps": [
+    {
+      "issue": "opportunities_without_principal",
+      "count": 0,
+      "severity": "CRITICAL",
+      "status": "PASS"
+    },
+    { "issue": "orphaned_pipeline_stages", "count": 0, "severity": "CRITICAL", "status": "PASS" },
+    {
+      "issue": "contacts_without_organization",
+      "count": 0,
+      "severity": "CRITICAL",
+      "status": "PASS"
+    },
+    {
+      "issue": "opportunities_without_customer",
+      "count": 0,
+      "severity": "CRITICAL",
+      "status": "PASS"
+    }
+  ],
+  "high_priority_gaps": [
+    {
+      "issue": "opportunities_without_owner",
+      "count": 369,
+      "total_opportunities": 372,
+      "percentage": 99.19,
+      "severity": "HIGH",
+      "status": "WARN",
+      "note": "May be acceptable for seed data, but should be addressed before production"
+    },
+    {
+      "issue": "activities_without_opportunity",
+      "count": 125,
+      "activity_type": "engagement",
+      "severity": "HIGH",
+      "status": "PASS",
+      "note": "Valid by design - engagement activities can exist without opportunities"
+    },
+    { "issue": "closed_won_without_reason", "count": 0, "severity": "HIGH", "status": "PASS" },
+    { "issue": "closed_lost_without_reason", "count": 0, "severity": "HIGH", "status": "PASS" }
+  ],
+  "medium_priority_gaps": [
+    { "issue": "activities_without_type", "count": 0, "severity": "MEDIUM", "status": "PASS" },
+    { "issue": "instant_close_anomalies", "count": 0, "severity": "MEDIUM", "status": "PASS" },
+    { "issue": "stale_opportunities", "count": 0, "severity": "MEDIUM", "status": "PASS" },
+    { "issue": "demo_without_next_action", "count": 0, "severity": "MEDIUM", "status": "PASS" }
+  ],
+  "data_quality": {
+    "opportunities_empty_name": 0,
+    "contacts_empty_name": 0,
+    "opportunities_with_empty_tags": 372,
+    "status": "INFO",
+    "note": "Empty tags arrays are normal - tags are optional metadata"
+  },
+  "pipeline_health": {
+    "stage_distribution": { "initial_outreach": 370, "sample_visit_offered": 1, "new_lead": 1 },
+    "total_active_opps": 372,
+    "total_closed_won": 0,
+    "total_closed_lost": 0
+  },
+  "summary": {
+    "total_checks_run": 14,
+    "critical_failures": 0,
+    "high_priority_warnings": 1,
+    "medium_priority_issues": 0,
+    "overall_status": "HEALTHY",
+    "recommendation": "Assign owners to opportunities before production deployment"
+  }
+}

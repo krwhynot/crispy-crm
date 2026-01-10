@@ -474,9 +474,9 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
 
 **When to use:** Form fields, search boxes, and user data entry.
 
-### Input with Touch Target Expansion
+### Input with Direct Touch Target Sizing
 
-The compact 32px input achieves 44px touch targets via pseudo-element:
+The input uses direct `h-11` (44px) height to meet touch target requirements:
 
 ```tsx
 // src/components/ui/input.tsx
@@ -493,21 +493,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           "transition-[border-color,background-color,box-shadow] duration-75",
 
           size === "default" && [
-            // Compact visual height: 32px
-            "h-8 px-2 py-1",
-            "text-[0.8125rem] leading-[1.35]",
+            // DIRECT TOUCH TARGET SIZING (44px)
+            // Uses h-11 directly - simpler than pseudo-element expansion
+            "h-11 px-3 py-2",
+            "text-sm leading-normal",
+            "rounded-md",
+          ],
 
-            // TOUCH TARGET EXPANSION (44px)
-            // Pseudo-element extends hit area without affecting layout
-            "relative",
-            "before:content-['']",
-            "before:absolute",
-            "before:top-[calc((44px-100%)/-2)]",
-            "before:bottom-[calc((44px-100%)/-2)]",
-            "before:left-0",
-            "before:right-0",
-
-            "rounded-sm",
+          size === "lg" && [
+            // Legacy 48px height for backward compatibility
+            "min-h-[48px] px-3 py-2",
+            "text-base md:text-sm",
+            "rounded-md",
           ],
 
           // Hybrid border system
@@ -648,10 +645,10 @@ size: {
 
 ### Technique 2: Pseudo-Element Expansion
 
-For compact visual elements that need larger touch areas:
+For compact visual elements that need larger touch areas (not currently used for Input, but available for other compact components):
 
 ```tsx
-// src/components/ui/input.tsx (32px visual, 44px touch)
+// Example: 32px visual element with 44px touch area
 "relative",
 "before:content-['']",
 "before:absolute",
@@ -660,6 +657,8 @@ For compact visual elements that need larger touch areas:
 "before:left-0",
 "before:right-0",
 ```
+
+Note: The Input component uses direct `h-11` sizing instead of pseudo-element expansion for simplicity.
 
 ### Technique 3: Mobile-Only Expansion
 
@@ -674,7 +673,7 @@ For compact visual elements that need larger touch areas:
 | Component | Visual Size | Touch Target | Method |
 |-----------|-------------|--------------|--------|
 | Button | 48px | 48px | Direct `h-12` |
-| Input (compact) | 32px | 44px | `before::` pseudo |
+| Input | 44px | 44px | Direct `h-11` |
 | Checkbox | 20px | 44px | Parent container |
 | Close button | 44px | 44px | Direct `size-11` |
 | Sidebar action | 20px | 36px (mobile) | `after::` pseudo |
@@ -859,8 +858,8 @@ className="text-destructive bg-primary border-border"
 // WRONG - 32px is too small
 className="h-8 w-8"
 
-// CORRECT - 44px minimum
-className="h-11 w-11"  // or use pseudo-element expansion
+// CORRECT - 44px minimum (preferred: direct sizing)
+className="h-11 w-11"
 ```
 
 ### 4. Using `watch()` Instead of `useWatch()`

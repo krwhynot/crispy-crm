@@ -108,9 +108,9 @@ describe("ContactCreate", () => {
             sales_id: 1,
           },
         });
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toEqual(serverError);
-        expect(error.message).toBe("Database connection failed");
+        expect((error as Error).message).toBe("Database connection failed");
       }
 
       expect(mockCreate).toHaveBeenCalledTimes(1);
@@ -135,10 +135,10 @@ describe("ContactCreate", () => {
             sales_id: 1,
           },
         });
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toEqual(validationErrors);
-        expect(error.errors).toHaveProperty("email.0.email");
-        expect(error.errors).toHaveProperty("organization_id");
+        expect((error as Record<string, unknown>).errors).toHaveProperty("email.0.email");
+        expect((error as Record<string, unknown>).errors).toHaveProperty("organization_id");
       }
 
       expect(mockCreate).toHaveBeenCalledTimes(1);
@@ -157,9 +157,9 @@ describe("ContactCreate", () => {
             sales_id: 1,
           },
         });
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toBe(networkError);
-        expect(error.message).toBe("Network timeout");
+        expect((error as Error).message).toBe("Network timeout");
       }
 
       expect(mockCreate).toHaveBeenCalledTimes(1);

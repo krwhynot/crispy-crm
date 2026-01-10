@@ -352,7 +352,145 @@ const appBarHeight = useAppBarHeight();
 
 ---
 
-## Pattern E: Derived State Patterns
+## Pattern E: Recent Items Hook (Cross-Resource)
+
+Tracks recently viewed records across all resources using React Admin's `useStore` for persistence.
+
+```tsx
+import { useRecentItems, type RecentItem } from "@/atomic-crm/hooks";
+
+function RecentlyViewed() {
+  const { recentItems, addRecentItem, clearRecentItems } = useRecentItems();
+
+  // When viewing a record
+  const handleView = (record: Contact) => {
+    addRecentItem({ id: record.id, resource: 'contacts', title: record.name });
+  };
+
+  return (
+    <ul>
+      {recentItems.map(item => (
+        <li key={`${item.resource}-${item.id}`}>
+          <Link to={`/${item.resource}/${item.id}`}>{item.title}</Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**When to use**: Navigation menus, quick-access panels, "recently viewed" widgets.
+
+### Key Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| `useStore` (React Admin) | Persists to localStorage, clears on logout automatically |
+| Max 10 items | Enough for quick access without overwhelming UI |
+| `resource + id` deduplication | Same ID can exist in different resources (contact #5 vs org #5) |
+| ISO timestamp | Enables sorting by recency |
+
+---
+
+## Pattern F: Recent Searches Hook (External Store)
+
+Cross-entity recent searches using `useSyncExternalStore` for multi-component synchronization.
+
+```tsx
+import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
+
+function GlobalSearch() {
+  const { recentItems, addRecent, clearRecent } = useRecentSearches();
+
+  const handleSelect = (org: Organization) => {
+    addRecent({ id: org.id, label: org.name, entityType: "organizations" });
+  };
+
+  return (
+    <Combobox>
+      {recentItems.length > 0 && (
+        <ComboboxGroup label="Recent">
+          {recentItems.map(item => (
+            <ComboboxItem key={`${item.entityType}-${item.id}`}>
+              {item.label}
+            </ComboboxItem>
+          ))}
+        </ComboboxGroup>
+      )}
+    </Combobox>
+  );
+}
+```
+
+**When to use**: Global search components where multiple instances need synchronized state.
+
+### Implementation Notes
+
+This hook uses `useSyncExternalStore` for these reasons:
+1. **Cross-tab sync**: `storage` event listener syncs data across browser tabs
+2. **Same-tab sync**: Module-level subscriber set notifies all hook instances
+3. **Stable snapshot**: Cached reference prevents infinite re-render loops
+
+```tsx
+// CRITICAL: getSnapshot must return stable reference
+const recentSearchesStore = {
+  getSnapshot: () => cachedSnapshot, // Return cached, NOT loadFromStorage()
+  subscribe: (callback) => { /* ... */ },
+  refreshCache: () => { cachedSnapshot = loadFromStorage(); notify(); },
+};
+```
+
+---
+
+## Pattern G: Related Record Counts Hook
+
+Fetches counts of related records for cascade delete warning dialogs.
+
+```tsx
+import { useRelatedRecordCounts } from "@/atomic-crm/hooks/useRelatedRecordCounts";
+
+function DeleteConfirmDialog({ resource, ids, open }) {
+  const { relatedCounts, isLoading } = useRelatedRecordCounts({
+    resource,
+    ids,
+    enabled: open, // Only fetch when dialog opens
+  });
+
+  return (
+    <Dialog open={open}>
+      {isLoading ? (
+        <Spinner />
+      ) : relatedCounts.length > 0 ? (
+        <WarningList counts={relatedCounts} />
+      ) : (
+        <p>No related records will be affected.</p>
+      )}
+    </Dialog>
+  );
+}
+```
+
+**When to use**: Delete confirmation dialogs that need to show cascade impact.
+
+### Relationship Configuration
+
+```tsx
+const RESOURCE_RELATIONSHIPS = {
+  organizations: [
+    { resource: "contacts", field: "organization_id", label: "Contacts" },
+    { resource: "opportunities", field: "customer_organization_id", label: "Opportunities (Customer)" },
+    { resource: "activities", field: "organization_id", label: "Activities" },
+  ],
+  contacts: [
+    { resource: "activities", field: "contact_id", label: "Activities" },
+    { resource: "tasks", field: "contact_id", label: "Tasks" },
+  ],
+};
+```
+
+---
+
+## Pattern H: Derived State Patterns
 
 Guidelines for `useMemo` and `useCallback` usage in hooks.
 
@@ -440,6 +578,9 @@ const defaults: SmartDefaults = {
 | `useRecentSelections` | localStorage | Zod | None | MRU dropdown sections |
 | `useSmartDefaults` | None | None | `useGetIdentity` | Form default values |
 | `useAppBarHeight` | None | None | None | Responsive layout calc |
+| `useRecentItems` | useStore (localStorage) | None | `useStore` | Cross-resource recent records |
+| `useRecentSearches` | localStorage | Zod | None | Global search recents |
+| `useRelatedRecordCounts` | None | None | `useDataProvider` | Cascade delete warnings |
 
 ### Decision Tree
 
@@ -447,7 +588,7 @@ const defaults: SmartDefaults = {
 Need to clean stale React Admin cache?
 └── Yes → useFilterCleanup
 
-Need to remember user's recent selections?
+Need to remember user's recent selections in a picker?
 └── Yes → useRecentSelections
 
 Need current user + date as form defaults?
@@ -455,6 +596,15 @@ Need current user + date as form defaults?
 
 Need navbar height for layout calculations?
 └── Yes → useAppBarHeight
+
+Need to track recently viewed records across resources?
+└── Yes → useRecentItems
+
+Need synchronized recent searches across components?
+└── Yes → useRecentSearches
+
+Need to show cascade impact before delete?
+└── Yes → useRelatedRecordCounts
 ```
 
 ---

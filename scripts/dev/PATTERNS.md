@@ -221,6 +221,17 @@ fi
 
 ### Transaction-Based Cleanup
 
+The script attempts truncation on all known tables, including deprecated ones that may no longer exist (`deals`, `dealNotes`, `segments`). If the primary truncation fails due to missing tables, it falls back to a dynamic PL/pgSQL approach that only truncates tables that exist.
+
+**Current tables in schema:**
+- `activities`, `contactNotes`, `contacts`, `opportunities`, `organizations`
+- `products`, `sales`, `tags`, `tasks`, `test_user_metadata`
+
+**Deprecated tables (may not exist):**
+- `deals` - replaced by `opportunities`
+- `dealNotes` - replaced by activity logging
+- `segments` - removed from schema
+
 ```bash
 # scripts/dev/reset-environment.sh
 
@@ -228,6 +239,7 @@ psql "$CLOUD_DB" << 'EOF' 2>/dev/null
 BEGIN;
 
 -- Truncate all public tables with CASCADE
+-- Note: Includes deprecated tables for backward compatibility
 TRUNCATE TABLE
   public.activities,
   public."contactNotes",
@@ -253,6 +265,8 @@ EOF
 
 ### Fallback PL/pgSQL
 
+When the primary TRUNCATE fails (typically because deprecated tables like `deals`, `dealNotes`, or `segments` no longer exist), the script automatically falls back to a dynamic PL/pgSQL approach. This queries `pg_tables` to find only tables that actually exist before truncating them.
+
 ```bash
 # scripts/dev/reset-environment.sh
 
@@ -264,6 +278,7 @@ DO $$
 DECLARE
   tbl_name text;
 BEGIN
+  -- Only truncate tables that exist in current schema
   FOR tbl_name IN
     SELECT tablename
     FROM pg_tables
@@ -310,10 +325,11 @@ fi
 ```
 
 **Key points:**
+- Script uses `set -e` at the top to exit on first failure
 - ALWAYS require explicit confirmation for destructive operations
 - Use TRUNCATE CASCADE in transactions for atomicity
 - Compose scripts for complex workflows
-- Include fallback for partial failures (dynamic PL/pgSQL)
+- Include fallback for partial failures (dynamic PL/pgSQL handles deprecated tables)
 - Use `SCRIPT_DIR` for reliable relative paths
 
 ---

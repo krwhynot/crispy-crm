@@ -30,6 +30,7 @@ import { Trash2 } from "lucide-react";
 // Having duplicate validation here caused 400 errors from empty string avatar_url
 import { invalidateIdentityCache } from "../providers/supabase/authProvider";
 import { salesPermissionsSchema } from "@/atomic-crm/validation/sales";
+import { UserDisableReassignDialog } from "./UserDisableReassignDialog";
 import type { Sale } from "@/atomic-crm/types";
 
 interface SalesPermissionsTabProps {
@@ -62,6 +63,8 @@ export function SalesPermissionsTab({
   const refresh = useRefresh();
   const { data: identity } = useGetIdentity();
   const [isDeleting, setIsDeleting] = useState(false);
+  // FIX [WF-C04]: Show reassign dialog before disabling user
+  const [showDisableDialog, setShowDisableDialog] = useState(false);
 
   // Form state
   // Per Engineering Constitution #5: Form defaults from schema
@@ -130,6 +133,30 @@ export function SalesPermissionsTab({
     }
   };
 
+  /**
+   * Handle disabled toggle change
+   * FIX [WF-C04]: When disabling, show reassign dialog instead of direct toggle
+   * Re-enabling doesn't require reassignment
+   */
+  const handleDisabledChange = (checked: boolean) => {
+    if (checked && !record.disabled) {
+      // User is trying to DISABLE → show reassignment dialog
+      setShowDisableDialog(true);
+    } else {
+      // User is RE-ENABLING → direct toggle is fine
+      handleChange("disabled", checked);
+    }
+  };
+
+  /**
+   * Handle successful disable from dialog
+   * Updates local form state to reflect the disabled status
+   */
+  const handleDisableSuccess = () => {
+    setFormData((prev) => ({ ...prev, disabled: true }));
+    if (onModeToggle) onModeToggle(); // Switch back to view mode
+  };
+
   // Save changes
   const handleSave = async () => {
     try {
@@ -158,7 +185,7 @@ export function SalesPermissionsTab({
           },
         }
       );
-    } catch (error) {
+    } catch (error: unknown) {
       const errorWithErrors = error as Error & { errors?: Record<string, string> };
       if (errorWithErrors.errors) {
         setErrors(errorWithErrors.errors);
@@ -233,7 +260,7 @@ export function SalesPermissionsTab({
           <>
             <Select
               value={formData.role}
-              onValueChange={(value) => handleChange("role", value)}
+              onValueChange={(value) => handleChange("role", value as "admin" | "manager" | "rep")}
               disabled={isLoading || isSelfEdit}
             >
               <SelectTrigger id="role" className={errors.role ? "border-destructive" : ""}>
@@ -303,7 +330,7 @@ export function SalesPermissionsTab({
               <Switch
                 id="disabled"
                 checked={formData.disabled}
-                onCheckedChange={(checked) => handleChange("disabled", checked)}
+                onCheckedChange={handleDisabledChange}
                 disabled={isLoading || isSelfEdit}
               />
               <div className="flex-1">
@@ -379,9 +406,18 @@ export function SalesPermissionsTab({
   // In edit mode, wrap with form so footer "Save Changes" button works
   if (mode === "edit") {
     return (
-      <form id="slide-over-edit-form" onSubmit={handleFormSubmit}>
-        {content}
-      </form>
+      <>
+        <form id="slide-over-edit-form" onSubmit={handleFormSubmit}>
+          {content}
+        </form>
+        {/* FIX [WF-C04]: Disable user reassignment dialog */}
+        <UserDisableReassignDialog
+          user={record}
+          open={showDisableDialog}
+          onClose={() => setShowDisableDialog(false)}
+          onSuccess={handleDisableSuccess}
+        />
+      </>
     );
   }
 

@@ -77,7 +77,7 @@ export function useResourceNamesBase<T extends ResourceWithId>(
         }, {});
 
         setNamesMap((prev) => ({ ...prev, ...newMap }));
-      } catch (error) {
+      } catch (error: unknown) {
         console.error(`Failed to fetch ${resourceName} names:`, error);
       } finally {
         setLoading(false);

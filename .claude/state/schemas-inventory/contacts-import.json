@@ -1,0 +1,237 @@
+{
+  "chunk_name": "contacts-import",
+  "generated_at": "2026-01-10T23:36:08.397Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "importContactSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-import.ts",
+      "line": 13,
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_name",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "min(1, { message: \"Organization name is required\" })"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email_work",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "email({ message: \"Invalid email address\" })"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email_home",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "email({ message: \"Invalid email address\" })"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email_other",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "email({ message: \"Invalid email address\" })"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "phone_work",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "String",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "phone_home",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "String",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "phone_other",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "String",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "linkedin_url",
+          "zodType": "literal",
+          "constraints": [
+            "max(2048, \"URL too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "title",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "max(5000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "tags",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "max(1000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_seen",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_seen",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "gender",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "avatar",
+          "zodType": "literal",
+          "constraints": [
+            "max(2048)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactBaseSchema",
+        "contactSchema",
+        "createContactSchema",
+        "contactDepartmentSchema",
+        "quickCreateContactSchema",
+        "contactOrganizationSchema",
+        "contactNoteSchema",
+        "contactListLayoutPropsSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": true
+    }
+  ]
+}

@@ -125,9 +125,12 @@ export function getStorageItem<T = unknown>(
 
       return parsed as T;
     }
-  } catch (e) {
-    console.error(`[Storage] Error reading key "${key}":`, e);
-    options.onError?.(e instanceof Error ? e : new Error(String(e)), key, "read");
+  } catch (error: unknown) {
+    console.error(
+      `[Storage] Error reading key "${key}":`,
+      error instanceof Error ? error.message : String(error)
+    );
+    options.onError?.(error instanceof Error ? error : new Error(String(error)), key, "read");
   }
 
   return null;
@@ -156,8 +159,11 @@ export function setStorageItem<T = any>(
     const storage = storageType === "session" ? sessionStorage : localStorage;
     storage.setItem(key, JSON.stringify(value));
     return true;
-  } catch (e) {
-    console.error(`[Storage] Error writing key "${key}":`, e);
+  } catch (error: unknown) {
+    console.error(
+      `[Storage] Error writing key "${key}":`,
+      error instanceof Error ? error.message : String(error)
+    );
 
     // Try fallback storage if preferred fails (quota exceeded, etc.)
     try {
@@ -165,9 +171,16 @@ export function setStorageItem<T = any>(
       fallbackStorage.setItem(key, JSON.stringify(value));
       console.warn(`[Storage] Used fallback storage for key "${key}"`);
       return true;
-    } catch (e2) {
-      console.error(`[Storage] Fallback storage also failed:`, e2);
-      options.onError?.(e2 instanceof Error ? e2 : new Error(String(e2)), key, "write");
+    } catch (fallbackError: unknown) {
+      console.error(
+        `[Storage] Fallback storage also failed:`,
+        fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
+      );
+      options.onError?.(
+        fallbackError instanceof Error ? fallbackError : new Error(String(fallbackError)),
+        key,
+        "write"
+      );
       return false;
     }
   }
@@ -188,9 +201,12 @@ export function removeStorageItem(key: string, options: StorageOptions = {}): vo
   try {
     sessionStorage.removeItem(key);
     localStorage.removeItem(key);
-  } catch (e) {
-    console.error(`[Storage] Error removing key "${key}":`, e);
-    options.onError?.(e instanceof Error ? e : new Error(String(e)), key, "remove");
+  } catch (error: unknown) {
+    console.error(
+      `[Storage] Error removing key "${key}":`,
+      error instanceof Error ? error.message : String(error)
+    );
+    options.onError?.(error instanceof Error ? error : new Error(String(error)), key, "remove");
   }
 }
 
@@ -221,8 +237,11 @@ export function clearStorageByPrefix(prefix: string): void {
   try {
     clearFromStorage(sessionStorage);
     clearFromStorage(localStorage);
-  } catch (e) {
-    console.error(`[Storage] Error clearing prefix "${prefix}":`, e);
+  } catch (error: unknown) {
+    console.error(
+      `[Storage] Error clearing prefix "${prefix}":`,
+      error instanceof Error ? error.message : String(error)
+    );
   }
 }
 
@@ -252,8 +271,11 @@ export function getKeysByPrefix(prefix: string): string[] {
   try {
     collectKeys(sessionStorage);
     collectKeys(localStorage);
-  } catch (e) {
-    console.error(`[Storage] Error getting keys for prefix "${prefix}":`, e);
+  } catch (error: unknown) {
+    console.error(
+      `[Storage] Error getting keys for prefix "${prefix}":`,
+      error instanceof Error ? error.message : String(error)
+    );
   }
 
   return Array.from(keys);

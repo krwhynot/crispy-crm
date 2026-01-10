@@ -210,14 +210,12 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
     key: "due_date@gte",
     label: "Due after",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "due_date_range",
   },
   {
     key: "due_date@lte",
     label: "Due before",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "due_date_range",
   },
   {
@@ -248,9 +246,13 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
 ]);
 ```
 
-### D.1: Date Label Formatting
+### D.1: Date Label Formatting (Planned Enhancement)
+
+> **Note:** This helper function is not yet implemented. When added, it would provide
+> human-readable labels for date filter chips (e.g., "Today", "This week").
 
 ```tsx
+// PLANNED: Add to taskFilterConfig.ts when implementing date chip formatting
 function formatDateLabel(value: unknown): string {
   if (!value || typeof value !== "string") return String(value);
 
@@ -268,7 +270,7 @@ function formatDateLabel(value: unknown): string {
 
 **Key concepts:**
 - `removalGroup`: Removes conflicting filters (both date range filters together)
-- `formatLabel()`: Custom formatting for chip display
+- `formatLabel()`: Custom formatting for chip display (optional per filter)
 - `getTaskTypeChoices()`: Dynamic choices from ConfigurationContext
 - Date filters use `@gte/@lte` operators for ranges
 

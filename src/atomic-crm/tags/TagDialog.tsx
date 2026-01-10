@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Loader2, SaveIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Tag } from "../types";
 import { colors } from "./colors";
@@ -59,12 +59,12 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
     handleSubmit,
     reset,
     setValue,
-    watch,
+    control,
     formState: { errors, isSubmitting, isDirty },
   } = form;
 
-  // Watch color for the color picker UI
-  const selectedColor = watch("color") as TagColorName;
+  // P5: useWatch for isolated re-renders (only re-renders when color changes, not on every keystroke)
+  const selectedColor = useWatch({ name: "color", control }) as TagColorName;
 
   // Reset form when dialog opens/closes or tag changes
   useEffect(() => {

@@ -2,21 +2,36 @@
  * Organizations Resource Lifecycle Callbacks
  *
  * Resource-specific logic for organizations using React Admin's withLifecycleCallbacks pattern.
- * Uses the createResourceCallbacks factory for standard soft-delete behavior.
+ * Uses the createResourceCallbacks factory with custom cascade delete.
  *
  * Key behaviors:
- * 1. Soft delete - Sets deleted_at instead of hard delete
+ * 1. CASCADE SOFT DELETE - FIX [WF-C02]: Uses RPC to archive org AND related records
  * 2. Filter cleaning - Adds soft delete filter by default
  * 3. Data transformation - Strips computed fields before save
  * 4. Logo handling - Preserved by storage service
  * 5. Search transformation - Transforms q filter into ILIKE search on name, city, state, sector
  *
+ * WHY CASCADE DELETE VIA RPC:
+ * --------------------------
+ * Standard soft delete only sets `deleted_at` on ONE record. Organizations have related data
+ * that must be archived atomically:
+ * - contacts → (and their activities, tasks, notes, participants, opportunity_contacts)
+ * - opportunities → (and their activities, tasks, notes, products, participants)
+ * - activities (directly linked to org)
+ * - tasks (directly linked to org)
+ * - organization_notes
+ *
+ * The `archive_organization_with_relations` RPC handles this in a single transaction,
+ * recursively calling `archive_contact_with_relations` and `archive_opportunity_with_relations`.
+ *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { RaRecord, GetListParams, DataProvider } from "ra-core";
+import type { RaRecord, GetListParams, DataProvider, DeleteParams } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 import { createQToIlikeTransformer } from "./commonTransforms";
+import { supabase } from "../supabase";
+import { collectOrganizationFilePaths, deleteStorageFiles } from "../utils/storageCleanup";
 
 /**
  * Computed fields that should be stripped before saving to database
@@ -63,42 +78,114 @@ export const transformQToIlikeSearch = createQToIlikeTransformer({
   useRawPostgrest: true,
 });
 
+// ============================================================================
+// CUSTOM CALLBACKS (Override factory defaults)
+// ============================================================================
+
 /**
- * Base callbacks from factory (soft delete, computed fields, transforms)
- * We extract this so we can override beforeGetList with search support
+ * Custom beforeDelete: Use archive RPC for cascading soft delete
+ *
+ * FIX [WF-C02]: Standard soft delete only sets `deleted_at` on ONE record.
+ * Organizations have related data that must be archived atomically:
+ * - contacts (recursively via archive_contact_with_relations)
+ * - opportunities (recursively via archive_opportunity_with_relations)
+ * - activities, tasks, organization_notes
+ *
+ * FIX [SF-C10]: Clean up storage files after archive.
+ * Files in logo_url, organization_notes, and all child records are deleted.
+ *
+ * The `archive_organization_with_relations` RPC handles this in a single transaction.
+ */
+async function organizationsBeforeDelete(
+  params: DeleteParams,
+  _dataProvider: DataProvider
+): Promise<DeleteParams & { meta?: { skipDelete?: boolean } }> {
+  // Validate ID before RPC call (fail-fast)
+  const numericId = Number(params.id);
+  if (!Number.isInteger(numericId) || numericId <= 0) {
+    throw new Error(`Invalid organization ID: ${params.id}`);
+  }
+
+  // FIX [SF-C10]: Collect file paths BEFORE archiving (records will be soft-deleted)
+  // This includes: logo_url, organization_notes, contacts' files, opportunity_notes
+  const filePaths = await collectOrganizationFilePaths(numericId);
+
+  // Use Supabase client directly - bypasses DataProvider abstraction
+  // This is the React Admin recommended pattern for lifecycle callbacks
+  const { error: rpcError } = await supabase.rpc("archive_organization_with_relations", {
+    org_id: numericId,
+  });
+
+  if (rpcError) {
+    throw new Error(`Archive organization failed: ${rpcError.message}`);
+  }
+
+  // FIX [ERR-001]: Storage cleanup is intentionally fire-and-forget
+  // Rationale: Archive operation already succeeded; storage cleanup failure
+  // should not block user or cause rollback. Orphaned files are acceptable
+  // technical debt that can be cleaned up via scheduled job.
+  //
+  // INTENTIONAL: Not awaited - cleanup runs in background
+  if (filePaths.length > 0) {
+    void deleteStorageFiles(filePaths).catch((err: unknown) => {
+      // Log for monitoring but don't propagate - archive already succeeded
+      console.warn(
+        `[organizationsBeforeDelete] Storage cleanup failed for ${filePaths.length} files:`,
+        err instanceof Error ? err.message : String(err)
+      );
+    });
+  }
+
+  // Return params with meta flag to skip actual delete (RPC already archived)
+  return {
+    ...params,
+    meta: { ...params.meta, skipDelete: true },
+  };
+}
+
+/**
+ * Base callbacks from factory (computed fields, transforms)
+ * We DON'T use soft delete from factory because we need custom RPC cascade delete
  */
 const baseCallbacks = createResourceCallbacks({
   resource: "organizations",
-  supportsSoftDelete: true,
+  supportsSoftDelete: false, // FIX [WF-C02]: We handle soft delete via custom RPC
   computedFields: COMPUTED_FIELDS,
 });
 
 /**
  * Custom beforeGetList that chains:
  * 1. q filter → ILIKE search transformation
- * 2. Soft delete filter (from base callbacks)
+ * 2. Soft delete filter (manual since we disabled factory soft delete)
  *
- * This matches the unified data provider's search behavior while preserving
- * the factory's soft-delete filtering.
+ * This matches the unified data provider's search behavior while applying
+ * soft-delete filtering.
  */
 async function organizationsBeforeGetList(
   params: GetListParams,
-  dataProvider: DataProvider
+  _dataProvider: DataProvider
 ): Promise<GetListParams> {
   // Step 1: Transform q filter to ILIKE search (removes q from filter)
   const searchTransformedParams = transformQToIlikeSearch(params);
 
-  // Step 2: Apply soft delete filter from base callbacks
-  // The base callback will add deleted_at@is: null unless includeDeleted is true
-  if (baseCallbacks.beforeGetList) {
-    return baseCallbacks.beforeGetList(searchTransformedParams, dataProvider);
-  }
+  // Step 2: Apply soft delete filter manually (since factory soft delete is disabled)
+  const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
+  const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
 
-  return searchTransformedParams;
+  return {
+    ...searchTransformedParams,
+    filter: {
+      ...otherFilters,
+      ...softDeleteFilter,
+    },
+  };
 }
 
 /**
  * Organizations lifecycle callbacks for React Admin withLifecycleCallbacks
+ *
+ * FIX [WF-C02]: Uses custom beforeDelete that calls archive_organization_with_relations RPC
+ * for atomic cascade soft delete of organization and all related records.
  *
  * Usage:
  * ```typescript
@@ -112,6 +199,7 @@ async function organizationsBeforeGetList(
  */
 export const organizationsCallbacks: ResourceCallbacks = {
   ...baseCallbacks,
+  beforeDelete: organizationsBeforeDelete, // FIX [WF-C02]: Cascade via RPC
   beforeGetList: organizationsBeforeGetList,
 };
 

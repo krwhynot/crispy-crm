@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-08T12:14:56.914Z",
-  "item_count": 2,
+  "generated_at": "2026-01-10T23:36:07.977Z",
+  "item_count": 7,
   "items": [
     {
       "name": "useDuplicateOrgCheck",
@@ -28,6 +28,70 @@
         "useDataProvider",
         "useGetIdentity",
         "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationImportExecution",
+      "file": "src/atomic-crm/organizations/useOrganizationImportExecution.ts",
+      "line": 38,
+      "parameters": [
+        "callbacks"
+      ],
+      "returnType": "ExecutionState",
+      "dependencies": [
+        "useCallback",
+        "useNotify",
+        "useOrganizationImport",
+        "useRef",
+        "useRefresh"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationImportMapper",
+      "file": "src/atomic-crm/organizations/useOrganizationImportMapper.ts",
+      "line": 31,
+      "parameters": [],
+      "returnType": "MapperState",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationImportParser",
+      "file": "src/atomic-crm/organizations/useOrganizationImportParser.ts",
+      "line": 21,
+      "parameters": [],
+      "returnType": "ParserState",
+      "dependencies": [
+        "useCallback",
+        "useNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationImportPreview",
+      "file": "src/atomic-crm/organizations/useOrganizationImportPreview.ts",
+      "line": 19,
+      "parameters": [],
+      "returnType": "PreviewState",
+      "dependencies": [
+        "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationImportUpload",
+      "file": "src/atomic-crm/organizations/useOrganizationImportUpload.ts",
+      "line": 13,
+      "parameters": [],
+      "returnType": "UploadState",
+      "dependencies": [
+        "useCallback"
       ],
       "isReact19Action": false
     }

@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-08T12:14:57.558Z",
+  "generated_at": "2026-01-10T23:36:08.649Z",
   "item_count": 13,
   "items": [
     {
@@ -65,7 +65,7 @@
     {
       "name": "FilterConfig",
       "file": "src/atomic-crm/filters/types.ts",
-      "line": 49,
+      "line": 51,
       "kind": "interface",
       "properties": [
         {
@@ -82,13 +82,13 @@
         },
         {
           "name": "type",
-          "type": "\"search\" | \"select\" | \"toggle\" | \"multiselect\" | \"reference\"",
+          "type": "\"boolean\" | \"search\" | \"select\" | \"toggle\" | \"multiselect\" | \"reference\" | \"date-range\"",
           "optional": false,
           "readonly": false
         },
         {
           "name": "choices",
-          "type": "FilterChoice[]",
+          "type": "FilterChoice[] | ((context: unknown) => FilterChoice[])",
           "optional": true,
           "readonly": false
         },
@@ -109,6 +109,18 @@
           "type": "string",
           "optional": true,
           "readonly": false
+        },
+        {
+          "name": "formatLabel",
+          "type": "(value: unknown) => string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "removalGroup",
+          "type": "string",
+          "optional": true,
+          "readonly": false
         }
       ],
       "isComplex": true,
@@ -117,7 +129,7 @@
     {
       "name": "FilterPreferences",
       "file": "src/atomic-crm/filters/types.ts",
-      "line": 71,
+      "line": 77,
       "kind": "interface",
       "properties": [
         {
@@ -145,7 +157,7 @@
     {
       "name": "Organization",
       "file": "src/atomic-crm/filters/types.ts",
-      "line": 80,
+      "line": 86,
       "kind": "interface",
       "properties": [
         {
@@ -194,7 +206,7 @@
     {
       "name": "FilterFormatter",
       "file": "src/atomic-crm/filters/types.ts",
-      "line": 88,
+      "line": 94,
       "kind": "type_alias",
       "typeExpression": "(value: SingleFilterValue) => string",
       "isComplex": false,
@@ -203,7 +215,7 @@
     {
       "name": "FilterValidator",
       "file": "src/atomic-crm/filters/types.ts",
-      "line": 93,
+      "line": 99,
       "kind": "type_alias",
       "typeExpression": "(value: FilterValue) => boolean",
       "isComplex": false,
@@ -212,7 +224,7 @@
     {
       "name": "FilterTransform",
       "file": "src/atomic-crm/filters/types.ts",
-      "line": 98,
+      "line": 104,
       "kind": "type_alias",
       "typeExpression": "(value: FilterValue) => unknown",
       "isComplex": false,
@@ -221,7 +233,7 @@
     {
       "name": "FilterKey",
       "file": "src/atomic-crm/filters/types.ts",
-      "line": 137,
+      "line": 143,
       "kind": "type_alias",
       "typeExpression": "(typeof FILTER_KEYS)[keyof typeof FILTER_KEYS]",
       "isComplex": false,

@@ -1,0 +1,17 @@
+{
+  "chunk_name": "opportunities-core",
+  "generated_at": "2026-01-10T23:36:09.110Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "validateOpportunityForm",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "line": 208,
+      "type": "formatter",
+      "schemaReference": "opportunitySchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    }
+  ]
+}

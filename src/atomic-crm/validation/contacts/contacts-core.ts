@@ -1,25 +1,13 @@
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
+import { emailAndTypeSchema, phoneNumberAndTypeSchema, EmailEntry } from "./contacts-communication";
+import { contactDepartmentSchema } from "./contacts-department";
+import { quickCreateContactSchema } from "./contacts-quick-create";
 
 /**
- * Contact validation schemas and functions
+ * Core contact validation schemas and functions
  * Implements validation rules from ContactInputs.tsx
  */
-
-// Email and phone type enum - lowercase to match database JSONB format
-export const personalInfoTypeSchema = z.enum(["work", "home", "other"]);
-
-// Contact department enum - for distributor staff classification
-export const contactDepartmentSchema = z.enum([
-  "senior_management",
-  "sales_management",
-  "district_management",
-  "area_sales",
-  "sales_specialist",
-  "sales_support",
-  "procurement",
-]);
-export type ContactDepartment = z.infer<typeof contactDepartmentSchema>;
 
 // LinkedIn URL validation
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin\.com\//;
@@ -40,45 +28,6 @@ const isLinkedinUrl = z
   )
   .optional()
   .nullable();
-
-// Email and phone sub-schemas for JSONB arrays
-// Field is "value" (not "email") to match database JSONB format
-export const emailAndTypeSchema = z.strictObject({
-  value: z.string().email("Invalid email address").max(254, "Email too long"),
-  type: personalInfoTypeSchema.default("work"),
-});
-
-// Field is "value" (not "number") to match database JSONB format
-export const phoneNumberAndTypeSchema = z.strictObject({
-  value: z.string().trim().max(30, "Phone number too long"),
-  type: personalInfoTypeSchema.default("work"),
-});
-
-// Note: Legacy schemas removed per Engineering Constitution #1 (NO BACKWARD COMPATIBILITY)
-// phoneNumberSchema, emailSchema, contactStatusSchema - use emailAndTypeSchema and phoneNumberAndTypeSchema instead
-
-// Contact-Organization relationship schema
-export const contactOrganizationSchema = z
-  .strictObject({
-    id: z.coerce.number().optional(),
-    contact_id: z.coerce.number().optional(),
-    organization_id: z.coerce.number().optional(),
-    is_primary: z.coerce.boolean().default(false),
-    created_at: z.string().max(50).optional(),
-    updated_at: z.string().max(50).optional(),
-    deleted_at: z.string().max(50).optional().nullable(),
-  })
-  .superRefine((data, ctx) => {
-    // Check for removed legacy fields and provide helpful error messages
-    if ("is_primary_contact" in data) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead.",
-        path: ["is_primary_contact"],
-      });
-    }
-  });
 
 // Base contact schema - validates only fields that have UI inputs in ContactInputs.tsx
 // Per "UI as source of truth" principle: we only validate what users can actually input
@@ -169,12 +118,6 @@ export const contactBaseSchema = z.strictObject({
   nb_activities: z.number().optional(),
 });
 
-// Email entry type for iteration - matches database JSONB format
-interface EmailEntry {
-  value: string;
-  type?: "work" | "home" | "other";
-}
-
 // Helper function to transform data
 function transformContactData(data: Record<string, unknown>) {
   // Compute name from first + last if not provided
@@ -236,172 +179,9 @@ export const contactSchema = contactBaseSchema
     }
   });
 
-// Schema specifically for CSV imports - validates raw string fields from CSV
-// More permissive than the main schema to handle real-world CSV data
-export const importContactSchema = z
-  .object({
-    first_name: z.string().trim().max(100).optional().nullable(),
-    last_name: z.string().trim().max(100).optional().nullable(),
-    organization_name: z
-      .string({ error: "Organization name is required" })
-      .trim()
-      .min(1, { message: "Organization name is required" }),
-    // Email fields - validate format but allow empty/null for lenient imports
-    email_work: z
-      .union([
-        z.literal(""),
-        z.literal(null),
-        z.undefined(),
-        z.string().trim().email({ message: "Invalid email address" }),
-      ])
-      .optional()
-      .nullable(),
-    email_home: z
-      .union([
-        z.literal(""),
-        z.literal(null),
-        z.undefined(),
-        z.string().trim().email({ message: "Invalid email address" }),
-      ])
-      .optional()
-      .nullable(),
-    email_other: z
-      .union([
-        z.literal(""),
-        z.literal(null),
-        z.undefined(),
-        z.string().trim().email({ message: "Invalid email address" }),
-      ])
-      .optional()
-      .nullable(),
-    // Phone fields - allow empty, null, string, or number (PapaParse converts numeric strings to numbers)
-    phone_work: z
-      .union([
-        z.literal(""),
-        z.literal(null),
-        z.undefined(),
-        z.string().max(50),
-        z.number().transform(String), // Convert numbers to strings
-      ])
-      .optional()
-      .nullable(),
-    phone_home: z
-      .union([
-        z.literal(""),
-        z.literal(null),
-        z.undefined(),
-        z.string().max(50),
-        z.number().transform(String), // Convert numbers to strings
-      ])
-      .optional()
-      .nullable(),
-    phone_other: z
-      .union([
-        z.literal(""),
-        z.literal(null),
-        z.undefined(),
-        z.string().max(50),
-        z.number().transform(String), // Convert numbers to strings
-      ])
-      .optional()
-      .nullable(),
-    // LinkedIn URL - allow empty, null, or valid LinkedIn URL
-    linkedin_url: z
-      .union([
-        z.literal(""),
-        z.literal(null),
-        z.undefined(),
-        z
-          .string()
-          .max(2048, "URL too long")
-          .refine(
-            (url) => {
-              try {
-                const parsedUrl = new URL(url);
-                return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
-              } catch {
-                return false;
-              }
-            },
-            { message: "LinkedIn URL must be a valid URL from linkedin.com" }
-          ),
-      ])
-      .optional()
-      .nullable(),
-    // Other optional fields - allow empty, null, or any string (with .max() for DoS prevention)
-    title: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(100)])
-      .optional()
-      .nullable(),
-    notes: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(5000)])
-      .optional()
-      .nullable(),
-    tags: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(1000)])
-      .optional()
-      .nullable(),
-    first_seen: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(50)])
-      .optional()
-      .nullable(),
-    last_seen: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(50)])
-      .optional()
-      .nullable(),
-    gender: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().trim().max(50)])
-      .optional()
-      .nullable(),
-    // Avatar field - allow URL strings for importing avatar images
-    avatar: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(2048)])
-      .optional()
-      .nullable(),
-  })
-  .superRefine((data, ctx) => {
-    // Require at least first name or last name
-    if (!data.first_name?.trim() && !data.last_name?.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["first_name"],
-        message: "Either first name or last name must be provided",
-      });
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["last_name"],
-        message: "Either first name or last name must be provided",
-      });
-    }
-  });
-
 // Type inference
 export type ContactInput = z.input<typeof contactSchema>;
 export type Contact = z.infer<typeof contactSchema>;
-export type ContactOrganization = z.infer<typeof contactOrganizationSchema>;
-export type ImportContactInput = z.input<typeof importContactSchema>;
-
-// Quick create schema - reduced requirements but maintains security
-export const quickCreateContactSchema = z.strictObject({
-  // REQUIRED: Security-critical fields
-  first_name: z.string().trim().min(1, "First name required").max(100),
-  organization_id: z.coerce.number().int().positive(),
-
-  // OPTIONAL: Can be empty for quick create
-  last_name: z.string().trim().max(100).optional().default(""),
-  email: z.array(emailAndTypeSchema).optional().default([]),
-  phone: z.array(phoneNumberAndTypeSchema).optional().default([]),
-
-  // PASS-THROUGH: Other valid fields
-  sales_id: z.coerce.number().int().positive().optional(),
-  first_seen: z.string().max(50).optional(),
-  last_seen: z.string().max(50).optional(),
-  quickCreate: z.literal(true), // Must be explicitly true
-
-  // COMPUTED: Added by contactsCallbacks.computeNameField() before validation
-  // Required by database NOT NULL constraint, but computed from first_name + last_name
-  name: z.string().max(201).optional(), // 100 + space + 100 = max combined length
-});
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where contact validation occurs
@@ -413,7 +193,7 @@ export async function validateContactForm(data: unknown): Promise<void> {
     try {
       quickCreateContactSchema.parse(rawData);
       return; // Valid quick create
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof z.ZodError) {
         const formattedErrors: Record<string, string> = {};
         error.issues.forEach((err) => {
@@ -495,7 +275,7 @@ export async function validateContactForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     formSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
@@ -703,7 +483,7 @@ export async function validateCreateContact(data: unknown): Promise<void> {
 
   try {
     createSchemaWithEmail.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
@@ -722,27 +502,7 @@ export async function validateCreateContact(data: unknown): Promise<void> {
 export async function validateUpdateContact(data: unknown): Promise<void> {
   try {
     updateContactSchema.parse(data);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const formattedErrors: Record<string, string> = {};
-      error.issues.forEach((err) => {
-        const path = err.path.join(".");
-        formattedErrors[path] = err.message;
-      });
-      throw {
-        message: "Validation failed",
-        body: { errors: formattedErrors },
-      };
-    }
-    throw error;
-  }
-}
-
-// Validation for contact-organization relationships
-export async function validateContactOrganization(data: unknown): Promise<void> {
-  try {
-    contactOrganizationSchema.parse(data);
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {

@@ -83,6 +83,8 @@ describe("createOpportunitiesHandler", () => {
         customer_organization_id: "1", // Required by createOpportunitySchema
         principal_organization_id: "2",
         estimated_close_date: "2026-02-01",
+        stage: "new_lead", // Required - no default after WG-003 fix
+        priority: "medium", // Required - no default after WG-002 fix
         products_to_sync: products,
       };
       const createdOpportunity = { id: 123, ...opportunityData };
@@ -106,6 +108,8 @@ describe("createOpportunitiesHandler", () => {
         customer_organization_id: "1", // Required by createOpportunitySchema
         principal_organization_id: "2",
         estimated_close_date: "2026-02-01",
+        stage: "new_lead", // Required - no default after WG-003 fix
+        priority: "medium", // Required - no default after WG-002 fix
       };
 
       // Note: mockBaseProvider.create is called through the composed handler chain
@@ -123,6 +127,8 @@ describe("createOpportunitiesHandler", () => {
         customer_organization_id: "1", // Required by createOpportunitySchema
         principal_organization_id: "2",
         estimated_close_date: "2026-02-01",
+        stage: "new_lead", // Required - no default after WG-003 fix
+        priority: "medium", // Required - no default after WG-002 fix
         products_to_sync: [],
       };
       const createdOpportunity = { id: 124, ...opportunityData };
@@ -170,7 +176,14 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123, products: previousProducts } as RaRecord,
       });
 
-      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, previousProducts);
+      // FIX [SF-C12]: Now passes 4th argument (previousVersion) for optimistic locking
+      // previousData has no version field, so previousVersion is undefined
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(
+        123,
+        updateData,
+        previousProducts,
+        undefined
+      );
       expect(result).toEqual({ data: updatedOpportunity });
     });
 
@@ -208,7 +221,8 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123 } as RaRecord,
       });
 
-      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, []);
+      // FIX [SF-C12]: Now passes 4th argument (previousVersion) for optimistic locking
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, [], undefined);
     });
 
     it("should pass empty array when previousData.products is missing", async () => {
@@ -230,13 +244,15 @@ describe("createOpportunitiesHandler", () => {
 
       // Note: Lifecycle callbacks may add defaults (contact_ids: [])
       // Use objectContaining to verify the key fields we care about
+      // FIX [SF-C12]: Now passes 4th argument (previousVersion) for optimistic locking
       expect(mockUpdateWithProducts).toHaveBeenCalledWith(
         123,
         expect.objectContaining({
           id: 123,
           products_to_sync: products,
         }),
-        []
+        [],
+        undefined
       );
     });
   });

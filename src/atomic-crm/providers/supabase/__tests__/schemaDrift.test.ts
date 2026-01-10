@@ -336,7 +336,7 @@ describe("Schema Drift Prevention: Security Hardening", () => {
       try {
         getFilterableFields("unknown_resource");
         expect.fail("Should have thrown");
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toBeInstanceOf(UnregisteredResourceError);
         expect((error as Error).message).toContain("[SECURITY]");
         expect((error as Error).message).toContain("unknown_resource");

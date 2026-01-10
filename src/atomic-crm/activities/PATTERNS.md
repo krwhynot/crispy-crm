@@ -52,9 +52,9 @@ export interface ActivityEntityContext {
 
 // Configuration system
 export interface QuickLogActivityDialogConfig {
-  /** Pre-select activity type (e.g., from MobileQuickActionBar) */
+  /** Pre-select interaction type (e.g., from MobileQuickActionBar) */
   activityType?: ActivityTypePreset;
-  /** Lock activity type selection (prevent user from changing) */
+  /** Lock interaction type selection (prevent user from changing) */
   lockActivityType?: boolean;
   /** Enable draft persistence to localStorage (24-hour expiry) */
   enableDraftPersistence?: boolean;

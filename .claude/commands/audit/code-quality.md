@@ -255,6 +255,14 @@ Save to: `docs/audits/YYYY-MM-DD-code-quality.md`
 | Low | X | Y | +Z/-W |
 | **Total** | X | Y | +Z/-W |
 
+### What This Means for Users
+
+| Severity | User Impact |
+|----------|-------------|
+| **High** | Users may encounter frustrating bugs, slow performance, or inconsistent behavior. Features may not work as expected, leading to confusion or wasted time. |
+| **Medium** | Users won't notice these immediately, but they make the app harder to improve. Future features will take longer to build and may introduce new bugs. |
+| **Low** | Minor polish issues that don't affect functionality. Users likely won't notice, but fixing them improves overall quality. |
+
 **Status:** [PASS if 0 High, WARN if High exists]
 
 ---
