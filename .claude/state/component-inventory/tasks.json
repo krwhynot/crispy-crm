@@ -1,7 +1,7 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-08T12:14:50.377Z",
-  "item_count": 28,
+  "generated_at": "2026-01-10T23:35:59.790Z",
+  "item_count": 27,
   "items": [
     {
       "name": "AddTask",
@@ -84,35 +84,9 @@
       "componentRole": "wrapper"
     },
     {
-      "name": "TaskCreate",
-      "file": "src/atomic-crm/tasks/TaskCreate.tsx",
-      "line": 33,
-      "type": "presentational",
-      "hooks": [
-        "useGetIdentity",
-        "useSearchParams"
-      ],
-      "imports": [
-        "../validation/task",
-        "./TaskInputs",
-        "@/atomic-crm/components",
-        "@/atomic-crm/utils/getContextAwareRedirect",
-        "@/components/admin/form",
-        "@hookform/resolvers/zod",
-        "ra-core",
-        "react-router-dom"
-      ],
-      "isDefaultExport": true,
-      "childComponents": [
-        "TaskInputs"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "TaskDetailsTab",
-      "file": "src/atomic-crm/tasks/TaskDetailsTab.tsx",
-      "line": 13,
+      "name": "TaskCompactForm",
+      "file": "src/atomic-crm/tasks/TaskCompactForm.tsx",
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useFormOptions"
@@ -124,12 +98,39 @@
         "@/components/admin/autocomplete-input",
         "@/components/admin/form",
         "@/components/admin/reference-input",
-        "@/components/admin/select-input"
+        "@/components/admin/select-input",
+        "@/components/admin/text-input"
       ],
       "isDefaultExport": false,
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
+    },
+    {
+      "name": "TaskCreate",
+      "file": "src/atomic-crm/tasks/TaskCreate.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useSearchParams"
+      ],
+      "imports": [
+        "../validation/task",
+        "./TaskCompactForm",
+        "@/atomic-crm/components",
+        "@/atomic-crm/utils/getContextAwareRedirect",
+        "@/components/admin/form",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "TaskCompactForm"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TaskEdit",
@@ -143,7 +144,7 @@
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
-        "./TaskInputs",
+        "./TaskCompactForm",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
         "@tanstack/react-query",
@@ -152,7 +153,7 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "TaskInputs",
+        "TaskCompactForm",
         "FormToolbar",
         "Task"
       ],
@@ -171,7 +172,7 @@
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
-        "./TaskInputs",
+        "./TaskCompactForm",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
         "@tanstack/react-query",
@@ -180,7 +181,7 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "TaskInputs",
+        "TaskCompactForm",
         "FormToolbar",
         "Task"
       ],
@@ -205,14 +206,17 @@
       "componentRole": "leaf"
     },
     {
-      "name": "TaskGeneralTab",
-      "file": "src/atomic-crm/tasks/TaskGeneralTab.tsx",
-      "line": 4,
+      "name": "TaskHierarchyBreadcrumb",
+      "file": "src/atomic-crm/tasks/TaskHierarchyBreadcrumb.tsx",
+      "line": 32,
       "type": "presentational",
-      "hooks": [],
+      "hooks": [
+        "useGetOne"
+      ],
       "imports": [
-        "@/components/admin/form",
-        "@/components/admin/text-input"
+        "lucide-react",
+        "react-admin",
+        "react-router-dom"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -220,28 +224,9 @@
       "componentRole": "leaf"
     },
     {
-      "name": "TaskInputs",
-      "file": "src/atomic-crm/tasks/TaskInputs.tsx",
-      "line": 5,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "./TaskDetailsTab",
-        "./TaskGeneralTab",
-        "@/components/admin/tabbed-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "TaskGeneralTab",
-        "TaskDetailsTab"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 75,
+      "line": 72,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -384,9 +369,9 @@
       "hooks": [],
       "imports": [
         "../types",
+        "./TaskHierarchyBreadcrumb",
         "./TaskRelatedItemsTab",
         "./TaskSlideOverDetailsTab",
-        "@/atomic-crm/components",
         "@/components/layouts/ResourceSlideOver",
         "lucide-react"
       ],
@@ -394,6 +379,7 @@
       "childComponents": [
         "TaskSlideOverDetailsTab",
         "TaskRelatedItemsTab",
+        "TaskHierarchyBreadcrumb",
         "Task"
       ],
       "contextDependencies": [],

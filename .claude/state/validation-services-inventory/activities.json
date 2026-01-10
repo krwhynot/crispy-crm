@@ -1,12 +1,12 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-08T12:14:58.114Z",
+  "generated_at": "2026-01-10T23:36:09.103Z",
   "item_count": 9,
   "items": [
     {
       "name": "validateActivitiesForm",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 320,
+      "line": 407,
       "type": "formatter",
       "schemaReference": "activitiesSchema",
       "errorFormatting": true,
@@ -23,19 +23,19 @@
     {
       "name": "validateCreateActivities",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 346,
+      "line": 433,
       "pattern": "date"
     },
     {
       "name": "validateUpdateActivities",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 351,
+      "line": 438,
       "pattern": "date"
     },
     {
       "name": "validateEngagementsForm",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 356,
+      "line": 443,
       "type": "formatter",
       "schemaReference": "engagementsSchema",
       "errorFormatting": true,
@@ -52,19 +52,19 @@
     {
       "name": "validateCreateEngagements",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 382,
+      "line": 469,
       "pattern": "date"
     },
     {
       "name": "validateUpdateEngagements",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 387,
+      "line": 474,
       "pattern": "date"
     },
     {
       "name": "validateInteractionsForm",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 392,
+      "line": 479,
       "type": "formatter",
       "schemaReference": "interactionsSchema",
       "errorFormatting": true,
@@ -81,13 +81,13 @@
     {
       "name": "validateCreateInteractions",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 418,
+      "line": 505,
       "pattern": "date"
     },
     {
       "name": "validateUpdateInteractions",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 423,
+      "line": 510,
       "pattern": "date"
     }
   ]

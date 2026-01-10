@@ -30,12 +30,74 @@ unifiedDataProvider (API boundary)
 
 ---
 
+## File Structure (Modularized)
+
+Complex entities are split into subdirectories per the 500-line rule. Simple entities remain as single files.
+
+```
+src/atomic-crm/validation/
+├── index.ts                      # Main barrel export
+├── constants.ts                  # VALIDATION_LIMITS
+├── rpc.ts                        # RPC_SCHEMAS registry
+├── quickAdd.ts                   # Quick-add form schemas
+│
+├── opportunities/                # Modularized (was 739 lines)
+│   ├── index.ts                  # Barrel re-export
+│   ├── opportunities-core.ts     # Base schema, enums, types
+│   ├── opportunities-operations.ts # Create, update, close schemas
+│   └── opportunities-duplicates.ts # Duplicate detection schemas
+│
+├── contacts/                     # Modularized (500-line rule)
+│   ├── index.ts                  # Barrel re-export
+│   ├── contacts-core.ts          # Base schema, transforms, validation
+│   ├── contacts-communication.ts # Email, phone sub-schemas
+│   ├── contacts-department.ts    # Department/role schemas
+│   ├── contacts-import.ts        # Import/CSV schemas
+│   ├── contacts-quick-create.ts  # Quick-create form
+│   └── contacts-relations.ts     # Junction table schemas
+│
+├── organizations.ts              # Single file (under 500 lines)
+├── products.ts
+├── activities.ts
+├── sales.ts
+├── notes.ts
+├── tags.ts
+├── task.ts
+├── segments.ts
+├── operatorSegments.ts
+├── distributorAuthorizations.ts
+├── productDistributors.ts
+├── organizationDistributors.ts
+├── favorites.ts
+├── categories.ts
+└── productWithDistributors.ts
+```
+
+**Import Pattern:** Import from the main index or feature subdirectory:
+
+```tsx
+// Recommended: Import from main barrel
+import { opportunitySchema, contactSchema } from "@/atomic-crm/validation";
+
+// Alternative: Direct subdirectory import
+import { opportunitySchema } from "@/atomic-crm/validation/opportunities";
+import { contactSchema } from "@/atomic-crm/validation/contacts";
+```
+
+**Modularization Rule:** When a validation file exceeds 500 lines, split by concern:
+1. Create a subdirectory named after the entity
+2. Split into `-core.ts`, `-operations.ts`, and domain-specific files
+3. Create `index.ts` barrel that re-exports all submodules
+4. Update main `validation/index.ts` to export from subdirectory
+
+---
+
 ## Pattern A: Base Schema with strictObject
 
 For primary entity schemas with mass assignment prevention.
 
 ```tsx
-// src/atomic-crm/validation/opportunities.ts
+// src/atomic-crm/validation/opportunities/opportunities-core.ts
 const opportunityBaseSchema = z.strictObject({
   // System fields (optional for forms)
   id: z.union([z.string(), z.number()]).optional(),
@@ -110,7 +172,7 @@ export const updateOrganizationSchema = organizationSchema.partial().required({
 ```
 
 ```tsx
-// src/atomic-crm/validation/contacts.ts
+// src/atomic-crm/validation/contacts/contacts-core.ts
 
 // Create: Omit + transform + superRefine for business rules
 export const createContactSchema = contactBaseSchema
@@ -214,7 +276,7 @@ export const opportunitySchema = z.strictObject({ ... });
 For constrained value sets with matching UI dropdown arrays.
 
 ```tsx
-// src/atomic-crm/validation/opportunities.ts
+// src/atomic-crm/validation/opportunities/opportunities-core.ts
 
 // Enum schema - single source of truth
 export const opportunityStageSchema = z.enum([
@@ -289,7 +351,7 @@ export const LOSS_REASONS: Array<{ id: LossReason; name: string }> = [
 For cross-field validation rules and conditional requirements.
 
 ```tsx
-// src/atomic-crm/validation/opportunities.ts
+// src/atomic-crm/validation/opportunities/opportunities-operations.ts
 
 export const updateOpportunitySchema = opportunityBaseSchema
   .partial()
@@ -345,7 +407,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
 ```
 
 ```tsx
-// src/atomic-crm/validation/contacts.ts
+// src/atomic-crm/validation/contacts/contacts-core.ts
 
 // Using superRefine for multiple issues
 export const contactSchema = contactBaseSchema
@@ -435,7 +497,7 @@ export type QuickAddInput = z.infer<typeof quickAddSchema>;
 ```
 
 ```tsx
-// src/atomic-crm/validation/opportunities.ts
+// src/atomic-crm/validation/opportunities/opportunities-operations.ts
 
 // Kanban quick-add schema
 export const quickCreateOpportunitySchema = z.strictObject({
@@ -479,7 +541,7 @@ export type QuickCreateOpportunityInput = z.infer<typeof quickCreateOpportunityS
 For data normalization and computed field generation.
 
 ```tsx
-// src/atomic-crm/validation/contacts.ts
+// src/atomic-crm/validation/contacts/contacts-core.ts
 
 // Transform helper function
 function transformContactData(data: Record<string, unknown>) {
@@ -633,7 +695,7 @@ export type RPCFunctionName = keyof typeof RPC_SCHEMAS;
 For JSONB array fields and nested object structures.
 
 ```tsx
-// src/atomic-crm/validation/contacts.ts
+// src/atomic-crm/validation/contacts/contacts-communication.ts
 
 // Sub-schemas for JSONB arrays
 export const personalInfoTypeSchema = z.enum(["work", "home", "other"]);
@@ -650,7 +712,7 @@ export const phoneNumberAndTypeSchema = z.strictObject({
   type: personalInfoTypeSchema.default("work"),
 });
 
-// Use in base schema
+// Use in base schema (contacts/contacts-core.ts)
 export const contactBaseSchema = z.strictObject({
   // ... other fields
 
@@ -666,7 +728,7 @@ export const contactBaseSchema = z.strictObject({
 ```
 
 ```tsx
-// src/atomic-crm/validation/opportunities.ts
+// src/atomic-crm/validation/opportunities/opportunities-operations.ts
 
 // Nested object schema for junction table operations
 const opportunityProductItemSchema = z.strictObject({

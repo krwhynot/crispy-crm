@@ -1,44 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useListContext, useCreatePath, useResourceContext } from "ra-core";
 import { useNavigate } from "react-router-dom";
-
-/**
- * Detect if running on Mac for Cmd vs Ctrl
- */
-const isMac = (): boolean => {
-  return typeof window !== "undefined" && /Mac|iPhone|iPod|iPad/.test(navigator.platform);
-};
-
-/**
- * Check if target element should prevent shortcuts
- * Returns true if shortcuts should be blocked (e.g., user is typing in an input)
- */
-const shouldPreventShortcut = (target: EventTarget | null): boolean => {
-  if (!(target instanceof HTMLElement)) return false;
-
-  const tagName = target.tagName.toLowerCase();
-  const isContentEditable = target.isContentEditable;
-
-  // Block shortcuts in inputs, textareas, selects, and contenteditable elements
-  if (tagName === "input" || tagName === "textarea" || tagName === "select" || isContentEditable) {
-    return true;
-  }
-
-  // Check if inside a contenteditable parent
-  let element: HTMLElement | null = target;
-  while (element) {
-    if (element.isContentEditable) return true;
-    element = element.parentElement;
-  }
-
-  // Check for ARIA text input roles
-  const role = target.getAttribute("role");
-  if (role === "textbox" || role === "searchbox" || role === "combobox") {
-    return true;
-  }
-
-  return false;
-};
+import { isMac, shouldPreventShortcut } from "@/utils/keyboard";
 
 export interface UseListKeyboardNavigationOptions {
   /**

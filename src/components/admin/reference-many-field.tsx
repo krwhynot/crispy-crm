@@ -69,9 +69,7 @@ const ReferenceManyFieldView = <ReferenceRecordType extends RaRecord = RaRecord>
       (total == null &&
         hasPreviousPage === false &&
         hasNextPage === false &&
-        // @ts-expect-error FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-        data.length === 0 &&
-        // the user didn't set any filters
+        (data?.length ?? 0) === 0 &&
         !Object.keys(filterValues).length)) &&
     empty !== false
   ) {

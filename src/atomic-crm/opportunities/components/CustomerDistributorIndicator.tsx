@@ -82,7 +82,7 @@ export function CustomerDistributorIndicator() {
     <div
       className={cn(
         "flex items-center gap-1.5 text-xs",
-        distributorId ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"
+        distributorId ? "text-warning" : "text-muted-foreground"
       )}
     >
       <Info className="h-3 w-3" />

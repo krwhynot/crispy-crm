@@ -1,7 +1,9 @@
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { BulkExportButton } from "@/components/admin/bulk-export-button";
-import { BulkReassignButton } from "./BulkReassignButton";
+import { BulkReassignButton } from "@/components/admin/bulk-reassign-button";
 import { OrganizationBulkDeleteButton } from "./OrganizationBulkDeleteButton";
+import { organizationKeys } from "../queryKeys";
+import type { Organization } from "../types";
 
 /**
  * OrganizationBulkActionsToolbar - Custom bulk actions for the organizations list
@@ -17,7 +19,12 @@ import { OrganizationBulkDeleteButton } from "./OrganizationBulkDeleteButton";
 export const OrganizationBulkActionsToolbar = () => {
   return (
     <BulkActionsToolbar>
-      <BulkReassignButton />
+      <BulkReassignButton<Organization>
+        resource="organizations"
+        queryKeys={organizationKeys}
+        itemDisplayName={(org) => org.name}
+        itemSubtitle={(org) => org.organization_type}
+      />
       <BulkExportButton />
       <OrganizationBulkDeleteButton />
     </BulkActionsToolbar>

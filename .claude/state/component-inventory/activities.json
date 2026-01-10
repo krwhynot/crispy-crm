@@ -1,12 +1,12 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-08T12:14:50.333Z",
-  "item_count": 25,
+  "generated_at": "2026-01-10T23:35:59.763Z",
+  "item_count": 29,
   "items": [
     {
       "name": "ActivityCreate",
       "file": "src/atomic-crm/activities/ActivityCreate.tsx",
-      "line": 22,
+      "line": 24,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -130,11 +130,12 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/ActivityList.tsx",
-      "line": 49,
+      "line": 51,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
-        "useGetIdentity"
+        "useGetIdentity",
+        "useSlideOverState"
       ],
       "imports": [
         "../components/SampleStatusBadge",
@@ -146,6 +147,7 @@
         "../utils/listPatterns",
         "../validation/activities",
         "./ActivityListFilter",
+        "./ActivitySlideOver",
         "./activityFilterConfig",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListSearchBar",
@@ -161,6 +163,7 @@
         "@/components/ui/badge",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
         "jsonexport/dist",
         "ra-core",
         "react-admin"
@@ -179,7 +182,8 @@
         "Organization",
         "Sale",
         "INTERACTION_TYPE_OPTIONS",
-        "ACTIVITY_FILTER_CONFIG"
+        "ACTIVITY_FILTER_CONFIG",
+        "ActivitySlideOver"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -215,22 +219,52 @@
     {
       "name": "ActivitySinglePage",
       "file": "src/atomic-crm/activities/ActivitySinglePage.tsx",
-      "line": 16,
+      "line": 24,
       "type": "presentational",
-      "hooks": [],
+      "hooks": [
+        "useWatch"
+      ],
       "imports": [
         "../contacts/ContactOption",
         "../utils/autocompleteDefaults",
         "../validation/activities",
         "@/components/admin/autocomplete-input",
+        "@/components/admin/boolean-input",
         "@/components/admin/form",
         "@/components/admin/reference-input",
         "@/components/admin/select-input",
-        "@/components/admin/text-input"
+        "@/components/admin/text-input",
+        "react-hook-form"
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "INTERACTION_TYPE_OPTIONS"
+        "INTERACTION_TYPE_OPTIONS",
+        "SAMPLE_STATUS_OPTIONS"
+      ],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ActivitySlideOver",
+      "file": "src/atomic-crm/activities/ActivitySlideOver.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "./slideOverTabs",
+        "@/components/layouts/ResourceSlideOver",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityDetailsTab",
+        "ActivityRelatedTab",
+        "ActivityRecord"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -238,22 +272,25 @@
     {
       "name": "QuickLogActivity",
       "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
-      "line": 95,
+      "line": 97,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
         "useEffect",
         "useGetOne",
         "useNotify",
+        "useQueryClient",
         "useState"
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/queryKeys",
         "@/components/ui/button",
         "@/components/ui/dialog",
         "@/components/ui/label",
         "@/components/ui/select",
         "@/components/ui/textarea",
+        "@tanstack/react-query",
         "ra-core",
         "react"
       ],
@@ -328,11 +365,12 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 49,
+      "line": 51,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
-        "useGetIdentity"
+        "useGetIdentity",
+        "useSlideOverState"
       ],
       "imports": [],
       "isDefaultExport": false,
@@ -343,7 +381,7 @@
     {
       "name": "ActivityCreate",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 22,
+      "line": 24,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -409,13 +447,14 @@
     {
       "name": "QuickLogActivity",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 95,
+      "line": 97,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
         "useEffect",
         "useGetOne",
         "useNotify",
+        "useQueryClient",
         "useState"
       ],
       "imports": [],
@@ -430,6 +469,18 @@
       "name": "ActivityTimelineEntry",
       "file": "src/atomic-crm/activities/index.tsx",
       "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "ActivitySlideOver",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 32,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -539,6 +590,71 @@
       "isDefaultExport": false,
       "childComponents": [
         "ActivityRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ActivityDetailsTab",
+      "file": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx",
+      "line": 53,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useUpdate"
+      ],
+      "imports": [
+        "../../contacts/ContactOption",
+        "../../types",
+        "../../validation/activities",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/boolean-input",
+        "@/components/admin/date-field",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/scroll-area",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "INTERACTION_TYPE_OPTIONS",
+        "ACTIVITY_TYPE_FROM_API",
+        "SAMPLE_STATUS_OPTIONS",
+        "ActivityRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ActivityRelatedTab",
+      "file": "src/atomic-crm/activities/slideOverTabs/ActivityRelatedTab.tsx",
+      "line": 181,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "../../opportunities/constants/stageConstants",
+        "../../types",
+        "@/components/layouts/ResourceSlideOver",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord",
+        "Contact",
+        "Organization",
+        "Opportunity"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

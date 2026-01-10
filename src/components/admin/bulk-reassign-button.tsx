@@ -1,6 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import { useNotify, useRefresh, useDataProvider, useGetList, useListContext } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { devLog } from "@/lib/devLogger";
 import {
   Dialog,
   DialogContent,
@@ -17,50 +19,49 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UserPlus } from "lucide-react";
-import type { Contact, Sale } from "../types";
-import { formatName } from "../utils/formatName";
+import type { Sale } from "@/atomic-crm/types";
+import { formatName } from "@/atomic-crm/utils/formatName";
 
-interface ContactBulkReassignButtonProps {
-  /**
-   * Optional callback after successful reassignment
-   * If not provided, will use onUnselectItems from ListContext
-   */
+interface ResourceItem {
+  id: string | number;
+  [key: string]: unknown;
+}
+
+interface BulkReassignButtonProps<T extends ResourceItem> {
+  resource: string;
+  queryKeys: {
+    all: readonly string[];
+  };
+  itemDisplayName: (item: T) => string;
+  itemSubtitle: (item: T) => string;
   onSuccess?: () => void;
 }
 
-/**
- * ContactBulkReassignButton - Reassign multiple contacts to a different sales rep
- *
- * Features:
- * - Modal with user (sales rep) selector
- * - Preview of affected contacts
- * - Bulk update with success/failure counts
- * - Audit logging via database triggers (automatic)
- *
- * Adapted from organizations/BulkReassignButton.tsx
- */
-export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButtonProps) => {
+export const BulkReassignButton = <T extends ResourceItem>({
+  resource,
+  queryKeys,
+  itemDisplayName,
+  itemSubtitle,
+  onSuccess,
+}: BulkReassignButtonProps<T>) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSalesId, setSelectedSalesId] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // AbortController for cancellation support
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Cleanup on unmount - abort any in-flight operation
   useEffect(() => {
     return () => {
       abortControllerRef.current?.abort();
     };
   }, []);
 
-  const { selectedIds, data: contacts, onUnselectItems } = useListContext<Contact>();
+  const { selectedIds, data, onUnselectItems } = useListContext<T>();
   const notify = useNotify();
   const refresh = useRefresh();
   const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
 
-  // Fetch active sales reps for the dropdown
-  // Filter: not disabled and has an associated user account
   const { data: salesList, isPending: isSalesLoading } = useGetList<Sale>("sales", {
     pagination: { page: 1, perPage: 100 },
     sort: { field: "last_name", order: "ASC" },
@@ -70,8 +71,7 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
     },
   });
 
-  // Get the selected contacts for preview
-  const selectedContacts = contacts?.filter((contact) => selectedIds?.includes(contact.id)) ?? [];
+  const selectedItems = data?.filter((item) => selectedIds?.includes(item.id)) ?? [];
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -83,27 +83,14 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
     setSelectedSalesId("");
   };
 
-  /**
-   * Cancel the in-progress bulk operation
-   */
   const handleCancelOperation = () => {
     abortControllerRef.current?.abort();
     notify("Operation cancelled", { type: "info" });
   };
 
-  /**
-   * Execute the bulk reassignment
-   *
-   * Pattern: Sequential updates with individual try-catch + AbortController
-   * - Allows partial success reporting
-   * - Supports cancellation mid-operation
-   * - Audit logging handled by database triggers automatically
-   * - Follows fail-fast principle (no retries)
-   */
   const handleExecuteReassign = async () => {
     if (!selectedSalesId || !selectedIds?.length) return;
 
-    // Create new AbortController for this operation
     abortControllerRef.current = new AbortController();
     const { signal } = abortControllerRef.current;
 
@@ -112,43 +99,39 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
     let failureCount = 0;
     let wasCancelled = false;
 
-    // Log the reassignment action for debugging
-    console.log(
-      `[BulkReassign] Reassigning ${selectedIds.length} contacts to sales_id: ${selectedSalesId}`
+    devLog(
+      "BulkReassign",
+      `Reassigning ${selectedIds.length} ${resource} to sales_id: ${selectedSalesId}`
     );
 
     try {
-      // Execute bulk update for each selected contact
       for (const id of selectedIds) {
-        // Check if operation was cancelled before each update
         if (signal.aborted) {
           wasCancelled = true;
           break;
         }
 
         try {
-          await dataProvider.update("contacts", {
+          await dataProvider.update(resource, {
             id,
             data: { sales_id: parseInt(selectedSalesId) },
-            previousData: contacts?.find((contact) => contact.id === id),
+            previousData: data?.find((item) => item.id === id),
           });
           successCount++;
-        } catch (error) {
-          // Check if this was an abort error
+        } catch (error: unknown) {
           if (error instanceof DOMException && error.name === "AbortError") {
             wasCancelled = true;
             break;
           }
-          console.error(`[BulkReassign] Failed to update contact ${id}:`, error);
+          console.error(`[BulkReassign] Failed to update ${resource} ${id}:`, error);
           failureCount++;
         }
       }
 
-      // Show results notification (only if not cancelled or if some work was done)
       if (wasCancelled) {
         if (successCount > 0) {
           notify(
-            `Cancelled after reassigning ${successCount} contact${successCount === 1 ? "" : "s"}`,
+            `Cancelled after reassigning ${successCount} ${resource}${successCount === 1 ? "" : "s"}`,
             { type: "warning" }
           );
         }
@@ -160,18 +143,19 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
             : "selected rep";
 
           notify(
-            `Successfully reassigned ${successCount} contact${successCount === 1 ? "" : "s"} to ${salesRepName}`,
+            `Successfully reassigned ${successCount} ${resource}${successCount === 1 ? "" : "s"} to ${salesRepName}`,
             { type: "success" }
           );
         }
         if (failureCount > 0) {
-          notify(`Failed to reassign ${failureCount} contact${failureCount === 1 ? "" : "s"}`, {
+          notify(`Failed to reassign ${failureCount} ${resource}${failureCount === 1 ? "" : "s"}`, {
             type: "error",
           });
         }
       }
 
-      // Refresh list and clear selection
+      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+
       refresh();
       if (onSuccess) {
         onSuccess();
@@ -179,9 +163,8 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
         onUnselectItems();
       }
       handleCloseDialog();
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof DOMException && error.name === "AbortError") {
-        // Already handled above
         return;
       }
       notify("Bulk reassignment failed", { type: "error" });
@@ -192,8 +175,10 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
     }
   };
 
-  // Don't render if no items selected (handled by parent toolbar)
   if (!selectedIds?.length) return null;
+
+  const resourceLabel = resource.replace(/_/g, " ");
+  const capitalizedResource = resourceLabel.charAt(0).toUpperCase() + resourceLabel.slice(1);
 
   return (
     <>
@@ -201,7 +186,7 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
         variant="outline"
         onClick={handleOpenDialog}
         className="h-11 gap-2 touch-manipulation"
-        aria-label="Reassign selected contacts"
+        aria-label={`Reassign selected ${resource}`}
       >
         <UserPlus className="h-4 w-4" />
         Reassign
@@ -210,34 +195,30 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
       <Dialog open={isDialogOpen} onOpenChange={(open) => !open && handleCloseDialog()}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Reassign Contacts</DialogTitle>
+            <DialogTitle>Reassign {capitalizedResource}</DialogTitle>
             <DialogDescription>
-              Reassign {selectedIds.length} contact{selectedIds.length === 1 ? "" : "s"} to a
-              different sales representative
+              Reassign {selectedIds.length} {resourceLabel}
+              {selectedIds.length === 1 ? "" : "s"} to a different sales representative
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
-            {/* Show affected contacts */}
             <div className="rounded-lg border border-border bg-muted/50 p-3 max-h-40 overflow-y-auto">
               <p className="text-xs font-medium text-muted-foreground mb-2">
-                Contacts to reassign:
+                {capitalizedResource} to reassign:
               </p>
               <div className="space-y-1">
-                {selectedContacts.map((contact) => (
-                  <div key={contact.id} className="text-sm flex items-center justify-between">
-                    <span className="truncate">
-                      {formatName(contact.first_name, contact.last_name)}
-                    </span>
+                {selectedItems.map((item) => (
+                  <div key={item.id} className="text-sm flex items-center justify-between">
+                    <span className="truncate">{itemDisplayName(item)}</span>
                     <span className="ml-2 text-xs text-muted-foreground shrink-0">
-                      {contact.title || "No title"}
+                      {itemSubtitle(item)}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Sales rep selector */}
             <div className="space-y-2">
               <label htmlFor="bulk-reassign-select" className="text-sm font-medium">
                 New Sales Representative
@@ -275,7 +256,8 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
                   Cancel
                 </Button>
                 <Button onClick={handleExecuteReassign} disabled={!selectedSalesId}>
-                  Reassign {selectedIds.length} Contact{selectedIds.length === 1 ? "" : "s"}
+                  Reassign {selectedIds.length} {capitalizedResource}
+                  {selectedIds.length === 1 ? "" : "s"}
                 </Button>
               </>
             )}
@@ -286,4 +268,4 @@ export const ContactBulkReassignButton = ({ onSuccess }: ContactBulkReassignButt
   );
 };
 
-export default ContactBulkReassignButton;
+export default BulkReassignButton;

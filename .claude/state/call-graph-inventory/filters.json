@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-08T12:15:01.707Z",
+  "generated_at": "2026-01-10T23:36:12.212Z",
   "items": {
     "nodes": [
       {
@@ -283,28 +283,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/filters/types.ts:103:isArrayFilterValue",
+        "id": "src/atomic-crm/filters/types.ts:109:isArrayFilterValue",
         "name": "isArrayFilterValue",
         "file": "src/atomic-crm/filters/types.ts",
-        "line": 103,
+        "line": 109,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/filters/types.ts:107:isSingleFilterValue",
+        "id": "src/atomic-crm/filters/types.ts:113:isSingleFilterValue",
         "name": "isSingleFilterValue",
         "file": "src/atomic-crm/filters/types.ts",
-        "line": 107,
+        "line": 113,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/filters/types.ts:111:isValidFilterValue",
+        "id": "src/atomic-crm/filters/types.ts:117:isValidFilterValue",
         "name": "isValidFilterValue",
         "file": "src/atomic-crm/filters/types.ts",
-        "line": 111,
+        "line": 117,
         "nodeType": "arrow",
         "exported": true,
         "async": false
@@ -2454,38 +2454,38 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/types.ts:103:isArrayFilterValue",
+        "source": "src/atomic-crm/filters/types.ts:109:isArrayFilterValue",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 104,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/types.ts:107:isSingleFilterValue",
-        "target": "isArray",
-        "targetName": "isArray",
-        "edgeType": "call",
-        "line": 108,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/types.ts:111:isValidFilterValue",
+        "source": "src/atomic-crm/filters/types.ts:113:isSingleFilterValue",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
         "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/types.ts:117:isValidFilterValue",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 120,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/types.ts:111:isValidFilterValue",
+        "source": "src/atomic-crm/filters/types.ts:117:isValidFilterValue",
         "target": "every",
         "targetName": "every",
         "edgeType": "call",
-        "line": 115,
+        "line": 121,
         "conditional": true,
         "inLoop": false
       },

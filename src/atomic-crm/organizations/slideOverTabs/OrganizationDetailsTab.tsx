@@ -92,8 +92,12 @@ export function OrganizationDetailsTab({
       });
       notify("Organization updated successfully", { type: "success" });
       onModeToggle?.();
-    } catch (_error) {
+    } catch (error: unknown) {
       notify("Error updating organization", { type: "error" });
+      console.error(
+        "Error updating organization:",
+        error instanceof Error ? error.message : String(error)
+      );
     }
   };
 

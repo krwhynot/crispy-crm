@@ -691,7 +691,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       try {
         await validateProductForm(invalidData);
         expect.fail("Should have thrown");
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toHaveProperty("message", "Validation failed");
         expect(error).toHaveProperty("body");
         expect((error as { body: { errors: Record<string, string> } }).body).toHaveProperty(
@@ -713,7 +713,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       try {
         await validateProductForm(invalidData);
         expect.fail("Should have thrown");
-      } catch (error) {
+      } catch (error: unknown) {
         const errors = (error as { body: { errors: Record<string, string> } }).body.errors;
         expect(Object.keys(errors).length).toBeGreaterThan(0);
       }
@@ -737,7 +737,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       try {
         await validateProductUpdate(invalidData);
         expect.fail("Should have thrown");
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toHaveProperty("message", "Validation failed");
         expect(error).toHaveProperty("body");
       }
@@ -760,7 +760,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       try {
         await validateOpportunityProduct(invalidData);
         expect.fail("Should have thrown");
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toHaveProperty("message", "Product validation failed");
         expect(error).toHaveProperty("body");
         expect((error as { body: { errors: Record<string, string> } }).body).toHaveProperty(
@@ -778,7 +778,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       try {
         await validateOpportunityProduct({});
         expect.fail("Should have thrown");
-      } catch (error) {
+      } catch (error: unknown) {
         expect(error).toBeInstanceOf(Error);
         expect((error as Error).message).toBe("Unexpected error");
       } finally {

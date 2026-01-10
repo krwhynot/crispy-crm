@@ -156,6 +156,18 @@ search-reindex:
 validate-migration:
     npm run validate:pre-migration
 
+# Audit storage for orphaned files (report only)
+storage-audit:
+    npx tsx scripts/storage-hygiene.ts
+
+# Clean up orphaned storage files
+storage-clean:
+    npx tsx scripts/storage-hygiene.ts --delete
+
+# Storage audit with JSON output (for CI/CD)
+storage-audit-json:
+    npx tsx scripts/storage-hygiene.ts --json
+
 # ─────────────────────────────────────────────────────────────
 # 🔍 Discovery (Codebase Analysis)
 # ─────────────────────────────────────────────────────────────

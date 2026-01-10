@@ -14,6 +14,8 @@
  * @module csvUploadValidator
  */
 
+import { devLog } from "@/lib/devLogger";
+
 export const CSV_UPLOAD_LIMITS = {
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   MAX_ROWS: 10000,
@@ -201,7 +203,7 @@ export function getSecurePapaParseConfig() {
     // Error handling
     error: (error: unknown) => {
       const message = error instanceof Error ? error.message : "Unknown error";
-      console.error("[CSV Security] Parse error:", message);
+      devLog("CSV Security", "Parse error", message);
       throw new Error(`CSV parsing failed: ${message}`);
     },
   };

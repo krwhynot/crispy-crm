@@ -550,14 +550,19 @@ Semantic utilities for responsive list pages.
 import { COLUMN_VISIBILITY } from "@/atomic-crm/utils";
 
 // Spread directly for type inference
+<TextField source="organization" {...COLUMN_VISIBILITY.largeDesktopOnly} />
 <TextField source="email" {...COLUMN_VISIBILITY.desktopOnly} />
 <TextField source="phone" {...COLUMN_VISIBILITY.tabletUp} />
 <TextField source="name" {...COLUMN_VISIBILITY.alwaysVisible} />
 ```
 
-From `listPatterns.ts:20-36`:
+From `listPatterns.ts:21-42`:
 ```typescript
 export const COLUMN_VISIBILITY = {
+  largeDesktopOnly: {
+    cellClassName: "hidden xl:table-cell",
+    headerClassName: "hidden xl:table-cell",
+  },
   desktopOnly: {
     cellClassName: "hidden lg:table-cell",
     headerClassName: "hidden lg:table-cell",
@@ -579,7 +584,8 @@ export const COLUMN_VISIBILITY = {
 |------------|--------|-----------------|
 | < 768px (md) | Mobile | `alwaysVisible` only |
 | 768px - 1024px | Tablet | `alwaysVisible` + `tabletUp` |
-| > 1024px (lg) | Desktop | All columns |
+| 1024px - 1280px | Desktop | `alwaysVisible` + `tabletUp` + `desktopOnly` |
+| > 1280px (xl) | Large Desktop | All columns including `largeDesktopOnly` |
 
 ### Pagination Defaults
 

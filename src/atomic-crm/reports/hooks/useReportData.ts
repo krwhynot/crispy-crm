@@ -88,27 +88,38 @@ export function useReportData<T extends RaRecord>(
     dataProvider
       .getList<T>(resource, {
         /*
-         * Technical Debt (A2): perPage: 10000 is unbounded pagination.
+         * Large pagination limit for report aggregation (PERF-001).
          *
-         * Current scale: 6 reps, 9 principals, ~500 opportunities - acceptable.
+         * Rationale: Reports require complete datasets for:
+         * - Grouping (by principal, rep, activity type)
+         * - Calculating totals, averages, percentages
+         * - Building charts with full data visibility
+         * - CSV exports with all records
          *
-         * Future optimization needed when:
-         * - Data exceeds 10K records
-         * - Page load time exceeds 2 seconds
+         * Current scale: 6 reps, 9 principals, ~500 opportunities - within limit.
+         * Limit: 1000 records (reduced from 10000 to prevent timeout issues).
          *
-         * Options for future:
-         * 1. Edge Function for server-side aggregation
-         * 2. Cursor-based pagination with client aggregation
-         * 3. Materialized views for pre-computed metrics
+         * Migration path when data exceeds 1000 records:
+         * 1. Implement Edge Function for server-side aggregation
+         * 2. Move to cursor-based pagination with streaming
+         * 3. Use materialized views for pre-computed metrics
          *
-         * See: docs/reports-audit/04-component-spec.md for details
+         * Performance monitoring:
+         * - If queries exceed 2 seconds, migrate to server-side aggregation
+         * - If data exceeds 1000 records, warning logged to console
          */
-        pagination: { page: 1, perPage: 10000 },
+        pagination: { page: 1, perPage: 1000 },
         sort: { field: "id", order: "DESC" },
         filter,
       })
       .then((result) => {
         if (!cancelled) {
+          // Warn if data is at limit (indicates potential truncation)
+          if (result.data.length >= 1000) {
+            console.warn(
+              `[useReportData] ${resource}: Retrieved ${result.data.length} records (at pagination limit). Data may be truncated. Consider implementing server-side aggregation.`
+            );
+          }
           setData(result.data);
           setIsLoading(false);
         }

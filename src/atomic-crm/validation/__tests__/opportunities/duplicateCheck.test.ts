@@ -142,7 +142,7 @@ describe("checkExactDuplicate", () => {
       let caughtError: any;
       try {
         await checkExactDuplicate(mockDataProvider, params);
-      } catch (error) {
+      } catch (error: unknown) {
         caughtError = error;
       }
 

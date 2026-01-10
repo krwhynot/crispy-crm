@@ -97,6 +97,10 @@ export const supabaseAdmin: SupabaseClient = new Proxy({} as SupabaseClient, {
 
 For handling cross-origin requests in user-facing Edge Functions.
 
+> **DEPRECATION WARNING**: `utils.ts` contains wildcard CORS (`Access-Control-Allow-Origin: *`) which is a security risk. **Do not use `corsHeaders` from `utils.ts`**. Always use `createCorsHeaders()` from `cors-config.ts` instead.
+>
+> **PRE-LAUNCH TRADEOFF**: The wildcard CORS in `utils.ts` remains active as a known tradeoff during pre-launch development. This allows rapid testing across environments without constant origin configuration. **Before production launch**, all functions must migrate to `createCorsHeaders()` and `utils.ts` should be deleted. Track this in the launch checklist.
+
 ### Dynamic CORS (Recommended)
 
 ```ts
@@ -187,6 +191,13 @@ Three distinct types with different auth and response patterns.
 ### Type 1: Cron Functions
 
 Scheduled tasks triggered by pg_cron. No CORS, secret-based auth.
+
+**Daily Digest (v3.0)** - Reference implementation for cron functions:
+- **Fail-Fast Per User**: Uses `Promise.allSettled` for parallel processing with isolated failures
+- **Opt-In Preference**: Respects `digest_opt_in` user preference (skips opted-out users)
+- **Empty Skip**: Skips users with no actionable items (tasks due, overdue, stale deals)
+- **Per-Stage Stale Thresholds**: Uses PRD Section 6.3 thresholds (7-21 days by stage)
+- **Error Isolation**: One user's error doesn't affect others; detailed per-user error reporting
 
 ```ts
 // supabase/functions/check-overdue-tasks/index.ts
@@ -404,7 +415,7 @@ Deno.serve(async (req: Request) => {
 | **Response** | JSON | JSON with CORS headers | HTML or JSON |
 | **Trigger** | pg_cron schedule | Browser fetch | Email link click |
 | **Validation** | Minimal | Zod at boundary | Token validation |
-| **Example** | daily-digest | users | digest-opt-out |
+| **Example** | daily-digest (v3.0) | users | digest-opt-out |
 
 ---
 

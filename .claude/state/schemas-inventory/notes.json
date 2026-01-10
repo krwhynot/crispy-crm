@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-08T12:14:57.304Z",
+  "generated_at": "2026-01-10T23:36:08.401Z",
   "item_count": 4,
   "items": [
     {
@@ -101,8 +101,8 @@
       "fields": [],
       "relatedSchemas": [
         "contactSchema",
-        "importContactSchema",
-        "createContactSchema"
+        "createContactSchema",
+        "importContactSchema"
       ],
       "validationFunctions": [
         "validateContactNoteForSubmission"

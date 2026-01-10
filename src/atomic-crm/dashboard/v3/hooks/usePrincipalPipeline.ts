@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useGetList } from "react-admin";
 import { useCurrentSale } from "./useCurrentSale";
 import type { PrincipalPipelineRow, PipelineSummaryRow } from "../types";
+import { devLog } from "@/lib/devLogger";
 
 // Stable empty array to avoid new reference creation on each render
 const EMPTY_PIPELINE: PrincipalPipelineRow[] = [];
@@ -17,7 +18,7 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
 
       // Debug logging for B1 filtering investigation
       if (import.meta.env.DEV) {
-        console.log("[usePrincipalPipeline] Filtering by sales_id:", salesId);
+        devLog("usePrincipalPipeline", "Filtering by sales_id", salesId);
       }
     }
     return filter;
@@ -55,7 +56,7 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
 
     // Debug logging for B1 filtering investigation
     if (import.meta.env.DEV && filters?.myPrincipalsOnly) {
-      console.log("[usePrincipalPipeline] Filter results:", {
+      devLog("usePrincipalPipeline", "Filter results", {
         salesId,
         resultCount: rawSummary.length,
         firstFewSalesIds: rawSummary.slice(0, 5).map((r) => r.sales_id),

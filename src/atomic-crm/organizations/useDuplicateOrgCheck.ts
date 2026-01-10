@@ -98,7 +98,7 @@ export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
         }
 
         return null;
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to check for duplicate organization:", error);
         notify("Unable to check for duplicate organizations. Please try again.", {
           type: "warning",

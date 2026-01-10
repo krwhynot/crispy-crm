@@ -49,7 +49,7 @@ export const parseUrlFilters = (search: string): FilterValues => {
     }
 
     return filters;
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn("Failed to parse URL filters:", error);
     return {};
   }
@@ -84,7 +84,7 @@ export function saveFilterPreferences<T = FilterValue>(key: string, value: T): v
   try {
     // SECURITY: Use sessionStorage instead of localStorage
     setStorageItem(key, value, { type: "session" });
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn("Failed to save filter preferences:", error);
   }
 }

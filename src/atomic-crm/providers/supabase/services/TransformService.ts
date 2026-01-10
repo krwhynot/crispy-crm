@@ -104,7 +104,7 @@ export class TransformService {
 
           try {
             await Promise.all(uploadPromises);
-          } catch (error) {
+          } catch (error: unknown) {
             console.error("Contact note attachment upload failed:", error);
             throw error; // Fail-fast: re-throw for caller to handle
           }
@@ -123,7 +123,7 @@ export class TransformService {
 
           try {
             await Promise.all(uploadPromises);
-          } catch (error) {
+          } catch (error: unknown) {
             console.error("Opportunity note attachment upload failed:", error);
             throw error; // Fail-fast: re-throw for caller to handle
           }
@@ -142,7 +142,7 @@ export class TransformService {
 
           try {
             await Promise.all(uploadPromises);
-          } catch (error) {
+          } catch (error: unknown) {
             console.error("Organization note attachment upload failed:", error);
             throw error; // Fail-fast: re-throw for caller to handle
           }

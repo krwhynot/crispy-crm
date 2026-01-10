@@ -802,6 +802,269 @@ const selectedIds = useWatch({ name: "distributor_ids" });
 
 ---
 
+## Pattern I: Lazy Loading with Error Boundaries
+
+Resource pages wrapped in lazy loading and error boundaries for resilient UX.
+
+```tsx
+import * as React from "react";
+import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+
+const ProductListLazy = React.lazy(() => import("./ProductList"));
+const ProductCreateLazy = React.lazy(() => import("./ProductCreate"));
+const ProductEditLazy = React.lazy(() => import("./ProductEdit"));
+
+// Wrap lazy components with resource-specific error boundaries
+export const ProductListView = () => (
+  <ResourceErrorBoundary resource="products" page="list">
+    <ProductListLazy />
+  </ResourceErrorBoundary>
+);
+
+export const ProductCreateView = () => (
+  <ResourceErrorBoundary resource="products" page="create">
+    <ProductCreateLazy />
+  </ResourceErrorBoundary>
+);
+
+export default {
+  list: ProductListView,
+  create: ProductCreateView,
+  edit: ProductEditView,
+  show: ProductShowView,
+  recordRepresentation: (record: { name?: string }) => record?.name || "Product",
+};
+```
+
+**When to use**: All resource entry points to improve bundle splitting and error recovery.
+
+**Key points:**
+- `React.lazy()` enables code splitting per-route
+- `ResourceErrorBoundary` catches errors per-page, not globally
+- `recordRepresentation` provides display name fallback for breadcrumbs
+- Each page fails independently without crashing the entire app
+
+**Example:** `src/atomic-crm/products/resource.tsx`
+
+---
+
+## Pattern J: Query Key Factory for Cache Invalidation
+
+Centralized cache key management ensures fetch and invalidation keys always match.
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query";
+import { productKeys } from "../queryKeys";
+
+const ProductEdit = () => {
+  const queryClient = useQueryClient();
+
+  return (
+    <EditBase
+      redirect="show"
+      mutationMode="pessimistic"
+      mutationOptions={{
+        onSuccess: () => {
+          // Invalidate products cache on save
+          queryClient.invalidateQueries({ queryKey: productKeys.all });
+        },
+      }}
+    >
+      <ProductEditForm />
+    </EditBase>
+  );
+};
+```
+
+**Query Key Factory Pattern:**
+```tsx
+// src/atomic-crm/queryKeys.ts
+const createKeys = <T extends string>(resource: T) => ({
+  all: [resource] as const,
+  lists: () => [resource, "list"] as const,
+  list: (filters?: Record<string, unknown>) => [resource, "list", filters] as const,
+  details: () => [resource, "detail"] as const,
+  detail: (id: number | string) => [resource, "detail", id] as const,
+});
+
+export const productKeys = createKeys("products");
+```
+
+**When to use**: Any mutation that should refresh related queries.
+
+**Key points:**
+- `productKeys.all` invalidates all product queries (list and detail)
+- `productKeys.detail(123)` targets specific record cache
+- Prevents stale data after create/update/delete operations
+- Factory ensures consistent key structure across resources
+
+**Example:** `src/atomic-crm/products/ProductEdit.tsx`, `src/atomic-crm/queryKeys.ts`
+
+---
+
+## Pattern K: Filter Cleanup Hook
+
+Clean up stale localStorage filter values that may cause errors.
+
+```tsx
+import { useFilterCleanup } from "../hooks/useFilterCleanup";
+
+export const ProductList = () => {
+  // Clean up stale cached filters from localStorage
+  useFilterCleanup("products");
+
+  return (
+    <List title={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
+      {/* ... */}
+    </List>
+  );
+};
+```
+
+**When to use**: List pages using React Admin's filter persistence.
+
+**Key points:**
+- Removes invalid filter values cached in localStorage
+- Prevents crashes from outdated filter references (e.g., deleted organizations)
+- Call early in component lifecycle before List renders
+- Pass resource name to target the correct localStorage key
+
+**Example:** `src/atomic-crm/products/ProductList.tsx`
+
+---
+
+## Pattern L: Certifications Badge with Overflow
+
+Display array fields with visual truncation and count indicator.
+
+```tsx
+function CertificationBadges({ certifications }: { certifications?: string[] }) {
+  if (!certifications || certifications.length === 0) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+
+  return (
+    <div className="flex gap-1 flex-wrap">
+      {certifications.slice(0, 3).map((cert, index) => (
+        <Badge key={index} variant="outline" className="text-xs">
+          {cert}
+        </Badge>
+      ))}
+      {certifications.length > 3 && (
+        <Badge variant="secondary" className="text-xs">
+          +{certifications.length - 3}
+        </Badge>
+      )}
+    </div>
+  );
+}
+```
+
+**When to use**: Displaying variable-length arrays in constrained column space.
+
+**Key points:**
+- `slice(0, 3)` shows first 3 items only
+- `+N` badge indicates overflow count
+- Empty state shows em-dash for visual consistency
+- `flex-wrap` handles responsive layout within cells
+
+**Example:** `src/atomic-crm/products/ProductList.tsx`
+
+---
+
+## Pattern M: Distributor Code Display
+
+View mode section for displaying multiple vendor item codes in a grid layout.
+
+```tsx
+const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
+  usf_code: "US Foods",
+  sysco_code: "Sysco",
+  gfs_code: "GFS",
+  pfg_code: "PFG",
+  greco_code: "Greco",
+  gofo_code: "GOFO",
+  rdp_code: "RDP",
+  wilkens_code: "Wilkens",
+};
+
+function hasDistributorCodes(record: Record<string, unknown>): boolean {
+  return Object.keys(DISTRIBUTOR_CODE_LABELS).some((key) => record[key as keyof typeof record]);
+}
+
+// In view mode:
+{hasDistributorCodes(record) && (
+  <SidepaneSection label="Distributor Codes" showSeparator>
+    <div className="grid grid-cols-2 gap-2 p-3 bg-muted/50 rounded-md">
+      {Object.entries(DISTRIBUTOR_CODE_LABELS).map(([field, label]) => {
+        const value = record[field as keyof typeof record];
+        if (!value) return null;
+        return (
+          <div key={field} className="flex justify-between">
+            <span className="text-sm text-muted-foreground">{label}:</span>
+            <span className="text-sm font-mono">{value}</span>
+          </div>
+        );
+      })}
+    </div>
+  </SidepaneSection>
+)}
+```
+
+**When to use**: Displaying multiple optional vendor-specific codes.
+
+**Key points:**
+- Section only renders if at least one code exists (`hasDistributorCodes` guard)
+- Label mapping provides human-readable names for code fields
+- `font-mono` for code values improves readability
+- Grid layout pairs labels with values cleanly
+
+**Example:** `src/atomic-crm/products/ProductDetailsTab.tsx`
+
+---
+
+## Pattern N: Form Remount on Record Change
+
+Force form re-initialization when switching between records in edit mode.
+
+```tsx
+const ProductEditForm = () => {
+  const record = useRecordContext<Product>();
+  const { data: identity } = useGetIdentity();
+
+  const defaultValues = useMemo(
+    () => ({
+      ...productUpdateSchema.partial().parse(record ?? {}),
+      updated_by: identity?.id,
+    }),
+    [record, identity?.id]
+  );
+
+  if (!record) return null;
+
+  return (
+    <Form
+      defaultValues={defaultValues}
+      key={record.id}  // Force remount when record changes
+    >
+      <ProductInputs />
+    </Form>
+  );
+};
+```
+
+**When to use**: Edit forms where record can change without navigation.
+
+**Key points:**
+- `key={record.id}` forces React to unmount/remount the form
+- Ensures `defaultValues` are re-applied from new record
+- Without this, form retains previous record's values
+- `useMemo` prevents unnecessary recalculation of defaults
+
+**Example:** `src/atomic-crm/products/ProductEdit.tsx`
+
+---
+
 ## Migration Checklist
 
 When adding a new product feature or migrating from another pattern:
@@ -818,3 +1081,7 @@ When adding a new product feature or migrating from another pattern:
 10. [ ] Test with `useWatch()` instead of `watch()` for form subscriptions
 11. [ ] Ensure Zod validation is at API boundary, not in form components
 12. [ ] Cache stable reference data with `staleTime` and `gcTime` options
+13. [ ] Wrap resource views in `ResourceErrorBoundary` with lazy loading (Pattern I)
+14. [ ] Use query key factory for cache invalidation after mutations (Pattern J)
+15. [ ] Add `useFilterCleanup()` to list pages with filter persistence (Pattern K)
+16. [ ] Use `key={record.id}` on forms to force remount on record change (Pattern N)

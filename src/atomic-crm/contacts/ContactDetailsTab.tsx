@@ -1,4 +1,5 @@
 import { Mail, Phone, Linkedin, Building2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -48,6 +49,7 @@ export function ContactDetailsTab({
 }: ContactDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Contact>) => {
@@ -57,9 +59,14 @@ export function ContactDetailsTab({
         data,
         previousData: record,
       });
+
+      // SS-001 FIX: Invalidate contact caches after successful update
+      queryClient.invalidateQueries({ queryKey: ["contacts"] });
+      queryClient.invalidateQueries({ queryKey: ["contacts", "getOne", record.id] });
+
       notify("Contact updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
-    } catch (error) {
+    } catch (error: unknown) {
       notify("Error updating contact", { type: "error" });
       console.error("Save error:", error);
     }

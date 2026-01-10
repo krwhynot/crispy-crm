@@ -1,6 +1,6 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2026-01-08T12:14:56.917Z",
+  "generated_at": "2026-01-10T23:36:07.983Z",
   "item_count": 22,
   "items": [
     {
@@ -167,7 +167,7 @@
     {
       "name": "useKeyboardShortcuts",
       "file": "src/hooks/useKeyboardShortcuts.ts",
-      "line": 87,
+      "line": 39,
       "parameters": [
         "handlers"
       ],
@@ -181,7 +181,7 @@
     {
       "name": "useListKeyboardNavigation",
       "file": "src/hooks/useListKeyboardNavigation.ts",
-      "line": 90,
+      "line": 53,
       "parameters": [
         "{\n  onSelect,\n  enabled = true,\n}"
       ],
@@ -205,6 +205,7 @@
       ],
       "returnType": "UseOrganizationDescendantsReturn",
       "dependencies": [
+        "useDataProvider",
         "useQuery"
       ],
       "isReact19Action": false

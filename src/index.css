@@ -550,14 +550,6 @@
 }
 
 @theme inline {
-  /* Desktop Data Density - NEW */
-  --row-height-compact: 32px; /* Desktop row height */
-  --row-height-comfortable: 40px; /* Current default */
-  --row-padding-desktop: 6px 12px; /* Vertical, horizontal */
-  --hover-zone-padding: 4px; /* Hover action zones */
-  --action-button-size: 28px; /* Inline action buttons */
-  --context-menu-width: 200px; /* Right-click menus */
-
   /* Semantic Spacing Utilities (Tailwind-accessible) */
   --spacing-widget: var(--spacing-widget-padding); /* 12px - card/widget padding */
   --spacing-section: var(--spacing-section); /* 24px - vertical spacing between sections */

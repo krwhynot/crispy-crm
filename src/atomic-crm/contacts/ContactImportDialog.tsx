@@ -10,32 +10,23 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
-import { Form, useRefresh } from "ra-core";
+import { Form } from "ra-core";
 import { Link } from "react-router-dom";
-import { usePapaParse } from "./usePapaParse";
-import type { ContactImportSchema } from "./useContactImport";
-import { useContactImport } from "./useContactImport";
-import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
+import type { DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
-import {
-  extractNewOrganizations,
-  extractNewTags,
-  findOrganizationsWithoutContacts,
-  findContactsWithoutContactInfo,
-} from "./contactImport.helpers";
-import { findCanonicalField, isFullNameColumn } from "./columnAliases";
 import { useColumnMapping } from "./useColumnMapping";
 import { useImportWizard } from "./useImportWizard";
 import { assertNever } from "./useImportWizard.types";
-import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
-import { validateCsvFile, getSecurePapaParseConfig } from "../utils/csvUploadValidator";
-import { contactImportLimiter } from "../utils/rateLimiter";
+import { useContactImportUpload } from "./useContactImportUpload";
+import { useContactImportParser } from "./useContactImportParser";
+import { useContactImportPreview } from "./useContactImportPreview";
+import { useContactImportProcessor } from "./useContactImportProcessor";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
 import * as React from "react";
-import { useCallback, useMemo, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import * as sampleCsv from "./contacts_export.csv?raw";
 
 // Feature flag for enhanced import preview
@@ -51,9 +42,6 @@ interface ContactImportModalProps {
 }
 
 export function ContactImportDialog({ open, onClose }: ContactImportModalProps) {
-  const refresh = useRefresh();
-  const processBatchHook = useContactImport();
-
   // ============================================================
   // STATE MACHINE - Replaces 10 useState calls + 2 refs
   // AbortController support for cancelling async operations
@@ -91,308 +79,42 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   } = useColumnMapping();
 
   // ============================================================
-  // PREVIEW CALLBACK - Triggered when PapaParse completes
+  // FILE UPLOAD - Extracted hook
   // ============================================================
-  const onPreview = useCallback(
-    (data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: unknown[][] }) => {
-      if (!ENABLE_IMPORT_PREVIEW) return;
-
-      const { rows, headers, rawDataRows: dataRows } = data;
-
-      // Delegate raw data storage to column mapping hook
-      if (dataRows) {
-        setRawData(headers, dataRows);
-      }
-
-      // Run data quality analysis
-      const organizationsWithoutContacts = findOrganizationsWithoutContacts(rows);
-      const contactsWithoutContactInfo = findContactsWithoutContactInfo(rows);
-
-      // Generate initial preview data with auto-detected mappings
-      const mappings = headers.map((header, index) => {
-        const canonicalField = findCanonicalField(header);
-        const isFullName = isFullNameColumn(header);
-        const target =
-          canonicalField || (isFullName ? "first_name + last_name (will be split)" : null);
-
-        // Calculate confidence: 1.0 for exact matches, 0.9 for full name patterns, 0 for no match
-        let confidence = 0;
-        if (canonicalField) confidence = 1.0;
-        else if (isFullName) confidence = 0.9;
-
-        // Get sample value from first row if available
-        const sampleValue = dataRows?.[0]?.[index]
-          ? String(dataRows[0][index]).substring(0, 50)
-          : undefined;
-
-        return {
-          source: header || "(empty)",
-          target,
-          confidence,
-          sampleValue,
-        };
-      });
-
-      const preview: PreviewData = {
-        mappings,
-        sampleRows: rows.slice(0, 5),
-        validCount: rows.length,
-        skipCount: 0,
-        totalRows: rows.length,
-        errors: [],
-        warnings: [],
-        newOrganizations: extractNewOrganizations(rows),
-        newTags: extractNewTags(rows),
-        hasErrors: false,
-        lowConfidenceMappings: mappings.filter((m) => m.confidence > 0 && m.confidence < 0.8)
-          .length,
-        organizationsWithoutContacts,
-        contactsWithoutContactInfo,
-      };
-
-      // Transition wizard to preview state
-      wizardActions.parsingComplete(preview);
-    },
-    [setRawData, wizardActions]
-  );
+  const { handleFileChange } = useContactImportUpload({ wizardActions });
 
   // ============================================================
-  // DERIVED PREVIEW DATA - Updates when column mappings change
-  // ============================================================
-  const derivedPreviewData = useMemo<PreviewData | null>(() => {
-    // Only compute when in preview state with column data
-    if (wizardState.step !== "preview" || !hasColumnData) {
-      return wizardState.step === "preview" ? wizardState.previewData : null;
-    }
-
-    // Re-run data quality analysis on the latest reprocessed data
-    const organizationsWithoutContacts = findOrganizationsWithoutContacts(reprocessedContacts);
-    const contactsWithoutContactInfo = findContactsWithoutContactInfo(reprocessedContacts);
-
-    // Generate updated mappings for UI display
-    const updatedMappings = rawHeaders.map((header) => {
-      const target = mergedMappings[header];
-
-      // Calculate confidence: 1.0 for user override or auto-match, 0.9 for full name
-      let confidence = 0;
-      if (userOverrides.has(header)) {
-        confidence = 1.0; // User override always high confidence
-      } else if (target === FULL_NAME_SPLIT_MARKER) {
-        confidence = 0.9;
-      } else if (target) {
-        confidence = 1.0; // Auto-detected match
-      }
-
-      // Get sample value from first reprocessed row
-      const firstContact = reprocessedContacts[0];
-      let sampleValue: string | undefined;
-      if (firstContact) {
-        // For full name splits, show the combined first + last
-        if (
-          target === FULL_NAME_SPLIT_MARKER ||
-          target === "first_name + last_name (will be split)"
-        ) {
-          const first = firstContact["first_name"] || "";
-          const last = firstContact["last_name"] || "";
-          sampleValue = [first, last].filter(Boolean).join(" ").substring(0, 50);
-        } else if (target && firstContact[target]) {
-          sampleValue = String(firstContact[target]).substring(0, 50);
-        }
-      }
-
-      return {
-        source: header || "(empty)",
-        target:
-          target === FULL_NAME_SPLIT_MARKER ? "first_name + last_name (will be split)" : target,
-        confidence,
-        sampleValue,
-      };
-    });
-
-    // Detect conflicting mappings (full name split + explicit first/last name)
-    const warnings: PreviewData["warnings"] = [];
-    const targetValues = Object.values(mergedMappings);
-    const hasFullNameSplit = targetValues.includes(FULL_NAME_SPLIT_MARKER);
-    const hasExplicitFirstName = targetValues.includes("first_name");
-    const hasExplicitLastName = targetValues.includes("last_name");
-
-    if (hasFullNameSplit && hasExplicitFirstName) {
-      warnings.push({
-        row: 0,
-        message:
-          "A column is mapped to 'Full Name (split)' and another to 'First Name'. The explicit 'First Name' column will take precedence.",
-      });
-    }
-    if (hasFullNameSplit && hasExplicitLastName) {
-      warnings.push({
-        row: 0,
-        message:
-          "A column is mapped to 'Full Name (split)' and another to 'Last Name'. The explicit 'Last Name' column will take precedence.",
-      });
-    }
-
-    return {
-      mappings: updatedMappings,
-      sampleRows: reprocessedContacts.slice(0, 5),
-      validCount: reprocessedContacts.length,
-      skipCount: 0,
-      totalRows: reprocessedContacts.length,
-      errors: [],
-      warnings,
-      newOrganizations: extractNewOrganizations(reprocessedContacts),
-      newTags: extractNewTags(reprocessedContacts),
-      hasErrors: false,
-      lowConfidenceMappings: updatedMappings.filter((m) => m.confidence > 0 && m.confidence < 0.8)
-        .length,
-      organizationsWithoutContacts,
-      contactsWithoutContactInfo,
-    };
-  }, [reprocessedContacts, mergedMappings, rawHeaders, hasColumnData, userOverrides, wizardState]);
-
-  // ============================================================
-  // PAPAPARSE HOOK - For CSV parsing
+  // CSV PARSING - Extracted hook
   // ============================================================
   const {
-    importer: previewImporter,
+    previewImporter,
     parseCsv,
     reset: resetPreviewImporter,
-  } = usePapaParse<ContactImportSchema>({
-    onPreview: onPreview,
-    previewRowCount: 100,
-    papaConfig: getSecurePapaParseConfig(),
+  } = useContactImportParser({
+    wizardActions,
+    setRawData,
   });
 
   // ============================================================
-  // IMPORT HANDLERS
+  // PREVIEW DATA COMPUTATION - Extracted hook
   // ============================================================
+  const derivedPreviewData = useContactImportPreview({
+    wizardState,
+    hasColumnData,
+    reprocessedContacts,
+    mergedMappings,
+    rawHeaders,
+    userOverrides,
+  });
 
-  /**
-   * Process a single batch of contacts during import.
-   * Updates wizard state with accumulated results.
-   */
-  const processBatch = useCallback(
-    async (batch: ContactImportSchema[], dataQualityDecisions: DataQualityDecisions) => {
-      if (wizardState.step !== "importing") return;
-
-      try {
-        const result = await processBatchHook(batch, {
-          preview: false,
-          startingRow: wizardState.rowOffset + 1,
-          dataQualityDecisions,
-          onProgress: () => {
-            // Progress is updated at batch level, not per-contact
-          },
-        });
-
-        // Accumulate results in wizard state
-        wizardActions.accumulateResult({
-          batchProcessed: result.totalProcessed,
-          batchSuccess: result.successCount,
-          batchSkipped: result.skippedCount,
-          batchFailed: result.failedCount,
-          batchErrors: result.errors,
-          batchSize: batch.length,
-        });
-      } catch (error: unknown) {
-        const errorMessage =
-          error instanceof Error
-            ? error.message
-            : "A critical error occurred during batch processing.";
-        const batchStartRow = wizardState.rowOffset + 1;
-
-        // Add an error entry for each contact in the failed batch
-        const batchErrors = batch.map((contactData, index) => ({
-          row: batchStartRow + index,
-          data: contactData,
-          errors: [{ field: "batch_processing", message: errorMessage }],
-        }));
-
-        wizardActions.accumulateResult({
-          batchProcessed: batch.length,
-          batchSuccess: 0,
-          batchSkipped: 0,
-          batchFailed: batch.length,
-          batchErrors,
-          batchSize: batch.length,
-        });
-      }
-    },
-    [processBatchHook, wizardState, wizardActions]
-  );
-
-  /**
-   * Handle preview confirmation - start the actual import.
-   */
-  const handlePreviewContinue = useCallback(
-    async (decisions: DataQualityDecisions) => {
-      // SECURITY: Check rate limit before starting import
-      if (!contactImportLimiter.canProceed()) {
-        const resetTime = contactImportLimiter.getResetTimeFormatted();
-        const remaining = contactImportLimiter.getRemaining();
-        alert(
-          `Import rate limit exceeded.\n\n` +
-            `You have ${remaining} imports remaining.\n` +
-            `Rate limit resets in ${resetTime}.\n\n` +
-            `This limit prevents accidental bulk data corruption and protects database performance.`
-        );
-        return;
-      }
-
-      // Update data quality decisions in wizard state
-      wizardActions.updateDataQualityDecisions(decisions);
-
-      // Transition to importing state
-      wizardActions.startImport(reprocessedContacts.length);
-
-      // Process contacts in batches with abort support
-      const batchSize = 10;
-      for (let i = 0; i < reprocessedContacts.length; i += batchSize) {
-        // Check if operation was cancelled
-        if (isAborted()) {
-          // Don't mark as complete - user cancelled
-          return;
-        }
-
-        const batch = reprocessedContacts.slice(i, i + batchSize);
-        await processBatch(batch, decisions);
-        wizardActions.updateProgress(i + batch.length);
-      }
-
-      // Check abort one final time before marking complete
-      if (isAborted()) {
-        return;
-      }
-
-      // Mark import as complete
-      wizardActions.importComplete();
-      refresh();
-    },
-    [reprocessedContacts, processBatch, refresh, wizardActions, isAborted]
-  );
-
-  /**
-   * Handle file selection with validation.
-   */
-  const handleFileChange = useCallback(
-    async (file: File | null) => {
-      if (!file) {
-        wizardActions.reset();
-        return;
-      }
-
-      // SECURITY: Validate file before processing
-      const validation = await validateCsvFile(file);
-
-      if (!validation.valid && validation.errors) {
-        wizardActions.selectFile(file, validation.errors, []);
-        return;
-      }
-
-      // File is valid - store with any warnings
-      wizardActions.selectFile(file, [], validation.warnings || []);
-    },
-    [wizardActions]
-  );
+  // ============================================================
+  // IMPORT PROCESSING - Extracted hook
+  // ============================================================
+  const { handlePreviewContinue } = useContactImportProcessor({
+    wizardState,
+    wizardActions,
+    isAborted,
+  });
 
   /**
    * Start the import/preview process.
@@ -692,7 +414,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
             <div className="flex-1 overflow-y-auto px-6">
               <ContactImportPreview
                 preview={derivedPreviewData}
-                onContinue={handlePreviewContinue}
+                onContinue={(decisions) => handlePreviewContinue(decisions, reprocessedContacts)}
                 onCancel={handlePreviewCancel}
                 onMappingChange={handleMappingChange}
                 userOverrides={userOverrides}

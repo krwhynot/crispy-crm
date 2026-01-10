@@ -46,8 +46,7 @@ export const FileField = <RecordType extends Record<string, any> = Record<string
   const titleValue =
     useFieldValue({
       ...props,
-      // @ts-expect-error We ignore here because title might be a custom label or undefined instead of a field name
-      source: title,
+      source: title as ExtractRecordPaths<RecordType>,
     })?.toString() ?? title;
   const translate = useTranslate();
 
@@ -107,7 +106,7 @@ export const FileField = <RecordType extends Record<string, any> = Record<string
 
 export interface FileFieldProps<RecordType extends Record<string, any> = Record<string, any>>
   extends FieldProps<RecordType>,
-    HTMLAttributes<HTMLElement> {
+    Omit<HTMLAttributes<HTMLElement>, "defaultValue"> {
   /**
    * The source of the link to the file, for an array of files.
    */

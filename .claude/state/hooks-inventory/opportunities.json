@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-08T12:14:56.913Z",
+  "generated_at": "2026-01-10T23:36:07.976Z",
   "item_count": 12,
   "items": [
     {
@@ -23,7 +23,7 @@
     {
       "name": "useBulkActionsState",
       "file": "src/atomic-crm/opportunities/hooks/useBulkActionsState.ts",
-      "line": 34,
+      "line": 36,
       "parameters": [
         "{\n  selectedIds,\n  opportunities,\n  onUnselectItems,\n  resource = \"opportunities\",\n}"
       ],
@@ -32,6 +32,7 @@
         "useCallback",
         "useDataProvider",
         "useNotify",
+        "useQueryClient",
         "useRefresh",
         "useState"
       ],
@@ -128,13 +129,14 @@
     {
       "name": "useQuickAdd",
       "file": "src/atomic-crm/opportunities/hooks/useQuickAdd.ts",
-      "line": 21,
+      "line": 23,
       "parameters": [],
       "returnType": "import(\"/home/krwhynot/projects/crispy-crm/node_modules/@tanstack/react-query/build/legacy/types\").UseMutationResult<any, Error, { org_name: string; campaign: string; principal_id: number; product_ids: number[]; first_name?: string; last_name?: string; phone?: string; email?: string; city?: string; state?: string; quick_note?: string; }, unknown>",
       "dependencies": [
         "useDataProvider",
         "useMutation",
-        "useNotify"
+        "useNotify",
+        "useQueryClient"
       ],
       "isReact19Action": false
     },

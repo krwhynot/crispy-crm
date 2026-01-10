@@ -66,7 +66,7 @@ export const saveStagePreferences = (selectedStages: string[]): void => {
   try {
     // SECURITY: Use sessionStorage instead of localStorage
     setStorageItem(STORAGE_KEY, selectedStages, { type: "session" });
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn("Failed to save stage preferences:", error);
   }
 };

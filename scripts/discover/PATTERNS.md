@@ -95,7 +95,7 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
 - `outputPath` is relative to `.claude/state/`
 - Filter test files in `getSourceFiles()`, not in the extractor
 
-**Example:** `scripts/discover/index.ts` lines 24-124
+**Example:** `scripts/discover/index.ts` lines 24-128
 
 ---
 
@@ -119,7 +119,7 @@ Chunked output reduces context usage by allowing Claude to load only needed feat
 ### Writing Chunked Output
 
 ```typescript
-// scripts/discover/utils/output.ts (lines 201-313)
+// scripts/discover/utils/output.ts (lines 198-312)
 export function writeChunkedDiscovery<T>(
   dirName: string,
   generator: string,
@@ -154,7 +154,7 @@ export function writeChunkedDiscovery<T>(
 ### ChunkedManifest Interface
 
 ```typescript
-// scripts/discover/utils/output.ts (lines 171-182)
+// scripts/discover/utils/output.ts (lines 168-190)
 export interface ChunkedManifest {
   status: "complete" | "in_progress" | "error";
   generated_at: string;
@@ -166,6 +166,45 @@ export interface ChunkedManifest {
   chunks: ChunkInfo[];
   file_to_chunks: Record<string, string[]>;     // Critical for incremental updates
 }
+
+export interface ChunkInfo {
+  name: string;
+  file: string;
+  item_count: number;
+  checksum: string;
+  source_files: string[];                       // Files contributing to this chunk
+  source_hashes: Record<string, string>;        // Per-chunk hashes for staleness
+}
+```
+
+### Incremental Chunked Discovery
+
+```typescript
+// scripts/discover/utils/output.ts (lines 576-722)
+export function writeIncrementalChunkedDiscovery<T>(
+  dirName: string,
+  generator: string,
+  sourceGlobs: string[],
+  allSourceFiles: string[],
+  updatedChunks: Map<string, T[]>,
+  fileToChunkMapping: Map<string, string>,
+  existingManifest: ChunkedManifest
+): void {
+  // 1. Only write updated chunk files (stale chunks)
+  // 2. Preserve existing chunk files for fresh chunks
+  // 3. Remove chunk files for deleted chunks
+  // 4. Create merged manifest with updated checksums
+}
+```
+
+### Reading Existing Manifests
+
+```typescript
+// scripts/discover/utils/output.ts (lines 530-556)
+export function readExistingManifest(dirName: string): ChunkedManifest | null {
+  // Returns parsed manifest or null if missing/invalid
+  // Validates required incremental fields (chunks, source_hashes, file_to_chunks)
+}
 ```
 
 **Key points:**
@@ -173,6 +212,8 @@ export interface ChunkedManifest {
 - `file_to_chunks` enables O(1) lookup of which chunks need updating
 - Chunk checksums allow verification without reading full content
 - Manifest is written last to ensure chunks exist first
+- `writeIncrementalChunkedDiscovery` merges with existing manifest for partial updates
+- `readExistingManifest` validates manifest before incremental operations
 
 ---
 
@@ -206,7 +247,7 @@ export function buildSourceHashes(filePaths: string[]): Record<string, string> {
 ### Stale Chunk Detection
 
 ```typescript
-// scripts/discover/utils/output.ts (lines 399-524)
+// scripts/discover/utils/output.ts (lines 398-521)
 export function getStaleChunks(
   dirName: string,
   currentSourceFiles: string[],
@@ -252,7 +293,7 @@ ts-morph provides type-safe AST traversal for extracting code metadata.
 ### Singleton Project
 
 ```typescript
-// scripts/discover/utils/project.ts (lines 8-33)
+// scripts/discover/utils/project.ts (lines 9-34)
 class DiscoveryProject {
   private static instance: Project;
 
@@ -273,7 +314,7 @@ export const project = DiscoveryProject.getInstance();
 ### Extractor Implementation
 
 ```typescript
-// scripts/discover/extractors/components.ts (lines 117-260)
+// scripts/discover/extractors/components.ts (lines 122-271)
 export async function extractComponents(onlyChunks?: Set<string>): Promise<void> {
   // 1. Get source files (cached by singleton)
   const sourceFiles = project.addSourceFilesAtPaths("src/atomic-crm/**/*.tsx");
@@ -313,7 +354,7 @@ export async function extractComponents(onlyChunks?: Set<string>): Promise<void>
 ### Feature-Based Chunk Grouping
 
 ```typescript
-// scripts/discover/extractors/components.ts (lines 25-33)
+// scripts/discover/extractors/components.ts (lines 30-38)
 function extractFeatureName(relativePath: string): string {
   const match = relativePath.match(/^src\/atomic-crm\/([^/]+)\//);
   if (match) return match[1];  // src/atomic-crm/contacts/... → "contacts"
@@ -324,7 +365,7 @@ function extractFeatureName(relativePath: string): string {
 ### Test File Filtering
 
 ```typescript
-// scripts/discover/extractors/hooks.ts (lines 162-164)
+// scripts/discover/extractors/hooks.ts (lines 155-161)
 if (filePath.includes("node_modules") ||
     filePath.includes(".test.") ||
     filePath.includes(".spec.")) {
@@ -349,7 +390,7 @@ Ollama generates embeddings, LanceDB stores them for similarity search.
 ### Ollama Client
 
 ```typescript
-// scripts/discover/embeddings/ollama.ts (lines 15-33)
+// scripts/discover/embeddings/ollama.ts (lines 15-29)
 const OLLAMA_BASE_URL = process.env.OLLAMA_URL ?? "http://localhost:11434";
 const DEFAULT_MODEL = "nomic-embed-8k";    // 8192 context for larger chunks
 const FALLBACK_MODEL = "nomic-embed-text"; // Standard 2048 context
@@ -360,6 +401,7 @@ interface OllamaEmbeddingRequest {
   prompt: string;  // API uses "prompt" NOT "input" (OpenAI difference)
 }
 
+// scripts/discover/embeddings/ollama.ts (lines 62-129)
 export async function generateEmbedding(text: string): Promise<number[]> {
   const response = await fetch(`${OLLAMA_BASE_URL}/api/embeddings`, {
     method: "POST",
@@ -377,7 +419,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 ### LanceDB Vector Store
 
 ```typescript
-// scripts/discover/embeddings/lancedb.ts (lines 29-102, 168-210)
+// scripts/discover/embeddings/lancedb.ts (lines 29-30, 83-99)
 let db: lancedb.Connection | null = null;
 
 async function getConnection(): Promise<lancedb.Connection> {
@@ -389,6 +431,7 @@ async function getConnection(): Promise<lancedb.Connection> {
   return db;
 }
 
+// scripts/discover/embeddings/lancedb.ts (lines 162-204)
 export async function upsertPoints(points: UpsertPoint[]): Promise<void> {
   const conn = await getConnection();
 
@@ -421,11 +464,31 @@ export async function upsertPoints(points: UpsertPoint[]): Promise<void> {
 ### Distance-to-Score Conversion
 
 ```typescript
-// scripts/discover/embeddings/lancedb.ts (lines 220-222)
+// scripts/discover/embeddings/lancedb.ts (lines 214-216)
 function distanceToScore(distance: number): number {
   // LanceDB cosine distance: 0 (identical) to 2 (opposite)
   // Qdrant-compatible score: -1 (opposite) to 1 (identical)
   return 1 - distance / 2;
+}
+```
+
+### Filtered Vector Search
+
+```typescript
+// scripts/discover/embeddings/lancedb.ts (lines 293-339)
+export async function searchByType(
+  queryVector: number[],
+  type: string,
+  limit: number = 10
+): Promise<SearchResult[]> {
+  const table = await conn.openTable(TABLE_NAME);
+  const results = await table
+    .vectorSearch(queryVector)
+    .distanceType("cosine")
+    .where(`type = '${type}'`)  // SQL-like filter syntax
+    .limit(limit)
+    .toArray();
+  // ... convert to SearchResult format
 }
 ```
 
@@ -434,6 +497,7 @@ function distanceToScore(distance: number): number {
 - No batch endpoint - sequential calls with retry logic
 - LanceDB stores as files in `.claude/state/vectors.lance/`
 - `mergeInsert("id")` enables idempotent upserts
+- `searchByType` allows filtering results by code element type (component, function, hook, etc.)
 
 ---
 
@@ -446,7 +510,7 @@ SCIP provides IDE-quality symbol navigation (go-to-definition, find-references).
 ### Loading SCIP Index
 
 ```typescript
-// scripts/discover/scip/query.ts (lines 48-59)
+// scripts/discover/scip/query.ts (lines 48-51)
 import { scip } from "@sourcegraph/scip-typescript/dist/src/scip.js";
 
 export async function loadIndex(indexPath: string): Promise<Index> {
@@ -472,7 +536,7 @@ scip-typescript npm atomic-crm 0.1.0 src/components/ContactList.tsx/ContactList.
 ### Symbol Roles Bitmask
 
 ```typescript
-// scripts/discover/scip/parser.ts (lines 25-33)
+// scripts/discover/scip/parser.ts (lines 26-33)
 export const SymbolRoles = {
   Definition: 1,        // 0b0001
   Import: 2,            // 0b0010
@@ -623,9 +687,9 @@ When adding a new extractor to the discovery system:
 
 | Pattern | Primary Files |
 |---------|---------------|
-| **A: Extractor Interface** | `index.ts:15-124` |
-| **B: Chunked Output** | `utils/output.ts:171-313` |
-| **C: Staleness Detection** | `utils/output.ts:40-55, 319-524` |
-| **D: AST Extraction** | `utils/project.ts:8-33`, `extractors/*.ts` |
-| **E: Embedding Pipeline** | `embeddings/ollama.ts:15-33`, `embeddings/lancedb.ts:29-222` |
-| **F: SCIP Integration** | `scip/query.ts:48-59`, `scip/parser.ts:25-123` |
+| **A: Extractor Interface** | `index.ts:15-128` |
+| **B: Chunked Output** | `utils/output.ts:168-312, 530-556, 576-722` |
+| **C: Staleness Detection** | `utils/output.ts:40-55, 318-521` |
+| **D: AST Extraction** | `utils/project.ts:9-34`, `extractors/*.ts` |
+| **E: Embedding Pipeline** | `embeddings/ollama.ts:15-129`, `embeddings/lancedb.ts:29-339` |
+| **F: SCIP Integration** | `scip/query.ts:48-51`, `scip/parser.ts:26-123` |

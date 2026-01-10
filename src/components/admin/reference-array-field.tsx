@@ -79,14 +79,6 @@ export const ReferenceArrayField = <
     source,
     queryOptions,
     render,
-    // Filter out React Admin-specific props that shouldn't be passed to child components
-    label: _label,
-    sortable: _sortable,
-    sortBy: _sortBy,
-    textAlign: _textAlign,
-    rowClassName: _rowClassName,
-    cellClassName: _cellClassName,
-    headerClassName: _headerClassName,
     ...rest
   } = props;
   return (
@@ -98,7 +90,8 @@ export const ReferenceArrayField = <
       resource={resource}
       sort={sort}
       source={source}
-      queryOptions={queryOptions}
+      // Type assertion needed due to React Query version mismatch between ra-core and @tanstack/react-query
+      queryOptions={queryOptions as Parameters<typeof ReferenceArrayFieldBase>[0]["queryOptions"]}
       render={render}
     >
       <PureReferenceArrayFieldView {...rest} />
@@ -152,9 +145,7 @@ export const ReferenceArrayFieldView = (props: ReferenceArrayFieldViewProps) => 
           (total == null &&
             hasPreviousPage === false &&
             hasNextPage === false &&
-            // @ts-expect-error FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-            data.length === 0 &&
-            // the user didn't set any filters
+            (data?.length ?? 0) === 0 &&
             !Object.keys(filterValues).length)) &&
         empty !== false ? (
         empty

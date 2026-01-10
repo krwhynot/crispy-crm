@@ -121,7 +121,7 @@ const toLocaleStringSupportsLocales = (() => {
   // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
   try {
     new Date().toLocaleString("i");
-  } catch (error) {
+  } catch (error: unknown) {
     return error instanceof RangeError;
   }
   return false;

@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-08T12:14:57.301Z",
+  "generated_at": "2026-01-10T23:36:08.395Z",
   "item_count": 10,
   "items": [
     {
@@ -67,7 +67,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 198,
+      "line": 227,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -80,7 +80,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 251,
+      "line": 309,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -93,7 +93,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 429,
+      "line": 516,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -156,7 +156,7 @@
     {
       "name": "activityDisplayTypeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 465,
+      "line": 552,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [],
@@ -167,7 +167,7 @@
     {
       "name": "activityOutcomeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 513,
+      "line": 600,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -185,7 +185,7 @@
     {
       "name": "quickLogFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 531,
+      "line": 618,
       "schemaType": "object",
       "fields": [
         {
@@ -297,7 +297,9 @@
           "hasDefault": false
         }
       ],
-      "relatedSchemas": [],
+      "relatedSchemas": [
+        "quickLogFormPropsSchema"
+      ],
       "validationFunctions": [],
       "hasTransforms": true,
       "hasSuperRefine": true

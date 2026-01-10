@@ -8,29 +8,29 @@
  * Provides enhanced error handling and progress indicators.
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const TYPES_OUTPUT = path.join(__dirname, '..', 'src', 'types', 'database.generated.ts');
+const TYPES_OUTPUT = path.join(__dirname, "..", "src", "types", "database.generated.ts");
 const TYPES_DIR = path.dirname(TYPES_OUTPUT);
-const MIGRATION_HASH_FILE = path.join(__dirname, '..', '.migration-hash');
-const MIGRATIONS_DIR = path.join(__dirname, '..', 'supabase', 'migrations');
+const MIGRATION_HASH_FILE = path.join(__dirname, "..", ".migration-hash");
+const MIGRATIONS_DIR = path.join(__dirname, "..", "supabase", "migrations");
 
 // Ensure types directory exists
 if (!fs.existsSync(TYPES_DIR)) {
   fs.mkdirSync(TYPES_DIR, { recursive: true });
-  console.log('✓ Created types directory');
+  console.log("✓ Created types directory");
 }
 
 /**
  * Progress indicator for long-running operations
  */
 class ProgressIndicator {
-  constructor(message = 'Processing') {
+  constructor(message = "Processing") {
     this.message = message;
     this.interval = null;
     this.frame = 0;
-    this.frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+    this.frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
   }
 
   start() {
@@ -44,7 +44,7 @@ class ProgressIndicator {
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = null;
-      process.stdout.write('\r' + ' '.repeat(50) + '\r'); // Clear line
+      process.stdout.write("\r" + " ".repeat(50) + "\r"); // Clear line
       if (successMessage) {
         console.log(successMessage);
       }
@@ -59,14 +59,15 @@ class ProgressIndicator {
 function calculateMigrationHash() {
   try {
     if (!fs.existsSync(MIGRATIONS_DIR)) {
-      return '';
+      return "";
     }
 
-    const files = fs.readdirSync(MIGRATIONS_DIR)
-      .filter(f => f.endsWith('.sql'))
+    const files = fs
+      .readdirSync(MIGRATIONS_DIR)
+      .filter((f) => f.endsWith(".sql"))
       .sort();
 
-    let content = '';
+    let content = "";
     for (const file of files) {
       const filePath = path.join(MIGRATIONS_DIR, file);
       const stat = fs.statSync(filePath);
@@ -75,11 +76,11 @@ function calculateMigrationHash() {
     }
 
     // Simple hash using Node's built-in crypto
-    const crypto = require('crypto');
-    return crypto.createHash('sha256').update(content).digest('hex');
+    const crypto = require("crypto");
+    return crypto.createHash("sha256").update(content).digest("hex");
   } catch (error) {
-    console.warn('⚠ Could not calculate migration hash:', error.message);
-    return '';
+    console.warn("⚠ Could not calculate migration hash:", error.message);
+    return "";
   }
 }
 
@@ -94,7 +95,7 @@ function haveMigrationsChanged() {
     return true;
   }
 
-  const storedHash = fs.readFileSync(MIGRATION_HASH_FILE, 'utf-8').trim();
+  const storedHash = fs.readFileSync(MIGRATION_HASH_FILE, "utf-8").trim();
   return currentHash !== storedHash;
 }
 
@@ -117,32 +118,28 @@ function validateGeneratedTypes(content) {
 
   // Check for required tables (migrated from companies to organizations)
   const requiredTables = [
-    'organizations', // renamed from companies
-    'contacts',
-    'opportunities', // renamed from deals
-    'tasks',
-    'tags',
-    'sales',
-    'contactNotes',
-    'opportunityNotes', // renamed from dealNotes
-    'contact_organizations', // junction table
-    'opportunity_contacts'   // junction table
+    "organizations", // renamed from companies
+    "contacts",
+    "opportunities", // renamed from deals
+    "tasks",
+    "tags",
+    "sales",
+    "contactNotes",
+    "opportunityNotes", // renamed from dealNotes
+    "contact_organizations", // junction table
+    "opportunity_contacts", // junction table
   ];
 
   // Check for required views
   const requiredViews = [
-    'organizations_summary',
-    'contacts_summary',
-    'opportunities_summary',
-    'init_state'
+    "organizations_summary",
+    "contacts_summary",
+    "opportunities_summary",
+    "init_state",
   ];
 
   // Check for required enums
-  const requiredEnums = [
-    'organization_type',
-    'opportunity_stage',
-    'opportunity_pipeline'
-  ];
+  const requiredEnums = ["organization_type", "opportunity_stage", "opportunity_pipeline"];
 
   // Extract tables from generated content
   const tablesMatch = content.match(/Tables:\s*{([^}]+)}/s);
@@ -157,7 +154,7 @@ function validateGeneratedTypes(content) {
       }
     }
   } else {
-    errors.push('Generated types do not contain Tables section');
+    errors.push("Generated types do not contain Tables section");
   }
 
   if (viewsMatch) {
@@ -180,13 +177,16 @@ function validateGeneratedTypes(content) {
 
   // Check for expected column types in key tables
   const columnChecks = [
-    { table: 'organizations', columns: ['organization_type', 'parent_company_id', 'priority', 'sector'] },
-    { table: 'opportunities', columns: ['pipeline', 'stage', 'probability', 'priority'] },
-    { table: 'contacts', columns: ['email_jsonb', 'phone_jsonb', 'gender'] }
+    {
+      table: "organizations",
+      columns: ["organization_type", "parent_company_id", "priority", "sector"],
+    },
+    { table: "opportunities", columns: ["pipeline", "stage", "probability", "priority"] },
+    { table: "contacts", columns: ["email_jsonb", "phone_jsonb", "gender"] },
   ];
 
   for (const check of columnChecks) {
-    const tableRegex = new RegExp(`${check.table}:\\s*{[^}]*Row:\\s*{([^}]+)}`, 's');
+    const tableRegex = new RegExp(`${check.table}:\\s*{[^}]*Row:\\s*{([^}]+)}`, "s");
     const tableMatch = content.match(tableRegex);
 
     if (tableMatch) {
@@ -200,7 +200,7 @@ function validateGeneratedTypes(content) {
   }
 
   // Check for backward compatibility views (should NOT exist after migration)
-  const deprecatedViews = ['companies', 'deals'];
+  const deprecatedViews = ["companies", "deals"];
   if (viewsMatch) {
     const viewsContent = viewsMatch[1];
     for (const view of deprecatedViews) {
@@ -217,13 +217,14 @@ function validateGeneratedTypes(content) {
  * Get project ID from environment with validation
  */
 function getProjectId() {
-  const projectId = process.env.VITE_SUPABASE_URL?.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1] ||
-                   process.env.SUPABASE_PROJECT_ID;
+  const projectId =
+    process.env.VITE_SUPABASE_URL?.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1] ||
+    process.env.SUPABASE_PROJECT_ID;
 
   if (!projectId) {
     throw new Error(
-      'Project ID not found. Please set VITE_SUPABASE_URL or SUPABASE_PROJECT_ID environment variable.\n' +
-      'Example: VITE_SUPABASE_URL=https://your-project.supabase.co'
+      "Project ID not found. Please set VITE_SUPABASE_URL or SUPABASE_PROJECT_ID environment variable.\n" +
+        "Example: VITE_SUPABASE_URL=https://your-project.supabase.co"
     );
   }
 
@@ -237,7 +238,7 @@ async function generateTypesWithMCP() {
   const projectId = getProjectId();
 
   // Show progress indicator for network operations
-  const progress = new ProgressIndicator('Generating types from database schema');
+  const progress = new ProgressIndicator("Generating types from database schema");
 
   progress.start();
 
@@ -245,7 +246,7 @@ async function generateTypesWithMCP() {
   // For now, we'll use a placeholder that demonstrates the expected behavior
   const typesContent = await callMCPGenerateTypes(projectId);
 
-  progress.stop('✓ Types generated successfully from database');
+  progress.stop("✓ Types generated successfully from database");
 
   return typesContent;
 }
@@ -260,7 +261,7 @@ async function callMCPGenerateTypes(projectId) {
   // return result.types;
 
   // For now, simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
   // Return a minimal valid TypeScript types structure for testing
   return `export type Database = {
@@ -390,7 +391,6 @@ export type Tables<T extends keyof Database['public']['Tables']> = Database['pub
 export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]`;
 }
 
-
 /**
  * Generate types from Supabase using MCP tools
  */
@@ -400,11 +400,11 @@ async function generateTypes(options = {}) {
   try {
     // Check if generation is needed (preserve hash logic)
     if (!force && !haveMigrationsChanged() && fs.existsSync(TYPES_OUTPUT)) {
-      console.log('ℹ Types are up to date, skipping generation');
+      console.log("ℹ Types are up to date, skipping generation");
       return true;
     }
 
-    console.log('ℹ Generating TypeScript types from Supabase schema using MCP...');
+    console.log("ℹ Generating TypeScript types from Supabase schema using MCP...");
 
     // Generate types using MCP
     const output = await generateTypesWithMCP();
@@ -413,13 +413,15 @@ async function generateTypes(options = {}) {
     const validation = validateGeneratedTypes(output);
 
     if (validation.errors.length > 0) {
-      console.error('\n❌ Schema validation errors detected:');
-      validation.errors.forEach(error => console.error(`  • ${error}`));
-      console.error('\n⚠️  Schema drift detected! The database schema does not match expected structure.');
-      console.error('  This may indicate:');
-      console.error('  1. Migrations have not been applied');
-      console.error('  2. Database is out of sync');
-      console.error('  3. Using wrong Supabase instance');
+      console.error("\n❌ Schema validation errors detected:");
+      validation.errors.forEach((error) => console.error(`  • ${error}`));
+      console.error(
+        "\n⚠️  Schema drift detected! The database schema does not match expected structure."
+      );
+      console.error("  This may indicate:");
+      console.error("  1. Migrations have not been applied");
+      console.error("  2. Database is out of sync");
+      console.error("  3. Using wrong Supabase instance");
 
       if (!skipValidation) {
         process.exit(1);
@@ -427,8 +429,8 @@ async function generateTypes(options = {}) {
     }
 
     if (validation.warnings.length > 0) {
-      console.warn('\n⚠️  Schema validation warnings:');
-      validation.warnings.forEach(warning => console.warn(`  • ${warning}`));
+      console.warn("\n⚠️  Schema validation warnings:");
+      validation.warnings.forEach((warning) => console.warn(`  • ${warning}`));
     }
 
     // Add header comment to generated file (preserve from original)
@@ -450,16 +452,15 @@ async function generateTypes(options = {}) {
     // Save migration hash (preserve from original)
     saveMigrationHash();
 
-    console.log('✓ Types generated successfully at:', TYPES_OUTPUT);
+    console.log("✓ Types generated successfully at:", TYPES_OUTPUT);
 
     if (validation.errors.length === 0 && validation.warnings.length === 0) {
-      console.log('✅ All schema validations passed!');
+      console.log("✅ All schema validations passed!");
     }
 
     return true;
-
   } catch (error) {
-    console.error('✗ Failed to generate types:', error.message);
+    console.error("✗ Failed to generate types:", error.message);
     throw error;
   }
 }
@@ -471,12 +472,12 @@ async function main() {
   const args = process.argv.slice(2);
 
   const options = {
-    force: args.includes('--force'),
-    watch: args.includes('--watch'),
-    skipValidation: args.includes('--skip-validation')
+    force: args.includes("--force"),
+    watch: args.includes("--watch"),
+    skipValidation: args.includes("--skip-validation"),
   };
 
-  if (args.includes('--help')) {
+  if (args.includes("--help")) {
     console.log(`
 MCP Type Generation Script
 ==========================
@@ -510,7 +511,7 @@ Examples:
   }
 
   if (options.watch) {
-    console.log('ℹ Watching for migration changes...');
+    console.log("ℹ Watching for migration changes...");
 
     // Initial generation
     await generateTypes(options);
@@ -518,16 +519,16 @@ Examples:
     // Watch for changes
     if (fs.existsSync(MIGRATIONS_DIR)) {
       fs.watch(MIGRATIONS_DIR, { recursive: true }, async (eventType, filename) => {
-        if (filename && filename.endsWith('.sql')) {
-          console.log('ℹ Migration changed:', filename);
+        if (filename && filename.endsWith(".sql")) {
+          console.log("ℹ Migration changed:", filename);
           await generateTypes({ ...options, force: true });
         }
       });
 
-      console.log('✓ Watching migrations directory for changes...');
-      console.log('Press Ctrl+C to stop');
+      console.log("✓ Watching migrations directory for changes...");
+      console.log("Press Ctrl+C to stop");
     } else {
-      console.warn('⚠ Migrations directory not found, cannot watch');
+      console.warn("⚠ Migrations directory not found, cannot watch");
     }
   } else {
     // Single run
@@ -537,15 +538,15 @@ Examples:
 }
 
 // Handle errors gracefully
-process.on('unhandledRejection', (error) => {
-  console.error('✗ Unhandled error:', error);
+process.on("unhandledRejection", (error) => {
+  console.error("✗ Unhandled error:", error);
   process.exit(1);
 });
 
 // Run if executed directly
 if (require.main === module) {
-  main().catch(error => {
-    console.error('✗ Execution failed:', error);
+  main().catch((error) => {
+    console.error("✗ Execution failed:", error);
     process.exit(1);
   });
 }

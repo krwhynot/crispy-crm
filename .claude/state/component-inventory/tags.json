@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-08T12:14:50.376Z",
+  "generated_at": "2026-01-10T23:35:59.790Z",
   "item_count": 7,
   "items": [
     {
@@ -70,7 +70,8 @@
       "hooks": [
         "useEffect",
         "useForm",
-        "useMemo"
+        "useMemo",
+        "useWatch"
       ],
       "imports": [
         "../types",
@@ -96,7 +97,9 @@
         "RoundButton",
         "CreateTagInput"
       ],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
       "componentRole": "wrapper"
     },
     {

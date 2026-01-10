@@ -1,7 +1,10 @@
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { BulkExportButton } from "@/components/admin/bulk-export-button";
 import { BulkDeleteButton } from "@/components/admin/bulk-delete-button";
-import { ContactBulkReassignButton } from "./ContactBulkReassignButton";
+import { BulkReassignButton } from "@/components/admin/bulk-reassign-button";
+import { contactKeys } from "../queryKeys";
+import { formatName } from "@/atomic-crm/utils/formatName";
+import type { Contact } from "../types";
 
 /**
  * ContactBulkActionsToolbar - Custom bulk actions for the Contacts list
@@ -16,7 +19,12 @@ import { ContactBulkReassignButton } from "./ContactBulkReassignButton";
 export const ContactBulkActionsToolbar = () => {
   return (
     <BulkActionsToolbar>
-      <ContactBulkReassignButton />
+      <BulkReassignButton<Contact>
+        resource="contacts"
+        queryKeys={contactKeys}
+        itemDisplayName={(contact) => formatName(contact.first_name, contact.last_name)}
+        itemSubtitle={(contact) => contact.title || "No title"}
+      />
       <BulkExportButton />
       <BulkDeleteButton />
     </BulkActionsToolbar>

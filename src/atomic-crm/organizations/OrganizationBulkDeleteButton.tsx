@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
+import { useRelatedRecordCounts } from "../hooks/useRelatedRecordCounts";
 import type { OrganizationWithHierarchy } from "../types";
 
 /**
@@ -18,9 +19,12 @@ import type { OrganizationWithHierarchy } from "../types";
  * Prevents deletion of organizations with child branches by checking
  * child_branch_count before allowing the delete operation.
  *
+ * FIX [WF-C06]: Now shows related record counts (Contacts, Opportunities, etc.)
+ * in the delete confirmation dialog before user confirms.
+ *
  * Behavior:
  * - If any selected org has children: button disabled + warning toast on click
- * - If all selected orgs deletable: shows confirmation dialog
+ * - If all selected orgs deletable: shows confirmation dialog with cascade warning
  * - DB trigger (check_parent_deletion) remains as defense-in-depth
  */
 export const OrganizationBulkDeleteButton = () => {
@@ -30,6 +34,15 @@ export const OrganizationBulkDeleteButton = () => {
   const notify = useNotify();
   const refresh = useRefresh();
   const resource = useResourceContext();
+
+  // FIX [WF-C06]: Fetch related record counts when dialog is open
+  // Filter out undefined values and cast to Identifier[] for type safety
+  const validIds = (selectedIds ?? []).filter((id): id is number => id !== undefined);
+  const { relatedCounts, isLoading: isLoadingRelated } = useRelatedRecordCounts({
+    resource: "organizations",
+    ids: validIds,
+    enabled: showConfirm, // Only fetch when dialog is visible
+  });
 
   // Find parent organizations (orgs with children)
   const selectedOrgs = data?.filter((org) => selectedIds?.includes(org.id)) ?? [];
@@ -41,12 +54,12 @@ export const OrganizationBulkDeleteButton = () => {
 
     if (hasParentOrgs) {
       // Show warning toast - block all deletions if any have children
-      notify(
-        parentOrgs.length === 1
-          ? `Cannot delete "${parentOrgs[0].name}" - it has ${parentOrgs[0].child_branch_count} branch(es). Remove branches first.`
-          : `Cannot delete ${parentOrgs.length} organizations with branches. Remove their branches first.`,
-        { type: "warning" }
-      );
+      const firstParent = parentOrgs[0];
+      const message =
+        parentOrgs.length === 1 && firstParent !== undefined
+          ? `Cannot delete "${String(firstParent.name)}" - it has ${firstParent.child_branch_count ?? 0} branch(es). Remove branches first.`
+          : `Cannot delete ${parentOrgs.length} organizations with branches. Remove their branches first.`;
+      notify(message, { type: "warning" });
       return;
     }
 
@@ -98,10 +111,12 @@ export const OrganizationBulkDeleteButton = () => {
       </Button>
       <DeleteConfirmDialog
         open={showConfirm}
-        count={selectedIds.length}
+        count={selectedIds?.length ?? 0}
         resourceName={resource ?? "organizations"}
         onConfirm={handleConfirmDelete}
         onCancel={() => setShowConfirm(false)}
+        relatedRecords={relatedCounts}
+        isLoadingRelated={isLoadingRelated}
       />
     </>
   );

@@ -397,6 +397,10 @@ docker stop container_that_doesnt_exist
 echo "Never reached"
 ```
 
+**Current Status:**
+- `supabase-docker.sh` - Has `set -e` (compliant)
+- `monitor-resources.sh` - **Missing `set -e`** (known issue) - Script is an infinite monitoring loop where fail-fast behavior is less critical since errors in display functions should not terminate the dashboard
+
 ### 2. No Confirmation on Destructive Operations
 
 ```bash

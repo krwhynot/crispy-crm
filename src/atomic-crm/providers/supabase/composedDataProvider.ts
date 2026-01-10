@@ -37,6 +37,7 @@ import {
   createNotificationsHandler,
 } from "./handlers";
 import { applySearchParams, getDatabaseResource } from "./dataProviderUtils";
+import { supportsSoftDelete } from "./resources";
 
 /**
  * List of resources with composed handlers
@@ -180,16 +181,33 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
       resource: string,
       params: Parameters<DataProvider["getMany"]>[1]
     ) => {
+      // FIX [SF-C09]: Use database view for getMany to ensure soft-deleted records are filtered
+      // Views like contacts_summary already exclude deleted_at IS NOT NULL records
+      const dbResource = getDatabaseResource(resource, "list");
       const provider = getProviderForResource(resource);
-      return provider.getMany<RecordType>(resource, params);
+      return provider.getMany<RecordType>(dbResource, params);
     },
 
     getManyReference: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: Parameters<DataProvider["getManyReference"]>[1]
     ) => {
+      // FIX [SF-C09]: Apply soft delete filter to getManyReference
+      // Adds deleted_at@is: null filter for resources with soft delete support
+      const needsSoftDeleteFilter = supportsSoftDelete(resource) && !params.filter?.includeDeleted;
+
+      const processedParams = needsSoftDeleteFilter
+        ? {
+            ...params,
+            filter: {
+              ...params.filter,
+              "deleted_at@is": null,
+            },
+          }
+        : params;
+
       const provider = getProviderForResource(resource);
-      return provider.getManyReference<RecordType>(resource, params);
+      return provider.getManyReference<RecordType>(resource, processedParams);
     },
 
     create: async <RecordType extends RaRecord = RaRecord>(

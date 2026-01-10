@@ -109,7 +109,7 @@ describe("OpportunityEdit - Cache Invalidation", () => {
     const onSuccess = async () => {
       try {
         await mockQueryClient.invalidateQueries({ queryKey: ["opportunities"] } as any);
-      } catch (error) {
+      } catch (error: unknown) {
         // Silently handle cache errors - the update was successful
         console.warn("Cache invalidation failed:", error);
       }

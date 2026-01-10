@@ -1,6 +1,29 @@
 import { useEffect, useState, useContext, createContext } from "react";
 import { useDataProvider } from "react-admin";
 import { supabase } from "@/atomic-crm/providers/supabase/supabase";
+import { devLog } from "@/lib/devLogger";
+
+/**
+ * ERR-003: Structured error categorization for sale queries
+ * Replaces fragile string matching with explicit error codes
+ */
+interface SaleQueryError {
+  code: "NOT_FOUND" | "UNAUTHORIZED" | "UNKNOWN";
+  message: string;
+}
+
+function categorizeError(error: unknown): SaleQueryError {
+  if (error instanceof Error) {
+    if (error.message.includes("not found") || error.message.includes("No rows")) {
+      return { code: "NOT_FOUND", message: error.message };
+    }
+    if (error.message.includes("unauthorized") || error.message.includes("permission")) {
+      return { code: "UNAUTHORIZED", message: error.message };
+    }
+    return { code: "UNKNOWN", message: error.message };
+  }
+  return { code: "UNKNOWN", message: String(error) };
+}
 
 /**
  * CurrentSaleContext for session-level caching
@@ -47,8 +70,21 @@ export function useCurrentSale() {
   // but only use its result when context is unavailable
   const directResult = useCurrentSaleDirect();
 
-  // If context is available and not in error state, use it
-  if (context && !context.error?.message?.includes("not found")) {
+  // ERR-003 FIX: Use structured error categorization instead of fragile string matching
+  // If context is available and has a non-404 error, return it with the error
+  if (context && context.error) {
+    const categorized = categorizeError(context.error);
+    if (categorized.code !== "NOT_FOUND") {
+      return {
+        salesId: context.salesId,
+        loading: context.loading,
+        error: context.error,
+      };
+    }
+  }
+
+  // If context is available with no error, use it
+  if (context && !context.error) {
     return {
       salesId: context.salesId,
       loading: context.loading,
@@ -119,7 +155,7 @@ function useCurrentSaleDirect() {
 
             // Debug logging for B1 filtering investigation
             if (import.meta.env.DEV) {
-              console.log("[useCurrentSale] Found sales record:", {
+              devLog("useCurrentSale", "Found sales record", {
                 salesId: sale.id,
                 hasUserId: !!sale.user_id,
                 email: sale.email,
@@ -135,16 +171,19 @@ function useCurrentSaleDirect() {
           } else {
             // Debug logging when no sales record found
             if (import.meta.env.DEV) {
-              console.log("[useCurrentSale] No sales record found for user:", {
+              devLog("useCurrentSale", "No sales record found for user", {
                 userId: user.id,
                 email: user.email,
               });
             }
           }
         }
-      } catch (err) {
-        console.error("Failed to fetch sales ID:", err);
-        if (isMounted) setError(err as Error);
+      } catch (error: unknown) {
+        console.error(
+          "Failed to fetch sales ID:",
+          error instanceof Error ? error.message : String(error)
+        );
+        if (isMounted) setError(error instanceof Error ? error : new Error(String(error)));
       } finally {
         if (isMounted) setLoading(false);
       }

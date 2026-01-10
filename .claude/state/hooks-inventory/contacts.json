@@ -1,7 +1,7 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-08T12:14:56.910Z",
-  "item_count": 4,
+  "generated_at": "2026-01-10T23:36:07.969Z",
+  "item_count": 8,
   "items": [
     {
       "name": "useColumnMapping",
@@ -18,7 +18,7 @@
     {
       "name": "useContactImport",
       "file": "src/atomic-crm/contacts/useContactImport.tsx",
-      "line": 31,
+      "line": 65,
       "parameters": [],
       "returnType": "(batch: ContactImportSchema[], options?: ImportOptions) => Promise<ImportResult>",
       "dependencies": [
@@ -26,6 +26,58 @@
         "useDataProvider",
         "useGetIdentity",
         "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useContactImportParser",
+      "file": "src/atomic-crm/contacts/useContactImportParser.ts",
+      "line": 49,
+      "parameters": [
+        "{ wizardActions, setRawData }"
+      ],
+      "returnType": "{ previewImporter: { state: \"idle\"; } | { state: \"parsing\"; } | { state: \"running\" | \"complete\"; rowCount: number; importCount: number; errorCount: number; remainingTime: number | null; } | { state: \"error\"; error: Error; }; parseCsv: (file: File) => void; reset: () => void; }",
+      "dependencies": [
+        "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useContactImportPreview",
+      "file": "src/atomic-crm/contacts/useContactImportPreview.ts",
+      "line": 57,
+      "parameters": [
+        "{\n  wizardState,\n  hasColumnData,\n  reprocessedContacts,\n  mergedMappings,\n  rawHeaders,\n  userOverrides,\n}"
+      ],
+      "returnType": "PreviewData",
+      "dependencies": [],
+      "isReact19Action": false
+    },
+    {
+      "name": "useContactImportProcessor",
+      "file": "src/atomic-crm/contacts/useContactImportProcessor.ts",
+      "line": 45,
+      "parameters": [
+        "{\n  wizardState,\n  wizardActions,\n  isAborted,\n}"
+      ],
+      "returnType": "{ processBatch: (batch: ContactImportSchema[], dataQualityDecisions: DataQualityDecisions) => Promise<void>; handlePreviewContinue: (decisions: DataQualityDecisions, contacts: ContactImportSchema[]) => Promise<void>; }",
+      "dependencies": [
+        "useCallback",
+        "useContactImport",
+        "useRefresh"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useContactImportUpload",
+      "file": "src/atomic-crm/contacts/useContactImportUpload.ts",
+      "line": 33,
+      "parameters": [
+        "{ wizardActions }"
+      ],
+      "returnType": "{ handleFileChange: (file: File | null) => Promise<void>; }",
+      "dependencies": [
+        "useCallback"
       ],
       "isReact19Action": false
     },

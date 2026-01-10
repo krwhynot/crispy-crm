@@ -3,7 +3,7 @@ import { SimpleForm } from "@/components/admin/simple-form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   useDataProvider,
   useEditController,
@@ -37,6 +37,7 @@ export default function SalesEdit() {
 
   // Create service instance using the base data provider
   const salesService = new SalesService(dataProvider);
+  const queryClient = useQueryClient();
 
   const defaultValues = useMemo(() => updateSalesSchema.partial().parse(record), [record]);
 
@@ -49,6 +50,10 @@ export default function SalesEdit() {
       return salesService.salesUpdate(record.id, data);
     },
     onSuccess: () => {
+      // SS-002 FIX: Invalidate sales caches before redirect
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+      queryClient.invalidateQueries({ queryKey: ["sales", "getOne", record?.id] });
+
       redirect("/sales");
       notify("User updated successfully");
     },

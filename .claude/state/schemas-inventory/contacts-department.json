@@ -1,0 +1,31 @@
+{
+  "chunk_name": "contacts-department",
+  "generated_at": "2026-01-10T23:36:08.397Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "contactDepartmentSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-department.ts",
+      "line": 9,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "senior_management",
+        "sales_management",
+        "district_management",
+        "area_sales",
+        "sales_specialist",
+        "sales_support",
+        "procurement"
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "createContactSchema",
+        "importContactSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

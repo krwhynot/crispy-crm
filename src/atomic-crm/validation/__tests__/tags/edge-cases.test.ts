@@ -158,7 +158,7 @@ describe("Tag Edge Cases and Business Rules", () => {
         try {
           tagSchema.parse(data);
           expect.fail("Should have thrown error");
-        } catch (error) {
+        } catch (error: unknown) {
           expect(error).toBeInstanceOf(z.ZodError);
           if (error instanceof z.ZodError) {
             expect(error.issues).toBeDefined();

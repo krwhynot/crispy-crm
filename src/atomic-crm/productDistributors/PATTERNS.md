@@ -57,20 +57,20 @@ Junction tables have composite primary keys (two FKs), but React Admin expects s
 React Admin's `getOne`, `edit`, and `delete` operations pass a single `id` parameter. For junction tables, we need both foreign keys to identify a record.
 
 ```tsx
-// src/atomic-crm/validation/productDistributors.ts
+// src/atomic-crm/services/productDistributors.service.ts
 
-// Parse "123_456" → { product_id: 123, distributor_id: 456 }
+// Parse "123-456" → { product_id: 123, distributor_id: 456 }
 export const parseCompositeId = (id: string): { product_id: number; distributor_id: number } => {
-  const [product_id, distributor_id] = id.split('_').map(Number);
+  const [product_id, distributor_id] = id.split('-').map(Number);
   if (isNaN(product_id) || isNaN(distributor_id)) {
-    throw new Error(`Invalid composite ID format: ${id}. Expected format: product_id_distributor_id`);
+    throw new Error(`Invalid composite ID format: ${id}. Expected format: product_id-distributor_id`);
   }
   return { product_id, distributor_id };
 };
 
 // Create string ID from two FKs
 export const createCompositeId = (product_id: number, distributor_id: number): string => {
-  return `${product_id}_${distributor_id}`;
+  return `${product_id}-${distributor_id}`;
 };
 ```
 
@@ -381,7 +381,7 @@ export default productDistributors;
 
 | Aspect | Junction Table (Many-to-Many) | Direct FK (One-to-Many) |
 |--------|-------------------------------|-------------------------|
-| **ID Format** | Composite (`{fk1}_{fk2}`) | Single integer |
+| **ID Format** | Composite (`{fk1}-{fk2}`) | Single integer |
 | **Create: FK Fields** | Two required, both editable | One required, editable |
 | **Edit: FK Fields** | Both immutable (read-only) | Usually editable |
 | **List Columns** | Two `ReferenceField` columns | One `ReferenceField` column |
@@ -455,11 +455,11 @@ export type ProductDistributorStatus = "pending" | "active" | "inactive";
 
 ```tsx
 // ❌ WRONG: Manual string concatenation
-const id = `${product_id}-${distributor_id}`;
-const [p, d] = id.split('-'); // Fragile, no validation
+const id = `${product_id}_${distributor_id}`;
+const [p, d] = id.split('_'); // Fragile, no validation
 
 // ✅ CORRECT: Use typed helper functions
-import { parseCompositeId, createCompositeId } from './validation/productDistributors';
+import { parseCompositeId, createCompositeId } from './services/productDistributors.service';
 const id = createCompositeId(product_id, distributor_id);
 const { product_id, distributor_id } = parseCompositeId(id);
 ```

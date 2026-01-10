@@ -281,9 +281,12 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           dealsMoved: createMetric(dealsMovedThisWeek, dealsMovedLastWeek),
           openOpportunities: createMetric(openOpportunities, openOpportunitiesLastWeek),
         });
-      } catch (err) {
-        console.error("Failed to fetch performance metrics:", err);
-        setError(err as Error);
+      } catch (error: unknown) {
+        console.error(
+          "Failed to fetch performance metrics:",
+          error instanceof Error ? error.message : String(error)
+        );
+        setError(error instanceof Error ? error : new Error(String(error)));
       } finally {
         setLoading(false);
       }

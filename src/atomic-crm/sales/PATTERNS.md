@@ -92,19 +92,27 @@ export default {
 
 **When to use:** Creating slide-over panels with multiple tabs and view/edit modes.
 
+**Form State Architecture:**
+- **State management:** Simple `useState` (NOT react-hook-form)
+- **Schema usage:** Zod schemas for **defaults only** via `schema.parse({ ...record })`
+- **Validation:** At API boundary (Edge Function or Service layer) - NOT in forms
+- **Rationale:** Per Engineering Constitution "Zod at API boundary only" principle
+
 ```tsx
 // SalesProfileTab.tsx
 interface SalesProfileTabProps {
   record: Sale;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
-export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabProps) {
+export function SalesProfileTab({ record, mode, onModeToggle, onDirtyChange }: SalesProfileTabProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
 
-  // Per Engineering Constitution #5: Form defaults from schema
+  // Form state using useState (NOT react-hook-form)
+  // Schema used for DEFAULTS ONLY - validation happens at API boundary
   const [formData, setFormData] = useState(() =>
     salesProfileSchema.parse({
       first_name: record.first_name,
@@ -114,7 +122,26 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
     })
   );
 
+  // Track errors returned from API (server-side validation)
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Manual dirty tracking (compare current formData with original record)
+  useEffect(() => {
+    if (mode !== "edit" || !onDirtyChange) return;
+    const isDirty = formData.first_name !== record.first_name || /* ... */;
+    onDirtyChange(isDirty);
+  }, [formData, record, mode, onDirtyChange]);
+
+  // Simple field update handler
+  const handleChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => { const newErrors = { ...prev }; delete newErrors[field]; return newErrors; });
+    }
+  };
+
   const handleSave = async () => {
+    // NO client-side validation - Edge Function/Service validates
     // CRITICAL: previousData required by ra-data-postgrest's getChanges()
     await update(
       "sales",
@@ -126,6 +153,9 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
         },
         onError: (error: Error) => {
           notify(error.message || "Failed to update profile", { type: "error" });
+          // Display server-side validation errors if present
+          const errorWithErrors = error as Error & { errors?: Record<string, string> };
+          if (errorWithErrors.errors) setErrors(errorWithErrors.errors);
         },
       }
     );
@@ -140,7 +170,7 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
   const content = (
     <div className="space-y-6">
       {/* View mode: read-only display */}
-      {/* Edit mode: input fields */}
+      {/* Edit mode: input fields with errors[field] display */}
     </div>
   );
 
@@ -158,8 +188,12 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
 ```
 
 **Key points:**
+- **State:** Use `useState` for form data (NOT react-hook-form in tabs)
+- **Defaults:** Use `schema.parse({ ...record })` for initial values only
+- **Validation:** NO client-side validation - API boundary validates
+- **Errors:** Track server-returned errors in separate `useState<Record<string, string>>({})`
+- **Dirty tracking:** Manual comparison with `onDirtyChange` callback
 - Accept `mode` ("view" | "edit") and `onModeToggle` callback as props
-- Use `useState` with schema defaults: `schema.parse({ ...record })`
 - CRITICAL: Always pass `previousData` to `useUpdate()` for ra-data-postgrest
 - Wrap edit content in `<form id="slide-over-edit-form">` for footer integration
 - Call `onModeToggle()` after successful save to return to view mode
@@ -834,6 +868,40 @@ await update("sales", { id: record.id, data: formData });
 await update("sales", { id: record.id, data: formData, previousData: record });
 ```
 
+### 7. Form-Level Validation (Engineering Constitution Violation)
+
+```tsx
+// ❌ WRONG: Client-side Zod validation in form component
+const handleSave = async () => {
+  const result = salesSchema.safeParse(formData);
+  if (!result.success) {
+    setErrors(result.error.flatten().fieldErrors);
+    return; // Duplicates API boundary validation
+  }
+  await update("sales", { id, data: formData, previousData: record });
+};
+```
+
+```tsx
+// ✅ CORRECT: Validation at API boundary only (Edge Function/Service)
+const handleSave = async () => {
+  // NO client-side validation - API boundary validates
+  await update(
+    "sales",
+    { id: record.id, data: formData, previousData: record },
+    {
+      onError: (error: Error) => {
+        // Display server-returned validation errors
+        const errorWithErrors = error as Error & { errors?: Record<string, string> };
+        if (errorWithErrors.errors) setErrors(errorWithErrors.errors);
+      },
+    }
+  );
+};
+```
+
+**Rationale:** Per Engineering Constitution "Zod at API boundary only" - single source of truth for validation. Duplicate validation causes drift and maintenance burden.
+
 ---
 
 ## Migration Checklist
@@ -847,7 +915,7 @@ When creating a new CRUD module based on the Sales pattern:
 5. [ ] Create sidebar filter component using `FilterCategory` and `ToggleFilterButton`
 6. [ ] Create slide-over with `ResourceSlideOver` wrapper and `TabConfig[]`
 7. [ ] Add tab components with View/Edit mode support and `id="slide-over-edit-form"`
-8. [ ] Use Zod schema for form defaults: `schema.parse({ ...record })`
+8. [ ] Use Zod schema for form **defaults only**: `schema.partial().parse({})` - validation at API boundary
 9. [ ] Always pass `previousData` to `useUpdate()` calls
 10. [ ] Register resource in `App.tsx` or router configuration
 11. [ ] Verify TypeScript compiles: `npx tsc --noEmit`
@@ -864,10 +932,17 @@ When creating a new CRUD module based on the Sales pattern:
 | `resource.tsx` | Resource config, lazy loading | A, H |
 | `index.tsx` | Entry point, re-exports | H |
 | `SalesList.tsx` | List view, identity loading | E |
+| `SalesCreate.tsx` | Create form with RBAC guard | A, E |
+| `SalesEdit.tsx` | Edit form with useEditController | A |
+| `SalesShow.tsx` | Show view with ShowBase | A |
+| `SalesInputs.tsx` | Tabbed form wrapper (General + Permissions) | B |
 | `SalesSlideOver.tsx` | Slide-over panel | D |
 | `SalesProfileTab.tsx` | Profile editing tab | B |
 | `SalesPermissionsTab.tsx` | Permissions management | B, F |
+| `SalesGeneralTab.tsx` | General form inputs (name, email) | B |
+| `SalesPermissionsInputs.tsx` | Permissions form inputs (role) | B |
 | `SalesListFilter.tsx` | Sidebar filter UI | C |
 | `salesFilterConfig.ts` | Filter metadata | C |
 | `SaleAvatar.tsx` | Avatar with variants | G |
 | `SaleName.tsx` | Name display ("You" for self) | G |
+| `UserDisableReassignDialog.tsx` | Record reassignment wizard before user disable | F |

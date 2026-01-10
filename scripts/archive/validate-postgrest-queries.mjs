@@ -50,8 +50,8 @@ function escapeForPostgREST(value) {
   }
 
   // IMPORTANT: Escape backslashes first, then quotes
-  let escaped = str.replace(/\\/g, '\\\\');  // Backslash → \\
-  escaped = escaped.replace(/"/g, '\\"');    // Quote → \"
+  let escaped = str.replace(/\\/g, "\\\\"); // Backslash → \\
+  escaped = escaped.replace(/"/g, '\\"'); // Quote → \"
   return `"${escaped}"`;
 }
 
@@ -59,12 +59,12 @@ function escapeForPostgREST(value) {
  * Transform array filter values to PostgREST operators
  */
 function transformArrayFilters(filter) {
-  if (!filter || typeof filter !== 'object') {
+  if (!filter || typeof filter !== "object") {
     return filter;
   }
 
   const transformed = {};
-  const jsonbArrayFields = ['tags', 'email', 'phone'];
+  const jsonbArrayFields = ["tags", "email", "phone"];
 
   for (const [key, value] of Object.entries(filter)) {
     // Skip null/undefined values
@@ -73,7 +73,7 @@ function transformArrayFilters(filter) {
     }
 
     // Preserve existing PostgREST operators (keys containing @)
-    if (key.includes('@')) {
+    if (key.includes("@")) {
       transformed[key] = value;
       continue;
     }
@@ -87,10 +87,10 @@ function transformArrayFilters(filter) {
 
       if (jsonbArrayFields.includes(key)) {
         // JSONB array contains - format: {1,2,3}
-        transformed[`${key}@cs`] = `{${value.map(escapeForPostgREST).join(',')}}`;
+        transformed[`${key}@cs`] = `{${value.map(escapeForPostgREST).join(",")}}`;
       } else {
         // Regular IN operator - format: (val1,val2,val3)
-        transformed[`${key}@in`] = `(${value.map(escapeForPostgREST).join(',')})`;
+        transformed[`${key}@in`] = `(${value.map(escapeForPostgREST).join(",")})`;
       }
     } else {
       // Regular non-array value
@@ -109,9 +109,9 @@ function filtersToQueryParams(filters) {
   const params = new URLSearchParams();
 
   for (const [key, value] of Object.entries(filters)) {
-    if (key.includes('@')) {
+    if (key.includes("@")) {
       // PostgREST operator format: field=op.value
-      const [field, operator] = key.split('@');
+      const [field, operator] = key.split("@");
       params.append(field, `${operator}.${value}`);
     } else {
       // Regular field: field=value
@@ -127,7 +127,7 @@ function filtersToQueryParams(filters) {
  * This is needed because URLSearchParams automatically encodes special characters
  */
 function decodeQueryString(queryString) {
-  return decodeURIComponent(queryString).replace(/\+/g, ' ');
+  return decodeURIComponent(queryString).replace(/\+/g, " ");
 }
 
 /**
@@ -140,12 +140,12 @@ class QueryValidator {
     this.failed = 0;
   }
 
-  addTestCase(name, inputFilters, expectedQuery, testType = 'basic') {
+  addTestCase(name, inputFilters, expectedQuery, testType = "basic") {
     this.tests.push({
       name,
       inputFilters,
       expectedQuery,
-      testType
+      testType,
     });
   }
 
@@ -161,13 +161,13 @@ class QueryValidator {
       expectedQuery,
       actualQuery: decodedActualQuery,
       encodedQuery: actualQuery,
-      passed: decodedActualQuery === expectedQuery
+      passed: decodedActualQuery === expectedQuery,
     };
   }
 
   async runValidation() {
-    console.log('🔍 PostgREST Query Validation Report');
-    console.log('=' .repeat(80));
+    console.log("🔍 PostgREST Query Validation Report");
+    console.log("=".repeat(80));
     console.log();
 
     const results = [];
@@ -195,9 +195,9 @@ class QueryValidator {
     }
 
     // Summary report
-    console.log('=' .repeat(80));
-    console.log('📊 VALIDATION SUMMARY');
-    console.log('=' .repeat(80));
+    console.log("=".repeat(80));
+    console.log("📊 VALIDATION SUMMARY");
+    console.log("=".repeat(80));
     console.log(`Total Tests: ${this.tests.length}`);
     console.log(`Passed: ${this.passed}`);
     console.log(`Failed: ${this.failed}`);
@@ -205,12 +205,14 @@ class QueryValidator {
 
     if (this.failed > 0) {
       console.log();
-      console.log('❌ FAILED TESTS:');
-      results.filter(r => !r.passed).forEach(r => {
-        console.log(`   • ${r.name}`);
-        console.log(`     Expected: ${r.expectedQuery}`);
-        console.log(`     Actual:   ${r.actualQuery}`);
-      });
+      console.log("❌ FAILED TESTS:");
+      results
+        .filter((r) => !r.passed)
+        .forEach((r) => {
+          console.log(`   • ${r.name}`);
+          console.log(`     Expected: ${r.expectedQuery}`);
+          console.log(`     Actual:   ${r.actualQuery}`);
+        });
     }
 
     console.log();
@@ -223,225 +225,225 @@ const validator = new QueryValidator();
 
 // Test Case 1: Single value filters (should NOT use IN operator)
 validator.addTestCase(
-  'Single value filters (no IN operator)',
-  { stage: 'qualified', priority: 'high' },
-  'stage=qualified&priority=high',
-  'single-value'
+  "Single value filters (no IN operator)",
+  { stage: "qualified", priority: "high" },
+  "stage=qualified&priority=high",
+  "single-value"
 );
 
 // Test Case 2: Multi-value filters (should use IN operator)
 validator.addTestCase(
-  'Multi-value filters (use IN operator)',
-  { stage: ['qualified', 'proposal'], priority: ['high', 'critical'] },
-  'stage=in.(qualified,proposal)&priority=in.(high,critical)',
-  'multi-value'
+  "Multi-value filters (use IN operator)",
+  { stage: ["qualified", "proposal"], priority: ["high", "critical"] },
+  "stage=in.(qualified,proposal)&priority=in.(high,critical)",
+  "multi-value"
 );
 
 // Test Case 3: Mixed single and multi-value filters
 validator.addTestCase(
-  'Mixed single and multi-value filters',
-  { stage: ['qualified', 'proposal'], priority: 'high', category: 'tech' },
-  'stage=in.(qualified,proposal)&priority=high&category=tech',
-  'mixed'
+  "Mixed single and multi-value filters",
+  { stage: ["qualified", "proposal"], priority: "high", category: "tech" },
+  "stage=in.(qualified,proposal)&priority=high&category=tech",
+  "mixed"
 );
 
 // Test Case 4: JSONB array fields using @cs operator
 validator.addTestCase(
-  'JSONB array fields (tags) using @cs operator',
-  { tags: [1, 2, 3], stage: 'qualified' },
-  'tags=cs.{1,2,3}&stage=qualified',
-  'jsonb-array'
+  "JSONB array fields (tags) using @cs operator",
+  { tags: [1, 2, 3], stage: "qualified" },
+  "tags=cs.{1,2,3}&stage=qualified",
+  "jsonb-array"
 );
 
 // Test Case 5: Regular fields using @in operator
 validator.addTestCase(
-  'Regular fields using @in operator',
-  { stage: ['qualified', 'proposal', 'negotiation'] },
-  'stage=in.(qualified,proposal,negotiation)',
-  'regular-in'
+  "Regular fields using @in operator",
+  { stage: ["qualified", "proposal", "negotiation"] },
+  "stage=in.(qualified,proposal,negotiation)",
+  "regular-in"
 );
 
 // Test Case 6: Organization names with special characters
 validator.addTestCase(
-  'Organization names with commas',
-  { customer_organization_name: ['Tech, Inc.', 'Software Co.', 'Normal Corp'] },
+  "Organization names with commas",
+  { customer_organization_name: ["Tech, Inc.", "Software Co.", "Normal Corp"] },
   'customer_organization_name=in.("Tech, Inc.","Software Co.","Normal Corp")',
-  'special-chars-comma'
+  "special-chars-comma"
 );
 
 validator.addTestCase(
-  'Organization names with quotes',
-  { customer_organization_name: [`O'Reilly & Co.`, 'Normal Corp'] },
+  "Organization names with quotes",
+  { customer_organization_name: [`O'Reilly & Co.`, "Normal Corp"] },
   `customer_organization_name=in.("O'Reilly & Co.","Normal Corp")`,
-  'special-chars-quotes'
+  "special-chars-quotes"
 );
 
 validator.addTestCase(
-  'Organization names with parentheses',
-  { customer_organization_name: ['Company (USA)', 'Tech Corp (International)'] },
+  "Organization names with parentheses",
+  { customer_organization_name: ["Company (USA)", "Tech Corp (International)"] },
   'customer_organization_name=in.("Company (USA)","Tech Corp (International)")',
-  'special-chars-parens'
+  "special-chars-parens"
 );
 
 // Test Case 7: Values with backslashes
 validator.addTestCase(
-  'Values with backslashes',
-  { file_path: ['C:\\Users\\Name', 'D:\\Documents\\File'] },
+  "Values with backslashes",
+  { file_path: ["C:\\Users\\Name", "D:\\Documents\\File"] },
   'file_path=in.("C:\\\\Users\\\\Name","D:\\\\Documents\\\\File")',
-  'backslashes'
+  "backslashes"
 );
 
 // Test Case 8: SQL injection attempts (should be safely escaped)
 validator.addTestCase(
-  'SQL injection attempts (safely escaped)',
-  { category: [`"; DROP TABLE--`, 'normal category'] },
+  "SQL injection attempts (safely escaped)",
+  { category: [`"; DROP TABLE--`, "normal category"] },
   'category=in.("\\"; DROP TABLE--","normal category")',
-  'sql-injection'
+  "sql-injection"
 );
 
 // Test Case 9: Complex real-world scenario
 validator.addTestCase(
-  'Complex real-world scenario',
+  "Complex real-world scenario",
   {
-    stage: ['qualified', 'proposal'],
-    priority: ['high', 'critical'],
-    customer_organization_name: ['Tech, Inc.', `O'Reilly & Co.`],
+    stage: ["qualified", "proposal"],
+    priority: ["high", "critical"],
+    customer_organization_name: ["Tech, Inc.", `O'Reilly & Co.`],
     tags: [1, 2, 3],
-    category: 'Software Development'
+    category: "Software Development",
   },
   'stage=in.(qualified,proposal)&priority=in.(high,critical)&customer_organization_name=in.("Tech, Inc.","O\'Reilly & Co.")&tags=cs.{1,2,3}&category=Software Development',
-  'complex-real-world'
+  "complex-real-world"
 );
 
 // Test Case 10: Empty arrays (should be omitted)
 validator.addTestCase(
-  'Empty arrays omitted from query',
-  { stage: [], priority: 'high', category: ['tech'] },
-  'priority=high&category=in.(tech)',
-  'empty-arrays'
+  "Empty arrays omitted from query",
+  { stage: [], priority: "high", category: ["tech"] },
+  "priority=high&category=in.(tech)",
+  "empty-arrays"
 );
 
 // Test Case 11: Null/undefined values (should be omitted)
 validator.addTestCase(
-  'Null/undefined values omitted',
-  { stage: ['qualified'], priority: null, category: undefined, amount: 0 },
-  'stage=in.(qualified)&amount=0',
-  'null-undefined'
+  "Null/undefined values omitted",
+  { stage: ["qualified"], priority: null, category: undefined, amount: 0 },
+  "stage=in.(qualified)&amount=0",
+  "null-undefined"
 );
 
 // Test Case 12: Preserve existing PostgREST operators
 validator.addTestCase(
-  'Preserve existing PostgREST operators',
+  "Preserve existing PostgREST operators",
   {
-    stage: ['qualified', 'proposal'],
-    'amount@gte': 10000,
-    'created_at@lte': '2023-12-31'
+    stage: ["qualified", "proposal"],
+    "amount@gte": 10000,
+    "created_at@lte": "2023-12-31",
   },
-  'stage=in.(qualified,proposal)&amount=gte.10000&created_at=lte.2023-12-31',
-  'preserve-operators'
+  "stage=in.(qualified,proposal)&amount=gte.10000&created_at=lte.2023-12-31",
+  "preserve-operators"
 );
 
 // Test Case 13: URLs and complex special characters
 validator.addTestCase(
-  'URLs and complex special characters',
+  "URLs and complex special characters",
   {
-    website: ['https://example.com:8080/path', 'http://test.org?param=value'],
-    stage: ['qualified']
+    website: ["https://example.com:8080/path", "http://test.org?param=value"],
+    stage: ["qualified"],
   },
   'website=in.("https://example.com:8080/path","http://test.org?param=value")&stage=in.(qualified)',
-  'urls-special'
+  "urls-special"
 );
 
 // Test Case 14: Email JSONB field
 validator.addTestCase(
-  'Email JSONB field with special characters',
+  "Email JSONB field with special characters",
   {
-    email: ['user@domain.com', 'user+tag@example.org'],
-    stage: 'qualified'
+    email: ["user@domain.com", "user+tag@example.org"],
+    stage: "qualified",
   },
   'email=cs.{"user@domain.com","user tag@example.org"}&stage=qualified',
-  'email-jsonb'
+  "email-jsonb"
 );
 
 // Test Case 15: Phone JSONB field
 validator.addTestCase(
-  'Phone JSONB field with various formats',
+  "Phone JSONB field with various formats",
   {
-    phone: ['+1-555-123-4567', '(555) 987-6543', '555.111.2222'],
-    priority: 'high'
+    phone: ["+1-555-123-4567", "(555) 987-6543", "555.111.2222"],
+    priority: "high",
   },
   'phone=cs.{ 1-555-123-4567,"(555) 987-6543","555.111.2222"}&priority=high',
-  'phone-jsonb'
+  "phone-jsonb"
 );
 
 // Test Case 16: Numeric IDs (should not be quoted)
 validator.addTestCase(
-  'Numeric IDs without quotes',
+  "Numeric IDs without quotes",
   {
     customer_organization_id: [123, 456, 789],
-    stage: 'qualified'
+    stage: "qualified",
   },
-  'customer_organization_id=in.(123,456,789)&stage=qualified',
-  'numeric-ids'
+  "customer_organization_id=in.(123,456,789)&stage=qualified",
+  "numeric-ids"
 );
 
 // Test Case 17: Boolean values
 validator.addTestCase(
-  'Boolean values without quotes',
+  "Boolean values without quotes",
   {
     active: [true, false],
-    archived: false
+    archived: false,
   },
-  'active=in.(true,false)&archived=false',
-  'boolean-values'
+  "active=in.(true,false)&archived=false",
+  "boolean-values"
 );
 
 // Test Case 18: Single item array (should still use IN operator)
 validator.addTestCase(
-  'Single item array uses IN operator',
+  "Single item array uses IN operator",
   {
-    stage: ['qualified'],
-    priority: ['high']
+    stage: ["qualified"],
+    priority: ["high"],
   },
-  'stage=in.(qualified)&priority=in.(high)',
-  'single-item-array'
+  "stage=in.(qualified)&priority=in.(high)",
+  "single-item-array"
 );
 
 // Test Case 19: Mixed data types in arrays
 validator.addTestCase(
-  'Mixed data types in arrays',
+  "Mixed data types in arrays",
   {
-    mixed_field: [1, 'text', true, 'text with spaces'],
-    stage: 'qualified'
+    mixed_field: [1, "text", true, "text with spaces"],
+    stage: "qualified",
   },
   'mixed_field=in.(1,text,true,"text with spaces")&stage=qualified',
-  'mixed-types'
+  "mixed-types"
 );
 
 // Test Case 20: Edge case - very long organization name
 validator.addTestCase(
-  'Very long organization name with special chars',
+  "Very long organization name with special chars",
   {
     customer_organization_name: [
       'Very Long Corporation Name with Many Special Characters: Commas, "Quotes", (Parentheses), and Spaces!',
-      'Short Corp'
-    ]
+      "Short Corp",
+    ],
   },
   'customer_organization_name=in.("Very Long Corporation Name with Many Special Characters: Commas, \\"Quotes\\", (Parentheses), and Spaces!","Short Corp")',
-  'long-name-edge-case'
+  "long-name-edge-case"
 );
 
 // Run the validation
-console.log('Starting PostgREST Query Validation...\n');
+console.log("Starting PostgREST Query Validation...\n");
 
 const success = await validator.runValidation();
 
 if (success) {
-  console.log('🎉 All network query validations passed!');
-  console.log('✅ PostgREST query generation is working correctly.');
+  console.log("🎉 All network query validations passed!");
+  console.log("✅ PostgREST query generation is working correctly.");
   process.exit(0);
 } else {
-  console.log('💥 Some network query validations failed!');
-  console.log('❌ PostgREST query generation needs attention.');
+  console.log("💥 Some network query validations failed!");
+  console.log("❌ PostgREST query generation needs attention.");
   process.exit(1);
 }

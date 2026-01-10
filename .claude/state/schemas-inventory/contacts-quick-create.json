@@ -1,0 +1,126 @@
+{
+  "chunk_name": "contacts-quick-create",
+  "generated_at": "2026-01-10T23:36:08.398Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "quickCreateContactSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-quick-create.ts",
+      "line": 9,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"First name required\")",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "email",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "phone",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "sales_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_seen",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_seen",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "quickCreate",
+          "zodType": "literal",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "max(201)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "createContactSchema",
+        "importContactSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

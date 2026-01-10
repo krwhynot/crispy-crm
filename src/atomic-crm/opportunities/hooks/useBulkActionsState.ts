@@ -1,6 +1,8 @@
 import { useState, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNotify, useRefresh, useDataProvider } from "ra-core";
-import type { Opportunity, OpportunityStageValue } from "../types";
+import type { Opportunity, OpportunityStageValue } from "../../types";
+import { opportunityKeys } from "@/atomic-crm/queryKeys";
 
 export type BulkAction = "change_stage" | "change_status" | "assign_owner" | "archive" | null;
 
@@ -46,6 +48,7 @@ export function useBulkActionsState({
   const notify = useNotify();
   const refresh = useRefresh();
   const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
 
   const handleOpenDialog = useCallback((action: BulkAction) => {
     setActiveAction(action);
@@ -87,7 +90,7 @@ export function useBulkActionsState({
             previousData: opportunities.find((opp) => opp.id === id),
           });
           successCount++;
-        } catch (error) {
+        } catch (error: unknown) {
           console.error(`Bulk update failed for ${resource} id=${id}:`, error);
           failureCount++;
         }
@@ -107,10 +110,11 @@ export function useBulkActionsState({
         });
       }
 
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       refresh();
       onUnselectItems();
       handleCloseDialog();
-    } catch (error) {
+    } catch (error: unknown) {
       notify("Bulk action failed", { type: "error" });
       console.error("Bulk action error:", error);
     } finally {
@@ -126,6 +130,7 @@ export function useBulkActionsState({
     dataProvider,
     opportunities,
     notify,
+    queryClient,
     refresh,
     onUnselectItems,
     handleCloseDialog,
@@ -142,10 +147,11 @@ export function useBulkActionsState({
         { type: "success" }
       );
 
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       refresh();
       onUnselectItems();
       handleCloseDialog();
-    } catch (error) {
+    } catch (error: unknown) {
       notify(
         `Failed to archive opportunities: ${error instanceof Error ? error.message : "Unknown error"}`,
         { type: "error" }
@@ -153,7 +159,16 @@ export function useBulkActionsState({
     } finally {
       setIsProcessing(false);
     }
-  }, [selectedIds, resource, dataProvider, notify, refresh, onUnselectItems, handleCloseDialog]);
+  }, [
+    selectedIds,
+    resource,
+    dataProvider,
+    notify,
+    queryClient,
+    refresh,
+    onUnselectItems,
+    handleCloseDialog,
+  ]);
 
   const canExecute = useCallback(() => {
     if (activeAction === "change_stage") return !!selectedStage;

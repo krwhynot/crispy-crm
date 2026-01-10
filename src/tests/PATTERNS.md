@@ -485,8 +485,8 @@ export const createMockOpportunity = (overrides?: any) => ({
   id: faker.number.int({ min: 1, max: 10000 }),
   name: faker.company.catchPhrase(),
   stage: faker.helpers.arrayElement([
-    "lead", "qualified", "proposal",
-    "negotiation", "closed_won", "closed_lost"
+    "new_lead", "initial_outreach", "sample_visit_offered",
+    "feedback_logged", "demo_scheduled", "closed_won", "closed_lost"
   ]),
   status: faker.helpers.arrayElement([
     "active", "on_hold", "nurturing", "stalled", "expired"

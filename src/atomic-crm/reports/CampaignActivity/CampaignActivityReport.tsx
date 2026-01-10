@@ -1,8 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { useGetList, useNotify, downloadCSV } from "ra-core";
-import jsonExport from "jsonexport/dist";
 import { ReportLayout } from "@/atomic-crm/reports/ReportLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -11,53 +8,50 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Card, CardHeader } from "@/components/ui/card";
 import { ActivityTypeCard } from "./ActivityTypeCard";
 import { StaleLeadsView } from "./StaleLeadsView";
+import { CampaignActivityFilters } from "./CampaignActivityFilters";
+import { CampaignActivitySummaryCards } from "./CampaignActivitySummaryCards";
+import { useCampaignActivityData } from "./useCampaignActivityData";
+import { useCampaignActivityExport } from "./useCampaignActivityExport";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
-import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
-import {
-  STAGE_STALE_THRESHOLDS,
-  isOpportunityStale,
-  getStaleThreshold,
-} from "@/atomic-crm/utils/stalenessCalculation";
 import { format, subDays, startOfMonth } from "date-fns";
-import { parseDateSafely } from "@/lib/date-utils";
-import type { Sale, Activity as BaseActivity, ActivityGroup } from "../types";
 import { AppliedFiltersBar, EmptyState } from "@/atomic-crm/reports/components";
-import { useReportData } from "@/atomic-crm/reports/hooks";
 import { Activity, CheckCircle } from "lucide-react";
+import { getStaleThreshold, isOpportunityStale } from "@/atomic-crm/utils/stalenessCalculation";
+import { parseDateSafely } from "@/lib/date-utils";
 
-/** Extended activity with required organization_name for campaign reporting */
-interface CampaignActivity extends Omit<BaseActivity, "organization_name"> {
-  organization_name: string; // Required for campaign reports
-}
-
-/** Campaign-specific opportunity data */
-interface CampaignOpportunity {
+/** Activity type matching useCampaignActivityData return type and Activity from types.ts */
+interface CampaignActivity {
   id: number;
-  name: string;
-  campaign: string | null;
-  customer_organization_name?: string;
-  stage?: string;
+  type: string;
+  subject: string;
+  organization_id: number;
+  organization_name: string;
+  contact_id: number | null;
+  contact_name?: string;
+  opportunity_id?: number | null;
+  created_by: number;
+  created_at: string;
 }
 
 /** Extended ActivityGroup with required percentage for campaign reports */
-interface CampaignActivityGroup
-  extends Omit<ActivityGroup, "percentage" | "mostActiveOrg" | "mostActiveCount" | "activities"> {
+interface CampaignActivityGroup {
+  type: string;
   activities: CampaignActivity[];
+  totalCount: number;
+  uniqueOrgs: number;
   percentage: number;
   mostActiveOrg: string;
   mostActiveCount: number;
 }
 
 export default function CampaignActivityReport() {
-  const notify = useNotify();
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
   const [selectedCampaign, setSelectedCampaign] = useState<string>("Grand Rapids Trade Show");
 
-  // Filter state
   const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
   const [selectedActivityTypes, setSelectedActivityTypes] = useState<string[]>(
     INTERACTION_TYPE_OPTIONS.map((opt) => opt.value)
@@ -65,127 +59,38 @@ export default function CampaignActivityReport() {
   const [datePreset, setDatePreset] = useState<string>("allTime");
   const [selectedSalesRep, setSelectedSalesRep] = useState<number | null>(null);
   const [showStaleLeads, setShowStaleLeads] = useState<boolean>(false);
-  // Per-stage thresholds from PRD Section 6.3 - no longer using a fixed threshold
-  // Thresholds: new_lead=7d, initial_outreach=14d, sample_visit_offered=14d, feedback_logged=21d, demo_scheduled=14d
-  // Closed stages (closed_won, closed_lost) are excluded from staleness calculations
   const [ariaLiveMessage, setAriaLiveMessage] = useState<string>("");
 
-  // Track if initial expansion has happened (prevents re-expansion on re-renders)
   const hasInitialized = React.useRef(false);
 
-  // Fetch all opportunities to get available campaigns
-  const { data: allOpportunities = [], isPending: opportunitiesPending } =
-    useGetList<CampaignOpportunity>("opportunities", {
-      pagination: { page: 1, perPage: 10000 },
-      filter: {
-        "deleted_at@is": null,
-      },
-    });
-
-  // Get distinct campaigns with opportunity counts
-  const campaignOptions = useMemo(() => {
-    const campaigns = new Map<string, number>();
-
-    allOpportunities.forEach((opp) => {
-      if (opp.campaign) {
-        campaigns.set(opp.campaign, (campaigns.get(opp.campaign) || 0) + 1);
-      }
-    });
-
-    return Array.from(campaigns.entries())
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count);
-  }, [allOpportunities]);
-
-  // Fetch ALL activities for the selected campaign (unfiltered, for counts)
-  const { data: allCampaignActivities = [], isPending: allActivitiesPending } =
-    useGetList<CampaignActivity>("activities", {
-      pagination: { page: 1, perPage: 10000 },
-      filter: {
-        "opportunities.campaign": selectedCampaign,
-        "opportunities.deleted_at@is": null,
-      },
-      sort: { field: "created_at", order: "DESC" },
-    });
-
-  // Fetch activities for the selected campaign (with filters applied)
-  const activitiesFilter = useMemo(
-    () => ({
-      "opportunities.campaign": selectedCampaign,
-      "opportunities.deleted_at@is": null,
-      ...(selectedActivityTypes.length > 0 &&
-        selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length && {
-          type: selectedActivityTypes,
-        }),
-      ...(selectedSalesRep !== null && { created_by: selectedSalesRep }),
-    }),
-    [selectedCampaign, selectedActivityTypes, selectedSalesRep]
-  );
-
-  const activitiesDateRange = useMemo(
-    () =>
-      dateRange
-        ? {
-            start: new Date(dateRange.start),
-            end: new Date(dateRange.end),
-          }
-        : undefined,
-    [dateRange]
-  );
-
   const {
-    data: activities,
-    isLoading: activitiesLoading,
-    error: activitiesError,
-  } = useReportData<CampaignActivity>("activities", {
-    dateRange: activitiesDateRange,
-    additionalFilters: activitiesFilter,
-    dateField: "created_at",
+    activities,
+    activitiesError,
+    allOpportunities,
+    allCampaignActivities,
+    opportunityMap,
+    salesMap,
+    campaignOptions,
+    salesRepOptions,
+    activityTypeCounts,
+    isLoadingCampaigns,
+    isLoadingActivities,
+  } = useCampaignActivityData({
+    selectedCampaign,
+    dateRange,
+    selectedActivityTypes,
+    selectedSalesRep,
+    allActivityTypes: INTERACTION_TYPE_OPTIONS,
   });
 
-  // Get sales rep names for created_by lookup
-  const ownerIds = useMemo(
-    () => Array.from(new Set((activities || []).map((a) => a.created_by).filter(Boolean))),
-    [activities]
+  const { exportStaleLeads, exportActivities } = useCampaignActivityExport(
+    selectedCampaign,
+    salesMap,
+    opportunityMap
   );
-
-  const { data: salesReps = [] } = useGetList<Sale>("sales", {
-    filter: ownerIds.length > 0 ? { id: ownerIds } : undefined,
-    pagination: { page: 1, perPage: 100 },
-  });
-
-  const salesMap = useMemo(
-    () => new Map((salesReps || []).map((s) => [s.id, `${s.first_name} ${s.last_name}`])),
-    [salesReps]
-  );
-
-  // Create opportunity map for looking up opportunity details
-  const opportunityMap = useMemo(
-    () => new Map((allOpportunities || []).map((o) => [o.id, o])),
-    [allOpportunities]
-  );
-
-  // Calculate sales rep options with activity counts from ALL activities (unfiltered)
-  const salesRepOptions = useMemo(() => {
-    const repCounts = new Map<number, number>();
-
-    allCampaignActivities.forEach((activity) => {
-      if (activity.created_by) {
-        repCounts.set(activity.created_by, (repCounts.get(activity.created_by) || 0) + 1);
-      }
-    });
-
-    return Array.from(repCounts.entries())
-      .map(([id, count]) => ({
-        id,
-        name: salesMap.get(id) || `Rep ${id}`,
-        count,
-      }))
-      .sort((a, b) => b.count - a.count);
-  }, [allCampaignActivities, salesMap]);
 
   // Group activities by type
-  const activityGroups = useMemo(() => {
+  const activityGroups = useMemo((): CampaignActivityGroup[] => {
     if (activities.length === 0) return [];
 
     const grouped = new Map<string, CampaignActivityGroup>();
@@ -257,7 +162,8 @@ export default function CampaignActivityReport() {
       return dateB.getTime() - dateA.getTime();
     });
 
-    return sortedActivities[0].created_at;
+    const firstActivity = sortedActivities[0];
+    return firstActivity?.created_at ?? null;
   };
 
   // Calculate stale opportunities using per-stage thresholds (PRD Section 6.3)
@@ -272,6 +178,17 @@ export default function CampaignActivityReport() {
 
     return (
       opportunitiesForCampaign
+        .filter((opp) => {
+          if (!opp.stage) {
+            console.error(
+              `[DATA INTEGRITY] Opportunity ID ${opp.id} has no stage. ` +
+                `Excluding from stale leads calculation. ` +
+                `This indicates database corruption or a bug in the data layer.`
+            );
+            return false;
+          }
+          return true;
+        })
         .map((opp) => {
           const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
           const lastActivityDateObj = lastActivityDate ? parseDateSafely(lastActivityDate) : null;
@@ -280,7 +197,8 @@ export default function CampaignActivityReport() {
             : 999999; // Never had activity - sort to end
 
           // Get per-stage threshold (undefined for closed stages)
-          const stage = opp.stage || "new_lead";
+          // Stage is guaranteed to exist due to filter above, but TypeScript needs assertion
+          const stage = opp.stage!;
           const stageThreshold = getStaleThreshold(stage);
 
           return {
@@ -288,7 +206,7 @@ export default function CampaignActivityReport() {
             lastActivityDate,
             daysInactive,
             stageThreshold, // Include threshold for display
-            isStale: isOpportunityStale(stage, lastActivityDate, now),
+            isStale: isOpportunityStale(stage, lastActivityDate ?? null, now),
           };
         })
         // Exclude closed stages (stageThreshold is undefined for them)
@@ -475,109 +393,11 @@ export default function CampaignActivityReport() {
     salesMap,
   ]);
 
-  // Check if data is loading
-  const isLoadingCampaigns = opportunitiesPending;
-  const isLoadingActivities = activitiesLoading || allActivitiesPending;
-
-  // Calculate activity counts by type for all activities (unfiltered)
-  const activityTypeCounts = useMemo(() => {
-    const counts = new Map<string, number>();
-    allCampaignActivities.forEach((activity) => {
-      const type = activity.type || "Unknown";
-      counts.set(type, (counts.get(type) || 0) + 1);
-    });
-    return counts;
-  }, [allCampaignActivities]);
-
-  // CSV Export Function
   const handleExport = () => {
     if (showStaleLeads) {
-      // Export stale leads
-      if (staleOpportunities.length === 0) {
-        notify("No stale leads to export", { type: "warning" });
-        return;
-      }
-
-      const exportData = staleOpportunities.map((opp) => {
-        const lastActivityDateObj = opp.lastActivityDate
-          ? parseDateSafely(opp.lastActivityDate)
-          : null;
-        return {
-          campaign: sanitizeCsvValue(selectedCampaign),
-          opportunity_name: sanitizeCsvValue(opp.name),
-          organization: sanitizeCsvValue(opp.customer_organization_name || ""),
-          last_activity_date: lastActivityDateObj
-            ? format(lastActivityDateObj, "yyyy-MM-dd")
-            : "Never",
-          days_inactive:
-            opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
-          notes: "", // Not available in current data structure
-        };
-      });
-
-      jsonExport(exportData, (err, csv) => {
-        if (err) {
-          console.error("Export error:", err);
-          notify("Export failed. Please try again.", { type: "error" });
-          return;
-        }
-        const campaignSlug = selectedCampaign
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^\w-]/g, "");
-        const dateStr = format(new Date(), "yyyy-MM-dd");
-        downloadCSV(csv, `campaign-stale-leads-${campaignSlug}-${dateStr}`);
-        notify(`${staleOpportunities.length} stale leads exported successfully`, {
-          type: "success",
-        });
-      });
+      exportStaleLeads(staleOpportunities);
     } else {
-      // Export activities
-      if (activityGroups.length === 0 || activities.length === 0) {
-        notify("No activities to export", { type: "warning" });
-        return;
-      }
-
-      const exportData = activityGroups.flatMap((group) =>
-        group.activities.map((activity) => {
-          const opportunity = activity.opportunity_id
-            ? opportunityMap.get(activity.opportunity_id)
-            : null;
-          const createdAtDate = parseDateSafely(activity.created_at);
-          const daysSinceActivity = createdAtDate
-            ? Math.floor((Date.now() - createdAtDate.getTime()) / (1000 * 60 * 60 * 24))
-            : 0;
-
-          return {
-            campaign: sanitizeCsvValue(selectedCampaign),
-            activity_type: sanitizeCsvValue(activity.type),
-            activity_category: sanitizeCsvValue(activity.type), // Same as activity_type for now
-            subject: sanitizeCsvValue(activity.subject),
-            organization: sanitizeCsvValue(activity.organization_name),
-            contact_name: sanitizeCsvValue(activity.contact_name || ""),
-            date: createdAtDate ? format(createdAtDate, "yyyy-MM-dd") : "",
-            sales_rep: sanitizeCsvValue(salesMap.get(activity.created_by!) || "Unassigned"),
-            days_since_activity: daysSinceActivity,
-            opportunity_name: sanitizeCsvValue(opportunity?.name || ""),
-            opportunity_stage: sanitizeCsvValue(opportunity?.stage || ""),
-          };
-        })
-      );
-
-      jsonExport(exportData, (err, csv) => {
-        if (err) {
-          console.error("Export error:", err);
-          notify("Export failed. Please try again.", { type: "error" });
-          return;
-        }
-        const campaignSlug = selectedCampaign
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^\w-]/g, "");
-        const dateStr = format(new Date(), "yyyy-MM-dd");
-        downloadCSV(csv, `campaign-activity-${campaignSlug}-${dateStr}`);
-        notify(`${exportData.length} activities exported successfully`, { type: "success" });
-      });
+      exportActivities(activityGroups, activities);
     }
   };
 
@@ -636,187 +456,25 @@ export default function CampaignActivityReport() {
           </div>
         </div>
 
-        {/* Filter Panel */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-section">
-              {/* Date Range Filter */}
-              <div>
-                <h4 className="text-sm font-medium mb-3">Date Range</h4>
-                <div className="space-y-3">
-                  <div className="flex gap-2 flex-wrap">
-                    <Button
-                      variant={datePreset === "allTime" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setDatePresetHandler("allTime")}
-                    >
-                      All time
-                    </Button>
-                    <Button
-                      variant={datePreset === "last7" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setDatePresetHandler("last7")}
-                    >
-                      Last 7 days
-                    </Button>
-                    <Button
-                      variant={datePreset === "last30" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setDatePresetHandler("last30")}
-                    >
-                      Last 30 days
-                    </Button>
-                    <Button
-                      variant={datePreset === "thisMonth" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setDatePresetHandler("thisMonth")}
-                    >
-                      This month
-                    </Button>
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <div className="flex-1">
-                      <Label htmlFor="start-date" className="text-xs">
-                        Start Date
-                      </Label>
-                      <input
-                        id="start-date"
-                        type="date"
-                        value={dateRange?.start || ""}
-                        onChange={(e) => {
-                          const newStart = e.target.value;
-                          setDatePreset(""); // Clear preset when manual input
-                          const endDate = dateRange?.end || format(new Date(), "yyyy-MM-dd");
-                          // Only update if start <= end
-                          if (newStart <= endDate) {
-                            setDateRange({ start: newStart, end: endDate });
-                          }
-                        }}
-                        className="h-11 w-full mt-1 px-3 py-2 border rounded-md text-sm"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <Label htmlFor="end-date" className="text-xs">
-                        End Date
-                      </Label>
-                      <input
-                        id="end-date"
-                        type="date"
-                        value={dateRange?.end || ""}
-                        onChange={(e) => {
-                          const newEnd = e.target.value;
-                          setDatePreset(""); // Clear preset when manual input
-                          const startDate = dateRange?.start || format(new Date(), "yyyy-MM-dd");
-                          // Only update if start <= end
-                          if (startDate <= newEnd) {
-                            setDateRange({ start: startDate, end: newEnd });
-                          }
-                        }}
-                        className="h-11 w-full mt-1 px-3 py-2 border rounded-md text-sm"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Activity Type Filter */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-sm font-medium">Activity Type</h4>
-                  <Button
-                    variant="link"
-                    size="sm"
-                    onClick={toggleAllActivityTypes}
-                    className="h-auto p-0 text-xs"
-                  >
-                    {selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length
-                      ? "Deselect All"
-                      : "Select All"}
-                  </Button>
-                </div>
-                <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
-                  {INTERACTION_TYPE_OPTIONS.map((option) => {
-                    const count = activityTypeCounts.get(option.value) || 0;
-                    return (
-                      <div key={option.value} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`activity-type-${option.value}`}
-                          checked={selectedActivityTypes.includes(option.value)}
-                          onCheckedChange={() => toggleActivityType(option.value)}
-                        />
-                        <Label
-                          htmlFor={`activity-type-${option.value}`}
-                          className="text-sm font-normal cursor-pointer flex-1"
-                        >
-                          {option.label} ({count})
-                        </Label>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Sales Rep Filter */}
-              <div>
-                <h4 className="text-sm font-medium mb-3">Sales Rep</h4>
-                <Select
-                  value={selectedSalesRep?.toString() || "all"}
-                  onValueChange={(value) =>
-                    setSelectedSalesRep(value === "all" ? null : parseInt(value, 10))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Reps" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Reps ({allCampaignActivities.length})</SelectItem>
-                    {salesRepOptions.map((rep) => (
-                      <SelectItem key={rep.id} value={rep.id.toString()}>
-                        {rep.name} ({rep.count})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Stale Leads Filter - Using Per-Stage Thresholds (PRD Section 6.3) */}
-              <div>
-                <h4 className="text-sm font-medium mb-3">Stale Leads</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="show-stale-leads"
-                      checked={showStaleLeads}
-                      onCheckedChange={(checked) => setShowStaleLeads(checked === true)}
-                    />
-                    <Label
-                      htmlFor="show-stale-leads"
-                      className="text-sm font-normal cursor-pointer"
-                    >
-                      Show stale leads (per-stage thresholds)
-                    </Label>
-                  </div>
-                  {/* Per-stage threshold info */}
-                  <div className="text-xs text-muted-foreground space-y-0.5">
-                    <p>Thresholds by stage:</p>
-                    <p className="pl-2">• New Lead: {STAGE_STALE_THRESHOLDS.new_lead}d</p>
-                    <p className="pl-2">
-                      • Outreach/Sample/Demo: {STAGE_STALE_THRESHOLDS.initial_outreach}d
-                    </p>
-                    <p className="pl-2">• Feedback: {STAGE_STALE_THRESHOLDS.feedback_logged}d</p>
-                    <p className="pl-2 italic">Closed stages excluded</p>
-                  </div>
-                  {showStaleLeads && staleOpportunities.length > 0 && (
-                    <div className="text-xs font-medium text-warning bg-warning/10 px-2 py-1 rounded">
-                      ⚠️ {staleOpportunities.length}{" "}
-                      {staleOpportunities.length === 1 ? "lead needs" : "leads need"} follow-up
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <CampaignActivityFilters
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          datePreset={datePreset}
+          setDatePreset={setDatePreset}
+          setDatePresetHandler={setDatePresetHandler}
+          selectedActivityTypes={selectedActivityTypes}
+          toggleActivityType={toggleActivityType}
+          toggleAllActivityTypes={toggleAllActivityTypes}
+          activityTypeOptions={INTERACTION_TYPE_OPTIONS}
+          activityTypeCounts={activityTypeCounts}
+          selectedSalesRep={selectedSalesRep}
+          setSelectedSalesRep={setSelectedSalesRep}
+          salesRepOptions={salesRepOptions}
+          allCampaignActivitiesCount={allCampaignActivities.length}
+          showStaleLeads={showStaleLeads}
+          setShowStaleLeads={setShowStaleLeads}
+          staleOpportunitiesCount={staleOpportunities.length}
+        />
       </div>
 
       {/* Applied Filters Bar */}
@@ -834,68 +492,14 @@ export default function CampaignActivityReport() {
         </div>
       )}
 
-      {/* Summary Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-content mb-section">
-        {isLoadingActivities ? (
-          <>
-            {[1, 2, 3, 4].map((i) => (
-              <Card key={i}>
-                <CardHeader className="pb-2">
-                  <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
-                </CardHeader>
-                <CardContent>
-                  <div className="h-8 bg-muted animate-pulse rounded w-1/2" />
-                </CardContent>
-              </Card>
-            ))}
-          </>
-        ) : (
-          <>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total Activities
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalActivities}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Organizations Contacted
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{uniqueOrgs}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Coverage Rate
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{coverageRate}%</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Avg Activities per Lead
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{avgActivitiesPerLead}</div>
-              </CardContent>
-            </Card>
-          </>
-        )}
+        <CampaignActivitySummaryCards
+          isLoadingActivities={isLoadingActivities}
+          totalActivities={totalActivities}
+          uniqueOrgs={uniqueOrgs}
+          coverageRate={coverageRate}
+          avgActivitiesPerLead={avgActivitiesPerLead}
+        />
       </div>
 
       {/* Conditional Rendering: Stale Leads View or Activity Type Breakdown */}

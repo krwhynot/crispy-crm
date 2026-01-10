@@ -116,9 +116,84 @@ Does this look correct? Any adjustments before I write the plan?
 
 ---
 
-## STEP 3: Write the Plan
+## STEP 3: AI Estimation
 
-Only after confirmation, write the plan following the `writing-plans` skill structure.
+**BEFORE writing the plan, use `mcp__zen__consensus` for multi-model estimation:**
+
+```typescript
+mcp__zen__consensus({
+  step: `Estimate implementation effort for: [feature name from Step 2]
+
+Project context:
+- React 19 + TypeScript + React Admin + Supabase CRM
+- Pre-launch (fail-fast principle, no retry logic)
+- Scope: [from Step 1-2 answers]
+
+Evaluate these aspects:
+1. EFFORT: Story points (1, 2, 3, 5, 8, 13) with justification
+2. RISK: Low/Medium/High with specific risk factors
+3. COMPLEXITY: Simple/Moderate/Complex with reasoning
+4. PARALLELIZATION: How many tasks can run simultaneously?
+5. CRITICAL PATH: Which tasks must be sequential?
+6. AGENT RECOMMENDATIONS: Which specialized agents should be used?`,
+  step_number: 1,
+  total_steps: 3, // 1: your analysis, 2-3: model consultations
+  next_step_required: true,
+  findings: "Starting estimation for [feature]",
+  models: [
+    { model: "gemini-2.5-pro", stance: "neutral" },
+    { model: "gpt-5.2", stance: "neutral" }
+  ]
+})
+```
+
+**Include the consensus results in the Executive Summary table.**
+
+---
+
+## STEP 4: Write the Plan
+
+Only after confirmation and estimation, write the plan following the `writing-plans` skill structure.
+
+### Task Template with Agent Hints
+
+Each task in the Task Breakdown MUST include an Agent Hint:
+
+```markdown
+### Task N: [Task Name]
+
+**Agent Hint:** `[agent-name]` ([reason for this agent])
+**File:** `exact/path/to/file.ts`
+**Line:** [if modifying existing code]
+**Effort:** X story points
+**Dependencies:** [Task IDs this depends on, or "None"]
+
+#### What to Implement
+[Clear description of the change]
+
+#### Code Example
+[Implementation code with constitution compliance markers]
+
+#### Verification
+- [ ] [Test command or check]
+
+#### Constitution Checklist
+- [ ] Zod validation at API boundary only
+- [ ] No retry logic or fallbacks
+- [ ] Semantic Tailwind colors only
+```
+
+### Agent Hint Reference
+
+| Agent | Use When |
+|-------|----------|
+| `schema-agent` | Zod schemas, type definitions, validation |
+| `component-agent` | React components, UI changes |
+| `provider-agent` | Data provider, handlers, Supabase queries |
+| `test-agent` | Writing tests (unit, integration, E2E) |
+| `migration-agent` | Database migrations, RLS policies |
+| `style-agent` | Tailwind styling, design system |
+| `general-agent` | Config files, documentation, simple edits |
 
 **Save to:** `docs/archive/plans/YYYY-MM-DD-<feature-name>.md`
 

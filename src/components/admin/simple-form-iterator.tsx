@@ -33,6 +33,27 @@ import { IconButtonWithTooltip } from "@/components/admin/icon-button-with-toolt
 
 type GetItemLabelFunc = (index: number) => string | ReactElement;
 
+/**
+ * Type for React Admin form input props that may have `source` and `defaultValue`.
+ * Used for introspecting children in SimpleFormIterator.
+ */
+interface FormInputProps {
+  source?: string;
+  defaultValue?: unknown;
+}
+
+/**
+ * Type guard to check if a ReactElement has FormInputProps (source and/or defaultValue).
+ */
+function hasFormInputProps(element: ReactElement): element is ReactElement<FormInputProps> {
+  return element.props != null && typeof element.props === "object";
+}
+
+/**
+ * Type for resetting initialDefaultValue fields to null.
+ */
+type NullableRecord = Record<string, unknown>;
+
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
   const {
     addButton = defaultAddItemButton,
@@ -62,7 +83,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
   const { trigger, getValues } = useFormContext();
   const translate = useTranslate();
   const record = useRecordContext(props);
-  const initialDefaultValue = useRef({});
+  const initialDefaultValue = useRef<NullableRecord>({});
 
   const removeField = useCallback(
     (index: number) => {
@@ -83,45 +104,44 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const { id: _id, ...rest } = fields[0];
     initialDefaultValue.current = rest;
     for (const k in initialDefaultValue.current) {
-      // @ts-expect-error: reset fields
       initialDefaultValue.current[k] = null;
     }
   }
 
   const addField = useCallback(
     (item: Record<string, unknown> | string | undefined = undefined) => {
-      let defaultValue = item;
+      let defaultValue: Record<string, unknown> | string | undefined = item;
       if (item == null) {
         defaultValue = initialDefaultValue.current;
-        if (
-          Children.count(children) === 1 &&
-          React.isValidElement(Children.only(children)) &&
-          // @ts-expect-error: Check if the child has a source prop
-          !Children.only(children).props.source &&
+        const onlyChild = Children.count(children) === 1 ? Children.only(children) : null;
+        const isScalarArrayInput =
+          onlyChild != null &&
+          React.isValidElement(onlyChild) &&
+          hasFormInputProps(onlyChild) &&
+          !onlyChild.props.source &&
           // Make sure it's not a FormDataConsumer
-          // @ts-expect-error: Check if the child is a FormDataConsumer
-          Children.only(children).type !== FormDataConsumer
-        ) {
+          onlyChild.type !== FormDataConsumer;
+
+        if (isScalarArrayInput) {
           // ArrayInput used for an array of scalar values
           // (e.g. tags: ['foo', 'bar'])
           defaultValue = "";
         } else {
           // ArrayInput used for an array of objects
           // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
-          defaultValue = defaultValue || ({} as Record<string, unknown>);
+          const objectDefault: Record<string, unknown> =
+            (defaultValue as Record<string, unknown>) || {};
           Children.forEach(children, (input) => {
             if (
               React.isValidElement(input) &&
               input.type !== FormDataConsumer &&
-              // @ts-expect-error: Check if the child has a source prop
+              hasFormInputProps(input) &&
               input.props.source
             ) {
-              // @ts-expect-error: Check if the child has a source prop
-              defaultValue[input.props.source] =
-                // @ts-expect-error: Check if the child has a source prop
-                input.props.defaultValue ?? null;
+              objectDefault[input.props.source] = input.props.defaultValue ?? null;
             }
           });
+          defaultValue = objectDefault;
         }
       }
       append(defaultValue);

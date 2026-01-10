@@ -5,6 +5,17 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import type * as ReactAdmin from "react-admin";
 
+// Mock @tanstack/react-query for useQueryClient (added for cache invalidation in audit fixes)
+vi.mock("@tanstack/react-query", async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useQueryClient: () => ({
+      invalidateQueries: vi.fn(),
+    }),
+  };
+});
+
 const mockRecord = {
   id: 1,
   name: "Test Opportunity",

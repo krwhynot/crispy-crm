@@ -63,9 +63,41 @@ if [ -n "$discovery_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 4. SKIP heavy checks - run manually or in CI
+# 4. SEMANTIC COLORS: Prevent theme drift (P0 - 243 fix commits)
 # ═══════════════════════════════════════════════════════════════
-# Semantic colors: Run 'npm run validate:semantic-colors' manually
+# Only check staged TSX files for performance
+tsx_files=$(echo "$STAGED_FILES" | grep -E '\.tsx$' || true)
+
+if [ -n "$tsx_files" ]; then
+  echo "🎨 Validating semantic colors..."
+  if ! npm run validate:semantic-colors 2>/dev/null; then
+    echo -e "${RED}❌ Hardcoded colors detected. Run 'npm run validate:semantic-colors' for details.${NC}"
+    echo -e "${YELLOW}Fix: Replace legacy Tailwind colors with semantic tokens (bg-warning, text-destructive, etc.)${NC}"
+    exit 1
+  fi
+  echo -e "${GREEN}✓ Semantic colors OK${NC}"
+fi
+
+# ═══════════════════════════════════════════════════════════════
+# 5. MIGRATIONS: Validate SQL migrations (P1 - 176 schema commits)
+# ═══════════════════════════════════════════════════════════════
+# Only check staged SQL files in migrations directory
+migration_files=$(echo "$STAGED_FILES" | grep -E '^supabase/migrations/.*\.sql$' || true)
+
+if [ -n "$migration_files" ]; then
+  echo "🗄️ Validating migration files..."
+  if [ -x "./scripts/validate-migrations.sh" ]; then
+    if ! ./scripts/validate-migrations.sh --staged 2>/dev/null; then
+      echo -e "${RED}❌ Migration validation failed. Run './scripts/validate-migrations.sh' for details.${NC}"
+      echo -e "${YELLOW}Fix: Check for missing columns, idempotent policies, and soft-delete patterns${NC}"
+      exit 1
+    fi
+    echo -e "${GREEN}✓ Migrations OK${NC}"
+  else
+    echo -e "${YELLOW}⚠ Migration validator not found, skipping...${NC}"
+  fi
+fi
+
 # Full test suite: Run 'npm test' manually or rely on CI
 
 echo -e "${GREEN}✓ Pre-commit checks passed${NC}"

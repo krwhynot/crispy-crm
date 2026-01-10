@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Evidence-based completion claims - BLOCKS claiming tests pass, builds succeed, features work, or tasks are done without running verification commands first. Triggers on done, complete, fixed, passes, works, ready, finished, verified, all good, ship it, commit, PR, push, merge.
+description: Evidence-based completion claims - BLOCKS claiming tests pass, builds succeed, features work, or tasks are done without running verification commands first. Enforces TDD for implementation tasks. Triggers on done, complete, fixed, passes, works, ready, finished, verified, all good, ship it, commit, PR, push, merge, implement, create feature, build.
 ---
 
 # Verification Before Completion
@@ -13,6 +13,48 @@ Never claim work is complete, fixed, passing, or ready without:
 1. Running the verification command
 2. Reading the actual output
 3. Confirming it matches your claim
+
+## TDD Enforcement (Implementation Tasks)
+
+**For ANY implementation task (new feature, component, handler, schema):**
+
+| Phase | Requirement | Evidence |
+|-------|-------------|----------|
+| 1. TEST FIRST | Write failing test BEFORE implementation | Test file exists, test fails with expected reason |
+| 2. IMPLEMENT | Write minimal code to pass test | Test now passes |
+| 3. REFACTOR | Clean up while tests pass | Tests still pass |
+| 4. VERIFY | Run full verification suite | Build + Types + Tests pass |
+
+**TDD is NOT optional for:**
+- New components (React components, hooks)
+- New data provider handlers
+- New Zod schemas
+- New service classes
+- Bug fixes (regression test first)
+
+**TDD Red Flags - STOP if you're about to:**
+- Write implementation code without a test file
+- Say "I'll add tests later"
+- Skip the failing test phase
+- Implement multiple features before testing
+
+## Manual E2E for UI Changes
+
+**For ANY UI-facing change, offer Manual E2E Testing:**
+
+When implementing UI changes (forms, lists, slide-overs, buttons), remind user:
+
+> **Manual E2E Available:** This UI change can be verified using Claude Chrome.
+> See `docs/tests/e2e/` for existing test prompts or I can generate a new one.
+>
+> Would you like me to generate a Claude Chrome test prompt for this feature?
+
+**When to generate E2E prompts:**
+- New forms (CRUD create/edit)
+- New validation rules
+- UI workflow changes
+- Accessibility improvements
+- Any user-facing feature
 
 ## The 5-Step Gate
 

@@ -68,8 +68,12 @@ export function ActivityDetailsTab({
       });
       notify("Activity updated successfully", { type: "success" });
       onModeToggle?.();
-    } catch (_error) {
+    } catch (error: unknown) {
       notify("Error updating activity", { type: "error" });
+      console.error(
+        "Error updating activity:",
+        error instanceof Error ? error.message : String(error)
+      );
     }
   };
 

@@ -573,8 +573,10 @@ samples: orphanedContacts
 
 ### Anti-Pattern 5: N+1 Query Pattern
 
+> **Exception for Validation Scripts:** N+1 queries are acceptable in validation scripts that run infrequently (e.g., pre-migration checks). In these cases, code simplicity and readability outweigh query optimization, as the scripts execute once before a migration rather than in hot paths. Prioritize batch queries only when dataset size makes N+1 noticeably slow.
+
 ```javascript
-// ❌ WRONG: One query per item
+// ❌ WRONG (in production code): One query per item
 for (const deal of deals) {
   for (const contactId of deal.contact_ids) {
     const { data } = await this.supabase
@@ -585,7 +587,7 @@ for (const deal of deals) {
   }
 }
 
-// ✅ CORRECT: Batch query
+// ✅ CORRECT (preferred for production): Batch query
 const allContactIds = deals.flatMap((d) => d.contact_ids || []);
 const { data: validContacts } = await this.supabase
   .from("contacts")
@@ -594,6 +596,16 @@ const { data: validContacts } = await this.supabase
 
 const validIds = new Set(validContacts.map((c) => c.id));
 const orphaned = allContactIds.filter((id) => !validIds.has(id));
+
+// ✅ ACCEPTABLE (in validation scripts): N+1 for simplicity
+// When running infrequently and dataset is small, clarity wins
+for (const deal of deals) {
+  const { data } = await this.supabase
+    .from("contacts")
+    .select("id")
+    .in("id", deal.contact_ids || []);
+  // Simple, readable validation logic here
+}
 ```
 
 ---

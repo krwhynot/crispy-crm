@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 # ============================================================================
 # Docker Compose Override for Port Consolidation
@@ -28,43 +28,43 @@ services:
   # Kong: API Gateway (primary entry point for your application)
   kong:
     ports:
-      - "54321:8000"  # REST API, GraphQL, Auth endpoints
+      - "54321:8000" # REST API, GraphQL, Auth endpoints
 
   # Studio: Database management UI
   studio:
     ports:
-      - "54323:3000"  # Supabase Studio web interface
+      - "54323:3000" # Supabase Studio web interface
 
   # --- INTERNAL SERVICES (no host exposure) ---
   # By defining these services with empty ports lists, we override
   # the base docker-compose.yml and keep them internal to Docker network.
 
   db:
-    ports: []  # PostgreSQL - accessed via Kong API
+    ports: [] # PostgreSQL - accessed via Kong API
 
   auth:
-    ports: []  # GoTrue auth service
+    ports: [] # GoTrue auth service
 
   rest:
-    ports: []  # PostgREST
+    ports: [] # PostgREST
 
   realtime:
-    ports: []  # Realtime subscriptions
+    ports: [] # Realtime subscriptions
 
   storage:
-    ports: []  # Storage API
+    ports: [] # Storage API
 
   imgproxy:
-    ports: []  # Image optimization
+    ports: [] # Image optimization
 
   meta:
-    ports: []  # Metadata service
+    ports: [] # Metadata service
 
   functions:
-    ports: []  # Edge functions
+    ports: [] # Edge functions
 
   analytics:
-    ports: []  # Analytics service
+    ports: [] # Analytics service
 
   # Inbucket: Email testing server
   # Uncomment to expose email testing UI:

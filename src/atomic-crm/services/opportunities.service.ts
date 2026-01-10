@@ -278,7 +278,7 @@ export class OpportunitiesService {
         p_contact_ids: contactIds,
       });
       devLog("OpportunitiesService", "Contacts synced successfully", { id, contactIds });
-    } catch (error) {
+    } catch (error: unknown) {
       devError("OpportunitiesService", "Failed to sync contacts", { id, error });
       throw error; // Fail-fast
     }

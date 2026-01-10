@@ -59,11 +59,13 @@ export interface ResourceNamesResult {
 export const resourceExtractors = {
   /**
    * Extract display name from Sales resource
-   * Combines first_name and last_name with fallback
+   * Combines first_name and last_name with ID-based fallback for data quality visibility
    */
-  sales: ((s) =>
-    `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim() ||
-    "Unknown") satisfies DisplayNameExtractor<Sales>,
+  sales: ((s) => {
+    const fullName = `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim();
+    if (fullName) return fullName;
+    return `Sales #${s.id} (missing name)`;
+  }) satisfies DisplayNameExtractor<Sales>,
 
   /**
    * Extract display name from Organization resource

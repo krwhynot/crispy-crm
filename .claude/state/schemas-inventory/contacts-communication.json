@@ -1,0 +1,89 @@
+{
+  "chunk_name": "contacts-communication",
+  "generated_at": "2026-01-10T23:36:08.396Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "personalInfoTypeSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-communication.ts",
+      "line": 9,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "work",
+        "home",
+        "other"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "emailAndTypeSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-communication.ts",
+      "line": 13,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "value",
+          "zodType": "string",
+          "constraints": [
+            "email(\"Invalid email address\")",
+            "max(254, \"Email too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "type",
+          "zodType": "ref:personalInfoTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "phoneNumberAndTypeSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-communication.ts",
+      "line": 19,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "value",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(30, \"Phone number too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "type",
+          "zodType": "ref:personalInfoTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

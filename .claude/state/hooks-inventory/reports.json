@@ -1,8 +1,54 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-08T12:14:56.915Z",
-  "item_count": 2,
+  "generated_at": "2026-01-10T23:36:07.977Z",
+  "item_count": 5,
   "items": [
+    {
+      "name": "useCampaignActivityData",
+      "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts",
+      "line": 40,
+      "parameters": [
+        "options"
+      ],
+      "returnType": "{ activities: CampaignActivity[]; activitiesError: Error; allOpportunities: CampaignOpportunity[]; allCampaignActivities: CampaignActivity[]; opportunityMap: Map<number, CampaignOpportunity>; salesMap: Map<number, string>; campaignOptions: { name: string; count: number; }[]; salesRepOptions: { id: number; name: string; count: number; }[]; activityTypeCounts: Map<string, number>; isLoadingCampaigns: boolean; isLoadingActivities: boolean; }",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useCampaignActivityExport",
+      "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts",
+      "line": 49,
+      "parameters": [
+        "selectedCampaign",
+        "salesMap",
+        "opportunityMap"
+      ],
+      "returnType": "{ exportStaleLeads: (staleOpportunities: StaleOpportunity[]) => void; exportActivities: (activityGroups: CampaignActivityGroup[], activities: CampaignActivity[]) => void; }",
+      "dependencies": [
+        "useCallback",
+        "useNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useCampaignActivityMetrics",
+      "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts",
+      "line": 53,
+      "parameters": [
+        "activities",
+        "allOpportunities",
+        "allCampaignActivities",
+        "selectedCampaign",
+        "showStaleLeads"
+      ],
+      "returnType": "{ activityGroups: { uniqueOrgs: number; percentage: number; mostActiveOrg: string; mostActiveCount: number; type: string; activities: CampaignActivity[]; totalCount: number; }[]; staleOpportunities: { lastActivityDate: string; daysInactive: number; stageThreshold: number; isStale: boolean; id: number; name: string; campaign: string | null; customer_organization_name?: string; stage?: string; }[]; totalActivities: number; uniqueOrgs: number; coverageRate: number; avgActivitiesPerLead: string; }",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
     {
       "name": "useChartTheme",
       "file": "src/atomic-crm/reports/hooks/useChartTheme.ts",

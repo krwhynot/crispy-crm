@@ -160,6 +160,45 @@ dotenv.config({ path: ".env.test" });
 vi.unmock("@supabase/supabase-js");
 ```
 
+### Setup Hook Choice: beforeAll vs beforeEach
+
+Both `beforeAll` and `beforeEach` are valid patterns - choose based on test isolation needs:
+
+| Hook | Use When | Example |
+|------|----------|---------|
+| `beforeAll` | Setup is expensive and can be shared across tests (DB connections, auth, fixtures) | RLS tests: create users once, run multiple permission checks |
+| `beforeEach` | Tests may mutate state and need fresh setup for isolation | CSV import: fresh harness per test to avoid data pollution |
+
+```typescript
+// beforeAll: Shared expensive setup
+describe("RLS Policies", () => {
+  let adminClient: SupabaseClient;
+
+  beforeAll(async () => {
+    // Create test users once - expensive operation
+    adminClient = await createAuthenticatedClient("admin");
+  });
+
+  afterAll(async () => {
+    await cleanup();
+  });
+});
+
+// beforeEach: Isolated per-test setup
+describe("CSV Import", () => {
+  let harness: TestHarness;
+
+  beforeEach(async () => {
+    // Fresh harness per test - tests may mutate seedData
+    harness = await createTestHarness();
+  });
+
+  afterEach(async () => {
+    await harness.cleanup();
+  });
+});
+```
+
 ### RLS Policy Testing
 
 ```typescript

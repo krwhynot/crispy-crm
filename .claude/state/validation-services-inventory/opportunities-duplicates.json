@@ -1,0 +1,19 @@
+{
+  "chunk_name": "opportunities-duplicates",
+  "generated_at": "2026-01-10T23:36:09.110Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "checkExactDuplicate",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts",
+      "line": 80,
+      "pattern": "unknown"
+    },
+    {
+      "name": "validateNoDuplicate",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts",
+      "line": 163,
+      "pattern": "date"
+    }
+  ]
+}

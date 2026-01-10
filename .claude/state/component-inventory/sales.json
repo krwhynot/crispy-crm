@@ -1,7 +1,7 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-08T12:14:50.374Z",
-  "item_count": 21,
+  "generated_at": "2026-01-10T23:35:59.787Z",
+  "item_count": 23,
   "items": [
     {
       "name": "SaleAvatar",
@@ -98,6 +98,7 @@
         "useMemo",
         "useMutation",
         "useNotify",
+        "useQueryClient",
         "useRedirect"
       ],
       "imports": [
@@ -243,7 +244,7 @@
     {
       "name": "SalesPermissionsTab",
       "file": "src/atomic-crm/sales/SalesPermissionsTab.tsx",
-      "line": 53,
+      "line": 54,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -256,6 +257,7 @@
       ],
       "imports": [
         "../providers/supabase/authProvider",
+        "./UserDisableReassignDialog",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/sales",
         "@/components/ui/alert-dialog",
@@ -270,9 +272,11 @@
         "react-admin"
       ],
       "isDefaultExport": false,
-      "childComponents": [],
+      "childComponents": [
+        "UserDisableReassignDialog"
+      ],
       "contextDependencies": [],
-      "componentRole": "leaf"
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesProfileTab",
@@ -360,6 +364,82 @@
         "Sale"
       ],
       "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "UserDisableReassignDialog",
+      "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
+      "line": 114,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetList",
+        "useNotify",
+        "useQueryClient",
+        "useRef",
+        "useRefresh",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../queryKeys",
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/select",
+        "@tanstack/react-query",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "UserDisableReassignDialog",
+      "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
+      "line": 114,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetList",
+        "useNotify",
+        "useQueryClient",
+        "useRef",
+        "useRefresh",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../queryKeys",
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/select",
+        "@tanstack/react-query",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "wrapper"
     },
     {

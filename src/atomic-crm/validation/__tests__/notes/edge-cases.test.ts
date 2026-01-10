@@ -136,7 +136,7 @@ describe("Note Edge Cases and Error Handling", () => {
         try {
           contactNoteSchema.parse(data);
           expect.fail("Should have thrown error");
-        } catch (error) {
+        } catch (error: unknown) {
           if (error instanceof z.ZodError) {
             expect(error.issues).toBeDefined();
             expect(error.issues.length).toBeGreaterThan(0);

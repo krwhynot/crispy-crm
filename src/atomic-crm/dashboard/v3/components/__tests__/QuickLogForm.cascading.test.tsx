@@ -265,6 +265,17 @@ vi.mock("@hookform/resolvers/zod", () => ({
   zodResolver: () => async (values: any) => ({ values, errors: {} }),
 }));
 
+// Mock @tanstack/react-query for useQueryClient (added for cache invalidation in audit fixes)
+vi.mock("@tanstack/react-query", async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, unknown>;
+  return {
+    ...actual,
+    useQueryClient: () => ({
+      invalidateQueries: vi.fn(),
+    }),
+  };
+});
+
 // Mock react-hook-form with controlled form state - use importOriginal to preserve all exports
 vi.mock("react-hook-form", async (importOriginal) => {
   const actual = await importOriginal<typeof ReactHookForm>();

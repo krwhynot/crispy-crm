@@ -88,7 +88,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
       try {
         quickAddSchema.parse(invalidData);
-      } catch (error) {
+      } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           const orgNameError = error.issues.find((issue) => issue.path[0] === "org_name");
           expect(orgNameError).toBeDefined();
@@ -143,7 +143,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
       try {
         quickAddSchema.parse(invalidData);
-      } catch (error) {
+      } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           const campaignError = error.issues.find((issue) => issue.path[0] === "campaign");
           expect(campaignError).toBeDefined();
@@ -166,7 +166,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
       try {
         quickAddSchema.parse(invalidData);
-      } catch (error) {
+      } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           const principalError = error.issues.find((issue) => issue.path[0] === "principal_id");
           expect(principalError).toBeDefined();
@@ -237,7 +237,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
       try {
         quickAddSchema.parse(invalidData);
-      } catch (error) {
+      } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           const phoneError = error.issues.find((issue) => issue.path[0] === "phone");
           expect(phoneError).toBeDefined();
@@ -312,7 +312,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
       try {
         quickAddSchema.parse(invalidData);
-      } catch (error) {
+      } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           const emailError = error.issues.find((issue) => issue.path[0] === "email");
           expect(emailError).toBeDefined();

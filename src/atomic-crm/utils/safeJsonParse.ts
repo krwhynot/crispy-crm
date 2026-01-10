@@ -32,7 +32,7 @@ export function safeJsonParse<T>(json: string | null, schema: ZodSchema<T>): T |
     }
 
     return result.data;
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn("[safeJsonParse] JSON.parse failed:", error);
     return null;
   }

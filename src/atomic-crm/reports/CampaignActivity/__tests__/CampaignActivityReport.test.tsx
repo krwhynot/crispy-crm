@@ -567,11 +567,13 @@ describe("CampaignActivityReport", () => {
       await user.click(last7DaysButton);
 
       await waitFor(() => {
-        expect(screen.getByText("Clear Filters")).toBeInTheDocument();
+        expect(screen.getAllByText("Clear Filters").length).toBeGreaterThan(0);
       });
 
-      const clearFiltersButton = screen.getByText("Clear Filters");
-      await user.click(clearFiltersButton);
+      // Use getAllByText and pick the first "Clear Filters" button (toolbar button)
+      const clearFiltersButtons = screen.getAllByText("Clear Filters");
+      expect(clearFiltersButtons[0]).toBeDefined();
+      await user.click(clearFiltersButtons[0]!);
 
       await waitFor(() => {
         expect(screen.getByLabelText("Start Date")).toHaveValue("");
@@ -581,6 +583,148 @@ describe("CampaignActivityReport", () => {
   });
 
   describe("Stale Leads Calculation", () => {
+    describe("Stage Data Integrity", () => {
+      it("should filter out opportunities with null stage and log error", async () => {
+        const { useGetList } = await import("ra-core");
+        const user = userEvent.setup();
+        const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+        const mockOpportunities = [
+          {
+            id: 1,
+            name: "Valid Stage Opp",
+            campaign: "Grand Rapids Trade Show",
+            customer_organization_name: "Test Org 1",
+            stage: "new_lead",
+          },
+          {
+            id: 2,
+            name: "Null Stage Opp",
+            campaign: "Grand Rapids Trade Show",
+            customer_organization_name: "Test Org 2",
+            stage: null, // Invalid - should be filtered out
+          },
+          {
+            id: 3,
+            name: "Undefined Stage Opp",
+            campaign: "Grand Rapids Trade Show",
+            customer_organization_name: "Test Org 3",
+            // stage is undefined - should be filtered out
+          },
+        ];
+
+        vi.mocked(useGetList).mockImplementation((resource: string) => {
+          if (resource === "opportunities") {
+            return {
+              data: mockOpportunities,
+              total: 3,
+              isPending: false,
+              isLoading: false,
+              error: null,
+              refetch: vi.fn(),
+            } as any;
+          }
+          return {
+            data: [],
+            total: 0,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        });
+
+        renderWithAdminContext(<CampaignActivityReport />);
+
+        await waitFor(() => {
+          expect(
+            screen.getByLabelText("Show stale leads (per-stage thresholds)")
+          ).toBeInTheDocument();
+        });
+
+        const staleLeadsCheckbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
+        await user.click(staleLeadsCheckbox);
+
+        await waitFor(() => {
+          // Should have logged errors for both invalid opportunities
+          expect(consoleErrorSpy).toHaveBeenCalledWith(
+            expect.stringContaining("[DATA INTEGRITY] Opportunity ID 2 has no stage")
+          );
+          expect(consoleErrorSpy).toHaveBeenCalledWith(
+            expect.stringContaining("[DATA INTEGRITY] Opportunity ID 3 has no stage")
+          );
+        });
+
+        consoleErrorSpy.mockRestore();
+      });
+
+      it("should process opportunities with valid stage without error", async () => {
+        const { useGetList } = await import("ra-core");
+        const user = userEvent.setup();
+        const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+        const mockOpportunities = [
+          {
+            id: 1,
+            name: "Valid Opp 1",
+            campaign: "Grand Rapids Trade Show",
+            customer_organization_name: "Test Org 1",
+            stage: "new_lead",
+          },
+          {
+            id: 2,
+            name: "Valid Opp 2",
+            campaign: "Grand Rapids Trade Show",
+            customer_organization_name: "Test Org 2",
+            stage: "initial_outreach",
+          },
+        ];
+
+        vi.mocked(useGetList).mockImplementation((resource: string) => {
+          if (resource === "opportunities") {
+            return {
+              data: mockOpportunities,
+              total: 2,
+              isPending: false,
+              isLoading: false,
+              error: null,
+              refetch: vi.fn(),
+            } as any;
+          }
+          return {
+            data: [],
+            total: 0,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        });
+
+        renderWithAdminContext(<CampaignActivityReport />);
+
+        await waitFor(() => {
+          expect(
+            screen.getByLabelText("Show stale leads (per-stage thresholds)")
+          ).toBeInTheDocument();
+        });
+
+        const staleLeadsCheckbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
+        await user.click(staleLeadsCheckbox);
+
+        await waitFor(() => {
+          expect(screen.getByText(/Stale Leads Report/)).toBeInTheDocument();
+        });
+
+        // Should not have logged any DATA INTEGRITY errors
+        expect(consoleErrorSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining("[DATA INTEGRITY]")
+        );
+
+        consoleErrorSpy.mockRestore();
+      });
+    });
+
     it("identifies stale opportunities with no activity in threshold period", async () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
@@ -591,6 +735,7 @@ describe("CampaignActivityReport", () => {
           name: "Stale Opp",
           campaign: "Grand Rapids Trade Show",
           customer_organization_name: "Test Org 1",
+          stage: "new_lead",
         },
       ];
 
@@ -664,6 +809,7 @@ describe("CampaignActivityReport", () => {
           name: "Test Opp",
           campaign: "Grand Rapids Trade Show",
           customer_organization_name: "Test Org",
+          stage: "new_lead",
         },
       ];
 
@@ -714,6 +860,7 @@ describe("CampaignActivityReport", () => {
           name: "Never Contacted Opp",
           campaign: "Grand Rapids Trade Show",
           customer_organization_name: "Test Org",
+          stage: "new_lead",
         },
       ];
 
@@ -939,6 +1086,7 @@ describe("CampaignActivityReport", () => {
           name: "Active Opp",
           campaign: "Grand Rapids Trade Show",
           customer_organization_name: "Test Org",
+          stage: "new_lead",
         },
       ];
 
@@ -1074,16 +1222,19 @@ describe("CampaignActivityReport", () => {
           id: 1,
           name: "Test Opp 1",
           campaign: "Grand Rapids Trade Show",
+          stage: "new_lead",
         },
         {
           id: 2,
           name: "Test Opp 2",
           campaign: "Grand Rapids Trade Show",
+          stage: "initial_outreach",
         },
         {
           id: 3,
           name: "Test Opp 3",
           campaign: "Grand Rapids Trade Show",
+          stage: "demo_scheduled",
         },
       ];
 

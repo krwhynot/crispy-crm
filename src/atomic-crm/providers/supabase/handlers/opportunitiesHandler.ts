@@ -67,6 +67,7 @@ const handlerInputSchema = z
 const previousDataSchema = z
   .object({
     products: z.array(productSchema).optional(),
+    version: z.number().optional(), // FIX [SF-C12]: Extract version for optimistic locking
   })
   .passthrough();
 
@@ -166,6 +167,8 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
         if (Array.isArray(productsToSync)) {
           const validatedPreviousData = previousDataSchema.parse(params.previousData);
           const previousProducts: ProductFromSchema[] = validatedPreviousData.products ?? [];
+          // FIX [SF-C12]: Pass version for optimistic locking concurrency check
+          const previousVersion: number | undefined = validatedPreviousData.version;
 
           // Service is instantiated here to ensure it uses the wrapped provider
           const extendedProvider = assertExtendedDataProvider(baseProvider);
@@ -173,7 +176,8 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
           const result = await service.updateWithProducts(
             params.id,
             validatedData,
-            previousProducts
+            previousProducts,
+            previousVersion // FIX [SF-C12]: Enable optimistic locking
           );
           return { data: result } as { data: RecordType };
         }

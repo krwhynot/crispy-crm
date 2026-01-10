@@ -14,6 +14,8 @@ describe("Opportunity Validation Functions - UI as Source of Truth", () => {
         principal_organization_id: "2",
         contact_ids: ["1"],
         estimated_close_date: "2025-12-31",
+        stage: "new_lead", // Required after WG-003 fix
+        priority: "medium", // Required after WG-002 fix
       };
 
       await expect(validateOpportunityForm(validData)).resolves.toBeUndefined();
@@ -31,13 +33,15 @@ describe("Opportunity Validation Functions - UI as Source of Truth", () => {
   });
 
   describe("validateCreateOpportunity", () => {
-    it("should require all creation fields", async () => {
+    it("should require all creation fields including stage", async () => {
       const validData = {
         name: "New Opportunity",
         customer_organization_id: "1",
         principal_organization_id: "2",
         contact_ids: ["1"],
         estimated_close_date: "2025-12-31",
+        stage: "new_lead", // Required after WG-003 fix
+        priority: "medium", // Required after WG-002 fix
       };
 
       await expect(validateCreateOpportunity(validData)).resolves.toBeUndefined();

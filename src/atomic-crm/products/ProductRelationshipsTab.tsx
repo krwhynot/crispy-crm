@@ -10,7 +10,7 @@ import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/si
 interface Product {
   id: number;
   name: string;
-  principal_id?: number | null;
+  principal_id: number;
   created_at?: string | null;
   updated_at?: string | null;
 }
