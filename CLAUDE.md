@@ -11,8 +11,9 @@
 - **Medium (60-84%):** Based on experience, likely correct.
 - **Low (30-59%):** Educated guess, needs verification.
 - **Speculative (<30%):** Hypothesis only, requires investigation.
-**<70% Items:** Include `To Increase: [verification steps]` field.
-**<50% Protocol:** State what would increase confidence, suggest verification, flag for human review.
+- **<70% Items:** Include `To Increase: [verification steps]` field.
+- **<50% Protocol:** State what would increase confidence, suggest verification, flag for human review.
+
 **Required Contexts:**
 - **Plans:** Task-level confidence + Rationale/Risk/Effort.
 - **Debug:** `Root cause: stale cache [60%]`.
