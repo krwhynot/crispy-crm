@@ -1,24 +1,34 @@
 # CLAUDE.md - Crispy CRM (Atomic CRM)
 **Stack:** React 19 + TypeScript + React Admin + Supabase | **Device:** Desktop (1440px+) & iPad
-**Goals:** Centralize sales data (kill Excel), <2s Principal answers, 10+ activities/week/principal, 100% adoption in 30 days.
+**Goals:** Centralize sales data (kill Excel), <2s Principal answers, 10+ activities/week/principal, 100% adoption (30 days).
+
+## 📊 Output Requirements (Confidence MANDATORY)
+**Rule:** Display `[Confidence: XX%]` on **ALL** tasks, plans, and technical assessments. **NEVER OMIT.**
+**Factors (+/-):** Code presence, docs, test coverage, known patterns (++) vs assumptions, complexity, missing context (--).
+
+**Scale:**
+- **High (85-100%):** Verified via code/docs, proven pattern.
+- **Medium (60-84%):** Based on experience, likely correct.
+- **Low (30-59%):** Educated guess, needs verification.
+- **Speculative (<30%):** Hypothesis only, requires investigation.
+
+**Required Contexts:**
+- **Plans:** Task-level confidence + Rationale/Risk/Effort.
+- **Debug:** `Root cause: stale cache [60%]`.
+- **Arch/Est/Risk:** `Recommend handler [90%]`, `~2 hours [65%]`, `Breaking risk [40%]`.
+
+**<50% Protocol:** State what would increase confidence, suggest verification, flag for human review.
+**Plan Summary:** Provide an **Aggregate Confidence Score** at the end of every multi-step plan.
 
 ## 🛠 Tooling & Discovery
 **Discovery:** `just discover` (full) | `just discover --incremental` | `just mcp-test`
-- **JSON Inventories:** Component/hook/type metadata.
-- **Search:** `search.db` (FTS5+SCIP) for definitions/refs; `vectors.lance` for semantic search.
-- **MCP Tools:** `search_code` (hybrid), `go_to_definition`, `find_references`.
-- **LSP:** `typescript-lsp` enabled. **Wildcards:** 36 patterns pre-approved (see `.claude/docs/lsp-wildcard-setup.md`).
-
-**Preferred CLI (Use these over defaults):**
-- **Task Runner:** `just <command>` (see `just --list`)
-- **Search:** `rg "pattern" --type ts` | `fd -e tsx "name"`
-- **Read:** `bat --plain --line-range=N:M file`
-- **Git:** `gh` CLI with `--json`
+**Intel:** JSON Inventories (metadata) | `search.db` (FTS5+SCIP) | `vectors.lance` (semantic) | LSP (36 wildcard patterns).
+**MCP Tools:** `search_code` (hybrid), `go_to_definition`, `find_references`.
+**CLI Prefs:** `just` (runner), `rg --type ts` (search), `fd -e tsx` (find), `bat` (read), `gh --json` (git).
 
 ## 🏗 Architecture & Structure
 **Critical:** All DB access via `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`.
-- **NEVER** import Supabase directly in components.
-- **Validation:** Zod schemas at API boundary (in provider), NOT in forms.
+- **Rules:** NO direct Supabase imports. Zod schemas at API boundary (provider), NOT forms.
 
 **Directory Map:**
 - `src/atomic-crm/` (Features: contacts, organizations, opportunities)
@@ -26,59 +36,41 @@
 - `src/components/admin/` (RA wrappers)
 - `supabase/migrations/` (SQL) | `supabase/functions/` (Edge/Deno)
 
-**Feature Pattern:** `index.tsx` (Entry), `FeatureList.tsx`, `FeatureCreate.tsx`, `FeatureEdit.tsx`, `FeatureSlideOver.tsx` (40vw).
+**Feature Pattern:** `index.tsx`, `Feature{List,Create,Edit}.tsx`, `FeatureSlideOver.tsx` (40vw).
 
 ## 📐 Engineering Principles
-**Philosophy:** Fail Fast (no retries/fallbacks). Single Source of Truth (Provider).
-**TypeScript:** `interface` for shapes, `type` for unions/intersections.
-**Forms:** `onSubmit`/`onBlur` mode (never `onChange`). Use `useWatch()` (isolated), not `watch()`.
+**Core:** Fail Fast (no retries). Single Source of Truth (Provider). TS: `interface` (shapes), `type` (unions).
+**Forms:** `onSubmit`/`onBlur` (no `onChange`). Use `useWatch()` (isolated), not `watch()`.
+**Zod:** `z.coerce` (non-strings), `.max()` (strings), `z.strictObject()` (API), `z.enum()` (allowlists).
 
-**Zod Rules:**
-- `z.coerce` for non-strings.
-- Strings must have `.max()`.
-- `z.strictObject()` at API boundary.
-- `z.enum()` allowlists (no denylists).
-
-**deprecated_patterns** (Strict Ban):
+**Strict Bans (Deprecated):**
 - `Contact.company_id` → Use `contact_organizations` junction.
 - `Opportunity.archived_at` → Use `deleted_at`.
 - Direct Supabase imports → Use `unifiedDataProvider`.
 - Form-level validation → Move to API boundary.
 
-**Accessibility (A11y):**
-- `aria-invalid={!!error}`, `aria-describedby={errorId}`.
-- `role="alert"` for errors. Touch targets ≥44px (`h-11 w-11`).
+**Accessibility (A11y):** `aria-invalid`, `aria-describedby`, `role="alert"`. Targets ≥44px (`h-11 w-11`).
 
 ## 🎨 Design System
-**Tailwind v4 Semantic Only:**
-- ✅ `text-muted-foreground`, `bg-primary`, `text-destructive`.
-- ❌ `text-gray-500`, `bg-green-600`, `hex/oklch`.
-
-**Components:**
-- **Layouts:** List Shell, Slide-Over (40vw), Tabbed Create Forms.
-- **Column Filters:** `src/components/admin/column-filters/`. Debounced text (300ms), Checkbox popovers. Use `useListContext`.
+**Tailwind v4 Semantic:** ✅ `text-muted-foreground`, `bg-primary` | ❌ `text-gray-500`, `hex/oklch`.
+**Components:** List Shell, Slide-Over, Tabbed Forms.
+**Filters:** `src/components/admin/column-filters/`. Debounced text (300ms), Checkbox popovers. Use `useListContext`.
 
 ## 🧪 Testing & Database
-- **Unit:** Vitest (`renderWithAdminContext` from `src/tests/utils/render-admin.tsx`). Mock Supabase via `src/tests/setup.ts`.
-- **E2E:** Manual via Claude Chrome (`docs/tests/e2e/`). Seed: `just seed-e2e`.
-- **DB:** Postgres 17, RLS enabled (100%), Soft deletes (`deleted_at`), Edge functions (digest/overdue).
-- **DB Test:** pgTAP for unit testing/security validation.
+**Test:** Vitest (`renderWithAdminContext`). Mock Supabase (`setup.ts`). E2E: Manual via Claude Chrome. Seed: `just seed-e2e`.
+**DB:** Postgres 17, RLS (100%), Soft deletes (`deleted_at`), Edge functions (digest/overdue).
+**Security:** pgTAP for unit testing/security validation.
 
 ## 💼 Business Domain (MFB)
-**Role:** Broker between Principal (Manufacturer) → Distributor → Operator (Restaurant).
-**Entities:**
-- **Principal:** Manufacturer (9 total).
-- **Distributor:** Buys from Principal, sells to Operator (50+). Has `Authorizations` & `Territory`.
-- **Operator:** End customer.
-- **Opportunity:** Deal per principal. Has Activities, Samples.
-
-**Pipeline Stages (7):** `new_lead` → `initial_outreach` → `sample_visit_offered` → `feedback_logged` → `demo_scheduled` → `closed_won` | `closed_lost`.
+**Model:** Principal (Manufacturer) → Distributor → Operator (Restaurant). Broker: MFB.
+**Entities:** Principal (9), Distributor (50+, Auth/Territory), Operator, Opportunity (Deal/Activities).
+**Stages:** `new_lead` → `initial_outreach` → `sample_visit_offered` → `feedback_logged` → `demo_scheduled` → `closed_won` | `closed_lost`.
 
 **Key Logic:**
-- **MVP Musts:** Principal views, Quick logging (<30s), Excel export, Sample tracking, Tablet/Mobile, Task snooze/digest.
-- **Not MVP:** PDF export, Volume/Price, Ext. Integrations, Territory mgmt.
-- **Activities:** Calls, Emails, Samples (require follow-up).
-- **Win/Loss:** Relationship, Quality vs Price, Auth, Competitor.
+- **MVP:** Principal views, Quick logging (<30s), Excel export, Sample tracking, Tablet/Mobile, Task snooze.
+- **Not MVP:** PDF, Volume/Price, Ext. Integrations, Territory mgmt.
+- **Activities:** Call, Email, Sample (follow-up req).
+- **Win/Loss:** Rel, Quality, Price, Auth, Competitor.
 - **Users:** Admin, Manager (All data), Rep (Own data).
 
-**Protocol:** Use `ref` MCP tool for industry standards. Ask multiple-choice questions if context is missing.
+**Protocol:** Use `ref` MCP. Ask multiple-choice if context missing.
