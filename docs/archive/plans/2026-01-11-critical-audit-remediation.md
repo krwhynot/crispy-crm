@@ -929,6 +929,118 @@ npx supabase db reset
 
 ---
 
+## Migration Safety Addendum
+
+### Preflight Checklist (Run Before ANY Migration)
+
+```sql
+-- ============================================================================
+-- PREFLIGHT AUDIT QUERIES - Run before migrations
+-- ============================================================================
+
+-- 1. Count contacts that would be affected by merge function
+SELECT COUNT(*) as duplicate_contacts_count
+FROM contacts
+WHERE deleted_at IS NULL;
+
+-- 2. Count orphaned opportunities (invalid customer_organization_id)
+SELECT COUNT(*) as orphaned_opportunities
+FROM opportunities
+WHERE customer_organization_id NOT IN (SELECT id FROM organizations WHERE deleted_at IS NULL)
+AND deleted_at IS NULL;
+
+-- 3. Count orphaned activities (invalid created_by)
+SELECT COUNT(*) as orphaned_activities
+FROM activities
+WHERE created_by IS NOT NULL
+AND created_by NOT IN (SELECT id FROM sales WHERE deleted_at IS NULL)
+AND deleted_at IS NULL;
+
+-- 4. Verify merge function exists
+SELECT proname, pg_get_function_arguments(oid)
+FROM pg_proc
+WHERE proname LIKE '%merge%contact%';
+
+-- 5. Record current row counts for verification
+SELECT 'contacts' as table_name, COUNT(*) as total, COUNT(*) FILTER (WHERE deleted_at IS NULL) as active FROM contacts
+UNION ALL
+SELECT 'opportunities', COUNT(*), COUNT(*) FILTER (WHERE deleted_at IS NULL) FROM opportunities
+UNION ALL
+SELECT 'activities', COUNT(*), COUNT(*) FILTER (WHERE deleted_at IS NULL) FROM activities;
+```
+
+### Postflight Checklist (Run After Each Migration)
+
+```sql
+-- ============================================================================
+-- POSTFLIGHT VERIFICATION - Run after migrations
+-- ============================================================================
+
+-- 1. Verify no hard deletes occurred (row counts should only decrease by soft delete)
+SELECT 'contacts' as table_name, COUNT(*) as total, COUNT(*) FILTER (WHERE deleted_at IS NULL) as active FROM contacts
+UNION ALL
+SELECT 'opportunities', COUNT(*), COUNT(*) FILTER (WHERE deleted_at IS NULL) FROM opportunities
+UNION ALL
+SELECT 'activities', COUNT(*), COUNT(*) FILTER (WHERE deleted_at IS NULL) FROM activities;
+
+-- 2. Verify merge function updated
+SELECT obj_description(oid, 'pg_proc') as function_comment
+FROM pg_proc
+WHERE proname = 'merge_duplicate_contacts';
+-- Expected: Comment mentions 'soft delete' and '2026-01-11'
+
+-- 3. Test merge function returns soft_delete flag
+SELECT merge_duplicate_contacts(
+  (SELECT id FROM contacts WHERE deleted_at IS NULL LIMIT 1),
+  ARRAY[]::INTEGER[]
+);
+-- Expected: Returns JSON with "soft_delete": true
+
+-- 4. Verify no constraint violations
+SELECT conname, conrelid::regclass
+FROM pg_constraint
+WHERE NOT convalidated;
+-- Expected: Empty (all constraints valid)
+```
+
+### Rollback Strategy Per Migration
+
+| Migration | Rollback Approach | Notes |
+|-----------|------------------|-------|
+| Task 9 (merge function) | **Forward-fix** | Recreate old function from git history if needed |
+| Task 10 (orphaned opps) | **Forward-fix** | SET deleted_at = NULL for affected rows |
+| Task 11 (orphaned activities) | **Forward-fix** | SET deleted_at = NULL for affected rows |
+| Task 12 (consolidate) | **Safe revert** | Functions can be recreated |
+
+### Forward-Fix Commands
+
+```sql
+-- If Task 10 needs reverting (orphaned opportunities):
+UPDATE opportunities
+SET deleted_at = NULL, updated_at = NOW()
+WHERE deleted_at >= '2026-01-11'::date
+AND customer_organization_id NOT IN (SELECT id FROM organizations);
+
+-- If Task 11 needs reverting (orphaned activities):
+UPDATE activities
+SET deleted_at = NULL, updated_at = NOW()
+WHERE deleted_at >= '2026-01-11'::date
+AND created_by NOT IN (SELECT id FROM sales);
+```
+
+### Migration Test Matrix
+
+| Task | Type | Risk | Idempotent | Locking |
+|------|------|------|------------|---------|
+| 9 | Function replace | Medium | Yes | None |
+| 10 | Data UPDATE | Low | Yes | Row-level |
+| 11 | Data UPDATE | Low | Yes | Row-level |
+| 12 | Function DROP | Low | Yes | None |
+
+**Note:** All migrations are idempotent (safe to re-run). Pre-launch status means data volume is small (<10K rows), so locking is not a concern.
+
+---
+
 ## Plan Confidence Summary
 
 - **Overall Confidence:** 85%
@@ -943,6 +1055,21 @@ npx supabase db reset
 
 ---
 
+## Plan Review Results
+
+**Reviewed by:** GPT-5.2 (Zen MCP thinkdeep)
+**Quality Score:** 7/10 → 8/10 (after addendum)
+**Recommendation:** Ready to execute
+
+**Issues Addressed:**
+- [x] Migration testing strategy (preflight/postflight queries added)
+- [x] Rollback procedures (forward-fix approach documented)
+- [x] Idempotency (all migrations verified idempotent)
+- [x] Operational concerns (locking noted as non-issue for pre-launch)
+
+---
+
 *Plan created: 2026-01-11*
 *Author: Claude Code Agent*
+*Reviewed: 2026-01-11 (GPT-5.2)*
 *For execution: /execute-plan docs/archive/plans/2026-01-11-critical-audit-remediation.md*
