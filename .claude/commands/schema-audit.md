@@ -1,6 +1,6 @@
 ---
 description: Audit database schema for consistency and missing patterns
-argument-hint: [optional: table-name to focus on]
+argument-hint: "[optional: table-name to focus on]"
 allowed-tools: Read, Grep, Glob, Bash(ls:*), Bash(cat:*), Task, TodoWrite
 ---
 
