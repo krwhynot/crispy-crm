@@ -1,134 +1,11 @@
 {
-  "lastAudit": "2026-01-10",
+  "lastAudit": "2026-01-11",
   "lastMode": "full",
   "scope": "src/",
   "findings": {
-    "critical": [
-      {
-        "id": "WF-C1-001",
-        "check": "WF-C1",
-        "type": "silent-status-default",
-        "location": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:188",
-        "description": "Stage defaults to 'new_lead' when opportunity stage is falsy",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-C1-002",
-        "check": "WF-C1",
-        "type": "silent-status-default",
-        "location": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:142",
-        "description": "Stage defaults to 'new_lead' in metrics calculation when falsy",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-C2-001",
-        "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/components/admin/text-input/TextInputWithCounter.tsx:15",
-        "description": "Empty string fallback for undefined/null form field values",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-C2-002",
-        "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/atomic-crm/filters/types/resourceTypes.ts:65",
-        "description": "Multiple fallbacks for sales name construction with 'Unknown' default",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-C3-001",
-        "check": "WF-C3",
-        "type": "nullable-required-fk",
-        "location": "src/atomic-crm/products/ProductRelationshipsTab.tsx:13",
-        "description": "Product principal_id marked as optional/nullable violating business rule",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-C3-002",
-        "check": "WF-C3",
-        "type": "nullable-required-fk",
-        "location": "src/atomic-crm/validation/rpc.ts:125",
-        "description": "RPC principal_ids parameter allows null/undefined bypassing authorization",
-        "firstSeen": "2026-01-10"
-      }
-    ],
-    "high": [
-      {
-        "id": "WF-H1-001",
-        "check": "WF-H1",
-        "type": "hardcoded-stage",
-        "location": "src/atomic-crm/opportunities/utils/rowStyling.ts:46",
-        "description": "Hardcoded stage string comparison 'new_lead'",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-H1-ENUM",
-        "check": "WF-H1",
-        "type": "hardcoded-stage-mass",
-        "location": "Multiple files (50+ locations)",
-        "description": "Pipeline stages hardcoded as string literals across codebase",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-H2-001",
-        "check": "WF-H2",
-        "type": "missing-activity-logging",
-        "location": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx:84",
-        "description": "Close transitions detected but no enforced activity logging",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-H3-001",
-        "check": "WF-H3",
-        "type": "incomplete-state-transition",
-        "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:299",
-        "description": "Kanban drag-and-drop allows direct stage assignment without transition validation",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-H3-002",
-        "check": "WF-H3",
-        "type": "incomplete-state-transition",
-        "location": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:184",
-        "description": "Report filter stage assignment without validation of valid values",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-H4-001",
-        "check": "WF-H4",
-        "type": "missing-required-relationship",
-        "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:68",
-        "description": "Quick-add form allows opportunity creation with minimal relationship validation",
-        "firstSeen": "2026-01-10"
-      }
-    ],
-    "medium": [
-      {
-        "id": "WF-M1-001",
-        "check": "WF-M1",
-        "type": "date-handling",
-        "location": "Multiple files (176 occurrences)",
-        "description": "Inconsistent date handling - mix of new Date(), parseISO(), and format()",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-M2-001",
-        "check": "WF-M2",
-        "type": "direct-stage-read",
-        "location": "Multiple opportunity components",
-        "description": "Direct stage property reads without state management (acceptable for display)",
-        "firstSeen": "2026-01-10"
-      },
-      {
-        "id": "WF-M4-001",
-        "check": "WF-M4",
-        "type": "optional-activity-type",
-        "location": "src/types/database.types.ts:90",
-        "description": "Activity type marked as optional in TypeScript despite DB NOT NULL constraint",
-        "firstSeen": "2026-01-10"
-      }
-    ]
+    "critical": [],
+    "high": [],
+    "medium": []
   },
   "dbFindings": {
     "orphanedOpportunities": 0,
@@ -136,16 +13,22 @@
     "unlinkedContacts": 0,
     "missingCloseReasons": 0,
     "activitiesWithoutType": 0,
-    "stateTransitionAnomalies": 0,
-    "opportunitiesWithoutOwner": 369,
-    "totalOpportunities": 372,
-    "activeActivities": 125,
-    "activeTasks": 6,
-    "deletedContacts": 158
+    "stateTransitionAnomalies": 0
   },
   "counts": {
-    "critical": 6,
-    "high": 6,
-    "medium": 3
+    "critical": 0,
+    "high": 0,
+    "medium": 0
+  },
+  "notes": {
+    "totalOpportunities": 372,
+    "closedWon": 0,
+    "closedLost": 0,
+    "schemaValidation": {
+      "principalOrganizationIdNotNull": true,
+      "customerOrganizationIdNotNull": true,
+      "contactOrganizationIdNotNull": true
+    },
+    "improvement": "All 15 baseline findings from 2026-01-10 have been resolved"
   }
 }
