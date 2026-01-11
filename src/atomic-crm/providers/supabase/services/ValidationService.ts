@@ -24,6 +24,7 @@ import {
 import {
   validateCreateOpportunity,
   validateUpdateOpportunity,
+  validateCloseOpportunity,
 } from "../../../validation/opportunities";
 import {
   validateCreateContactNote,
@@ -266,6 +267,19 @@ export class ValidationService {
    */
   hasValidation(resource: string): boolean {
     return !!this.validationRegistry[resource];
+  }
+
+  /**
+   * Validate opportunity close action (WG-002)
+   * Enforces win/loss reason requirements when closing opportunities.
+   * This is a dedicated method because close is a special operation
+   * distinct from regular create/update validation.
+   *
+   * @param data The close opportunity data (id, stage, win_reason/loss_reason)
+   * @throws ZodError if validation fails (missing required reason)
+   */
+  async validateCloseOpportunity(data: unknown): Promise<void> {
+    await validateCloseOpportunity(data);
   }
 
   /**

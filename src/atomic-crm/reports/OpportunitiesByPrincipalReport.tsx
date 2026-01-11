@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useGetList, useNotify, downloadCSV } from "ra-core";
 import { useNavigate } from "react-router-dom";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 import jsonExport from "jsonexport/dist";
 import { format } from "date-fns";
 import { ReportLayout } from "./ReportLayout";
@@ -49,15 +49,12 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
     defaultValues: filters,
   });
 
-  // Watch form values and sync to parent state using subscription pattern
-  // This avoids infinite loops - form.watch() returns new object each render,
-  // but the subscription only fires when actual values change
+  // Watch form values using useWatch hook (isolates re-renders, no subscription leak)
+  const watchedValues = useWatch({ control: form.control });
+
   useEffect(() => {
-    const subscription = form.watch((value) => {
-      onFiltersChange(value as FilterValues);
-    });
-    return () => subscription.unsubscribe();
-  }, [form, onFiltersChange]);
+    onFiltersChange(watchedValues as FilterValues);
+  }, [watchedValues, onFiltersChange]);
 
   const hasActiveFilters =
     filters.principal_organization_id ||

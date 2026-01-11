@@ -133,9 +133,11 @@ export const createOpportunitySchema = opportunityBaseSchema
     deleted_at: true,
   })
   .extend({
-    // Contact_ids optional for quick-add (can be enriched later via slide-over)
+    // Contact_ids REQUIRED for create (WG-001: every opportunity must have at least one contact)
     // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
-    contact_ids: z.array(z.coerce.number().int().positive()).optional().default([]),
+    contact_ids: z
+      .array(z.coerce.number().int().positive())
+      .min(1, "At least one contact is required"),
 
     // Auto-default: 30 days from now (industry standard placeholder)
     estimated_close_date: z.coerce

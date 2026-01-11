@@ -29,7 +29,10 @@ import { getOpportunitiesByStage } from "../constants/stages";
 import { useColumnPreferences } from "../hooks/useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
-import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
+import {
+  type CloseOpportunityInput,
+  validateCloseOpportunity,
+} from "@/atomic-crm/validation/opportunities";
 import { OpportunityCard } from "./OpportunityCard";
 
 interface OpportunityListContentProps {
@@ -154,7 +157,7 @@ export const OpportunityListContent = ({
    * Perform the actual stage update after modal confirmation (or for non-close stages)
    */
   const performStageUpdate = useCallback(
-    (
+    async (
       opportunityId: string,
       newStage: string,
       previousState: OpportunitiesByStage,
@@ -162,6 +165,27 @@ export const OpportunityListContent = ({
       additionalData?: Partial<CloseOpportunityInput>
     ) => {
       const oldStage = draggedItem.stage;
+
+      // WG-002: Validate close opportunity data before update
+      // This enforces win/loss reason requirements and prevents bypass
+      if (newStage === "closed_won" || newStage === "closed_lost") {
+        try {
+          await validateCloseOpportunity({
+            id: opportunityId,
+            stage: newStage,
+            ...additionalData,
+          });
+        } catch (error: unknown) {
+          // Validation failed - revert optimistic update and notify user
+          setOpportunitiesByStage(previousState);
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "Win/loss reason is required when closing an opportunity";
+          notify(errorMessage, { type: "error" });
+          return;
+        }
+      }
 
       update(
         "opportunities",
@@ -193,10 +217,10 @@ export const OpportunityListContent = ({
             } catch (error: unknown) {
               // WG-002 FIX: Notify user that activity log failed (audit trail incomplete)
               console.error("Failed to create stage change activity:", error);
-              notify(
-                "Stage updated but activity log failed. The change is saved but may not appear in the activity timeline.",
-                { type: "warning" }
-              );
+              notify("Failed to log activity. Please manually add a note for this stage change.", {
+                type: "error",
+                autoHideDuration: 10000, // 10 seconds - longer for action items
+              });
             }
           },
           onError: () => {

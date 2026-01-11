@@ -23,16 +23,14 @@ import { DashboardTutorial } from "./DashboardTutorial";
  * - Team activity feed showing recent activities with avatars
  */
 export function PrincipalDashboardV3() {
-  // Refresh key to force data components to re-mount and re-fetch
-  const [refreshKey, setRefreshKey] = useState(0);
+  const queryClient = useQueryClient();
   // Task completion sheet state (for mobile quick action bar)
   const [isTaskSheetOpen, setIsTaskSheetOpen] = useState(false);
 
-  // Memoized to prevent child re-renders when passed as prop
+  // Invalidate dashboard queries to trigger refetch without remounting components
   const handleRefresh = useCallback(() => {
-    // Increment refresh key to force data components to re-mount and re-fetch
-    setRefreshKey((prev) => prev + 1);
-  }, []);
+    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+  }, [queryClient]);
 
   // Open task completion sheet (from mobile quick action bar)
   const handleCompleteTask = useCallback(() => {
@@ -50,11 +48,11 @@ export function PrincipalDashboardV3() {
       <main className="relative flex min-h-0 flex-1 flex-col gap-3">
         {/* KPI Summary Row - compact, shrinks to content */}
         <div className="shrink-0">
-          <KPISummaryRow key={`kpi-${refreshKey}`} />
+          <KPISummaryRow />
         </div>
 
         {/* Tabbed interface - fills ALL remaining height */}
-        <DashboardTabPanel key={`tabs-${refreshKey}`} />
+        <DashboardTabPanel />
 
         {/* FAB - Fixed position, opens Log Activity Sheet (desktop only) */}
         <LogActivityFAB onRefresh={handleRefresh} />
