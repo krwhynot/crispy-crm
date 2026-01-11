@@ -3,50 +3,29 @@
 **Goals:** Centralize sales data (kill Excel), <2s Principal answers, 10+ activities/week/principal, 100% adoption (30 days).
 
 ## 📊 Output Requirements (Confidence MANDATORY)
-**Rule:** Display `[Confidence: XX%]` on **ALL** tasks, plans, and technical assessments. **NEVER OMIT.**
-**Factors (+/-):** Code presence, docs, test coverage, known patterns (++) vs assumptions, complexity, missing context (--).
+**Rule:** Display `[Confidence: XX%]` on **ALL** tasks, plans, and assessments. **NEVER OMIT.**
+**Factors:** Code/docs/tests (++) vs assumptions/missing context (--).
+**Scale:** **High (85-100%)** Verified; **Med (60-84%)** Likely; **Low (30-59%)** Guess; **Spec (<30%)** Hypothesis.
+**Protocol:** Items <70% require `To Increase: [steps]`. Items <50% require human flag.
 
-**Scale:**
-- **High (85-100%):** Verified via code/docs, proven pattern.
-- **Medium (60-84%):** Based on experience, likely correct.
-- **Low (30-59%):** Educated guess, needs verification.
-- **Speculative (<30%):** Hypothesis only, requires investigation.
-- **<70% Items:** Include `To Increase: [verification steps]` field.
-- **<50% Protocol:** State what would increase confidence, suggest verification, flag for human review.
+**Required Plan Format:**
+1. **Task Schema:**
+   ### Task X: [Name] [Confidence%]
+   **File:** `path/to/file`
+   **Basis:** [Rationale/Evidence]
+   **Effort:** [Time] [Confidence%]
+   **To Increase:** [Verification steps if <70%]
 
-**Required Contexts:**
-- **Plans:** Task-level confidence + Rationale/Risk/Effort.
+2. **Summary Schema (End of Plan):**
+   ## Plan Confidence Summary
+   - **Overall Confidence:** [XX%]
+   - **Highest Risk:** [Task #]
+   - **Verification Needed:** [List key items]
+
+**Contexts:**
 - **Debug:** `Root cause: stale cache [60%]`.
-- **Arch/Est/Risk:** `Recommend handler [90%]`, `~2 hours [65%]`, `Breaking risk [40%]`.
+- **Arch/Est:** `Recommend handler [90%]`, `~2 hours [65%]`, `Breaking risk [40%]`.
 
-**<50% Protocol:** State what would increase confidence, suggest verification, flag for human review.
-**Plan Summary:** Provide an **Aggregate Confidence Score** at the end of every multi-step plan.
- Example output:
- ## Implementation Plan: Add "priority" Field to Contacts
-
-### Task 1: Update Zod Schema [92% confident]
-**File:** src/atomic-crm/validation/contacts.ts
-**Confidence Basis:** Existing field patterns, clear schema structure
-**Effort:** 15 min [85%]
-
-### Task 2: Add Database Column [78% confident]
-**File:** supabase/migrations/YYYYMMDD_add_priority.sql
-**Confidence Basis:** Standard migration pattern, but need to verify RLS
-**Effort:** 30 min [70%]
-**To Increase Confidence:** Check existing RLS policies on contacts table
-
-### Task 3: Update Form Components [65% confident]
-**File:** src/atomic-crm/contacts/ContactCreate.tsx
-**Confidence Basis:** Multiple form patterns exist, unsure which applies
-**Effort:** 1-2 hours [55%]
-**To Increase Confidence:** Review ContactEdit.tsx for existing pattern
-
----
-
-## Plan Confidence Summary
-- **Overall Confidence:** 78%
-- **Highest Risk Task:** Task 3 at 65%
-- **Verification Needed:** RLS policies, form pattern selection
 ## 🛠 Tooling & Discovery
 **Discovery:** `just discover` (full) | `just discover --incremental` | `just mcp-test`
 **Intel:** JSON Inventories (metadata) | `search.db` (FTS5+SCIP) | `vectors.lance` (semantic) | LSP (36 wildcard patterns).
