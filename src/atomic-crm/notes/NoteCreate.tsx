@@ -81,19 +81,19 @@ const NoteCreateButton = ({
 
   if (!record || !identity) return null;
 
-  const handleSuccess = () => {
+  const handleSuccess = async () => {
     reset(baseNoteSchema.partial().parse({}), { keepValues: false });
-    refetch();
 
     // Only update last_seen for contacts (opportunities don't have last_seen)
     if (reference === "contacts") {
-      update(reference, {
+      await update(reference, {
         id: record.id,
         data: { last_seen: new Date().toISOString() },
         previousData: record,
       });
     }
 
+    refetch();
     notify("Note added");
   };
 
