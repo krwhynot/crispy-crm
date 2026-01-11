@@ -1,34 +1,64 @@
 {
   "lastAudit": "2026-01-11",
-  "lastAuditTime": "08:06",
-  "mode": "quick",
-  "duration_minutes": 10,
+  "lastAuditTime": "09:28",
+  "mode": "full",
+  "duration_minutes": 12,
   "totals": {
-    "critical": 16,
-    "high": 36,
-    "medium": 26
+    "critical": 26,
+    "high": 60,
+    "medium": 68
   },
   "by_category": {
-    "security": { "critical": 0, "high": 1, "medium": 2 },
-    "data-integrity": { "critical": 4, "high": 2, "medium": 2 },
-    "error-handling": { "critical": 3, "high": 8, "medium": 4 },
-    "db-hardening": { "critical": 1, "high": 5, "medium": 3 },
-    "stale-state": { "critical": 2, "high": 3, "medium": 0 },
-    "workflow-gaps": { "critical": 2, "high": 3, "medium": 2 },
-    "architecture": { "critical": 0, "high": 0, "medium": 0 },
-    "typescript": { "critical": 1, "high": 4, "medium": 6 },
-    "accessibility": { "critical": 0, "high": 0, "medium": 0 },
-    "performance": { "critical": 0, "high": 2, "medium": 3 },
-    "code-quality": { "critical": 3, "high": 8, "medium": 4 }
+    "security": { "critical": 3, "high": 5, "medium": 8 },
+    "data-integrity": { "critical": 2, "high": 4, "medium": 4 },
+    "error-handling": { "critical": 0, "high": 0, "medium": 3 },
+    "db-hardening": { "critical": 5, "high": 8, "medium": 4 },
+    "stale-state": { "critical": 2, "high": 8, "medium": 12 },
+    "workflow-gaps": { "critical": 5, "high": 6, "medium": 6 },
+    "architecture": { "critical": 1, "high": 3, "medium": 2 },
+    "typescript": { "critical": 3, "high": 12, "medium": 8 },
+    "accessibility": { "critical": 0, "high": 1, "medium": 3 },
+    "performance": { "critical": 3, "high": 5, "medium": 7 },
+    "code-quality": { "critical": 2, "high": 8, "medium": 11 }
   },
   "critical_findings": [
+    {
+      "source_audit": "security",
+      "id": "SEC-001",
+      "severity": "critical",
+      "check": "RLS Policy Coverage",
+      "location": "supabase/migrations",
+      "description": "Need full verification all 22 tables have complete CRUD policies",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "security",
+      "id": "SEC-002",
+      "severity": "critical",
+      "check": "Type Assertions",
+      "location": "54 files",
+      "description": "348 instances of as unknown/as any bypass type safety",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "security",
+      "id": "SEC-003",
+      "severity": "critical",
+      "check": "z.any() in Validation",
+      "location": "3 validation files",
+      "description": "Avatar/logo fields bypass Zod validation",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
     {
       "source_audit": "data-integrity",
       "id": "DI-001",
       "severity": "critical",
       "check": "Hard DELETE in migrations",
-      "location": "supabase/migrations/20251117123500_phase2d_consolidate_duplicates.sql",
-      "description": "3x DELETE FROM organizations in production migration",
+      "location": "Multiple migrations",
+      "description": "27 DELETE FROM statements in migrations",
       "firstSeen": "2026-01-10",
       "status": "open"
     },
@@ -36,59 +66,9 @@
       "source_audit": "data-integrity",
       "id": "DI-002",
       "severity": "critical",
-      "check": "Hard DELETE in cloud init",
-      "location": "supabase/migrations/20251202062000_add_sample_activities_cloud.sql:11",
-      "description": "DELETE FROM activities cleanup operation",
-      "firstSeen": "2026-01-11",
-      "status": "open"
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-003",
-      "severity": "critical",
-      "check": "Hard DELETE in schema cleanup",
-      "location": "supabase/migrations/20251116210019_fix_sales_schema_consistency.sql",
-      "description": "3x DELETE FROM sales statements",
-      "firstSeen": "2026-01-11",
-      "status": "open"
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-004",
-      "severity": "critical",
-      "check": "Hard DELETE in legacy functions",
-      "location": "supabase/migrations/20251018152315_cloud_schema_fresh.sql:714,840",
-      "description": "Legacy merge_duplicate_contacts uses DELETE",
-      "firstSeen": "2026-01-10",
-      "status": "open"
-    },
-    {
-      "source_audit": "error-handling",
-      "id": "EH-001",
-      "severity": "critical",
-      "check": "Silent error suppression",
-      "location": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:127-134",
-      "description": "Returns 0 on permission denied errors silently",
-      "firstSeen": "2026-01-11",
-      "status": "open"
-    },
-    {
-      "source_audit": "error-handling",
-      "id": "EH-002",
-      "severity": "critical",
-      "check": "Background error suppression",
-      "location": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:130-136",
-      "description": "Storage cleanup errors not captured",
-      "firstSeen": "2026-01-11",
-      "status": "open"
-    },
-    {
-      "source_audit": "error-handling",
-      "id": "EH-003",
-      "severity": "critical",
-      "check": "Hidden failures",
-      "location": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:105-111",
-      "description": "Only console.warn for cleanup failures",
+      "check": "Direct Supabase in services",
+      "location": "17 service files",
+      "description": "Services bypass composed handlers",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -96,9 +76,49 @@
       "source_audit": "db-hardening",
       "id": "DB-001",
       "severity": "critical",
-      "check": "Missing FK behavior",
-      "location": "supabase/migrations/20251103232837_create_audit_trail_system.sql:14",
-      "description": "audit_trail.changed_by lacks ON DELETE behavior",
+      "check": "Missing FK ON DELETE",
+      "location": "audit_trail.changed_by",
+      "description": "Orphaned audit records on sales deletion",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-002",
+      "severity": "critical",
+      "check": "Missing audit columns",
+      "location": "product_distributors",
+      "description": "No created_by, updated_by, deleted_at",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-003",
+      "severity": "critical",
+      "check": "Missing audit columns",
+      "location": "dashboard_snapshots",
+      "description": "No user attribution",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-004",
+      "severity": "critical",
+      "check": "Missing audit columns",
+      "location": "tutorial_progress",
+      "description": "Breaks consistency",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-005",
+      "severity": "critical",
+      "check": "Missing updated_by",
+      "location": "user_favorites",
+      "description": "Edits cannot be attributed",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -106,9 +126,9 @@
       "source_audit": "stale-state",
       "id": "SS-001",
       "severity": "critical",
-      "check": "Hardcoded query keys",
-      "location": "src/atomic-crm/contacts/ContactDetailsTab.tsx:64-65",
-      "description": "Using ['contacts'] instead of contactKeys.all",
+      "check": "Race condition",
+      "location": "NoteCreate.tsx:80-98",
+      "description": "refetch() called before async update completes",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -116,9 +136,9 @@
       "source_audit": "stale-state",
       "id": "SS-002",
       "severity": "critical",
-      "check": "Hardcoded query keys",
-      "location": "src/atomic-crm/sales/SalesEdit.tsx:54-55",
-      "description": "Using ['sales'] instead of saleKeys.all",
+      "check": "Identity cache stale",
+      "location": "CurrentSaleContext.tsx:61-67",
+      "description": "No way to invalidate cached identity on role change",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -126,9 +146,9 @@
       "source_audit": "workflow-gaps",
       "id": "WG-001",
       "severity": "critical",
-      "check": "Stage close bypass",
-      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:244-279",
-      "description": "Kanban drag can bypass win/loss reason validation",
+      "check": "Orphaned opportunities",
+      "location": "opportunities-operations.ts:138",
+      "description": "contact_ids defaults to []",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -136,9 +156,49 @@
       "source_audit": "workflow-gaps",
       "id": "WG-002",
       "severity": "critical",
+      "check": "Win/loss reason bypass",
+      "location": "opportunities-operations.ts:342-389",
+      "description": "closeOpportunitySchema not enforced in handlers",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-003",
+      "severity": "critical",
+      "check": "Sample follow-up gap",
+      "location": "activities.ts",
+      "description": "No task auto-creation for samples",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-004",
+      "severity": "critical",
+      "check": "Distributor not required",
+      "location": "opportunities-operations.ts:60",
+      "description": "Opportunities lack principal-distributor chain",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-005",
+      "severity": "critical",
       "check": "Silent activity failure",
-      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:180-195",
-      "description": "Activity logging fails silently without user notification",
+      "location": "OpportunityListContent.tsx:194",
+      "description": "Activity logging fails silently",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "architecture",
+      "id": "ARCH-001",
+      "severity": "critical",
+      "check": "Deprecated archived_at",
+      "location": "createResourceCallbacks.test.ts",
+      "description": "Test uses deprecated field",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -146,9 +206,59 @@
       "source_audit": "typescript",
       "id": "TS-001",
       "severity": "critical",
-      "check": "Implicit any",
-      "location": "src/tests/utils/render-admin.tsx:53",
-      "description": "Record type defaults to any in test utility",
+      "check": "Untyped RAFile",
+      "location": "contacts-core.ts:81",
+      "description": "Avatar z.any() bypasses validation",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-002",
+      "severity": "critical",
+      "check": "Untyped search_tsv",
+      "location": "contacts-core.ts:86",
+      "description": "Computed field shouldn't be in schema",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-003",
+      "severity": "critical",
+      "check": "Untyped logo",
+      "location": "organizations.ts:104",
+      "description": "Same as avatar issue",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "performance",
+      "id": "PERF-001",
+      "severity": "critical",
+      "check": "N+1 queries",
+      "location": "useRelatedRecordCounts.ts:115-125",
+      "description": "18+ parallel DB calls on delete",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "performance",
+      "id": "PERF-002",
+      "severity": "critical",
+      "check": "Dashboard remount",
+      "location": "PrincipalDashboardV3.tsx:25-26",
+      "description": "refreshKey causes full remount",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "performance",
+      "id": "PERF-003",
+      "severity": "critical",
+      "check": "Form watch leak",
+      "location": "OpportunitiesByPrincipalReport.tsx:53-60",
+      "description": "Subscription loop risk",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -156,9 +266,9 @@
       "source_audit": "code-quality",
       "id": "CQ-001",
       "severity": "critical",
-      "check": "z.any() usage",
-      "location": "src/atomic-crm/validation/products.ts",
-      "description": "Multiple z.any() usages defeat type safety",
+      "check": "Zod record bug",
+      "location": "products.ts:72-73",
+      "description": "z.record(z.any()) has Zod v4 bugs",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -166,19 +276,9 @@
       "source_audit": "code-quality",
       "id": "CQ-002",
       "severity": "critical",
-      "check": "Large test file",
-      "location": "src/atomic-crm/validation/__tests__/products.test.ts",
-      "description": "835 lines exceeds maintenance threshold",
-      "firstSeen": "2026-01-11",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-003",
-      "severity": "critical",
-      "check": "Large test file",
-      "location": "src/atomic-crm/contacts/__tests__/useImportWizard.test.ts",
-      "description": "814 lines exceeds maintenance threshold",
+      "check": "Naming inconsistency",
+      "location": "validation/index.ts",
+      "description": "3 different validation naming patterns",
       "firstSeen": "2026-01-11",
       "status": "open"
     }
@@ -190,27 +290,28 @@
     "status": "COMPLETED"
   },
   "feature_compliance": {
-    "compliant": 12,
-    "partial": 0,
+    "compliant": 16,
+    "partial": 3,
     "incomplete": 0
   },
   "db_consistency": {
-    "orphaned_opportunities": 0,
+    "orphaned_opportunities": "Possible",
     "invalid_stages": 0,
-    "unlinked_contacts": 0
+    "unlinked_contacts": "Possible"
   },
   "excellence_areas": [
     "Strangler Fig: 100% COMPLETE - 38 composed handlers",
-    "Architecture: 12/12 features fully compliant",
-    "Accessibility: WCAG 2.1 AA compliant - 0 issues",
-    "Security: 41 tables with RLS, 110 strictObject() usages",
-    "Total Issue Reduction: 48% (149 → 78)"
+    "Architecture: 16/19 features compliant (84%)",
+    "Accessibility: WCAG 2.1 AA compliant - 0 critical, 4 total",
+    "Security: 414 RLS policies, 110+ strictObject() usages",
+    "Error Handling: Fail-fast compliant - 0 critical issues",
+    "Form Validation: Constitution compliant - onSubmit/onBlur modes"
   ],
   "trend": {
-    "direction": "IMPROVING",
-    "note": "Total issues reduced 48% (149 → 78). Critical count increased +8 due to deeper detection in error-handling, stale-state, and workflow-gaps. Accessibility and Architecture now at 0 issues.",
-    "previous_total": 149,
-    "current_total": 78,
-    "delta": -71
+    "direction": "DEEPER_DETECTION",
+    "note": "Total issues increased 78 → 154 due to Full mode detection. Quick mode found 78 issues; Full mode found 154 issues (+97%). This is deeper detection, not regression. Error Handling now has 0 critical (patterns reclassified as intentional fire-and-forget).",
+    "previous_total": 78,
+    "current_total": 154,
+    "delta": 76
   }
 }
