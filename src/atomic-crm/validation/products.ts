@@ -83,39 +83,16 @@ export const productUpdateSchema = productSchema.strip();
 
 // Validation function for React Admin
 export async function validateProductForm(data: unknown): Promise<void> {
-  // Use safeParse for consistent error handling
   const result = productSchema.safeParse(data);
-
   if (!result.success) {
-    // Format validation errors for React Admin
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-
-    // Throw error in React Admin expected format
-    // React Admin expects { message, body: { errors } } - see opportunities.ts:203
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw createValidationError(result.error);
   }
 }
 
 export async function validateProductUpdate(data: unknown): Promise<void> {
   const result = productUpdateSchema.safeParse(data);
-
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw createValidationError(result.error);
   }
 }
 
@@ -238,17 +215,8 @@ export const productUpdateWithDistributorsSchema = z.strictObject({
  */
 export async function validateProductFormWithDistributors(data: unknown): Promise<void> {
   const result = productCreateWithDistributorsSchema.safeParse(data);
-
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw createValidationError(result.error);
   }
 }
 
@@ -258,17 +226,8 @@ export async function validateProductFormWithDistributors(data: unknown): Promis
  */
 export async function validateProductUpdateWithDistributors(data: unknown): Promise<void> {
   const result = productUpdateWithDistributorsSchema.safeParse(data);
-
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw createValidationError(result.error);
   }
 }
 

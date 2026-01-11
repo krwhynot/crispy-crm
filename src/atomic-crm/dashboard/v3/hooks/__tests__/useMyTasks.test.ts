@@ -15,6 +15,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import type { ReactNode } from "react";
+import type { GetListParams } from "ra-core";
 import { useMyTasks } from "../useMyTasks";
 import { startOfDay, addDays } from "date-fns";
 

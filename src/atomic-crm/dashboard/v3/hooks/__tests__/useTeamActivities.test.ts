@@ -13,6 +13,7 @@
 
 import { renderHook, waitFor, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { GetListParams } from "ra-core";
 import type { TeamActivity } from "../useTeamActivities";
 import { useTeamActivities } from "../useTeamActivities";
 
@@ -28,9 +29,9 @@ vi.mock("react-admin", async () => {
   const React = await import("react");
 
   return {
-    useGetList: (resource: string, params: any) => {
+    useGetList: (resource: string, params: GetListParams) => {
       const [state, setState] = React.useState<{
-        data: any[];
+        data: TeamActivity[];
         isPending: boolean;
         error: Error | null;
       }>({
@@ -42,7 +43,7 @@ vi.mock("react-admin", async () => {
       // Serialize params for stable dependency - params object changes each render but content is stable
       const paramsKey = JSON.stringify(params);
       const fetchData = React.useCallback(async () => {
-        setState((s: any) => ({ ...s, isPending: true, error: null }));
+        setState((s) => ({ ...s, isPending: true, error: null }));
         try {
           const result = await mockGetList(resource, params);
           setState({

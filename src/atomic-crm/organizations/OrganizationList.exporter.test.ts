@@ -139,6 +139,34 @@ const createMockSegment = (overrides: Partial<Segment> = {}): Segment => ({
 const getJsonExportMock = () => vi.mocked(jsonExport);
 const getDownloadCSVMock = () => vi.mocked(downloadCSV);
 
+/**
+ * Shape of each row in the exported organization data.
+ * Mirrors the object structure created in the exporter (lines 51-91).
+ */
+interface ExportedOrganizationRow {
+  id: number;
+  name: string;
+  organization_type: string;
+  priority: string | null;
+  parent_organization?: string;
+  segment?: string;
+  sales_rep?: string;
+  website?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postal_code?: string | null;
+  country?: string | null;
+  nb_contacts: number;
+  nb_opportunities: number;
+  created_at: string;
+  sales_id: number | null;
+  segment_id: number | null;
+  parent_organization_id: number | null;
+}
+
 describe("OrganizationList Exporter", () => {
   let mockFetchRelatedRecords: ReturnType<typeof vi.fn>;
 
@@ -147,9 +175,13 @@ describe("OrganizationList Exporter", () => {
 
     // Configure jsonExport mock to simulate CSV generation
     getJsonExportMock().mockImplementation(
-      (data: any, _options: any, callback: (err: any, csv: string) => void) => {
+      (
+        data: ExportedOrganizationRow[],
+        _options: Record<string, unknown>,
+        callback: (err: Error | null, csv: string) => void
+      ) => {
         const headers = data.length > 0 ? Object.keys(data[0]).join(",") : "";
-        const rows = data.map((row: any) =>
+        const rows = data.map((row: ExportedOrganizationRow) =>
           Object.values(row)
             .map((v) => (v === undefined ? "" : String(v)))
             .join(",")

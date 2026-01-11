@@ -64,3 +64,14 @@ export {
   type MockIdentity,
   type GetListParams,
 } from "./typed-mocks";
+
+// Typed test helpers for eliminating `: any` patterns
+export {
+  mapExportRows,
+  getFilterValue,
+  createMockSetState,
+  type MockSetState,
+  type MockGetListImpl,
+  type MockDataProviderMethod,
+  type HookState,
+} from "./typed-test-helpers";

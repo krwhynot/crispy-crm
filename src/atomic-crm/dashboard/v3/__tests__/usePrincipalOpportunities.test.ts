@@ -2,6 +2,21 @@ import { describe, it, expect } from "vitest";
 import type { OpportunitySummary } from "../hooks/usePrincipalOpportunities";
 
 /**
+ * Raw opportunity data as returned from the database/API.
+ * Uses snake_case field names matching database columns.
+ */
+interface RawOpportunityData {
+  id: number;
+  name?: string;
+  stage?: string;
+  amount?: number;
+  probability?: number;
+  last_activity_date?: string | null;
+  estimated_close_date?: string | null;
+  expected_close_date?: string;
+}
+
+/**
  * Tests for usePrincipalOpportunities hook logic
  *
  * Tests the data mapping and transformation logic used by the hook.
@@ -13,7 +28,7 @@ describe("usePrincipalOpportunities", () => {
    * Extracts the mapping logic from the hook for testing.
    * This mirrors exactly what the hook does in lines 60-67.
    */
-  const mapOpportunityData = (opp: any): OpportunitySummary => ({
+  const mapOpportunityData = (opp: RawOpportunityData): OpportunitySummary => ({
     id: opp.id,
     name: opp.name || "Unnamed Opportunity",
     stage: opp.stage || "Unknown",
