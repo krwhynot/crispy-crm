@@ -19,3 +19,4 @@
 [2026-01-10T17:40:27.484Z] ✓ search_code | query: "authentication handling" | limit=3, type="all" | results: 3 | 566ms
 [2026-01-10T19:06:24.664Z] ✓ find_references | symbolName="EMPTY_PLACEHOLDER", includeDefinition=true | results: 7 | 863ms
 [2026-01-10T23:02:58.548Z] ✓ search_code | query: "withLifecycle wrapper callbacks lifecycle hooks" | limit=5, type="function" | results: 5 | 2750ms
+[2026-01-11T00:18:13.356Z] ✓ search_code | query: "unifiedDataProvider" | limit=1, type="all" | results: 1 | 1187ms
