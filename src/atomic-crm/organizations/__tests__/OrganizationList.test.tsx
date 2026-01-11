@@ -716,7 +716,7 @@ describe("OrganizationList exporter", () => {
     };
 
     // Mock the exporter function
-    const exporter = async (records: any[]) => {
+    const exporter = async (records: unknown[]) => {
       const sales = mockSales;
       const segments = mockSegments;
       const parentOrganizations = mockParentOrgs;

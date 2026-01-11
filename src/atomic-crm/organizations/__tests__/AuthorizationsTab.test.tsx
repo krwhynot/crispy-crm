@@ -183,7 +183,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -214,7 +214,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -326,7 +326,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -359,7 +359,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -400,7 +400,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -480,7 +480,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -521,7 +521,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -570,7 +570,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -620,7 +620,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -660,7 +660,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -696,7 +696,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;
@@ -732,7 +732,7 @@ describe("AuthorizationsTab", () => {
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
-              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
               return { data: principal ? [principal] : [], isPending: false, error: null } as any;
             }
             return { data: mockPrincipals, isPending: false, error: null } as any;

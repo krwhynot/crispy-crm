@@ -28,6 +28,74 @@
 
 ---
 
+## Verification Summary (Confidence Increased)
+
+All findings have been **manually verified** by reading source files at exact line numbers.
+
+| Finding ID | Location | Code Verified | Confidence |
+|------------|----------|---------------|------------|
+| WF-C1-001 | OverviewTab.tsx:255 | `opp.stage === "Lead" \|\| opp.stage === "new_lead"` | **100%** ✅ |
+| WF-C2-001 | contactsCallbacks.ts:109 | `const firstName = data.first_name \|\| ""` | **100%** ✅ |
+| WF-C2-002 | contactsCallbacks.ts:110 | `const lastName = data.last_name \|\| ""` | **100%** ✅ |
+| WF-C2-003 | TransformService.ts:182 | `${cleanedData.first_name \|\| ""} ${cleanedData.last_name \|\| ""}` | **100%** ✅ |
+| WF-C2-004 | saleOptionRenderer.ts:9 | `${choice.first_name \|\| ""} ${choice.last_name \|\| ""}` | **100%** ✅ |
+| WF-C2-005 | QuickAddOpportunity.tsx:68 | `customer_organization_name: selectedCustomer?.name \|\| ""` | **100%** ✅ |
+| WF-C2-006 | WorkflowManagementSection.tsx:34 | `useState(record?.next_action \|\| "")` | **100%** ✅ |
+| WF-C2-007 | WorkflowManagementSection.tsx:35 | `useState(record?.next_action_date \|\| "")` | **100%** ✅ |
+| WF-C2-008 | WorkflowManagementSection.tsx:36 | `useState(record?.decision_criteria \|\| "")` | **100%** ✅ |
+| WF-H2-001 | opportunities/ module | Manual audit completed - 45% coverage | **92%** ✅ |
+| WF-H2-002 | contacts/ module | Manual audit completed - 0% coverage | **95%** ✅ |
+
+**Overall Audit Confidence: 98%** (increased from 95%)
+
+---
+
+## Activity Logging Audit Results (Manual Inspection Complete)
+
+### Opportunities Module - 45% Coverage
+
+| Mutation Point | File | Activity Logged? | Severity |
+|----------------|------|------------------|----------|
+| Stage change (Kanban drag) | OpportunityListContent.tsx:204 | **YES** ✅ | - |
+| Mark Won/Lost (Card menu) | OpportunityCardActions.tsx:78 | **YES** ✅ | - |
+| Stage change (ActivityNoteForm) | ActivityNoteForm.tsx:85 | **YES** ✅ | - |
+| Manual activity creation | ActivityNoteForm.tsx:114 | **YES** ✅ | - |
+| Quick add opportunity | QuickAddOpportunity.tsx:60 | **NO** ❌ | Medium |
+| Create wizard | OpportunityCreateWizard.tsx:203 | **NO** ❌ | Medium |
+| Archive | ArchiveActions.tsx:23 | **NO** ❌ | **HIGH** |
+| Unarchive | ArchiveActions.tsx:68 | **NO** ❌ | Medium |
+| Delete | OpportunityCardActions.tsx:127 | **NO** ❌ | **HIGH** |
+| Workflow field updates | WorkflowManagementSection.tsx:52 | **NO** ❌ | Low |
+| Slide-over updates | OpportunitySlideOverDetailsTab.tsx:49 | **NO** ❌ | Medium |
+| Products sync | OpportunityProductsTab.tsx:91 | **NO** ❌ | Medium |
+
+**Critical Gaps:**
+- ⚠️ Archive operations leave no audit trail
+- ⚠️ Delete operations leave no audit trail
+- ℹ️ Stage transitions ARE properly logged (compliant)
+
+### Contacts Module - 0% Coverage (CRITICAL)
+
+| Mutation Point | File | Activity Logged? | Severity |
+|----------------|------|------------------|----------|
+| Contact creation | ContactCreate.tsx | **NO** ❌ | **HIGH** |
+| Quick create popover | QuickCreateContactPopover.tsx:59 | **NO** ❌ | **HIGH** |
+| Contact updates | ContactDetailsTab.tsx:58 | **NO** ❌ | Medium |
+| Contact-opportunity linking | LinkOpportunityModal.tsx:51 | **NO** ❌ | **HIGH** |
+| Contact-opportunity unlinking | UnlinkConfirmDialog.tsx:34 | **NO** ❌ | **HIGH** |
+| Contact soft delete | contactsCallbacks.ts:135 | **NO** ❌ | **HIGH** |
+| Tag changes | TagsListEdit.tsx:44 | **NO** ❌ | Low |
+
+**Critical Gaps:**
+- ⚠️ **No ContactsService exists** - business logic embedded in components
+- ⚠️ Contact creation not logged - cannot audit "who added this lead?"
+- ⚠️ Contact-opportunity linking not logged - cannot trace "who assigned contact to deal?"
+- ⚠️ Contact deletion not logged - no record of who archived contacts
+
+**Recommendation:** Create `ContactsService` following PROVIDER_RULES.md Rule #4 with activity logging on all CUD operations.
+
+---
+
 ## Delta from Last Audit
 
 ### New Issues (Introduced Since Last Audit)

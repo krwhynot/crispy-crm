@@ -179,7 +179,6 @@ describe("SelectInput", () => {
   });
 
   test("handles Radix bug workaround with key-based remounting", async () => {
-    const _user = userEvent.setup();
     const onSubmit = vi.fn();
 
     const { rerender } = renderWithAdminContext(
@@ -443,8 +442,7 @@ describe("SelectInput", () => {
     expect(() => {
       renderWithAdminContext(
         <FormWrapper>
-          {/* @ts-expect-error - Intentionally omitting source to test error */}
-          <SelectInput label="Invalid" choices={mockChoices} />
+          <SelectInput source="" label="Invalid" choices={mockChoices} />
         </FormWrapper>,
         { resource: "test" }
       );
