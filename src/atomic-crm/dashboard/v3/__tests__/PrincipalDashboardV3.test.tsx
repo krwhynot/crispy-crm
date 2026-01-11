@@ -100,14 +100,27 @@ vi.mock("../hooks/useKPIMetrics", () => ({
   }),
 }));
 
+// Create fresh QueryClient for each test to avoid state leakage
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false, // Don't retry in tests
+      },
+    },
+  });
+
 // Helper to render with all required providers
 const renderDashboard = () => {
+  const queryClient = createTestQueryClient();
   return render(
-    <MemoryRouter>
-      <TooltipProvider>
-        <PrincipalDashboardV3 />
-      </TooltipProvider>
-    </MemoryRouter>
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <TooltipProvider>
+          <PrincipalDashboardV3 />
+        </TooltipProvider>
+      </MemoryRouter>
+    </QueryClientProvider>
   );
 };
 
