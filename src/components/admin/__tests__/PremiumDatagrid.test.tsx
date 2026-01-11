@@ -39,11 +39,15 @@ vi.mock("react-admin", async () => {
   return {
     ...actual,
     useListContext: vi.fn(() => mockListContext),
-    Datagrid: ({ children, rowClassName, rowClick }: {
-  children?: React.ReactNode;
-  rowClassName?: string | ((record: unknown, index: number) => string);
-  rowClick?: string | false | ((id: unknown, resource: string, record: unknown) => void);
-}) => {
+    Datagrid: ({
+      children,
+      rowClassName,
+      rowClick,
+    }: {
+      children?: React.ReactNode;
+      rowClassName?: string | ((record: unknown, index: number) => string);
+      rowClick?: string | false | ((id: unknown, resource: string, record: unknown) => void);
+    }) => {
       const getRowClass = (record: unknown, index: number) => {
         if (typeof rowClassName === "function") {
           return rowClassName(record, index);
@@ -83,7 +87,7 @@ vi.mock("react-admin", async () => {
 
 // Mock cn utility
 vi.mock("@/lib/utils", () => ({
-  cn: (...args: any[]) => args.filter(Boolean).join(" "),
+  cn: (...args: (string | undefined | null | boolean)[]) => args.filter(Boolean).join(" "),
 }));
 
 describe("PremiumDatagrid", () => {
@@ -234,7 +238,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("supports external rowClassName function", () => {
-      const customRowClassName = (record: any, index: number) =>
+      const customRowClassName = (record: unknown, index: number) =>
         index === 0 ? "custom-first-row" : "custom-row";
 
       render(

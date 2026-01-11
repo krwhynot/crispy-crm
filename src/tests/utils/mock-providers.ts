@@ -148,7 +148,7 @@ export const createMockAuthProvider = (options?: {
   const { role = "user", isAuthenticated = true } = options || {};
 
   return {
-    login: async (_params: any) => {
+    login: async (_params: { username: string; password: string }) => {
       return Promise.resolve();
     },
     logout: async () => {
@@ -160,7 +160,7 @@ export const createMockAuthProvider = (options?: {
       }
       return Promise.resolve();
     },
-    checkError: async (_error: any) => {
+    checkError: async (_error: unknown) => {
       return Promise.resolve();
     },
     getPermissions: async () => {

@@ -19,6 +19,32 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOrganization } from "@/tests/utils/mock-providers";
 import { OrganizationList } from "../OrganizationList";
 
+// Mock component prop types
+interface MockChildrenProps {
+  children?: React.ReactNode;
+}
+
+interface MockFieldProps extends MockChildrenProps {
+  source?: string;
+  sortable?: boolean;
+  label?: string;
+  sortBy?: string;
+}
+
+interface MockLayoutProps extends MockChildrenProps {
+  filterComponent?: React.ReactNode;
+  onRowClick?: (id: string | number, resource: string, record: unknown) => void;
+  recordId?: string | number;
+  isOpen?: boolean;
+  placeholder?: string;
+}
+
+interface MockBadgeProps {
+  type?: string;
+  priority?: string;
+  status?: string;
+}
+
 // Mock dependencies
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
@@ -46,7 +72,7 @@ vi.mock("ra-core", async () => {
       data: { id: 1, fullName: "Test User", sales_id: 1 },
       isLoading: false,
     }),
-    FilterLiveForm: ({ children }: any) => <div>{children}</div>,
+    FilterLiveForm: ({ children }: MockChildrenProps) => <div>{children}</div>,
     downloadCSV: vi.fn(),
   };
 });
@@ -74,7 +100,7 @@ vi.mock("react-admin", async () => {
       onToggleItem: vi.fn(),
       onUnselectItems: vi.fn(),
     })),
-    TextField: ({ source, sortable, label }: any) => (
+    TextField: ({ source, sortable, label }: MockFieldProps) => (
       <span
         data-testid={`text-field-${source}`}
         data-sortable={sortable !== false ? "true" : "false"}

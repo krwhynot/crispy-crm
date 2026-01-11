@@ -23,8 +23,8 @@ const FormWrapper = ({
   onSubmit = vi.fn(),
 }: {
   children: React.ReactNode;
-  defaultValues?: any;
-  onSubmit?: (data: any) => void;
+  defaultValues?: Record<string, unknown>;
+  onSubmit?: (data: Record<string, unknown>) => void;
 }) => {
   const saveContext = {
     save: onSubmit,

@@ -200,19 +200,28 @@ describe("AuthorizationsTab", () => {
     });
 
     test("displays authorization cards", async () => {
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: mockAuthorizations, isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: mockAuthorizations, isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -303,19 +312,28 @@ describe("AuthorizationsTab", () => {
 
   describe("Remove Authorization", () => {
     test("shows remove button on authorization cards", async () => {
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -327,19 +345,28 @@ describe("AuthorizationsTab", () => {
     test("opens confirmation dialog when clicking remove", async () => {
       const user = userEvent.setup();
 
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -359,19 +386,28 @@ describe("AuthorizationsTab", () => {
     test("closes confirmation dialog on cancel", async () => {
       const user = userEvent.setup();
 
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -430,19 +466,28 @@ describe("AuthorizationsTab", () => {
 
   describe("Product-Level Exceptions", () => {
     test("shows expand button on authorization cards", async () => {
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -456,25 +501,34 @@ describe("AuthorizationsTab", () => {
     test("expands to show product exceptions section", async () => {
       const user = userEvent.setup();
 
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "product_distributor_authorizations") {
-          return { data: mockProductAuths, isPending: false, error: null } as any;
-        }
-        if (resource === "products") {
-          return { data: mockProducts, isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "product_distributor_authorizations") {
+            return { data: mockProductAuths, isPending: false, error: null } as any;
+          }
+          if (resource === "products") {
+            return { data: mockProducts, isPending: false, error: null } as any;
+          }
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -496,25 +550,34 @@ describe("AuthorizationsTab", () => {
     test("shows exception count badge when exceptions exist", async () => {
       const user = userEvent.setup();
 
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "product_distributor_authorizations") {
-          return { data: mockProductAuths, isPending: false, error: null } as any;
-        }
-        if (resource === "products") {
-          return { data: mockProducts, isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "product_distributor_authorizations") {
+            return { data: mockProductAuths, isPending: false, error: null } as any;
+          }
+          if (resource === "products") {
+            return { data: mockProducts, isPending: false, error: null } as any;
+          }
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -537,25 +600,34 @@ describe("AuthorizationsTab", () => {
     test("displays blocked product in exceptions list", async () => {
       const user = userEvent.setup();
 
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "product_distributor_authorizations") {
-          return { data: mockProductAuths, isPending: false, error: null } as any;
-        }
-        if (resource === "products") {
-          return { data: mockProducts, isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "product_distributor_authorizations") {
+            return { data: mockProductAuths, isPending: false, error: null } as any;
+          }
+          if (resource === "products") {
+            return { data: mockProducts, isPending: false, error: null } as any;
+          }
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -574,19 +646,28 @@ describe("AuthorizationsTab", () => {
 
   describe("Status Badges", () => {
     test("shows Active badge for valid authorization", async () => {
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -601,19 +682,28 @@ describe("AuthorizationsTab", () => {
         expiration_date: "2020-01-01", // Past date
       };
 
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [expiredAuth], isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [expiredAuth], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
@@ -628,19 +718,28 @@ describe("AuthorizationsTab", () => {
         is_authorized: false,
       };
 
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: [inactiveAuth], isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (
+          resource: string,
+          params?: Partial<{
+            pagination: { page: number; perPage: number };
+            sort: { field: string; order: string };
+            filter: Record<string, unknown>;
+          }>
+        ) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: [inactiveAuth], isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 

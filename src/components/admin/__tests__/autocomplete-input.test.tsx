@@ -22,8 +22,8 @@ const FormWrapper = ({
   onSubmit = vi.fn(),
 }: {
   children: React.ReactNode;
-  defaultValues?: any;
-  onSubmit?: (data: any) => void;
+  defaultValues?: Record<string, unknown>;
+  onSubmit?: (data: Record<string, unknown>) => void;
 }) => {
   const saveContext = {
     save: onSubmit,
@@ -535,7 +535,7 @@ describe("AutocompleteInput", () => {
     });
 
     test("handles custom inputText as function", async () => {
-      const inputTextFn = vi.fn((option: any) => (option ? `Selected: ${option.name}` : ""));
+      const inputTextFn = vi.fn((option: { name?: string } | null) => (option ? `Selected: ${option.name}` : ""));
 
       renderWithAdminContext(
         <FormWrapper defaultValues={{ stage: "new_lead" }}>
