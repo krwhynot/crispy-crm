@@ -10,7 +10,11 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
-import { productsCallbacks, COMPUTED_FIELDS } from "./productsCallbacks";
+import {
+  productsCallbacks,
+  COMPUTED_FIELDS,
+  sparseArrayToRecordTransform,
+} from "./productsCallbacks";
 
 describe("productsCallbacks", () => {
   let mockDataProvider: DataProvider;
@@ -163,6 +167,103 @@ describe("productsCallbacks", () => {
       expect(result).not.toHaveProperty("principal_name");
       expect(result).toHaveProperty("name", "Widget X");
       expect(result).toHaveProperty("sku", "WX-001");
+    });
+  });
+
+  describe("sparseArrayToRecordTransform", () => {
+    it("should convert sparse array to record object", () => {
+      // Simulate what React Hook Form sends with large numeric IDs
+      const sparseArray: Array<{ vendor_item_number: string | null } | null> = [];
+      sparseArray[10335] = { vendor_item_number: "DOT-001" };
+      sparseArray[10338] = { vendor_item_number: "DOT-002" };
+
+      const record = {
+        id: 1,
+        name: "Test Product",
+        product_distributors: sparseArray,
+      } as RaRecord;
+
+      const result = sparseArrayToRecordTransform.apply(record);
+
+      // Should be converted to record object with string keys
+      expect(Array.isArray(result.product_distributors)).toBe(false);
+      expect(result.product_distributors).toEqual({
+        "10335": { vendor_item_number: "DOT-001" },
+        "10338": { vendor_item_number: "DOT-002" },
+      });
+    });
+
+    it("should handle null entries in sparse array", () => {
+      const sparseArray: Array<{ vendor_item_number: string | null } | null> = [];
+      sparseArray[100] = null;
+      sparseArray[200] = { vendor_item_number: "DOT-123" };
+      sparseArray[300] = undefined as unknown as null;
+
+      const record = {
+        id: 1,
+        product_distributors: sparseArray,
+      } as RaRecord;
+
+      const result = sparseArrayToRecordTransform.apply(record);
+
+      // Should only include valid entries
+      expect(result.product_distributors).toEqual({
+        "200": { vendor_item_number: "DOT-123" },
+      });
+    });
+
+    it("should pass through if product_distributors is already an object", () => {
+      const record = {
+        id: 1,
+        product_distributors: {
+          "123": { vendor_item_number: "DOT-456" },
+        },
+      } as RaRecord;
+
+      const result = sparseArrayToRecordTransform.apply(record);
+
+      expect(result.product_distributors).toEqual({
+        "123": { vendor_item_number: "DOT-456" },
+      });
+    });
+
+    it("should pass through if product_distributors is not present", () => {
+      const record = {
+        id: 1,
+        name: "Test Product",
+      } as RaRecord;
+
+      const result = sparseArrayToRecordTransform.apply(record);
+
+      expect(result).not.toHaveProperty("product_distributors");
+    });
+
+    it("should handle empty array", () => {
+      const record = {
+        id: 1,
+        product_distributors: [],
+      } as RaRecord;
+
+      const result = sparseArrayToRecordTransform.apply(record);
+
+      // Empty array should become undefined (no distributors selected)
+      expect(result.product_distributors).toBeUndefined();
+    });
+
+    it("should handle vendor_item_number with null value", () => {
+      const sparseArray: Array<{ vendor_item_number: string | null } | null> = [];
+      sparseArray[500] = { vendor_item_number: null }; // User didn't enter DOT#
+
+      const record = {
+        id: 1,
+        product_distributors: sparseArray,
+      } as RaRecord;
+
+      const result = sparseArrayToRecordTransform.apply(record);
+
+      expect(result.product_distributors).toEqual({
+        "500": { vendor_item_number: null },
+      });
     });
   });
 });

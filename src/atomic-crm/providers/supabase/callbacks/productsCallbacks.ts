@@ -13,7 +13,11 @@
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import { createResourceCallbacks, type ResourceCallbacks, type Transform } from "./createResourceCallbacks";
+import {
+  createResourceCallbacks,
+  type ResourceCallbacks,
+  type Transform,
+} from "./createResourceCallbacks";
 import type { RaRecord } from "react-admin";
 
 /**
