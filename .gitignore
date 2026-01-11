@@ -39,13 +39,19 @@ $RECYCLE.BIN/
 !.env.example               # Exception: Keep .env.example (template)
 !.env.local                 # Exception: Keep .env.local (safe Docker keys)
 .env-archive/               # Archived old env files
+supabase/.env               # Supabase configuration
+supabase/functions/.env
+
+# Backup files - should not be tracked
+*.bak
+*.backup
+*.old
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 supabase/.branches
 supabase/.temp
-supabase/functions/.env
 
 dist/
 /lib/
