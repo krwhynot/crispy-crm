@@ -34,6 +34,108 @@
 
 ---
 
+## Amendments (Post-Review)
+
+**Review Date:** 2026-01-11
+**Reviewer:** Zen MCP (GPT-4.1)
+**Status:** Approved with amendments
+
+### Amendment 1: Task 8 - Required Data Compatibility Check
+
+**Risk Identified:** The `z.any()` → `z.string()` change may break existing records if `nutritional_info` contains numeric values (e.g., `calories: 200` instead of `"200"`).
+
+**Required Precondition:** Before implementing Task 8, run this data check:
+
+```sql
+-- Check for numeric values in nutritional_info (run in Supabase SQL Editor)
+SELECT id, name, nutritional_info
+FROM products
+WHERE nutritional_info IS NOT NULL
+  AND jsonb_typeof(nutritional_info) = 'object'
+  AND EXISTS (
+    SELECT 1 FROM jsonb_each(nutritional_info) kv
+    WHERE jsonb_typeof(kv.value) = 'number'
+  );
+```
+
+**Decision Tree:**
+- **If 0 rows returned:** Proceed with `z.string()` schema as planned
+- **If rows returned:** Use `z.union([z.string(), z.number()])` schema instead:
+
+```typescript
+nutritional_info: z
+  .record(
+    z.string().max(50),
+    z.union([z.string().max(100), z.number()])  // Allow both types
+  )
+  .nullish(),
+```
+
+### Amendment 2: Task 3 - UI Regression Test Required
+
+**Risk Identified:** Removing the early return at lines 277-279 will cause validation to fail for Kanban drag-drop to closed stages without win/loss reasons. The UI must handle this gracefully.
+
+**Required Regression Test (Manual):**
+
+1. Open Opportunities Kanban view
+2. Drag an opportunity card to "Closed Won" column
+3. **Expected:** `CloseOpportunityModal` appears requesting `win_reason`
+4. Attempt to submit without selecting a reason
+5. **Expected:** Validation error displayed, submission blocked
+6. Select a reason and submit
+7. **Expected:** Opportunity moves to closed column, activity logged
+
+**If CloseOpportunityModal does NOT appear:** The Kanban drag handler needs modification to detect closed stage targets and trigger the modal before calling `dataProvider.update()`.
+
+### Amendment 3: Error Handling - Future Telemetry TODO
+
+**Risk Identified:** `console.warn` provides no operational visibility for systemic infrastructure issues.
+
+**Accepted for MVP:** Structured logging is sufficient for initial release.
+
+**Future Enhancement (Add as TODO comments in code):**
+
+```typescript
+// TODO: [TELEMETRY] Consider Sentry/metrics for repeated failures
+// Track: storage cleanup failures, permission errors, activity log failures
+// Threshold: >5 failures/hour should trigger alert
+```
+
+### Amendment 4: Test Coverage Gap - Legacy Data
+
+**Risk Identified:** No tests verify behavior with legacy/numeric nutritional_info data.
+
+**Add to Task 8 TDD tests:**
+
+```typescript
+it("should handle legacy numeric values if using union schema", () => {
+  const legacyProduct = {
+    name: "Legacy Product",
+    organization_id: 1,
+    nutritional_info: {
+      "calories": 200,      // number (legacy)
+      "protein_g": "15",    // string (new format)
+    },
+  };
+
+  const result = createProductSchema.safeParse(legacyProduct);
+  // If using z.union: expect(result.success).toBe(true);
+  // If using z.string only: expect(result.success).toBe(false);
+});
+```
+
+---
+
+## Risk Summary (Updated)
+
+| Task | Original Confidence | Post-Review Confidence | Mitigation |
+|------|---------------------|------------------------|------------|
+| Task 3 (WG-001) | 75% | 80% | UI regression test added |
+| Task 8 (CQ-001) | 70% | 85% | Data check precondition added |
+| Tasks 5-7 (EH) | 85% | 85% | Future telemetry TODO noted |
+
+---
+
 ## Dependency Graph
 
 ```
