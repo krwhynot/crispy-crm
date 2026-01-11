@@ -112,7 +112,7 @@ export function QuickLogForm({
   ] = useWatch({
     control: form.control,
     name: ["opportunityId", "contactId", "organizationId", "activityType", "createFollowUp"],
-  });
+  }) as [number | undefined, number | undefined, number | undefined, string | undefined, boolean | undefined];
 
   // Notify parent of form changes for draft persistence
   useEffect(() => {
@@ -131,7 +131,7 @@ export function QuickLogForm({
 
   // Form submission handler - uses atomic RPC for transactional activity+task creation
   const onSubmit = useCallback(
-    async (data: ActivityLogInput, closeAfterSave = true) => {
+    async (data: ActivityLogInput) => {
       if (!salesId) {
         notify("Cannot log activity: user session expired. Please refresh and try again.", {
           type: "error",
@@ -140,14 +140,18 @@ export function QuickLogForm({
       }
 
       try {
+        // Extract values with defaults (schema provides defaults during parsing)
+        const activityType = data.activityType ?? "Call";
+        const activityDate = data.date ?? new Date();
+
         // Build activity payload for RPC
         const activityPayload = {
           activity_type: data.opportunityId ? "interaction" : "engagement",
-          type: ACTIVITY_TYPE_MAP[data.activityType],
+          type: ACTIVITY_TYPE_MAP[activityType],
           outcome: data.outcome || null,
-          subject: data.notes.substring(0, 100) || `${data.activityType} update`,
+          subject: data.notes.substring(0, 100) || `${activityType} update`,
           description: data.notes,
-          activity_date: data.date.toISOString(),
+          activity_date: activityDate.toISOString(),
           duration_minutes: data.duration || null,
           contact_id: data.contactId || null,
           organization_id: data.organizationId || null,
@@ -191,10 +195,7 @@ export function QuickLogForm({
           { type: "success" }
         );
         form.reset();
-
-        if (closeAfterSave) {
-          onComplete();
-        }
+        onComplete();
 
         if (onRefresh) {
           onRefresh();

@@ -201,14 +201,28 @@ export function useOrganizationImport() {
                   message: issue.message,
                 });
               });
-            } else if (error.body?.errors) {
-              for (const [field, message] of Object.entries(error.body.errors)) {
+            } else if (
+              typeof error === "object" &&
+              error !== null &&
+              "body" in error &&
+              typeof (error as { body?: { errors?: Record<string, unknown> } }).body?.errors ===
+                "object"
+            ) {
+              const bodyErrors = (error as { body: { errors: Record<string, unknown> } }).body
+                .errors;
+              for (const [field, message] of Object.entries(bodyErrors)) {
                 finalErrors.push({ field, message: String(message) });
               }
             } else {
+              const errorMessage =
+                error instanceof Error
+                  ? error.message
+                  : typeof error === "object" && error !== null && "message" in error
+                    ? String((error as { message: unknown }).message)
+                    : "Unknown error during record creation";
               finalErrors.push({
                 field: "general",
-                message: error.message || "Unknown error during record creation",
+                message: errorMessage,
               });
             }
             return { rowNumber, success: false, errors: finalErrors, data: orgData };

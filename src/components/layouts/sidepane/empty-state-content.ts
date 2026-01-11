@@ -58,6 +58,7 @@ export const EMPTY_STATE_CONTENT: EmptyStateContentMap = {
     title: "No relationships yet",
     description: "This product has no linked opportunities.",
   },
-} as const;
+};
 
-export type EmptyStateKey = keyof typeof EMPTY_STATE_CONTENT;
+export type EmptyStateKey = keyof EmptyStateContentMap;
+export type { EmptyStateEntry, EmptyStateContentMap };
