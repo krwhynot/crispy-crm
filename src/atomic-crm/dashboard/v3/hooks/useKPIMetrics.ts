@@ -51,6 +51,8 @@ interface UseKPIMetricsReturn {
   metrics: KPIMetrics;
   loading: boolean;
   error: Error | null;
+  errorMessage: string | null;
+  hasPartialFailure: boolean;
   refetch: () => void;
 }
 
@@ -68,6 +70,8 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
   const [metrics, setMetrics] = useState<KPIMetrics>(DEFAULT_METRICS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [hasPartialFailure, setHasPartialFailure] = useState(false);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   // Track previous salesId to avoid unnecessary fetches
@@ -172,10 +176,18 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         let overdueTasksCount = 0;
         let activitiesThisWeek = 0;
 
+        // Accumulate errors from rejected results
+        const errors: string[] = [];
+
         // Use server-side total for open opportunities count
         if (openCountResult.status === "fulfilled") {
           openOpportunitiesCount = openCountResult.value.total || 0;
         } else {
+          const reason =
+            openCountResult.reason instanceof Error
+              ? openCountResult.reason.message
+              : String(openCountResult.reason);
+          errors.push(`Open opportunities: ${reason}`);
           console.error("Failed to fetch open opportunities count:", openCountResult.reason);
         }
 
@@ -188,18 +200,33 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
               isOpportunityStale(opp.stage, opp.last_activity_date ?? null, today)
           ).length;
         } else {
+          const reason =
+            staleOpportunitiesResult.reason instanceof Error
+              ? staleOpportunitiesResult.reason.message
+              : String(staleOpportunitiesResult.reason);
+          errors.push(`Stale opportunities: ${reason}`);
           console.error("Failed to fetch stale opportunities:", staleOpportunitiesResult.reason);
         }
 
         if (tasksResult.status === "fulfilled") {
           overdueTasksCount = tasksResult.value.total || 0;
         } else {
+          const reason =
+            tasksResult.reason instanceof Error
+              ? tasksResult.reason.message
+              : String(tasksResult.reason);
+          errors.push(`Overdue tasks: ${reason}`);
           console.error("Failed to fetch tasks:", tasksResult.reason);
         }
 
         if (activitiesResult.status === "fulfilled") {
           activitiesThisWeek = activitiesResult.value.total || 0;
         } else {
+          const reason =
+            activitiesResult.reason instanceof Error
+              ? activitiesResult.reason.message
+              : String(activitiesResult.reason);
+          errors.push(`Activities: ${reason}`);
           console.error("Failed to fetch activities:", activitiesResult.reason);
         }
 
@@ -210,6 +237,9 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
             activitiesThisWeek,
             staleDealsCount,
           });
+          // Set error state based on accumulated errors
+          setErrorMessage(errors.length > 0 ? errors.join("; ") : null);
+          setHasPartialFailure(errors.length > 0 && errors.length < 4);
         }
       } catch (error: unknown) {
         // Don't log or set error if aborted

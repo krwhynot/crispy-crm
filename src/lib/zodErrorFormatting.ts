@@ -1,0 +1,95 @@
+/**
+ * Zod Error Formatting Utilities
+ *
+ * Transforms Zod validation errors into formats suitable for form display.
+ * Centralizes the error transformation logic that was duplicated across files.
+ *
+ * @example
+ * ```typescript
+ * try {
+ *   schema.parse(data);
+ * } catch (error) {
+ *   if (error instanceof ZodError) {
+ *     const formErrors = zodErrorToFormErrors(error);
+ *     // { "email": "Invalid email", "phone.0.value": "Required" }
+ *   }
+ * }
+ * ```
+ */
+
+import type { ZodError, ZodIssue } from "zod";
+
+/**
+ * Transform a Zod error into a flat record of field paths to error messages.
+ * Handles nested paths by joining with dots (e.g., "phone.0.value").
+ *
+ * @param error - The ZodError instance from a failed parse/safeParse
+ * @returns Record mapping field paths to their error messages
+ */
+export function zodErrorToFormErrors(error: ZodError): Record<string, string> {
+  const errors: Record<string, string> = {};
+
+  error.issues.forEach((issue: ZodIssue) => {
+    const path = issue.path.join(".");
+    if (!errors[path]) {
+      errors[path] = issue.message;
+    }
+  });
+
+  return errors;
+}
+
+/**
+ * Transform a Zod error into React Admin validation error format.
+ * This format is expected by React Admin's form error handling.
+ *
+ * @param error - The ZodError instance from a failed parse/safeParse
+ * @returns Record with error messages in React Admin format
+ */
+export function zodErrorToReactAdminErrors(
+  error: ZodError
+): Record<string, string> {
+  return zodErrorToFormErrors(error);
+}
+
+/**
+ * Extract the first error message from a Zod error for a specific field.
+ *
+ * @param error - The ZodError instance
+ * @param fieldPath - The field path to get the error for (e.g., "email" or "phone.0.value")
+ * @returns The first error message for the field, or undefined if none
+ */
+export function getFieldError(
+  error: ZodError,
+  fieldPath: string
+): string | undefined {
+  const issue = error.issues.find(
+    (issue) => issue.path.join(".") === fieldPath
+  );
+  return issue?.message;
+}
+
+/**
+ * Check if a Zod error contains an error for a specific field.
+ *
+ * @param error - The ZodError instance
+ * @param fieldPath - The field path to check (e.g., "email" or "phone.0.value")
+ * @returns true if the field has an error
+ */
+export function hasFieldError(error: ZodError, fieldPath: string): boolean {
+  return error.issues.some((issue) => issue.path.join(".") === fieldPath);
+}
+
+/**
+ * Get all error messages as a flat array of strings.
+ * Useful for displaying a summary of all validation errors.
+ *
+ * @param error - The ZodError instance
+ * @returns Array of all error messages
+ */
+export function getAllErrorMessages(error: ZodError): string[] {
+  return error.issues.map((issue) => {
+    const path = issue.path.join(".");
+    return path ? `${path}: ${issue.message}` : issue.message;
+  });
+}

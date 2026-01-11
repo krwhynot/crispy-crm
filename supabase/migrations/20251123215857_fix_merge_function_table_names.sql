@@ -1,5 +1,11 @@
 -- Migration: Fix merge function to use correct table names
 -- The original function referenced "interactions" but the actual table is "contactNotes"
+--
+-- HISTORICAL NOTE (2026-01-11): This migration is OBSOLETE.
+-- The merge_duplicate_contacts function uses hard DELETE (line 62) which violates
+-- PROVIDER_RULES.md §5 (Soft Deletes Only). This function has been superseded by
+-- soft-delete-aware merge patterns. Retained for migration history integrity only.
+-- Do NOT use merge_duplicate_contacts() in new code - implement soft delete merges instead.
 
 -- Drop and recreate the merge function with correct table names
 CREATE OR REPLACE FUNCTION merge_duplicate_contacts(

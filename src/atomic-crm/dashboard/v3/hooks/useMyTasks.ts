@@ -3,7 +3,7 @@ import { useGetList, useDataProvider } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 
-import { taskKeys } from "@/atomic-crm/queryKeys";
+import { taskKeys, opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 import { useCurrentSale } from "./useCurrentSale";
 import type { TaskItem, TaskStatus, TaskApiResponse } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";

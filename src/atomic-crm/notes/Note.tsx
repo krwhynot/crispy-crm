@@ -24,6 +24,7 @@ export const Note = ({
   const [isEditing, setEditing] = useState(false);
   const resource = useResourceContext();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const [update, { isPending }] = useUpdate();
 
@@ -34,6 +35,10 @@ export const Note = ({
       mutationMode: "undoable",
       onSuccess: () => {
         notify("Note deleted", { type: "info", undoable: true });
+        // Invalidate parent resources to refresh note counts
+        queryClient.invalidateQueries({ queryKey: ["contacts"] });
+        queryClient.invalidateQueries({ queryKey: ["opportunities"] });
+        queryClient.invalidateQueries({ queryKey: ["organizations"] });
       },
     }
   );
@@ -59,6 +64,10 @@ export const Note = ({
         onSuccess: () => {
           setEditing(false);
           setHover(false);
+          // Invalidate parent resources to refresh note counts
+          queryClient.invalidateQueries({ queryKey: ["contacts"] });
+          queryClient.invalidateQueries({ queryKey: ["opportunities"] });
+          queryClient.invalidateQueries({ queryKey: ["organizations"] });
         },
       }
     );

@@ -7,8 +7,9 @@
 -- Activities require either contact_id OR organization_id (check_has_contact_or_org)
 -- ============================================================================
 
--- First, clear any existing activities that might have invalid references
-DELETE FROM activities WHERE created_by IS NOT NULL AND created_by NOT IN (SELECT id FROM sales);
+-- First, soft-delete any existing activities that might have invalid references
+-- Using UPDATE with deleted_at per PROVIDER_RULES.md §5 (Soft Deletes Only)
+UPDATE activities SET deleted_at = NOW() WHERE created_by IS NOT NULL AND created_by NOT IN (SELECT id FROM sales) AND deleted_at IS NULL;
 
 -- Get actual sales IDs and some org IDs dynamically
 DO $$

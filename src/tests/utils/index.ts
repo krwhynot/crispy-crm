@@ -48,3 +48,19 @@ export {
   selectCityAndVerifyState,
   type ComboboxTestOptions,
 } from "./combobox";
+
+// Typed mock helpers for React Admin hooks
+export {
+  mockUseGetList,
+  mockUseGetListReturn,
+  mockUseGetOne,
+  mockUseGetOneReturn,
+  mockUseCreate,
+  mockUseCreateReturn,
+  mockUseDelete,
+  mockUseDeleteReturn,
+  mockUseGetIdentity,
+  mockUseGetIdentityReturn,
+  type MockIdentity,
+  type GetListParams,
+} from "./typed-mocks";
