@@ -1,44 +1,34 @@
 {
   "lastAudit": "2026-01-11",
-  "lastAuditTime": "02:19",
+  "lastAuditTime": "08:06",
   "mode": "quick",
-  "duration_minutes": 15,
+  "duration_minutes": 10,
   "totals": {
-    "critical": 8,
-    "high": 45,
-    "medium": 96
+    "critical": 16,
+    "high": 36,
+    "medium": 26
   },
   "by_category": {
-    "security": { "critical": 1, "high": 2, "medium": 4 },
-    "data-integrity": { "critical": 4, "high": 6, "medium": 3 },
-    "error-handling": { "critical": 0, "high": 1, "medium": 16 },
-    "db-hardening": { "critical": 0, "high": 4, "medium": 8 },
-    "stale-state": { "critical": 0, "high": 3, "medium": 8 },
-    "workflow-gaps": { "critical": 0, "high": 2, "medium": 5 },
-    "architecture": { "critical": 0, "high": 5, "medium": 4 },
-    "typescript": { "critical": 0, "high": 8, "medium": 25 },
-    "accessibility": { "critical": 0, "high": 6, "medium": 10 },
-    "performance": { "critical": 2, "high": 4, "medium": 5 },
-    "code-quality": { "critical": 1, "high": 4, "medium": 8 }
+    "security": { "critical": 0, "high": 1, "medium": 2 },
+    "data-integrity": { "critical": 4, "high": 2, "medium": 2 },
+    "error-handling": { "critical": 3, "high": 8, "medium": 4 },
+    "db-hardening": { "critical": 1, "high": 5, "medium": 3 },
+    "stale-state": { "critical": 2, "high": 3, "medium": 0 },
+    "workflow-gaps": { "critical": 2, "high": 3, "medium": 2 },
+    "architecture": { "critical": 0, "high": 0, "medium": 0 },
+    "typescript": { "critical": 1, "high": 4, "medium": 6 },
+    "accessibility": { "critical": 0, "high": 0, "medium": 0 },
+    "performance": { "critical": 0, "high": 2, "medium": 3 },
+    "code-quality": { "critical": 3, "high": 8, "medium": 4 }
   },
   "critical_findings": [
-    {
-      "source_audit": "security",
-      "id": "SEC-001",
-      "severity": "critical",
-      "check": "Environment Files in Git",
-      "location": ".env, .env.local",
-      "description": "Environment files tracked in repository with sensitive keys",
-      "firstSeen": "2026-01-11",
-      "status": "open"
-    },
     {
       "source_audit": "data-integrity",
       "id": "DI-001",
       "severity": "critical",
-      "check": "Hard DELETE in merge function",
-      "location": "supabase/migrations/20251123215857_fix_merge_function.sql:62",
-      "description": "merge_duplicate_contacts uses hard DELETE on contacts",
+      "check": "Hard DELETE in migrations",
+      "location": "supabase/migrations/20251117123500_phase2d_consolidate_duplicates.sql",
+      "description": "3x DELETE FROM organizations in production migration",
       "firstSeen": "2026-01-10",
       "status": "open"
     },
@@ -46,19 +36,19 @@
       "source_audit": "data-integrity",
       "id": "DI-002",
       "severity": "critical",
-      "check": "Hard DELETE in merge function",
-      "location": "supabase/migrations/20251123214721_add_contact_duplicates.sql:101",
-      "description": "Duplicate merge function with hard DELETE",
-      "firstSeen": "2026-01-10",
+      "check": "Hard DELETE in cloud init",
+      "location": "supabase/migrations/20251202062000_add_sample_activities_cloud.sql:11",
+      "description": "DELETE FROM activities cleanup operation",
+      "firstSeen": "2026-01-11",
       "status": "open"
     },
     {
       "source_audit": "data-integrity",
       "id": "DI-003",
       "severity": "critical",
-      "check": "Hard DELETE on opportunities",
-      "location": "supabase/migrations/20251117032253_fix_referential_integrity.sql:21",
-      "description": "Data cleanup uses hard DELETE on opportunities",
+      "check": "Hard DELETE in schema cleanup",
+      "location": "supabase/migrations/20251116210019_fix_sales_schema_consistency.sql",
+      "description": "3x DELETE FROM sales statements",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -66,29 +56,99 @@
       "source_audit": "data-integrity",
       "id": "DI-004",
       "severity": "critical",
-      "check": "Hard DELETE on activities",
-      "location": "supabase/migrations/20251202062000_add_sample_activities.sql:11",
-      "description": "Orphaned activity cleanup uses hard DELETE",
+      "check": "Hard DELETE in legacy functions",
+      "location": "supabase/migrations/20251018152315_cloud_schema_fresh.sql:714,840",
+      "description": "Legacy merge_duplicate_contacts uses DELETE",
+      "firstSeen": "2026-01-10",
+      "status": "open"
+    },
+    {
+      "source_audit": "error-handling",
+      "id": "EH-001",
+      "severity": "critical",
+      "check": "Silent error suppression",
+      "location": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:127-134",
+      "description": "Returns 0 on permission denied errors silently",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
     {
-      "source_audit": "performance",
-      "id": "PERF-001",
+      "source_audit": "error-handling",
+      "id": "EH-002",
       "severity": "critical",
-      "check": "Sequential API calls",
-      "location": "src/atomic-crm/opportunities/hooks/useBulkActionsState.ts:85-97",
-      "description": "Sequential await in for-loop for bulk updates instead of Promise.all()",
+      "check": "Background error suppression",
+      "location": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:130-136",
+      "description": "Storage cleanup errors not captured",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
     {
-      "source_audit": "performance",
-      "id": "PERF-002",
+      "source_audit": "error-handling",
+      "id": "EH-003",
       "severity": "critical",
-      "check": "Sequential API calls",
-      "location": "src/atomic-crm/services/products.service.ts:140-142",
-      "description": "Sequential creates in loop for product_distributors",
+      "check": "Hidden failures",
+      "location": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:105-111",
+      "description": "Only console.warn for cleanup failures",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-001",
+      "severity": "critical",
+      "check": "Missing FK behavior",
+      "location": "supabase/migrations/20251103232837_create_audit_trail_system.sql:14",
+      "description": "audit_trail.changed_by lacks ON DELETE behavior",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-001",
+      "severity": "critical",
+      "check": "Hardcoded query keys",
+      "location": "src/atomic-crm/contacts/ContactDetailsTab.tsx:64-65",
+      "description": "Using ['contacts'] instead of contactKeys.all",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-002",
+      "severity": "critical",
+      "check": "Hardcoded query keys",
+      "location": "src/atomic-crm/sales/SalesEdit.tsx:54-55",
+      "description": "Using ['sales'] instead of saleKeys.all",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-001",
+      "severity": "critical",
+      "check": "Stage close bypass",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:244-279",
+      "description": "Kanban drag can bypass win/loss reason validation",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-002",
+      "severity": "critical",
+      "check": "Silent activity failure",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:180-195",
+      "description": "Activity logging fails silently without user notification",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-001",
+      "severity": "critical",
+      "check": "Implicit any",
+      "location": "src/tests/utils/render-admin.tsx:53",
+      "description": "Record type defaults to any in test utility",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
@@ -96,9 +156,29 @@
       "source_audit": "code-quality",
       "id": "CQ-001",
       "severity": "critical",
-      "check": "Backup file in repository",
-      "location": "src/atomic-crm/validation/opportunities.ts.bak",
-      "description": "Tracked backup file (740 lines) should not be in git",
+      "check": "z.any() usage",
+      "location": "src/atomic-crm/validation/products.ts",
+      "description": "Multiple z.any() usages defeat type safety",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "code-quality",
+      "id": "CQ-002",
+      "severity": "critical",
+      "check": "Large test file",
+      "location": "src/atomic-crm/validation/__tests__/products.test.ts",
+      "description": "835 lines exceeds maintenance threshold",
+      "firstSeen": "2026-01-11",
+      "status": "open"
+    },
+    {
+      "source_audit": "code-quality",
+      "id": "CQ-003",
+      "severity": "critical",
+      "check": "Large test file",
+      "location": "src/atomic-crm/contacts/__tests__/useImportWizard.test.ts",
+      "description": "814 lines exceeds maintenance threshold",
       "firstSeen": "2026-01-11",
       "status": "open"
     }
@@ -110,8 +190,8 @@
     "status": "COMPLETED"
   },
   "feature_compliance": {
-    "compliant": 7,
-    "partial": 1,
+    "compliant": 12,
+    "partial": 0,
     "incomplete": 0
   },
   "db_consistency": {
@@ -121,18 +201,16 @@
   },
   "excellence_areas": [
     "Strangler Fig: 100% COMPLETE - 38 composed handlers",
-    "TypeScript: 98% type safety score",
-    "Design System: Semantic colors throughout",
-    "Touch Targets: WCAG compliant (44px minimum)",
-    "Feature Structure: 7/8 features fully compliant",
-    "React Optimization: 166 files with useMemo/useCallback",
-    "Critical Issue Reduction: 81% decrease from previous audit"
+    "Architecture: 12/12 features fully compliant",
+    "Accessibility: WCAG 2.1 AA compliant - 0 issues",
+    "Security: 41 tables with RLS, 110 strictObject() usages",
+    "Total Issue Reduction: 48% (149 → 78)"
   ],
   "trend": {
-    "direction": "SIGNIFICANTLY_IMPROVING",
-    "note": "Critical issues reduced from 43 to 8 (-81%). High issues reduced from 70 to 45 (-36%). More granular detection increased medium issues but overall quality improved.",
-    "previous_total": 182,
-    "current_total": 149,
-    "delta": -33
+    "direction": "IMPROVING",
+    "note": "Total issues reduced 48% (149 → 78). Critical count increased +8 due to deeper detection in error-handling, stale-state, and workflow-gaps. Accessibility and Architecture now at 0 issues.",
+    "previous_total": 149,
+    "current_total": 78,
+    "delta": -71
   }
 }
