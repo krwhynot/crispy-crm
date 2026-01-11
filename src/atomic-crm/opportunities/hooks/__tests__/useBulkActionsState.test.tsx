@@ -1,7 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
 import type { ReactNode } from "react";
 import { useBulkActionsState } from "../useBulkActionsState";
 import type { Opportunity } from "@/atomic-crm/types";
@@ -11,11 +10,20 @@ vi.mock("ra-core", () => ({
   useDataProvider: vi.fn(),
   useNotify: vi.fn(),
   useRefresh: vi.fn(),
-  useQueryClient: vi.fn(),
 }));
 
+// Mock tanstack-query's useQueryClient
+vi.mock("@tanstack/react-query", async () => {
+  const actual = await vi.importActual("@tanstack/react-query");
+  return {
+    ...actual,
+    useQueryClient: vi.fn(),
+  };
+});
+
 // Import mocked modules
-import { useDataProvider, useNotify, useRefresh, useQueryClient } from "ra-core";
+import { useDataProvider, useNotify, useRefresh } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 
 describe("useBulkActionsState - Parallel Execution", () => {
   let mockDataProvider: any;
@@ -265,7 +273,12 @@ describe("useBulkActionsState - Parallel Execution", () => {
       previousData: mockOpportunities[1],
     });
 
-    vi.clearAllMocks();
+    vi.resetAllMocks();
+    (useDataProvider as any).mockReturnValue(mockDataProvider);
+    (useNotify as any).mockReturnValue(mockNotify);
+    (useRefresh as any).mockReturnValue(mockRefresh);
+    (useQueryClient as any).mockReturnValue(queryClient);
+    mockDataProvider.update.mockResolvedValue({ data: {} });
 
     // Test assign_owner
     const { result: ownerResult } = renderHook(
