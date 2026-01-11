@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { DashboardTabPanel } from "./components/DashboardTabPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
