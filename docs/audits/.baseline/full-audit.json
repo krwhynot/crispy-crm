@@ -1,20 +1,20 @@
 {
   "lastAudit": "2026-01-11",
-  "lastAuditTime": "12:49",
-  "mode": "full",
-  "duration_minutes": 10,
+  "lastAuditTime": "20:50",
+  "mode": "post-fix-verification",
+  "duration_minutes": 5,
   "totals": {
-    "critical": 21,
+    "critical": 15,
     "high": 63,
     "medium": 166
   },
   "by_category": {
     "security": { "critical": 0, "high": 3, "medium": 4 },
-    "data-integrity": { "critical": 3, "high": 2, "medium": 5 },
-    "error-handling": { "critical": 1, "high": 0, "medium": 2 },
+    "data-integrity": { "critical": 2, "high": 2, "medium": 5 },
+    "error-handling": { "critical": 0, "high": 0, "medium": 2 },
     "db-hardening": { "critical": 3, "high": 8, "medium": 12 },
-    "stale-state": { "critical": 3, "high": 5, "medium": 4 },
-    "workflow-gaps": { "critical": 1, "high": 4, "medium": 3 },
+    "stale-state": { "critical": 0, "high": 5, "medium": 4 },
+    "workflow-gaps": { "critical": 0, "high": 4, "medium": 3 },
     "architecture": { "critical": 0, "high": 0, "medium": 1 },
     "typescript": { "critical": 8, "high": 34, "medium": 127 },
     "accessibility": { "critical": 0, "high": 0, "medium": 0 },
@@ -234,6 +234,12 @@
     }
   ],
   "fixed_since_last_audit": [
+    "DI-002: Tags Handler Mismatch - Changed supportsSoftDelete: true",
+    "SS-001: Missing Note Invalidation - Added parent cache invalidation",
+    "SS-002: Identity Cache TTL - Reduced to 5 minutes",
+    "SS-003: Task→KPI Invalidation - Added KPI invalidation calls",
+    "EH-001: Graceful Degradation - Added errorMessage/hasPartialFailure",
+    "WG-001: Sample Follow-up Gap - Created atomic RPC function",
     "SEC-001: RLS Policy Coverage - Verified 100% coverage",
     "SEC-002: Type Assertions - Reclassified to high",
     "SEC-003: z.any() in Validation - Reclassified to high",
@@ -272,9 +278,9 @@
   ],
   "trend": {
     "direction": "IMPROVING",
-    "note": "Critical issues decreased 26 → 21 (-19%). Security critical 3→0, Workflow Gaps critical 5→1 (validation confirmed working). Medium issues increased due to deeper TypeScript test file analysis (127 medium vs 8 previously). This is better detection, not regression.",
-    "previous_total": 154,
-    "current_total": 250,
-    "critical_delta": -5
+    "note": "Critical issues decreased 21 → 15 (-29%). Implementation plan resolved: DI-002 (tags soft delete), SS-001/SS-002/SS-003 (stale state), EH-001 (error exposure), WG-001 (atomic RPC). Remaining 15 critical: 8 TypeScript (test files), 3 DB hardening (migrations needed), 2 data integrity (historical migrations), 2 code quality (DRY, Zod).",
+    "previous_total": 250,
+    "current_total": 244,
+    "critical_delta": -6
   }
 }
