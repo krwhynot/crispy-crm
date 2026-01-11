@@ -71,6 +71,6 @@ $$;
 -- Grant execute permission
 GRANT EXECUTE ON FUNCTION merge_duplicate_contacts(INTEGER, INTEGER[]) TO authenticated;
 
--- Add comment documenting the change
-COMMENT ON FUNCTION merge_duplicate_contacts IS
+-- Add comment documenting the change (must specify full signature due to function overloads)
+COMMENT ON FUNCTION merge_duplicate_contacts(INTEGER, INTEGER[]) IS
   'Merges duplicate contacts by transferring activities/tasks to keeper and SOFT DELETING duplicates (sets deleted_at). v2: converted from hard DELETE 2026-01-11.';
