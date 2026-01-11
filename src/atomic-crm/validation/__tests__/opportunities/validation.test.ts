@@ -66,19 +66,32 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
       expect(() => opportunitySchema.parse(invalidOpportunity)).toThrow(z.ZodError);
     });
 
-    it("should allow empty contact_ids for creation (can be enriched later)", () => {
-      const validOpportunity = {
+    it("should reject empty contact_ids for creation (WG-001: at least one contact required)", () => {
+      const invalidOpportunity = {
         name: "Test",
         customer_organization_id: "1",
         principal_organization_id: "2",
         contact_ids: [],
-        stage: "new_lead", // Required after WG-003 fix
-        priority: "medium", // Required after WG-002 fix
+        stage: "new_lead",
+        priority: "medium",
       };
 
-      // Contacts are optional for quick-add (can be enriched later via slide-over)
+      // WG-001: Every opportunity must have at least one contact
+      expect(() => createOpportunitySchema.parse(invalidOpportunity)).toThrow(z.ZodError);
+    });
+
+    it("should accept non-empty contact_ids for creation", () => {
+      const validOpportunity = {
+        name: "Test",
+        customer_organization_id: "1",
+        principal_organization_id: "2",
+        contact_ids: [1],
+        stage: "new_lead",
+        priority: "medium",
+      };
+
       const result = createOpportunitySchema.parse(validOpportunity);
-      expect(result.contact_ids).toEqual([]);
+      expect(result.contact_ids).toEqual([1]);
     });
   });
 

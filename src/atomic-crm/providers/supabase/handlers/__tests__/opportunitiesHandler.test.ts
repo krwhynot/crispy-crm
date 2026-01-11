@@ -85,6 +85,7 @@ describe("createOpportunitiesHandler", () => {
         estimated_close_date: "2026-02-01",
         stage: "new_lead", // Required - no default after WG-003 fix
         priority: "medium", // Required - no default after WG-002 fix
+        contact_ids: [1], // WG-001: At least one contact required
         products_to_sync: products,
       };
       const createdOpportunity = { id: 123, ...opportunityData };
@@ -110,6 +111,7 @@ describe("createOpportunitiesHandler", () => {
         estimated_close_date: "2026-02-01",
         stage: "new_lead", // Required - no default after WG-003 fix
         priority: "medium", // Required - no default after WG-002 fix
+        contact_ids: [1], // WG-001: At least one contact required
       };
 
       // Note: mockBaseProvider.create is called through the composed handler chain
@@ -129,6 +131,7 @@ describe("createOpportunitiesHandler", () => {
         estimated_close_date: "2026-02-01",
         stage: "new_lead", // Required - no default after WG-003 fix
         priority: "medium", // Required - no default after WG-002 fix
+        contact_ids: [1], // WG-001: At least one contact required
         products_to_sync: [],
       };
       const createdOpportunity = { id: 124, ...opportunityData };
