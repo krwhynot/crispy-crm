@@ -1,0 +1,122 @@
+{
+  "domain": "discovery",
+  "description": "Skills for codebase discovery and comprehensive analysis",
+  "skills": {
+    "discovery-first": {
+      "type": "guardrail",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use pre-computed discovery files at .claude/state/ for codebase inventory questions instead of scanning source files. Saves 90%+ tokens.",
+      "promptTriggers": {
+        "keywords": [
+          "component",
+          "components",
+          "hook",
+          "hooks",
+          "schema",
+          "schemas",
+          "form",
+          "forms",
+          "type",
+          "types",
+          "inventory",
+          "what exists",
+          "list all",
+          "how many",
+          "which components",
+          "what hooks",
+          "what schemas",
+          "what forms",
+          "what types",
+          "codebase structure",
+          "component hierarchy",
+          "call graph",
+          "who calls",
+          "what calls",
+          "dependencies"
+        ],
+        "intentPatterns": [
+          "(what|which|list|show|find).*?(component|hook|schema|form|type)s?",
+          "how many.*?(component|hook|schema|form|type)s?",
+          "(find|search|locate).*?(component|hook|schema|form|type)s?",
+          "(what|which).*?(exist|available|defined)",
+          "(list|show|display).*?all.*?(component|hook|schema|form|type)s?",
+          "(codebase|code|project).*?(structure|hierarchy|overview)",
+          "(who|what).*?calls?.*?(function|hook|component)",
+          "(component|hook).*?(use|depend|import)",
+          "inventory.*?(component|hook|schema|form|type)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          ".claude/state/**/*.json"
+        ],
+        "contentPatterns": [
+          "component-inventory",
+          "hooks-inventory",
+          "schemas-inventory",
+          "forms-inventory",
+          "types-inventory",
+          "call-graph-inventory"
+        ]
+      }
+    },
+    "comprehensive-tracing": {
+      "type": "guardrail",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Enforces thorough end-to-end code analysis with complete flow tracing. Activates automatically when crispy MCP tools are used. Ensures all entry points are found, architectural reasoning is provided, and consumption locations are shown.",
+      "promptTriggers": {
+        "keywords": [
+          "analyze",
+          "workflow",
+          "how does",
+          "trace",
+          "deep dive",
+          "explain",
+          "search_code",
+          "go_to_definition",
+          "find_references",
+          "data flow",
+          "entry points",
+          "who calls",
+          "what calls",
+          "where is this used",
+          "complete analysis",
+          "full analysis",
+          "thorough analysis"
+        ],
+        "intentPatterns": [
+          "(understand|explain|analyze).*?how.*?works",
+          "(find|trace|show).*?all.*?(entry|path|flow)",
+          "(trace|follow).*?(data|call|execution).*?flow",
+          "(who|what|where).*?(calls|uses|consumes|triggers)",
+          "(complete|full|thorough|comprehensive).*?(analysis|trace|review)",
+          "search.*?code.*?for",
+          "find.*?(definition|references)",
+          "go.*?to.*?definition"
+        ]
+      },
+      "toolTriggers": [
+        "mcp__crispy-code-intel__search_code",
+        "mcp__crispy-code-intel__go_to_definition",
+        "mcp__crispy-code-intel__find_references"
+      ],
+      "requiredOutputs": {
+        "multiPathDiscovery": "Find ALL entry points, not just the first one",
+        "endToEndTracing": "Trace complete flow: Component -> Hook -> Provider -> Service -> DB",
+        "architecturalReasoning": "Explain WHY patterns were chosen, not just WHAT",
+        "consumptionTracking": "Show WHERE things are used, not just defined",
+        "fileLineReferences": "Include file:line citations for all claims"
+      },
+      "qualityChecklist": [
+        "Found ALL entry points (not just first one)",
+        "Traced complete data flow for each path",
+        "Explained WHY patterns were chosen",
+        "Showed consumption locations, not just definitions",
+        "Included file:line references throughout",
+        "Offered continuation/deeper dive"
+      ]
+    }
+  }
+}

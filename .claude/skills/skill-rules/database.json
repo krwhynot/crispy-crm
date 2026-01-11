@@ -1,0 +1,146 @@
+{
+  "domain": "database",
+  "description": "Skills for Supabase backend and data integrity",
+  "skills": {
+    "supabase-crm": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Supabase backend patterns, RLS policies, Edge Functions, query optimization, and migration best practices",
+      "promptTriggers": {
+        "keywords": [
+          "supabase",
+          "database",
+          "query",
+          "RLS",
+          "edge function",
+          "backend",
+          "api",
+          "service layer",
+          "migration",
+          "migrate",
+          "schema",
+          "CREATE VIEW",
+          "ALTER TABLE",
+          "GRANT",
+          "RLS policy",
+          "database view",
+          "sql migration",
+          "row level security",
+          "permissions",
+          "postgres",
+          "postgresql"
+        ],
+        "intentPatterns": [
+          "(create|build|write).*?(query|function|api|migration|schema|view|table|policy)",
+          "(database|backend|supabase).*",
+          "how.*?(query|fetch|insert|update|delete)",
+          "(create|write|refactor|update).*?(migration|schema|view|table)",
+          "(add|modify|update|fix).*?(table|view|policy|permission)",
+          "migration.*?(file|pattern|template|best practice)",
+          "(deploy|push|apply).*?(migration|schema)",
+          "(grant|revoke).*?(select|insert|update|delete)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/services/**/*.ts",
+          "src/lib/supabase/**/*.ts",
+          "supabase/functions/**/*.ts",
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "import.*supabase",
+          "\\.from\\(",
+          "\\.select\\(",
+          "createClient",
+          "RLS",
+          "CREATE (TABLE|VIEW|FUNCTION|POLICY|INDEX)",
+          "ALTER (TABLE|VIEW)",
+          "GRANT (SELECT|INSERT|UPDATE|DELETE)",
+          "ROW LEVEL SECURITY",
+          "ENABLE ROW LEVEL SECURITY",
+          "-- ====="
+        ]
+      }
+    },
+    "data-integrity-guards": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Defense-in-depth validation pattern - validates data at EVERY layer: API boundary (Zod with strictObject, .max() limits, coercion), form state (schema defaults, useWatch), database (RLS/soft-delete), and logging. Makes bugs structurally impossible.",
+      "promptTriggers": {
+        "keywords": [
+          "validation",
+          "data flow",
+          "integrity",
+          "security",
+          "guards",
+          "layers",
+          "defense in depth",
+          "multi-layer",
+          "Zod",
+          "RLS",
+          "form defaults",
+          "soft delete",
+          "audit",
+          "data corruption",
+          "sanitize",
+          "boundary",
+          "checkpoint",
+          "strictObject",
+          "string limit",
+          "max length",
+          "coerce",
+          "coercion",
+          "mass assignment",
+          "DoS",
+          "OWASP",
+          "allowlist",
+          "denylist"
+        ],
+        "intentPatterns": [
+          "(validate|check|verify).*?(data|input|form|request)",
+          "(add|implement|create).*?(validation|guard|check)",
+          "(data|input).*?(flow|path|journey)",
+          "(where|how).*?(validate|check|verify)",
+          "(prevent|stop|catch).*?(invalid|bad|corrupt).*?data",
+          "(ensure|guarantee|enforce).*?(integrity|valid|correct)",
+          "defense.*?in.*?depth",
+          "(multiple|multi).*?layer.*?(validation|check)",
+          "(zod|schema).*?(validate|boundary|api)",
+          "(rls|row level security).*?(policy|check)",
+          "(soft|hard).*?delete",
+          "(prevent|avoid).*?(mass assignment|DoS|injection)",
+          "(add|use).*?(strict|length limit|coercion)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/validation/**/*.ts",
+          "src/atomic-crm/**/*Create.tsx",
+          "src/atomic-crm/**/*Edit.tsx",
+          "src/atomic-crm/**/*Form.tsx",
+          "supabase/functions/**/*.ts",
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "z\\.object\\(",
+          "\\.safeParse\\(",
+          "\\.parse\\(",
+          "superRefine",
+          "ValidationService",
+          "validateContactForm",
+          "validateOrganization",
+          "partial\\(\\)\\.parse",
+          "defaultValues",
+          "CREATE POLICY",
+          "ROW LEVEL SECURITY",
+          "deleted_at",
+          "logger\\.error"
+        ]
+      }
+    }
+  }
+}

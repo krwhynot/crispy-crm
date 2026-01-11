@@ -1,0 +1,345 @@
+{
+  "domain": "debugging",
+  "description": "Skills for systematic debugging and root cause investigation",
+  "skills": {
+    "root-cause-tracing": {
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "Systematic backward tracing through call chains to find where bugs originate. BLOCKS symptom-fixing edits without root cause investigation. Integrates with mcp__zen__debug for hypothesis-driven investigation. Includes find-polluter.sh for test pollution bisection.",
+      "promptTriggers": {
+        "keywords": [
+          "debug",
+          "debugging",
+          "trace",
+          "tracing",
+          "root cause",
+          "call stack",
+          "stack trace",
+          "where does this come from",
+          "why is this failing",
+          "track down",
+          "find the source",
+          "investigate",
+          "error",
+          "exception",
+          "bug",
+          "issue",
+          "problem",
+          "test pollution",
+          "flaky test",
+          "test isolation",
+          "which test",
+          "bisect",
+          "bisection",
+          "polluter",
+          "null pointer",
+          "undefined",
+          "NaN",
+          "type error",
+          "runtime error",
+          "fails intermittently",
+          "sometimes fails",
+          "trace back",
+          "work backward",
+          "where is this set",
+          "who calls this",
+          "what calls this"
+        ],
+        "intentPatterns": [
+          "(debug|trace|investigate|find).*?(error|bug|issue|problem|cause)",
+          "(why|where|how).*?(is|does|did).*?(this|it).*?(fail|error|break|null|undefined)",
+          "(track|trace|find).*?(down|back|source|origin)",
+          "(root|original|underlying).*?cause",
+          "(call|execution).*?(stack|chain|trace)",
+          "(where|what|who).*?(calls?|sets?|creates?|passes?).*?this",
+          "(test|spec).*?(pollution|polluter|isolation|flaky|intermittent)",
+          "(bisect|binary search).*?(test|failure)",
+          "(fix|patch).*?(symptom|where it appears)",
+          "the error (is|appears) (in|at).*?(but|however)",
+          "(null|undefined|NaN).*?(where|why|how)",
+          "(investigate|look into|dig into).*?(failure|crash|error)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/**/*.tsx",
+          "src/**/*.ts",
+          "tests/**/*.ts",
+          "tests/**/*.spec.ts",
+          "src/**/*.test.ts"
+        ],
+        "contentPatterns": [
+          "throw new Error",
+          "console\\.error",
+          "catch\\s*\\(",
+          "\\?\\.\\s*\\w+",
+          "\\|\\|\\s*\\{\\}",
+          "\\|\\|\\s*\\[\\]",
+          "\\|\\|\\s*''",
+          "\\?\\?\\s*",
+          "if\\s*\\(\\s*!",
+          "\\.catch\\(",
+          "try\\s*\\{"
+        ]
+      },
+      "blockPatterns": {
+        "description": "Anti-patterns that indicate symptom-fixing without root cause investigation. NOTE: Optional chaining (?.) is valid TypeScript - only block when combined with suspicious fallbacks.",
+        "patterns": [
+          "catch\\s*\\([^)]*\\)\\s*\\{[^}]*\\?\\.",
+          "\\|\\|\\s*\\{\\}",
+          "\\|\\|\\s*\\[\\]",
+          "\\|\\|\\s*''",
+          "\\?\\?\\s*\\{\\}",
+          "\\?\\?\\s*\\[\\]",
+          "catch\\s*\\([^)]*\\)\\s*\\{[^}]*console",
+          "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}",
+          "catch\\s*\\{\\s*\\}",
+          "if\\s*\\(!\\w+\\)\\s*return\\s*;?\\s*$"
+        ]
+      },
+      "integrations": {
+        "zenDebug": {
+          "tool": "mcp__zen__debug",
+          "purpose": "Structured hypothesis-driven investigation",
+          "requiredFields": ["step", "hypothesis", "confidence", "relevant_files"]
+        }
+      }
+    },
+    "fail-fast-debugging": {
+      "type": "guardrail",
+      "enforcement": "contextual",
+      "priority": "critical",
+      "description": "Systematic debugging discipline - ENFORCES root cause investigation BEFORE fixes. Integrates with Zen MCP (mcp__zen__debug), TodoWrite, and verification-before-completion. 2-attempt rule for architecture escalation. Aligns with fail-fast engineering principle.",
+      "promptTriggers": {
+        "keywords": [
+          "bug",
+          "error",
+          "failing",
+          "broken",
+          "fix",
+          "not working",
+          "crash",
+          "issue",
+          "debug",
+          "investigate",
+          "diagnose",
+          "trace",
+          "root cause",
+          "why is",
+          "undefined",
+          "null",
+          "500 error",
+          "RLS",
+          "timeout",
+          "infinite loop",
+          "exception",
+          "stack trace",
+          "doesn't work",
+          "stopped working",
+          "fails",
+          "throws",
+          "unexpected",
+          "wrong value",
+          "incorrect",
+          "type error",
+          "runtime error",
+          "network error",
+          "query error"
+        ],
+        "intentPatterns": [
+          "(fix|debug|investigate|diagnose|trace).*?(bug|error|issue|problem|failure)",
+          "(why|how come|what's wrong).*?(is|does|did).*?(fail|error|break|crash|not work)",
+          "(not|isn't|doesn't|won't).*?(work|working|loading|rendering|showing)",
+          "(getting|seeing|have|got).*?(error|exception|bug|issue)",
+          "(something|it).*?(broke|broken|wrong|incorrect)",
+          "(null|undefined|NaN).*?(error|exception|value)",
+          "(stack|error).*?trace",
+          "(root|underlying|real).*?cause",
+          "(investigate|look into|dig into|find).*?(why|what|cause)",
+          "quick.*?fix",
+          "just.*?try",
+          "maybe.*?(this|that).*?will",
+          "let me.*?(add|try|change)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/validation/**/*.ts",
+          "supabase/migrations/**/*.sql",
+          "supabase/functions/**/*.ts"
+        ],
+        "contentPatterns": [
+          "throw new Error",
+          "console\\.error",
+          "\\.catch\\(",
+          "try\\s*\\{",
+          "Error\\(",
+          "reject\\(",
+          "fail\\("
+        ]
+      },
+      "contextualEnforcement": {
+        "block": {
+          "pathPatterns": [
+            "src/atomic-crm/providers/**/*.ts",
+            "src/atomic-crm/validation/**/*.ts",
+            "supabase/migrations/**/*.sql"
+          ],
+          "reason": "Data layer, validation, and database changes are critical - require investigation first"
+        },
+        "suggest": {
+          "pathPatterns": ["src/components/**/*.tsx", "src/**/__tests__/**/*.ts", "tests/**/*.ts"],
+          "reason": "UI and test files are less critical - investigation recommended but not enforced"
+        }
+      },
+      "antiPatterns": {
+        "description": "Patterns that indicate skipping investigation - trigger warning",
+        "patterns": [
+          "let me just",
+          "quick fix",
+          "try this",
+          "maybe this",
+          "should fix",
+          "might work",
+          "worth a try"
+        ]
+      },
+      "integrations": {
+        "zenDebug": {
+          "tool": "mcp__zen__debug",
+          "purpose": "Structure investigation thinking",
+          "requiredBefore": "any fix attempt"
+        },
+        "todoWrite": {
+          "tool": "TodoWrite",
+          "purpose": "Track investigation steps",
+          "requiredBefore": "any fix attempt"
+        },
+        "verification": {
+          "skill": "verification-before-completion",
+          "purpose": "Verify fix after implementation"
+        }
+      },
+      "escalation": {
+        "attempts": 2,
+        "action": "question architecture",
+        "tool": "mcp__zen__thinkdeep"
+      }
+    },
+    "troubleshooting": {
+      "type": "domain",
+      "enforcement": "contextual",
+      "priority": "high",
+      "description": "Diagnose and resolve build failures, performance issues, and deployment problems using the RAPID framework. Parallel specialist to fail-fast-debugging (bugs) and root-cause-tracing (code investigation). Covers TypeScript/build errors, performance bottlenecks, Edge Functions, environment configs.",
+      "promptTriggers": {
+        "keywords": [
+          "build error",
+          "build failure",
+          "build failed",
+          "compile error",
+          "compilation error",
+          "TypeScript error",
+          "TS error",
+          "tsc error",
+          "webpack",
+          "vite",
+          "bundle",
+          "bundler",
+          "dependency",
+          "dependencies",
+          "npm error",
+          "npm install",
+          "package",
+          "performance",
+          "slow",
+          "latency",
+          "bottleneck",
+          "memory leak",
+          "memory",
+          "N+1",
+          "query slow",
+          "deployment",
+          "deploy",
+          "production",
+          "staging",
+          "Edge Function",
+          "edge function",
+          "environment",
+          "env var",
+          "service not starting",
+          "not starting",
+          "timeout",
+          "CORS",
+          "401",
+          "403",
+          "500 error",
+          "module not found",
+          "cannot find module",
+          "peer dependency",
+          "version mismatch",
+          "bundle size",
+          "chunk"
+        ],
+        "intentPatterns": [
+          "(build|compile|bundle).*?(fail|error|broken|issue)",
+          "(npm|yarn|pnpm).*?(error|fail|issue|problem)",
+          "(TypeScript|tsc|TS).*?(error|fail|issue)",
+          "(slow|performance|latency|bottleneck).*?(query|api|render|load)",
+          "(deploy|deployment|production|staging).*?(fail|error|issue|problem)",
+          "(Edge Function|edge function|supabase function).*?(fail|error|timeout)",
+          "(environment|env|config).*?(missing|wrong|issue|mismatch)",
+          "(memory|heap).*?(leak|grow|issue)",
+          "(bundle|chunk).*?(size|large|too big)",
+          "why.*?(build|deploy|performance).*?(fail|slow|broken)",
+          "(service|app|function).*?(not starting|crash|timeout)",
+          "(module|dependency|package).*?(not found|missing|conflict)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "package.json",
+          "package-lock.json",
+          "tsconfig.json",
+          "vite.config.ts",
+          "webpack.config.js",
+          "supabase/functions/**/*.ts",
+          ".env*"
+        ],
+        "contentPatterns": [
+          "\"dependencies\"",
+          "\"devDependencies\"",
+          "\"scripts\"",
+          "compilerOptions",
+          "Deno\\.serve",
+          "EdgeFunction",
+          "SUPABASE_URL",
+          "SUPABASE_ANON_KEY"
+        ]
+      },
+      "contextualEnforcement": {
+        "block": {
+          "pathPatterns": [
+            "supabase/functions/**/*.ts",
+            "package.json",
+            "package-lock.json",
+            "tsconfig.json",
+            "vite.config.ts"
+          ],
+          "reason": "Build/deploy config changes are high-risk - require systematic diagnosis first"
+        },
+        "suggest": {
+          "pathPatterns": ["src/**/*.ts", "src/**/*.tsx"],
+          "reason": "Code changes for performance fixes are lower risk"
+        }
+      },
+      "requiredSkills": ["verification-before-completion"],
+      "handoffSkills": {
+        "codeBugs": "fail-fast-debugging",
+        "callChainTracing": "root-cause-tracing",
+        "codeChanges": "enforcing-principles"
+      }
+    }
+  }
+}
