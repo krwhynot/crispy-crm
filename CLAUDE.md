@@ -21,7 +21,32 @@
 
 **<50% Protocol:** State what would increase confidence, suggest verification, flag for human review.
 **Plan Summary:** Provide an **Aggregate Confidence Score** at the end of every multi-step plan.
+ Example output:
+ ## Implementation Plan: Add "priority" Field to Contacts
 
+### Task 1: Update Zod Schema [92% confident]
+**File:** src/atomic-crm/validation/contacts.ts
+**Confidence Basis:** Existing field patterns, clear schema structure
+**Effort:** 15 min [85%]
+
+### Task 2: Add Database Column [78% confident]
+**File:** supabase/migrations/YYYYMMDD_add_priority.sql
+**Confidence Basis:** Standard migration pattern, but need to verify RLS
+**Effort:** 30 min [70%]
+**To Increase Confidence:** Check existing RLS policies on contacts table
+
+### Task 3: Update Form Components [65% confident]
+**File:** src/atomic-crm/contacts/ContactCreate.tsx
+**Confidence Basis:** Multiple form patterns exist, unsure which applies
+**Effort:** 1-2 hours [55%]
+**To Increase Confidence:** Review ContactEdit.tsx for existing pattern
+
+---
+
+## Plan Confidence Summary
+- **Overall Confidence:** 78%
+- **Highest Risk Task:** Task 3 at 65%
+- **Verification Needed:** RLS policies, form pattern selection
 ## 🛠 Tooling & Discovery
 **Discovery:** `just discover` (full) | `just discover --incremental` | `just mcp-test`
 **Intel:** JSON Inventories (metadata) | `search.db` (FTS5+SCIP) | `vectors.lance` (semantic) | LSP (36 wildcard patterns).
