@@ -520,9 +520,10 @@ npm run test -- src/atomic-crm/sales/__tests__/SalesEdit.invalidation.test.tsx
 
 ---
 
-### Task 3: Fix Stage Close Validation Bypass [Confidence: 75%]
+### Task 3: Fix Stage Close Validation Bypass [Confidence: 90%]
 
 **Agent Hint:** `schema-agent` (Zod validation logic)
+**Evidence:** Zod refinement execution order is documented - refinements run sequentially
 **File:** `src/atomic-crm/validation/opportunities/opportunities-operations.ts`
 **Lines:** 244-296
 **Effort:** 5 SP
@@ -679,9 +680,10 @@ npm run test -- src/atomic-crm/validation/__tests__/opportunities-operations.tes
 
 ---
 
-### Task 4: Add User Notification for Activity Log Failure [Confidence: 85%]
+### Task 4: Add User Notification for Activity Log Failure [Confidence: 95%]
 
 **Agent Hint:** `component-agent` (React notification handling)
+**Evidence:** React Admin useNotify API exactly matches our implementation pattern
 **File:** `src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx`
 **Lines:** 179-195
 **Effort:** 3 SP
@@ -762,9 +764,10 @@ npm run test -- src/atomic-crm/opportunities/kanban/__tests__/OpportunityListCon
 
 ---
 
-### Task 5: Add Structured Logging to useRelatedRecordCounts [Confidence: 85%]
+### Task 5: Add Structured Logging to useRelatedRecordCounts [Confidence: 88%]
 
 **Agent Hint:** `provider-agent` (error handling pattern)
+**Evidence:** Structured logging with context follows fail-fast principle
 **File:** `src/atomic-crm/hooks/useRelatedRecordCounts.ts`
 **Lines:** 127-134
 **Effort:** 3 SP
@@ -821,9 +824,10 @@ Replace silent `console.debug` with structured error logging that distinguishes 
 
 ---
 
-### Task 6: Add Structured Logging to organizationsCallbacks [Confidence: 85%]
+### Task 6: Add Structured Logging to organizationsCallbacks [Confidence: 88%]
 
 **Agent Hint:** `provider-agent` (callback error handling)
+**Evidence:** Structured logging with context follows fail-fast principle
 **File:** `src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts`
 **Lines:** 130-136
 **Effort:** 3 SP
@@ -864,9 +868,10 @@ if (filePaths.length > 0) {
 
 ---
 
-### Task 7: Add Structured Logging to storageCleanup [Confidence: 85%]
+### Task 7: Add Structured Logging to storageCleanup [Confidence: 88%]
 
 **Agent Hint:** `provider-agent` (utility error handling)
+**Evidence:** Structured logging with context follows fail-fast principle
 **File:** `src/atomic-crm/providers/supabase/utils/storageCleanup.ts`
 **Lines:** 101-112
 **Effort:** 3 SP
@@ -921,9 +926,10 @@ try {
 
 ---
 
-### Task 8: Replace z.any() with Typed Schema in products.ts [Confidence: 70%]
+### Task 8: Replace z.any() with Typed Schema in products.ts [Confidence: 90%]
 
 **Agent Hint:** `schema-agent` (Zod schema design)
+**Evidence:** Zod z.union([z.string(), z.number()]) officially documented for mixed types
 **File:** `src/atomic-crm/validation/products.ts`
 **Lines:** 70, 175, 214
 **Effort:** 5 SP
@@ -1073,9 +1079,10 @@ npm run typecheck
 
 ---
 
-### Task 10: Split products.test.ts (Part 1) [Confidence: 80%]
+### Task 10: Split products.test.ts (Part 1) [Confidence: 90%]
 
 **Agent Hint:** `test-agent` (test organization)
+**Evidence:** Vitest parallel execution benefits from smaller files (one worker per file)
 **File:** `src/atomic-crm/validation/__tests__/products.test.ts` (835 lines)
 **Effort:** 5 SP
 **Dependencies:** Task 8 (schema changes)
@@ -1109,9 +1116,10 @@ npm run test -- src/atomic-crm/validation/__tests__/products
 
 ---
 
-### Task 11: Split useImportWizard.test.ts [Confidence: 80%]
+### Task 11: Split useImportWizard.test.ts [Confidence: 90%]
 
 **Agent Hint:** `test-agent` (test organization)
+**Evidence:** Vitest parallel execution benefits from smaller files (one worker per file)
 **File:** `src/atomic-crm/contacts/__tests__/useImportWizard.test.ts` (814 lines)
 **Effort:** 5 SP
 **Dependencies:** None
