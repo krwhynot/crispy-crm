@@ -1,10 +1,10 @@
 # Implementation Plan: Products with Distributors Validation Bug Fix
 
 **Created:** 2026-01-11
-**Status:** Draft
+**Status:** Draft (Revision 2 - Post-Review)
 **Type:** Bug Fix
 **Scope:** Single Feature (Data Provider/Validation)
-**Estimated Effort:** 3 Story Points
+**Estimated Effort:** 4 Story Points (increased from 3 - added create path fix)
 **Risk:** Low-Medium
 **Complexity:** Simple
 
@@ -14,13 +14,28 @@
 
 | Metric | Value | Confidence |
 |--------|-------|------------|
-| **Total Tasks** | 5 | 95% |
-| **Effort** | 3 story points | 85% |
+| **Total Tasks** | 6 | 95% |
+| **Effort** | 4 story points | 85% |
 | **Risk Level** | Low-Medium | 90% |
 | **Parallelization** | Sequential (TDD approach) | 100% |
-| **Critical Path** | Test → Schema → ValidationService → Verify | 95% |
+| **Critical Path** | Test → Schema → ValidationService (create+update) → Verify | 95% |
 
 **AI Estimation Source:** GPT-5.2 consensus (8/10 confidence)
+
+---
+
+## Review Feedback Applied (Revision 2)
+
+| Issue | Severity | Resolution |
+|-------|----------|------------|
+| Create path also affected | High | Added Task 3B for create validation |
+| Unknown keys silently dropped | Medium | Use explicit field allowlist, not generic `.strip()` |
+| Missing integration test | Medium | Added wrapper-level test in Task 1 |
+| Field shapes unclear | Low | Documented exact types from ProductDistributorInput.tsx |
+
+**Exact Field Types (from form):**
+- `distributor_ids: number[]` - Array of distributor organization IDs
+- `product_distributors: Record<number, { vendor_item_number: string | null }>` - Map of distributor ID to vendor item number
 
 ---
 
@@ -37,14 +52,17 @@ The wrapper chain in `productsHandler.ts` is:
 withErrorLogging → withLifecycleCallbacks → withValidation → customProductsHandler
 ```
 
-When `update()` is called:
-1. `withValidation.update()` calls `ValidationService.validate('products', 'update', data)`
-2. `ValidationService` uses `validateProductUpdate()` from `products.ts`
-3. `validateProductUpdate()` uses `productUpdateSchema = productSchema.strip()`
-4. `productSchema` uses `z.strictObject()` which rejects unknown keys
-5. **The form sends `distributor_ids` and `product_distributors` fields**
-6. `z.strictObject()` throws "Unrecognized keys" error
-7. `customProductsHandler.update()` **never runs** to strip these fields
+**Affects BOTH create() and update():**
+
+When `update()` or `create()` is called:
+1. `withValidation` calls `ValidationService.validate('products', 'create'|'update', data)`
+2. `ValidationService` uses `validateProductForm()` or `validateProductUpdate()` from `products.ts`
+3. Both use `productSchema` which is `z.strictObject()` - rejects unknown keys
+4. **The form sends `distributor_ids` and `product_distributors` fields** (see `ProductInputs.tsx:17`)
+5. `z.strictObject()` throws "Unrecognized keys" error
+6. `customProductsHandler` **never runs** to strip/process these fields
+
+**Why create works sometimes:** The create handler (`productsHandler.ts:129`) uses `productWithDistributorsSchema.safeParse()` first, which has `.passthrough()`. But `withValidation` runs BEFORE this, so if strict validation fails, we never get there.
 
 ### Evidence
 
@@ -57,32 +75,46 @@ When `update()` is called:
 
 ## Solution Design [Confidence: 90%]
 
-**Approach:** Update `ValidationService.ts` to use a validation function that accepts distributor fields via `.passthrough()`.
+**Approach:** Update `ValidationService.ts` to use validation functions that explicitly allow distributor fields for BOTH create and update.
 
 **Why NOT reorder wrappers:**
 - The wrapper order is documented as intentional for error logging coverage
 - Reordering could bypass validation or lifecycle callbacks
 - Higher systemic risk for a single-resource fix
 
+**Why NOT use generic `.strip()` or `.passthrough()`:**
+- `.strip()` silently drops ALL unknown keys - could mask typos
+- `.passthrough()` allows ALL unknown keys - too permissive
+- **Better:** Explicitly define allowed distributor fields, reject truly unknown keys
+
 **Implementation:**
-1. Create `validateProductUpdateWithDistributors()` in `products.ts` that uses `.strip()` (not `.strictObject()`) to allow and strip unknown keys
-2. Update `ValidationService.ts` to use the new validator for products update
-3. Ensure product base fields are still validated strictly
+1. Create `productFormWithDistributorsSchema` in `products.ts` that:
+   - Keeps strict validation for product fields
+   - Explicitly allows `distributor_ids` and `product_distributors` as optional
+   - Uses `z.object({...})` (not `.strictObject()`) with explicit fields only
+2. Export `validateProductFormWithDistributors()` for create
+3. Export `validateProductUpdateWithDistributors()` for update
+4. Update `ValidationService.ts` to use new validators for BOTH create and update
+5. Ensure truly unknown keys still fail validation (fail-fast principle)
 
 ---
 
 ## Task Breakdown
 
-### Task 1: Write Failing Test [TDD]
+### Task 1: Write Failing Tests [TDD]
 
 **Agent Hint:** `test-agent` (Vitest test patterns)
 **File:** `src/atomic-crm/providers/supabase/services/__tests__/ValidationService.products.test.ts`
-**Effort:** 1 story point
+**Effort:** 1.5 story points
 **Dependencies:** None
 
 #### What to Implement
 
-Create a test that reproduces the bug - calling `ValidationService.validate('products', 'update', data)` with `distributor_ids` and `product_distributors` fields should NOT throw.
+Create comprehensive tests that:
+1. Reproduce the bug for BOTH create and update paths
+2. Verify distributor fields are allowed
+3. Verify truly unknown keys still fail (fail-fast)
+4. Verify required product fields are still validated
 
 #### Code Example
 
@@ -98,31 +130,86 @@ describe('ValidationService - Products', () => {
     service = new ValidationService();
   });
 
-  describe('update validation', () => {
-    it('should accept product update with distributor fields', async () => {
-      // ✅ Constitution: TDD - this test should FAIL before fix
+  // Valid product data for testing
+  const validProductBase = {
+    name: 'Test Product',
+    principal_id: 123,
+    category: 'beverages',
+    status: 'active',
+  };
+
+  // Distributor fields as sent by ProductDistributorInput.tsx
+  const distributorFields = {
+    distributor_ids: [1, 2, 3],
+    product_distributors: {
+      1: { vendor_item_number: 'DOT-001' },
+      2: { vendor_item_number: 'DOT-002' },
+      3: { vendor_item_number: null }, // null is valid
+    },
+  };
+
+  describe('create validation', () => {
+    it('should accept product create with distributor fields', async () => {
+      // ✅ TDD: This test should FAIL before fix
       const productDataWithDistributors = {
-        id: 1,
-        name: 'Test Product',
-        principal_id: 123,
-        category: 'beverages',
-        status: 'active',
-        // Form-only fields that should be allowed (then stripped by handler)
-        distributor_ids: [1, 2, 3],
-        product_distributors: {
-          1: { vendor_item_number: 'DOT-001' },
-          2: { vendor_item_number: 'DOT-002' },
-        },
+        ...validProductBase,
+        ...distributorFields,
       };
 
-      // Should NOT throw - distributor fields should be allowed
+      await expect(
+        service.validate('products', 'create', productDataWithDistributors)
+      ).resolves.not.toThrow();
+    });
+
+    it('should accept product create without distributor fields', async () => {
+      // Regression: normal creates should still work
+      await expect(
+        service.validate('products', 'create', validProductBase)
+      ).resolves.not.toThrow();
+    });
+
+    it('should reject product create with missing required fields', async () => {
+      // ✅ Fail-fast: invalid data should still fail
+      const invalidProduct = {
+        // Missing required 'name' field
+        principal_id: 123,
+        category: 'beverages',
+      };
+
+      await expect(
+        service.validate('products', 'create', invalidProduct)
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('update validation', () => {
+    it('should accept product update with distributor fields', async () => {
+      // ✅ TDD: This test should FAIL before fix
+      const productDataWithDistributors = {
+        id: 1,
+        ...validProductBase,
+        ...distributorFields,
+      };
+
       await expect(
         service.validate('products', 'update', productDataWithDistributors)
       ).resolves.not.toThrow();
     });
 
-    it('should still validate required product fields', async () => {
-      // ✅ Constitution: Fail-fast - invalid data should still fail
+    it('should accept product update without distributor fields', async () => {
+      // Regression: normal updates should still work
+      const normalProductUpdate = {
+        id: 1,
+        ...validProductBase,
+      };
+
+      await expect(
+        service.validate('products', 'update', normalProductUpdate)
+      ).resolves.not.toThrow();
+    });
+
+    it('should reject product update with missing required fields', async () => {
+      // ✅ Fail-fast: invalid data should still fail
       const invalidProduct = {
         id: 1,
         // Missing required 'name' field
@@ -134,20 +221,59 @@ describe('ValidationService - Products', () => {
         service.validate('products', 'update', invalidProduct)
       ).rejects.toThrow();
     });
+  });
 
-    it('should accept product update without distributor fields', async () => {
-      // Regression test: normal updates should still work
-      const normalProductUpdate = {
-        id: 1,
-        name: 'Updated Product',
-        principal_id: 123,
-        category: 'frozen',
-        status: 'active',
+  describe('unknown key behavior', () => {
+    it('should reject truly unknown keys on create (fail-fast)', async () => {
+      // ✅ Fail-fast: typos and garbage keys should be rejected
+      const productWithUnknownKey = {
+        ...validProductBase,
+        totally_unknown_field: 'should fail',
+        distibutor_ids: [1, 2], // typo - should fail
       };
 
       await expect(
-        service.validate('products', 'update', normalProductUpdate)
-      ).resolves.not.toThrow();
+        service.validate('products', 'create', productWithUnknownKey)
+      ).rejects.toThrow();
+    });
+
+    it('should reject truly unknown keys on update (fail-fast)', async () => {
+      // ✅ Fail-fast: typos and garbage keys should be rejected
+      const productWithUnknownKey = {
+        id: 1,
+        ...validProductBase,
+        garbage_field: 123,
+      };
+
+      await expect(
+        service.validate('products', 'update', productWithUnknownKey)
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('distributor field type validation', () => {
+    it('should validate distributor_ids is array of numbers', async () => {
+      const invalidDistributorIds = {
+        ...validProductBase,
+        distributor_ids: ['not', 'numbers'], // should fail
+      };
+
+      await expect(
+        service.validate('products', 'create', invalidDistributorIds)
+      ).rejects.toThrow();
+    });
+
+    it('should validate product_distributors shape', async () => {
+      const invalidProductDistributors = {
+        ...validProductBase,
+        product_distributors: {
+          1: { wrong_field: 'invalid' }, // missing vendor_item_number
+        },
+      };
+
+      await expect(
+        service.validate('products', 'create', invalidProductDistributors)
+      ).rejects.toThrow();
     });
   });
 });
@@ -158,14 +284,18 @@ describe('ValidationService - Products', () => {
 ```bash
 # Run test - should FAIL (red phase)
 npx vitest run src/atomic-crm/providers/supabase/services/__tests__/ValidationService.products.test.ts
+
+# Expected: Multiple tests fail with "Unrecognized keys" error
+# - "should accept product create with distributor fields"
+# - "should accept product update with distributor fields"
 ```
 
-**Expected output:** Test fails with "Unrecognized keys" error
-
 #### Constitution Checklist
-- [x] TDD: Failing test written BEFORE implementation
-- [x] Fail-fast: Test verifies invalid data still fails
-- [x] No retry logic in test
+- [x] TDD: Failing tests written BEFORE implementation
+- [x] Fail-fast: Tests verify invalid data still fails
+- [x] Tests cover BOTH create and update paths
+- [x] Tests verify unknown keys are rejected
+- [x] No retry logic in tests
 
 ---
 
