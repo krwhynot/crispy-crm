@@ -26,7 +26,7 @@ import { faker } from "@faker-js/faker";
  */
 export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataProvider => {
   const defaultProvider: DataProvider = {
-    getList: async <RecordType extends Record<string, any> = any>(
+    getList: async <RecordType extends Record<string, unknown> = Record<string, unknown>>(
       _resource: string,
       _params: GetListParams
     ) => {
@@ -43,7 +43,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       };
     },
 
-    getOne: async <RecordType extends Record<string, any> = any>(
+    getOne: async <RecordType extends Record<string, unknown> = Record<string, unknown>>(
       resource: string,
       params: GetOneParams
     ) => {
@@ -52,7 +52,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       };
     },
 
-    getMany: async <RecordType extends Record<string, any> = any>(
+    getMany: async <RecordType extends Record<string, unknown> = Record<string, unknown>>(
       resource: string,
       params: GetManyParams
     ) => {
@@ -61,7 +61,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       };
     },
 
-    getManyReference: async <RecordType extends Record<string, any> = any>(
+    getManyReference: async <RecordType extends Record<string, unknown> = Record<string, unknown>>(
       _resource: string,
       _params: GetManyReferenceParams
     ) => {
@@ -75,7 +75,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       };
     },
 
-    create: async <RecordType extends Record<string, any> = any>(
+    create: async <RecordType extends Record<string, unknown> = Record<string, unknown>>(
       resource: string,
       params: CreateParams
     ) => {
@@ -90,7 +90,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       };
     },
 
-    update: async <RecordType extends Record<string, any> = any>(
+    update: async <RecordType extends Record<string, unknown> = Record<string, unknown>>(
       resource: string,
       params: UpdateParams
     ) => {
@@ -108,7 +108,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       };
     },
 
-    delete: async <RecordType extends Record<string, any> = any>(
+    delete: async <RecordType extends Record<string, unknown> = Record<string, unknown>>(
       resource: string,
       params: DeleteParams
     ) => {

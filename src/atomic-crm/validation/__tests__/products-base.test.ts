@@ -86,8 +86,7 @@ describe("Product Base Schemas", () => {
   });
 
   describe("productSchema", () => {
-    // Note: nutritional_info excluded from base object due to Zod v4 z.record(z.any()) issue
-    // The schema field works with null but not with actual record values
+    // Note: nutritional_info defaults to undefined; explicit null/record values tested below
     const validProduct = {
       name: "Artisan Coffee Blend",
       principal_id: 1,
@@ -389,9 +388,8 @@ describe("Product Base Schemas", () => {
     });
 
     describe("nutritional_info validation", () => {
-      // Note: z.record(z.any()) has a bug in Zod v4 where parsing actual record values fails
-      // with "Cannot read properties of undefined (reading '_zod')"
-      // These tests document the expected behavior once the schema is fixed
+      // Fixed in products.ts using Zod v4 compliant z.record(keySchema, valueSchema)
+      // Tests verify the schema accepts string, number, and mixed record values
 
       it("should accept null for nutritional_info", () => {
         const data = { ...validProduct, nutritional_info: null };

@@ -93,3 +93,31 @@ export function getAllErrorMessages(error: ZodError): string[] {
     return path ? `${path}: ${issue.message}` : issue.message;
   });
 }
+
+/**
+ * Create a React Admin compatible validation error
+ *
+ * @param error - ZodError from failed validation
+ * @param message - Optional custom error message (default: "Validation failed")
+ * @returns Object with message and body.errors for React Admin
+ *
+ * @example
+ * ```typescript
+ * try {
+ *   schema.parse(data);
+ * } catch (error) {
+ *   if (error instanceof ZodError) {
+ *     throw createValidationError(error);
+ *   }
+ * }
+ * ```
+ */
+export function createValidationError(
+  error: ZodError,
+  message = "Validation failed"
+): { message: string; body: { errors: Record<string, string> } } {
+  return {
+    message,
+    body: { errors: zodErrorToFormErrors(error) },
+  };
+}
