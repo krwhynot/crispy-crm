@@ -1,7 +1,7 @@
 ---
 description: Deep root cause analysis using backward call chain tracing
 argument-hint: [error-description or symptom-location]
-allowed-tools: Read, Grep, Glob, Bash(git log:*), Bash(git diff:*), Bash(git bisect:*), mcp__zen__debug, TodoWrite
+allowed-tools: Skill, Read, Grep, Glob, Bash(git log:*), Bash(git diff:*), Bash(git bisect:*), mcp__zen__debug, TodoWrite
 ---
 
 # Root Cause Analysis: $ARGUMENTS
@@ -9,6 +9,8 @@ allowed-tools: Read, Grep, Glob, Bash(git log:*), Bash(git diff:*), Bash(git bis
 Use the `root-cause-tracing` skill for systematic backward tracing through call chains.
 
 > **SKILL ACTIVATION:** Using `root-cause-tracing` skill to enforce investigation before fixes.
+
+**FIRST:** Invoke `Skill("root-cause-tracing")` to activate guardrails before proceeding.
 
 ## Phase 1: Evidence Collection
 

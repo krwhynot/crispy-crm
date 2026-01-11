@@ -1,7 +1,7 @@
 ---
 description: Detect and resolve stuck background processes
-argument-hint: [optional: process-name or shell-id]
-allowed-tools: Bash(ps:*), Bash(lsof:*), Bash(netstat:*), Bash(ls:*), KillShell, Read, TodoWrite
+argument-hint: "[optional: process-name or shell-id]"
+allowed-tools: Skill, Bash(ps:*), Bash(lsof:*), Bash(netstat:*), Bash(ls:*), KillShell, Read, TodoWrite
 ---
 
 # Stuck Process Detection
@@ -9,6 +9,8 @@ allowed-tools: Bash(ps:*), Bash(lsof:*), Bash(netstat:*), Bash(ls:*), KillShell,
 Use the `stuck-process-detection` skill to identify and resolve hung processes.
 
 > **SKILL ACTIVATION:** Using `stuck-process-detection` skill to prevent infinite polling loops.
+
+**FIRST:** Invoke `Skill("stuck-process-detection")` to activate guardrails before proceeding.
 
 ## Step 1: Process Survey
 
