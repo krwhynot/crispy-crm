@@ -136,10 +136,12 @@ export class ProductsService {
           valid_from: new Date().toISOString(),
         }));
 
-        // Create all junction records
-        for (const record of distributorRecords) {
-          await this.dataProvider.create("product_distributors", { data: record });
-        }
+        // Create all junction records in parallel
+        await Promise.all(
+          distributorRecords.map((record) =>
+            this.dataProvider.create("product_distributors", { data: record })
+          )
+        );
 
         devLog("ProductsService", "Created distributor relationships", {
           productId: product.id,
