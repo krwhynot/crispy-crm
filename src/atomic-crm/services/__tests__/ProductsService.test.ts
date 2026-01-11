@@ -440,4 +440,37 @@ describe("ProductsService", () => {
       );
     });
   });
+
+  describe("Performance - Parallel Distributor Creation", () => {
+    const mockProductInput: ProductCreateInput = {
+      name: "Test Product",
+      principal_id: 10,
+      pack_size: "24oz",
+    };
+
+    test("should create distributor relationships in parallel", async () => {
+      const distributors: ProductDistributorInput[] = [
+        { distributor_id: 1 },
+        { distributor_id: 2 },
+        { distributor_id: 3 },
+        { distributor_id: 4 },
+        { distributor_id: 5 },
+      ];
+
+      mockDataProvider.create = vi.fn().mockImplementation((resource) => {
+        if (resource === "products") {
+          return Promise.resolve({ data: { ...mockProductInput, id: 42 } });
+        }
+        return new Promise((resolve) => setTimeout(() => resolve({ data: { id: 1 } }), 100));
+      });
+
+      const startTime = Date.now();
+
+      await service.createWithDistributors(mockProductInput, distributors);
+
+      const duration = Date.now() - startTime;
+
+      expect(duration).toBeLessThan(250);
+    });
+  });
 });
