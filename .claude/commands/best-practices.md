@@ -1,0 +1,1 @@
+ increase confidence levels to +85% for all tasks in plan by using ref mcp tool to research best practices 
