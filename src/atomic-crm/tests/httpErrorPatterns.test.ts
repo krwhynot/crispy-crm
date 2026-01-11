@@ -65,13 +65,14 @@ describe("HTTP Error Patterns from Production", () => {
       const wrapMethod = async (method: () => Promise<any>) => {
         try {
           return await method();
-        } catch (error: any) {
+        } catch (error: unknown) {
           // This is where the error gets wrapped
+          const err = error as { message?: string; status?: number; code?: string };
           const httpError = {
             name: "HttpError2", // As shown in the console error
-            message: error.message || "Unknown error",
-            status: error.status || 500,
-            code: error.code,
+            message: err.message || "Unknown error",
+            status: err.status || 500,
+            code: err.code,
           };
 
           throw httpError;
@@ -90,11 +91,12 @@ describe("HTTP Error Patterns from Production", () => {
       try {
         await wrapMethod(supabaseMethod);
         expect.fail("Should have thrown");
-      } catch (error: any) {
-        expect(error.name).toBe("HttpError2");
-        expect(error.status).toBe(400);
-        expect(error.message).toContain("nb_tasks does not exist");
-        expect(error.code).toBe("PGRST202");
+      } catch (error: unknown) {
+        const err = error as { name: string; status: number; message: string; code: string };
+        expect(err.name).toBe("HttpError2");
+        expect(err.status).toBe(400);
+        expect(err.message).toContain("nb_tasks does not exist");
+        expect(err.code).toBe("PGRST202");
       }
     });
   });

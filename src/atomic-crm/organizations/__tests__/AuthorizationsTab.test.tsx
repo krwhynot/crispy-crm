@@ -176,19 +176,21 @@ describe("AuthorizationsTab", () => {
 
   describe("Authorization List", () => {
     test("renders list of authorized principals with count", async () => {
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: GetListParams) => {
-        if (resource === "distributor_principal_authorizations") {
-          return { data: mockAuthorizations, isPending: false, error: null } as any;
-        }
-        if (resource === "organizations") {
-          if (params?.filter?.id) {
-            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
-            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+      vi.mocked(reactAdmin.useGetList).mockImplementation(
+        (resource: string, params?: GetListParams) => {
+          if (resource === "distributor_principal_authorizations") {
+            return { data: mockAuthorizations, isPending: false, error: null } as any;
           }
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          if (resource === "organizations") {
+            if (params?.filter?.id) {
+              const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+            }
+            return { data: mockPrincipals, isPending: false, error: null } as any;
+          }
+          return { data: [], isPending: false, error: null } as any;
         }
-        return { data: [], isPending: false, error: null } as any;
-      });
+      );
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 

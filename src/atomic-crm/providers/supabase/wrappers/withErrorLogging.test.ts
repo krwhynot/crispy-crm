@@ -196,10 +196,11 @@ describe("withErrorLogging", () => {
       const wrappedProvider = withErrorLogging(mockProvider);
       try {
         await wrappedProvider.create("contacts", { data: { email: "test@test.com" } });
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Should transform to validation error format with field
-        expect(error.errors).toBeDefined();
-        expect(error.errors.email || error.errors._error).toBeDefined();
+        const err = error as { errors?: Record<string, string> };
+        expect(err.errors).toBeDefined();
+        expect(err.errors?.email || err.errors?._error).toBeDefined();
       }
     });
   });

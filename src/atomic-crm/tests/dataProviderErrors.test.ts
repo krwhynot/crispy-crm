@@ -48,10 +48,11 @@ describe("Data Provider Error Handling", () => {
 
         // Should not reach here
         expect.fail("Should have thrown an error");
-      } catch (error: any) {
-        expect(error.status).toBe(400);
-        expect(error.message).toContain("nb_tasks does not exist");
-        expect(error.code).toBe("PGRST202");
+      } catch (error: unknown) {
+        const err = error as { status: number; message: string; code: string };
+        expect(err.status).toBe(400);
+        expect(err.message).toContain("nb_tasks does not exist");
+        expect(err.code).toBe("PGRST202");
       }
     });
 
@@ -130,7 +131,10 @@ describe("Data Provider Error Handling", () => {
     it("should log detailed error information for debugging", () => {
       const consoleSpy = vi.spyOn(console, "error");
 
-      const logDataProviderError = (error: any, context: any) => {
+      const logDataProviderError = (
+        error: { message: string; code: string; status: number },
+        context: { resource: string; method: string; params: Record<string, unknown> }
+      ) => {
         console.error("[DataProvider Error]", {
           message: error.message,
           code: error.code,

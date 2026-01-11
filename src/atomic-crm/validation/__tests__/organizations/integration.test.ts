@@ -29,12 +29,13 @@ describe("Organization Validation Functions", () => {
       try {
         await validateOrganizationForm(invalidData);
         expect.fail("Should have thrown validation error");
-      } catch (error: any) {
-        expect(error.message).toBe("Validation failed");
-        expect(error.body.errors).toBeDefined();
-        expect(error.body.errors.name).toBe("Organization name is required");
-        expect(error.body.errors.organization_type).toBeDefined();
-        expect(error.body.errors.website).toBe("Must be a valid URL");
+      } catch (error: unknown) {
+        const err = error as { message: string; body: { errors: Record<string, string> } };
+        expect(err.message).toBe("Validation failed");
+        expect(err.body.errors).toBeDefined();
+        expect(err.body.errors.name).toBe("Organization name is required");
+        expect(err.body.errors.organization_type).toBeDefined();
+        expect(err.body.errors.website).toBe("Must be a valid URL");
       }
     });
 
@@ -47,8 +48,9 @@ describe("Organization Validation Functions", () => {
       try {
         await validateOrganizationForm(invalidLinkedIn);
         expect.fail("Should have thrown validation error");
-      } catch (error: any) {
-        expect(error.body.errors.linkedin_url).toBe("Must be a LinkedIn URL (linkedin.com)");
+      } catch (error: unknown) {
+        const err = error as { body: { errors: Record<string, string> } };
+        expect(err.body.errors.linkedin_url).toBe("Must be a LinkedIn URL (linkedin.com)");
       }
     });
 
@@ -67,9 +69,10 @@ describe("Organization Validation Functions", () => {
 
       try {
         await validateOrganizationForm(complexInvalidData);
-      } catch (error: any) {
+      } catch (error: unknown) {
         // z.strictObject() rejects unrecognized keys like 'address' and 'contact'
-        expect(error.body.errors).toBeDefined();
+        const err = error as { body: { errors: Record<string, string> } };
+        expect(err.body.errors).toBeDefined();
       }
     });
   });
