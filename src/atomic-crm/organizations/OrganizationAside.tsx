@@ -18,7 +18,9 @@ interface OrganizationAsideProps {
   link?: string;
 }
 
-export const OrganizationAside = ({ link = "edit" }: OrganizationAsideProps) => {
+export const OrganizationAside = ({
+  link = "edit",
+}: OrganizationAsideProps): JSX.Element | null => {
   const record = useRecordContext<Company>();
   if (!record) return null;
 

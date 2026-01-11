@@ -74,7 +74,6 @@ export function QuickLogForm({
   initialOrganizationId,
   initialOpportunityId,
 }: QuickLogFormProps) {
-  const dataProvider = useDataProvider();
   const notify = useNotify();
   const queryClient = useQueryClient();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
@@ -130,7 +129,7 @@ export function QuickLogForm({
     selectedOpportunityId,
   });
 
-  // Form submission handler
+  // Form submission handler - uses atomic RPC for transactional activity+task creation
   const onSubmit = useCallback(
     async (data: ActivityLogInput, closeAfterSave = true) => {
       if (!salesId) {
@@ -141,52 +140,56 @@ export function QuickLogForm({
       }
 
       try {
-        // Create the activity record
-        await dataProvider.create("activities", {
-          data: {
-            activity_type: data.opportunityId ? "interaction" : "engagement",
-            type: ACTIVITY_TYPE_MAP[data.activityType],
-            outcome: data.outcome,
-            subject: data.notes.substring(0, 100) || `${data.activityType} update`,
-            description: data.notes,
-            activity_date: data.date.toISOString(),
-            duration_minutes: data.duration,
-            contact_id: data.contactId,
-            organization_id: data.organizationId,
-            opportunity_id: data.opportunityId,
-            follow_up_required: data.createFollowUp || false,
-            follow_up_date: data.followUpDate
-              ? data.followUpDate.toISOString().split("T")[0]
-              : null,
-            sample_status: data.activityType === "Sample" ? data.sampleStatus : null,
-            created_by: salesId,
-          },
+        // Build activity payload for RPC
+        const activityPayload = {
+          activity_type: data.opportunityId ? "interaction" : "engagement",
+          type: ACTIVITY_TYPE_MAP[data.activityType],
+          outcome: data.outcome || null,
+          subject: data.notes.substring(0, 100) || `${data.activityType} update`,
+          description: data.notes,
+          activity_date: data.date.toISOString(),
+          duration_minutes: data.duration || null,
+          contact_id: data.contactId || null,
+          organization_id: data.organizationId || null,
+          opportunity_id: data.opportunityId || null,
+          follow_up_required: data.createFollowUp || false,
+          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null,
+        };
+
+        // Build optional task payload for RPC
+        const taskPayload =
+          data.createFollowUp && data.followUpDate
+            ? {
+                title: `Follow-up: ${data.notes.substring(0, 50)}`,
+                due_date: data.followUpDate.toISOString().split("T")[0],
+                priority: "medium",
+                contact_id: typeof data.contactId === "number" ? data.contactId : null,
+                opportunity_id: typeof data.opportunityId === "number" ? data.opportunityId : null,
+              }
+            : null;
+
+        // Single atomic RPC call for activity + optional task
+        const { data: rpcResult, error } = await supabase.rpc("log_activity_with_task", {
+          p_activity: activityPayload,
+          p_task: taskPayload,
         });
 
-        // Create follow-up task if requested
-        if (data.createFollowUp && data.followUpDate) {
-          const taskData: Record<string, unknown> = {
-            title: `Follow-up: ${data.notes.substring(0, 50)}`,
-            due_date: data.followUpDate.toISOString(),
-            type: "Follow-up",
-            priority: "medium",
-            sales_id: salesId,
-            created_by: salesId,
-          };
-          if (typeof data.contactId === "number" && !isNaN(data.contactId)) {
-            taskData.contact_id = data.contactId;
-          }
-          if (typeof data.opportunityId === "number" && !isNaN(data.opportunityId)) {
-            taskData.opportunity_id = data.opportunityId;
-          }
-          await dataProvider.create("tasks", { data: taskData });
+        if (error) {
+          throw error;
+        }
+
+        // Invalidate relevant caches
+        queryClient.invalidateQueries({ queryKey: activityKeys.all });
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+        if (taskPayload) {
           queryClient.invalidateQueries({ queryKey: taskKeys.all });
         }
 
-        queryClient.invalidateQueries({ queryKey: activityKeys.all });
-        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-
-        notify("Activity logged successfully", { type: "success" });
+        const taskCreated = rpcResult?.task_id != null;
+        notify(
+          taskCreated ? "Activity and follow-up task created" : "Activity logged successfully",
+          { type: "success" }
+        );
         form.reset();
 
         if (closeAfterSave) {
@@ -197,11 +200,12 @@ export function QuickLogForm({
           onRefresh();
         }
       } catch (error: unknown) {
-        notify("Failed to log activity", { type: "error" });
+        const errorMessage = error instanceof Error ? error.message : "Failed to log activity";
+        notify(errorMessage, { type: "error" });
         console.error("Activity log error:", error);
       }
     },
-    [salesId, dataProvider, notify, queryClient, form, onComplete, onRefresh]
+    [salesId, notify, queryClient, form, onComplete, onRefresh]
   );
 
   // Handle contact selection - auto-fill organization

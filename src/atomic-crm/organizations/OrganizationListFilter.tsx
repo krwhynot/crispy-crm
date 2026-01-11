@@ -16,7 +16,7 @@ import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
  * NOTE: Active filter chips are now displayed via FilterChipBar above the datagrid.
  * SidebarActiveFilters removed to avoid duplicate filter visibility.
  */
-export const OrganizationListFilter = () => {
+export const OrganizationListFilter = (): JSX.Element => {
   const { filterValues } = useListContext();
 
   // Determine which segment filters to show based on organization_type filter

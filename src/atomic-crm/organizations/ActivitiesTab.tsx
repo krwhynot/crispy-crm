@@ -11,7 +11,7 @@ interface ActivitiesTabProps {
   organizationId: string | number;
 }
 
-export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
+export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps): JSX.Element => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data, isPending, error, refetch } = useGetList<ActivityRecord>("activities", {

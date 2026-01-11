@@ -3,7 +3,7 @@ import { BooleanInput } from "@/components/admin/boolean-input";
 import { CollapsibleSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
 import { ORG_SCOPE_CHOICES } from "./constants";
 
-export const OrganizationHierarchySection = () => {
+export const OrganizationHierarchySection = (): JSX.Element => {
   return (
     <CollapsibleSection title="Organization Hierarchy">
       <CompactFormRow>

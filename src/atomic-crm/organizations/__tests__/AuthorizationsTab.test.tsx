@@ -15,6 +15,7 @@ import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import type { GetListParams } from "react-admin";
 import * as reactAdmin from "react-admin";
 
 // Import component under test
@@ -175,7 +176,7 @@ describe("AuthorizationsTab", () => {
 
   describe("Authorization List", () => {
     test("renders list of authorized principals with count", async () => {
-      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: GetListParams) => {
         if (resource === "distributor_principal_authorizations") {
           return { data: mockAuthorizations, isPending: false, error: null } as any;
         }

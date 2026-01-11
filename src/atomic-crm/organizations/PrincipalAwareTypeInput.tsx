@@ -27,7 +27,7 @@ interface Product {
  *
  * This provides immediate feedback at form field level, not at save time.
  */
-export const PrincipalAwareTypeInput = () => {
+export const PrincipalAwareTypeInput = (): JSX.Element => {
   const record = useRecordContext<Organization>();
   const { setValue } = useFormContext();
   const currentType = useWatch({ name: "organization_type" });

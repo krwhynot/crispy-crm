@@ -405,15 +405,13 @@ describe("Product Base Schemas", () => {
         expect(result.success).toBe(true);
       });
 
-      it.skip("should accept valid record for nutritional_info (blocked by Zod v4 z.record(z.any()) bug)", () => {
-        // TODO: Re-enable when z.record(z.any()) is fixed in Zod v4
+      it("should accept valid record for nutritional_info", () => {
         const data = { ...validProduct, nutritional_info: { calories: 100, protein: "5g" } };
         const result = productSchema.safeParse(data);
         expect(result.success).toBe(true);
       });
 
-      it.skip("should accept empty object for nutritional_info (blocked by Zod v4 z.record(z.any()) bug)", () => {
-        // TODO: Re-enable when z.record(z.any()) is fixed in Zod v4
+      it("should accept empty object for nutritional_info", () => {
         const data = { ...validProduct, nutritional_info: {} };
         const result = productSchema.safeParse(data);
         expect(result.success).toBe(true);
