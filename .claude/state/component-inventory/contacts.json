@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-11T13:38:13.678Z",
+  "generated_at": "2026-01-11T15:15:54.858Z",
   "item_count": 58,
   "items": [
     {
@@ -378,7 +378,7 @@
     {
       "name": "ContactDetailsTab",
       "file": "src/atomic-crm/contacts/ContactDetailsTab.tsx",
-      "line": 44,
+      "line": 45,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -391,6 +391,7 @@
         "../utils/formatName",
         "./Avatar",
         "./ContactInputs",
+        "@/atomic-crm/queryKeys",
         "@/components/admin/array-field",
         "@/components/admin/email-field",
         "@/components/admin/form/FormProgressProvider",

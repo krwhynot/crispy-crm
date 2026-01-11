@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-11T13:38:23.734Z",
+  "generated_at": "2026-01-11T15:16:08.056Z",
   "items": {
     "nodes": [
       {
@@ -40,37 +40,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:22:EditToolbar",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:23:EditToolbar",
         "name": "EditToolbar",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 22,
+        "line": 23,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "name": "SalesEdit",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 31,
+        "line": 32,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:87:SalesFormContent",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
         "name": "SalesFormContent",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 87,
+        "line": 88,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:98:SaleEditTitle",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:99:SaleEditTitle",
         "name": "SaleEditTitle",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 98,
+        "line": 99,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -690,124 +690,115 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:22:EditToolbar",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:23:EditToolbar",
         "target": "CancelButton",
         "targetName": "CancelButton",
-        "edgeType": "render",
-        "line": 25,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:22:EditToolbar",
-        "target": "SaveButton",
-        "targetName": "SaveButton",
         "edgeType": "render",
         "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:23:EditToolbar",
+        "target": "SaveButton",
+        "targetName": "SaveButton",
+        "edgeType": "render",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "useEditController",
         "targetName": "useEditController",
         "edgeType": "hook",
-        "line": 32,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 34,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 35,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
+        "edgeType": "hook",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "useQueryClient",
         "targetName": "useQueryClient",
         "edgeType": "hook",
-        "line": 40,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "useMutation",
         "targetName": "useMutation",
         "edgeType": "hook",
-        "line": 44,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "salesUpdate",
         "targetName": "salesUpdate",
         "edgeType": "call",
-        "line": 50,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 54,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
@@ -816,137 +807,155 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "redirect",
-        "targetName": "redirect",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 57,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "detail",
+        "targetName": "detail",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "redirect",
+        "targetName": "redirect",
         "edgeType": "call",
         "line": 58,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 61,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "mutate",
         "targetName": "mutate",
         "edgeType": "call",
-        "line": 66,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 71,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "CardContent",
-        "targetName": "CardContent",
         "edgeType": "render",
         "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "SimpleForm",
-        "targetName": "SimpleForm",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
         "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "onSubmit",
-        "targetName": "onSubmit",
-        "edgeType": "callback",
-        "line": 75,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
-        "target": "EditToolbar",
-        "targetName": "EditToolbar",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "SimpleForm",
+        "targetName": "SimpleForm",
         "edgeType": "render",
         "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:31:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "onSubmit",
+        "targetName": "onSubmit",
+        "edgeType": "callback",
+        "line": 76,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "target": "EditToolbar",
+        "targetName": "EditToolbar",
+        "edgeType": "render",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
         "target": "SalesFormContent",
         "targetName": "SalesFormContent",
         "edgeType": "render",
-        "line": 79,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:87:SalesFormContent",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
         "target": "useUnsavedChangesWarning",
         "targetName": "useUnsavedChangesWarning",
         "edgeType": "hook",
-        "line": 88,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:87:SalesFormContent",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
         "target": "SaleEditTitle",
         "targetName": "SaleEditTitle",
-        "edgeType": "render",
-        "line": 92,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:87:SalesFormContent",
-        "target": "SalesInputs",
-        "targetName": "SalesInputs",
         "edgeType": "render",
         "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:98:SaleEditTitle",
-        "target": "useRecordContext",
-        "targetName": "useRecordContext",
-        "edgeType": "hook",
-        "line": 99,
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
+        "target": "SalesInputs",
+        "targetName": "SalesInputs",
+        "edgeType": "render",
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:98:SaleEditTitle",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:99:SaleEditTitle",
+        "target": "useRecordContext",
+        "targetName": "useRecordContext",
+        "edgeType": "hook",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:99:SaleEditTitle",
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 103,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },

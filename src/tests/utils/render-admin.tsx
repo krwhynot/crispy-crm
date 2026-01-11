@@ -50,7 +50,7 @@ export interface RenderAdminOptions extends Omit<RenderOptions, "wrapper"> {
   /**
    * Record data for RecordContextProvider
    */
-  record?: any;
+  record?: Record<string, unknown>;
 
   /**
    * User role for mock auth provider
@@ -181,7 +181,7 @@ export function renderWithAdminContext(
 export function renderWithRecordContext(
   ui: ReactElement,
   options: {
-    record: any;
+    record: Record<string, unknown>;
     resource?: string;
     queryClient?: QueryClient;
   } & Omit<RenderOptions, "wrapper">

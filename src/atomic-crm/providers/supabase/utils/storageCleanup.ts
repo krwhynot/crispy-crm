@@ -102,13 +102,25 @@ export async function deleteStorageFiles(paths: string[]): Promise<void> {
     const { error } = await supabase.storage.from(STORAGE_BUCKET).remove(paths);
 
     if (error) {
-      // Log but don't throw - cleanup failure shouldn't block the archive
-      console.warn(`[StorageCleanup] Failed to delete ${paths.length} files:`, error.message);
+      // EH-003 FIX: Structured error with context
+      console.warn(`[StorageCleanup] Delete operation failed`, {
+        bucket: STORAGE_BUCKET,
+        fileCount: paths.length,
+        paths: paths.slice(0, 5), // First 5 for debugging
+        error: error.message,
+        errorCode: error.name,
+      });
     } else {
       devLog("StorageCleanup", `Deleted ${paths.length} files from storage`);
     }
   } catch (error: unknown) {
-    console.warn(`[StorageCleanup] Unexpected error during cleanup:`, error);
+    // EH-003 FIX: Catch unexpected errors with full context
+    console.warn(`[StorageCleanup] Unexpected error during cleanup`, {
+      bucket: STORAGE_BUCKET,
+      fileCount: paths.length,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
   }
 }
 

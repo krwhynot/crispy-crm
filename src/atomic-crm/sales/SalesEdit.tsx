@@ -4,6 +4,7 @@ import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { saleKeys } from "@/atomic-crm/queryKeys";
 import {
   useDataProvider,
   useEditController,
@@ -51,8 +52,8 @@ export default function SalesEdit() {
     },
     onSuccess: () => {
       // SS-002 FIX: Invalidate sales caches before redirect
-      queryClient.invalidateQueries({ queryKey: ["sales"] });
-      queryClient.invalidateQueries({ queryKey: ["sales", "getOne", record?.id] });
+      queryClient.invalidateQueries({ queryKey: saleKeys.all });
+      queryClient.invalidateQueries({ queryKey: saleKeys.detail(record?.id ?? 0) });
 
       redirect("/sales");
       notify("User updated successfully");

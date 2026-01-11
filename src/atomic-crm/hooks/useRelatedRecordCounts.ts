@@ -125,11 +125,27 @@ export function useRelatedRecordCounts({
               });
               return { label: rel.label, count: result.total ?? 0 };
             } catch (error: unknown) {
-              // Silently skip on error (e.g., permission denied)
-              console.debug(
-                "Failed to fetch related count:",
-                error instanceof Error ? error.message : String(error)
-              );
+              // EH-001 FIX: Structured logging with error categorization
+              const errorMessage = error instanceof Error ? error.message : String(error);
+              const isPermissionError =
+                errorMessage.toLowerCase().includes("permission") ||
+                errorMessage.includes("403") ||
+                errorMessage.includes("RLS");
+
+              if (isPermissionError) {
+                // Expected case: user doesn't have access to this resource type
+                console.debug(
+                  `[useRelatedRecordCounts] Permission denied for ${rel.resource}:`,
+                  errorMessage
+                );
+              } else {
+                // Unexpected error: log as warning for visibility
+                console.warn(
+                  `[useRelatedRecordCounts] Failed to fetch count for ${rel.resource}:`,
+                  { error: errorMessage, resourceId: id, relationship: rel }
+                );
+              }
+
               return { label: rel.label, count: 0 };
             }
           })

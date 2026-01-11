@@ -67,7 +67,10 @@ export const productSchema = z.strictObject({
   certifications: z.array(z.string().max(100)).max(50).nullish(),
   allergens: z.array(z.string().max(100)).max(50).nullish(),
   ingredients: z.string().trim().max(5000).nullish(),
-  nutritional_info: z.record(z.string(), z.any()).nullish(),
+  // Union supports both string and number values for backwards compatibility with legacy data
+  nutritional_info: z
+    .record(z.string().max(50), z.union([z.string().max(100), z.number()]))
+    .nullish(),
   marketing_description: z.string().trim().max(2000).nullish(),
 
   // System fields (handled automatically)
@@ -172,7 +175,10 @@ export const productCreateWithDistributorsSchema = z.strictObject({
   certifications: z.array(z.string().max(100)).max(50).nullish(),
   allergens: z.array(z.string().max(100)).max(50).nullish(),
   ingredients: z.string().trim().max(5000).nullish(),
-  nutritional_info: z.record(z.string(), z.any()).nullish(),
+  // Union supports both string and number values for backwards compatibility with legacy data
+  nutritional_info: z
+    .record(z.string().max(50), z.union([z.string().max(100), z.number()]))
+    .nullish(),
   marketing_description: z.string().trim().max(2000).nullish(),
 
   // System fields
@@ -211,7 +217,10 @@ export const productUpdateWithDistributorsSchema = z.strictObject({
   certifications: z.array(z.string().max(100)).max(50).nullish(),
   allergens: z.array(z.string().max(100)).max(50).nullish(),
   ingredients: z.string().trim().max(5000).nullish(),
-  nutritional_info: z.record(z.string(), z.any()).nullish(),
+  // Union supports both string and number values for backwards compatibility with legacy data
+  nutritional_info: z
+    .record(z.string().max(50), z.union([z.string().max(100), z.number()]))
+    .nullish(),
   marketing_description: z.string().trim().max(2000).nullish(),
 
   // System fields

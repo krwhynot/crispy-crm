@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-11T13:38:23.701Z",
+  "generated_at": "2026-01-11T15:16:08.025Z",
   "items": {
     "nodes": [
       {
@@ -898,19 +898,64 @@
       },
       {
         "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "debug",
-        "targetName": "debug",
+        "target": "String",
+        "targetName": "String",
         "edgeType": "call",
         "line": 129,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "String",
-        "targetName": "String",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
         "edgeType": "call",
         "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "target": "debug",
+        "targetName": "debug",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 143,
         "conditional": true,
         "inLoop": false
       },
@@ -919,7 +964,7 @@
         "target": "all",
         "targetName": "all",
         "edgeType": "call",
-        "line": 138,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
@@ -928,7 +973,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 143,
+        "line": 159,
         "conditional": false,
         "inLoop": false
       },
@@ -937,7 +982,7 @@
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 148,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
@@ -946,7 +991,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 148,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
@@ -955,7 +1000,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 148,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
@@ -964,7 +1009,7 @@
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 148,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
@@ -973,7 +1018,7 @@
         "target": "setRelatedCounts",
         "targetName": "setRelatedCounts",
         "edgeType": "call",
-        "line": 153,
+        "line": 169,
         "conditional": false,
         "inLoop": false
       },
@@ -982,7 +1027,7 @@
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 156,
+        "line": 172,
         "conditional": true,
         "inLoop": false
       },
@@ -991,7 +1036,7 @@
         "target": "setIsLoading",
         "targetName": "setIsLoading",
         "edgeType": "call",
-        "line": 160,
+        "line": 176,
         "conditional": true,
         "inLoop": false
       },
@@ -1000,7 +1045,7 @@
         "target": "fetchCounts",
         "targetName": "fetchCounts",
         "edgeType": "call",
-        "line": 165,
+        "line": 181,
         "conditional": false,
         "inLoop": false
       },

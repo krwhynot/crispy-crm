@@ -272,11 +272,10 @@ export const updateOpportunitySchema = opportunityBaseSchema
         return true; // Allow non-closed stage drag-drop
       }
 
-      // For closed stage updates (stage-only OR full form), validation continues below
-      // The existing refinements at lines 286-325 will enforce win/loss reasons
-      if (isStageOnlyUpdate && data.stage && CLOSED_STAGES.includes(data.stage)) {
-        return true; // Allow, but win/loss refinements below will still validate
-      }
+      // WG-001 FIX: For closed stage updates, DO NOT return early!
+      // We must fall through to allow the win/loss refinements (lines 298-336) to validate.
+      // Removing the early return that previously bypassed contact validation for closed stages.
+      // The win_reason/loss_reason refinements below will enforce proper close requirements.
 
       // Skip validation for full form submissions (React Admin v5 sends ALL fields on every update)
       // Heuristic: If 5+ fields are present, this is a form submission, not a contacts-only edit.

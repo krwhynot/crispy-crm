@@ -191,7 +191,12 @@ export const OpportunityListContent = ({
               queryClient.invalidateQueries({ queryKey: activityKeys.all });
               queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
             } catch (error: unknown) {
+              // WG-002 FIX: Notify user that activity log failed (audit trail incomplete)
               console.error("Failed to create stage change activity:", error);
+              notify(
+                "Stage updated but activity log failed. The change is saved but may not appear in the activity timeline.",
+                { type: "warning" }
+              );
             }
           },
           onError: () => {

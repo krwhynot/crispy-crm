@@ -2,6 +2,7 @@ import { Mail, Phone, Linkedin, Building2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
+import { contactKeys } from "@/atomic-crm/queryKeys";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { ArrayField } from "@/components/admin/array-field";
@@ -61,8 +62,8 @@ export function ContactDetailsTab({
       });
 
       // SS-001 FIX: Invalidate contact caches after successful update
-      queryClient.invalidateQueries({ queryKey: ["contacts"] });
-      queryClient.invalidateQueries({ queryKey: ["contacts", "getOne", record.id] });
+      queryClient.invalidateQueries({ queryKey: contactKeys.all });
+      queryClient.invalidateQueries({ queryKey: contactKeys.detail(record.id) });
 
       notify("Contact updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
