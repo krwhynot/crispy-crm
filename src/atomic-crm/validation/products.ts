@@ -118,6 +118,150 @@ export async function validateProductUpdate(data: unknown): Promise<void> {
 // Export for type inference
 export type ProductFormData = z.infer<typeof productSchema>;
 
+// ============================================================================
+// PRODUCT SCHEMAS WITH DISTRIBUTOR FIELDS
+// ============================================================================
+// These schemas explicitly allow distributor fields that are sent by the form
+// (ProductDistributorInput.tsx) and processed by productsHandler before DB write.
+//
+// Uses z.strictObject() to REJECT truly unknown keys (fail-fast principle)
+// while explicitly allowing the known distributor fields.
+
+/**
+ * Distributor fields schema - reusable for create and update
+ * Types match exactly what ProductDistributorInput.tsx sends:
+ * - distributor_ids: number[] - array of distributor organization IDs
+ * - product_distributors: Record<number, { vendor_item_number: string | null }>
+ */
+const distributorFieldsSchema = {
+  distributor_ids: z.array(z.coerce.number().int().positive()).optional(),
+  // Zod v4: z.record(keySchema, valueSchema) - keys are strings in JS objects
+  product_distributors: z
+    .record(z.string(), z.strictObject({ vendor_item_number: z.string().max(50).nullable() }))
+    .optional(),
+};
+
+/**
+ * Product schema with distributor fields for create operations
+ *
+ * Uses z.strictObject() to:
+ * 1. Validate all product fields strictly
+ * 2. Explicitly allow distributor fields (handled by productsHandler.create)
+ * 3. REJECT truly unknown keys (fail-fast principle)
+ *
+ * Constitution: Zod at API boundary, fail-fast on unknown keys
+ */
+export const productCreateWithDistributorsSchema = z.strictObject({
+  // Required fields
+  name: z
+    .string({ error: "Product name is required" })
+    .trim()
+    .min(1, "Product name is required")
+    .max(255, "Product name too long"),
+  principal_id: z
+    .number({ error: "Principal/Supplier is required" })
+    .int()
+    .positive("Principal/Supplier is required"),
+  category: productCategorySchema,
+
+  // Optional fields with defaults
+  status: productStatusSchema.default("active"),
+  description: z.string().trim().max(2000).nullish(),
+
+  // Food/health specific fields
+  certifications: z.array(z.string().max(100)).max(50).nullish(),
+  allergens: z.array(z.string().max(100)).max(50).nullish(),
+  ingredients: z.string().trim().max(5000).nullish(),
+  nutritional_info: z.record(z.any()).nullish(),
+  marketing_description: z.string().trim().max(2000).nullish(),
+
+  // System fields
+  created_by: z.number().int().nullish(),
+  updated_by: z.number().int().nullish(),
+
+  // Distributor fields - explicitly allowed for productsHandler
+  ...distributorFieldsSchema,
+});
+
+/**
+ * Product schema with distributor fields for update operations
+ * Same as create but id is allowed in data (React Admin includes it)
+ */
+export const productUpdateWithDistributorsSchema = z.strictObject({
+  // ID may be included in update data
+  id: z.union([z.string(), z.number()]).optional(),
+
+  // Required fields
+  name: z
+    .string({ error: "Product name is required" })
+    .trim()
+    .min(1, "Product name is required")
+    .max(255, "Product name too long"),
+  principal_id: z
+    .number({ error: "Principal/Supplier is required" })
+    .int()
+    .positive("Principal/Supplier is required"),
+  category: productCategorySchema,
+
+  // Optional fields with defaults
+  status: productStatusSchema.default("active"),
+  description: z.string().trim().max(2000).nullish(),
+
+  // Food/health specific fields
+  certifications: z.array(z.string().max(100)).max(50).nullish(),
+  allergens: z.array(z.string().max(100)).max(50).nullish(),
+  ingredients: z.string().trim().max(5000).nullish(),
+  nutritional_info: z.record(z.any()).nullish(),
+  marketing_description: z.string().trim().max(2000).nullish(),
+
+  // System fields
+  created_by: z.number().int().nullish(),
+  updated_by: z.number().int().nullish(),
+
+  // Distributor fields - explicitly allowed for productsHandler
+  ...distributorFieldsSchema,
+});
+
+/**
+ * Validation function for product create with distributor fields
+ * Used by ValidationService for 'products' create operations
+ */
+export async function validateProductFormWithDistributors(data: unknown): Promise<void> {
+  const result = productCreateWithDistributorsSchema.safeParse(data);
+
+  if (!result.success) {
+    const formattedErrors: Record<string, string> = {};
+    result.error.issues.forEach((err) => {
+      const path = err.path.join(".");
+      formattedErrors[path] = err.message;
+    });
+    throw {
+      message: "Validation failed",
+      body: { errors: formattedErrors },
+    };
+  }
+}
+
+/**
+ * Validation function for product updates with distributor fields
+ * Used by ValidationService for 'products' update operations
+ */
+export async function validateProductUpdateWithDistributors(data: unknown): Promise<void> {
+  const result = productUpdateWithDistributorsSchema.safeParse(data);
+
+  if (!result.success) {
+    const formattedErrors: Record<string, string> = {};
+    result.error.issues.forEach((err) => {
+      const path = err.path.join(".");
+      formattedErrors[path] = err.message;
+    });
+    throw {
+      message: "Validation failed",
+      body: { errors: formattedErrors },
+    };
+  }
+}
+
 // Opportunity Product schema for line items (added for opportunity-products junction)
 // SIMPLIFIED: Only tracks product associations, no pricing/quantity (matches database schema)
 export const opportunityProductSchema = z.strictObject({
