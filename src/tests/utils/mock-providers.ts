@@ -182,9 +182,105 @@ export const createMockAuthProvider = (options?: {
  */
 
 /**
+ * Mock Opportunity type for test factories
+ */
+interface MockOpportunity {
+  id: number;
+  name: string;
+  stage: string;
+  status: string;
+  priority: string;
+  probability: number;
+  expected_closing_date: string;
+  customer_organization_id: number;
+  contact_ids: number[];
+  opportunity_owner_id: number;
+  account_manager_id: number;
+  index: number;
+  products: unknown[];
+  created_at: string;
+  updated_at: string;
+  deleted_at: null | string;
+}
+
+/**
+ * Mock Contact type for test factories
+ */
+interface MockContact {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: Array<{ value: string; type: "work" | "home" | "other" }>;
+  phone: Array<{ value: string; type: "work" | "home" | "other" }>;
+  title: string;
+  organization_id: number;
+  department: string;
+  company_name: string;
+  avatar: string;
+  tags: unknown[];
+  first_seen: string;
+  last_seen: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null | string;
+}
+
+/**
+ * Mock Organization type for test factories
+ */
+interface MockOrganization {
+  id: number;
+  name: string;
+  website: string;
+  linkedin_url: string;
+  segment_id: string;
+  priority: string;
+  parent_organization_id: null | number;
+  context_links: unknown[];
+  created_at: string;
+  updated_at: string;
+  deleted_at: null | string;
+}
+
+/**
+ * Mock Product type for test factories
+ */
+interface MockProduct {
+  id: number;
+  name: string;
+  sku: string;
+  category: string;
+  description: string;
+  status: string;
+  certifications: unknown[];
+  allergens: unknown[];
+  image_urls: unknown[];
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Mock Task type for test factories
+ */
+interface MockTask {
+  id: number;
+  title: string;
+  description: string;
+  task_type: string;
+  status: string;
+  priority: string;
+  due_date: string;
+  sales_id: number;
+  contact_id: number;
+  opportunity_id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
  * Create a mock opportunity record
  */
-export const createMockOpportunity = (overrides?: any) => ({
+export const createMockOpportunity = (overrides?: Partial<MockOpportunity>): MockOpportunity => ({
   id: faker.number.int({ min: 1, max: 10000 }),
   name: faker.company.catchPhrase(),
   stage: faker.helpers.arrayElement([
@@ -216,7 +312,7 @@ export const createMockOpportunity = (overrides?: any) => ({
  * Create a mock contact record
  * Note: Contacts have a single organization_id (not array) per PRD
  */
-export const createMockContact = (overrides?: any) => ({
+export const createMockContact = (overrides?: Partial<MockContact>): MockContact => ({
   id: faker.number.int({ min: 1, max: 10000 }),
   first_name: faker.person.firstName(),
   last_name: faker.person.lastName(),
@@ -249,7 +345,9 @@ export const createMockContact = (overrides?: any) => ({
 /**
  * Create a mock organization record
  */
-export const createMockOrganization = (overrides?: any) => ({
+export const createMockOrganization = (
+  overrides?: Partial<MockOrganization>
+): MockOrganization => ({
   id: faker.number.int({ min: 1, max: 10000 }),
   name: faker.company.name(),
   website: faker.internet.url(),
@@ -271,7 +369,7 @@ export const createMockOrganization = (overrides?: any) => ({
 /**
  * Create a mock product record
  */
-export const createMockProduct = (overrides?: any) => ({
+export const createMockProduct = (overrides?: Partial<MockProduct>): MockProduct => ({
   id: faker.number.int({ min: 1, max: 10000 }),
   name: faker.commerce.productName(),
   sku: faker.commerce.isbn(),
@@ -289,7 +387,7 @@ export const createMockProduct = (overrides?: any) => ({
 /**
  * Create a mock task record
  */
-export const createMockTask = (overrides?: any) => ({
+export const createMockTask = (overrides?: Partial<MockTask>): MockTask => ({
   id: faker.number.int({ min: 1, max: 10000 }),
   title: faker.lorem.sentence(),
   description: faker.lorem.paragraph(),
@@ -376,7 +474,10 @@ export const createValidationError = (
 /**
  * Create a rejected data provider method (for testing error states)
  */
-export const createRejectedDataProvider = (method: keyof DataProvider, error: any) => {
+export const createRejectedDataProvider = (
+  method: keyof DataProvider,
+  error: unknown
+): DataProvider => {
   const provider = createMockDataProvider();
   return {
     ...provider,

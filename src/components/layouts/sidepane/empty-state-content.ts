@@ -1,8 +1,30 @@
 /**
+ * Empty state content entry with optional action button
+ */
+interface EmptyStateEntry {
+  title: string;
+  description: string;
+  actionLabel?: string;
+}
+
+/**
+ * Type for all empty state content entries
+ */
+interface EmptyStateContentMap {
+  activities: EmptyStateEntry;
+  notes: EmptyStateEntry;
+  contacts: EmptyStateEntry;
+  opportunities: EmptyStateEntry;
+  products: EmptyStateEntry;
+  relatedItems: Omit<EmptyStateEntry, "actionLabel">;
+  relationships: Omit<EmptyStateEntry, "actionLabel">;
+}
+
+/**
  * Centralized empty state content for slide-over tabs.
  * Ensures consistent copy across all modules.
  */
-export const EMPTY_STATE_CONTENT = {
+export const EMPTY_STATE_CONTENT: EmptyStateContentMap = {
   activities: {
     title: "No activities yet",
     description: "Log calls, emails, and meetings to track interactions.",

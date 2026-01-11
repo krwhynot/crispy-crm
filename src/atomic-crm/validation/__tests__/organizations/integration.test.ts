@@ -144,8 +144,9 @@ describe("Organization Validation Functions", () => {
         try {
           await validateOrganizationForm(data);
           expect.fail(`Should have thrown error for field: ${field}`);
-        } catch (error: any) {
-          expect(error.body.errors[field]).toBeDefined();
+        } catch (error: unknown) {
+          const err = error as { body: { errors: Record<string, string> } };
+          expect(err.body.errors[field]).toBeDefined();
         }
       }
     });
