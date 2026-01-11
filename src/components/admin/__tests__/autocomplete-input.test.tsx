@@ -535,7 +535,9 @@ describe("AutocompleteInput", () => {
     });
 
     test("handles custom inputText as function", async () => {
-      const inputTextFn = vi.fn((option: { name?: string } | null) => (option ? `Selected: ${option.name}` : ""));
+      const inputTextFn = vi.fn((option: { name?: string } | null) =>
+        option ? `Selected: ${option.name}` : ""
+      );
 
       renderWithAdminContext(
         <FormWrapper defaultValues={{ stage: "new_lead" }}>

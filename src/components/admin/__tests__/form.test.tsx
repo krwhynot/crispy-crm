@@ -45,8 +45,8 @@ const FormWrapper = ({
   onSubmit = vi.fn(),
 }: {
   children: React.ReactNode;
-  defaultValues?: any;
-  onSubmit?: (data: any) => void;
+  defaultValues?: Record<string, unknown>;
+  onSubmit?: (data: Record<string, unknown>) => void;
 }) => {
   const form = useForm({
     defaultValues,
@@ -418,7 +418,7 @@ describe("SaveButton", () => {
         form.setValue("name", "test value", { shouldDirty: true });
       }, [form]);
 
-      const handleSave = React.useCallback(async (values: any) => {
+      const handleSave = React.useCallback(async (values: Record<string, unknown>) => {
         setSaving(true);
         await slowSave(values);
         setSaving(false);

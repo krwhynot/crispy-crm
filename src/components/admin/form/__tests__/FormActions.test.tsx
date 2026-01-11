@@ -10,8 +10,8 @@ const FormWrapper = ({
   validation,
 }: {
   children: React.ReactNode;
-  onSubmit: (data: any) => void;
-  validation?: Record<string, any>;
+  onSubmit: (data: Record<string, unknown>) => void;
+  validation?: Record<string, unknown>;
 }) => {
   const methods = useForm({
     defaultValues: { name: "test" },

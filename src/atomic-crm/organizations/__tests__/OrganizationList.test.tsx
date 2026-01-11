@@ -109,7 +109,7 @@ vi.mock("react-admin", async () => {
         {label || source}
       </span>
     ),
-    ReferenceField: ({ source, sortable, children, label }: any) => (
+    ReferenceField: ({ source, sortable, children, label }: MockFieldProps) => (
       <span
         data-testid={`ref-field-${source}`}
         data-sortable={sortable ? "true" : "false"}
@@ -119,7 +119,7 @@ vi.mock("react-admin", async () => {
         {children}
       </span>
     ),
-    FunctionField: ({ label, sortBy, sortable }: any) => {
+    FunctionField: ({ label, sortBy, sortable }: MockFieldProps) => {
       // Extract label text for testid - handle both string and React element labels
       let labelText = "";
       if (typeof label === "string") {
@@ -154,7 +154,7 @@ vi.mock("jsonexport/dist", () => ({
 
 // Mock OrganizationSlideOver to simplify testing
 vi.mock("../OrganizationSlideOver", () => ({
-  OrganizationSlideOver: ({ recordId, isOpen }: any) => (
+  OrganizationSlideOver: ({ recordId, isOpen }: MockLayoutProps) => (
     <div data-testid="organization-slide-over">
       {isOpen && <div data-testid={`slide-over-org-${recordId}`}>Slide Over</div>}
     </div>
@@ -173,7 +173,7 @@ vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
     previousStep: vi.fn(),
     skipTutorial: vi.fn(),
   }),
-  TutorialProvider: ({ children }: any) => children,
+  TutorialProvider: ({ children }: MockChildrenProps) => children,
 }));
 
 // Mock PageTutorialTrigger to avoid tutorial context requirement
@@ -186,7 +186,7 @@ const sortableColumns: { label: string; sortBy: string; sortable: boolean }[] = 
 
 // Mock PremiumDatagrid to expose row click handler and track column config
 vi.mock("@/components/admin/PremiumDatagrid", () => ({
-  PremiumDatagrid: ({ children, onRowClick }: any) => {
+  PremiumDatagrid: ({ children, onRowClick }: MockLayoutProps) => {
     // Clear previous column tracking
     sortableColumns.length = 0;
 
