@@ -33,7 +33,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Setup mocks
     mockNotify = vi.fn();
@@ -60,7 +60,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   // Wrapper component for providing QueryClient context
@@ -232,7 +232,12 @@ describe("useBulkActionsState - Parallel Execution", () => {
       previousData: mockOpportunities[0],
     });
 
-    vi.clearAllMocks();
+    vi.resetAllMocks();
+    (useDataProvider as any).mockReturnValue(mockDataProvider);
+    (useNotify as any).mockReturnValue(mockNotify);
+    (useRefresh as any).mockReturnValue(mockRefresh);
+    (useQueryClient as any).mockReturnValue(queryClient);
+    mockDataProvider.update.mockResolvedValue({ data: {} });
 
     // Test change_status
     const { result: statusResult } = renderHook(
