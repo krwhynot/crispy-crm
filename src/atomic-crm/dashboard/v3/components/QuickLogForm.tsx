@@ -112,7 +112,13 @@ export function QuickLogForm({
   ] = useWatch({
     control: form.control,
     name: ["opportunityId", "contactId", "organizationId", "activityType", "createFollowUp"],
-  }) as [number | undefined, number | undefined, number | undefined, string | undefined, boolean | undefined];
+  }) as [
+    number | undefined,
+    number | undefined,
+    number | undefined,
+    string | undefined,
+    boolean | undefined,
+  ];
 
   // Notify parent of form changes for draft persistence
   useEffect(() => {
@@ -130,8 +136,8 @@ export function QuickLogForm({
   });
 
   // Form submission handler - uses atomic RPC for transactional activity+task creation
-  const onSubmit = useCallback(
-    async (data: ActivityLogInput) => {
+  const submitActivity = useCallback(
+    async (data: ActivityLogInput, closeAfterSave = true) => {
       if (!salesId) {
         notify("Cannot log activity: user session expired. Please refresh and try again.", {
           type: "error",
@@ -195,7 +201,10 @@ export function QuickLogForm({
           { type: "success" }
         );
         form.reset();
-        onComplete();
+
+        if (closeAfterSave) {
+          onComplete();
+        }
 
         if (onRefresh) {
           onRefresh();
@@ -273,9 +282,12 @@ export function QuickLogForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit((data) => submitActivity(data, true))}
+        className="space-y-4"
+      >
         {/* Group 1: What happened? */}
-        <ActivityTypeSection control={form.control} activityType={activityType} />
+        <ActivityTypeSection control={form.control} activityType={activityType ?? "Call"} />
 
         {/* Activity Date */}
         <FormField
@@ -425,7 +437,7 @@ export function QuickLogForm({
         />
 
         {/* Group 4: Follow-up */}
-        <FollowUpSection control={form.control} showFollowUpDate={createFollowUp} />
+        <FollowUpSection control={form.control} showFollowUpDate={createFollowUp ?? false} />
 
         {/* Action buttons */}
         <div className="flex justify-between pt-4">
@@ -455,7 +467,7 @@ export function QuickLogForm({
               disabled={form.formState.isSubmitting}
               onClick={() => {
                 form.handleSubmit((data) => {
-                  onSubmit(data, false);
+                  submitActivity(data, false);
                 })();
               }}
             >

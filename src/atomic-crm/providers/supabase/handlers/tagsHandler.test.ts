@@ -4,11 +4,11 @@
  * TDD: These tests verify the composed tags DataProvider handler
  * which combines:
  * 1. Base Supabase provider operations
- * 2. withLifecycleCallbacks for minimal resource logic (NO soft delete)
+ * 2. withLifecycleCallbacks for resource logic (soft delete since DI-002 audit fix)
  * 3. withValidation for Zod schema validation (color normalization)
  * 4. withErrorLogging for structured error handling + Sentry
  *
- * Tags are the simplest resource - hard delete, no computed fields.
+ * Tags use soft delete (deleted_at column exists in schema).
  *
  * Engineering Constitution: Composition over inheritance
  */
