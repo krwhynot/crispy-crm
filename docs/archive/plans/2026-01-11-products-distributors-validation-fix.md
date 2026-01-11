@@ -1,7 +1,7 @@
 # Implementation Plan: Products with Distributors Validation Bug Fix
 
 **Created:** 2026-01-11
-**Status:** Draft (Revision 2 - Post-Review)
+**Status:** APPROVED - Ready to Execute (Revision 2)
 **Type:** Bug Fix
 **Scope:** Single Feature (Data Provider/Validation)
 **Estimated Effort:** 4 Story Points (increased from 3 - added create path fix)
@@ -36,6 +36,8 @@
 **Exact Field Types (from form):**
 - `distributor_ids: number[]` - Array of distributor organization IDs
 - `product_distributors: Record<number, { vendor_item_number: string | null }>` - Map of distributor ID to vendor item number
+
+**Update Payload Semantics:** React Admin's `EditBase` sends **full objects** (not partial patches). See `ProductEdit.tsx:42` - form is initialized with `productUpdateSchema.partial().parse(record)`, meaning all fields from the record are included. The validation schema should expect full objects.
 
 ---
 
@@ -299,17 +301,22 @@ npx vitest run src/atomic-crm/providers/supabase/services/__tests__/ValidationSe
 
 ---
 
-### Task 2: Create Permissive Update Validator
+### Task 2: Create Product Schemas with Distributor Fields
 
 **Agent Hint:** `schema-agent` (Zod validation patterns)
 **File:** `src/atomic-crm/validation/products.ts`
 **Line:** After line 116 (after `validateProductUpdate`)
-**Effort:** 0.5 story points
+**Effort:** 1 story point
 **Dependencies:** Task 1
 
 #### What to Implement
 
-Add a new validation function that uses `.strip()` instead of `.strictObject()` to allow distributor fields to pass through (they'll be stripped by the handler).
+Add new validation schemas that:
+1. Keep `z.strictObject()` to reject truly unknown keys (fail-fast)
+2. Explicitly add `distributor_ids` and `product_distributors` as optional fields
+3. Provide validators for BOTH create and update operations
+
+**IMPORTANT:** Use `z.strictObject()` NOT `.strip()` - we want to reject unknown keys while allowing the known distributor fields.
 
 #### Code Example
 
@@ -317,20 +324,33 @@ Add a new validation function that uses `.strip()` instead of `.strictObject()` 
 // Add after line 116 in src/atomic-crm/validation/products.ts
 
 /**
- * Update schema that allows form-only distributor fields
+ * Distributor fields schema - reusable for create and update
+ * These fields are sent by ProductDistributorInput.tsx and handled by productsHandler
  *
- * The form sends distributor_ids and product_distributors which are
- * handled by productsHandler.update() - we need to let them through
- * validation so the handler can process them.
- *
- * Uses .strip() to:
- * 1. Allow unknown keys (unlike strictObject)
- * 2. Strip them from the validated output
- *
- * ✅ Constitution: Zod at API boundary - handler strips before DB write
+ * Types match exactly what the form sends:
+ * - distributor_ids: number[] - array of distributor organization IDs
+ * - product_distributors: Record<number, { vendor_item_number: string | null }>
  */
-export const productUpdatePermissiveSchema = z.object({
-  // Required fields for update (id comes from params, not data)
+const distributorFieldsSchema = {
+  distributor_ids: z.array(z.coerce.number().int().positive()).optional(),
+  product_distributors: z.record(
+    z.coerce.string(), // Record keys are always strings in JS
+    z.strictObject({ vendor_item_number: z.string().max(50).nullable() })
+  ).optional(),
+};
+
+/**
+ * Product schema with distributor fields for create operations
+ *
+ * Uses z.strictObject() to:
+ * 1. Validate all product fields strictly
+ * 2. Explicitly allow distributor fields (handled by productsHandler.create)
+ * 3. REJECT truly unknown keys (fail-fast principle)
+ *
+ * ✅ Constitution: Zod at API boundary, fail-fast on unknown keys
+ */
+export const productCreateWithDistributorsSchema = z.strictObject({
+  // Required fields
   name: z
     .string({ error: "Product name is required" })
     .trim()
@@ -357,21 +377,75 @@ export const productUpdatePermissiveSchema = z.object({
   created_by: z.number().int().nullish(),
   updated_by: z.number().int().nullish(),
 
-  // Form-only fields - explicitly allowed, will be stripped
-  // These are handled by productsHandler.update() before DB write
-  distributor_ids: z.array(z.coerce.number().int().positive()).optional(),
-  product_distributors: z.record(
-    z.coerce.number(),
-    z.object({ vendor_item_number: z.string().nullable() })
-  ).optional(),
-}).strip(); // ✅ Strip unknown keys (safer than .passthrough())
+  // ✅ Distributor fields - explicitly allowed for productsHandler.create()
+  ...distributorFieldsSchema,
+});
+
+/**
+ * Product schema with distributor fields for update operations
+ * Same as create but id is allowed in data (React Admin includes it)
+ */
+export const productUpdateWithDistributorsSchema = z.strictObject({
+  // ID may be included in update data
+  id: z.union([z.string(), z.number()]).optional(),
+
+  // Required fields
+  name: z
+    .string({ error: "Product name is required" })
+    .trim()
+    .min(1, "Product name is required")
+    .max(255, "Product name too long"),
+  principal_id: z
+    .number({ error: "Principal/Supplier is required" })
+    .int()
+    .positive("Principal/Supplier is required"),
+  category: productCategorySchema,
+
+  // Optional fields with defaults
+  status: productStatusSchema.default("active"),
+  description: z.string().trim().max(2000).nullish(),
+
+  // Food/health specific fields
+  certifications: z.array(z.string().max(100)).max(50).nullish(),
+  allergens: z.array(z.string().max(100)).max(50).nullish(),
+  ingredients: z.string().trim().max(5000).nullish(),
+  nutritional_info: z.record(z.any()).nullish(),
+  marketing_description: z.string().trim().max(2000).nullish(),
+
+  // System fields
+  created_by: z.number().int().nullish(),
+  updated_by: z.number().int().nullish(),
+
+  // ✅ Distributor fields - explicitly allowed for productsHandler.update()
+  ...distributorFieldsSchema,
+});
+
+/**
+ * Validation function for product create with distributor fields
+ * Used by ValidationService for 'products' create operations
+ */
+export async function validateProductFormWithDistributors(data: unknown): Promise<void> {
+  const result = productCreateWithDistributorsSchema.safeParse(data);
+
+  if (!result.success) {
+    const formattedErrors: Record<string, string> = {};
+    result.error.issues.forEach((err) => {
+      const path = err.path.join(".");
+      formattedErrors[path] = err.message;
+    });
+    throw {
+      message: "Validation failed",
+      body: { errors: formattedErrors },
+    };
+  }
+}
 
 /**
  * Validation function for product updates with distributor fields
  * Used by ValidationService for 'products' update operations
  */
 export async function validateProductUpdateWithDistributors(data: unknown): Promise<void> {
-  const result = productUpdatePermissiveSchema.safeParse(data);
+  const result = productUpdateWithDistributorsSchema.safeParse(data);
 
   if (!result.success) {
     const formattedErrors: Record<string, string> = {};
@@ -396,38 +470,44 @@ npx tsc --noEmit src/atomic-crm/validation/products.ts
 
 #### Constitution Checklist
 - [x] Zod validation at API boundary
-- [x] Uses `.strip()` not `.passthrough()` (safer)
-- [x] Explicit distributor field types (not z.any())
+- [x] Uses `z.strictObject()` to reject unknown keys (fail-fast)
+- [x] Explicit distributor field types with proper shapes
 - [x] String `.max()` limits on all strings
+- [x] Provides BOTH create and update validators
 - [x] No retry logic
 
 ---
 
-### Task 3: Update ValidationService Registry
+### Task 3: Update ValidationService Registry (BOTH create and update)
 
 **Agent Hint:** `provider-agent` (DataProvider patterns)
 **File:** `src/atomic-crm/providers/supabase/services/ValidationService.ts`
-**Line:** 147-150
+**Line:** 38 (imports) and 147-150 (registry)
 **Effort:** 0.5 story points
 **Dependencies:** Task 2
 
 #### What to Implement
 
-Update the products validation registry entry to use the new permissive validator for updates.
+Update the products validation registry entry to use the new validators for BOTH create and update.
 
 #### Code Example
 
 ```typescript
 // In src/atomic-crm/providers/supabase/services/ValidationService.ts
 
-// Add import at top (around line 38)
+// STEP 1: Update import at top (around line 38)
+// Change FROM:
+import { validateProductForm, validateProductUpdate } from "../../../validation/products";
+
+// Change TO:
 import {
   validateProductForm,
   validateProductUpdate,
-  validateProductUpdateWithDistributors  // ✅ Add this import
+  validateProductFormWithDistributors,    // ✅ Add for create
+  validateProductUpdateWithDistributors   // ✅ Add for update
 } from "../../../validation/products";
 
-// Update the products entry in validationRegistry (lines 147-150)
+// STEP 2: Update the products entry in validationRegistry (lines 147-150)
 // Change FROM:
 products: {
   create: async (data: unknown) => validateProductForm(data),
@@ -436,9 +516,11 @@ products: {
 
 // Change TO:
 products: {
-  create: async (data: unknown) => validateProductForm(data),
-  // ✅ FIX: Use permissive validator that allows distributor fields
-  // These fields are handled by productsHandler.update() before DB write
+  // ✅ FIX: Use validators that allow distributor fields
+  // These fields are handled by productsHandler before DB write
+  // Original validators (validateProductForm, validateProductUpdate) still exist
+  // for use cases that don't include distributor fields
+  create: async (data: unknown) => validateProductFormWithDistributors(data),
   update: async (data: unknown) => validateProductUpdateWithDistributors(data),
 },
 ```
@@ -453,7 +535,8 @@ npx tsc --noEmit src/atomic-crm/providers/supabase/services/ValidationService.ts
 #### Constitution Checklist
 - [x] Single source of truth (ValidationService)
 - [x] Explicit import path
-- [x] Comment explains why permissive validator is used
+- [x] Comment explains why new validators are used
+- [x] Updates BOTH create and update paths
 
 ---
 
@@ -536,19 +619,21 @@ npm run build
 
 | Task | Confidence | Risk |
 |------|------------|------|
-| Task 1: Write Failing Test | 95% | Low |
-| Task 2: Create Permissive Validator | 90% | Low |
+| Task 1: Write Failing Tests | 95% | Low |
+| Task 2: Create Product Schemas | 90% | Low |
 | Task 3: Update ValidationService | 95% | Low |
 | Task 4: Run Tests | 95% | Low |
 | Task 5: Integration Verification | 85% | Medium |
 
-- **Overall Confidence:** 90%
+- **Overall Confidence:** 92% (up from 90% after review)
 - **Highest Risk:** Task 5 (E2E manual testing - depends on running app)
 - **Verification Needed:**
   - [ ] Test file compiles and runs
-  - [ ] New validator correctly allows distributor fields
-  - [ ] ValidationService import works
-  - [ ] E2E product save works
+  - [ ] New validators correctly allow distributor fields
+  - [ ] New validators correctly reject unknown keys (fail-fast)
+  - [ ] ValidationService imports work
+  - [ ] E2E product save works for BOTH create and update
+  - [ ] E2E product save still works WITHOUT distributors
 
 ---
 
@@ -556,11 +641,11 @@ npm run build
 
 | File | Change Type | Lines |
 |------|-------------|-------|
-| `src/atomic-crm/validation/products.ts` | ADD | +45 |
-| `src/atomic-crm/providers/supabase/services/ValidationService.ts` | MODIFY | ~5 |
-| `src/atomic-crm/providers/supabase/services/__tests__/ValidationService.products.test.ts` | NEW | +60 |
+| `src/atomic-crm/validation/products.ts` | ADD | +90 |
+| `src/atomic-crm/providers/supabase/services/ValidationService.ts` | MODIFY | ~8 |
+| `src/atomic-crm/providers/supabase/services/__tests__/ValidationService.products.test.ts` | NEW | +120 |
 
-**Total:** ~110 lines changed
+**Total:** ~220 lines changed (increased from 110 due to comprehensive tests)
 
 ---
 
