@@ -15,7 +15,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import type { ReactNode } from "react";
-import type { GetListParams } from "ra-core";
+import type { GetListParams, UpdateParams, DeleteParams, RaRecord } from "ra-core";
 import { useMyTasks } from "../useMyTasks";
 import { startOfDay, addDays } from "date-fns";
 
@@ -40,18 +40,37 @@ let queryClient: QueryClient;
 const completedTaskIds = new Set<number>();
 const deletedTaskIds = new Set<number>();
 
+// Task data shape as returned from the API
+interface TaskData {
+  id: number;
+  title: string;
+  due_date: string;
+  priority: string;
+  type: string;
+  completed: boolean;
+  sales_id: number;
+  opportunity_id: number | null;
+  opportunity?: { id: number; name: string };
+  contact_id?: number | null;
+  contact?: { id: number; name: string };
+  organization_id?: number | null;
+  organization?: { id: number; name: string };
+  description: string | null;
+  [key: string]: unknown;
+}
+
 // Store the base tasks data that tests will populate
-let baseTasksData: any[] = [];
+let baseTasksData: TaskData[] = [];
 
 // Version counter to trigger re-fetch after mutations
 let mutationVersion = 0;
 
 // Create stable mock functions OUTSIDE the factory to prevent new references
-const mockGetList = vi.fn().mockImplementation((resource: string, _params: any) => {
+const mockGetList = vi.fn().mockImplementation((resource: string, _params: GetListParams) => {
   if (resource === "tasks") {
     // Filter out completed and deleted tasks to simulate server-side filtering
     const filteredTasks = baseTasksData.filter(
-      (task: any) => !completedTaskIds.has(task.id) && !deletedTaskIds.has(task.id)
+      (task: TaskData) => !completedTaskIds.has(task.id) && !deletedTaskIds.has(task.id)
     );
     return Promise.resolve({
       data: filteredTasks,
@@ -65,20 +84,19 @@ const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
 // Wrap mockUpdate to track completed tasks and update base data for snooze
-const wrappedUpdate = async (...args: any[]) => {
-  const result = await mockUpdate(...args);
-  const [resource, params] = args;
+const wrappedUpdate = async (resource: string, params: UpdateParams<RaRecord>) => {
+  const result = await mockUpdate(resource, params);
   if (resource === "tasks") {
     // Track completed tasks
     if (params.data?.completed === true) {
-      completedTaskIds.add(params.id);
+      completedTaskIds.add(params.id as number);
       mutationVersion++;
     }
     // Update base data for other updates (like snooze)
     if (params.data?.due_date) {
-      const taskIndex = baseTasksData.findIndex((t: any) => t.id === params.id);
+      const taskIndex = baseTasksData.findIndex((t: TaskData) => t.id === params.id);
       if (taskIndex !== -1) {
-        baseTasksData[taskIndex] = { ...baseTasksData[taskIndex], ...params.data };
+        baseTasksData[taskIndex] = { ...baseTasksData[taskIndex], ...params.data } as TaskData;
         mutationVersion++;
       }
     }
@@ -87,11 +105,10 @@ const wrappedUpdate = async (...args: any[]) => {
 };
 
 // Wrap mockDelete to track deleted tasks
-const wrappedDelete = async (...args: any[]) => {
-  const result = await mockDelete(...args);
-  const [resource, params] = args;
+const wrappedDelete = async (resource: string, params: DeleteParams<RaRecord>) => {
+  const result = await mockDelete(resource, params);
   if (resource === "tasks") {
-    deletedTaskIds.add(params.id);
+    deletedTaskIds.add(params.id as number);
     mutationVersion++;
   }
   return result;
@@ -128,18 +145,21 @@ vi.mock("react-admin", async (importOriginal) => {
     // Mock useGetList using React state to simulate async behavior
     useGetList: (
       resource: string,
-      params: any,
+      params: GetListParams,
       options?: { enabled?: boolean; staleTime?: number }
     ) => {
       // Support enabled option - if false, don't fetch
       const enabled = options?.enabled !== false;
 
-      const [state, setState] = React.useState<{
-        data: any[];
+      // State shape for the mock useGetList
+      interface MockUseGetListState {
+        data: RaRecord[];
         total: number;
         isLoading: boolean;
         error: Error | null;
-      }>({
+      }
+
+      const [state, setState] = React.useState<MockUseGetListState>({
         data: [],
         total: 0,
         isLoading: enabled, // Only loading if enabled
@@ -150,7 +170,7 @@ vi.mock("react-admin", async (importOriginal) => {
       const paramsKey = JSON.stringify(params);
       const fetchData = React.useCallback(async () => {
         if (!enabled) return;
-        setState((s: any) => ({ ...s, isLoading: true, error: null }));
+        setState((s) => ({ ...s, isLoading: true, error: null }));
         try {
           const result = await mockGetList(resource, params);
           setState({

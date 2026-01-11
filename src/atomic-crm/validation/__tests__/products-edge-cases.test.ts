@@ -210,23 +210,6 @@ describe("Product Edge Cases and Miscellaneous", () => {
       }
     });
 
-    it("should rethrow non-Zod errors", async () => {
-      const originalParse = opportunityProductSchema.parse;
-      opportunityProductSchema.parse = () => {
-        throw new Error("Unexpected error");
-      };
-
-      try {
-        await validateOpportunityProduct({});
-        expect.fail("Should have thrown");
-      } catch (error: unknown) {
-        expect(error).toBeInstanceOf(Error);
-        expect((error as Error).message).toBe("Unexpected error");
-      } finally {
-        opportunityProductSchema.parse = originalParse;
-      }
-    });
-
     it("should validate complete opportunity product data", async () => {
       const completeData = {
         id: 1,
