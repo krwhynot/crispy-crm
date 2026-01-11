@@ -1,0 +1,364 @@
+{
+  "domain": "enforcement",
+  "description": "Guardrail skills that BLOCK anti-patterns",
+  "skills": {
+    "verification-before-completion": {
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "Evidence-based completion claims - BLOCKS claiming tests pass, builds succeed, features work, or tasks done without running verification commands first. Requires npm run build, npx tsc --noEmit before completion claims.",
+      "promptTriggers": {
+        "keywords": [
+          "done",
+          "complete",
+          "completed",
+          "finished",
+          "fixed",
+          "passes",
+          "passing",
+          "works",
+          "working",
+          "ready",
+          "ship it",
+          "good to go",
+          "all good",
+          "verified",
+          "commit",
+          "PR",
+          "pull request",
+          "push",
+          "merge",
+          "deploy",
+          "implement",
+          "create",
+          "build",
+          "add feature",
+          "new component",
+          "new handler"
+        ],
+        "intentPatterns": [
+          "(tests?|build|types?).*?(pass|passes|passing|succeed|succeeds|work|works)",
+          "(feature|task|bug|fix).*?(complete|done|finished|ready|works)",
+          "(ready|good).*?(to|for).*?(commit|push|PR|merge|deploy|review)",
+          "(should|probably|seems to).*?(work|pass|be fixed)",
+          "(i'm|we're).*?(done|finished|complete)",
+          "(it|this|that).*?(works|passes|is fixed|is ready)",
+          "ship.*?it",
+          "all.*?(good|done|set|ready)",
+          "(create|make|open).*?(commit|PR|pull request)",
+          "(push|merge|deploy).*?(changes|code|branch)",
+          "(implement|create|build|add).*?(feature|component|handler|schema|form)",
+          "(new|add).*?(component|hook|handler|schema|validation)"
+        ]
+      },
+      "verificationCommands": {
+        "build": "npm run build",
+        "types": "npx tsc --noEmit",
+        "tests": "npm test",
+        "e2e": "npx playwright test"
+      },
+      "blockPatterns": {
+        "description": "Completion claims that should BLOCK without verification evidence",
+        "patterns": [
+          "tests? pass",
+          "build (succeeds|passes|works)",
+          "types? (are |is )?(correct|good|fixed)",
+          "feature (is )?(complete|done|ready)",
+          "bug (is )?(fixed|resolved)",
+          "ready (to|for) (commit|push|PR|merge|deploy)",
+          "should (work|pass|be fixed)",
+          "looks (good|correct|right)",
+          "all (good|done|set|ready)",
+          "ship it",
+          "good to go"
+        ]
+      }
+    },
+    "enforcing-principles": {
+      "type": "guardrail",
+      "enforcement": "hybrid",
+      "priority": "critical",
+      "description": "Engineering Constitution enforcement - BLOCKS anti-patterns (retry logic, circuit breakers, TypeScript escape hatches), SUGGESTS best practices (fail-fast, Zod validation, form defaults from schema). Includes Zod security (strictObject, string limits, coercion), form performance (onSubmit/onBlur mode, useWatch), and TypeScript strictness.",
+      "promptTriggers": {
+        "keywords": [
+          "implement",
+          "feature",
+          "error handling",
+          "validation",
+          "form",
+          "defaults",
+          "zod",
+          "schema",
+          "migration",
+          "database",
+          "retry",
+          "circuit breaker",
+          "resilience",
+          "fallback",
+          "data provider",
+          "unified provider",
+          "react admin",
+          "interface",
+          "type",
+          "strictObject",
+          "strict object",
+          "string limit",
+          "max length",
+          "coerce",
+          "coercion",
+          "allowlist",
+          "enum",
+          "useWatch",
+          "watch",
+          "onSubmit",
+          "onBlur",
+          "onChange",
+          "validation mode",
+          "form mode",
+          "mass assignment",
+          "DoS",
+          "OWASP",
+          "as any",
+          "ts-ignore",
+          "ts-nocheck",
+          "type safety",
+          "any type",
+          "typescript strict"
+        ],
+        "intentPatterns": [
+          "(implement|create|build|add).*?(feature|form|validation|migration)",
+          "(handle|add|implement).*?(error|resilience|retry|fallback)",
+          "(create|add|modify).*?(schema|validation|zod)",
+          "(set|define|add).*?(default|form)",
+          "how.*?(validate|handle error|create form)",
+          "(database|db|migration).*?(change|update|create)",
+          "(add|set|use).*?(string|length).*?(limit|max)",
+          "(use|create).*?strict.*?object",
+          "(form|input).*?(coerce|coercion|number|date)",
+          "(watch|useWatch).*?(form|value|field)",
+          "(validation|form).*?mode"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/**/*.tsx",
+          "src/atomic-crm/**/*.ts",
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/validation/**/*.ts",
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "CircuitBreaker",
+          "maxRetries",
+          "MAX_RETRIES",
+          "exponential.*backoff",
+          "retry.*logic",
+          "class.*CircuitBreaker",
+          "graceful.*fallback",
+          "catch.*return.*cached",
+          "defaultValue=",
+          "defaultValues:\\s*\\{",
+          "validate=\\{",
+          "\\.safeParse\\(",
+          "z\\.object\\(",
+          "import.*from.*react-admin",
+          "z\\.strictObject\\(",
+          "z\\.coerce\\.",
+          "\\.max\\(\\d+\\)",
+          "z\\.enum\\(",
+          "useWatch\\(",
+          "mode:\\s*['\"]onChange['\"]",
+          "watch\\(\\)",
+          "as any",
+          "@ts-ignore",
+          "@ts-nocheck",
+          "as unknown as"
+        ]
+      },
+      "blockPatterns": {
+        "description": "Anti-patterns that should BLOCK and require skill review",
+        "patterns": [
+          "class\\s+CircuitBreaker",
+          "for\\s*\\(.*MAX_RETRIES",
+          "exponential.*backoff",
+          "Math\\.pow\\(2,.*\\).*\\*.*1000",
+          "catch.*\\{[^}]*return.*cached",
+          "state:\\s*['\"]OPEN['\"]\\s*\\|\\s*['\"]CLOSED['\"]"
+        ]
+      },
+      "warnPatterns": {
+        "description": "Patterns that trigger a warning but don't block - require justification",
+        "patterns": [
+          "as\\s+any",
+          "@ts-ignore",
+          "@ts-nocheck",
+          "as\\s+unknown\\s+as",
+          "\\!\\s*$",
+          ": any[,;\\)\\s]"
+        ],
+        "allowedContexts": [
+          "test files",
+          "type definition files (.d.ts)",
+          "third-party library wrappers"
+        ]
+      }
+    },
+    "supabase-cli": {
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "BLOCKS invalid Supabase CLI commands (supabase db execute doesn't exist!) and incorrect Docker flags (-it in non-TTY). Auto-detects project container names from config.toml. Covers migrations, Edge Functions, type generation, local development.",
+      "promptTriggers": {
+        "keywords": [
+          "supabase",
+          "npx supabase",
+          "supabase start",
+          "supabase stop",
+          "supabase status",
+          "supabase link",
+          "supabase init",
+          "supabase login",
+          "db push",
+          "db pull",
+          "db reset",
+          "db diff",
+          "migration new",
+          "migration up",
+          "migration list",
+          "gen types",
+          "functions deploy",
+          "functions serve",
+          "functions new",
+          "edge function",
+          "edge functions",
+          "secrets set",
+          "storage ls",
+          "storage cp",
+          "inspect db",
+          "local development",
+          "local stack",
+          "supabase docker",
+          "supabase container",
+          "run sql",
+          "execute sql",
+          "psql",
+          "supabase_db",
+          "config.toml"
+        ],
+        "intentPatterns": [
+          "(run|execute|use).*?supabase.*?(cli|command)",
+          "supabase.*?(start|stop|status|init|link|login)",
+          "(push|pull|reset|diff).*?(database|db|migration)",
+          "(create|new|add).*?(migration|edge function|function)",
+          "(deploy|serve|test).*?(function|edge function)",
+          "(generate|gen).*?types?",
+          "(run|execute).*?sql.*?(supabase|local|docker)",
+          "(docker|container).*?supabase",
+          "supabase.*?docker",
+          "how.*?(supabase|migration|edge function)",
+          "what.*?supabase.*?command",
+          "(local|dev).*?(stack|environment|database)",
+          "config\\.toml"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "supabase/config.toml",
+          "supabase/migrations/**/*.sql",
+          "supabase/functions/**/*.ts",
+          "supabase/seed.sql"
+        ],
+        "contentPatterns": [
+          "supabase",
+          "CREATE TABLE",
+          "CREATE VIEW",
+          "ALTER TABLE",
+          "Deno\\.serve"
+        ]
+      },
+      "blockPatterns": {
+        "description": "Commands that DON'T exist or will fail - BLOCK and require skill review",
+        "patterns": [
+          "supabase\\s+db\\s+execute",
+          "supabase\\s+run\\s+",
+          "supabase\\s+sql\\s+",
+          "supabase\\s+query\\s+",
+          "docker\\s+exec\\s+-it\\s+supabase",
+          "docker\\s+exec\\s+-ti\\s+supabase",
+          "npx\\s+supabase\\s+db\\s+execute"
+        ]
+      },
+      "autoDetect": {
+        "containerName": {
+          "source": "supabase/config.toml",
+          "pattern": "^id\\s*=\\s*[\"']?([^\"'\\s]+)[\"']?",
+          "template": "supabase_db_{project_id}"
+        }
+      },
+      "hooks": {
+        "PreToolUse": {
+          "matcher": "Bash",
+          "script": ".claude/hooks/supabase-cli-guard.ts",
+          "purpose": "Block invalid supabase/docker commands before execution"
+        }
+      }
+    },
+    "stuck-process-detection": {
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "Prevents infinite polling loops when monitoring background shells. Enforces timeout limits, max poll attempts (5), and foreground preference. BLOCKS after 5 consecutive empty BashOutput calls. Integrates with KillShell for stuck process recovery.",
+      "promptTriggers": {
+        "keywords": [
+          "run_in_background",
+          "background",
+          "BashOutput",
+          "wait for",
+          "waiting for",
+          "check output",
+          "poll",
+          "polling",
+          "monitoring",
+          "long-running",
+          "tests running",
+          "build running",
+          "server starting",
+          "still running",
+          "wait a bit",
+          "wait longer",
+          "check again",
+          "no content",
+          "empty output",
+          "no output yet"
+        ],
+        "intentPatterns": [
+          "(run|execute|start).*?(in background|background)",
+          "(wait|waiting).*?(for|on).*?(output|process|test|build)",
+          "(check|poll|monitor).*?(output|status|progress)",
+          "(let me|i'll).*?(wait|check).*?(again|longer|bit)",
+          "(no|empty|nothing).*?(output|content|result)",
+          "still.*?(running|waiting|polling)",
+          "process.*?(running|started|launched)",
+          "background.*?(task|process|shell|command)"
+        ]
+      },
+      "hooks": {
+        "PreToolUse": {
+          "matcher": "BashOutput",
+          "script": "bash-output-poll-guard.sh",
+          "purpose": "Detect and block infinite polling loops"
+        },
+        "PostToolUse": {
+          "matcher": "BashOutput",
+          "script": "bash-output-success-reset.sh",
+          "purpose": "Reset counter when output is received"
+        }
+      },
+      "thresholds": {
+        "warningAfter": 3,
+        "blockAfter": 5,
+        "resetIntervalSeconds": 30
+      }
+    }
+  }
+}
