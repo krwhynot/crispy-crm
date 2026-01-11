@@ -82,19 +82,27 @@ export function useBulkActionsState({
         updateData = { opportunity_owner_id: parseInt(selectedOwner) };
       }
 
-      for (const id of selectedIds) {
-        try {
-          await dataProvider.update(resource, {
-            id,
-            data: updateData,
-            previousData: opportunities.find((opp) => opp.id === id),
-          });
+      const updatePromises = selectedIds.map((id) =>
+        dataProvider.update(resource, {
+          id,
+          data: updateData,
+          previousData: opportunities.find((opp) => opp.id === id),
+        })
+      );
+
+      const results = await Promise.allSettled(updatePromises);
+
+      results.forEach((result, index) => {
+        if (result.status === "fulfilled") {
           successCount++;
-        } catch (error: unknown) {
-          console.error(`Bulk update failed for ${resource} id=${id}:`, error);
+        } else {
+          console.error(
+            `Bulk update failed for ${resource} id=${selectedIds[index]}:`,
+            result.reason
+          );
           failureCount++;
         }
-      }
+      });
 
       if (successCount > 0) {
         notify(
