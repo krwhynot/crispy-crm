@@ -267,5 +267,5 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
     setRefetchTrigger((prev) => prev + 1);
   };
 
-  return { metrics, loading, error, refetch };
+  return { metrics, loading, error, errorMessage, hasPartialFailure, refetch };
 }

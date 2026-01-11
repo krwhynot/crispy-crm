@@ -167,6 +167,9 @@ export function useMyTasks() {
 
         // Invalidate tasks query to ensure fresh data on next fetch
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        // Invalidate dashboard KPIs that depend on task/activity data
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+        queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
         console.error(
           "Failed to complete task:",
@@ -245,6 +248,9 @@ export function useMyTasks() {
         // Invalidate tasks query to ensure fresh data on next fetch
         // This ensures the UI stays in sync when optimistic update is cleared
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        // Invalidate dashboard KPIs that depend on task/activity data
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+        queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
         console.error(
           "Failed to snooze task:",
@@ -294,6 +300,9 @@ export function useMyTasks() {
 
         // Invalidate tasks query to ensure fresh data on next fetch
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        // Invalidate dashboard KPIs that depend on task/activity data
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+        queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
         console.error(
           "Failed to delete task:",
@@ -360,6 +369,9 @@ export function useMyTasks() {
 
         // Invalidate tasks query to ensure fresh data on next fetch
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        // Invalidate dashboard KPIs that depend on task/activity data
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+        queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
         console.error(
           "Failed to update task due date:",

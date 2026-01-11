@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
-import { useDataProvider, useNotify } from "react-admin";
+import { useNotify } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/atomic-crm/providers/supabase/supabase";
 import { useMemo, useEffect, useCallback } from "react";
 import { activityKeys, opportunityKeys, taskKeys } from "@/atomic-crm/queryKeys";
 import { Button } from "@/components/ui/button";
