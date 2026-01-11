@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, waitFor, act } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import type { ReactNode } from "react";
@@ -140,11 +140,15 @@ describe("useBulkActionsState - Parallel Execution", () => {
     );
 
     // Open dialog and select stage
-    result.current.handleOpenDialog("change_stage");
-    result.current.setSelectedStage("initial_outreach");
+    act(() => {
+      result.current.handleOpenDialog("change_stage");
+      result.current.setSelectedStage("initial_outreach");
+    });
 
     // Execute bulk action
-    await result.current.handleExecuteBulkAction();
+    await act(async () => {
+      await result.current.handleExecuteBulkAction();
+    });
 
     // Verify all 3 updates were attempted
     expect(mockDataProvider.update).toHaveBeenCalledTimes(3);
@@ -174,11 +178,15 @@ describe("useBulkActionsState - Parallel Execution", () => {
     );
 
     // Open dialog and select stage
-    result.current.handleOpenDialog("change_stage");
-    result.current.setSelectedStage("initial_outreach");
+    act(() => {
+      result.current.handleOpenDialog("change_stage");
+      result.current.setSelectedStage("initial_outreach");
+    });
 
     // Execute bulk action
-    await result.current.handleExecuteBulkAction();
+    await act(async () => {
+      await result.current.handleExecuteBulkAction();
+    });
 
     // Verify all 3 updates were attempted
     expect(mockDataProvider.update).toHaveBeenCalledTimes(3);
@@ -209,9 +217,14 @@ describe("useBulkActionsState - Parallel Execution", () => {
       { wrapper }
     );
 
-    stageResult.current.handleOpenDialog("change_stage");
-    stageResult.current.setSelectedStage("demo_scheduled");
-    await stageResult.current.handleExecuteBulkAction();
+    act(() => {
+      stageResult.current.handleOpenDialog("change_stage");
+      stageResult.current.setSelectedStage("demo_scheduled");
+    });
+
+    await act(async () => {
+      await stageResult.current.handleExecuteBulkAction();
+    });
 
     expect(mockDataProvider.update).toHaveBeenCalledWith("opportunities", {
       id: 1,
@@ -232,9 +245,14 @@ describe("useBulkActionsState - Parallel Execution", () => {
       { wrapper }
     );
 
-    statusResult.current.handleOpenDialog("change_status");
-    statusResult.current.setSelectedStatus("active");
-    await statusResult.current.handleExecuteBulkAction();
+    act(() => {
+      statusResult.current.handleOpenDialog("change_status");
+      statusResult.current.setSelectedStatus("active");
+    });
+
+    await act(async () => {
+      await statusResult.current.handleExecuteBulkAction();
+    });
 
     expect(mockDataProvider.update).toHaveBeenCalledWith("opportunities", {
       id: 2,
@@ -255,9 +273,14 @@ describe("useBulkActionsState - Parallel Execution", () => {
       { wrapper }
     );
 
-    ownerResult.current.handleOpenDialog("assign_owner");
-    ownerResult.current.setSelectedOwner("42");
-    await ownerResult.current.handleExecuteBulkAction();
+    act(() => {
+      ownerResult.current.handleOpenDialog("assign_owner");
+      ownerResult.current.setSelectedOwner("42");
+    });
+
+    await act(async () => {
+      await ownerResult.current.handleExecuteBulkAction();
+    });
 
     expect(mockDataProvider.update).toHaveBeenCalledWith("opportunities", {
       id: 3,
