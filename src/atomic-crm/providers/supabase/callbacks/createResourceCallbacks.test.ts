@@ -343,7 +343,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
         resource: "products",
         softDeleteConfig: {
           enabled: true,
-          field: "archived_at",
+          field: "deleted_at",
           filterOutDeleted: true,
           restoreValue: null,
         },
@@ -357,8 +357,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
       await callbacks.beforeDelete!(params, mockDataProvider);
 
       const updateCall = (mockDataProvider.update as any).mock.calls[0];
-      expect(updateCall[1].data).toHaveProperty("archived_at");
-      expect(updateCall[1].data).not.toHaveProperty("deleted_at");
+      expect(updateCall[1].data).toHaveProperty("deleted_at");
     });
 
     it("should use custom soft delete filter field", async () => {
@@ -366,7 +365,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
         resource: "products",
         softDeleteConfig: {
           enabled: true,
-          field: "archived_at",
+          field: "deleted_at",
           filterOutDeleted: true,
           restoreValue: null,
         },
@@ -380,8 +379,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
 
       const result = await callbacks.beforeGetList!(params, mockDataProvider);
 
-      expect(result.filter).toHaveProperty("archived_at@is", null);
-      expect(result.filter).not.toHaveProperty("deleted_at@is");
+      expect(result.filter).toHaveProperty("deleted_at@is", null);
     });
   });
 

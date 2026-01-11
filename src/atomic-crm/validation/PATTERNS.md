@@ -186,7 +186,6 @@ export const createContactSchema = contactBaseSchema
     created_at: true,
     updated_at: true,
     created_by: true,
-    search_tsv: true,
   })
   .transform(transformContactData)
   .superRefine((data, ctx) => {

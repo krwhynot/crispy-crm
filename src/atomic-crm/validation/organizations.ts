@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
+import { optionalRaFileSchema } from "./shared/ra-file";
 
 /**
  * Organization validation schemas and functions
@@ -101,7 +102,7 @@ export const organizationSchema = z.strictObject({
     .trim()
     .min(1, "Organization name is required")
     .max(255, "Organization name too long"),
-  logo: z.any().optional().nullable(), // RAFile type
+  logo: optionalRaFileSchema,
   parent_organization_id: z.coerce.number().optional().nullable(), // Parent organization reference
   // Updated field names to match database schema
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined

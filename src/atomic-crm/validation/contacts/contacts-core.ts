@@ -3,6 +3,7 @@ import { sanitizeHtml } from "@/lib/sanitization";
 import { emailAndTypeSchema, phoneNumberAndTypeSchema, EmailEntry } from "./contacts-communication";
 import { contactDepartmentSchema } from "./contacts-department";
 import { quickCreateContactSchema } from "./contacts-quick-create";
+import { optionalRaFileSchema } from "../shared/ra-file";
 
 /**
  * Core contact validation schemas and functions
@@ -77,13 +78,12 @@ export const contactBaseSchema = z.strictObject({
   first_seen: z.string().max(50).optional(),
   last_seen: z.string().max(50).optional(),
 
-  // Avatar field (managed by ImageEditorField, not validated)
-  avatar: z.any().optional(), // Partial<RAFile>
+  // Avatar field (managed by ImageEditorField)
+  avatar: optionalRaFileSchema,
 
   // Calculated/readonly fields (not user input)
   nb_tasks: z.number().optional(),
   company_name: z.string().max(255, "Company name too long").optional().nullable(),
-  search_tsv: z.any().optional(),
 
   // Notes field - text field for additional contact information
   notes: z
@@ -306,7 +306,6 @@ export const createContactSchema = contactBaseSchema
     created_at: true,
     updated_at: true,
     created_by: true,
-    search_tsv: true,
   })
   .transform(transformContactData)
   .superRefine((data, ctx) => {
@@ -396,7 +395,6 @@ export async function validateCreateContact(data: unknown): Promise<void> {
       created_at: true,
       updated_at: true,
       created_by: true,
-      search_tsv: true,
     })
     .transform(transformContactData)
     .superRefine((data, ctx) => {
