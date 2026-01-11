@@ -39,7 +39,11 @@ vi.mock("react-admin", async () => {
   return {
     ...actual,
     useListContext: vi.fn(() => mockListContext),
-    Datagrid: ({ children, rowClassName, rowClick }: any) => {
+    Datagrid: ({ children, rowClassName, rowClick }: {
+  children?: React.ReactNode;
+  rowClassName?: string | ((record: unknown, index: number) => string);
+  rowClick?: string | false | ((id: unknown, resource: string, record: unknown) => void);
+}) => {
       const getRowClass = (record: unknown, index: number) => {
         if (typeof rowClassName === "function") {
           return rowClassName(record, index);
