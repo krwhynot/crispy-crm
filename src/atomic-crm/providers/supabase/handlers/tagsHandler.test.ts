@@ -63,7 +63,7 @@ describe("tagsHandler", () => {
   });
 
   describe("composition verification", () => {
-    it("should NOT apply soft delete filter (tags use hard delete)", async () => {
+    it("should apply soft delete filter (tags have deleted_at column)", async () => {
       const handler = createTagsHandler(mockBaseProvider);
 
       await handler.getList("tags", {
@@ -72,11 +72,11 @@ describe("tagsHandler", () => {
         filter: {},
       });
 
-      // Tags do NOT have soft delete filter
+      // Tags use soft delete filter (DI-002 audit fix)
       expect(mockBaseProvider.getList).toHaveBeenCalledWith(
         "tags",
         expect.objectContaining({
-          filter: expect.not.objectContaining({
+          filter: expect.objectContaining({
             "deleted_at@is": null,
           }),
         })
@@ -91,13 +91,22 @@ describe("tagsHandler", () => {
       expect(mockBaseProvider.getOne).toHaveBeenCalledWith("tags", { id: 1 });
     });
 
-    it("should perform hard delete (not soft delete)", async () => {
+    it("should perform soft delete (not hard delete)", async () => {
       const handler = createTagsHandler(mockBaseProvider);
 
       await handler.delete("tags", { id: 1, previousData: { id: 1, name: "Old Tag" } });
 
-      // For hard delete, the delete method is called directly (not converted to update)
-      expect(mockBaseProvider.delete).toHaveBeenCalled();
+      // For soft delete, update is called instead of delete (DI-002 audit fix)
+      // deleted_at is sent as ISO string, not Date object
+      expect(mockBaseProvider.update).toHaveBeenCalledWith(
+        "tags",
+        expect.objectContaining({
+          id: 1,
+          data: expect.objectContaining({
+            deleted_at: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/),
+          }),
+        })
+      );
     });
   });
 

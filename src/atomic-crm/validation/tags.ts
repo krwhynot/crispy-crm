@@ -66,6 +66,9 @@ export const tagSchema = z.strictObject({
   createdAt: z.union([z.string(), z.date()]).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional(),
 
+  // Soft delete timestamp (DI-002 audit fix)
+  deleted_at: z.union([z.string(), z.date()]).nullable().optional(),
+
   // ID only present on updates
   id: z.union([z.string(), z.number()]).optional(),
 });
@@ -87,11 +90,21 @@ export const createTagSchema = tagSchema
 
 /**
  * Schema for updating an existing tag
+ * Includes deleted_at for soft delete support (DI-002 audit fix)
  */
 export const updateTagSchema = tagSchema
   .partial()
   .required({ id: true })
   .omit({ createdAt: true, updatedAt: true });
+
+/**
+ * Schema for soft deleting a tag
+ * Used by withLifecycleCallbacks when supportsSoftDelete is true
+ */
+export const deleteTagSchema = z.object({
+  id: z.union([z.string(), z.number()]),
+  deleted_at: z.union([z.string(), z.date()]),
+});
 
 /**
  * Schema for tag with usage count
