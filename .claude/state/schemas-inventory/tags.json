@@ -1,7 +1,7 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-11T15:16:04.663Z",
-  "item_count": 3,
+  "generated_at": "2026-01-11T23:43:41.828Z",
+  "item_count": 4,
   "items": [
     {
       "name": "tagSchema",
@@ -54,6 +54,15 @@
           "hasDefault": false
         },
         {
+          "name": "deleted_at",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
           "name": "id",
           "zodType": "union",
           "constraints": [],
@@ -65,6 +74,7 @@
       ],
       "relatedSchemas": [
         "opportunityStageSchema",
+        "deleteTagSchema",
         "tagWithCountSchema",
         "tagFilterSchema"
       ],
@@ -75,9 +85,41 @@
       "hasSuperRefine": false
     },
     {
+      "name": "deleteTagSchema",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 104,
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "union",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "tagSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
       "name": "tagWithCountSchema",
       "file": "src/atomic-crm/validation/tags.ts",
-      "line": 99,
+      "line": 112,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -90,7 +132,7 @@
     {
       "name": "tagFilterSchema",
       "file": "src/atomic-crm/validation/tags.ts",
-      "line": 106,
+      "line": 119,
       "schemaType": "strictObject",
       "fields": [
         {

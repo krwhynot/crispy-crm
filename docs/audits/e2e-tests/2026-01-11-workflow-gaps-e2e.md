@@ -561,5 +561,635 @@ SELECT
 
 ---
 
+# PART 2: Blind Spot Detection Tests
+
+These tests validate the audit's "PASS" findings to ensure we didn't miss any gaps.
+
+---
+
+## Test 11: PASS Validation - Close Reason Required for Won/Lost (WF-M3)
+
+### Objective
+Verify that closing an opportunity as won/lost REQUIRES close_reason (audit said this PASSES).
+
+### Steps
+
+```
+MANUAL E2E TEST: Close Reason Validation (Should PASS)
+
+1. Navigate to: http://localhost:5173/opportunities (Kanban view)
+
+2. Find an opportunity that is NOT closed (any active stage)
+
+3. Try to move it directly to "Closed Won" column (drag and drop)
+
+4. OBSERVE:
+   - Does a modal/dialog appear asking for close reason?
+   - Can you complete the move WITHOUT providing a reason?
+
+5. If a modal appears:
+   - Try clicking "Save" or "Confirm" WITHOUT selecting a reason
+   - Does it show validation error?
+
+6. Test via UI menu (if available):
+   - Click on opportunity card menu (3 dots)
+   - Look for "Mark as Won" or "Close Won" option
+   - Try to complete WITHOUT providing close_reason
+
+7. RECORD:
+   - Close reason modal appeared? (YES/NO)
+   - Could close without reason? (YES/NO)
+   - Validation error shown? (YES/NO)
+
+8. ALSO TEST "Closed Lost":
+   - Same steps for closing as lost
+   - Is loss_reason required?
+
+EXPECTED RESULT (confirming audit PASS):
+- Modal/dialog REQUIRES close_reason selection
+- Cannot complete close transition without reason
+- Validation error if attempted without reason
+
+IF THIS FAILS:
+- We have a BLIND SPOT in the audit
+- WF-M3 should be marked as FAIL, not PASS
+```
+
+---
+
+## Test 12: PASS Validation - Principal Required for Opportunity (WF-C3/Database)
+
+### Objective
+Verify opportunities REQUIRE principal_organization_id (audit showed 0 violations).
+
+### Steps
+
+```
+MANUAL E2E TEST: Principal Requirement (Should PASS)
+
+1. Navigate to: http://localhost:5173/opportunities
+
+2. Go to full Create form (not Quick Add) if available
+   - Or use Quick Add
+
+3. Look for Principal selection field:
+   - Is there a "Principal" dropdown/field?
+   - Is it marked as required (*)?
+   - Can you leave it empty?
+
+4. Try to create opportunity WITHOUT selecting a principal:
+   - Fill in name: "Test No Principal"
+   - Select customer
+   - DO NOT select principal (if field exists)
+   - Click Create/Save
+
+5. OBSERVE:
+   - Does form submit?
+   - Is there a validation error for principal?
+
+6. IF NO PRINCIPAL FIELD VISIBLE:
+   - This might be auto-assigned or derived
+   - Check database after creation:
+   Query: SELECT id, name, principal_organization_id FROM opportunities WHERE name = 'Test No Principal';
+   - Is principal_organization_id NULL or populated?
+
+7. RECORD:
+   - Principal field visible in form? (YES/NO)
+   - Principal field required? (YES/NO)
+   - Could create without principal? (YES/NO)
+   - Database value: ___
+
+EXPECTED RESULT (confirming audit PASS):
+- Principal either required in form OR auto-assigned
+- Database has valid principal_organization_id (NOT NULL)
+- Constraint enforced
+
+IF THIS FAILS:
+- BLIND SPOT: Opportunities can be created without principal
+- Critical business rule violation
+```
+
+---
+
+## Test 13: PASS Validation - Activity Type Required (WF-M4)
+
+### Objective
+Verify activities cannot be created without activity_type (audit showed concern but database has 0 nulls).
+
+### Steps
+
+```
+MANUAL E2E TEST: Activity Type Validation
+
+1. Navigate to an opportunity with activity creation UI
+
+2. Find where you can log an activity (Activity tab, Quick Log, etc.)
+
+3. Look at the activity form:
+   - Is there an "Activity Type" dropdown?
+   - Is it pre-selected with a default?
+   - Can you clear it/set to empty?
+
+4. Try to create activity WITHOUT type:
+   - Fill in other fields (subject, notes)
+   - If type field exists, try to submit without selection
+   - Or clear the default if possible
+
+5. OBSERVE:
+   - Does form require activity type selection?
+   - Is there a default value?
+   - Can you submit with no type?
+
+6. Check database:
+   Query: SELECT id, activity_type, subject, created_at FROM activities ORDER BY created_at DESC LIMIT 5;
+   - What activity_type values exist?
+   - Are any NULL?
+
+7. RECORD:
+   - Activity type field visible? (YES/NO)
+   - Has default value? (YES/NO)
+   - Could submit without type? (YES/NO)
+   - Database has NULLs? (YES/NO)
+
+EXPECTED RESULT (confirming audit assessment):
+- Activity type either required OR has sensible default
+- Database shows all activities have type
+- No way to create activity without type through UI
+
+IF THIS FAILS:
+- WF-M4 severity should increase
+- Activity type constraint not enforced
+```
+
+---
+
+## Test 14: PASS Validation - Won/Lost Activity IS Logged (Partial 45% Coverage)
+
+### Objective
+Verify that marking opportunity as won/lost DOES log activity (part of working 45%).
+
+### Steps
+
+```
+MANUAL E2E TEST: Won/Lost Activity Logging (Should PASS)
+
+1. Note initial activity count for an opportunity:
+   - Pick any active opportunity, note ID: ___
+   - Query: SELECT COUNT(*) FROM activities WHERE opportunity_id = [ID];
+   - Initial count: ___
+
+2. Navigate to that opportunity in UI
+
+3. Mark it as "Closed Won":
+   - Use card menu or drag to Closed Won column
+   - Provide required close_reason
+   - Confirm the action
+
+4. IMMEDIATELY check for new activity:
+   Query: SELECT * FROM activities WHERE opportunity_id = [ID] ORDER BY created_at DESC LIMIT 3;
+
+5. RECORD:
+   - New activity created? (YES/NO)
+   - Activity type: ___
+   - Activity subject/description: ___
+   - Contains "won" or "closed"? (YES/NO)
+
+6. ALSO TEST "Closed Lost":
+   - Revert opportunity first (if possible)
+   - Mark as Closed Lost
+   - Check for activity
+
+EXPECTED RESULT (confirming 45% coverage claim):
+- Activity record created for won/lost transition
+- Subject contains "won" or "lost" or "closed"
+- This validates that closed transitions ARE logged
+
+IF THIS FAILS:
+- Critical gap in audit!
+- We claimed stage transitions are logged but they're not
+- 45% coverage claim would be WRONG
+```
+
+---
+
+## Test 15: PASS Validation - RLS Filtering Works (Security)
+
+### Objective
+Verify Row Level Security is filtering data correctly.
+
+### Steps
+
+```
+MANUAL E2E TEST: RLS Data Filtering
+
+1. Check current user identity:
+   - Look at logged-in user in UI header
+   - Note user ID/email: ___
+
+2. Query opportunities as service role (bypasses RLS):
+   - In Supabase SQL Editor:
+   SELECT COUNT(*) FROM opportunities WHERE deleted_at IS NULL;
+   - Total opportunities (all users): ___
+
+3. Check what UI shows:
+   - Navigate to opportunities list
+   - Count total shown or check "Showing X of Y"
+   - UI count: ___
+
+4. COMPARE:
+   - Do counts match?
+   - If different, RLS is filtering (expected for non-admin users)
+   - If same, user might be admin OR RLS might be broken
+
+5. Test with different user (if possible):
+   - Log out and log in as different user
+   - Check opportunity count again
+   - Different users should see different counts (unless all data is shared)
+
+6. RECORD:
+   - Service role count: ___
+   - UI count: ___
+   - Counts match: YES/NO
+   - If different, RLS appears to be working
+
+EXPECTED RESULT:
+- Either counts match (user has full access) OR
+- Counts differ (RLS correctly filtering)
+- Key: verify soft-deleted records are NEVER shown
+```
+
+---
+
+## Test 16: PASS Validation - Hardcoded Stage Values Work (WF-H1)
+
+### Objective
+Verify the pipeline stages displayed in UI match database values (no stage mismatch bugs).
+
+### Steps
+
+```
+MANUAL E2E TEST: Pipeline Stage Consistency
+
+1. Navigate to Kanban board: http://localhost:5173/opportunities
+
+2. Note all visible columns/stages:
+   - List them: ___
+
+3. Query database for valid stages:
+   Query: SELECT DISTINCT stage FROM opportunities WHERE deleted_at IS NULL;
+   - Database stages: ___
+
+4. Query for the stage enum definition:
+   Query: SELECT enum_range(NULL::opportunity_stage);
+   - OR check migration files for stage enum
+
+5. COMPARE:
+   - Do UI columns match database stage values?
+   - Are there any stages in DB not shown in UI?
+   - Are there any UI columns with no DB records?
+
+6. Test stage value integrity:
+   - Drag an opportunity between columns
+   - Check database value after move:
+   Query: SELECT id, stage FROM opportunities WHERE id = [MOVED_OPP_ID];
+   - Does DB value match the column name?
+
+7. RECORD:
+   - All stages consistent? (YES/NO)
+   - Mismatched stages found: ___
+   - Stage values update correctly? (YES/NO)
+
+EXPECTED RESULT (confirming audit PASS):
+- UI columns match database stage enum
+- Stage changes update correct string value in DB
+- No orphaned/invalid stage values
+
+IF THIS FAILS:
+- WF-H1 should be reconsidered
+- Hardcoded stage strings causing mismatches
+```
+
+---
+
+## Test 17: PASS Validation - Organization Type Integrity
+
+### Objective
+Verify organizations are correctly typed (principal, distributor, customer).
+
+### Steps
+
+```
+MANUAL E2E TEST: Organization Type Validation
+
+1. Navigate to a Principal detail view (if accessible)
+   - Or query: SELECT id, name, organization_type FROM organizations WHERE organization_type = 'principal' LIMIT 5;
+
+2. Check if principals are used correctly:
+   Query:
+   SELECT o.id, o.name, org.organization_type
+   FROM opportunities o
+   JOIN organizations org ON o.principal_organization_id = org.id
+   WHERE org.organization_type != 'principal'
+   AND o.deleted_at IS NULL
+   LIMIT 10;
+
+   - Should return 0 rows (principals used as principals only)
+
+3. Check if customers are valid types:
+   Query:
+   SELECT o.id, o.name, org.organization_type
+   FROM opportunities o
+   JOIN organizations org ON o.customer_organization_id = org.id
+   WHERE org.organization_type = 'principal'
+   AND o.deleted_at IS NULL
+   LIMIT 10;
+
+   - Should return 0 rows (principals not used as customers)
+
+4. RECORD:
+   - Principals used correctly? (YES/NO)
+   - Customers are valid types? (YES/NO)
+   - Organization type integrity maintained? (YES/NO)
+
+EXPECTED RESULT:
+- Principals only used as principal_organization_id
+- Customers are prospect/customer/distributor types
+- No type mismatches
+```
+
+---
+
+## Test 18: Blind Spot Hunt - Hidden Validation Bypass
+
+### Objective
+Look for ways to bypass validation that the static audit couldn't detect.
+
+### Steps
+
+```
+MANUAL E2E TEST: Validation Bypass Hunting
+
+1. TEST BROWSER DEVTOOLS MANIPULATION:
+   - Open Chrome DevTools (F12)
+   - Find a "required" form field
+   - Use Elements panel to remove "required" attribute
+   - Try to submit form
+   - Does server-side validation catch it?
+
+2. TEST DIRECT API CALL:
+   - Open Network tab in DevTools
+   - Submit a valid form
+   - Copy the API request as cURL
+   - Modify the request to remove required fields
+   - Execute modified request
+   - Does backend reject it?
+
+3. TEST RAPID DOUBLE-SUBMIT:
+   - Fill out a create form
+   - Click submit very rapidly (2-3 times)
+   - Are duplicate records created?
+   - Is there debounce/disable-on-submit?
+
+4. TEST EMPTY STRING vs NULL:
+   - In form, type a space " " in required field
+   - Delete the space (field now has "" not null)
+   - Submit form
+   - Does validation catch empty strings?
+
+5. RECORD any bypass found:
+   - Bypass method: ___
+   - Field affected: ___
+   - Server rejected: YES/NO
+   - New bug ID: ___
+
+EXPECTED RESULT:
+- All bypasses caught by server-side validation
+- Zod schemas enforce rules regardless of client
+- No duplicates from rapid submit
+
+IF BYPASSES FOUND:
+- These are BLIND SPOTS in the audit
+- Need to add to critical findings
+```
+
+---
+
+## Test 19: Edge Case - Unicode and Special Characters
+
+### Objective
+Test if validation handles edge cases the audit couldn't check statically.
+
+### Steps
+
+```
+MANUAL E2E TEST: Special Character Handling
+
+1. Test empty-looking but not empty values:
+   - Create contact with first_name = "‎" (zero-width character)
+   - Or first_name = " " (just spaces)
+   - Does validation reject?
+
+2. Test very long strings:
+   - Try name with 10,000 characters
+   - Does .max() validation in Zod catch it?
+   - Or does it break the UI?
+
+3. Test SQL injection attempt:
+   - Try name: "Robert'); DROP TABLE contacts;--"
+   - Does it save safely (escaped)?
+   - Any errors?
+
+4. Test XSS attempt:
+   - Try name: "<script>alert('XSS')</script>"
+   - Does it render safely in UI?
+   - Any script execution?
+
+5. RECORD:
+   - Zero-width chars handled? (YES/NO)
+   - Long strings validated? (YES/NO)
+   - SQL injection safe? (YES/NO)
+   - XSS safe? (YES/NO)
+
+EXPECTED RESULT:
+- All edge cases handled safely
+- Zod .max() limits enforced
+- No injection vulnerabilities
+- Proper escaping in UI
+```
+
+---
+
+## Test 20: Comprehensive - Full Create/Update/Delete Cycle
+
+### Objective
+Test complete lifecycle to catch any missed gaps.
+
+### Steps
+
+```
+MANUAL E2E TEST: Full CUD Cycle
+
+1. CREATE OPPORTUNITY:
+   - Use Create Wizard (full form)
+   - Fill ALL fields (name, customer, principal, stage, priority, etc.)
+   - Save and note ID: ___
+   - Verify all fields saved correctly
+
+2. READ/VIEW:
+   - Open the created opportunity
+   - Verify all fields display correctly
+   - Check computed fields (days_in_stage, names, etc.)
+
+3. UPDATE MULTIPLE FIELDS:
+   - Change name
+   - Change priority
+   - Add tags
+   - Change next_action
+   - Save each change
+   - Verify database reflects changes
+
+4. STAGE TRANSITION:
+   - Move through multiple stages
+   - Verify each transition logged (activity)
+   - Check stage field updates
+
+5. CLOSE AS WON:
+   - Provide close_reason
+   - Verify close_date set
+   - Verify activity logged
+
+6. ARCHIVE:
+   - Archive the opportunity
+   - Verify it disappears from list
+   - Query: SELECT deleted_at FROM opportunities WHERE id = [ID];
+   - Is deleted_at set?
+
+7. CHECK FINAL STATE:
+   Query: SELECT * FROM opportunities WHERE id = [ID];
+   Query: SELECT COUNT(*) FROM activities WHERE opportunity_id = [ID];
+
+   - All fields as expected?
+   - Activities logged for: create? stage changes? close? archive?
+
+8. RECORD summary of lifecycle test:
+   - Create: OK/FAIL
+   - Read: OK/FAIL
+   - Update: OK/FAIL
+   - Stage transitions: OK/FAIL
+   - Close: OK/FAIL
+   - Archive: OK/FAIL
+   - Activity logging gaps found: ___
+
+EXPECTED RESULT:
+- Full lifecycle works
+- Only expected gaps (quick create no activity, archive no activity)
+- No new bugs discovered
+```
+
+---
+
+# Updated Results Template (Including Blind Spot Tests)
+
+After completing ALL tests (1-20), fill in this comprehensive template:
+
+```markdown
+## E2E Test Results - Workflow Gaps Audit (Full Verification)
+
+**Tester:** Claude Chrome
+**Date:** 2026-01-11
+**Environment:** Local dev (localhost:5173 + Supabase localhost:54323)
+
+---
+
+### PART 1: Bug Confirmation Tests
+
+| Test | Finding ID | Expected | Actual | Status |
+|------|------------|----------|--------|--------|
+| Test 1 | WF-C2-001/002 | Bug exists | | CONFIRMED/FIXED/FALSE_POSITIVE |
+| Test 2 | WF-C2-005 | Bug exists | | CONFIRMED/FIXED/FALSE_POSITIVE |
+| Test 3 | WF-C2-006/007/008 | Bug exists | | CONFIRMED/FIXED/FALSE_POSITIVE |
+| Test 4 | WF-H2-001 | Bug exists | | CONFIRMED/FIXED/FALSE_POSITIVE |
+| Test 5 | Stage logging | Works | | PASS/FAIL |
+| Test 6 | WF-H2-004 | Bug exists | | CONFIRMED/FIXED/FALSE_POSITIVE |
+| Test 7 | WF-H2-002 | Bug exists | | CONFIRMED/FIXED/FALSE_POSITIVE |
+| Test 8 | WF-H2-005 | Bug exists | | CONFIRMED/FIXED/FALSE_POSITIVE |
+| Test 9 | Soft delete | Works | | PASS/FAIL |
+| Test 10 | DB constraints | Works | | PASS/FAIL |
+
+---
+
+### PART 2: Blind Spot Detection Tests
+
+| Test | Audit Claim | Expected | Actual | Blind Spot? |
+|------|-------------|----------|--------|-------------|
+| Test 11 | WF-M3 PASS | Close reason required | | NO/YES |
+| Test 12 | WF-C3 PASS | Principal required | | NO/YES |
+| Test 13 | WF-M4 concern | Activity type enforced | | NO/YES |
+| Test 14 | 45% coverage | Won/Lost logging works | | NO/YES |
+| Test 15 | Security | RLS filtering works | | NO/YES |
+| Test 16 | WF-H1 PASS | Stage values consistent | | NO/YES |
+| Test 17 | DB integrity | Org types valid | | NO/YES |
+| Test 18 | - | No validation bypass | | NO/YES |
+| Test 19 | - | Special chars safe | | NO/YES |
+| Test 20 | - | Full lifecycle OK | | NO/YES |
+
+---
+
+### Summary Metrics
+
+**Bug Confirmation:**
+- Bugs CONFIRMED: ___/9 critical, ___/10 high
+- Bugs FIXED (false positives): ___
+- Bugs WORSE than reported: ___
+
+**Blind Spots Found:**
+- New bugs discovered: ___
+- Audit claims invalidated: ___
+- Additional gaps: ___
+
+**Audit Accuracy:**
+- Original confidence: 98%
+- Adjusted confidence: ___%
+- Accuracy rating: EXCELLENT/GOOD/NEEDS_REVISION
+
+---
+
+### Detailed Findings
+
+**New Bugs Discovered (Blind Spots):**
+1. [Describe any new bugs found]
+
+**False Positives (Reported bugs that aren't bugs):**
+1. [Describe any findings that were wrong]
+
+**Audit Claims Validated:**
+1. Close reason enforcement: VALIDATED/INVALIDATED
+2. Stage logging works: VALIDATED/INVALIDATED
+3. RLS security: VALIDATED/INVALIDATED
+4. DB constraints: VALIDATED/INVALIDATED
+
+---
+
+### Final Confidence Assessment
+
+**Pre-E2E Confidence:** 98%
+
+**Post-E2E Confidence:** ___%
+
+**Calculation:**
+- Critical confirmed: ___/9 (weight: 40%)
+- High confirmed: ___/10 (weight: 30%)
+- PASS claims validated: ___/10 (weight: 20%)
+- No new blind spots: YES/NO (weight: 10%)
+
+**Final Rating:**
+- 95-100%: AUDIT HIGHLY ACCURATE
+- 85-94%: AUDIT ACCURATE, MINOR ADJUSTMENTS
+- 70-84%: AUDIT NEEDS REVISION
+- <70%: AUDIT UNRELIABLE
+```
+
+---
+
 *Generated for Workflow Gaps Audit verification*
 *Report: docs/audits/2026-01-11-workflow-gaps.md*

@@ -1,16 +1,17 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-11T15:15:54.865Z",
+  "generated_at": "2026-01-11T23:43:27.875Z",
   "item_count": 4,
   "items": [
     {
       "name": "Note",
       "file": "src/atomic-crm/notes/Note.tsx",
-      "line": 16,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useDelete",
         "useNotify",
+        "useQueryClient",
         "useResourceContext",
         "useState",
         "useUpdate"
@@ -25,6 +26,7 @@
         "@/components/ui",
         "@/components/ui/button",
         "@/components/ui/tooltip",
+        "@tanstack/react-query",
         "lucide-react",
         "ra-core",
         "react",

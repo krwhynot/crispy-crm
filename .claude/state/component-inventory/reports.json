@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-11T15:15:54.875Z",
+  "generated_at": "2026-01-11T23:43:27.917Z",
   "item_count": 25,
   "items": [
     {
@@ -127,7 +127,7 @@
     {
       "name": "OpportunitiesByPrincipalReport",
       "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-      "line": 156,
+      "line": 153,
       "type": "presentational",
       "hooks": [
         "useGetList",

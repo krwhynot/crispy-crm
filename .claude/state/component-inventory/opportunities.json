@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-11T15:15:54.866Z",
+  "generated_at": "2026-01-11T23:43:27.889Z",
   "item_count": 81,
   "items": [
     {
@@ -2076,7 +2076,7 @@
     {
       "name": "OpportunityListContent",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
-      "line": 82,
+      "line": 85,
       "type": "presentational",
       "hooks": [
         "useCallback",

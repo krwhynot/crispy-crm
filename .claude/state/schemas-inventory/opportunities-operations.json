@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-11T15:16:04.658Z",
+  "generated_at": "2026-01-11T23:43:41.803Z",
   "item_count": 4,
   "items": [
     {
@@ -76,7 +76,7 @@
     {
       "name": "quickCreateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 187,
+      "line": 189,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -177,7 +177,7 @@
     {
       "name": "updateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 223,
+      "line": 225,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -222,7 +222,7 @@
     {
       "name": "closeOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 342,
+      "line": 344,
       "schemaType": "strictObject",
       "fields": [
         {

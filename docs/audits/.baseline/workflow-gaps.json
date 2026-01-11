@@ -18,7 +18,10 @@
         "type": "required-field-fallback",
         "location": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:109",
         "description": "Contact first_name uses empty string fallback",
-        "firstSeen": "2026-01-11"
+        "firstSeen": "2026-01-11",
+        "e2eResult": "MITIGATED",
+        "e2eNote": "Form validation catches empty names before reaching callback - defense-in-depth code, not exploitable via UI",
+        "severity": "low"
       },
       {
         "id": "WF-C2-002",
@@ -26,7 +29,10 @@
         "type": "required-field-fallback",
         "location": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:110",
         "description": "Contact last_name uses empty string fallback",
-        "firstSeen": "2026-01-11"
+        "firstSeen": "2026-01-11",
+        "e2eResult": "MITIGATED",
+        "e2eNote": "Form validation catches empty names before reaching callback - defense-in-depth code, not exploitable via UI",
+        "severity": "low"
       },
       {
         "id": "WF-C2-003",

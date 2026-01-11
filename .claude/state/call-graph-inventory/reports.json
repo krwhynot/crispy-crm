@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-11T15:16:08.053Z",
+  "generated_at": "2026-01-11T23:43:48.411Z",
   "items": {
     "nodes": [
       {
@@ -103,19 +103,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "name": "OpportunitiesByPrincipalReport",
         "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-        "line": 156,
+        "line": 153,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "name": "PrincipalGroupCard",
         "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-        "line": 494,
+        "line": 491,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -3697,6 +3697,15 @@
       },
       {
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
+        "target": "useWatch",
+        "targetName": "useWatch",
+        "edgeType": "hook",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
@@ -3706,28 +3715,10 @@
       },
       {
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "watch",
-        "targetName": "watch",
-        "edgeType": "call",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
         "target": "onFiltersChange",
         "targetName": "onFiltersChange",
         "edgeType": "call",
-        "line": 57,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "unsubscribe",
-        "targetName": "unsubscribe",
-        "edgeType": "call",
-        "line": 59,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
@@ -3736,7 +3727,7 @@
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 70,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -3745,7 +3736,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 116,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
@@ -3754,7 +3745,7 @@
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 124,
+        "line": 121,
         "conditional": false,
         "inLoop": false
       },
@@ -3762,6 +3753,15 @@
         "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
         "target": "FormProvider",
         "targetName": "FormProvider",
+        "edgeType": "render",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
         "edgeType": "render",
         "line": 80,
         "conditional": false,
@@ -3772,16 +3772,7 @@
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 83,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 104,
+        "line": 101,
         "conditional": false,
         "inLoop": false
       },
@@ -3790,7 +3781,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 133,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
@@ -3799,7 +3790,7 @@
         "target": "AutocompleteArrayInput",
         "targetName": "AutocompleteArrayInput",
         "edgeType": "render",
-        "line": 88,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
@@ -3808,7 +3799,7 @@
         "target": "MultiSelectInput",
         "targetName": "MultiSelectInput",
         "edgeType": "render",
-        "line": 96,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
@@ -3817,318 +3808,345 @@
         "target": "AutocompleteArrayInput",
         "targetName": "AutocompleteArrayInput",
         "edgeType": "render",
-        "line": 105,
+        "line": 102,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useNavigate",
         "targetName": "useNavigate",
         "edgeType": "hook",
-        "line": 157,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useNotify",
         "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
         "line": 158,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 161,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "useMemo",
+        "targetName": "useMemo",
         "edgeType": "hook",
         "line": 170,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 173,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useReportData",
         "targetName": "useReportData",
         "edgeType": "hook",
-        "line": 207,
+        "line": 204,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 212,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 214,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 214,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 214,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 218,
+        "line": 215,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 223,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 224,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 229,
+        "line": 226,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 235,
+        "line": 232,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 236,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 239,
+        "line": 236,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 240,
+        "line": 237,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 249,
+        "line": 246,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 250,
+        "line": 247,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 259,
+        "line": 256,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 259,
+        "line": 256,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 259,
+        "line": 256,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 263,
+        "line": 260,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 263,
+        "line": 260,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "setExpandedPrincipals",
         "targetName": "setExpandedPrincipals",
         "edgeType": "call",
-        "line": 264,
+        "line": 261,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "has",
         "targetName": "has",
+        "edgeType": "call",
+        "line": 271,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 272,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "add",
+        "targetName": "add",
         "edgeType": "call",
         "line": 274,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "delete",
-        "targetName": "delete",
-        "edgeType": "call",
-        "line": 275,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "add",
-        "targetName": "add",
-        "edgeType": "call",
-        "line": 277,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "setExpandedPrincipals",
         "targetName": "setExpandedPrincipals",
         "edgeType": "call",
-        "line": 279,
+        "line": 276,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 296,
+        "line": 293,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 297,
+        "line": 294,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 299,
+        "line": 296,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
+        "edgeType": "call",
+        "line": 298,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 299,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 300,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
         "line": 301,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -4137,16 +4155,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
         "line": 303,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -4155,7 +4173,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 304,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -4164,659 +4191,623 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "format",
-        "targetName": "format",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
         "line": 306,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 307,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 307,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 308,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 309,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 316,
+        "line": 313,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "jsonExport",
         "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 320,
+        "line": 317,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 322,
+        "line": 319,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 323,
+        "line": 320,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "downloadCSV",
         "targetName": "downloadCSV",
         "edgeType": "call",
-        "line": 326,
+        "line": 323,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 326,
+        "line": 323,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 327,
+        "line": 324,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 333,
+        "line": 330,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 337,
+        "line": 334,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
+        "edgeType": "call",
+        "line": 338,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "setFilters",
+        "targetName": "setFilters",
         "edgeType": "call",
         "line": 341,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "setFilters",
-        "targetName": "setFilters",
-        "edgeType": "call",
-        "line": 344,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
+        "edgeType": "call",
+        "line": 346,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "setFilters",
+        "targetName": "setFilters",
         "edgeType": "call",
         "line": 349,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "setFilters",
-        "targetName": "setFilters",
-        "edgeType": "call",
-        "line": 352,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
+        "edgeType": "call",
+        "line": 354,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "setFilters",
+        "targetName": "setFilters",
         "edgeType": "call",
         "line": 357,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "setFilters",
-        "targetName": "setFilters",
-        "edgeType": "call",
-        "line": 360,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
+        "edgeType": "call",
+        "line": 362,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 364,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "setFilters",
+        "targetName": "setFilters",
         "edgeType": "call",
         "line": 365,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 367,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "setFilters",
-        "targetName": "setFilters",
-        "edgeType": "call",
-        "line": 368,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 373,
+        "line": 370,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 375,
+        "line": 372,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 376,
+        "line": 373,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 391,
+        "line": 388,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "round",
         "targetName": "round",
         "edgeType": "call",
-        "line": 450,
+        "line": 447,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 464,
+        "line": 461,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 469,
+        "line": 466,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 473,
+        "line": 470,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "togglePrincipalExpansion",
         "targetName": "togglePrincipalExpansion",
         "edgeType": "call",
-        "line": 474,
+        "line": 471,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 403,
+        "line": 400,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "ReportLayout",
         "targetName": "ReportLayout",
+        "edgeType": "render",
+        "line": 410,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "handleExport",
+        "targetName": "handleExport",
+        "edgeType": "callback",
+        "line": 412,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 431,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 432,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 437,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 438,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 443,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 444,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "FilterToolbar",
+        "targetName": "FilterToolbar",
         "edgeType": "render",
         "line": 413,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "handleExport",
-        "targetName": "handleExport",
-        "edgeType": "callback",
-        "line": 415,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 434,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 435,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 440,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 441,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 446,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 447,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "FilterToolbar",
-        "targetName": "FilterToolbar",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
+        "target": "AppliedFiltersBar",
+        "targetName": "AppliedFiltersBar",
         "edgeType": "render",
         "line": 416,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
-        "target": "AppliedFiltersBar",
-        "targetName": "AppliedFiltersBar",
-        "edgeType": "render",
-        "line": 419,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "handleResetAllFilters",
         "targetName": "handleResetAllFilters",
         "edgeType": "callback",
-        "line": 421,
+        "line": 418,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 458,
+        "line": 455,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "PrincipalGroupCard",
         "targetName": "PrincipalGroupCard",
         "edgeType": "render",
-        "line": 470,
+        "line": 467,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:156:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:153:OpportunitiesByPrincipalReport",
         "target": "handleOpportunityClick",
         "targetName": "handleOpportunityClick",
         "edgeType": "callback",
-        "line": 475,
+        "line": 472,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 502,
+        "line": 499,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 502,
+        "line": 499,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 502,
+        "line": 499,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 502,
+        "line": 499,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 502,
+        "line": 499,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 551,
+        "line": 548,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 578,
+        "line": 575,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 579,
+        "line": 576,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 579,
+        "line": 576,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 583,
+        "line": 580,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "stopPropagation",
         "targetName": "stopPropagation",
         "edgeType": "call",
-        "line": 590,
+        "line": 587,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "onOpportunityClick",
         "targetName": "onOpportunityClick",
         "edgeType": "call",
-        "line": 591,
+        "line": 588,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
+        "line": 506,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 507,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
+        "target": "onToggle",
+        "targetName": "onToggle",
+        "edgeType": "callback",
         "line": 509,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 510,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
-        "target": "onToggle",
-        "targetName": "onToggle",
-        "edgeType": "callback",
-        "line": 512,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 514,
+        "line": 511,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 524,
+        "line": 521,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 537,
+        "line": 534,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 557,
+        "line": 554,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 562,
+        "line": 559,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 567,
+        "line": 564,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 575,
+        "line": 572,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 586,
+        "line": 583,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "ChevronDown",
         "targetName": "ChevronDown",
         "edgeType": "render",
-        "line": 517,
+        "line": 514,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "ChevronRight",
         "targetName": "ChevronRight",
         "edgeType": "render",
-        "line": 519,
+        "line": 516,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:494:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:491:PrincipalGroupCard",
         "target": "ExternalLink",
         "targetName": "ExternalLink",
         "edgeType": "render",
-        "line": 594,
+        "line": 591,
         "conditional": false,
         "inLoop": false
       },

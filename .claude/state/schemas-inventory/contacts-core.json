@@ -1,12 +1,12 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-11T15:16:04.655Z",
+  "generated_at": "2026-01-11T23:43:41.781Z",
   "item_count": 3,
   "items": [
     {
       "name": "contactBaseSchema",
       "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
-      "line": 36,
+      "line": 37,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -231,9 +231,9 @@
         },
         {
           "name": "avatar",
-          "zodType": "any",
+          "zodType": "ref:optionalRaFileSchema",
           "constraints": [],
-          "optional": true,
+          "optional": false,
           "nullable": false,
           "hasTransform": false,
           "hasDefault": false
@@ -255,15 +255,6 @@
           ],
           "optional": true,
           "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "search_tsv",
-          "zodType": "any",
-          "constraints": [],
-          "optional": true,
-          "nullable": false,
           "hasTransform": false,
           "hasDefault": false
         },

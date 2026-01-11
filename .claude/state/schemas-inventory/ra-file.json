@@ -1,0 +1,51 @@
+{
+  "chunk_name": "ra-file",
+  "generated_at": "2026-01-11T23:43:41.828Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "raFileSchema",
+      "file": "src/atomic-crm/validation/shared/ra-file.ts",
+      "line": 7,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "src",
+          "zodType": "string",
+          "constraints": [
+            "url()",
+            "max(2048)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "title",
+          "zodType": "string",
+          "constraints": [
+            "max(255)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "rawFile",
+          "zodType": "instanceof",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

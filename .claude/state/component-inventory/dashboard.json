@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-11T15:15:54.861Z",
+  "generated_at": "2026-01-11T23:43:27.810Z",
   "item_count": 31,
   "items": [
     {
@@ -55,10 +55,11 @@
     {
       "name": "PrincipalDashboardV3",
       "file": "src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
-      "line": 24,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useQueryClient",
         "useState"
       ],
       "imports": [
@@ -68,6 +69,7 @@
         "./components/LogActivityFAB",
         "./components/MobileQuickActionBar",
         "./components/TaskCompleteSheet",
+        "@tanstack/react-query",
         "react"
       ],
       "isDefaultExport": false,
@@ -514,12 +516,11 @@
     {
       "name": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 67,
+      "line": 68,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useCurrentSale",
-        "useDataProvider",
         "useEffect",
         "useEntityData",
         "useForm",
@@ -534,6 +535,7 @@
         "./ActivityTypeSection",
         "./EntityCombobox",
         "./FollowUpSection",
+        "@/atomic-crm/providers/supabase/supabase",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/ui/button",
@@ -558,7 +560,6 @@
         "FollowUpSection"
       ],
       "contextDependencies": [
-        "useDataProvider",
         "useWatch"
       ],
       "componentRole": "wrapper"

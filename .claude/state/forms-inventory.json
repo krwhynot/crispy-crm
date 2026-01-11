@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-11T15:16:05.153Z",
+  "generated_at": "2026-01-11T23:43:42.834Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:a717926ec10bc62b",
+  "checksum": "sha256:5e504803592316c7",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ba1bfd5bd810",
     "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
@@ -27,9 +27,9 @@
     "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "e43ec2bde925",
     "src/atomic-crm/contacts/TagsListEdit.tsx": "740faec91d7c",
     "src/atomic-crm/contexts/FormOptionsContext.tsx": "164b5fa6c2d5",
-    "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "a8a9ee026804",
+    "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "0f5238a6d660",
     "src/atomic-crm/layout/FormToolbar.tsx": "cffd014a8b77",
-    "src/atomic-crm/notes/NoteCreate.tsx": "870a953cb9ea",
+    "src/atomic-crm/notes/NoteCreate.tsx": "ec8c1a1862dc",
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "5e4c3a348816",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "36e217f92bd9",
@@ -340,7 +340,7 @@
     {
       "componentName": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 67,
+      "line": 68,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
