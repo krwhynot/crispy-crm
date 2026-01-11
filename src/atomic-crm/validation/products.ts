@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createValidationError } from "@/lib/zodErrorFormatting";
 
 /**
  * Product validation schemas and functions

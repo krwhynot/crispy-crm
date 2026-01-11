@@ -48,7 +48,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       params: GetOneParams
     ) => {
       return {
-        data: { id: params.id } as RecordType,
+        data: { id: params.id } as unknown as RecordType,
       };
     },
 
@@ -57,7 +57,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       params: GetManyParams
     ) => {
       return {
-        data: params.ids.map((id) => ({ id })) as RecordType[],
+        data: params.ids.map((id) => ({ id })) as unknown as RecordType[],
       };
     },
 
@@ -86,7 +86,7 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
         data: {
           ...params.data,
           id: faker.number.int({ min: 1, max: 10000 }),
-        } as RecordType,
+        } as unknown as RecordType,
       };
     },
 

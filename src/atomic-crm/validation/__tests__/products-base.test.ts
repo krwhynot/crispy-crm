@@ -146,7 +146,7 @@ describe("Product Base Schemas", () => {
         const data = { ...validProduct, name: "" };
         const result = productSchema.safeParse(data);
         expect(result.success).toBe(false);
-        if (!result.success) {
+        if (!result.success && result.error.issues[0]) {
           expect(result.error.issues[0].message).toContain("Product name is required");
         }
       });
@@ -156,7 +156,7 @@ describe("Product Base Schemas", () => {
         const data = { ...validProduct, name: longName };
         const result = productSchema.safeParse(data);
         expect(result.success).toBe(false);
-        if (!result.success) {
+        if (!result.success && result.error.issues[0]) {
           expect(result.error.issues[0].message).toContain("Product name too long");
         }
       });
