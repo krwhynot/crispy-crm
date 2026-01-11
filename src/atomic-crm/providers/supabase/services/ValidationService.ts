@@ -35,7 +35,10 @@ import {
 } from "../../../validation/notes";
 import type { OrganizationNote } from "../../../validation/notes";
 import { validateTaskForSubmission } from "../../../validation/task";
-import { validateProductForm, validateProductUpdate } from "../../../validation/products";
+import {
+  validateProductFormWithDistributors,
+  validateProductUpdateWithDistributors,
+} from "../../../validation/products";
 import { validateCreateTag, validateUpdateTag } from "../../../validation/tags";
 import { validateSalesForm } from "../../../validation/sales";
 import {
@@ -145,8 +148,11 @@ export class ValidationService {
         update: async (data: unknown) => validateUpdateOpportunity(data),
       },
       products: {
-        create: async (data: unknown) => validateProductForm(data),
-        update: async (data: unknown) => validateProductUpdate(data),
+        // FIX: Use validators that allow distributor fields
+        // These fields are handled by productsHandler before DB write
+        // Original validators still exist for use cases without distributors
+        create: async (data: unknown) => validateProductFormWithDistributors(data),
+        update: async (data: unknown) => validateProductUpdateWithDistributors(data),
       },
       product_distributors: {
         create: async (data: unknown) => validateCreateProductDistributor(data),
