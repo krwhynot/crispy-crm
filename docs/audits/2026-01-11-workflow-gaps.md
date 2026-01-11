@@ -12,9 +12,15 @@
 | Severity | Previous | Current | Delta |
 |----------|----------|---------|-------|
 | Critical | 0 | 9 | +9 |
-| High | 0 | 1 | +1 |
+| High | 0 | 11 | +11 |
 | Medium | 0 | 38 | +38 |
-| **Total** | 0 | 48 | +48 |
+| **Total** | 0 | 58 | +58 |
+
+**Activity Logging Coverage (Manual Audit):**
+| Module | Coverage | Status |
+|--------|----------|--------|
+| Opportunities | 45% (5/11 mutations) | ⚠️ Gaps in archive/delete |
+| Contacts | **0%** (0/9 mutations) | ❌ CRITICAL - No audit trail |
 
 ### What This Means for Users
 

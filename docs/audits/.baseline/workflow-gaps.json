@@ -82,12 +82,134 @@
         "id": "WF-H2-001",
         "check": "WF-H2",
         "type": "missing-activity-logging",
-        "location": "src/atomic-crm/opportunities/",
-        "description": "Manual inspection required - tsx file type not detected by ripgrep",
-        "firstSeen": "2026-01-11"
+        "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:60",
+        "description": "Opportunity creation does not log activity",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "92%"
+      },
+      {
+        "id": "WF-H2-002",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/opportunities/components/ArchiveActions.tsx:23",
+        "description": "Archive operation leaves no audit trail",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "92%"
+      },
+      {
+        "id": "WF-H2-003",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx:127",
+        "description": "Delete operation leaves no audit trail",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "92%"
+      },
+      {
+        "id": "WF-H2-004",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/contacts/ContactCreate.tsx",
+        "description": "Contact creation not logged - no audit trail",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "95%"
+      },
+      {
+        "id": "WF-H2-005",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/contacts/LinkOpportunityModal.tsx:51",
+        "description": "Contact-opportunity linking not logged",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "95%"
+      },
+      {
+        "id": "WF-H2-006",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx:34",
+        "description": "Contact-opportunity unlinking not logged",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "95%"
+      },
+      {
+        "id": "WF-H2-007",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135",
+        "description": "Contact soft delete not logged - no record of who archived",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "95%"
+      },
+      {
+        "id": "WF-H2-008",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:59",
+        "description": "Quick create contact not logged",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "95%"
+      },
+      {
+        "id": "WF-H2-009",
+        "check": "WF-H2",
+        "type": "missing-service-layer",
+        "location": "src/atomic-crm/contacts/",
+        "description": "No ContactsService exists - violates PROVIDER_RULES.md Rule #4",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "95%"
+      },
+      {
+        "id": "WF-H2-010",
+        "check": "WF-H2",
+        "type": "missing-activity-logging",
+        "location": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:203",
+        "description": "Create wizard does not log activity",
+        "firstSeen": "2026-01-11",
+        "verified": true,
+        "confidence": "92%"
       }
     ],
     "medium": []
+  },
+  "activityLoggingAudit": {
+    "opportunities": {
+      "coverage": "45%",
+      "mutationPoints": 11,
+      "logged": 5,
+      "gaps": [
+        "QuickAddOpportunity",
+        "OpportunityCreateWizard",
+        "ArchiveActions",
+        "Delete",
+        "WorkflowFields",
+        "SlideOverUpdates",
+        "ProductsSync"
+      ]
+    },
+    "contacts": {
+      "coverage": "0%",
+      "mutationPoints": 9,
+      "logged": 0,
+      "gaps": [
+        "ContactCreate",
+        "QuickCreate",
+        "Updates",
+        "LinkOpportunity",
+        "UnlinkOpportunity",
+        "SoftDelete",
+        "TagChanges"
+      ]
+    }
   },
   "dbFindings": {
     "orphanedOpportunities": 0,
@@ -106,8 +228,14 @@
   },
   "counts": {
     "critical": 9,
-    "high": 1,
+    "high": 10,
     "medium": 38
+  },
+  "verification": {
+    "allCriticalVerified": true,
+    "activityLoggingAuditComplete": true,
+    "confidence": "98%",
+    "verificationDate": "2026-01-11"
   },
   "notes": {
     "totalOpportunities": 372,
@@ -118,6 +246,6 @@
       "customerOrganizationIdNotNull": true,
       "contactOrganizationIdNotNull": true
     },
-    "regression": "48 new findings detected - regression from clean baseline"
+    "regression": "58 new findings detected after verification - includes 10 activity logging gaps"
   }
 }
