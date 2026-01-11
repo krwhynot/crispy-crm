@@ -191,7 +191,7 @@ vi.mock("@/components/admin/PremiumDatagrid", () => ({
     sortableColumns.length = 0;
 
     // Process children to extract column configuration
-    const processChild = (child: any) => {
+    const processChild = (child: React.ReactNode) => {
       if (!child?.props) return;
 
       const { label, sortBy, sortable, source } = child.props;
@@ -239,12 +239,12 @@ vi.mock("@/components/admin/PremiumDatagrid", () => ({
 
 // Mock OrganizationBadges
 vi.mock("../OrganizationBadges", () => ({
-  OrganizationTypeBadge: ({ type }: any) => (
+  OrganizationTypeBadge: ({ type }: MockBadgeProps) => (
     <span data-testid="org-type-badge" data-type={type}>
       {type}
     </span>
   ),
-  PriorityBadge: ({ priority }: any) => (
+  PriorityBadge: ({ priority }: MockBadgeProps) => (
     <span data-testid="priority-badge" data-priority={priority}>
       {priority}
     </span>
@@ -253,7 +253,7 @@ vi.mock("../OrganizationBadges", () => ({
 
 // Mock StandardListLayout
 vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent }: any) => (
+  StandardListLayout: ({ children, filterComponent }: MockLayoutProps) => (
     <div data-testid="standard-list-layout">
       <div data-testid="filter-sidebar">{filterComponent}</div>
       <div data-testid="list-content">{children}</div>
