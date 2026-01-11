@@ -263,7 +263,7 @@ vi.mock("@/components/layouts/StandardListLayout", () => ({
 
 // Mock List component
 vi.mock("@/components/admin/list", () => ({
-  List: ({ children }: any) => <div data-testid="list-wrapper">{children}</div>,
+  List: ({ children }: MockChildrenProps) => <div data-testid="list-wrapper">{children}</div>,
 }));
 
 // Mock OrganizationEmpty
@@ -283,7 +283,7 @@ vi.mock("@/components/admin/FloatingCreateButton", () => ({
 
 // Mock TopToolbar and buttons
 vi.mock("../layout/TopToolbar", () => ({
-  TopToolbar: ({ children }: any) => <div data-testid="top-toolbar">{children}</div>,
+  TopToolbar: ({ children }: MockChildrenProps) => <div data-testid="top-toolbar">{children}</div>,
 }));
 
 vi.mock("@/components/admin/export-button", () => ({
@@ -301,7 +301,7 @@ vi.mock("../OrganizationListFilter", () => ({
 
 // Mock ListSearchBar to avoid FilterLiveForm/SearchInput context issues
 vi.mock("@/components/admin/ListSearchBar", () => ({
-  ListSearchBar: ({ placeholder }: any) => (
+  ListSearchBar: ({ placeholder }: MockLayoutProps) => (
     <div data-testid="list-search-bar">
       <input type="text" placeholder={placeholder || "Search..."} data-testid="search-input" />
     </div>
