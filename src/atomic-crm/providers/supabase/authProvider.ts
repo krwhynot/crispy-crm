@@ -137,7 +137,7 @@ interface CachedSale {
 
 let cachedSale: CachedSale | undefined;
 let cacheTimestamp: number = 0;
-const CACHE_TTL_MS = 15 * 60 * 1000;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes - balance freshness vs API calls
 
 const getSaleFromCache = async () => {
   const now = Date.now();

@@ -31,6 +31,5 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
  */
 export const tagsCallbacks: ResourceCallbacks = createResourceCallbacks({
   resource: "tags",
-  supportsSoftDelete: false,
-  // No computed fields or transforms - tags use hard delete
+  supportsSoftDelete: true,
 });

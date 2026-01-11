@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CircleX, Edit, Save, Trash2 } from "lucide-react";
 import { Form, useDelete, useNotify, useResourceContext, useUpdate, WithRecord } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
