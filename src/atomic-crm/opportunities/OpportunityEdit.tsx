@@ -64,33 +64,35 @@ const OpportunityEditForm = () => {
   if (!record) return null;
 
   return (
-    <Form
-      className="flex flex-1 flex-col gap-4 pb-2"
-      defaultValues={defaultValues}
-      key={record.id} // Force remount when record changes
-    >
-      <Card>
-        <CardContent className="pt-6">
-          <EditHeader />
+    <FormProgressProvider>
+      <Form
+        className="flex flex-1 flex-col gap-4 pb-2"
+        defaultValues={defaultValues}
+        key={record.id} // Force remount when record changes
+      >
+        <Card>
+          <CardContent className="pt-6">
+            <EditHeader />
 
-          <div className="mt-6">
-            <OpportunityCompactForm mode="edit" />
-            <Separator className="my-6" />
-            <OpportunityActivitySection />
-          </div>
-
-          <FormToolbar>
-            <div className="flex flex-row gap-2 justify-between w-full">
-              <DeleteButton />
-              <div className="flex gap-2">
-                <CancelButton />
-                <SaveButton />
-              </div>
+            <div className="mt-6">
+              <OpportunityCompactForm mode="edit" />
+              <Separator className="my-6" />
+              <OpportunityActivitySection />
             </div>
-          </FormToolbar>
-        </CardContent>
-      </Card>
-    </Form>
+
+            <FormToolbar>
+              <div className="flex flex-row gap-2 justify-between w-full">
+                <DeleteButton />
+                <div className="flex gap-2">
+                  <CancelButton />
+                  <SaveButton />
+                </div>
+              </div>
+            </FormToolbar>
+          </CardContent>
+        </Card>
+      </Form>
+    </FormProgressProvider>
   );
 };
 
