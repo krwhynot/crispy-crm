@@ -165,11 +165,12 @@ export const createOpportunitySchema = opportunityBaseSchema
     deleted_at: true,
   })
   .extend({
-    // Contact_ids REQUIRED for create (WG-001: every opportunity must have at least one contact)
+    // Contact_ids: REQUIRED for full creates, OPTIONAL for quick creates
+    // FIX [WF-E2E-001]: Quick creates (Kanban button) don't collect contacts upfront
+    // They create minimal opportunities that users enrich later via slide-over
+    // The .refine() below enforces min(1) only when contact_ids is explicitly provided
     // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
-    contact_ids: z
-      .array(z.coerce.number().int().positive())
-      .min(1, "At least one contact is required"),
+    contact_ids: z.array(z.coerce.number().int().positive()).optional(),
 
     // Auto-default: 30 days from now (industry standard placeholder)
     estimated_close_date: z.coerce
@@ -206,7 +207,25 @@ export const createOpportunitySchema = opportunityBaseSchema
   .required({
     name: true,
     customer_organization_id: true, // Salesforce standard: Account required
-  });
+  })
+  // FIX [WF-E2E-001]: Contact validation for create
+  // - contact_ids undefined → Quick create (allowed, user adds contacts later)
+  // - contact_ids [] empty → Form submission with no contacts (rejected)
+  // - contact_ids [1,2] → Full create with contacts (allowed)
+  .refine(
+    (data) => {
+      // Quick creates don't include contact_ids - allow them
+      if (data.contact_ids === undefined) {
+        return true;
+      }
+      // If contact_ids is explicitly provided, require at least one
+      return data.contact_ids.length > 0;
+    },
+    {
+      message: "At least one contact is required",
+      path: ["contact_ids"],
+    }
+  );
 
 /**
  * Quick-Create Schema (Salesforce standard + business rule Q12)

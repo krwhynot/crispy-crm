@@ -15,6 +15,12 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string>("");
   const [principalId, setPrincipalId] = useState<string>("");
+  // FIX [WF-E2E-001]: Add field-level error state for inline validation display
+  const [errors, setErrors] = useState<{
+    name?: string;
+    principalId?: string;
+    customerId?: string;
+  }>({});
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
   const refresh = useRefresh();
@@ -43,20 +49,29 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // FIX [WF-E2E-001]: Collect all validation errors for inline display
+    const newErrors: typeof errors = {};
+
     if (!name.trim()) {
-      notify("Name is required", { type: "error" });
-      return;
+      newErrors.name = "Name is required";
     }
 
     if (!principalId) {
-      notify("Principal is required", { type: "error" });
-      return;
+      newErrors.principalId = "Principal is required";
     }
 
     if (!customerId) {
-      notify("Customer is required", { type: "error" });
+      newErrors.customerId = "Customer is required";
+    }
+
+    // If any errors, set state and show inline (no toast spam)
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
+
+    // Clear errors on successful validation
+    setErrors({});
 
     try {
       // MFB business rule: Name + Principal + Customer + Stage required
@@ -161,13 +176,26 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                   id="name"
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    // Clear error when user starts typing
+                    if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                  }}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors ${
+                    errors.name ? "border-destructive" : "border-border"
+                  }`}
                   placeholder="Enter opportunity name"
                   disabled={isLoading}
+                  aria-invalid={errors.name ? "true" : undefined}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                   // eslint-disable-next-line jsx-a11y/no-autofocus -- Modal has role="dialog" + aria-modal, autoFocus is appropriate
                   autoFocus
                 />
+                {errors.name && (
+                  <p id="name-error" role="alert" className="mt-1 text-sm text-destructive">
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
               <div className="mb-4">
@@ -177,9 +205,18 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                 <select
                   id="principal"
                   value={principalId}
-                  onChange={(e) => setPrincipalId(e.target.value)}
-                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background"
+                  onChange={(e) => {
+                    setPrincipalId(e.target.value);
+                    // Clear error when user selects
+                    if (errors.principalId)
+                      setErrors((prev) => ({ ...prev, principalId: undefined }));
+                  }}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background ${
+                    errors.principalId ? "border-destructive" : "border-border"
+                  }`}
                   disabled={isLoading || principalsLoading}
+                  aria-invalid={errors.principalId ? "true" : undefined}
+                  aria-describedby={errors.principalId ? "principal-error" : undefined}
                 >
                   <option value="">
                     {principalsLoading ? "Loading principals..." : "Select a principal"}
@@ -190,6 +227,11 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                     </option>
                   ))}
                 </select>
+                {errors.principalId && (
+                  <p id="principal-error" role="alert" className="mt-1 text-sm text-destructive">
+                    {errors.principalId}
+                  </p>
+                )}
               </div>
 
               <div className="mb-4">
@@ -199,9 +241,18 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                 <select
                   id="customer"
                   value={customerId}
-                  onChange={(e) => setCustomerId(e.target.value)}
-                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background"
+                  onChange={(e) => {
+                    setCustomerId(e.target.value);
+                    // Clear error when user selects
+                    if (errors.customerId)
+                      setErrors((prev) => ({ ...prev, customerId: undefined }));
+                  }}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background ${
+                    errors.customerId ? "border-destructive" : "border-border"
+                  }`}
                   disabled={isLoading || customersLoading}
+                  aria-invalid={errors.customerId ? "true" : undefined}
+                  aria-describedby={errors.customerId ? "customer-error" : undefined}
                 >
                   <option value="">
                     {customersLoading ? "Loading customers..." : "Select a customer"}
@@ -212,6 +263,11 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                     </option>
                   ))}
                 </select>
+                {errors.customerId && (
+                  <p id="customer-error" role="alert" className="mt-1 text-sm text-destructive">
+                    {errors.customerId}
+                  </p>
+                )}
               </div>
 
               <div className="mb-4">
