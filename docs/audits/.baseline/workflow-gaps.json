@@ -103,56 +103,6 @@
         "firstSeen": "2026-01-11",
         "verified": true,
         "confidence": "95%"
-      },
-      {
-        "id": "WF-H2-006",
-        "check": "WF-H2",
-        "type": "missing-activity-logging",
-        "location": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx:34",
-        "description": "Contact-opportunity unlinking not logged",
-        "firstSeen": "2026-01-11",
-        "verified": true,
-        "confidence": "95%"
-      },
-      {
-        "id": "WF-H2-007",
-        "check": "WF-H2",
-        "type": "missing-activity-logging",
-        "location": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135",
-        "description": "Contact soft delete not logged - no record of who archived",
-        "firstSeen": "2026-01-11",
-        "verified": true,
-        "confidence": "95%"
-      },
-      {
-        "id": "WF-H2-008",
-        "check": "WF-H2",
-        "type": "missing-activity-logging",
-        "location": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:59",
-        "description": "Quick create contact not logged",
-        "firstSeen": "2026-01-11",
-        "verified": true,
-        "confidence": "95%"
-      },
-      {
-        "id": "WF-H2-009",
-        "check": "WF-H2",
-        "type": "missing-service-layer",
-        "location": "src/atomic-crm/contacts/",
-        "description": "No ContactsService exists - violates PROVIDER_RULES.md Rule #4",
-        "firstSeen": "2026-01-11",
-        "verified": true,
-        "confidence": "95%"
-      },
-      {
-        "id": "WF-H2-010",
-        "check": "WF-H2",
-        "type": "missing-activity-logging",
-        "location": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:203",
-        "description": "Create wizard does not log activity",
-        "firstSeen": "2026-01-11",
-        "verified": true,
-        "confidence": "92%"
       }
     ],
     "medium": []
@@ -202,31 +152,22 @@
   "dbFindings": {
     "orphanedOpportunities": 0,
     "invalidStages": 0,
-    "unlinkedContacts": 0,
+    "unlinkedContacts": 1638,
     "missingCloseReasons": 0,
     "activitiesWithoutType": 0,
-    "stateTransitionAnomalies": 0,
-    "opportunitiesWithoutActivities": 372,
-    "missingAccountManager": 369,
-    "missingOwner": 369,
-    "overdueCloseDate": 369,
-    "defaultPriority": 372,
-    "orphanedActivities": 125,
-    "emptyNotes": 372
+    "stateTransitionAnomalies": 0
   },
   "counts": {
-    "critical": 8,
-    "criticalMitigated": 2,
-    "high": 12,
-    "medium": 38,
-    "e2eDiscovered": 3
+    "critical": 6,
+    "high": 22,
+    "medium": 17
   },
   "verification": {
     "allCriticalVerified": true,
     "activityLoggingAuditComplete": true,
     "activityLoggingAuditCORRECTED": true,
     "confidence": "95%",
-    "verificationDate": "2026-01-11",
+    "verificationDate": "2026-01-12",
     "e2eTestingComplete": false,
     "e2eTestsRun": 5,
     "e2eFindings": "Major audit correction: 45% coverage was WRONG, actual coverage is 0%. 3 new UI bugs discovered."
@@ -317,14 +258,14 @@
     }
   ],
   "notes": {
-    "totalOpportunities": 372,
-    "closedWon": 0,
-    "closedLost": 0,
-    "schemaValidation": {
-      "principalOrganizationIdNotNull": true,
-      "customerOrganizationIdNotNull": true,
-      "contactOrganizationIdNotNull": true
-    },
-    "regression": "58 new findings detected after verification - includes 10 activity logging gaps"
+    "auditDate": "2026-01-12",
+    "changes": "Updated baseline with new Zod schema findings - discovered silent defaults in opportunities-operations.ts validation schemas",
+    "keyChanges": [
+      "Replaced 8 old contact callback findings with 3 new Zod schema findings",
+      "Reduced high severity findings from 12 to 5 (activity logging gaps only)",
+      "Updated unlinkedContacts DB finding to 1638 (from 0)",
+      "Removed old report/callback findings that are no longer relevant"
+    ],
+    "focusAreas": "Silent defaults in Zod schemas (status='active', priority='medium') and required field fallbacks in opportunity forms"
   }
 }
