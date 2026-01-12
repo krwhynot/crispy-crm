@@ -6,7 +6,7 @@ import { opportunityKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DeleteButton } from "@/components/admin/delete-button";
-import { SaveButton } from "@/components/admin/form";
+import { SaveButton, FormProgressProvider } from "@/components/admin/form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { FormToolbar } from "@/components/admin/simple-form";
