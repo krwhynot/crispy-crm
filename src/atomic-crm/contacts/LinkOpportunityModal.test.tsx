@@ -5,6 +5,27 @@ import type * as ReactAdmin from "react-admin";
 
 const mockCreate = vi.fn();
 const mockNotify = vi.fn();
+const mockDataProvider = {
+  create: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+  getOne: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+};
+const mockQueryClient = {
+  invalidateQueries: vi.fn(),
+};
+
+// Mock ra-core hooks that use QueryClient
+vi.mock("ra-core", async () => {
+  const actual = await vi.importActual("ra-core");
+  return {
+    ...actual,
+    useDataProvider: () => mockDataProvider,
+  };
+});
+
+// Mock @tanstack/react-query
+vi.mock("@tanstack/react-query", () => ({
+  useQueryClient: () => mockQueryClient,
+}));
 
 // Mock react-admin hooks - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
