@@ -227,9 +227,12 @@ export const OpportunityListContent = ({
             });
 
             try {
+              // FIX [WF-E2E-002]: Use "interaction" not "engagement" because we have opportunity_id
+              // Per activitiesSchema: engagement + opportunity_id = validation error
+              // Per activitiesSchema: interaction requires opportunity_id (which we have)
               await dataProvider.create("activities", {
                 data: {
-                  activity_type: "engagement",
+                  activity_type: "interaction", // FIX: Must be "interaction" when opportunity_id is set
                   type: "note",
                   subject: `Stage changed from ${getOpportunityStageLabel(oldStage)} to ${getOpportunityStageLabel(newStage)}`,
                   activity_date: new Date().toISOString(),

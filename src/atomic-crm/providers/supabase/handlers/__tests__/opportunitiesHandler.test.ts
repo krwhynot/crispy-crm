@@ -121,9 +121,11 @@ describe("createOpportunitiesHandler", () => {
       expect(mockCreateWithProducts).not.toHaveBeenCalled();
     });
 
-    it("should delegate to service when products_to_sync is empty array (service handles efficiently)", async () => {
-      // Note: Empty array IS an array, so handler delegates to service.
-      // The service handles empty arrays efficiently by using standard create.
+    it("should NOT delegate to service when products_to_sync is empty array (avoids ExtendedDataProvider requirement)", async () => {
+      // FIX [WF-E2E-003]: Empty arrays should NOT trigger OpportunitiesService
+      // because OpportunitiesService requires ExtendedDataProvider with rpc/storage/invoke
+      // methods that are not available when handlers are created.
+      // The baseProvider path is the correct path for empty products.
       const opportunityData = {
         name: "Test Opportunity",
         customer_organization_id: "1", // Required by createOpportunitySchema
@@ -134,18 +136,11 @@ describe("createOpportunitiesHandler", () => {
         contact_ids: [1], // WG-001: At least one contact required
         products_to_sync: [],
       };
-      const createdOpportunity = { id: 124, ...opportunityData };
-
-      mockCreateWithProducts.mockResolvedValue(createdOpportunity);
 
       await handler.create("opportunities", { data: opportunityData });
 
-      expect(mockCreateWithProducts).toHaveBeenCalledWith(
-        expect.objectContaining({
-          name: "Test Opportunity",
-          products_to_sync: [],
-        })
-      );
+      // Empty array should NOT delegate to service - uses baseProvider instead
+      expect(mockCreateWithProducts).not.toHaveBeenCalled();
     });
 
     it("should pass through non-opportunities resources to base provider", async () => {
@@ -206,17 +201,16 @@ describe("createOpportunitiesHandler", () => {
       expect(mockUpdateWithProducts).not.toHaveBeenCalled();
     });
 
-    it("should delegate to service when products_to_sync is empty array (service handles efficiently)", async () => {
-      // Note: Empty array IS an array, so handler delegates to service.
-      // The service handles empty arrays efficiently by using standard update.
+    it("should NOT delegate to service when products_to_sync is empty array (avoids ExtendedDataProvider requirement)", async () => {
+      // FIX [WF-E2E-003]: Empty arrays should NOT trigger OpportunitiesService
+      // because OpportunitiesService requires ExtendedDataProvider with rpc/storage/invoke
+      // methods that are not available when handlers are created.
+      // The baseProvider path is the correct path for empty products.
       const updateData = {
         id: 123,
         name: "Updated Opportunity",
         products_to_sync: [],
       };
-      const updatedOpportunity = { id: 123, name: "Updated Opportunity" };
-
-      mockUpdateWithProducts.mockResolvedValue(updatedOpportunity);
 
       await handler.update("opportunities", {
         id: 123,
@@ -224,8 +218,8 @@ describe("createOpportunitiesHandler", () => {
         previousData: { id: 123 } as RaRecord,
       });
 
-      // FIX [SF-C12]: Now passes 4th argument (previousVersion) for optimistic locking
-      expect(mockUpdateWithProducts).toHaveBeenCalledWith(123, updateData, [], undefined);
+      // Empty array should NOT delegate to service - uses baseProvider instead
+      expect(mockUpdateWithProducts).not.toHaveBeenCalled();
     });
 
     it("should pass empty array when previousData.products is missing", async () => {

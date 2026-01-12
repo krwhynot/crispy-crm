@@ -166,7 +166,9 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
         const validatedData = handlerInputSchema.parse(params.data);
         const productsToSync: ProductFromSchema[] | undefined = validatedData.products_to_sync;
 
-        if (Array.isArray(productsToSync)) {
+        // Only use OpportunitiesService when there are actual products to sync
+        // Empty arrays should use the standard update path (avoids ExtendedDataProvider requirement)
+        if (Array.isArray(productsToSync) && productsToSync.length > 0) {
           const validatedPreviousData = previousDataSchema.parse(params.previousData);
           const previousProducts: ProductFromSchema[] = validatedPreviousData.products ?? [];
           // FIX [SF-C12]: Pass version for optimistic locking concurrency check
