@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-11T23:43:48.434Z",
+  "generated_at": "2026-01-12T03:19:55.434Z",
   "generator": "scripts/discover/extractors/call-graph.ts",
   "source_globs": [
     "src/atomic-crm/**/*.ts",
     "src/atomic-crm/**/*.tsx",
     "src/hooks/**/*.ts"
   ],
-  "checksum": "sha256:f3e8b03e5781f83c",
+  "checksum": "sha256:4a6317f10bfc2fcf",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ba1bfd5bd810",
     "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
@@ -221,7 +221,7 @@
     "src/atomic-crm/opportunities/OpportunityAside.tsx": "30db27e36624",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "36e217f92bd9",
     "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "9ad8403ba618",
-    "src/atomic-crm/opportunities/OpportunityEdit.tsx": "42b649677b41",
+    "src/atomic-crm/opportunities/OpportunityEdit.tsx": "66dbe9aa81c2",
     "src/atomic-crm/opportunities/OpportunityEmpty.tsx": "52066759e15e",
     "src/atomic-crm/opportunities/OpportunityHeader.tsx": "9f1fbf95f9f6",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
@@ -286,7 +286,7 @@
     "src/atomic-crm/opportunities/kanban/OpportunityCard.tsx": "74310b7652c8",
     "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx": "ad6156e57b8a",
     "src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx": "5cbb8ee759de",
-    "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx": "2183e614e914",
+    "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx": "b508515d2af1",
     "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx": "06370d163f80",
     "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx": "de20e74a2d68",
     "src/atomic-crm/opportunities/kanban/index.ts": "44c89866a8ca",
@@ -1232,7 +1232,7 @@
     {
       "name": "opportunities",
       "file": "opportunities.json",
-      "checksum": "sha256:7f1a6b28acc0e820",
+      "checksum": "sha256:1a2e562b07f5ebf1",
       "source_files": [
         "src/atomic-crm/opportunities/ActivitiesList.tsx",
         "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
@@ -1351,7 +1351,7 @@
         "src/atomic-crm/opportunities/OpportunityAside.tsx": "30db27e36624",
         "src/atomic-crm/opportunities/OpportunityCreate.tsx": "36e217f92bd9",
         "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "9ad8403ba618",
-        "src/atomic-crm/opportunities/OpportunityEdit.tsx": "42b649677b41",
+        "src/atomic-crm/opportunities/OpportunityEdit.tsx": "66dbe9aa81c2",
         "src/atomic-crm/opportunities/OpportunityEmpty.tsx": "52066759e15e",
         "src/atomic-crm/opportunities/OpportunityHeader.tsx": "9f1fbf95f9f6",
         "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
@@ -1416,7 +1416,7 @@
         "src/atomic-crm/opportunities/kanban/OpportunityCard.tsx": "74310b7652c8",
         "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx": "ad6156e57b8a",
         "src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx": "5cbb8ee759de",
-        "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx": "2183e614e914",
+        "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx": "b508515d2af1",
         "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx": "06370d163f80",
         "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx": "de20e74a2d68",
         "src/atomic-crm/opportunities/kanban/index.ts": "44c89866a8ca",

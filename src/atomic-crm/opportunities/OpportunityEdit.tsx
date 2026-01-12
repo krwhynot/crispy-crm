@@ -9,7 +9,7 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { SaveButton } from "@/components/admin/form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { ReferenceField } from "@/components/admin/reference-field";
-import { FormToolbar } from "../layout/FormToolbar";
+import { FormToolbar } from "@/components/admin/simple-form";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 import { OpportunityCompactForm } from "./forms/OpportunityCompactForm";

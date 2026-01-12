@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-11T23:43:48.168Z",
+  "generated_at": "2026-01-12T03:19:55.422Z",
   "items": {
     "nodes": [
       {
@@ -175,10 +175,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/OpportunityEdit.tsx:92:EditHeader",
+        "id": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
         "name": "EditHeader",
         "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-        "line": 92,
+        "line": 97,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -949,19 +949,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:56:customCollisionDetection",
+        "id": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:71:customCollisionDetection",
         "name": "customCollisionDetection",
         "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
-        "line": 56,
+        "line": 71,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "id": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "name": "OpportunityListContent",
         "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
-        "line": 85,
+        "line": 111,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -6589,7 +6589,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 56,
+        "line": 58,
         "conditional": false,
         "inLoop": false
       },
@@ -6598,7 +6598,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 56,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
@@ -6607,7 +6607,7 @@
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 56,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
@@ -6616,7 +6616,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 62,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -6625,7 +6625,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 67,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
@@ -6634,7 +6634,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 68,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
@@ -6643,7 +6643,7 @@
         "target": "FormToolbar",
         "targetName": "FormToolbar",
         "edgeType": "render",
-        "line": 77,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
@@ -6652,7 +6652,7 @@
         "target": "EditHeader",
         "targetName": "EditHeader",
         "edgeType": "render",
-        "line": 69,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
@@ -6661,7 +6661,7 @@
         "target": "OpportunityCompactForm",
         "targetName": "OpportunityCompactForm",
         "edgeType": "render",
-        "line": 72,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
@@ -6670,7 +6670,7 @@
         "target": "Separator",
         "targetName": "Separator",
         "edgeType": "render",
-        "line": 73,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
@@ -6679,7 +6679,7 @@
         "target": "OpportunityActivitySection",
         "targetName": "OpportunityActivitySection",
         "edgeType": "render",
-        "line": 74,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
@@ -6688,7 +6688,7 @@
         "target": "DeleteButton",
         "targetName": "DeleteButton",
         "edgeType": "render",
-        "line": 79,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
@@ -6697,7 +6697,7 @@
         "target": "CancelButton",
         "targetName": "CancelButton",
         "edgeType": "render",
-        "line": 81,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
@@ -6706,34 +6706,34 @@
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 82,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:92:EditHeader",
+        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 93,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:92:EditHeader",
+        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 100,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:92:EditHeader",
+        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
         "target": "OrganizationAvatar",
         "targetName": "OrganizationAvatar",
         "edgeType": "render",
-        "line": 101,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
@@ -19005,1127 +19005,1154 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:56:customCollisionDetection",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:71:customCollisionDetection",
         "target": "pointerWithin",
         "targetName": "pointerWithin",
         "edgeType": "call",
-        "line": 58,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:56:customCollisionDetection",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:71:customCollisionDetection",
         "target": "rectIntersection",
         "targetName": "rectIntersection",
         "edgeType": "call",
-        "line": 64,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:56:customCollisionDetection",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:71:customCollisionDetection",
         "target": "closestCorners",
         "targetName": "closestCorners",
         "edgeType": "call",
-        "line": 70,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:71:customCollisionDetection",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:71:customCollisionDetection",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:71:customCollisionDetection",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 92,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "useUpdate",
         "targetName": "useUpdate",
         "edgeType": "hook",
-        "line": 94,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "useNotify",
         "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 95,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
-        "edgeType": "hook",
-        "line": 96,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 97,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
-        "edgeType": "hook",
-        "line": 98,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 102,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 103,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useSensors",
-        "targetName": "useSensors",
-        "edgeType": "hook",
-        "line": 105,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useSensor",
-        "targetName": "useSensor",
-        "edgeType": "hook",
-        "line": 106,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useSensor",
-        "targetName": "useSensor",
-        "edgeType": "hook",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 110,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useColumnPreferences",
-        "targetName": "useColumnPreferences",
         "edgeType": "hook",
         "line": 121,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "isArray",
-        "targetName": "isArray",
-        "edgeType": "call",
-        "line": 125,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 126,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 128,
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
+        "edgeType": "hook",
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 128,
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 130,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 130,
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "useState",
         "targetName": "useState",
+        "edgeType": "hook",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 128,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useSensors",
+        "targetName": "useSensors",
+        "edgeType": "hook",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useSensor",
+        "targetName": "useSensor",
         "edgeType": "hook",
         "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "getOpportunitiesByStage",
-        "targetName": "getOpportunitiesByStage",
-        "edgeType": "call",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useSensor",
+        "targetName": "useSensor",
+        "edgeType": "hook",
         "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 138,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "flat",
-        "targetName": "flat",
-        "edgeType": "call",
-        "line": 138,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "values",
-        "targetName": "values",
-        "edgeType": "call",
-        "line": 138,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useEffect",
-        "targetName": "useEffect",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
-        "line": 143,
+        "line": 136,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useColumnPreferences",
+        "targetName": "useColumnPreferences",
+        "edgeType": "hook",
+        "line": 147,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 151,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 154,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 154,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "getOpportunitiesByStage",
         "targetName": "getOpportunitiesByStage",
         "edgeType": "call",
-        "line": 145,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "isEqual",
-        "targetName": "isEqual",
-        "edgeType": "call",
-        "line": 149,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setOpportunitiesByStage",
-        "targetName": "setOpportunitiesByStage",
-        "edgeType": "call",
-        "line": 150,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
         "line": 159,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "validateCloseOpportunity",
-        "targetName": "validateCloseOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "find",
+        "targetName": "find",
         "edgeType": "call",
-        "line": 173,
+        "line": 164,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "flat",
+        "targetName": "flat",
+        "edgeType": "call",
+        "line": 164,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "values",
+        "targetName": "values",
+        "edgeType": "call",
+        "line": 164,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 169,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "getOpportunitiesByStage",
+        "targetName": "getOpportunitiesByStage",
+        "edgeType": "call",
+        "line": 171,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "isEqual",
+        "targetName": "isEqual",
+        "edgeType": "call",
+        "line": 175,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "setOpportunitiesByStage",
         "targetName": "setOpportunitiesByStage",
         "edgeType": "call",
-        "line": 180,
+        "line": 176,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 185,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "validateCloseOpportunity",
+        "targetName": "validateCloseOpportunity",
+        "edgeType": "call",
+        "line": 199,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setOpportunitiesByStage",
+        "targetName": "setOpportunitiesByStage",
+        "edgeType": "call",
+        "line": 206,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 185,
+        "line": 211,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "update",
         "targetName": "update",
-        "edgeType": "call",
-        "line": 190,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 199,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "getOpportunityStageLabel",
-        "targetName": "getOpportunityStageLabel",
-        "edgeType": "call",
-        "line": 199,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "create",
-        "targetName": "create",
-        "edgeType": "call",
-        "line": 204,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "getOpportunityStageLabel",
-        "targetName": "getOpportunityStageLabel",
-        "edgeType": "call",
-        "line": 208,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "getOpportunityStageLabel",
-        "targetName": "getOpportunityStageLabel",
-        "edgeType": "call",
-        "line": 208,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 209,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 215,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
         "edgeType": "call",
         "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 220,
+        "line": 225,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "getOpportunityStageLabel",
+        "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 227,
+        "line": 225,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setOpportunitiesByStage",
-        "targetName": "setOpportunitiesByStage",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "create",
+        "targetName": "create",
         "edgeType": "call",
         "line": 230,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "getOpportunityStageLabel",
+        "targetName": "getOpportunityStageLabel",
+        "edgeType": "call",
+        "line": 234,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "getOpportunityStageLabel",
+        "targetName": "getOpportunityStageLabel",
+        "edgeType": "call",
+        "line": 234,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 235,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
         "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setIsClosing",
-        "targetName": "setIsClosing",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 242,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 245,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "performStageUpdate",
-        "targetName": "performStageUpdate",
-        "edgeType": "call",
-        "line": 247,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setIsClosing",
-        "targetName": "setIsClosing",
-        "edgeType": "call",
-        "line": 259,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setShowCloseModal",
-        "targetName": "setShowCloseModal",
-        "edgeType": "call",
-        "line": 260,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setPendingCloseData",
-        "targetName": "setPendingCloseData",
-        "edgeType": "call",
-        "line": 261,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 269,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setOpportunitiesByStage",
-        "targetName": "setOpportunitiesByStage",
-        "edgeType": "call",
-        "line": 273,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 274,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setShowCloseModal",
-        "targetName": "setShowCloseModal",
-        "edgeType": "call",
-        "line": 276,
+        "line": 246,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setPendingCloseData",
-        "targetName": "setPendingCloseData",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 278,
-        "conditional": true,
+        "line": 253,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setOpportunitiesByStage",
+        "targetName": "setOpportunitiesByStage",
+        "edgeType": "call",
+        "line": 256,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 292,
+        "line": 267,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "closeSlideOver",
-        "targetName": "closeSlideOver",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setIsClosing",
+        "targetName": "setIsClosing",
         "edgeType": "call",
-        "line": 296,
-        "conditional": true,
+        "line": 271,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "performStageUpdate",
+        "targetName": "performStageUpdate",
+        "edgeType": "call",
+        "line": 273,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setIsClosing",
+        "targetName": "setIsClosing",
+        "edgeType": "call",
+        "line": 285,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setShowCloseModal",
+        "targetName": "setShowCloseModal",
+        "edgeType": "call",
+        "line": 286,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setPendingCloseData",
+        "targetName": "setPendingCloseData",
+        "edgeType": "call",
+        "line": 287,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 295,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "setOpportunitiesByStage",
         "targetName": "setOpportunitiesByStage",
         "edgeType": "call",
         "line": 299,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "keys",
-        "targetName": "keys",
-        "edgeType": "call",
-        "line": 302,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 304,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "refresh",
-        "targetName": "refresh",
-        "edgeType": "call",
-        "line": 313,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 326,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setOpportunitiesByStage",
-        "targetName": "setOpportunitiesByStage",
-        "edgeType": "call",
-        "line": 327,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "warn",
-        "targetName": "warn",
-        "edgeType": "call",
-        "line": 332,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 344,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setActiveId",
-        "targetName": "setActiveId",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 345,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 345,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 348,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 350,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setActiveId",
-        "targetName": "setActiveId",
-        "edgeType": "call",
-        "line": 351,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 354,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setActiveId",
-        "targetName": "setActiveId",
-        "edgeType": "call",
-        "line": 358,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 365,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "entries",
-        "targetName": "entries",
-        "edgeType": "call",
-        "line": 370,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "findIndex",
-        "targetName": "findIndex",
-        "edgeType": "call",
-        "line": 371,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 371,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 388,
+        "line": 300,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 389,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "entries",
-        "targetName": "entries",
-        "edgeType": "call",
-        "line": 393,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "findIndex",
-        "targetName": "findIndex",
-        "edgeType": "call",
-        "line": 394,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 394,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 394,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 417,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 417,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 427,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "splice",
-        "targetName": "splice",
-        "edgeType": "call",
-        "line": 428,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 433,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "splice",
-        "targetName": "splice",
-        "edgeType": "call",
-        "line": 434,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setOpportunitiesByStage",
-        "targetName": "setOpportunitiesByStage",
-        "edgeType": "call",
-        "line": 437,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "setPendingCloseData",
-        "targetName": "setPendingCloseData",
-        "edgeType": "call",
-        "line": 442,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "setShowCloseModal",
         "targetName": "setShowCloseModal",
         "edgeType": "call",
-        "line": 450,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "performStageUpdate",
-        "targetName": "performStageUpdate",
-        "edgeType": "call",
-        "line": 455,
+        "line": 302,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setPendingCloseData",
+        "targetName": "setPendingCloseData",
+        "edgeType": "call",
+        "line": 304,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 318,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "closeSlideOver",
+        "targetName": "closeSlideOver",
+        "edgeType": "call",
+        "line": 322,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setOpportunitiesByStage",
+        "targetName": "setOpportunitiesByStage",
+        "edgeType": "call",
+        "line": 325,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 328,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 330,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 339,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 352,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setOpportunitiesByStage",
+        "targetName": "setOpportunitiesByStage",
+        "edgeType": "call",
+        "line": 353,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 358,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 370,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setActiveId",
+        "targetName": "setActiveId",
+        "edgeType": "call",
+        "line": 371,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 371,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 374,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 376,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setActiveId",
+        "targetName": "setActiveId",
+        "edgeType": "call",
+        "line": 377,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 380,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setActiveId",
+        "targetName": "setActiveId",
+        "edgeType": "call",
+        "line": 384,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 391,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 396,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "findIndex",
+        "targetName": "findIndex",
+        "edgeType": "call",
+        "line": 397,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 397,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 414,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 415,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 419,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "findIndex",
+        "targetName": "findIndex",
+        "edgeType": "call",
+        "line": 420,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 420,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 420,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 462,
+        "line": 443,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 443,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 453,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "splice",
+        "targetName": "splice",
+        "edgeType": "call",
+        "line": 454,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 459,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "splice",
+        "targetName": "splice",
+        "edgeType": "call",
+        "line": 460,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setOpportunitiesByStage",
+        "targetName": "setOpportunitiesByStage",
+        "edgeType": "call",
+        "line": 463,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setPendingCloseData",
+        "targetName": "setPendingCloseData",
+        "edgeType": "call",
+        "line": 468,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setShowCloseModal",
+        "targetName": "setShowCloseModal",
+        "edgeType": "call",
+        "line": 476,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "performStageUpdate",
+        "targetName": "performStageUpdate",
+        "edgeType": "call",
+        "line": 481,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 488,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "flat",
         "targetName": "flat",
         "edgeType": "call",
-        "line": 462,
+        "line": 488,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 462,
+        "line": 488,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 464,
+        "line": 490,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 464,
+        "line": 490,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 465,
+        "line": 491,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 470,
+        "line": 496,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 470,
+        "line": 496,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 477,
+        "line": 503,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 477,
+        "line": 503,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 507,
+        "line": 533,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 512,
+        "line": 538,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "toggleCollapse",
         "targetName": "toggleCollapse",
         "edgeType": "call",
-        "line": 513,
+        "line": 539,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "DndContext",
         "targetName": "DndContext",
         "edgeType": "render",
-        "line": 489,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "handleDragStart",
-        "targetName": "handleDragStart",
-        "edgeType": "callback",
-        "line": 492,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "handleDragOver",
-        "targetName": "handleDragOver",
-        "edgeType": "callback",
-        "line": 493,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "handleDragEnd",
-        "targetName": "handleDragEnd",
-        "edgeType": "callback",
-        "line": 494,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "handleDragCancel",
-        "targetName": "handleDragCancel",
-        "edgeType": "callback",
-        "line": 495,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "DragOverlay",
-        "targetName": "DragOverlay",
-        "edgeType": "render",
-        "line": 531,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "OpportunityColumn",
-        "targetName": "OpportunityColumn",
-        "edgeType": "render",
-        "line": 508,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "handleDeleteOpportunity",
-        "targetName": "handleDeleteOpportunity",
-        "edgeType": "callback",
         "line": 515,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "handleOpportunityCreated",
-        "targetName": "handleOpportunityCreated",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "handleDragStart",
+        "targetName": "handleDragStart",
         "edgeType": "callback",
-        "line": 516,
+        "line": 518,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
-        "target": "ColumnCustomizationMenu",
-        "targetName": "ColumnCustomizationMenu",
-        "edgeType": "render",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "handleDragOver",
+        "targetName": "handleDragOver",
+        "edgeType": "callback",
+        "line": 519,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "handleDragEnd",
+        "targetName": "handleDragEnd",
+        "edgeType": "callback",
+        "line": 520,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "handleDragCancel",
+        "targetName": "handleDragCancel",
+        "edgeType": "callback",
         "line": 521,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "DragOverlay",
+        "targetName": "DragOverlay",
+        "edgeType": "render",
+        "line": 557,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "OpportunityColumn",
+        "targetName": "OpportunityColumn",
+        "edgeType": "render",
+        "line": 534,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "handleDeleteOpportunity",
+        "targetName": "handleDeleteOpportunity",
+        "edgeType": "callback",
+        "line": 541,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "handleOpportunityCreated",
+        "targetName": "handleOpportunityCreated",
+        "edgeType": "callback",
+        "line": 542,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "ColumnCustomizationMenu",
+        "targetName": "ColumnCustomizationMenu",
+        "edgeType": "render",
+        "line": 547,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "OpportunityCard",
         "targetName": "OpportunityCard",
         "edgeType": "render",
-        "line": 533,
+        "line": 559,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "CloseOpportunityModal",
         "targetName": "CloseOpportunityModal",
         "edgeType": "render",
-        "line": 544,
+        "line": 570,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "handleCloseCancel",
         "targetName": "handleCloseCancel",
         "edgeType": "callback",
-        "line": 546,
+        "line": 572,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:85:OpportunityListContent",
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "handleCloseConfirm",
         "targetName": "handleCloseConfirm",
         "edgeType": "callback",
-        "line": 550,
+        "line": 576,
         "conditional": false,
         "inLoop": false
       },

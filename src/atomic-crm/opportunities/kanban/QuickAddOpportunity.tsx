@@ -14,10 +14,21 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string>("");
+  const [principalId, setPrincipalId] = useState<string>("");
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
   const refresh = useRefresh();
   const { identity } = useGetIdentity();
+
+  // Fetch principal organizations (MFB business rule: every opportunity has a principal)
+  const { data: principals, isLoading: principalsLoading } = useGetList<Organization>(
+    "organizations",
+    {
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
+      filter: { organization_type: "principal", deleted_at: null },
+    }
+  );
 
   // Fetch customer organizations (Salesforce standard: Account required for Opportunity)
   const { data: customers, isLoading: customersLoading } = useGetList<Organization>(
@@ -37,16 +48,22 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       return;
     }
 
+    if (!principalId) {
+      notify("Principal is required", { type: "error" });
+      return;
+    }
+
     if (!customerId) {
       notify("Customer is required", { type: "error" });
       return;
     }
 
     try {
-      // Salesforce standard: Name + Customer + Stage required
+      // MFB business rule: Name + Principal + Customer + Stage required
       const validatedData = quickCreateOpportunitySchema.parse({
         name: name.trim(),
         stage,
+        principal_organization_id: Number(principalId),
         customer_organization_id: Number(customerId),
         // Set current user as owner - ensures opportunity shows in "My Opportunities"
         opportunity_owner_id: identity?.id,

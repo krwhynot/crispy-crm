@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-11T23:43:27.889Z",
+  "generated_at": "2026-01-12T03:19:49.335Z",
   "item_count": 81,
   "items": [
     {
@@ -510,7 +510,6 @@
         "useRefresh"
       ],
       "imports": [
-        "../layout/FormToolbar",
         "../organizations/OrganizationAvatar",
         "../queryKeys",
         "../types",
@@ -521,6 +520,7 @@
         "@/components/admin/delete-button",
         "@/components/admin/form",
         "@/components/admin/reference-field",
+        "@/components/admin/simple-form",
         "@/components/ui/card",
         "@/components/ui/separator",
         "@tanstack/react-query",
@@ -529,7 +529,6 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "FormToolbar",
         "OrganizationAvatar",
         "Opportunity",
         "OpportunityCompactForm",
@@ -549,7 +548,6 @@
         "useRefresh"
       ],
       "imports": [
-        "../layout/FormToolbar",
         "../organizations/OrganizationAvatar",
         "../queryKeys",
         "../types",
@@ -560,6 +558,7 @@
         "@/components/admin/delete-button",
         "@/components/admin/form",
         "@/components/admin/reference-field",
+        "@/components/admin/simple-form",
         "@/components/ui/card",
         "@/components/ui/separator",
         "@tanstack/react-query",
@@ -568,7 +567,6 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "FormToolbar",
         "OrganizationAvatar",
         "Opportunity",
         "OpportunityCompactForm",
@@ -2076,7 +2074,7 @@
     {
       "name": "OpportunityListContent",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
-      "line": 85,
+      "line": 111,
       "type": "presentational",
       "hooks": [
         "useCallback",
