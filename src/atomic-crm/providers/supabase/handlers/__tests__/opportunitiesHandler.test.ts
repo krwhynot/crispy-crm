@@ -20,6 +20,7 @@ import {
   COMPUTED_FIELDS,
   TYPED_COMPUTED_FIELDS,
   VIEW_ONLY_FIELDS,
+  UPDATE_ONLY_STRIP_FIELDS,
 } from "../../callbacks/opportunitiesCallbacks";
 
 // Mock service methods using vi.hoisted to ensure they're available when vi.mock runs
@@ -290,7 +291,7 @@ describe("opportunitiesCallbacks - view field stripping", () => {
         stage_manual: false,
         status_manual: false,
         competition: null,
-        opportunity_owner_id: "owner-456",
+        // NOTE: opportunity_owner_id moved to UPDATE_ONLY_STRIP_FIELDS (FIX WF-E2E-001)
       };
 
       const result = stripComputedFields(data);
@@ -302,6 +303,61 @@ describe("opportunitiesCallbacks - view field stripping", () => {
 
       // Should strip all typed computed fields
       for (const field of TYPED_COMPUTED_FIELDS) {
+        expect(result).not.toHaveProperty(field);
+      }
+    });
+
+    // FIX [WF-E2E-001]: Test for UPDATE_ONLY_STRIP_FIELDS behavior
+    it("should preserve opportunity_owner_id during CREATE (isUpdate=false)", () => {
+      const data = {
+        name: "New Opportunity",
+        stage: "new_lead",
+        opportunity_owner_id: "owner-456",
+      };
+
+      // CREATE operation: isUpdate=false (default)
+      const result = stripComputedFields(data);
+
+      // Should preserve opportunity_owner_id for CREATE
+      expect(result).toHaveProperty("opportunity_owner_id", "owner-456");
+    });
+
+    // FIX [WF-E2E-001]: Test for UPDATE_ONLY_STRIP_FIELDS behavior
+    it("should strip opportunity_owner_id during UPDATE (isUpdate=true)", () => {
+      const data = {
+        id: 1,
+        name: "Updated Opportunity",
+        stage: "demo_scheduled",
+        opportunity_owner_id: "owner-456",
+      };
+
+      // UPDATE operation: isUpdate=true
+      const result = stripComputedFields(data, true);
+
+      // Should strip opportunity_owner_id for UPDATE
+      expect(result).not.toHaveProperty("opportunity_owner_id");
+
+      // Should keep other fields
+      expect(result).toHaveProperty("id", 1);
+      expect(result).toHaveProperty("name", "Updated Opportunity");
+      expect(result).toHaveProperty("stage", "demo_scheduled");
+    });
+
+    // FIX [WF-E2E-001]: Ensure all UPDATE_ONLY_STRIP_FIELDS are stripped for updates
+    it("should strip all UPDATE_ONLY_STRIP_FIELDS during UPDATE", () => {
+      const data: Record<string, unknown> = {
+        id: 1,
+        name: "Test",
+      };
+      // Add all UPDATE_ONLY_STRIP_FIELDS to data
+      for (const field of UPDATE_ONLY_STRIP_FIELDS) {
+        data[field] = "test-value";
+      }
+
+      const result = stripComputedFields(data, true);
+
+      // Should strip all UPDATE_ONLY_STRIP_FIELDS
+      for (const field of UPDATE_ONLY_STRIP_FIELDS) {
         expect(result).not.toHaveProperty(field);
       }
     });

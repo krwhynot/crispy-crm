@@ -137,9 +137,14 @@ const CREATE_DEFAULTS = {
  * Strip computed and virtual fields that shouldn't be sent to database
  *
  * @param data - The data being saved
+ * @param isUpdate - Whether this is an UPDATE operation (vs CREATE)
  * @returns Data without computed/virtual fields
+ *
+ * FIX [WF-E2E-001]: Added isUpdate parameter to conditionally strip
+ * UPDATE_ONLY_STRIP_FIELDS (like opportunity_owner_id) only during updates.
+ * CREATE operations preserve these fields so the database can set them.
  */
-function stripComputedFields(data: Partial<RaRecord>): Partial<RaRecord> {
+function stripComputedFields(data: Partial<RaRecord>, isUpdate = false): Partial<RaRecord> {
   const cleaned = { ...data };
 
   // Strip computed fields (from views/aggregations)
@@ -150,6 +155,14 @@ function stripComputedFields(data: Partial<RaRecord>): Partial<RaRecord> {
   // Strip virtual fields (UI-only, not in database schema)
   for (const field of VIRTUAL_FIELDS) {
     delete cleaned[field];
+  }
+
+  // FIX [WF-E2E-001]: Only strip UPDATE_ONLY_STRIP_FIELDS during update operations
+  // CREATE operations preserve these fields (e.g., opportunity_owner_id)
+  if (isUpdate) {
+    for (const field of UPDATE_ONLY_STRIP_FIELDS) {
+      delete cleaned[field];
+    }
   }
 
   return cleaned;
@@ -242,34 +255,35 @@ async function opportunitiesBeforeGetList(
  * 1. Virtual field stripping (products_to_sync, products)
  * 2. Stage-only update detection for Kanban (strip empty contact_ids)
  * 3. Create defaults merging
+ * 4. FIX [WF-E2E-001]: Conditional stripping of UPDATE_ONLY_STRIP_FIELDS
  */
 async function opportunitiesBeforeSave(
   data: Partial<RaRecord>,
   _dataProvider: DataProvider,
   _resource: string
 ): Promise<Partial<RaRecord>> {
-  // Strip computed fields first
-  let processed = stripComputedFields(data);
+  // FIX [WF-E2E-001]: Detect CREATE vs UPDATE
+  // - UPDATE: data.id is present (React Admin includes id in data for updates)
+  // - CREATE: data.id is undefined/null
+  // This determines whether to strip UPDATE_ONLY_STRIP_FIELDS (like opportunity_owner_id)
+  const isUpdate = data.id != null;
+
+  // Strip computed fields - conditionally strip UPDATE_ONLY_STRIP_FIELDS for updates
+  let processed = stripComputedFields(data, isUpdate);
 
   // Strip empty contact_ids for stage-only updates (Kanban drag-drop)
-  // NOTE: data.id is NOT available in beforeSave - id is passed separately as params.id
-  // Detection: stage is present, name is NOT present (name is required for create/full edit)
+  // Detection: stage is present AND this is an update (has id) AND name is NOT present
   // When contact_ids is empty array from previousData merge, strip it to avoid validation error
-  const isStageOnlyUpdate = data.stage && !data.name;
+  const isStageOnlyUpdate = isUpdate && data.stage && !data.name;
   const hasEmptyContactIds = Array.isArray(data.contact_ids) && data.contact_ids.length === 0;
 
   if (isStageOnlyUpdate && hasEmptyContactIds) {
     delete processed.contact_ids;
   }
 
-  // Merge defaults for create (when no required fields present - indicates create operation)
-  // Note: We check for name since it's required for create, not data.id (unavailable here)
-  if (!data.name) {
-    // Only merge defaults if this looks like a create (no id means create in validation layer)
-    // But for stage-only updates, skip defaults
-    if (!isStageOnlyUpdate) {
-      processed = mergeCreateDefaults(processed);
-    }
+  // Merge defaults for create (when no id - indicates create operation)
+  if (!isUpdate) {
+    processed = mergeCreateDefaults(processed);
   }
 
   return processed;
@@ -324,5 +338,6 @@ export {
   COMPUTED_FIELDS,
   TYPED_COMPUTED_FIELDS,
   VIEW_ONLY_FIELDS,
+  UPDATE_ONLY_STRIP_FIELDS,
   CREATE_DEFAULTS,
 };
