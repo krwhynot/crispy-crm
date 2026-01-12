@@ -169,10 +169,11 @@ describe("opportunitiesCallbacks", () => {
         "opportunities"
       );
 
-      // Should add defaults for missing fields
+      // Should preserve provided fields
       expect(result.probability).toBe(50);
-      // contact_ids should default to empty array to pass validation
-      expect(result.contact_ids).toEqual([]);
+      // FIX [WF-E2E-001]: contact_ids intentionally NOT defaulted
+      // Quick creates work without contact_ids; full creates enforce it via schema
+      expect(result.contact_ids).toBeUndefined();
     });
 
     it("should PRESERVE products_to_sync for handler processing (NOT stripped by callbacks)", async () => {
