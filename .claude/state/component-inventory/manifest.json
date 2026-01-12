@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-12T03:19:49.340Z",
+  "generated_at": "2026-01-12T04:00:59.877Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:98a703b9ea5d356a",
+  "checksum": "sha256:32f65af518b87e36",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ba1bfd5bd810",
     "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
@@ -245,7 +245,7 @@
     "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx": "ad6156e57b8a",
     "src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx": "5cbb8ee759de",
     "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx": "b508515d2af1",
-    "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx": "06370d163f80",
+    "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx": "81a7cbc85341",
     "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx": "de20e74a2d68",
     "src/atomic-crm/opportunities/kanban/__tests__/StageStatusDot.test.tsx": "f01b812363c1",
     "src/atomic-crm/opportunities/quick-add/QuickAddButton.tsx": "69e4faecce5c",
@@ -895,7 +895,7 @@
       "name": "opportunities",
       "file": "opportunities.json",
       "item_count": 81,
-      "checksum": "sha256:16e2c8b5efd9c7bc",
+      "checksum": "sha256:cce982b4ef51433b",
       "source_files": [
         "src/atomic-crm/opportunities/ActivitiesList.tsx",
         "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
@@ -1074,7 +1074,7 @@
         "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx": "ad6156e57b8a",
         "src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx": "5cbb8ee759de",
         "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx": "b508515d2af1",
-        "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx": "06370d163f80",
+        "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx": "81a7cbc85341",
         "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx": "de20e74a2d68",
         "src/atomic-crm/opportunities/kanban/__tests__/StageStatusDot.test.tsx": "f01b812363c1",
         "src/atomic-crm/opportunities/quick-add/QuickAddButton.tsx": "69e4faecce5c",
