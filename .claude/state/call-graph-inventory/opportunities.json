@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-12T04:01:02.895Z",
+  "generated_at": "2026-01-12T19:25:43.247Z",
   "items": {
     "nodes": [
       {
@@ -175,10 +175,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
+        "id": "src/atomic-crm/opportunities/OpportunityEdit.tsx:99:EditHeader",
         "name": "EditHeader",
         "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-        "line": 97,
+        "line": 99,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -6613,10 +6613,19 @@
       },
       {
         "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:53:OpportunityEditForm",
+        "target": "FormProgressProvider",
+        "targetName": "FormProgressProvider",
+        "edgeType": "render",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:53:OpportunityEditForm",
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 67,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
@@ -6625,7 +6634,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 72,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
@@ -6634,7 +6643,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 73,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
@@ -6643,7 +6652,7 @@
         "target": "FormToolbar",
         "targetName": "FormToolbar",
         "edgeType": "render",
-        "line": 82,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
@@ -6652,7 +6661,7 @@
         "target": "EditHeader",
         "targetName": "EditHeader",
         "edgeType": "render",
-        "line": 74,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
@@ -6661,7 +6670,7 @@
         "target": "OpportunityCompactForm",
         "targetName": "OpportunityCompactForm",
         "edgeType": "render",
-        "line": 77,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
@@ -6670,7 +6679,7 @@
         "target": "Separator",
         "targetName": "Separator",
         "edgeType": "render",
-        "line": 78,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
@@ -6679,7 +6688,7 @@
         "target": "OpportunityActivitySection",
         "targetName": "OpportunityActivitySection",
         "edgeType": "render",
-        "line": 79,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
@@ -6688,7 +6697,7 @@
         "target": "DeleteButton",
         "targetName": "DeleteButton",
         "edgeType": "render",
-        "line": 84,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
@@ -6697,7 +6706,7 @@
         "target": "CancelButton",
         "targetName": "CancelButton",
         "edgeType": "render",
-        "line": 86,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
@@ -6706,34 +6715,34 @@
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 87,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
+        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:99:EditHeader",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 98,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
+        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:99:EditHeader",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 105,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:97:EditHeader",
+        "source": "src/atomic-crm/opportunities/OpportunityEdit.tsx:99:EditHeader",
         "target": "OrganizationAvatar",
         "targetName": "OrganizationAvatar",
         "edgeType": "render",
-        "line": 106,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -19396,7 +19405,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 230,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
@@ -19405,7 +19414,7 @@
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 234,
+        "line": 237,
         "conditional": false,
         "inLoop": false
       },
@@ -19414,7 +19423,7 @@
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 234,
+        "line": 237,
         "conditional": false,
         "inLoop": false
       },
@@ -19423,7 +19432,7 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 235,
+        "line": 238,
         "conditional": false,
         "inLoop": false
       },
@@ -19432,7 +19441,7 @@
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 241,
+        "line": 244,
         "conditional": false,
         "inLoop": false
       },
@@ -19441,7 +19450,7 @@
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 242,
+        "line": 245,
         "conditional": false,
         "inLoop": false
       },
@@ -19450,7 +19459,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 245,
+        "line": 248,
         "conditional": false,
         "inLoop": false
       },
@@ -19459,7 +19468,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 246,
+        "line": 249,
         "conditional": false,
         "inLoop": false
       },
@@ -19468,7 +19477,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 253,
+        "line": 256,
         "conditional": false,
         "inLoop": false
       },
@@ -19477,7 +19486,7 @@
         "target": "setOpportunitiesByStage",
         "targetName": "setOpportunitiesByStage",
         "edgeType": "call",
-        "line": 256,
+        "line": 259,
         "conditional": false,
         "inLoop": false
       },
@@ -19486,7 +19495,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 267,
+        "line": 270,
         "conditional": false,
         "inLoop": false
       },
@@ -19495,7 +19504,7 @@
         "target": "setIsClosing",
         "targetName": "setIsClosing",
         "edgeType": "call",
-        "line": 271,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
@@ -19504,7 +19513,7 @@
         "target": "performStageUpdate",
         "targetName": "performStageUpdate",
         "edgeType": "call",
-        "line": 273,
+        "line": 276,
         "conditional": false,
         "inLoop": false
       },
@@ -19513,7 +19522,7 @@
         "target": "setIsClosing",
         "targetName": "setIsClosing",
         "edgeType": "call",
-        "line": 285,
+        "line": 288,
         "conditional": false,
         "inLoop": false
       },
@@ -19522,7 +19531,7 @@
         "target": "setShowCloseModal",
         "targetName": "setShowCloseModal",
         "edgeType": "call",
-        "line": 286,
+        "line": 289,
         "conditional": false,
         "inLoop": false
       },
@@ -19531,7 +19540,7 @@
         "target": "setPendingCloseData",
         "targetName": "setPendingCloseData",
         "edgeType": "call",
-        "line": 287,
+        "line": 290,
         "conditional": false,
         "inLoop": false
       },
@@ -19540,7 +19549,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 295,
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
@@ -19549,7 +19558,7 @@
         "target": "setOpportunitiesByStage",
         "targetName": "setOpportunitiesByStage",
         "edgeType": "call",
-        "line": 299,
+        "line": 302,
         "conditional": true,
         "inLoop": false
       },
@@ -19558,7 +19567,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 300,
+        "line": 303,
         "conditional": true,
         "inLoop": false
       },
@@ -19567,7 +19576,7 @@
         "target": "setShowCloseModal",
         "targetName": "setShowCloseModal",
         "edgeType": "call",
-        "line": 302,
+        "line": 305,
         "conditional": false,
         "inLoop": false
       },
@@ -19576,7 +19585,7 @@
         "target": "setPendingCloseData",
         "targetName": "setPendingCloseData",
         "edgeType": "call",
-        "line": 304,
+        "line": 307,
         "conditional": true,
         "inLoop": false
       },
@@ -19585,7 +19594,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 318,
+        "line": 321,
         "conditional": false,
         "inLoop": false
       },
@@ -19594,7 +19603,7 @@
         "target": "closeSlideOver",
         "targetName": "closeSlideOver",
         "edgeType": "call",
-        "line": 322,
+        "line": 325,
         "conditional": true,
         "inLoop": false
       },
@@ -19603,7 +19612,7 @@
         "target": "setOpportunitiesByStage",
         "targetName": "setOpportunitiesByStage",
         "edgeType": "call",
-        "line": 325,
+        "line": 328,
         "conditional": false,
         "inLoop": false
       },
@@ -19612,7 +19621,7 @@
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 328,
+        "line": 331,
         "conditional": false,
         "inLoop": true
       },
@@ -19621,7 +19630,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 330,
+        "line": 333,
         "conditional": false,
         "inLoop": true
       },
@@ -19630,7 +19639,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 339,
+        "line": 342,
         "conditional": false,
         "inLoop": false
       },
@@ -19639,7 +19648,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 352,
+        "line": 355,
         "conditional": false,
         "inLoop": false
       },
@@ -19648,7 +19657,7 @@
         "target": "setOpportunitiesByStage",
         "targetName": "setOpportunitiesByStage",
         "edgeType": "call",
-        "line": 353,
+        "line": 356,
         "conditional": false,
         "inLoop": false
       },
@@ -19657,7 +19666,7 @@
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 358,
+        "line": 361,
         "conditional": true,
         "inLoop": false
       },
@@ -19666,7 +19675,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 370,
+        "line": 373,
         "conditional": false,
         "inLoop": false
       },
@@ -19675,7 +19684,7 @@
         "target": "setActiveId",
         "targetName": "setActiveId",
         "edgeType": "call",
-        "line": 371,
+        "line": 374,
         "conditional": false,
         "inLoop": false
       },
@@ -19684,15 +19693,6 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 371,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
         "line": 374,
         "conditional": false,
         "inLoop": false
@@ -19702,15 +19702,6 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 376,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
-        "target": "setActiveId",
-        "targetName": "setActiveId",
-        "edgeType": "call",
         "line": 377,
         "conditional": false,
         "inLoop": false
@@ -19720,7 +19711,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 380,
+        "line": 379,
         "conditional": false,
         "inLoop": false
       },
@@ -19729,7 +19720,25 @@
         "target": "setActiveId",
         "targetName": "setActiveId",
         "edgeType": "call",
-        "line": 384,
+        "line": 380,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 383,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "setActiveId",
+        "targetName": "setActiveId",
+        "edgeType": "call",
+        "line": 387,
         "conditional": false,
         "inLoop": false
       },
@@ -19738,7 +19747,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 391,
+        "line": 394,
         "conditional": false,
         "inLoop": false
       },
@@ -19747,7 +19756,7 @@
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 396,
+        "line": 399,
         "conditional": false,
         "inLoop": true
       },
@@ -19756,7 +19765,7 @@
         "target": "findIndex",
         "targetName": "findIndex",
         "edgeType": "call",
-        "line": 397,
+        "line": 400,
         "conditional": false,
         "inLoop": true
       },
@@ -19765,7 +19774,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 397,
+        "line": 400,
         "conditional": false,
         "inLoop": false
       },
@@ -19774,7 +19783,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 414,
+        "line": 417,
         "conditional": true,
         "inLoop": false
       },
@@ -19783,7 +19792,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 415,
+        "line": 418,
         "conditional": true,
         "inLoop": false
       },
@@ -19792,7 +19801,7 @@
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 419,
+        "line": 422,
         "conditional": true,
         "inLoop": true
       },
@@ -19801,7 +19810,7 @@
         "target": "findIndex",
         "targetName": "findIndex",
         "edgeType": "call",
-        "line": 420,
+        "line": 423,
         "conditional": true,
         "inLoop": true
       },
@@ -19810,7 +19819,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 420,
+        "line": 423,
         "conditional": false,
         "inLoop": false
       },
@@ -19819,7 +19828,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 420,
+        "line": 423,
         "conditional": false,
         "inLoop": false
       },
@@ -19828,7 +19837,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 443,
+        "line": 446,
         "conditional": false,
         "inLoop": false
       },
@@ -19837,7 +19846,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 443,
+        "line": 446,
         "conditional": false,
         "inLoop": false
       },
@@ -19846,7 +19855,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 453,
+        "line": 456,
         "conditional": false,
         "inLoop": false
       },
@@ -19855,7 +19864,7 @@
         "target": "splice",
         "targetName": "splice",
         "edgeType": "call",
-        "line": 454,
+        "line": 457,
         "conditional": false,
         "inLoop": false
       },
@@ -19864,7 +19873,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 459,
+        "line": 462,
         "conditional": true,
         "inLoop": false
       },
@@ -19873,7 +19882,7 @@
         "target": "splice",
         "targetName": "splice",
         "edgeType": "call",
-        "line": 460,
+        "line": 463,
         "conditional": false,
         "inLoop": false
       },
@@ -19882,7 +19891,7 @@
         "target": "setOpportunitiesByStage",
         "targetName": "setOpportunitiesByStage",
         "edgeType": "call",
-        "line": 463,
+        "line": 466,
         "conditional": false,
         "inLoop": false
       },
@@ -19891,7 +19900,7 @@
         "target": "setPendingCloseData",
         "targetName": "setPendingCloseData",
         "edgeType": "call",
-        "line": 468,
+        "line": 471,
         "conditional": true,
         "inLoop": false
       },
@@ -19900,7 +19909,7 @@
         "target": "setShowCloseModal",
         "targetName": "setShowCloseModal",
         "edgeType": "call",
-        "line": 476,
+        "line": 479,
         "conditional": true,
         "inLoop": false
       },
@@ -19909,7 +19918,7 @@
         "target": "performStageUpdate",
         "targetName": "performStageUpdate",
         "edgeType": "call",
-        "line": 481,
+        "line": 484,
         "conditional": false,
         "inLoop": false
       },
@@ -19918,7 +19927,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 488,
+        "line": 491,
         "conditional": false,
         "inLoop": false
       },
@@ -19927,7 +19936,7 @@
         "target": "flat",
         "targetName": "flat",
         "edgeType": "call",
-        "line": 488,
+        "line": 491,
         "conditional": false,
         "inLoop": false
       },
@@ -19936,43 +19945,43 @@
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 488,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 490,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 490,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
-        "target": "getOpportunityStageLabel",
-        "targetName": "getOpportunityStageLabel",
-        "edgeType": "call",
         "line": 491,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 493,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 493,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 496,
+        "line": 494,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:111:OpportunityListContent",
+        "target": "getOpportunityStageLabel",
+        "targetName": "getOpportunityStageLabel",
+        "edgeType": "call",
+        "line": 499,
         "conditional": true,
         "inLoop": false
       },
@@ -19981,7 +19990,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 496,
+        "line": 499,
         "conditional": true,
         "inLoop": false
       },
@@ -19990,7 +19999,7 @@
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 503,
+        "line": 506,
         "conditional": true,
         "inLoop": false
       },
@@ -19999,7 +20008,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 503,
+        "line": 506,
         "conditional": true,
         "inLoop": false
       },
@@ -20008,7 +20017,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 533,
+        "line": 536,
         "conditional": false,
         "inLoop": false
       },
@@ -20017,7 +20026,7 @@
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 538,
+        "line": 541,
         "conditional": false,
         "inLoop": false
       },
@@ -20026,7 +20035,7 @@
         "target": "toggleCollapse",
         "targetName": "toggleCollapse",
         "edgeType": "call",
-        "line": 539,
+        "line": 542,
         "conditional": false,
         "inLoop": false
       },
@@ -20035,7 +20044,7 @@
         "target": "DndContext",
         "targetName": "DndContext",
         "edgeType": "render",
-        "line": 515,
+        "line": 518,
         "conditional": false,
         "inLoop": false
       },
@@ -20044,7 +20053,7 @@
         "target": "handleDragStart",
         "targetName": "handleDragStart",
         "edgeType": "callback",
-        "line": 518,
+        "line": 521,
         "conditional": false,
         "inLoop": false
       },
@@ -20053,7 +20062,7 @@
         "target": "handleDragOver",
         "targetName": "handleDragOver",
         "edgeType": "callback",
-        "line": 519,
+        "line": 522,
         "conditional": false,
         "inLoop": false
       },
@@ -20062,7 +20071,7 @@
         "target": "handleDragEnd",
         "targetName": "handleDragEnd",
         "edgeType": "callback",
-        "line": 520,
+        "line": 523,
         "conditional": false,
         "inLoop": false
       },
@@ -20071,7 +20080,7 @@
         "target": "handleDragCancel",
         "targetName": "handleDragCancel",
         "edgeType": "callback",
-        "line": 521,
+        "line": 524,
         "conditional": false,
         "inLoop": false
       },
@@ -20080,7 +20089,7 @@
         "target": "DragOverlay",
         "targetName": "DragOverlay",
         "edgeType": "render",
-        "line": 557,
+        "line": 560,
         "conditional": false,
         "inLoop": false
       },
@@ -20089,7 +20098,7 @@
         "target": "OpportunityColumn",
         "targetName": "OpportunityColumn",
         "edgeType": "render",
-        "line": 534,
+        "line": 537,
         "conditional": false,
         "inLoop": false
       },
@@ -20098,7 +20107,7 @@
         "target": "handleDeleteOpportunity",
         "targetName": "handleDeleteOpportunity",
         "edgeType": "callback",
-        "line": 541,
+        "line": 544,
         "conditional": false,
         "inLoop": false
       },
@@ -20107,7 +20116,7 @@
         "target": "handleOpportunityCreated",
         "targetName": "handleOpportunityCreated",
         "edgeType": "callback",
-        "line": 542,
+        "line": 545,
         "conditional": false,
         "inLoop": false
       },
@@ -20116,7 +20125,7 @@
         "target": "ColumnCustomizationMenu",
         "targetName": "ColumnCustomizationMenu",
         "edgeType": "render",
-        "line": 547,
+        "line": 550,
         "conditional": false,
         "inLoop": false
       },
@@ -20125,7 +20134,7 @@
         "target": "OpportunityCard",
         "targetName": "OpportunityCard",
         "edgeType": "render",
-        "line": 559,
+        "line": 562,
         "conditional": true,
         "inLoop": false
       },
@@ -20134,7 +20143,7 @@
         "target": "CloseOpportunityModal",
         "targetName": "CloseOpportunityModal",
         "edgeType": "render",
-        "line": 570,
+        "line": 573,
         "conditional": false,
         "inLoop": false
       },
@@ -20143,7 +20152,7 @@
         "target": "handleCloseCancel",
         "targetName": "handleCloseCancel",
         "edgeType": "callback",
-        "line": 572,
+        "line": 575,
         "conditional": false,
         "inLoop": false
       },
@@ -20152,7 +20161,7 @@
         "target": "handleCloseConfirm",
         "targetName": "handleCloseConfirm",
         "edgeType": "callback",
-        "line": 576,
+        "line": 579,
         "conditional": false,
         "inLoop": false
       },
@@ -20194,10 +20203,19 @@
       },
       {
         "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
         "target": "useCreate",
         "targetName": "useCreate",
         "edgeType": "hook",
-        "line": 18,
+        "line": 24,
         "conditional": false,
         "inLoop": false
       },
@@ -20206,7 +20224,7 @@
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 19,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
@@ -20215,7 +20233,7 @@
         "target": "useRefresh",
         "targetName": "useRefresh",
         "edgeType": "hook",
-        "line": 20,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },
@@ -20224,7 +20242,7 @@
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 21,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
@@ -20233,7 +20251,7 @@
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 24,
+        "line": 30,
         "conditional": false,
         "inLoop": false
       },
@@ -20242,7 +20260,7 @@
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 34,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
@@ -20251,7 +20269,7 @@
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 44,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
@@ -20260,35 +20278,35 @@
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 46,
+        "line": 55,
         "conditional": true,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
-        "target": "notify",
-        "targetName": "notify",
+        "target": "keys",
+        "targetName": "keys",
         "edgeType": "call",
-        "line": 47,
+        "line": 68,
         "conditional": true,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
-        "target": "notify",
-        "targetName": "notify",
+        "target": "setErrors",
+        "targetName": "setErrors",
         "edgeType": "call",
-        "line": 52,
+        "line": 69,
         "conditional": true,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
-        "target": "notify",
-        "targetName": "notify",
+        "target": "setErrors",
+        "targetName": "setErrors",
         "edgeType": "call",
-        "line": 57,
-        "conditional": true,
+        "line": 74,
+        "conditional": false,
         "inLoop": false
       },
       {
@@ -20296,7 +20314,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 63,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
@@ -20305,7 +20323,7 @@
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 64,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
@@ -20314,7 +20332,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 66,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
@@ -20323,7 +20341,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 67,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
@@ -20332,7 +20350,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 74,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
@@ -20341,7 +20359,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 74,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
@@ -20350,7 +20368,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 75,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
@@ -20359,7 +20377,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 75,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
@@ -20368,8 +20386,17 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 78,
+        "line": 93,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -20377,7 +20404,7 @@
         "target": "onOpportunityCreated",
         "targetName": "onOpportunityCreated",
         "edgeType": "call",
-        "line": 91,
+        "line": 114,
         "conditional": true,
         "inLoop": false
       },
@@ -20386,7 +20413,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 94,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
@@ -20395,7 +20422,7 @@
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 95,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
@@ -20404,7 +20431,7 @@
         "target": "setName",
         "targetName": "setName",
         "edgeType": "call",
-        "line": 96,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
@@ -20413,7 +20440,7 @@
         "target": "setPrincipalId",
         "targetName": "setPrincipalId",
         "edgeType": "call",
-        "line": 97,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
@@ -20422,7 +20449,7 @@
         "target": "setCustomerId",
         "targetName": "setCustomerId",
         "edgeType": "call",
-        "line": 98,
+        "line": 121,
         "conditional": false,
         "inLoop": false
       },
@@ -20431,7 +20458,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 99,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
@@ -20440,7 +20467,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 103,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
@@ -20449,7 +20476,7 @@
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 108,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
@@ -20458,7 +20485,7 @@
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 108,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
@@ -20467,7 +20494,7 @@
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 108,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
@@ -20476,7 +20503,7 @@
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 111,
+        "line": 146,
         "conditional": false,
         "inLoop": false
       },
@@ -20485,7 +20512,7 @@
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 113,
+        "line": 148,
         "conditional": true,
         "inLoop": false
       },
@@ -20494,7 +20521,7 @@
         "target": "addEventListener",
         "targetName": "addEventListener",
         "edgeType": "call",
-        "line": 115,
+        "line": 150,
         "conditional": false,
         "inLoop": false
       },
@@ -20503,7 +20530,7 @@
         "target": "removeEventListener",
         "targetName": "removeEventListener",
         "edgeType": "call",
-        "line": 116,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
@@ -20512,7 +20539,7 @@
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 123,
+        "line": 158,
         "conditional": false,
         "inLoop": false
       },
@@ -20521,7 +20548,7 @@
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 135,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
@@ -20530,7 +20557,7 @@
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 145,
+        "line": 180,
         "conditional": false,
         "inLoop": false
       },
@@ -20539,8 +20566,17 @@
         "target": "setName",
         "targetName": "setName",
         "edgeType": "call",
-        "line": 164,
+        "line": 200,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
+        "target": "setErrors",
+        "targetName": "setErrors",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -20548,8 +20584,17 @@
         "target": "setPrincipalId",
         "targetName": "setPrincipalId",
         "edgeType": "call",
-        "line": 180,
+        "line": 229,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
+        "target": "setErrors",
+        "targetName": "setErrors",
+        "edgeType": "call",
+        "line": 232,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -20557,7 +20602,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 187,
+        "line": 244,
         "conditional": false,
         "inLoop": false
       },
@@ -20566,8 +20611,17 @@
         "target": "setCustomerId",
         "targetName": "setCustomerId",
         "edgeType": "call",
-        "line": 202,
+        "line": 265,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:13:QuickAddOpportunity",
+        "target": "setErrors",
+        "targetName": "setErrors",
+        "edgeType": "call",
+        "line": 268,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -20575,7 +20629,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 209,
+        "line": 280,
         "conditional": false,
         "inLoop": false
       },
@@ -20584,7 +20638,7 @@
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 234,
+        "line": 310,
         "conditional": false,
         "inLoop": false
       },
@@ -20593,7 +20647,7 @@
         "target": "setName",
         "targetName": "setName",
         "edgeType": "call",
-        "line": 235,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
@@ -20602,7 +20656,7 @@
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "callback",
-        "line": 155,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
@@ -20611,7 +20665,7 @@
         "target": "X",
         "targetName": "X",
         "edgeType": "render",
-        "line": 149,
+        "line": 184,
         "conditional": false,
         "inLoop": false
       },
@@ -20620,7 +20674,7 @@
         "target": "Loader2",
         "targetName": "Loader2",
         "edgeType": "render",
-        "line": 249,
+        "line": 325,
         "conditional": true,
         "inLoop": false
       },

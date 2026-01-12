@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-core",
-  "generated_at": "2026-01-11T23:43:41.802Z",
+  "generated_at": "2026-01-12T19:25:39.883Z",
   "item_count": 5,
   "items": [
     {
@@ -21,8 +21,7 @@
       "relatedSchemas": [
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
-        "tagSchema"
+        "closeOpportunitySchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,

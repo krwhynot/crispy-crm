@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-11T23:43:41.835Z",
+  "generated_at": "2026-01-12T19:25:39.897Z",
   "generator": "scripts/discover/extractors/schemas.ts",
   "source_globs": [
     "src/atomic-crm/validation/**/*.ts"
   ],
-  "checksum": "sha256:95a5181759f45268",
+  "checksum": "sha256:48c685a448c2dd8f",
   "source_hashes": {
     "src/atomic-crm/validation/activities.ts": "a30e221951be",
     "src/atomic-crm/validation/categories.ts": "0f7d9f25b8f8",
@@ -23,9 +23,9 @@
     "src/atomic-crm/validation/notes.ts": "557ab89b53fd",
     "src/atomic-crm/validation/operatorSegments.ts": "b0f573acd197",
     "src/atomic-crm/validation/opportunities/index.ts": "8b03549e3f83",
-    "src/atomic-crm/validation/opportunities/opportunities-core.ts": "e683c293c5d7",
+    "src/atomic-crm/validation/opportunities/opportunities-core.ts": "b9772be3bb00",
     "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts": "1f233d01e04e",
-    "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "b6ba2b6eb5f0",
+    "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "d6fcf5d6953e",
     "src/atomic-crm/validation/organizationDistributors.ts": "95da3604b4fe",
     "src/atomic-crm/validation/organizations.ts": "ce9d310007f2",
     "src/atomic-crm/validation/productDistributors.ts": "8f6ec7e2789f",
@@ -198,24 +198,24 @@
       "name": "opportunities-core",
       "file": "opportunities-core.json",
       "item_count": 5,
-      "checksum": "sha256:18c697d3fc98f7c6",
+      "checksum": "sha256:f634cec3f0ab6d70",
       "source_files": [
         "src/atomic-crm/validation/opportunities/opportunities-core.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/opportunities/opportunities-core.ts": "e683c293c5d7"
+        "src/atomic-crm/validation/opportunities/opportunities-core.ts": "b9772be3bb00"
       }
     },
     {
       "name": "opportunities-operations",
       "file": "opportunities-operations.json",
       "item_count": 4,
-      "checksum": "sha256:c1eb7742afaab678",
+      "checksum": "sha256:d0809de3579632eb",
       "source_files": [
         "src/atomic-crm/validation/opportunities/opportunities-operations.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "b6ba2b6eb5f0"
+        "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "d6fcf5d6953e"
       }
     },
     {

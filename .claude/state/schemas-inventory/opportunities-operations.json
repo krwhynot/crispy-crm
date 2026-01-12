@@ -1,12 +1,12 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-11T23:43:41.803Z",
+  "generated_at": "2026-01-12T19:25:39.890Z",
   "item_count": 4,
   "items": [
     {
       "name": "createOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 127,
+      "line": 159,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -56,16 +56,11 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityNoteSchema",
         "opportunityStageSchema",
         "opportunityPrioritySchema",
         "quickCreateOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
-        "opportunityProductSchema",
-        "archiveOpportunityWithRelationsParamsSchema",
-        "unarchiveOpportunityWithRelationsParamsSchema",
-        "syncOpportunityWithProductsParamsSchema"
+        "closeOpportunitySchema"
       ],
       "validationFunctions": [
         "validateCreateOpportunity"
@@ -76,7 +71,7 @@
     {
       "name": "quickCreateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 189,
+      "line": 240,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -177,7 +172,7 @@
     {
       "name": "updateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 225,
+      "line": 276,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -202,16 +197,11 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityNoteSchema",
         "opportunityStageSchema",
         "opportunityPrioritySchema",
         "createOpportunitySchema",
         "quickCreateOpportunitySchema",
-        "closeOpportunitySchema",
-        "opportunityProductSchema",
-        "archiveOpportunityWithRelationsParamsSchema",
-        "unarchiveOpportunityWithRelationsParamsSchema",
-        "syncOpportunityWithProductsParamsSchema"
+        "closeOpportunitySchema"
       ],
       "validationFunctions": [
         "validateUpdateOpportunity"
@@ -222,7 +212,7 @@
     {
       "name": "closeOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 344,
+      "line": 395,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -278,16 +268,11 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityNoteSchema",
         "opportunityStageSchema",
         "opportunityPrioritySchema",
         "createOpportunitySchema",
         "quickCreateOpportunitySchema",
-        "updateOpportunitySchema",
-        "opportunityProductSchema",
-        "archiveOpportunityWithRelationsParamsSchema",
-        "unarchiveOpportunityWithRelationsParamsSchema",
-        "syncOpportunityWithProductsParamsSchema"
+        "updateOpportunitySchema"
       ],
       "validationFunctions": [
         "validateCloseOpportunity"

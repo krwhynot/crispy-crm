@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-11T23:43:48.393Z",
+  "generated_at": "2026-01-12T19:25:43.284Z",
   "items": {
     "nodes": [
       {
@@ -157,46 +157,46 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:124:stripComputedFields",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:151:stripComputedFields",
         "name": "stripComputedFields",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 124,
+        "line": 151,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:147:mergeCreateDefaults",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:182:mergeCreateDefaults",
         "name": "mergeCreateDefaults",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 147,
+        "line": 182,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:170:opportunitiesBeforeDelete",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:205:opportunitiesBeforeDelete",
         "name": "opportunitiesBeforeDelete",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 170,
+        "line": 205,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:203:opportunitiesBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:238:opportunitiesBeforeGetList",
         "name": "opportunitiesBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 203,
+        "line": 238,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:228:opportunitiesBeforeSave",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:264:opportunitiesBeforeSave",
         "name": "opportunitiesBeforeSave",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 228,
+        "line": 264,
         "nodeType": "function",
         "exported": false,
         "async": true
@@ -1365,56 +1365,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:170:opportunitiesBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:205:opportunitiesBeforeDelete",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 175,
+        "line": 210,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:170:opportunitiesBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:205:opportunitiesBeforeDelete",
         "target": "isInteger",
         "targetName": "isInteger",
         "edgeType": "call",
-        "line": 176,
+        "line": 211,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:170:opportunitiesBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:205:opportunitiesBeforeDelete",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 182,
+        "line": 217,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:228:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:264:opportunitiesBeforeSave",
         "target": "stripComputedFields",
         "targetName": "stripComputedFields",
         "edgeType": "call",
-        "line": 234,
+        "line": 276,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:228:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:264:opportunitiesBeforeSave",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 241,
+        "line": 282,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:228:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:264:opportunitiesBeforeSave",
         "target": "mergeCreateDefaults",
         "targetName": "mergeCreateDefaults",
         "edgeType": "call",
-        "line": 253,
+        "line": 290,
         "conditional": true,
         "inLoop": false
       },
@@ -3520,7 +3520,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 136,
+        "line": 138,
         "conditional": true,
         "inLoop": false
       },
@@ -3529,7 +3529,7 @@
         "target": "assertExtendedDataProvider",
         "targetName": "assertExtendedDataProvider",
         "edgeType": "call",
-        "line": 138,
+        "line": 140,
         "conditional": true,
         "inLoop": false
       },
@@ -3538,7 +3538,7 @@
         "target": "createWithProducts",
         "targetName": "createWithProducts",
         "edgeType": "call",
-        "line": 140,
+        "line": 142,
         "conditional": true,
         "inLoop": false
       },
@@ -3547,7 +3547,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 146,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
@@ -3556,7 +3556,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 164,
+        "line": 166,
         "conditional": true,
         "inLoop": false
       },
@@ -3565,7 +3565,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 167,
+        "line": 171,
         "conditional": true,
         "inLoop": false
       },
@@ -3574,7 +3574,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 168,
+        "line": 172,
         "conditional": true,
         "inLoop": false
       },
@@ -3583,7 +3583,7 @@
         "target": "assertExtendedDataProvider",
         "targetName": "assertExtendedDataProvider",
         "edgeType": "call",
-        "line": 174,
+        "line": 178,
         "conditional": true,
         "inLoop": false
       },
@@ -3592,7 +3592,7 @@
         "target": "updateWithProducts",
         "targetName": "updateWithProducts",
         "edgeType": "call",
-        "line": 176,
+        "line": 180,
         "conditional": true,
         "inLoop": false
       },
@@ -3601,7 +3601,7 @@
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 187,
+        "line": 191,
         "conditional": false,
         "inLoop": false
       },
@@ -3610,7 +3610,7 @@
         "target": "updateMany",
         "targetName": "updateMany",
         "edgeType": "call",
-        "line": 196,
+        "line": 200,
         "conditional": false,
         "inLoop": false
       },
@@ -3619,7 +3619,7 @@
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 204,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
@@ -3628,7 +3628,7 @@
         "target": "deleteMany",
         "targetName": "deleteMany",
         "edgeType": "call",
-        "line": 212,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
@@ -3637,7 +3637,7 @@
         "target": "withErrorLogging",
         "targetName": "withErrorLogging",
         "edgeType": "call",
-        "line": 226,
+        "line": 230,
         "conditional": false,
         "inLoop": false
       },
@@ -3646,7 +3646,7 @@
         "target": "withLifecycleCallbacks",
         "targetName": "withLifecycleCallbacks",
         "edgeType": "call",
-        "line": 227,
+        "line": 231,
         "conditional": false,
         "inLoop": false
       },
@@ -3655,7 +3655,7 @@
         "target": "withValidation",
         "targetName": "withValidation",
         "edgeType": "call",
-        "line": 227,
+        "line": 231,
         "conditional": false,
         "inLoop": false
       },

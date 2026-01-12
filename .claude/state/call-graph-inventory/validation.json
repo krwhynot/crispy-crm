@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-11T23:43:48.428Z",
+  "generated_at": "2026-01-12T19:25:43.291Z",
   "items": {
     "nodes": [
       {
@@ -409,10 +409,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-core.ts:208:validateOpportunityForm",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-core.ts:229:validateOpportunityForm",
         "name": "validateOpportunityForm",
         "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
-        "line": 208,
+        "line": 229,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -436,28 +436,28 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:396:validateCreateOpportunity",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:447:validateCreateOpportunity",
         "name": "validateCreateOpportunity",
         "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-        "line": 396,
+        "line": 447,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:415:validateUpdateOpportunity",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:466:validateUpdateOpportunity",
         "name": "validateUpdateOpportunity",
         "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-        "line": 415,
+        "line": 466,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:438:validateCloseOpportunity",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:489:validateCloseOpportunity",
         "name": "validateCloseOpportunity",
         "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-        "line": 438,
+        "line": 489,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -1770,29 +1770,29 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:208:validateOpportunityForm",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:229:validateOpportunityForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 210,
+        "line": 231,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:208:validateOpportunityForm",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:229:validateOpportunityForm",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 215,
+        "line": 236,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:208:validateOpportunityForm",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:229:validateOpportunityForm",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 216,
+        "line": 237,
         "conditional": false,
         "inLoop": false
       },
@@ -1833,83 +1833,83 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:396:validateCreateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:447:validateCreateOpportunity",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 398,
+        "line": 449,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:396:validateCreateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:447:validateCreateOpportunity",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 402,
+        "line": 453,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:396:validateCreateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:447:validateCreateOpportunity",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 403,
+        "line": 454,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:415:validateUpdateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:466:validateUpdateOpportunity",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 417,
+        "line": 468,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:415:validateUpdateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:466:validateUpdateOpportunity",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 421,
+        "line": 472,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:415:validateUpdateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:466:validateUpdateOpportunity",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 422,
+        "line": 473,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:438:validateCloseOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:489:validateCloseOpportunity",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 440,
+        "line": 491,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:438:validateCloseOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:489:validateCloseOpportunity",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 444,
+        "line": 495,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:438:validateCloseOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:489:validateCloseOpportunity",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 445,
+        "line": 496,
         "conditional": false,
         "inLoop": false
       },

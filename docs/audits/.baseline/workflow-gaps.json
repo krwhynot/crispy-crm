@@ -1,5 +1,5 @@
 {
-  "lastAudit": "2026-01-11",
+  "lastAudit": "2026-01-12",
   "lastMode": "full",
   "scope": "src/",
   "findings": {
@@ -8,78 +8,48 @@
         "id": "WF-C1-001",
         "check": "WF-C1",
         "type": "silent-status-default",
-        "location": "src/atomic-crm/reports/tabs/OverviewTab.tsx:255",
-        "description": "Hardcoded stage comparison that could mask silent defaults",
-        "firstSeen": "2026-01-11"
+        "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:204",
+        "description": "Status field has silent default to 'active' in createOpportunitySchema",
+        "firstSeen": "2026-01-12"
+      },
+      {
+        "id": "WF-C1-002",
+        "check": "WF-C1",
+        "type": "silent-status-default",
+        "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:252",
+        "description": "Status field has silent default to 'active' in quickCreateOpportunitySchema",
+        "firstSeen": "2026-01-12"
+      },
+      {
+        "id": "WF-C1-003",
+        "check": "WF-C1",
+        "type": "silent-priority-default",
+        "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:253",
+        "description": "Priority field defaults to 'medium' in quickCreateOpportunitySchema",
+        "firstSeen": "2026-01-12"
       },
       {
         "id": "WF-C2-001",
         "check": "WF-C2",
         "type": "required-field-fallback",
-        "location": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:109",
-        "description": "Contact first_name uses empty string fallback",
-        "firstSeen": "2026-01-11",
-        "e2eResult": "MITIGATED",
-        "e2eNote": "Form validation catches empty names before reaching callback - defense-in-depth code, not exploitable via UI",
-        "severity": "low"
+        "location": "src/atomic-crm/opportunities/WorkflowManagementSection.tsx:34-36",
+        "description": "Workflow fields initialize with empty string fallbacks",
+        "firstSeen": "2026-01-11"
       },
       {
         "id": "WF-C2-002",
         "check": "WF-C2",
         "type": "required-field-fallback",
-        "location": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:110",
-        "description": "Contact last_name uses empty string fallback",
-        "firstSeen": "2026-01-11",
-        "e2eResult": "MITIGATED",
-        "e2eNote": "Form validation catches empty names before reaching callback - defense-in-depth code, not exploitable via UI",
-        "severity": "low"
+        "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:109-110",
+        "description": "Organization names fallback to empty strings",
+        "firstSeen": "2026-01-11"
       },
       {
         "id": "WF-C2-003",
         "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/atomic-crm/providers/supabase/services/TransformService.ts:182",
-        "description": "Name concatenation with empty string fallback",
-        "firstSeen": "2026-01-11"
-      },
-      {
-        "id": "WF-C2-004",
-        "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/atomic-crm/utils/saleOptionRenderer.ts:9",
-        "description": "Display logic using empty string fallback for names",
-        "firstSeen": "2026-01-11"
-      },
-      {
-        "id": "WF-C2-005",
-        "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:68",
-        "description": "Organization name fallback in opportunity creation",
-        "firstSeen": "2026-01-11"
-      },
-      {
-        "id": "WF-C2-006",
-        "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/atomic-crm/opportunities/WorkflowManagementSection.tsx:34",
-        "description": "Next action workflow field fallback",
-        "firstSeen": "2026-01-11"
-      },
-      {
-        "id": "WF-C2-007",
-        "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/atomic-crm/opportunities/WorkflowManagementSection.tsx:35",
-        "description": "Next action date workflow field fallback",
-        "firstSeen": "2026-01-11"
-      },
-      {
-        "id": "WF-C2-008",
-        "check": "WF-C2",
-        "type": "required-field-fallback",
-        "location": "src/atomic-crm/opportunities/WorkflowManagementSection.tsx:36",
-        "description": "Decision criteria workflow field fallback",
+        "type": "required-field-implicit-default",
+        "location": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:96-98",
+        "description": "Campaign field chains three fallbacks",
         "firstSeen": "2026-01-11"
       }
     ],
