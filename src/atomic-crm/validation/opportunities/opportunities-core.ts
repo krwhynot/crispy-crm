@@ -178,15 +178,36 @@ const opportunityBaseSchema = z.strictObject({
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)), // Required when reason is "other"
 
-  // Note: The following fields exist in database but are NOT validated
-  // because they have no UI input fields in OpportunityInputs.tsx (per "UI as truth" principle):
-  // - status, actual_close_date
-  // - index, founding_interaction_id
-  // - stage_manual, status_manual
-  // - competition (undocumented - not in PRD)
-  // - probability
-  // - competitor_ids, team_members
-  // - opportunity_owner_id
+  // Database fields (read-only - no UI inputs in OpportunityInputs.tsx)
+  // Included in schema for validation completeness when loading records
+  status: z.enum(["active", "on_hold", "nurturing", "stalled", "expired"]).optional().nullable(),
+  index: z.number().int().optional().nullable(),
+  actual_close_date: z.coerce.date().optional().nullable(),
+  stage_manual: z.boolean().optional().nullable(),
+  status_manual: z.boolean().optional().nullable(),
+  competition: z.string().max(2000).optional().nullable(),
+  founding_interaction_id: z.union([z.string(), z.number()]).optional().nullable(),
+  probability: z.number().optional().nullable(),
+  opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
+  created_by: z.union([z.string(), z.number()]).optional().nullable(),
+  updated_by: z.union([z.string(), z.number()]).optional().nullable(),
+  search_tsv: z.string().optional().nullable(),
+  stage_changed_at: z.string().optional().nullable(),
+
+  // Summary view computed fields (populated by database views, not editable)
+  customer_organization_name: z.string().optional().nullable(),
+  principal_organization_name: z.string().optional().nullable(),
+  distributor_organization_name: z.string().optional().nullable(),
+  days_in_stage: z.number().optional().nullable(),
+  last_activity_date: z.string().optional().nullable(),
+  days_since_last_activity: z.number().optional().nullable(),
+  pending_task_count: z.number().optional().nullable(),
+  overdue_task_count: z.number().optional().nullable(),
+  next_task_id: z.union([z.string(), z.number()]).optional().nullable(),
+  next_task_title: z.string().optional().nullable(),
+  next_task_due_date: z.string().optional().nullable(),
+  next_task_priority: z.string().optional().nullable(),
+  products: z.any().optional().nullable(), // JSONB array from view
 });
 
 // Main opportunity schema
