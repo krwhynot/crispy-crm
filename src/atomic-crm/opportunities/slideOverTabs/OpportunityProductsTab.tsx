@@ -1,7 +1,16 @@
 import { useState } from "react";
-import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from "react-admin";
+import {
+  useGetList,
+  Form,
+  useUpdate,
+  useNotify,
+  ReferenceArrayInput,
+  useDataProvider,
+} from "react-admin";
 import type { Identifier } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { activityKeys } from "@/atomic-crm/queryKeys";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -55,6 +64,8 @@ export function OpportunityProductsTab({
 }: OpportunityProductsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
 
   // Fetch junction table data for view mode - only when tab is active AND in view mode
@@ -96,8 +107,39 @@ export function OpportunityProductsTab({
           previousData: record,
         },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             notify("Products updated successfully", { type: "success" });
+
+            try {
+              const productCount = data.product_ids?.length ?? 0;
+              const subject =
+                productCount === 0
+                  ? "Products cleared from opportunity"
+                  : `Product lineup updated (${productCount} product${productCount === 1 ? "" : "s"})`;
+
+              await dataProvider.create("activities", {
+                data: {
+                  activity_type: "interaction",
+                  type: "note",
+                  subject,
+                  activity_date: new Date().toISOString(),
+                  opportunity_id: record.id,
+                  organization_id: record.customer_organization_id,
+                },
+              });
+
+              queryClient.invalidateQueries({ queryKey: activityKeys.all });
+            } catch (error: unknown) {
+              console.error("Failed to create product update activity:", error);
+              notify(
+                "Failed to log activity. Please manually add a note for this product change.",
+                {
+                  type: "error",
+                  autoHideDuration: 10000,
+                }
+              );
+            }
+
             if (onModeToggle) {
               onModeToggle();
             }

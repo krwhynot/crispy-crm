@@ -1,6 +1,16 @@
 import { useState, useMemo } from "react";
-import { useShowContext, useGetList, useGetMany, useRefresh, useCreate, useNotify } from "ra-core";
+import {
+  useShowContext,
+  useGetList,
+  useGetMany,
+  useRefresh,
+  useCreate,
+  useNotify,
+  useDataProvider,
+} from "ra-core";
 import type { Identifier } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
+import { activityKeys } from "../queryKeys";
 import {
   Datagrid,
   FunctionField,
@@ -32,6 +42,8 @@ export function OpportunitiesTab() {
   const refresh = useRefresh();
   const [create] = useCreate();
   const notify = useNotify();
+  const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
 
   // Step 1: Fetch junction records
   const { data: junctionRecords, isLoading: junctionLoading } = useGetList(
@@ -88,20 +100,38 @@ export function OpportunitiesTab() {
     setUnlinkingOpportunity(null);
   };
 
-  const handleQuickLink = async (opportunityId: number) => {
+  const handleQuickLink = async (opportunity: Opportunity) => {
     try {
       await create(
         "opportunity_contacts",
         {
           data: {
-            opportunity_id: opportunityId,
+            opportunity_id: opportunity.id,
             contact_id: contact.id,
           },
         },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             notify("Opportunity linked", { type: "success" });
             refresh();
+
+            // Log activity after successful link
+            try {
+              await dataProvider.create("activities", {
+                data: {
+                  activity_type: "interaction",
+                  type: "note",
+                  subject: `Contact linked: ${contactName}`,
+                  activity_date: new Date().toISOString(),
+                  opportunity_id: opportunity.id,
+                  organization_id: opportunity.customer_organization_id,
+                },
+              });
+              queryClient.invalidateQueries({ queryKey: activityKeys.all });
+            } catch (activityError) {
+              console.error("Failed to log contact link activity:", activityError);
+              notify("Contact linked, but failed to log activity", { type: "warning" });
+            }
           },
           onError: (error: Error) => {
             notify(error?.message || "Failed to link opportunity", { type: "error" });
@@ -133,7 +163,7 @@ export function OpportunitiesTab() {
               <SuggestedOpportunityCard
                 key={opp.id}
                 opportunity={opp}
-                onLink={() => handleQuickLink(opp.id)}
+                onLink={() => handleQuickLink(opp)}
               />
             ))}
           </div>

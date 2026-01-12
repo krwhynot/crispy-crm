@@ -250,8 +250,10 @@ export const quickCreateOpportunitySchema = z.strictObject({
   principal_organization_id: z.union([z.string(), z.number()]), // MFB: every opp has a principal
 
   // Auto-populated fields
-  status: z.literal("active").default("active"),
-  priority: opportunityPrioritySchema.default("medium"),
+  // NO DEFAULT: UI must explicitly provide status. DB has column default as safety net.
+  status: z.literal("active"),
+  // NO DEFAULT: UI must explicitly provide priority. DB has column default as safety net.
+  priority: opportunityPrioritySchema,
 
   // Owner assignment (current user)
   opportunity_owner_id: z.union([z.string(), z.number()]).optional(),

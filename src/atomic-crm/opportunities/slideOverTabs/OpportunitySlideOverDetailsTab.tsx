@@ -1,7 +1,9 @@
 import { useState, useCallback, useRef } from "react";
-import { Form, useUpdate, useNotify } from "react-admin";
+import { Form, useUpdate, useNotify, useDataProvider } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";
+import { activityKeys } from "@/atomic-crm/queryKeys";
 import { OpportunityDetailsFormSection } from "./OpportunityDetailsFormSection";
 import { OpportunityDetailsViewSection } from "./OpportunityDetailsViewSection";
 
@@ -29,6 +31,8 @@ export function OpportunitySlideOverDetailsTab({
 }: OpportunitySlideOverDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
   const [serverError, setServerError] = useState<ServerValidationError | null>(null);
 
@@ -54,9 +58,31 @@ export function OpportunitySlideOverDetailsTab({
             previousData: record,
           },
           {
-            onSuccess: () => {
+            onSuccess: async () => {
               setServerError(null); // Clear server errors on success
               notify("Opportunity updated successfully", { type: "success" });
+
+              try {
+                await dataProvider.create("activities", {
+                  data: {
+                    activity_type: "interaction",
+                    type: "note",
+                    subject: "Opportunity details updated",
+                    activity_date: new Date().toISOString(),
+                    opportunity_id: record.id,
+                    organization_id: record.customer_organization_id,
+                  },
+                });
+
+                queryClient.invalidateQueries({ queryKey: activityKeys.all });
+              } catch (error: unknown) {
+                console.error("Failed to create update activity:", error);
+                notify("Failed to log activity. Please manually add a note for this update.", {
+                  type: "error",
+                  autoHideDuration: 10000,
+                });
+              }
+
               if (onModeToggle) {
                 onModeToggle(); // Switch back to view mode
               }
@@ -72,7 +98,7 @@ export function OpportunitySlideOverDetailsTab({
         setIsSaving(false);
       }
     },
-    [update, record, notify, onModeToggle]
+    [update, record, notify, onModeToggle, dataProvider, queryClient]
   );
 
   /**
