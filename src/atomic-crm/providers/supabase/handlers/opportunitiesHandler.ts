@@ -133,7 +133,9 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
         const validatedData = handlerInputSchema.parse(params.data);
         const productsToSync: ProductFromSchema[] | undefined = validatedData.products_to_sync;
 
-        if (Array.isArray(productsToSync)) {
+        // Only use OpportunitiesService when there are actual products to sync
+        // Empty arrays should use the standard create path (avoids ExtendedDataProvider requirement)
+        if (Array.isArray(productsToSync) && productsToSync.length > 0) {
           // Service is instantiated here to ensure it uses the wrapped provider
           const extendedProvider = assertExtendedDataProvider(baseProvider);
           const service = new OpportunitiesService(extendedProvider);
