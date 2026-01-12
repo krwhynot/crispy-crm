@@ -201,7 +201,8 @@ export const createOpportunitySchema = opportunityBaseSchema
     // Fields used by quick-create but not in UI forms
     // These are set programmatically (status=active, owner=current user)
     // Must be included since opportunityBaseSchema uses strictObject()
-    status: z.literal("active").optional().default("active"),
+    // NO DEFAULT: UI must explicitly provide status. DB has column default as safety net.
+    status: z.literal("active").optional(),
     opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
   })
   .required({

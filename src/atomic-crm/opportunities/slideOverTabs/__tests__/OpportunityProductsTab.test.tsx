@@ -1,16 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-// Mock opportunity record for testing
-const mockOpportunity = {
-  id: 1,
-  name: "Test Opportunity",
-  stage: "new_lead",
-  status: "active",
-  priority: "high",
-  customer_organization_id: 1,
-  principal_organization_id: 2,
-  products_to_sync: [],
-};
+// Test data will be used when full implementation is added
+// For now, documenting expected behavior only
 
 describe("OpportunityProductsTab - WF-H2-004", () => {
   beforeEach(() => {
@@ -18,8 +9,9 @@ describe("OpportunityProductsTab - WF-H2-004", () => {
   });
 
   it("should create activity log when products are synced", async () => {
+    // Setup spies for the expected behavior
     const createSpy = vi.fn().mockResolvedValue({ data: { id: 1 } });
-    const updateSpy = vi.fn().mockResolvedValue({ data: mockOpportunity });
+    const updateSpy = vi.fn().mockResolvedValue({ data: { id: 1 } });
 
     // This test documents the EXPECTED behavior after fix
     // Currently will FAIL because activity logging is not implemented
@@ -44,7 +36,7 @@ describe("OpportunityProductsTab - WF-H2-004", () => {
     //       activity_type: "interaction",
     //       type: "note",
     //       subject: expect.stringContaining("product"),
-    //       opportunity_id: mockOpportunity.id,
+    //       opportunity_id: 1,  // The opportunity ID
     //     }),
     //   })
     // );

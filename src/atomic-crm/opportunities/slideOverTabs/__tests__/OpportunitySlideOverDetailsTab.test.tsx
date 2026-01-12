@@ -1,18 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderWithAdminContext } from "@/test/renderWithAdminContext";
-import { screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 
-// Mock opportunity record for testing
-const mockOpportunity = {
-  id: 1,
-  name: "Test Opportunity",
-  stage: "new_lead",
-  status: "active",
-  priority: "high",
-  customer_organization_id: 1,
-  principal_organization_id: 2,
-};
+// Test data will be used when full implementation is added
+// For now, documenting expected behavior only
 
 describe("OpportunitySlideOverDetailsTab - WF-H2-003", () => {
   beforeEach(() => {
@@ -20,8 +9,9 @@ describe("OpportunitySlideOverDetailsTab - WF-H2-003", () => {
   });
 
   it("should create activity log when details are updated", async () => {
+    // Setup spies for the expected behavior
     const createSpy = vi.fn().mockResolvedValue({ data: { id: 1 } });
-    const updateSpy = vi.fn().mockResolvedValue({ data: mockOpportunity });
+    const updateSpy = vi.fn().mockResolvedValue({ data: { id: 1 } });
 
     // This test documents the EXPECTED behavior after fix
     // Currently will FAIL because activity logging is not implemented
@@ -44,7 +34,7 @@ describe("OpportunitySlideOverDetailsTab - WF-H2-003", () => {
     //   expect.objectContaining({
     //     data: expect.objectContaining({
     //       activity_type: "interaction",
-    //       opportunity_id: mockOpportunity.id,
+    //       opportunity_id: 1,  // The opportunity ID
     //     }),
     //   })
     // );
