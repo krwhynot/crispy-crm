@@ -128,10 +128,14 @@ const VIRTUAL_FIELDS = [
 /**
  * Default values for opportunity create
  * Used to ensure validation passes when fields are missing
+ *
+ * FIX [WF-E2E-001]: REMOVED contact_ids from defaults.
+ * Quick creates should NOT have contact_ids set at all (undefined).
+ * The createOpportunitySchema.refine() allows undefined contact_ids
+ * for quick creates but rejects empty arrays [] for full creates.
+ * Setting contact_ids: [] here was causing quick creates to fail validation.
  */
-const CREATE_DEFAULTS = {
-  contact_ids: [] as number[],
-} as const;
+const CREATE_DEFAULTS = {} as const;
 
 /**
  * Strip computed and virtual fields that shouldn't be sent to database
