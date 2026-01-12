@@ -91,6 +91,15 @@ vi.mock("react-admin", async (importOriginal) => {
   };
 });
 
+const mockDataProvider = {
+  create: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+  getOne: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+};
+
+const mockQueryClient = {
+  invalidateQueries: vi.fn(),
+};
+
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
   return {
@@ -100,8 +109,13 @@ vi.mock("ra-core", async () => {
     useRefresh: () => mockUseRefresh,
     useCreate: () => [mockCreate],
     useNotify: () => mockNotify,
+    useDataProvider: () => mockDataProvider,
   };
 });
+
+vi.mock("@tanstack/react-query", () => ({
+  useQueryClient: () => mockQueryClient,
+}));
 
 describe("OpportunitiesTab", () => {
   beforeEach(() => {

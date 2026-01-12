@@ -1,6 +1,8 @@
-import { useCreate, useNotify, Form, ReferenceInput } from "react-admin";
+import { useCreate, useNotify, useDataProvider, Form, ReferenceInput } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { getAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
+import { activityKeys } from "@/atomic-crm/queryKeys";
 import {
   Dialog,
   DialogContent,
@@ -35,6 +37,8 @@ export function LinkOpportunityModal({
 }: LinkOpportunityModalProps) {
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
+  const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
 
   const handleLink = async (data: LinkOpportunityFormData) => {
     if (!data.opportunity_id) return;
@@ -57,10 +61,34 @@ export function LinkOpportunityModal({
           },
         },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             notify("Opportunity linked successfully", { type: "success" });
             onSuccess();
             onClose();
+
+            // Log activity after successful link
+            try {
+              // Fetch opportunity details for activity log
+              const { data: opportunity } = await dataProvider.getOne<Opportunity>(
+                "opportunities",
+                { id: data.opportunity_id! }
+              );
+
+              await dataProvider.create("activities", {
+                data: {
+                  activity_type: "interaction",
+                  type: "note",
+                  subject: `Contact linked: ${contactName}`,
+                  activity_date: new Date().toISOString(),
+                  opportunity_id: opportunity.id,
+                  organization_id: opportunity.customer_organization_id,
+                },
+              });
+              queryClient.invalidateQueries({ queryKey: activityKeys.all });
+            } catch (activityError) {
+              console.error("Failed to log contact link activity:", activityError);
+              // Don't notify user since the link itself succeeded
+            }
           },
           onError: (error: unknown) => {
             const errorMessage =
