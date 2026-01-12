@@ -53,7 +53,12 @@ const OpportunityEdit = () => {
 const OpportunityEditForm = () => {
   const record = useRecordContext<Opportunity>();
 
-  const defaultValues = useMemo(() => opportunitySchema.partial().parse(record), [record]);
+  // Guard against null record during initial render - useMemo must be called unconditionally
+  // per React hooks rules, so we handle null inside the callback
+  const defaultValues = useMemo(() => {
+    if (!record) return {};
+    return opportunitySchema.partial().parse(record);
+  }, [record]);
 
   // Wait for record to load before rendering form
   if (!record) return null;

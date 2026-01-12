@@ -44,30 +44,56 @@ interface OpportunityListContentProps {
 }
 
 /**
- * Custom collision detection that prioritizes pointer position.
+ * Custom collision detection for Kanban drag-drop.
  *
- * 1. First tries `pointerWithin` - checks if pointer is inside a droppable
- * 2. Falls back to `rectIntersection` - checks if dragged element overlaps droppables
- * 3. Finally falls back to `closestCorners` for keyboard navigation
+ * Strategy: Prioritize column (stage) droppables over card droppables to ensure
+ * the drop target is always resolved to a column, not a card within the column.
  *
- * This solves issues where `closestCorners` alone fails to detect collisions
- * in nested scrollable containers.
+ * The issue: SortableContext creates droppable zones for each card, which can
+ * intercept collisions before the column droppable is detected. This causes
+ * "stuck" highlights where the column never registers the drop.
+ *
+ * Solution:
+ * 1. Get all collisions using multiple strategies
+ * 2. Filter to prioritize stage (column) collisions over card collisions
+ * 3. Fall back to card collisions if no column collision found
  */
+const STAGE_IDS = new Set([
+  "new_lead",
+  "initial_outreach",
+  "sample_visit_offered",
+  "feedback_logged",
+  "demo_scheduled",
+  "closed_won",
+  "closed_lost",
+]);
+
 const customCollisionDetection: CollisionDetection = (args) => {
-  // First, check if pointer is directly within a droppable
+  // Get collisions from multiple detection strategies
   const pointerCollisions = pointerWithin(args);
-  if (pointerCollisions.length > 0) {
-    return pointerCollisions;
-  }
-
-  // Fall back to rectangle intersection (more tolerant)
   const rectCollisions = rectIntersection(args);
-  if (rectCollisions.length > 0) {
-    return rectCollisions;
+  const cornerCollisions = closestCorners(args);
+
+  // Combine all collisions, prioritizing pointer > rect > corners
+  const allCollisions = [...pointerCollisions, ...rectCollisions, ...cornerCollisions];
+
+  if (allCollisions.length === 0) {
+    return [];
   }
 
-  // Final fallback to closestCorners (useful for keyboard navigation)
-  return closestCorners(args);
+  // Separate column (stage) collisions from card collisions
+  const columnCollisions = allCollisions.filter((collision) => STAGE_IDS.has(String(collision.id)));
+
+  // If we have a column collision, prioritize it
+  // This ensures drops register on the column, not individual cards
+  if (columnCollisions.length > 0) {
+    // Return the first column collision (highest priority from detection order)
+    return [columnCollisions[0]];
+  }
+
+  // Fall back to the first available collision (card collision)
+  // handleDragEnd will resolve card IDs to their parent column
+  return [allCollisions[0]];
 };
 
 /**
