@@ -233,16 +233,53 @@
     "emptyNotes": 372
   },
   "counts": {
-    "critical": 9,
+    "critical": 7,
+    "criticalMitigated": 2,
     "high": 10,
     "medium": 38
   },
   "verification": {
     "allCriticalVerified": true,
     "activityLoggingAuditComplete": true,
-    "confidence": "98%",
+    "confidence": "92%",
     "verificationDate": "2026-01-11"
   },
+  "e2eVerification": {
+    "status": "in_progress",
+    "testsCompleted": 1.5,
+    "testsTotal": 20,
+    "results": {
+      "test1_WF-C2-001-002": {
+        "expected": "BUG",
+        "actual": "MITIGATED",
+        "reason": "Form validation prevents empty names - code is defense-in-depth",
+        "reclassified": "critical -> low"
+      },
+      "test4_WF-H2-001": {
+        "expected": "NO_ACTIVITY_LOGGED",
+        "actual": "BLOCKED_BY_UI_BUG",
+        "reason": "Quick Add form missing principal_organization_id field - cannot complete creation",
+        "newFinding": "WF-E2E-001"
+      }
+    },
+    "falsePositives": 2,
+    "confirmedBugs": 0,
+    "newBugsDiscovered": 1,
+    "pendingTests": ["Test 5-10 (Bug Confirmation)", "Test 11-20 (Blind Spot Detection)"],
+    "priorityRecommendation": "Use SQL-direct testing to validate activity logging - bypasses UI bugs"
+  },
+  "e2eDiscoveredBugs": [
+    {
+      "id": "WF-E2E-001",
+      "severity": "high",
+      "type": "missing-form-field",
+      "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
+      "description": "Quick Add Opportunity modal missing required principal_organization_id field - users cannot create opportunities via Kanban columns",
+      "impact": "UX blocker - Quick Add feature is non-functional",
+      "discoveredVia": "E2E Test 4",
+      "firstSeen": "2026-01-11"
+    }
+  ],
   "notes": {
     "totalOpportunities": 372,
     "closedWon": 0,
