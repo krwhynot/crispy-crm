@@ -92,9 +92,17 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       // Create returns the new record - use it for optimistic updates
       const result = await create("opportunities", { data: validatedData });
 
+      // FIX [WF-E2E-001]: Only show success when create actually succeeds
+      // React Admin's useCreate can resolve without throwing but with no data on error
+      if (!result?.data) {
+        // Create failed silently - show error and don't close dialog
+        notify("Failed to create opportunity. Please try again.", { type: "error" });
+        return;
+      }
+
       // Optimistic update: immediately add to Kanban before refresh completes
       // This ensures the new opportunity appears instantly in the UI
-      if (onOpportunityCreated && result?.data) {
+      if (onOpportunityCreated) {
         const newOpportunity: Opportunity = {
           ...result.data,
           // Add computed fields that the summary view would provide
@@ -113,8 +121,20 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       setCustomerId("");
       refresh(); // Still refresh to sync with server (gets full computed fields)
     } catch (error: unknown) {
-      // Fail-fast: show actual validation error for debugging
-      const message = error instanceof Error ? error.message : "Error creating opportunity";
+      // FIX [WF-E2E-001]: Handle both Error instances and React Admin validation errors
+      // React Admin validation errors have shape: { message: string, body: { errors: {...} } }
+      let message = "Error creating opportunity";
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof (error as { message: unknown }).message === "string"
+      ) {
+        // React Admin validation error format
+        message = (error as { message: string }).message;
+      }
       notify(message, { type: "error" });
     }
   };

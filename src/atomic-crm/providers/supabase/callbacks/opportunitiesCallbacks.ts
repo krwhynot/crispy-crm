@@ -39,6 +39,9 @@ import { supabase } from "../supabase";
  *
  * Source: opportunities_summary view + database triggers
  * Updated: 2025-12-20 to include all fields from view that cause validation errors
+ *
+ * NOTE: These fields are stripped from BOTH create and update operations.
+ * For UPDATE-only stripping, see UPDATE_ONLY_STRIP_FIELDS below.
  */
 const TYPED_COMPUTED_FIELDS = [
   // Joined org names (from view JOINs)
@@ -67,9 +70,24 @@ const TYPED_COMPUTED_FIELDS = [
   "stage_manual",
   "status_manual",
   "competition",
-  // Owner/assignment fields (set programmatically, not via edit form)
-  // NOTE: Stripped from UPDATE payloads to pass Zod strictObject validation
-  // Database has this field but updateOpportunitySchema does not include it
+  // NOTE: opportunity_owner_id removed - it's in UPDATE_ONLY_STRIP_FIELDS
+  // because CREATE operations need to pass it to the database
+] as const satisfies readonly (keyof Opportunity)[];
+
+/**
+ * Fields that should ONLY be stripped from UPDATE operations, NOT create.
+ *
+ * FIX [WF-E2E-001]: opportunity_owner_id must be preserved during CREATE
+ * so the database can set the owner. The trigger `set_opportunity_owner_defaults`
+ * expects this field or falls back to current_sales_id(). If we strip it
+ * during CREATE and auth context isn't properly set, the trigger fails with:
+ * "Cannot determine opportunity owner. User may not have a sales record."
+ *
+ * For UPDATE operations, this field should be stripped because:
+ * - updateOpportunitySchema does not include it (strictObject validation)
+ * - Ownership changes should go through dedicated reassignment flows
+ */
+const UPDATE_ONLY_STRIP_FIELDS = [
   "opportunity_owner_id",
 ] as const satisfies readonly (keyof Opportunity)[];
 
