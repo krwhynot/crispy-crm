@@ -188,10 +188,13 @@
     "medium": []
   },
   "activityLoggingAudit": {
+    "AUDIT_CORRECTION": "Original 45% coverage claim was INCORRECT - verified via codebase review",
+    "actualCoverage": "0%",
+    "explanation": "No afterUpdate/afterCreate callbacks exist that auto-log activities. Activities are ONLY created manually by users via QuickLogActivityDialog.",
     "opportunities": {
-      "coverage": "45%",
+      "coverage": "0%",
       "mutationPoints": 11,
-      "logged": 5,
+      "logged": 0,
       "gaps": [
         "QuickAddOpportunity",
         "OpportunityCreateWizard",
@@ -199,7 +202,9 @@
         "Delete",
         "WorkflowFields",
         "SlideOverUpdates",
-        "ProductsSync"
+        "ProductsSync",
+        "StageChanges",
+        "ALL_MUTATIONS"
       ]
     },
     "contacts": {
@@ -213,8 +218,15 @@
         "LinkOpportunity",
         "UnlinkOpportunity",
         "SoftDelete",
-        "TagChanges"
+        "TagChanges",
+        "ALL_MUTATIONS"
       ]
+    },
+    "codeVerification": {
+      "opportunitiesCallbacks": "NO afterCreate, NO afterUpdate - only beforeSave/beforeDelete",
+      "OpportunitiesService": "NO activity logging in createWithProducts, updateWithProducts, archiveOpportunity",
+      "ActivitiesService": "ONLY has getActivityLog for READING, not creating activities",
+      "verified": "2026-01-11"
     }
   },
   "dbFindings": {
