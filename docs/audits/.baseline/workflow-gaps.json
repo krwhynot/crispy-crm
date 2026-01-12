@@ -246,7 +246,7 @@
   },
   "e2eVerification": {
     "status": "in_progress",
-    "testsCompleted": 1.5,
+    "testsCompleted": 4,
     "testsTotal": 20,
     "results": {
       "test1_WF-C2-001-002": {
@@ -260,13 +260,39 @@
         "actual": "BLOCKED_BY_UI_BUG",
         "reason": "Quick Add form missing principal_organization_id field - cannot complete creation",
         "newFinding": "WF-E2E-001"
+      },
+      "test5_stage_change_sql": {
+        "expected": "ACTIVITY_LOGGED",
+        "actual": "NO_ACTIVITY",
+        "reason": "SQL-direct stage change bypasses application layer - no DB triggers for activities"
+      },
+      "test6_contact_create_sql": {
+        "expected": "NO_ACTIVITY",
+        "actual": "NO_ACTIVITY",
+        "reason": "Confirms 0% contacts coverage - no DB triggers for contact activities"
+      },
+      "test7_archive_sql": {
+        "expected": "NO_ACTIVITY",
+        "actual": "NO_ACTIVITY",
+        "reason": "Confirms archive operations have no audit trail via SQL"
       }
     },
     "falsePositives": 2,
     "confirmedBugs": 0,
     "newBugsDiscovered": 1,
-    "pendingTests": ["Test 5-10 (Bug Confirmation)", "Test 11-20 (Blind Spot Detection)"],
-    "priorityRecommendation": "Use SQL-direct testing to validate activity logging - bypasses UI bugs"
+    "pendingTests": ["Test 5-10 via UI (Bug Confirmation)", "Test 11-20 (Blind Spot Detection)"],
+    "priorityRecommendation": "UI-layer testing required - activity logging is application-layer only, not DB triggers"
+  },
+  "architecturalDiscovery": {
+    "finding": "Activity logging is APPLICATION-LAYER ONLY",
+    "details": [
+      "No database triggers create activity records",
+      "All activity logging happens in React Admin withLifecycleCallbacks",
+      "SQL-direct operations bypass logging entirely",
+      "The 45% coverage claim applies to UI operations only"
+    ],
+    "implication": "Direct database access (API bypass, SQL scripts) leaves no audit trail",
+    "recommendation": "Consider adding database-level audit triggers for compliance"
   },
   "e2eDiscoveredBugs": [
     {
