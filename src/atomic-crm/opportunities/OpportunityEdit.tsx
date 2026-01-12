@@ -85,7 +85,7 @@ const OpportunityEditForm = () => {
                 <DeleteButton />
                 <div className="flex gap-2">
                   <CancelButton />
-                  <SaveButton />
+                  <SaveButton type="button" />
                 </div>
               </div>
             </FormToolbar>
