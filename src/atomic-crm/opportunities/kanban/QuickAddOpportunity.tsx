@@ -70,8 +70,9 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
         account_manager_id: identity?.id,
       });
 
-      // Get the selected customer name for optimistic update display
+      // Get the selected organization names for optimistic update display
       const selectedCustomer = customers?.find((c) => c.id === Number(customerId));
+      const selectedPrincipal = principals?.find((p) => p.id === Number(principalId));
 
       // Create returns the new record - use it for optimistic updates
       const result = await create("opportunities", { data: validatedData });
@@ -83,7 +84,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
           ...result.data,
           // Add computed fields that the summary view would provide
           customer_organization_name: selectedCustomer?.name || "",
-          principal_organization_name: null,
+          principal_organization_name: selectedPrincipal?.name || "",
           distributor_organization_name: null,
           days_in_stage: 0,
         } as Opportunity;
@@ -93,6 +94,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       notify("Opportunity created! Add details via the card menu.", { type: "success" });
       setIsOpen(false);
       setName("");
+      setPrincipalId("");
       setCustomerId("");
       refresh(); // Still refresh to sync with server (gets full computed fields)
     } catch (error: unknown) {
@@ -166,6 +168,28 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                   // eslint-disable-next-line jsx-a11y/no-autofocus -- Modal has role="dialog" + aria-modal, autoFocus is appropriate
                   autoFocus
                 />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="principal" className="block text-sm font-medium mb-1">
+                  Principal <span className="text-destructive">*</span>
+                </label>
+                <select
+                  id="principal"
+                  value={principalId}
+                  onChange={(e) => setPrincipalId(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background"
+                  disabled={isLoading || principalsLoading}
+                >
+                  <option value="">
+                    {principalsLoading ? "Loading principals..." : "Select a principal"}
+                  </option>
+                  {principals?.map((principal) => (
+                    <option key={principal.id} value={principal.id}>
+                      {principal.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="mb-4">
