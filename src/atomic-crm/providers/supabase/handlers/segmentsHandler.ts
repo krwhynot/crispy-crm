@@ -219,8 +219,8 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
           .map((id) => segmentsService.getSegmentById(String(id)))
           .filter((s): s is Segment & { id: string } => s !== undefined && hasRequiredId(s));
 
-        // Type-safe: runtime filter ensures all segments have required id
-        return { data: segments as unknown as RecordType[] };
+        // Type-safe: runtime filter + type guard validation before cast
+        return { data: assertSegmentRecordArray<RecordType>(segments, "getMany") };
       }
 
       return baseProvider.getMany<RecordType>(resource, params);

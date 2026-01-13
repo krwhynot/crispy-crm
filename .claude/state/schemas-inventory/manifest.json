@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-12T19:25:39.897Z",
+  "generated_at": "2026-01-13T00:59:41.340Z",
   "generator": "scripts/discover/extractors/schemas.ts",
   "source_globs": [
     "src/atomic-crm/validation/**/*.ts"
   ],
-  "checksum": "sha256:48c685a448c2dd8f",
+  "checksum": "sha256:733375937bddd385",
   "source_hashes": {
     "src/atomic-crm/validation/activities.ts": "a30e221951be",
     "src/atomic-crm/validation/categories.ts": "0f7d9f25b8f8",
@@ -23,9 +23,9 @@
     "src/atomic-crm/validation/notes.ts": "557ab89b53fd",
     "src/atomic-crm/validation/operatorSegments.ts": "b0f573acd197",
     "src/atomic-crm/validation/opportunities/index.ts": "8b03549e3f83",
-    "src/atomic-crm/validation/opportunities/opportunities-core.ts": "b9772be3bb00",
+    "src/atomic-crm/validation/opportunities/opportunities-core.ts": "05a4810e2b6b",
     "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts": "1f233d01e04e",
-    "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "d6fcf5d6953e",
+    "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "93506e0d7e4f",
     "src/atomic-crm/validation/organizationDistributors.ts": "95da3604b4fe",
     "src/atomic-crm/validation/organizations.ts": "ce9d310007f2",
     "src/atomic-crm/validation/productDistributors.ts": "8f6ec7e2789f",
@@ -41,7 +41,7 @@
     "src/atomic-crm/validation/ui-props.ts": "a7ad870c0454"
   },
   "summary": {
-    "total_items": 91,
+    "total_items": 92,
     "total_chunks": 27,
     "strict_objects": 49,
     "objects": 5,
@@ -197,25 +197,25 @@
     {
       "name": "opportunities-core",
       "file": "opportunities-core.json",
-      "item_count": 5,
-      "checksum": "sha256:f634cec3f0ab6d70",
+      "item_count": 6,
+      "checksum": "sha256:cd34ed190261e372",
       "source_files": [
         "src/atomic-crm/validation/opportunities/opportunities-core.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/opportunities/opportunities-core.ts": "b9772be3bb00"
+        "src/atomic-crm/validation/opportunities/opportunities-core.ts": "05a4810e2b6b"
       }
     },
     {
       "name": "opportunities-operations",
       "file": "opportunities-operations.json",
       "item_count": 4,
-      "checksum": "sha256:d0809de3579632eb",
+      "checksum": "sha256:94a76a0a4daf7508",
       "source_files": [
         "src/atomic-crm/validation/opportunities/opportunities-operations.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "d6fcf5d6953e"
+        "src/atomic-crm/validation/opportunities/opportunities-operations.ts": "93506e0d7e4f"
       }
     },
     {

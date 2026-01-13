@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-12T19:25:43.284Z",
+  "generated_at": "2026-01-13T00:59:52.013Z",
   "items": {
     "nodes": [
       {
@@ -661,10 +661,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "id": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:45:isSegmentRecord",
+        "name": "isSegmentRecord",
+        "file": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
+        "line": 45,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:63:assertSegmentRecord",
+        "name": "assertSegmentRecord",
+        "file": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
+        "line": 63,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:80:assertSegmentRecordArray",
+        "name": "assertSegmentRecordArray",
+        "file": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
+        "line": 80,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "name": "createSegmentsHandler",
         "file": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
-        "line": 48,
+        "line": 103,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -4416,164 +4443,236 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:45:isSegmentRecord",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:63:assertSegmentRecord",
+        "target": "isSegmentRecord",
+        "targetName": "isSegmentRecord",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:80:assertSegmentRecordArray",
+        "target": "isSegmentRecord",
+        "targetName": "isSegmentRecord",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 80,
+        "line": 135,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "getOrCreateSegment",
         "targetName": "getOrCreateSegment",
         "edgeType": "call",
-        "line": 84,
+        "line": 139,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "hasRequiredId",
         "targetName": "hasRequiredId",
         "edgeType": "call",
-        "line": 87,
+        "line": 142,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
+        "target": "assertSegmentRecord",
+        "targetName": "assertSegmentRecord",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 95,
+        "line": 150,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "getSegmentById",
         "targetName": "getSegmentById",
         "edgeType": "call",
-        "line": 107,
+        "line": 162,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 107,
+        "line": 162,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "hasRequiredId",
         "targetName": "hasRequiredId",
         "edgeType": "call",
-        "line": 113,
+        "line": 168,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
+        "target": "assertSegmentRecord",
+        "targetName": "assertSegmentRecord",
+        "edgeType": "call",
+        "line": 172,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "getOne",
         "targetName": "getOne",
         "edgeType": "call",
-        "line": 120,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "getAllCategories",
         "targetName": "getAllCategories",
         "edgeType": "call",
-        "line": 132,
+        "line": 187,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
+        "target": "isSegmentRecord",
+        "targetName": "isSegmentRecord",
         "edgeType": "call",
-        "line": 134,
+        "line": 192,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
+        "target": "assertSegmentRecordArray",
+        "targetName": "assertSegmentRecordArray",
+        "edgeType": "call",
+        "line": 198,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 145,
+        "line": 206,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 157,
+        "line": 218,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 157,
+        "line": 218,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "getSegmentById",
         "targetName": "getSegmentById",
         "edgeType": "call",
-        "line": 158,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 158,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "hasRequiredId",
         "targetName": "hasRequiredId",
         "edgeType": "call",
-        "line": 159,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
+        "target": "assertSegmentRecordArray",
+        "targetName": "assertSegmentRecordArray",
+        "edgeType": "call",
+        "line": 223,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "getMany",
         "targetName": "getMany",
         "edgeType": "call",
-        "line": 165,
+        "line": 226,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:48:createSegmentsHandler",
+        "source": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts:103:createSegmentsHandler",
         "target": "withErrorLogging",
         "targetName": "withErrorLogging",
         "edgeType": "call",
-        "line": 178,
+        "line": 239,
         "conditional": false,
         "inLoop": false
       },

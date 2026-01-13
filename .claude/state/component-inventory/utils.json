@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-11T15:15:54.883Z",
+  "generated_at": "2026-01-13T00:59:03.905Z",
   "item_count": 3,
   "items": [
     {
@@ -20,7 +20,7 @@
     {
       "name": "useNotifyWithRetry",
       "file": "src/atomic-crm/utils/useNotifyWithRetry.tsx",
-      "line": 31,
+      "line": 37,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -39,7 +39,7 @@
     {
       "name": "useNotifyWithRetry",
       "file": "src/atomic-crm/utils/useNotifyWithRetry.tsx",
-      "line": 31,
+      "line": 37,
       "type": "presentational",
       "hooks": [
         "useCallback",

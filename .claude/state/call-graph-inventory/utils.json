@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-11T15:16:08.073Z",
+  "generated_at": "2026-01-13T00:59:52.059Z",
   "items": {
     "nodes": [
       {
@@ -292,10 +292,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatName.ts:26:formatFullName",
-        "name": "formatFullName",
+        "id": "src/atomic-crm/utils/formatName.ts:29:formatSingleName",
+        "name": "formatSingleName",
         "file": "src/atomic-crm/utils/formatName.ts",
-        "line": 26,
+        "line": 29,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -562,10 +562,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/useNotifyWithRetry.tsx:31:useNotifyWithRetry",
+        "id": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
         "name": "useNotifyWithRetry",
         "file": "src/atomic-crm/utils/useNotifyWithRetry.tsx",
-        "line": 31,
+        "line": 37,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -1689,11 +1689,11 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:26:formatFullName",
+        "source": "src/atomic-crm/utils/formatName.ts:29:formatSingleName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 27,
+        "line": 30,
         "conditional": false,
         "inLoop": false
       },
@@ -2904,56 +2904,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:31:useNotifyWithRetry",
+        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 32,
+        "line": 38,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:31:useNotifyWithRetry",
+        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 34,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:31:useNotifyWithRetry",
+        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
         "target": "retryAction",
         "targetName": "retryAction",
         "edgeType": "call",
-        "line": 41,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:31:useNotifyWithRetry",
+        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 49,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:31:useNotifyWithRetry",
+        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 37,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:31:useNotifyWithRetry",
+        "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
         "target": "RetryButton",
         "targetName": "RetryButton",
         "edgeType": "render",
-        "line": 55,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       }

@@ -1,12 +1,12 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-11T23:43:40.880Z",
+  "generated_at": "2026-01-13T00:59:40.828Z",
   "item_count": 1,
   "items": [
     {
       "name": "useNotifyWithRetry",
       "file": "src/atomic-crm/utils/useNotifyWithRetry.tsx",
-      "line": 31,
+      "line": 37,
       "parameters": [],
       "returnType": "(message: string, retryAction: () => void, options?: NotifyWithRetryOptions) => void",
       "dependencies": [

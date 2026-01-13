@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-12T19:25:27.138Z",
+  "generated_at": "2026-01-13T00:59:03.906Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:19d810ed523d86d9",
+  "checksum": "sha256:405e05a50c56d93f",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ba1bfd5bd810",
     "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
@@ -77,10 +77,10 @@
     "src/atomic-crm/contacts/ContactShow.tsx": "d8df2e26372f",
     "src/atomic-crm/contacts/ContactSlideOver.test.tsx": "8febf7dc9806",
     "src/atomic-crm/contacts/ContactSlideOver.tsx": "71d3fe29c431",
-    "src/atomic-crm/contacts/LinkOpportunityModal.test.tsx": "506935eaa965",
-    "src/atomic-crm/contacts/LinkOpportunityModal.tsx": "7e268fee0db4",
-    "src/atomic-crm/contacts/OpportunitiesTab.test.tsx": "2a8a2cf634af",
-    "src/atomic-crm/contacts/OpportunitiesTab.tsx": "36303f9cd36b",
+    "src/atomic-crm/contacts/LinkOpportunityModal.test.tsx": "923a33655aa8",
+    "src/atomic-crm/contacts/LinkOpportunityModal.tsx": "b375113adb4d",
+    "src/atomic-crm/contacts/OpportunitiesTab.test.tsx": "8836e6bc3afb",
+    "src/atomic-crm/contacts/OpportunitiesTab.tsx": "db51c51ff91e",
     "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "e43ec2bde925",
     "src/atomic-crm/contacts/StageBadgeWithHealth.test.tsx": "764f12c5c66a",
     "src/atomic-crm/contacts/StageBadgeWithHealth.tsx": "8f633b5a6de6",
@@ -95,6 +95,7 @@
     "src/atomic-crm/contacts/__tests__/ContactList.test.tsx": "2d8007851141",
     "src/atomic-crm/contacts/__tests__/ContactShow.test.tsx": "c3793222d8a3",
     "src/atomic-crm/contacts/__tests__/ContactSlideOver.test.tsx": "65ed8568e40c",
+    "src/atomic-crm/contacts/__tests__/OpportunitiesTab.test.tsx": "6b4c6de21580",
     "src/atomic-crm/contacts/index.tsx": "42bfb331c81d",
     "src/atomic-crm/contacts/resource.tsx": "8094fd32297f",
     "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx": "308b5a448e83",
@@ -256,8 +257,10 @@
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "89631721b707",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsViewSection.tsx": "6d63b803973a",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityNotesTab.tsx": "7c2869038e59",
-    "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx": "7ee5af90e868",
-    "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx": "34923e663db5",
+    "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx": "a52e55f0ce77",
+    "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx": "b46c0805f407",
+    "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunityProductsTab.test.tsx": "e57ff53f8080",
+    "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunitySlideOverDetailsTab.test.tsx": "a616eb50ff1c",
     "src/atomic-crm/organizations/ActivitiesTab.tsx": "04122184adba",
     "src/atomic-crm/organizations/AuthorizationsTab.tsx": "0d7efd3f3021",
     "src/atomic-crm/organizations/AutocompleteOrganizationInput.tsx": "f73b65fb6b2e",
@@ -435,7 +438,7 @@
     "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx": "ba829aac49dc",
     "src/atomic-crm/tasks/TaskShow.tsx": "c0b3862310d5",
     "src/atomic-crm/tasks/TaskSlideOver.tsx": "5a0012b340b6",
-    "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx": "90ee0ec66da8",
+    "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx": "768676feadff",
     "src/atomic-crm/tasks/TasksDatagridHeader.tsx": "e1bf2bf3947f",
     "src/atomic-crm/tasks/TasksIterator.tsx": "31c4b87768af",
     "src/atomic-crm/tasks/__tests__/TaskCreate.integration.test.tsx": "03476ffed030",
@@ -454,7 +457,7 @@
     "src/atomic-crm/tutorial/index.tsx": "9cc5217682dd",
     "src/atomic-crm/utils/__tests__/getActivityIcon.test.tsx": "59d788ebef0e",
     "src/atomic-crm/utils/getActivityIcon.tsx": "5f6e3477d5c0",
-    "src/atomic-crm/utils/useNotifyWithRetry.tsx": "730dcbd6bf33"
+    "src/atomic-crm/utils/useNotifyWithRetry.tsx": "26005f1ee419"
   },
   "summary": {
     "total_items": 504,
@@ -583,7 +586,7 @@
       "name": "contacts",
       "file": "contacts.json",
       "item_count": 58,
-      "checksum": "sha256:9ac232789eb5f040",
+      "checksum": "sha256:8447efb9169ef1cd",
       "source_files": [
         "src/atomic-crm/contacts/ActivitiesTab.tsx",
         "src/atomic-crm/contacts/AutocompleteContactInput.tsx",
@@ -635,6 +638,7 @@
         "src/atomic-crm/contacts/__tests__/ContactList.test.tsx",
         "src/atomic-crm/contacts/__tests__/ContactShow.test.tsx",
         "src/atomic-crm/contacts/__tests__/ContactSlideOver.test.tsx",
+        "src/atomic-crm/contacts/__tests__/OpportunitiesTab.test.tsx",
         "src/atomic-crm/contacts/index.tsx",
         "src/atomic-crm/contacts/resource.tsx",
         "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx",
@@ -674,10 +678,10 @@
         "src/atomic-crm/contacts/ContactShow.tsx": "d8df2e26372f",
         "src/atomic-crm/contacts/ContactSlideOver.test.tsx": "8febf7dc9806",
         "src/atomic-crm/contacts/ContactSlideOver.tsx": "71d3fe29c431",
-        "src/atomic-crm/contacts/LinkOpportunityModal.test.tsx": "506935eaa965",
-        "src/atomic-crm/contacts/LinkOpportunityModal.tsx": "7e268fee0db4",
-        "src/atomic-crm/contacts/OpportunitiesTab.test.tsx": "2a8a2cf634af",
-        "src/atomic-crm/contacts/OpportunitiesTab.tsx": "36303f9cd36b",
+        "src/atomic-crm/contacts/LinkOpportunityModal.test.tsx": "923a33655aa8",
+        "src/atomic-crm/contacts/LinkOpportunityModal.tsx": "b375113adb4d",
+        "src/atomic-crm/contacts/OpportunitiesTab.test.tsx": "8836e6bc3afb",
+        "src/atomic-crm/contacts/OpportunitiesTab.tsx": "db51c51ff91e",
         "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "e43ec2bde925",
         "src/atomic-crm/contacts/StageBadgeWithHealth.test.tsx": "764f12c5c66a",
         "src/atomic-crm/contacts/StageBadgeWithHealth.tsx": "8f633b5a6de6",
@@ -692,6 +696,7 @@
         "src/atomic-crm/contacts/__tests__/ContactList.test.tsx": "2d8007851141",
         "src/atomic-crm/contacts/__tests__/ContactShow.test.tsx": "c3793222d8a3",
         "src/atomic-crm/contacts/__tests__/ContactSlideOver.test.tsx": "65ed8568e40c",
+        "src/atomic-crm/contacts/__tests__/OpportunitiesTab.test.tsx": "6b4c6de21580",
         "src/atomic-crm/contacts/index.tsx": "42bfb331c81d",
         "src/atomic-crm/contacts/resource.tsx": "8094fd32297f",
         "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx": "308b5a448e83",
@@ -895,7 +900,7 @@
       "name": "opportunities",
       "file": "opportunities.json",
       "item_count": 81,
-      "checksum": "sha256:bee257eb0f1e10e5",
+      "checksum": "sha256:6e690922f0e6e132",
       "source_files": [
         "src/atomic-crm/opportunities/ActivitiesList.tsx",
         "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
@@ -990,7 +995,9 @@
         "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsViewSection.tsx",
         "src/atomic-crm/opportunities/slideOverTabs/OpportunityNotesTab.tsx",
         "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-        "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx"
+        "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
+        "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunityProductsTab.test.tsx",
+        "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunitySlideOverDetailsTab.test.tsx"
       ],
       "source_hashes": {
         "src/atomic-crm/opportunities/ActivitiesList.tsx": "b402ca31a1c8",
@@ -1085,8 +1092,10 @@
         "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "89631721b707",
         "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsViewSection.tsx": "6d63b803973a",
         "src/atomic-crm/opportunities/slideOverTabs/OpportunityNotesTab.tsx": "7c2869038e59",
-        "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx": "7ee5af90e868",
-        "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx": "34923e663db5"
+        "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx": "a52e55f0ce77",
+        "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx": "b46c0805f407",
+        "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunityProductsTab.test.tsx": "e57ff53f8080",
+        "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunitySlideOverDetailsTab.test.tsx": "a616eb50ff1c"
       }
     },
     {
@@ -1523,7 +1532,7 @@
       "name": "tasks",
       "file": "tasks.json",
       "item_count": 27,
-      "checksum": "sha256:9327bf620a433d0a",
+      "checksum": "sha256:e71d137a9890c02d",
       "source_files": [
         "src/atomic-crm/tasks/AddTask.tsx",
         "src/atomic-crm/tasks/Task.tsx",
@@ -1561,7 +1570,7 @@
         "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx": "ba829aac49dc",
         "src/atomic-crm/tasks/TaskShow.tsx": "c0b3862310d5",
         "src/atomic-crm/tasks/TaskSlideOver.tsx": "5a0012b340b6",
-        "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx": "90ee0ec66da8",
+        "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx": "768676feadff",
         "src/atomic-crm/tasks/TasksDatagridHeader.tsx": "e1bf2bf3947f",
         "src/atomic-crm/tasks/TasksIterator.tsx": "31c4b87768af",
         "src/atomic-crm/tasks/__tests__/TaskCreate.integration.test.tsx": "03476ffed030",
@@ -1601,7 +1610,7 @@
       "name": "utils",
       "file": "utils.json",
       "item_count": 3,
-      "checksum": "sha256:96882641c6e3ce75",
+      "checksum": "sha256:2716627613ae245a",
       "source_files": [
         "src/atomic-crm/utils/__tests__/getActivityIcon.test.tsx",
         "src/atomic-crm/utils/getActivityIcon.tsx",
@@ -1610,7 +1619,7 @@
       "source_hashes": {
         "src/atomic-crm/utils/__tests__/getActivityIcon.test.tsx": "59d788ebef0e",
         "src/atomic-crm/utils/getActivityIcon.tsx": "5f6e3477d5c0",
-        "src/atomic-crm/utils/useNotifyWithRetry.tsx": "730dcbd6bf33"
+        "src/atomic-crm/utils/useNotifyWithRetry.tsx": "26005f1ee419"
       }
     }
   ],
@@ -1877,6 +1886,9 @@
       "contacts"
     ],
     "src/atomic-crm/contacts/__tests__/ContactSlideOver.test.tsx": [
+      "contacts"
+    ],
+    "src/atomic-crm/contacts/__tests__/OpportunitiesTab.test.tsx": [
       "contacts"
     ],
     "src/atomic-crm/contacts/index.tsx": [
@@ -2366,6 +2378,12 @@
       "opportunities"
     ],
     "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx": [
+      "opportunities"
+    ],
+    "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunityProductsTab.test.tsx": [
+      "opportunities"
+    ],
+    "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunitySlideOverDetailsTab.test.tsx": [
       "opportunities"
     ],
     "src/atomic-crm/organizations/ActivitiesTab.tsx": [

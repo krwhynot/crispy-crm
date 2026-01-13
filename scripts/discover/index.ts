@@ -397,11 +397,50 @@ async function main() {
     }
 
     printSummary(extractorsToUse);
+
+    // Update the top-level manifest to reflect the refresh
+    // This ensures session-init.sh staleness check sees the update
+    updateTopLevelManifest();
+
     return;
   }
 
   await runExtractors(extractorsToUse);
   printSummary(extractorsToUse);
+
+  // Also update top-level manifest after full discovery
+  updateTopLevelManifest();
+}
+
+/**
+ * Update the top-level manifest.json to reflect that discovery has run.
+ * The session-init.sh hook checks this file's mtime to determine staleness.
+ * This ensures incremental discovery also updates the staleness indicator.
+ */
+function updateTopLevelManifest(): void {
+  const manifestPath = path.join(process.cwd(), ".claude/state/manifest.json");
+
+  if (!fs.existsSync(manifestPath)) {
+    // No manifest exists - will be handled by full discovery or generate command
+    return;
+  }
+
+  try {
+    // Update the file's mtime (for session-init.sh staleness check)
+    const now = new Date();
+    fs.utimesSync(manifestPath, now, now);
+
+    // Also update the generatedAt timestamp inside the file for consistency
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
+    manifest.generatedAt = now.toISOString();
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), "utf-8");
+  } catch (error) {
+    // Non-fatal: log warning but don't fail discovery
+    console.warn(
+      chalk.yellow("⚠️  Could not update top-level manifest:"),
+      error instanceof Error ? error.message : error
+    );
+  }
 }
 
 main().catch((err) => {

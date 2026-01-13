@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-12T19:25:27.128Z",
+  "generated_at": "2026-01-13T00:59:03.891Z",
   "item_count": 81,
   "items": [
     {
@@ -2437,15 +2437,18 @@
     {
       "name": "OpportunityProductsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-      "line": 49,
+      "line": 58,
       "type": "presentational",
       "hooks": [
+        "useDataProvider",
         "useGetList",
         "useNotify",
+        "useQueryClient",
         "useState",
         "useUpdate"
       ],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
         "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-array-input",
@@ -2454,6 +2457,7 @@
         "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/scroll-area",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin",
@@ -2461,17 +2465,21 @@
       ],
       "isDefaultExport": false,
       "childComponents": [],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "leaf"
     },
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 23,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useDataProvider",
         "useNotify",
+        "useQueryClient",
         "useRef",
         "useState",
         "useUpdate"
@@ -2479,8 +2487,10 @@
       "imports": [
         "./OpportunityDetailsFormSection",
         "./OpportunityDetailsViewSection",
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/opportunities",
+        "@tanstack/react-query",
         "react",
         "react-admin"
       ],
@@ -2489,7 +2499,9 @@
         "OpportunityDetailsFormSection",
         "OpportunityDetailsViewSection"
       ],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "wrapper"
     }
   ]

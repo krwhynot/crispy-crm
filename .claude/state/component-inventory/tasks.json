@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-11T15:15:54.882Z",
+  "generated_at": "2026-01-13T00:59:03.903Z",
   "item_count": 27,
   "items": [
     {
@@ -388,11 +388,12 @@
     {
       "name": "TaskSlideOverDetailsTab",
       "file": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
-      "line": 44,
+      "line": 45,
       "type": "presentational",
       "hooks": [
         "useFormOptions",
         "useNotify",
+        "useQueryClient",
         "useUpdate"
       ],
       "imports": [
@@ -411,6 +412,7 @@
         "@/components/ui/badge",
         "@/components/ui/priority-badge",
         "@/components/ui/scroll-area",
+        "@tanstack/react-query",
         "ra-core",
         "react-admin"
       ],

@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-11T15:15:54.858Z",
+  "generated_at": "2026-01-13T00:59:03.876Z",
   "item_count": 58,
   "items": [
     {
@@ -1106,47 +1106,57 @@
     {
       "name": "LinkOpportunityModal",
       "file": "src/atomic-crm/contacts/LinkOpportunityModal.tsx",
-      "line": 28,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useCreate",
-        "useNotify"
+        "useDataProvider",
+        "useNotify",
+        "useQueryClient"
       ],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
         "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
         "@/components/ui/button",
         "@/components/ui/dialog",
+        "@tanstack/react-query",
         "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "leaf"
     },
     {
       "name": "OpportunitiesTab",
       "file": "src/atomic-crm/contacts/OpportunitiesTab.tsx",
-      "line": 26,
+      "line": 36,
       "type": "presentational",
       "hooks": [
         "useCreate",
+        "useDataProvider",
         "useGetList",
         "useGetMany",
         "useMemo",
         "useNotify",
+        "useQueryClient",
         "useRefresh",
         "useShowContext",
         "useState"
       ],
       "imports": [
+        "../queryKeys",
         "../types",
         "./LinkOpportunityModal",
         "./StageBadgeWithHealth",
         "./SuggestedOpportunityCard",
         "./UnlinkConfirmDialog",
         "@/components/ui/button",
+        "@tanstack/react-query",
         "lucide-react",
         "ra-core",
         "react",
@@ -1163,7 +1173,9 @@
         "Opportunity",
         "OpportunityContact"
       ],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "wrapper"
     },
     {
