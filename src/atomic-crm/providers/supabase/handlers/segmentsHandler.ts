@@ -142,8 +142,8 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
         if (!hasRequiredId(segment)) {
           throw new Error("Segment missing required id field");
         }
-        // Type-safe: runtime guard ensures segment has required id
-        return { data: segment as unknown as RecordType };
+        // Type-safe: runtime guard validates before cast
+        return { data: assertSegmentRecord<RecordType>(segment, "create") };
       }
 
       // Not segments - delegate to base provider
@@ -168,8 +168,8 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
         if (!hasRequiredId(segment)) {
           throw new Error("Segment missing required id field");
         }
-        // Type-safe: runtime guard ensures segment has required id
-        return { data: segment as unknown as RecordType };
+        // Type-safe: runtime guard validates before cast
+        return { data: assertSegmentRecord<RecordType>(segment, "getOne") };
       }
 
       return baseProvider.getOne<RecordType>(resource, params);
@@ -185,11 +185,17 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       if (resource === "segments") {
         const categories = segmentsService.getAllCategories();
-        // Categories always have id and name - shape matches RaRecord requirements
-        const data = categories.map((cat) => ({
-          id: cat.id,
-          name: cat.name,
-        })) as unknown as RecordType[];
+        // Validate each category before building result
+        const validatedSegments: Array<Segment & { id: string }> = [];
+        for (const cat of categories) {
+          const segment = { id: cat.id, name: cat.name };
+          if (!isSegmentRecord(segment)) {
+            throw new Error(`Invalid category data in getList: ${cat.name}`);
+          }
+          validatedSegments.push(segment as Segment & { id: string });
+        }
+        // Type-safe: all segments validated by type guard
+        const data = assertSegmentRecordArray<RecordType>(validatedSegments, "getList");
 
         return {
           data,
