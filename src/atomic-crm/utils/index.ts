@@ -1,5 +1,5 @@
 // Utils barrel exports
-export { formatName, formatFullName } from "./formatName";
+export { formatName, formatSingleName } from "./formatName";
 export { formatRelativeTime } from "./formatRelativeTime";
 export { rateLimiter, createRateLimiter } from "./rateLimiter";
 export { secureStorage } from "./secureStorage";

@@ -81,6 +81,7 @@ export function TaskSlideOverDetailsTab({
         },
         previousData: record,
       });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
       notify(checked ? "Task marked complete" : "Task marked incomplete", { type: "success" });
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });

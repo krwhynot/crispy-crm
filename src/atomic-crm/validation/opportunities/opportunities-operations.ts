@@ -6,6 +6,7 @@ import {
   leadSourceSchema,
   winReasonSchema,
   lossReasonSchema,
+  opportunityProductSchema,
 } from "./opportunities-core";
 
 /**
@@ -143,7 +144,7 @@ const opportunityBaseSchema = z.strictObject({
   next_task_title: z.string().optional().nullable(),
   next_task_due_date: z.string().optional().nullable(),
   next_task_priority: z.string().optional().nullable(),
-  products: z.any().optional().nullable(), // JSONB array from view
+  products: opportunityProductSchema, // Type-safe JSONB array from view
 });
 
 /**

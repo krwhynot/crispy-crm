@@ -36,6 +36,61 @@ function hasRequiredId(segment: Segment): segment is Segment & { id: string } {
 }
 
 /**
+ * Type guard to validate segment record shape from unknown data
+ * Used to replace unsafe double-casts (as unknown as RecordType)
+ *
+ * Validates minimal RaRecord requirements: id (string) and name (string)
+ * Engineering Constitution: Fail-fast with explicit type checking
+ */
+export function isSegmentRecord(value: unknown): value is Segment & { id: string } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value) &&
+    "id" in value &&
+    typeof (value as Record<string, unknown>).id === "string" &&
+    "name" in value &&
+    typeof (value as Record<string, unknown>).name === "string"
+  );
+}
+
+/**
+ * Assert and cast a validated segment to RecordType
+ * Replaces double-casts with single generic cast after validation
+ *
+ * @throws Error if segment fails type guard validation
+ */
+function assertSegmentRecord<RecordType extends RaRecord>(
+  segment: Segment & { id: string },
+  context: string
+): RecordType {
+  if (!isSegmentRecord(segment)) {
+    throw new Error(`Invalid segment data in ${context}`);
+  }
+  // Single cast is safe after type guard validation
+  return segment as RecordType;
+}
+
+/**
+ * Assert and cast an array of validated segments to RecordType[]
+ * Replaces double-casts with single generic cast after validation
+ *
+ * @throws Error if any segment fails type guard validation
+ */
+function assertSegmentRecordArray<RecordType extends RaRecord>(
+  segments: Array<Segment & { id: string }>,
+  context: string
+): RecordType[] {
+  for (const segment of segments) {
+    if (!isSegmentRecord(segment)) {
+      throw new Error(`Invalid segment data in ${context}`);
+    }
+  }
+  // Single cast is safe after type guard validation
+  return segments as RecordType[];
+}
+
+/**
  * Create a composed DataProvider for segments
  *
  * The segments resource is unique:
