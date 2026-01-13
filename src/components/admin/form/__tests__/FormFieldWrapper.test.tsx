@@ -6,6 +6,8 @@ import { FormFieldWrapper } from "../FormFieldWrapper";
 vi.mock("react-hook-form", () => ({
   useFormState: vi.fn(() => ({ errors: {}, dirtyFields: {} })),
   useWatch: vi.fn(() => undefined),
+  // BUG-002 fix added trigger() to revalidate fields with stale errors
+  useFormContext: vi.fn(() => ({ trigger: vi.fn() })),
 }));
 
 // Mock formProgressUtils

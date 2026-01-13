@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveGrid } from "@/components/design-system";
-import { EditBase, Form, useEditContext } from "ra-core";
+import { EditBase, Form, useEditContext, useNotify, useRefresh } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { contactKeys, activityKeys, opportunityKeys } from "../queryKeys";
@@ -13,16 +13,26 @@ import { contactBaseSchema } from "@/atomic-crm/validation/contacts";
 
 export const ContactEdit = () => {
   const queryClient = useQueryClient();
+  const notify = useNotify();
+  const refresh = useRefresh();
 
   return (
     <EditBase
       redirect="show"
+      mutationMode="pessimistic"
       mutationOptions={{
         onSuccess: () => {
           // Invalidate related caches to prevent stale data
           queryClient.invalidateQueries({ queryKey: contactKeys.all });
           queryClient.invalidateQueries({ queryKey: activityKeys.all });
           queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          notify("Contact updated successfully", { type: "success" });
+        },
+        onError: (error: Error) => {
+          // BUG-008 fix: Catch validation errors, RLS failures, network errors
+          // Without this callback, errors from dataProvider.update() were silently swallowed
+          notify(error.message || "Failed to update contact", { type: "error" });
+          refresh(); // Reset form to last known good state
         },
       }}
     >
