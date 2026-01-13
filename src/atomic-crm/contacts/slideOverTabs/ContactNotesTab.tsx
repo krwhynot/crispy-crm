@@ -3,7 +3,7 @@ import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { NotesIterator } from "../../notes";
 import { SidepaneEmptyState } from "@/components/layouts/sidepane/SidepaneEmptyState";
 import { EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane/empty-state-content";
-import type { Contact } from "../types";
+import type { Contact } from "@/atomic-crm/validation/contacts/contacts-core";
 
 interface ContactNotesTabProps {
   record: Contact;

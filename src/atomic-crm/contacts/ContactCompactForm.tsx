@@ -18,7 +18,7 @@ const emailSchema = z.string().email("Invalid email address");
 const validateEmailOnBlur = (value: string) => {
   if (!value || value.trim() === "") return undefined;
   const result = emailSchema.safeParse(value.trim());
-  return result.success ? undefined : result.error.errors[0]?.message;
+  return result.success ? undefined : result.error.issues[0]?.message;
 };
 
 // Lowercase type values to match Zod schema (personalInfoTypeSchema)
