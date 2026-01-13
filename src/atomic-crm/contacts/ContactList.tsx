@@ -151,7 +151,49 @@ const ContactListLayout = ({
             )}
           />
 
-          {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
+          {/* Column 3: Email - Primary email from JSONB array - visible on md+ */}
+          <FunctionField
+            source="email"
+            label="Email"
+            sortable={false}
+            render={(record: Contact) => {
+              const emails = record?.email as Array<{ value: string; type: string }> | undefined;
+              return (
+                <span className="text-muted-foreground">
+                  {emails?.[0]?.value || "—"}
+                </span>
+              );
+            }}
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
+          />
+
+          {/* Column 4: Phone - Primary phone from JSONB array - visible on lg+ */}
+          <FunctionField
+            source="phone"
+            label="Phone"
+            sortable={false}
+            render={(record: Contact) => {
+              const phones = record?.phone as Array<{ value: string; type: string }> | undefined;
+              return (
+                <span className="text-muted-foreground">
+                  {phones?.[0]?.value || "—"}
+                </span>
+              );
+            }}
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
+          />
+
+          {/* Column 5: Title - Job title standalone - visible on lg+ */}
+          <TextField
+            source="title"
+            label="Title"
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
+          />
+
+          {/* Column 6: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
           <FunctionField
             label="Role"
             sortBy="title"
