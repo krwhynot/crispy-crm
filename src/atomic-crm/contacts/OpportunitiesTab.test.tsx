@@ -101,7 +101,7 @@ const mockQueryClient = {
 };
 
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual("ra-core");
+  const actual = await vi.importActual<typeof import("ra-core")>("ra-core");
   return {
     ...actual,
     useGetList: () => mockUseGetList(),
@@ -110,6 +110,8 @@ vi.mock("ra-core", async () => {
     useCreate: () => [mockCreate],
     useNotify: () => mockNotify,
     useDataProvider: () => mockDataProvider,
+    // Preserve ShowContextProvider from actual module
+    ShowContextProvider: actual.ShowContextProvider,
   };
 });
 
@@ -133,7 +135,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -152,7 +154,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -197,7 +199,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -215,7 +217,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -276,7 +278,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -335,7 +337,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -374,7 +376,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
