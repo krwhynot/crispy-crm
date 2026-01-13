@@ -8,13 +8,17 @@ interface NotifyWithRetryOptions {
 }
 
 /**
- * useNotifyWithRetry - Error notifications with built-in retry action
+ * Hook that provides notification with optional user-initiated retry.
  *
- * Provides a convenient wrapper around react-admin's notify() that adds
- * a retry button to error notifications. This improves UX by allowing
- * users to immediately retry failed operations without additional clicks.
+ * **Fail-Fast Compliance:** This hook does NOT implement automatic retry.
+ * The retry button allows users to manually retry failed operations after
+ * reviewing the error. This is an intentional UX pattern that:
  *
- * Usage:
+ * 1. Shows errors immediately (fail-fast)
+ * 2. Gives users control over retry timing
+ * 3. Prevents infinite retry loops
+ *
+ * @example
  * ```tsx
  * const notifyWithRetry = useNotifyWithRetry();
  *
@@ -27,6 +31,8 @@ interface NotifyWithRetryOptions {
  *   }
  * };
  * ```
+ *
+ * @returns Callback function to show error notification with retry button
  */
 export const useNotifyWithRetry = () => {
   const notify = useNotify();

@@ -79,6 +79,31 @@ export const LOSS_REASONS: Array<{ id: LossReason; name: string }> = [
   { id: "other", name: "Other (specify)" },
 ];
 
+/**
+ * Product item schema for JSONB array from opportunities_summary view
+ * Matches the jsonb_build_object structure in the database view:
+ * - id, product_id_reference, product_name, product_category, principal_name, notes
+ */
+const opportunityProductItemSchema = z
+  .object({
+    id: z.number(),
+    product_id_reference: z.number().optional().nullable(),
+    product_name: z.string().optional().nullable(),
+    product_category: z.string().optional().nullable(),
+    principal_name: z.string().optional().nullable(),
+    notes: z.string().optional().nullable(),
+  })
+  .passthrough(); // Allow additional fields from JSONB for forward compatibility
+
+/**
+ * Product array schema for opportunities_summary view
+ * Exported for testing and type inference
+ */
+export const opportunityProductSchema = z.array(opportunityProductItemSchema).optional().nullable();
+
+// Type export for product item
+export type OpportunityProductItem = z.infer<typeof opportunityProductItemSchema>;
+
 // Base schema - validates only fields that have UI inputs in OpportunityInputs.tsx
 const opportunityBaseSchema = z.strictObject({
   // System fields

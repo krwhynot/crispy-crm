@@ -21,9 +21,12 @@ export function formatName(firstName?: string | null, lastName?: string | null):
 }
 
 /**
- * Format a full name, returning "--" if null/empty
+ * Formats a single name field (trims whitespace).
+ *
+ * @deprecated Prefer formatFullName(firstName, lastName) for contact names.
+ * Use this only for single-field name formatting.
  */
-export function formatFullName(name?: string | null): string {
+export function formatSingleName(name?: string | null): string {
   const trimmed = name?.trim();
   return trimmed || "--";
 }

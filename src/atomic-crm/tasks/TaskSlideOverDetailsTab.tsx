@@ -1,4 +1,5 @@
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
@@ -49,6 +50,7 @@ export function TaskSlideOverDetailsTab({
 }: TaskSlideOverDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  const queryClient = useQueryClient();
   const { taskTypes } = useFormOptions();
 
   // Handle save in edit mode
@@ -59,6 +61,7 @@ export function TaskSlideOverDetailsTab({
         data,
         previousData: record,
       });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
       notify("Task updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
