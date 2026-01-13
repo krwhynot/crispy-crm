@@ -35,6 +35,42 @@
 
 ---
 
+## Plan Relationship
+
+> **Note:** This plan is the **canonical plan** for the 2026-01-12 full audit critical issues.
+> A separate plan (`2026-01-12-workflow-gaps-remediation.md`) addressed workflow gaps from 2026-01-11.
+> These plans are **independent** and can be executed in any order.
+
+---
+
+## Shared Invariants for Cache Invalidation (Tasks 4-8)
+
+All cache invalidation tasks follow this canonical pattern:
+
+```typescript
+// CANONICAL INVALIDATION RECIPE
+import { useQueryClient } from "@tanstack/react-query";
+
+// 1. Get queryClient at component top
+const queryClient = useQueryClient();
+
+// 2. After successful mutation, invalidate by resource key
+queryClient.invalidateQueries({ queryKey: ["<resource>"] });
+
+// 3. DO NOT:
+//    - Use useRefresh() (too broad)
+//    - Invalidate multiple resources (over-invalidation)
+//    - Add retry logic on failure
+```
+
+**Verification for all cache tasks:**
+- [ ] Import `useQueryClient` from `@tanstack/react-query`
+- [ ] Call `invalidateQueries` ONLY after successful mutation
+- [ ] Use exact resource key: `["tasks"]`, `["products"]`, `["activities"]`
+- [ ] No automatic retry on invalidation failure
+
+---
+
 ## Dependency Analysis
 
 ```
@@ -42,7 +78,8 @@ Group 1 (Independent - Run in Parallel):
 ├── Task 1: TS-001 z.any() in Zod schemas
 ├── Task 2: CQ-001 formatFullName consolidation
 ├── Task 3: EH-001 useNotifyWithRetry JSDoc
-└── Task 4: SS-001 TaskSlideOverDetailsTab cache
+├── Task 4: SS-001 TaskSlideOverDetailsTab cache
+└── Task 9: TS-002 segmentsHandler type guards (NOW INDEPENDENT)
 
 Group 2 (Independent - Run in Parallel):
 ├── Task 5: SS-002 TaskList CompletionCheckbox cache
@@ -50,10 +87,13 @@ Group 2 (Independent - Run in Parallel):
 ├── Task 7: SS-004 ProductDetailsTab cache
 └── Task 8: SS-005 ActivityDetailsTab cache
 
-Group 3 (Sequential - After Group 1):
-├── Task 9: TS-002 segmentsHandler type guards (depends on Task 1 patterns)
+Group 3 (Sequential - After Groups 1 & 2):
 └── Task 10: Update imports after formatFullName consolidation (depends on Task 2)
 ```
+
+**Dependency Changes from Review:**
+- Task 9 moved to Group 1 (type guards are independent of z.any() replacement)
+- This increases parallelization from 4→5 tasks in Group 1
 
 ---
 
@@ -629,7 +669,7 @@ export function ActivityDetailsTab({ record, mode, onModeToggle, onDirtyChange }
 **File:** `src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts`
 **Lines:** 91, 117, 137, 162
 **Effort:** 2 story points
-**Dependencies:** Task 1 (patterns established)
+**Dependencies:** None (independent - type guards don't depend on Zod patterns)
 
 #### What to Implement
 
@@ -754,6 +794,7 @@ Update imports in:
 | Task 2: formatFullName DRY | task-implementor | 5-8 min |
 | Task 3: JSDoc | task-implementor | 2-3 min |
 | Task 4: Task cache | task-implementor | 3-5 min |
+| Task 9: segmentsHandler types | task-implementor | 5-8 min |
 
 ### Group 2 (Parallel) - ~12 minutes
 
@@ -764,12 +805,13 @@ Update imports in:
 | Task 7: Product cache | task-implementor | 3-5 min |
 | Task 8: Activity cache | task-implementor | 3-5 min |
 
-### Group 3 (Sequential) - ~10 minutes
+### Group 3 (Sequential) - ~3 minutes
 
 | Task | Agent | Est. Time | Depends On |
 |------|-------|-----------|------------|
-| Task 9: segmentsHandler | task-implementor | 5-8 min | Task 1 |
 | Task 10: Import cleanup | task-implementor | 2-3 min | Task 2 |
+
+**Note:** Task 9 moved to Group 1 (now runs in parallel)
 
 **Total Estimated Time:** ~35-40 minutes with parallel execution
 
