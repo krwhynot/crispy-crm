@@ -11,6 +11,15 @@ import { enableGetChoices } from "../utils/autocompleteDefaults";
 import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
+import { z } from "zod";
+
+const emailSchema = z.string().email("Invalid email address");
+
+const validateEmailOnBlur = (value: string) => {
+  if (!value || value.trim() === "") return undefined;
+  const result = emailSchema.safeParse(value.trim());
+  return result.success ? undefined : result.error.errors[0]?.message;
+};
 
 // Lowercase type values to match Zod schema (personalInfoTypeSchema)
 const personalInfoTypes = [{ id: "work" }, { id: "home" }, { id: "other" }];
@@ -145,6 +154,7 @@ export const ContactCompactForm = () => {
                   onPaste={handleEmailPaste}
                   onBlur={handleEmailBlur}
                   autoComplete="email"
+                  validate={validateEmailOnBlur}
                 />
                 <SelectInput
                   source="type"

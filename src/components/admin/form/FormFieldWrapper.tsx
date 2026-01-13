@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { useFormState, useWatch } from "react-hook-form";
+import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { useFormProgress } from "./formProgressUtils";
 import { Check, X } from "lucide-react";
@@ -25,6 +25,7 @@ function FormFieldWrapper({
   className,
   countDefaultAsFilled = false,
 }: FormFieldWrapperProps) {
+  const { trigger } = useFormContext();
   const { registerField, markFieldValid } = useFormProgress();
   const value = useWatch({ name });
   const { errors, dirtyFields } = useFormState({ name });
@@ -54,6 +55,15 @@ function FormFieldWrapper({
   useEffect(() => {
     markFieldValid(name, isFilledForProgress && !hasError);
   }, [name, isFilledForProgress, hasError, markFieldValid]);
+
+  // Revalidate field when user fixes a stale validation error
+  // react-hook-form's clearErrors() does NOT affect isValid formState
+  // Must use trigger() to force revalidation and clear the error properly
+  useEffect(() => {
+    if (hasValue && hasError && isDirty) {
+      trigger(name);
+    }
+  }, [hasValue, hasError, isDirty, name, trigger]);
 
   // Clone child elements with aria-required for WCAG 3.3.2 compliance
   // This allows screen readers to announce which fields are required

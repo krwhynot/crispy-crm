@@ -351,7 +351,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
             </RecordContextProvider>
           </SourceContextProvider>
           {!disabled && (
-            <div className="simple-form-iterator-item-actions flex flex-row h-9 items-center gap-1">
+            <div className="simple-form-iterator-item-actions flex flex-row min-h-[44px] items-center gap-2">
               {!disableReordering && reOrderButtons}
               {!disableRemoveField(record) && removeButton}
             </div>
