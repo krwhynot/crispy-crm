@@ -113,7 +113,7 @@
         "todoScope": "all"
       }
     },
-    "audit:rls-soft-delete": {
+    "audit-rls-soft-delete": {
       "type": "audit",
       "enforcement": "suggest",
       "priority": "high",
@@ -144,7 +144,7 @@
         ]
       }
     },
-    "audit:summary-views": {
+    "audit-summary-views": {
       "type": "audit",
       "enforcement": "suggest",
       "priority": "high",
@@ -175,7 +175,7 @@
         ]
       }
     },
-    "validate:props": {
+    "validate-props": {
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",

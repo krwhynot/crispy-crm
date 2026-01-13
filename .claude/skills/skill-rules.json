@@ -1559,7 +1559,7 @@
         ]
       }
     },
-    "audit:rls-soft-delete": {
+    "audit-rls-soft-delete": {
       "type": "audit",
       "enforcement": "suggest",
       "priority": "high",
@@ -1590,7 +1590,7 @@
         ]
       }
     },
-    "audit:summary-views": {
+    "audit-summary-views": {
       "type": "audit",
       "enforcement": "suggest",
       "priority": "high",
@@ -1621,7 +1621,7 @@
         ]
       }
     },
-    "validate:props": {
+    "validate-props": {
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
@@ -1668,7 +1668,7 @@
       "primary": "enforcing-principles",
       "context": {
         "data": "data-integrity-guards",
-        "props": "validate:props"
+        "props": "validate-props"
       }
     },
     "edge function": {

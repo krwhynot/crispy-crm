@@ -932,7 +932,7 @@
         "parallel.*?(execution|implementation|tasks?)"
       ]
     },
-    "audit:rls-soft-delete": {
+    "audit-rls-soft-delete": {
       "priority": "high",
       "keywords": [
         "rls audit",
@@ -949,7 +949,7 @@
         "rls.*?(soft.?delete|deleted_at)"
       ]
     },
-    "audit:summary-views": {
+    "audit-summary-views": {
       "priority": "high",
       "keywords": [
         "view audit",
@@ -966,7 +966,7 @@
         "(view|summary).*?(out of sync|missing|columns)"
       ]
     },
-    "validate:props": {
+    "validate-props": {
       "priority": "medium",
       "keywords": [
         "props validation",
@@ -998,7 +998,7 @@
       "primary": "enforcing-principles",
       "context": {
         "data": "data-integrity-guards",
-        "props": "validate:props"
+        "props": "validate-props"
       }
     },
     "edge function": {
