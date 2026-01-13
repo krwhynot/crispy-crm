@@ -18,6 +18,7 @@ This folder contains copy-paste-ready prompts for manual E2E testing using Claud
 | [opportunities.md](./opportunities.md) | Opportunities | Pipeline stages, win/loss reasons, related entities |
 | [products.md](./products.md) | Products | Principal products, categories, distributor assignments |
 | [team.md](./team.md) | Team/Sales | User management, roles, permissions |
+| [cross-entity-workflows.md](./cross-entity-workflows.md) | Workflows | Lead-to-Opportunity journey, Task completion with activity logging, Quick activity multi-entry |
 
 ## Test Coverage Philosophy
 

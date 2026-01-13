@@ -21,10 +21,22 @@ import {
 import type { RaRecord } from "react-admin";
 
 /**
- * Computed fields from products_summary view (must be stripped before save)
- * - principal_name: Joined from organizations table on principal_id
+ * View-only fields from products_summary that must be stripped before save
+ *
+ * These fields come from the view but should NOT be written to the products table:
+ * - principal_name: Computed from JOIN with organizations table
+ * - created_at, updated_at: Managed by database triggers
+ * - deleted_at: Managed by soft delete logic
+ *
+ * FIX (2025-01): Added timestamp fields to prevent validation passing but
+ * DB write failing due to trying to update read-only/trigger-managed columns.
  */
-export const COMPUTED_FIELDS = ["principal_name"] as const;
+export const COMPUTED_FIELDS = [
+  "principal_name", // Computed from JOIN
+  "created_at", // Managed by DB - not user-editable
+  "updated_at", // Managed by DB trigger - not user-editable
+  "deleted_at", // Managed by soft delete - not user-editable
+] as const;
 
 /**
  * Transform: Convert product_distributors from sparse array to record object
