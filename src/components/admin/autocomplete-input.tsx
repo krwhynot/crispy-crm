@@ -30,6 +30,25 @@ import { InputHelperText } from "./input-helper-text";
 import type { SupportCreateSuggestionOptions } from "@/hooks/useSupportCreateSuggestion";
 import { useSupportCreateSuggestion } from "@/hooks/useSupportCreateSuggestion";
 
+/**
+ * AutocompleteInput - Enhanced autocomplete with toggle selection
+ *
+ * ## Selection Behavior
+ * - **Non-required fields:** Clicking a selected item toggles it off (deselects)
+ * - **Required fields:** Cannot deselect - must choose a different option
+ *
+ * This toggle pattern allows users to clear selections without a separate "X" button,
+ * which is especially useful on touch devices where the clear button may be hard to tap.
+ *
+ * @example
+ * ```tsx
+ * // Required field - no toggle, must select something
+ * <AutocompleteInput source="organization_id" isRequired />
+ *
+ * // Optional field - clicking selected item clears it
+ * <AutocompleteInput source="category" />
+ * ```
+ */
 export const AutocompleteInput = (
   props: Omit<InputProps, "source"> &
     Omit<SupportCreateSuggestionOptions, "handleChange" | "filter"> &

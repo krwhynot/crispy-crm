@@ -28,23 +28,22 @@ interface FormErrorSummaryProps {
 /**
  * Extracts all error messages from nested react-hook-form errors object.
  * Handles nested objects (like address.city) and arrays (like email[0].value).
+ * Returns both fieldPath (for DOM focusing) and displayLabel (for user-friendly display).
  */
 function extractErrors(
   errors: FieldErrors,
   fieldLabels: Record<string, string> = {},
   prefix = ""
-): Array<{ field: string; message: string }> {
-  const result: Array<{ field: string; message: string }> = [];
+): Array<{ fieldPath: string; displayLabel: string; message: string }> {
+  const result: Array<{ fieldPath: string; displayLabel: string; message: string }> = [];
 
   for (const [key, value] of Object.entries(errors)) {
     const fieldPath = prefix ? `${prefix}.${key}` : key;
 
     if (value?.message && typeof value.message === "string") {
-      // Direct error message
-      const label = fieldLabels[fieldPath] || fieldLabels[key] || formatFieldName(key);
-      result.push({ field: label, message: value.message });
+      const displayLabel = fieldLabels[fieldPath] || fieldLabels[key] || formatFieldName(key);
+      result.push({ fieldPath, displayLabel, message: value.message });
     } else if (value && typeof value === "object") {
-      // Nested errors (objects or arrays)
       result.push(...extractErrors(value as FieldErrors, fieldLabels, fieldPath));
     }
   }
@@ -162,15 +161,15 @@ export function FormErrorSummary({
           className="mt-2 space-y-1 text-sm text-destructive/90"
           aria-label="Form validation errors"
         >
-          {errorList.map(({ field, message }, index) => (
-            <li key={`${field}-${index}`} className="flex items-start gap-2">
+          {errorList.map((error, index) => (
+            <li key={`${error.fieldPath}-${index}`} className="flex items-start gap-2">
               <span className="shrink-0">•</span>
               <button
                 type="button"
-                onClick={() => focusField(field)}
+                onClick={() => focusField(error.fieldPath)}
                 className="text-left hover:underline focus:underline focus:outline-none"
               >
-                <span className="font-medium">{field}:</span> {message}
+                <span className="font-medium">{error.displayLabel}:</span> {error.message}
               </button>
             </li>
           ))}

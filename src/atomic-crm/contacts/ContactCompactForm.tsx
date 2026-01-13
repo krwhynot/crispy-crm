@@ -79,7 +79,7 @@ export const ContactCompactForm = () => {
       >
         {/* Organization - full width row */}
         <div data-tutorial="contact-organization">
-          <FormFieldWrapper name="organization_id" isRequired>
+          <FormFieldWrapper name="organization_id" isRequired countDefaultAsFilled>
             <ReferenceInput
               source="organization_id"
               reference="organizations"
