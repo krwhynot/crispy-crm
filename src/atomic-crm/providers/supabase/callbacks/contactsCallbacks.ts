@@ -87,6 +87,11 @@ export const transformQToIlikeSearch = createQToIlikeTransformer({
  * The database schema requires a name field, but the UI form captures
  * first_name and last_name separately for better UX.
  *
+ * FIX [DATA-001]: Prevents contacts displaying email as name by:
+ * 1. Always computing name from first_name/last_name when available
+ * 2. Falling back to "Unknown Contact" when no valid name can be computed
+ * 3. Logging warning for data quality issues (fail-fast principle)
+ *
  * @param data - Contact data (partial for updates, full for creates)
  * @returns Data with computed name field
  *
@@ -100,19 +105,42 @@ export const transformQToIlikeSearch = createQToIlikeTransformer({
  *
  * computeNameField({ last_name: "Doe" })
  * // Returns: { last_name: "Doe", name: "Doe" }
+ *
+ * computeNameField({ email: [{ value: "john@example.com" }] })
+ * // Returns: { ..., name: "Unknown Contact" } (with warning logged)
  * ```
  */
-export function computeNameField(data: Partial<RaRecord>): Partial<RaRecord> {
-  // Only compute if first_name or last_name is present in the data
-  // This allows partial updates that don't touch these fields to pass through
-  if (data.first_name !== undefined || data.last_name !== undefined) {
-    const firstName = data.first_name || "";
-    const lastName = data.last_name || "";
+export function computeNameField(data: RaRecord): RaRecord {
+  const firstName = typeof data.first_name === "string" ? data.first_name.trim() : "";
+  const lastName = typeof data.last_name === "string" ? data.last_name.trim() : "";
+
+  // Compute name from first_name and last_name if either is present
+  if (firstName || lastName) {
     return {
       ...data,
       name: `${firstName} ${lastName}`.trim(),
     };
   }
+
+  // For partial updates that don't include first_name/last_name, preserve existing name
+  if (data.first_name === undefined && data.last_name === undefined && data.name) {
+    return data;
+  }
+
+  // For creates or when name is missing/empty: use fallback
+  // FIX [DATA-001]: Prevent empty or email-like names in database
+  if (!data.name || (typeof data.name === "string" && data.name.trim() === "")) {
+    console.warn(
+      "[ContactsCallbacks] Contact created without proper name - using fallback. " +
+        "This indicates a data quality issue that should be investigated.",
+      { id: data.id, first_name: data.first_name, last_name: data.last_name }
+    );
+    return {
+      ...data,
+      name: "Unknown Contact",
+    };
+  }
+
   return data;
 }
 

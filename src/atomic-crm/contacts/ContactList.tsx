@@ -158,11 +158,7 @@ const ContactListLayout = ({
             sortable={false}
             render={(record: Contact) => {
               const emails = record?.email as Array<{ value: string; type: string }> | undefined;
-              return (
-                <span className="text-muted-foreground">
-                  {emails?.[0]?.value || "—"}
-                </span>
-              );
+              return <span className="text-muted-foreground">{emails?.[0]?.value || "—"}</span>;
             }}
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
@@ -175,11 +171,7 @@ const ContactListLayout = ({
             sortable={false}
             render={(record: Contact) => {
               const phones = record?.phone as Array<{ value: string; type: string }> | undefined;
-              return (
-                <span className="text-muted-foreground">
-                  {phones?.[0]?.value || "—"}
-                </span>
-              );
+              return <span className="text-muted-foreground">{phones?.[0]?.value || "—"}</span>;
             }}
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"
