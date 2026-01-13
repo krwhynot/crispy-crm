@@ -23,7 +23,7 @@ vi.mock("../formProgressUtils", () => ({
 }));
 
 // Import mocked modules to access their implementations
-import { useFormState, useWatch } from "react-hook-form";
+import { useFormState, useWatch, useFormContext } from "react-hook-form";
 import { useFormProgress } from "../formProgressUtils";
 
 // Get mock functions
