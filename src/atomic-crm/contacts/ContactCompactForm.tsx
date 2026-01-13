@@ -21,7 +21,10 @@ export const ContactCompactForm = () => {
   const handleEmailChange = (email: string) => {
     const { first_name, last_name } = getValues();
     if (first_name || last_name || !email) return;
-    const [first, last] = email.split("@")[0].split(".");
+    const localPart = email.split("@")[0];
+    if (!localPart) return;
+    const [first, last] = localPart.split(".");
+    if (!first) return;
     setValue("first_name", first.charAt(0).toUpperCase() + first.slice(1));
     setValue("last_name", last ? last.charAt(0).toUpperCase() + last.slice(1) : "");
   };
@@ -94,7 +97,7 @@ export const ContactCompactForm = () => {
 
         {/* Account Manager - full width row */}
         <div data-tutorial="contact-account-manager">
-          <FormFieldWrapper name="sales_id" isRequired>
+          <FormFieldWrapper name="sales_id" isRequired countDefaultAsFilled>
             <ReferenceInput
               reference="sales"
               source="sales_id"
