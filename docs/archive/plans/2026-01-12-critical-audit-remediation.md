@@ -146,6 +146,28 @@ describe("opportunityProductSchema", () => {
     const result = opportunityProductSchema.safeParse(invalidProducts);
     expect(result.success).toBe(false);
   });
+
+  // BACKWARD COMPATIBILITY: Ensure previously valid payloads remain valid
+  it("accepts products with extra fields (passthrough)", () => {
+    const productsWithExtras = [
+      { id: 1, name: "Widget", quantity: 10, customField: "legacy" },
+    ];
+    const result = opportunityProductSchema.safeParse(productsWithExtras);
+    expect(result.success).toBe(true);
+    // Verify extra fields are preserved
+    if (result.success) {
+      expect(result.data?.[0]).toHaveProperty("customField", "legacy");
+    }
+  });
+
+  it("handles real JSONB data from database view", () => {
+    // Sample actual data structure from opportunities_summary view
+    const realJsonbData = [
+      { id: 42, product_name: "Sample Kit A", category: "samples" },
+    ];
+    const result = opportunityProductSchema.safeParse(realJsonbData);
+    expect(result.success).toBe(true);
+  });
 });
 ```
 
@@ -813,7 +835,7 @@ Update imports in:
 
 **Note:** Task 9 moved to Group 1 (now runs in parallel)
 
-**Total Estimated Time:** ~35-40 minutes with parallel execution
+**Total Estimated Time:** ~30-35 minutes with improved parallelization (Task 9 moved to Group 1)
 
 ---
 
