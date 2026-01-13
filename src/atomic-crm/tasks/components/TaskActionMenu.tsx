@@ -63,6 +63,7 @@ export function TaskActionMenu({
   const notify = useNotify();
   const [update] = useUpdate();
   const [deleteOne] = useDelete();
+  const queryClient = useQueryClient();
 
   const taskId = typeof task.id === "string" ? parseInt(task.id, 10) : task.id;
   const taskTitle = task.title || task.subject || "task";
@@ -89,6 +90,8 @@ export function TaskActionMenu({
         previousData: task,
       });
 
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+
       notify(`Task postponed to ${days === 1 ? "tomorrow" : "next week"}`, {
         type: "success",
       });
@@ -106,6 +109,7 @@ export function TaskActionMenu({
     setIsDeleting(true);
     try {
       await deleteOne("tasks", { id: taskId, previousData: task });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
       notify("Task deleted", { type: "success" });
     } catch {
       notify("Failed to delete task", { type: "error" });

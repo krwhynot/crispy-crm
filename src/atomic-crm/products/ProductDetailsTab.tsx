@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { useFormContext } from "react-hook-form";
 import { Form } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -101,6 +102,7 @@ export function ProductDetailsTab({
 }: ProductDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  const queryClient = useQueryClient();
   // Ref to access form's getValues() from outside the Form context
   const getValuesRef = useRef<(() => Record<string, unknown>) | null>(null);
 
@@ -116,6 +118,7 @@ export function ProductDetailsTab({
         data: completeData,
         previousData: record,
       });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       notify("Product updated successfully", { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {

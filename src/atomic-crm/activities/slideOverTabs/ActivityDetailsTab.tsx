@@ -1,5 +1,7 @@
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { Form, ReferenceField } from "react-admin";
+import { activityKeys } from "../../queryKeys";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
@@ -58,6 +60,7 @@ export function ActivityDetailsTab({
 }: ActivityDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const handleSave = async (data: Partial<ActivityRecord>) => {
     try {
@@ -66,6 +69,7 @@ export function ActivityDetailsTab({
         data,
         previousData: record,
       });
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
       notify("Activity updated successfully", { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {

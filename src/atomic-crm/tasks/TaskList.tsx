@@ -7,6 +7,7 @@ import {
   downloadCSV,
   type Exporter,
 } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import jsonExport from "jsonexport/dist";
 
 import { FunctionField } from "react-admin";
@@ -275,6 +276,7 @@ const TaskListLayout = ({
 const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { task: Task }) {
   const [update] = useUpdate();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // Prevent row click
@@ -291,6 +293,9 @@ const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { ta
         },
         previousData: task,
       });
+
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+
       notify(checked ? "Task completed" : "Task reopened", { type: "success" });
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
