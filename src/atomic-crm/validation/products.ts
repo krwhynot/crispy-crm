@@ -170,6 +170,16 @@ export const productCreateWithDistributorsSchema = z.strictObject({
 /**
  * Product schema with distributor fields for update operations
  * Same as create but id is allowed in data (React Admin includes it)
+ *
+ * IMPORTANT: This schema must include ALL fields from products_summary view
+ * because EditBase populates defaultValues from the view record, and React Admin
+ * includes ALL defaultValues in the update payload. Using z.strictObject() will
+ * reject any fields not explicitly defined here.
+ *
+ * View fields that MUST be allowed (but are stripped before DB write):
+ * - principal_name: Computed from JOIN
+ * - manufacturer_part_number: DB column
+ * - created_at, updated_at, deleted_at: Timestamps
  */
 export const productUpdateWithDistributorsSchema = z.strictObject({
   // ID may be included in update data
@@ -201,9 +211,18 @@ export const productUpdateWithDistributorsSchema = z.strictObject({
     .nullish(),
   marketing_description: z.string().trim().max(2000).nullish(),
 
-  // System fields
+  // Database fields from products table (allowed in update payload)
+  manufacturer_part_number: z.string().max(100).nullish(),
+
+  // System/timestamp fields (from view, stripped before save by productsCallbacks)
   created_by: z.number().int().nullish(),
   updated_by: z.number().int().nullish(),
+  created_at: z.string().nullish(), // ISO timestamp from view
+  updated_at: z.string().nullish(), // ISO timestamp from view
+  deleted_at: z.string().nullish(), // ISO timestamp from view
+
+  // Computed fields from products_summary view (stripped before save)
+  principal_name: z.string().nullish(),
 
   // Distributor fields - explicitly allowed for productsHandler
   ...distributorFieldsSchema,
