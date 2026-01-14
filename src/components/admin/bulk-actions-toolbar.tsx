@@ -31,8 +31,14 @@ export const BulkActionsToolbar = ({
   return (
     <Card className="flex flex-col gap-2 md:gap-6 md:flex-row items-stretch sm:items-center p-2 px-4 w-[90%] sm:w-fit fixed bottom-14 left-4 z-10 bg-card dark:bg-card">
       <div className="flex items-center gap-2">
-        <Button variant="ghost" className="has-[>svg]:px-0" onClick={handleUnselectAll}>
-          <X />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-11 w-11"
+          aria-label="Unselect all"
+          onClick={handleUnselectAll}
+        >
+          <X className="h-4 w-4" />
         </Button>
         <span className="text-sm text-muted-foreground">
           <Translate i18nKey="ra.action.bulk_actions" options={{ smart_count: selectedIds.length }}>

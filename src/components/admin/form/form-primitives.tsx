@@ -31,8 +31,14 @@ interface FormItemContextValue {
 const FormItemContext = createContext<FormItemContextValue>({} as FormItemContextValue);
 
 const useFormField = () => {
-  const { getFieldState, formState } = useFormContext();
+  const { getFieldState } = useFormContext();
   const { id, name } = useContext(FormItemContext);
+
+  // Subscribe to form state changes via useFormState() to ensure re-renders
+  // when errors change. Passing `name` optimizes by only subscribing to
+  // this specific field's state changes (React Hook Form docs pattern).
+  // This fixes aria-invalid not updating when setError() is called.
+  const formState = useFormState({ name });
 
   const fieldState = getFieldState(name, formState);
 
