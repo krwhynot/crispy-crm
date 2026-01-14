@@ -76,27 +76,28 @@ export function TaskActionMenu({
   };
 
   /**
-   * Internal postpone handler - updates due_date via data provider
+   * Internal snooze handler - sets snooze_until via data provider
    */
   const handlePostponeInternal = async (days: number) => {
     setIsPostponing(true);
     try {
-      const currentDate = getCurrentDueDate();
-      const newDate = addDays(currentDate, days);
+      const newSnoozeDate = new Date();
+      newSnoozeDate.setDate(newSnoozeDate.getDate() + days);
+      newSnoozeDate.setHours(23, 59, 59, 999);
 
       await update("tasks", {
         id: taskId,
-        data: { due_date: newDate.toISOString().split("T")[0] },
+        data: { snooze_until: newSnoozeDate.toISOString() },
         previousData: task,
       });
 
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
 
-      notify(`Task postponed to ${days === 1 ? "tomorrow" : "next week"}`, {
+      notify(`Task snoozed until ${days === 1 ? "tomorrow" : "next week"}`, {
         type: "success",
       });
     } catch {
-      notify("Failed to postpone task", { type: "error" });
+      notify("Failed to snooze task", { type: "error" });
     } finally {
       setIsPostponing(false);
     }
@@ -124,11 +125,11 @@ export function TaskActionMenu({
     if (onPostpone && !useInternalHandlers) {
       try {
         await onPostpone(taskId, days);
-        notify(`Task postponed to ${days === 1 ? "tomorrow" : "next week"}`, {
+        notify(`Task snoozed until ${days === 1 ? "tomorrow" : "next week"}`, {
           type: "success",
         });
       } catch {
-        notify("Failed to postpone task", { type: "error" });
+        notify("Failed to snooze task", { type: "error" });
       }
     } else {
       await handlePostponeInternal(days);

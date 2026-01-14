@@ -102,6 +102,7 @@ export interface TaskApiResponse {
   opportunity_id?: number;
   contact_id?: number;
   organization_id?: number;
+  snooze_until?: string;
   // Expanded relations (when meta.expand is used)
   opportunity?: { id: number; name: string };
   contact?: { id: number; name: string };

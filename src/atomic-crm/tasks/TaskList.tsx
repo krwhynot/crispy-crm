@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   useUpdate,
   useNotify,
@@ -42,6 +42,7 @@ import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { TaskActionMenu } from "./components/TaskActionMenu";
 import { SortButton } from "@/components/admin/sort-button";
 import { ExportButton } from "@/components/admin/export-button";
+import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**

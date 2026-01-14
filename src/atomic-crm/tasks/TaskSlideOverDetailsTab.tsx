@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
+import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
 import { TextInput } from "@/components/admin/text-input";

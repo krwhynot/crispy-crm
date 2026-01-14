@@ -26,7 +26,7 @@ import { useDeleteWithUndoController, useNotify, useUpdate } from "ra-core";
 import { useEffect, useState } from "react";
 import type { Contact, Task as TData } from "../types";
 import TaskEdit from "./TaskEdit";
-import { QuickLogActivity } from "../activities/QuickLogActivity";
+import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
 import { cn } from "@/lib/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 
