@@ -244,12 +244,22 @@ describe("Product Update Validation", () => {
         expect(() => productUpdateWithDistributorsSchema.parse(dataWithExtra)).toThrow();
       });
 
-      it("should reject created_at field (prevent timestamp injection)", () => {
+      it("should ALLOW timestamp fields from view (stripped later by callbacks)", () => {
+        // FIX (2025-01): Schema now allows timestamp fields because:
+        // 1. EditBase populates defaultValues from products_summary view
+        // 2. View includes created_at, updated_at, deleted_at, principal_name
+        // 3. React Admin includes ALL defaultValues in update payload
+        // 4. productsCallbacks.computedFields strips these before DB write
+        // This prevents "Unrecognized key" validation errors
         const dataWithTimestamp = {
           ...validUpdateWithDistributors,
           created_at: "2025-01-01T00:00:00Z",
+          updated_at: "2025-01-15T00:00:00Z",
+          deleted_at: null,
+          principal_name: "Test Principal",
         };
-        expect(() => productUpdateWithDistributorsSchema.parse(dataWithTimestamp)).toThrow();
+        // Should NOT throw - these fields are allowed (but stripped before save)
+        expect(() => productUpdateWithDistributorsSchema.parse(dataWithTimestamp)).not.toThrow();
       });
     });
   });

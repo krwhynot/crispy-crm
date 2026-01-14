@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-11T15:15:54.855Z",
+  "generated_at": "2026-01-14T18:00:23.847Z",
   "item_count": 29,
   "items": [
     {
@@ -597,14 +597,16 @@
     {
       "name": "ActivityDetailsTab",
       "file": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx",
-      "line": 53,
+      "line": 55,
       "type": "presentational",
       "hooks": [
         "useNotify",
+        "useQueryClient",
         "useUpdate"
       ],
       "imports": [
         "../../contacts/ContactOption",
+        "../../queryKeys",
         "../../types",
         "../../validation/activities",
         "@/components/admin/autocomplete-input",
@@ -616,6 +618,7 @@
         "@/components/layouts/sidepane",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
+        "@tanstack/react-query",
         "ra-core",
         "react-admin"
       ],

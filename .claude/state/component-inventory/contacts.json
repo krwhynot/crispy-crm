@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-13T00:59:03.876Z",
+  "generated_at": "2026-01-14T18:00:23.857Z",
   "item_count": 58,
   "items": [
     {
@@ -277,7 +277,7 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 18,
+      "line": 27,
       "type": "presentational",
       "hooks": [
         "useFormContext"
@@ -295,7 +295,8 @@
         "@/components/admin/simple-form-iterator",
         "@/components/admin/text-input",
         "react",
-        "react-hook-form"
+        "react-hook-form",
+        "zod"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -422,7 +423,9 @@
       "line": 14,
       "type": "presentational",
       "hooks": [
-        "useQueryClient"
+        "useNotify",
+        "useQueryClient",
+        "useRefresh"
       ],
       "imports": [
         "../layout/FormToolbar",
@@ -453,7 +456,9 @@
       "line": 14,
       "type": "presentational",
       "hooks": [
-        "useQueryClient"
+        "useNotify",
+        "useQueryClient",
+        "useRefresh"
       ],
       "imports": [
         "../layout/FormToolbar",
@@ -775,7 +780,7 @@
     {
       "name": "ContactInputs",
       "file": "src/atomic-crm/contacts/ContactInputs.tsx",
-      "line": 18,
+      "line": 61,
       "type": "presentational",
       "hooks": [
         "useFormState"
@@ -1448,19 +1453,20 @@
     {
       "name": "ContactNotesTab",
       "file": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx",
-      "line": 19,
+      "line": 21,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../../notes",
-        "../types",
+        "@/atomic-crm/validation/contacts/contacts-core",
         "@/components/admin/reference-many-field",
+        "@/components/layouts/sidepane/SidepaneEmptyState",
+        "@/components/layouts/sidepane/empty-state-content",
         "ra-core"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "NotesIterator",
-        "Contact"
+        "NotesIterator"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-11T15:15:54.873Z",
+  "generated_at": "2026-01-14T18:00:23.879Z",
   "item_count": 30,
   "items": [
     {
@@ -114,10 +114,11 @@
     {
       "name": "ProductDetailsTab",
       "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-      "line": 96,
+      "line": 97,
       "type": "presentational",
       "hooks": [
         "useNotify",
+        "useQueryClient",
         "useRef",
         "useUpdate"
       ],
@@ -132,6 +133,7 @@
         "@/components/layouts/sidepane",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
+        "@tanstack/react-query",
         "ra-core",
         "react",
         "react-admin",

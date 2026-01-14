@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-13T00:59:52.100Z",
+  "generated_at": "2026-01-14T18:00:40.563Z",
   "items": {
     "nodes": [
       {
@@ -598,28 +598,28 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/products.ts:216:validateProductFormWithDistributors",
+        "id": "src/atomic-crm/validation/products.ts:235:validateProductFormWithDistributors",
         "name": "validateProductFormWithDistributors",
         "file": "src/atomic-crm/validation/products.ts",
-        "line": 216,
+        "line": 235,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/products.ts:227:validateProductUpdateWithDistributors",
+        "id": "src/atomic-crm/validation/products.ts:246:validateProductUpdateWithDistributors",
         "name": "validateProductUpdateWithDistributors",
         "file": "src/atomic-crm/validation/products.ts",
-        "line": 227,
+        "line": 246,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/products.ts:252:validateOpportunityProduct",
+        "id": "src/atomic-crm/validation/products.ts:271:validateOpportunityProduct",
         "name": "validateOpportunityProduct",
         "file": "src/atomic-crm/validation/products.ts",
-        "line": 252,
+        "line": 271,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -2256,56 +2256,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/products.ts:216:validateProductFormWithDistributors",
+        "source": "src/atomic-crm/validation/products.ts:235:validateProductFormWithDistributors",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 217,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/products.ts:216:validateProductFormWithDistributors",
+        "source": "src/atomic-crm/validation/products.ts:235:validateProductFormWithDistributors",
         "target": "createValidationError",
         "targetName": "createValidationError",
         "edgeType": "call",
-        "line": 219,
+        "line": 238,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/products.ts:227:validateProductUpdateWithDistributors",
+        "source": "src/atomic-crm/validation/products.ts:246:validateProductUpdateWithDistributors",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 228,
+        "line": 247,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/products.ts:227:validateProductUpdateWithDistributors",
+        "source": "src/atomic-crm/validation/products.ts:246:validateProductUpdateWithDistributors",
         "target": "createValidationError",
         "targetName": "createValidationError",
         "edgeType": "call",
-        "line": 230,
+        "line": 249,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/products.ts:252:validateOpportunityProduct",
+        "source": "src/atomic-crm/validation/products.ts:271:validateOpportunityProduct",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 253,
+        "line": 272,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/products.ts:252:validateOpportunityProduct",
+        "source": "src/atomic-crm/validation/products.ts:271:validateOpportunityProduct",
         "target": "createValidationError",
         "targetName": "createValidationError",
         "edgeType": "call",
-        "line": 255,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },

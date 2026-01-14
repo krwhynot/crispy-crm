@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-11T23:43:41.819Z",
+  "generated_at": "2026-01-14T18:00:34.436Z",
   "item_count": 5,
   "items": [
     {
@@ -160,13 +160,13 @@
       ],
       "relatedSchemas": [
         "productDistributorAuthorizationSchema",
+        "opportunityProductSchema",
         "productDistributorStatusSchema",
         "productDistributorSchema",
         "productWithDistributorsSchema",
         "productStatusSchema",
         "productCreateWithDistributorsSchema",
         "productUpdateWithDistributorsSchema",
-        "opportunityProductSchema",
         "syncOpportunityWithProductsParamsSchema"
       ],
       "validationFunctions": [
@@ -324,7 +324,7 @@
     {
       "name": "productUpdateWithDistributorsSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 174,
+      "line": 184,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -449,6 +449,17 @@
           "hasDefault": false
         },
         {
+          "name": "manufacturer_part_number",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
           "name": "created_by",
           "zodType": "number",
           "constraints": [],
@@ -460,6 +471,42 @@
         {
           "name": "updated_by",
           "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "principal_name",
+          "zodType": "string",
           "constraints": [],
           "optional": false,
           "nullable": true,
@@ -479,7 +526,7 @@
     {
       "name": "opportunityProductSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 236,
+      "line": 255,
       "schemaType": "strictObject",
       "fields": [
         {

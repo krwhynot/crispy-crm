@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-13T00:59:03.903Z",
+  "generated_at": "2026-01-14T18:00:23.890Z",
   "item_count": 27,
   "items": [
     {
@@ -226,7 +226,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 72,
+      "line": 73,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -266,6 +266,7 @@
         "@/components/ui/truncated-text",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
+        "@tanstack/react-query",
         "jsonexport/dist",
         "ra-core",
         "react",
@@ -498,17 +499,19 @@
     {
       "name": "TaskActionMenu",
       "file": "src/atomic-crm/tasks/components/TaskActionMenu.tsx",
-      "line": 52,
+      "line": 53,
       "type": "presentational",
       "hooks": [
         "useDelete",
         "useNotify",
+        "useQueryClient",
         "useState",
         "useUpdate"
       ],
       "imports": [
         "@/components/ui/button",
         "@/components/ui/dropdown-menu",
+        "@tanstack/react-query",
         "date-fns",
         "lucide-react",
         "react",

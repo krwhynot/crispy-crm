@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-13T00:59:52.013Z",
+  "generated_at": "2026-01-14T18:00:40.521Z",
   "items": {
     "nodes": [
       {
@@ -76,37 +76,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:105:computeNameField",
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:113:computeNameField",
         "name": "computeNameField",
         "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
-        "line": 105,
+        "line": 113,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135:contactsBeforeDelete",
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
         "name": "contactsBeforeDelete",
         "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
-        "line": 135,
+        "line": 163,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:195:contactsBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:223:contactsBeforeGetList",
         "name": "contactsBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
-        "line": 195,
+        "line": 223,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:241:stripComputedFields",
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:269:stripComputedFields",
         "name": "stripComputedFields",
         "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
-        "line": 241,
+        "line": 269,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -1149,74 +1149,110 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:105:computeNameField",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:113:computeNameField",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 113,
+        "line": 114,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135:contactsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:113:computeNameField",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:113:computeNameField",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:113:computeNameField",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:113:computeNameField",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 140,
+        "line": 168,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135:contactsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
         "target": "isInteger",
         "targetName": "isInteger",
         "edgeType": "call",
-        "line": 141,
+        "line": 169,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135:contactsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
         "target": "collectContactFilePaths",
         "targetName": "collectContactFilePaths",
         "edgeType": "call",
-        "line": 146,
+        "line": 174,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135:contactsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 150,
+        "line": 178,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135:contactsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
         "target": "deleteStorageFiles",
         "targetName": "deleteStorageFiles",
         "edgeType": "call",
-        "line": 162,
+        "line": 190,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:135:contactsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 164,
+        "line": 192,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:195:contactsBeforeGetList",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:223:contactsBeforeGetList",
         "target": "transformQToIlikeSearch",
         "targetName": "transformQToIlikeSearch",
         "edgeType": "call",
-        "line": 200,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
