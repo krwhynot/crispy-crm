@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-14T18:00:40.521Z",
+  "generated_at": "2026-01-14T21:47:45.407Z",
   "items": {
     "nodes": [
       {
@@ -229,10 +229,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:58:salesBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:63:salesBeforeGetList",
         "name": "salesBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts",
-        "line": 58,
+        "line": 63,
         "nodeType": "function",
         "exported": false,
         "async": true
@@ -1572,20 +1572,20 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:58:salesBeforeGetList",
+        "source": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:63:salesBeforeGetList",
         "target": "transformQToIlikeSearch",
         "targetName": "transformQToIlikeSearch",
         "edgeType": "call",
-        "line": 63,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:58:salesBeforeGetList",
+        "source": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:63:salesBeforeGetList",
         "target": "beforeGetList",
         "targetName": "beforeGetList",
         "edgeType": "call",
-        "line": 68,
+        "line": 73,
         "conditional": true,
         "inLoop": false
       },

@@ -91,7 +91,8 @@ function arePropsEqual(prevProps: TaskKanbanCardProps, nextProps: TaskKanbanCard
     prev.priority === next.priority &&
     prev.taskType === next.taskType &&
     prev.dueDate.getTime() === next.dueDate.getTime() &&
-    prev.relatedTo.name === next.relatedTo.name
+    prev.relatedTo.name === next.relatedTo.name &&
+    prev.snoozeUntil?.getTime() === next.snoozeUntil?.getTime()
   );
 }
 
@@ -255,11 +256,23 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         </div>
       </div>
 
-      {/* Footer: Priority + Due Date */}
+      {/* Footer: Priority + Snooze Badge + Due Date */}
       <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/50">
-        <Badge className={`text-xs ${priorityClass}`}>
-          {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
-        </Badge>
+        <div className="flex items-center gap-1.5">
+          <Badge className={`text-xs ${priorityClass}`}>
+            {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+          </Badge>
+          {/* Snooze indicator - shown when task is snoozed */}
+          {task.snoozeUntil && task.snoozeUntil > new Date() && (
+            <Badge
+              variant="outline"
+              className="text-xs text-amber-600 border-amber-200 bg-amber-50 dark:bg-amber-950/20"
+            >
+              <AlarmClock className="h-3 w-3 mr-1" />
+              Snoozed
+            </Badge>
+          )}
+        </div>
         <span className="text-xs text-muted-foreground">{format(task.dueDate, "MMM d")}</span>
       </div>
 

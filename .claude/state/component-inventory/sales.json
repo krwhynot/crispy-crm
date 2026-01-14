@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-14T18:00:23.885Z",
+  "generated_at": "2026-01-14T21:46:36.811Z",
   "item_count": 23,
   "items": [
     {
@@ -51,7 +51,7 @@
     {
       "name": "SalesCreate",
       "file": "src/atomic-crm/sales/SalesCreate.tsx",
-      "line": 16,
+      "line": 23,
       "type": "presentational",
       "hooks": [
         "useCanAccess",
@@ -59,7 +59,8 @@
         "useEffect",
         "useMutation",
         "useNotify",
-        "useRedirect"
+        "useRedirect",
+        "useState"
       ],
       "imports": [
         "../services",
@@ -71,6 +72,7 @@
         "@/components/ui/card",
         "@/components/ui/list-skeleton",
         "@/hooks/useUnsavedChangesWarning",
+        "@/lib/type-guards",
         "@tanstack/react-query",
         "ra-core",
         "react",
@@ -166,7 +168,7 @@
     {
       "name": "SalesList",
       "file": "src/atomic-crm/sales/SalesList.tsx",
-      "line": 30,
+      "line": 29,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -177,7 +179,6 @@
         "../hooks/useFilterCleanup",
         "../layout/TopToolbar",
         "../utils/listPatterns",
-        "./SalesListFilter",
         "./SalesSlideOver",
         "./salesFilterConfig",
         "@/components/admin/FloatingCreateButton",
@@ -196,7 +197,6 @@
         "TopToolbar",
         "COLUMN_VISIBILITY",
         "SalesSlideOver",
-        "SalesListFilter",
         "SALES_FILTER_CONFIG"
       ],
       "contextDependencies": [],

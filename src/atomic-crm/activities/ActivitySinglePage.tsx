@@ -4,6 +4,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { BooleanInput } from "@/components/admin/boolean-input";
+import { RadioButtonGroupInput } from "@/components/admin/radio-button-group-input";
 import { FormGrid, FormSectionWithProgress, FormFieldWrapper } from "@/components/admin/form";
 import { contactOptionText } from "../contacts/ContactOption";
 import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
@@ -21,18 +22,39 @@ const sentimentChoices = [
   { id: "negative", name: "Negative" },
 ];
 
+// Activity type choices (engagement vs interaction)
+const ACTIVITY_TYPE_CHOICES = [
+  { id: "engagement", name: "Engagement (standalone)" },
+  { id: "interaction", name: "Interaction (linked to opportunity)" },
+];
+
 export default function ActivitySinglePage() {
   // Watch the type field to conditionally show sample-specific fields
-  const activityType = useWatch({ name: "type" });
-  const isSampleActivity = activityType === "sample";
+  const interactionType = useWatch({ name: "type" });
+  const isSampleActivity = interactionType === "sample";
+
+  // Watch activity_type to conditionally show/require opportunity field
+  const activityType = useWatch({ name: "activity_type" });
+  const isInteraction = activityType === "interaction";
 
   return (
     <div className="space-y-6">
       <FormSectionWithProgress
         id="activity-details"
         title="Activity Details"
-        requiredFields={["type", "subject", "activity_date"]}
+        requiredFields={["activity_type", "type", "subject", "activity_date"]}
       >
+        {/* Activity Type selector - engagement vs interaction */}
+        <FormFieldWrapper name="activity_type" isRequired countDefaultAsFilled>
+          <RadioButtonGroupInput
+            source="activity_type"
+            label="Activity Type"
+            choices={ACTIVITY_TYPE_CHOICES}
+            row
+            helperText="Interactions require an opportunity; engagements are standalone activities"
+          />
+        </FormFieldWrapper>
+
         <FormGrid>
           <div data-tutorial="activity-type">
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
@@ -99,10 +121,15 @@ export default function ActivitySinglePage() {
         </div>
       </FormSectionWithProgress>
 
-      <FormSectionWithProgress id="relationships" title="Relationships" requiredFields={[]}>
-        <FormGrid>
+      <FormSectionWithProgress
+        id="relationships"
+        title="Relationships"
+        requiredFields={isInteraction ? ["opportunity_id"] : []}
+      >
+        {/* Opportunity field - only shown for interaction activities */}
+        {isInteraction && (
           <div data-tutorial="activity-opportunity">
-            <FormFieldWrapper name="opportunity_id">
+            <FormFieldWrapper name="opportunity_id" isRequired>
               <ReferenceInput source="opportunity_id" reference="opportunities">
                 <AutocompleteInput
                   {...getAutocompleteProps("name")}
@@ -110,34 +137,37 @@ export default function ActivitySinglePage() {
                   optionText="name"
                   helperText="Required for interaction activities"
                   placeholder="Search opportunities"
+                  isRequired
                 />
               </ReferenceInput>
             </FormFieldWrapper>
           </div>
+        )}
+
+        <FormGrid>
           <FormFieldWrapper name="contact_id">
             <ReferenceInput source="contact_id" reference="contacts_summary">
               <AutocompleteInput
                 {...getQSearchAutocompleteProps()}
                 label="Contact"
                 optionText={contactOptionText}
-                helperText="Optional contact involved"
+                helperText="At least one contact or organization is required"
                 placeholder="Search contacts"
               />
             </ReferenceInput>
           </FormFieldWrapper>
+          <FormFieldWrapper name="organization_id">
+            <ReferenceInput source="organization_id" reference="organizations">
+              <AutocompleteInput
+                {...getAutocompleteProps("name")}
+                label="Organization"
+                optionText="name"
+                helperText="At least one contact or organization is required"
+                placeholder="Search organizations"
+              />
+            </ReferenceInput>
+          </FormFieldWrapper>
         </FormGrid>
-
-        <FormFieldWrapper name="organization_id">
-          <ReferenceInput source="organization_id" reference="organizations">
-            <AutocompleteInput
-              {...getAutocompleteProps("name")}
-              label="Organization"
-              optionText="name"
-              helperText="Optional organization context"
-              placeholder="Search organizations"
-            />
-          </ReferenceInput>
-        </FormFieldWrapper>
       </FormSectionWithProgress>
 
       <FormSectionWithProgress id="follow-up" title="Follow-up" requiredFields={[]}>

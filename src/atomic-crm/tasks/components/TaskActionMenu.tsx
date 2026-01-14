@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNotify, useUpdate, useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
-import { addDays } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -67,13 +66,6 @@ export function TaskActionMenu({
 
   const taskId = typeof task.id === "string" ? parseInt(task.id, 10) : task.id;
   const taskTitle = task.title || task.subject || "task";
-
-  // Get current due date (handle both formats)
-  const getCurrentDueDate = (): Date => {
-    if (task.dueDate instanceof Date) return task.dueDate;
-    if (task.due_date) return new Date(task.due_date);
-    return new Date();
-  };
 
   /**
    * Internal snooze handler - sets snooze_until via data provider

@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-14T18:00:35.092Z",
+  "generated_at": "2026-01-14T21:47:30.101Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,11 +8,11 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:f249593b3120c16a",
+  "checksum": "sha256:de094bdd2bdbea8e",
   "source_hashes": {
-    "src/atomic-crm/activities/ActivityCreate.tsx": "ba1bfd5bd810",
-    "src/atomic-crm/activities/ActivityEdit.tsx": "2f8c451857cf",
-    "src/atomic-crm/activities/ActivityInputs.tsx": "ddf9ffb909b7",
+    "src/atomic-crm/activities/ActivityCreate.tsx": "55a2a3cf4221",
+    "src/atomic-crm/activities/ActivityEdit.tsx": "16c0dd3c2ea9",
+    "src/atomic-crm/activities/ActivityInputs.tsx": "8837676b4b69",
     "src/atomic-crm/activity-log/ActivityLogContactCreated.tsx": "2bf2a909a4af",
     "src/atomic-crm/activity-log/ActivityLogContactNoteCreated.tsx": "e3939537f007",
     "src/atomic-crm/activity-log/ActivityLogOpportunityCreated.tsx": "796619cbf306",
@@ -54,7 +54,7 @@
     "src/atomic-crm/products/ProductEdit.tsx": "b612c4d44714",
     "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
     "src/atomic-crm/products/ProductInputs.tsx": "7404ed9b661a",
-    "src/atomic-crm/sales/SalesCreate.tsx": "7f8eed9fd7ee",
+    "src/atomic-crm/sales/SalesCreate.tsx": "db53dc01c561",
     "src/atomic-crm/sales/SalesEdit.tsx": "51939e04704b",
     "src/atomic-crm/sales/SalesInputs.tsx": "34ac70873dd7",
     "src/atomic-crm/sales/SalesPermissionsInputs.tsx": "4bdb7d8bdcdd",
@@ -79,7 +79,7 @@
     {
       "componentName": "ActivityCreate",
       "file": "src/atomic-crm/activities/ActivityCreate.tsx",
-      "line": 24,
+      "line": 13,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -1192,7 +1192,7 @@
     {
       "componentName": "SalesCreate",
       "file": "src/atomic-crm/sales/SalesCreate.tsx",
-      "line": 16,
+      "line": 23,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "SimpleForm",

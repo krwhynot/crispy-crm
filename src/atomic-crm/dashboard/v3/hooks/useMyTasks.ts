@@ -85,18 +85,18 @@ export function useMyTasks() {
 
       return {
         id: task.id,
-        subject: task.title || "Untitled Task",
+        subject: task.subject || "Untitled Task",
         dueDate,
         priority: (task.priority || "medium") as TaskItem["priority"],
         taskType: taskTypeMap[task.type?.toLowerCase()] || "Other",
         relatedTo: {
-          type: task.opportunity_id
+          type: (task.opportunity_id
             ? "opportunity"
             : task.contact_id
               ? "contact"
               : task.organization_id
                 ? "organization"
-                : "personal",
+                : "personal") as TaskItem["relatedTo"]["type"],
           name:
             task.opportunity?.name ||
             task.contact?.name ||
@@ -105,7 +105,10 @@ export function useMyTasks() {
           id: task.opportunity_id || task.contact_id || task.organization_id || 0,
         },
         status,
-        notes: task.description,
+        notes: task.notes,
+        snoozeUntil: task.snooze_until
+          ? (parseDateSafely(task.snooze_until) ?? undefined)
+          : undefined,
       };
     });
   }, [rawTasks]);
@@ -211,30 +214,32 @@ export function useMyTasks() {
   }, []);
 
   /**
-   * Snooze a task by 1 day (to end of following day)
+   * Snooze a task by setting snooze_until to end of following day
    * Uses optimistic UI update for immediate feedback
    * Uses tasksRef pattern to avoid callback recreation on task changes
+   *
+   * NOTE: Snoozing sets snooze_until (NOT due_date) - the task's due date remains unchanged.
+   * The task will be hidden from the active task list until snooze_until has passed.
    */
   const snoozeTask = useCallback(
     async (taskId: number) => {
       const task = tasksRef.current.find((t) => t.id === taskId);
       if (!task) return;
 
-      // Calculate new due date: end of the following day (timezone-aware)
-      const newDueDate = endOfDay(addDays(task.dueDate, 1));
-      const newStatus = calculateStatus(newDueDate);
+      // Calculate snooze date: end of the following day (timezone-aware)
+      const snoozeUntil = endOfDay(addDays(new Date(), 1));
 
-      // Optimistic UI update - immediately move task to new bucket
+      // Optimistic UI update - hide task immediately (snoozed tasks are filtered out)
       setOptimisticUpdates((prev) => {
         const next = new Map(prev);
-        next.set(taskId, { dueDate: newDueDate, status: newStatus });
+        next.set(taskId, { deleted: true });
         return next;
       });
 
       try {
         await dataProvider.update("tasks", {
           id: taskId,
-          data: { due_date: newDueDate.toISOString() },
+          data: { snooze_until: snoozeUntil.toISOString() },
           previousData: task,
         });
 
@@ -265,7 +270,7 @@ export function useMyTasks() {
         throw error;
       }
     },
-    [dataProvider, calculateStatus, queryClient]
+    [dataProvider, queryClient]
   );
 
   /**

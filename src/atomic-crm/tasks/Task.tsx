@@ -52,14 +52,11 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
   const nextMondayFormatted = format(nextMonday, "EEE, MMM d");
 
   const [openEdit, setOpenEdit] = useState(false);
-  const [openActivityDialog, setOpenActivityDialog] = useState(false);
+  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
+  const [pendingTask, setPendingTask] = useState<TData | null>(null);
 
   const handleCloseEdit = () => {
     setOpenEdit(false);
-  };
-
-  const handleCloseActivityDialog = () => {
-    setOpenActivityDialog(false);
   };
 
   const [update, { isPending: isUpdatePending, isSuccess, variables }] = useUpdate();
@@ -78,26 +75,35 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
   };
 
   const handleCheck = (checked: boolean) => {
-    update(
-      "tasks",
-      {
+    if (checked) {
+      setPendingTask(task);
+      setShowCompletionDialog(true);
+    } else {
+      update("tasks", {
         id: task.id,
         data: {
-          id: task.id, // Include ID to trigger partial update validation
-          completed: checked,
-          completed_at: checked ? new Date().toISOString() : null,
+          id: task.id,
+          completed: false,
+          completed_at: null,
         },
         previousData: task,
+      });
+    }
+  };
+
+  const handleDialogComplete = async () => {
+    if (!pendingTask) return;
+    await update("tasks", {
+      id: pendingTask.id,
+      data: {
+        id: pendingTask.id,
+        completed: true,
+        completed_at: new Date().toISOString(),
       },
-      {
-        onSuccess: () => {
-          // Only open activity dialog when task is being completed (not uncompleted)
-          if (checked) {
-            setOpenActivityDialog(true);
-          }
-        },
-      }
-    );
+      previousData: pendingTask,
+    });
+    setShowCompletionDialog(false);
+    setPendingTask(null);
   };
 
   useEffect(() => {
@@ -215,12 +221,25 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
       {/* This part is for editing the Task directly via a Dialog */}
       {openEdit && <TaskEdit taskId={task.id} open={openEdit} close={handleCloseEdit} />}
 
-      {/* Quick log activity dialog after task completion */}
-      {openActivityDialog && (
-        <QuickLogActivity
-          open={openActivityDialog}
-          onClose={handleCloseActivityDialog}
-          task={task}
+      {/* Task completion dialog with options: Log Activity, Create Follow-up, Just Complete */}
+      {pendingTask && (
+        <TaskCompletionDialog
+          task={{
+            id: pendingTask.id as number,
+            subject: pendingTask.title,
+            taskType: pendingTask.type,
+            relatedTo: {
+              id: (pendingTask.contact_id || pendingTask.opportunity_id || 0) as number,
+              type: pendingTask.contact_id ? "contact" : "opportunity",
+              name: "",
+            },
+          }}
+          open={showCompletionDialog}
+          onClose={() => {
+            setShowCompletionDialog(false);
+            setPendingTask(null);
+          }}
+          onComplete={handleDialogComplete}
         />
       )}
     </>

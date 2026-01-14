@@ -65,6 +65,8 @@ export interface TaskItem {
   status: TaskStatus;
   owner?: string;
   notes?: string;
+  /** Snooze date - if set and in the future, task is snoozed */
+  snoozeUntil?: Date;
 }
 
 // ============================================================================

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreateBase, Form, useInput, useGetIdentity } from "ra-core";
+import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useFormState } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
@@ -9,17 +9,6 @@ import { activitiesSchema } from "../validation/activities";
 import ActivitySinglePage from "./ActivitySinglePage";
 import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
-
-const HiddenActivityTypeField = () => {
-  // Use "engagement" as default - doesn't require opportunity_id like "interaction" does
-  // This prevents validation errors on form mount when no opportunity is pre-selected
-  const { field } = useInput({
-    source: "activity_type",
-    defaultValue: "engagement",
-  });
-
-  return <input type="hidden" {...field} value={field.value ?? "engagement"} />;
-};
 
 export default function ActivityCreate() {
   const { identity } = useGetIdentity();
@@ -38,6 +27,8 @@ export default function ActivityCreate() {
       ...activitiesSchema.partial().parse({}),
       // Set current user as creator - ensures proper audit trail
       created_by: identity?.id,
+      // Default to engagement - doesn't require opportunity_id like "interaction" does
+      activity_type: "engagement",
       // URL params override defaults
       ...(urlType && { type: urlType }),
       ...(urlSubject && { subject: decodeURIComponent(urlSubject) }),
@@ -54,7 +45,7 @@ export default function ActivityCreate() {
         <div className="w-full max-w-5xl">
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar className="mb-6" />
-            <Form defaultValues={defaultValues} mode="onBlur">
+            <Form defaultValues={defaultValues} mode="onBlur" shouldUnregister>
               <Card>
                 <CardContent className="space-y-6 p-6">
                   <ActivityFormContent />
@@ -75,7 +66,6 @@ const ActivityFormContent = () => {
   return (
     <>
       <FormErrorSummary errors={errors} />
-      <HiddenActivityTypeField />
       <ActivitySinglePage />
       <CreateFormFooter
         resourceName="activity"

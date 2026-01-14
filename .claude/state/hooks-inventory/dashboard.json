@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-14T18:00:34.013Z",
+  "generated_at": "2026-01-14T21:47:26.159Z",
   "item_count": 12,
   "items": [
     {
@@ -94,7 +94,7 @@
       "file": "src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts",
       "line": 19,
       "parameters": [],
-      "returnType": "{ tasks: { id: number; subject: any; dueDate: Date; priority: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").Priority; taskType: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").TaskType; relatedTo: { type: string; name: string; id: number; }; status: TaskStatus; owner?: string; notes: any; deleted?: boolean; }[]; loading: boolean; error: Error; completeTask: (taskId: number) => Promise<void>; snoozeTask: (taskId: number) => Promise<void>; deleteTask: (taskId: number) => Promise<void>; viewTask: (taskId: number) => void; updateTaskDueDate: (taskId: number, newDueDate: Date) => Promise<void>; updateTaskLocally: (taskId: number, updates: Partial<TaskItem>) => void; rollbackTask: (taskId: number, _previousState: TaskItem) => void; calculateStatus: (dueDate: Date) => TaskStatus; }",
+      "returnType": "{ tasks: { id: number; subject: string; dueDate: Date; priority: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").Priority; taskType: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").TaskType; relatedTo: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").RelatedEntity; status: TaskStatus; owner?: string; notes: string; snoozeUntil: Date; deleted?: boolean; }[]; loading: boolean; error: Error; completeTask: (taskId: number) => Promise<void>; snoozeTask: (taskId: number) => Promise<void>; deleteTask: (taskId: number) => Promise<void>; viewTask: (taskId: number) => void; updateTaskDueDate: (taskId: number, newDueDate: Date) => Promise<void>; updateTaskLocally: (taskId: number, updates: Partial<TaskItem>) => void; rollbackTask: (taskId: number, _previousState: TaskItem) => void; calculateStatus: (dueDate: Date) => TaskStatus; }",
       "dependencies": [
         "useCallback",
         "useCurrentSale",

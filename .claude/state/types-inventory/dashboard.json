@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-14T18:00:34.610Z",
+  "generated_at": "2026-01-14T21:47:28.555Z",
   "item_count": 13,
   "items": [
     {
@@ -142,6 +142,12 @@
           "type": "string",
           "optional": true,
           "readonly": false
+        },
+        {
+          "name": "snoozeUntil",
+          "type": "Date",
+          "optional": true,
+          "readonly": false
         }
       ],
       "isComplex": true,
@@ -150,7 +156,7 @@
     {
       "name": "PipelineSummaryRow",
       "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 78,
+      "line": 80,
       "kind": "interface",
       "properties": [
         {
@@ -208,7 +214,7 @@
     {
       "name": "TaskApiResponse",
       "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 93,
+      "line": 95,
       "kind": "interface",
       "properties": [
         {
@@ -278,6 +284,12 @@
           "readonly": false
         },
         {
+          "name": "snooze_until",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
           "name": "opportunity",
           "type": "{ id: number; name: string; }",
           "optional": true,
@@ -302,7 +314,7 @@
     {
       "name": "OpportunityApiResponse",
       "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 115,
+      "line": 118,
       "kind": "interface",
       "properties": [
         {

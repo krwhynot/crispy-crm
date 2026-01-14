@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-14T18:00:23.890Z",
+  "generated_at": "2026-01-14T21:46:36.815Z",
   "item_count": 27,
   "items": [
     {
@@ -56,10 +56,10 @@
         "useUpdate"
       ],
       "imports": [
-        "../activities/QuickLogActivity",
         "../queryKeys",
         "../types",
         "./TaskEdit",
+        "./components/TaskCompletionDialog",
         "@/components/admin/date-field",
         "@/components/admin/reference-field",
         "@/components/ui/button",
@@ -78,7 +78,7 @@
         "Contact",
         "Task",
         "TaskEdit",
-        "QuickLogActivity"
+        "TaskCompletionDialog"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -226,7 +226,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 73,
+      "line": 76,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -246,6 +246,7 @@
         "./TaskSlideOver",
         "./TasksDatagridHeader",
         "./components/TaskActionMenu",
+        "./components/TaskCompletionDialog",
         "./taskFilterConfig",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
@@ -267,7 +268,9 @@
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "@tanstack/react-query",
+        "date-fns",
         "jsonexport/dist",
+        "lucide-react",
         "ra-core",
         "react",
         "react-admin"
@@ -286,6 +289,7 @@
         "TaskTypeHeader",
         "TopToolbar",
         "TaskActionMenu",
+        "TaskCompletionDialog",
         "Task",
         "Opportunity",
         "Organization"
@@ -389,12 +393,13 @@
     {
       "name": "TaskSlideOverDetailsTab",
       "file": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
-      "line": 45,
+      "line": 49,
       "type": "presentational",
       "hooks": [
         "useFormOptions",
         "useNotify",
         "useQueryClient",
+        "useState",
         "useUpdate"
       ],
       "imports": [
@@ -402,6 +407,7 @@
         "../root/ConfigurationContext",
         "../sales/SaleName",
         "../types",
+        "./components/TaskCompletionDialog",
         "@/components/admin/autocomplete-input",
         "@/components/admin/boolean-input",
         "@/components/admin/date-field",
@@ -414,11 +420,15 @@
         "@/components/ui/priority-badge",
         "@/components/ui/scroll-area",
         "@tanstack/react-query",
+        "date-fns",
+        "lucide-react",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [
+        "TaskCompletionDialog",
         "SaleName",
         "Task"
       ],
@@ -499,7 +509,7 @@
     {
       "name": "TaskActionMenu",
       "file": "src/atomic-crm/tasks/components/TaskActionMenu.tsx",
-      "line": 53,
+      "line": 52,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -512,7 +522,6 @@
         "@/components/ui/button",
         "@/components/ui/dropdown-menu",
         "@tanstack/react-query",
-        "date-fns",
         "lucide-react",
         "react",
         "react-admin"

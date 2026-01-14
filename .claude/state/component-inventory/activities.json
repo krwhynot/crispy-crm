@@ -1,12 +1,12 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-14T18:00:23.847Z",
+  "generated_at": "2026-01-14T21:46:36.725Z",
   "item_count": 29,
   "items": [
     {
       "name": "ActivityCreate",
       "file": "src/atomic-crm/activities/ActivityCreate.tsx",
-      "line": 24,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -86,7 +86,7 @@
     {
       "name": "ActivityInputs",
       "file": "src/atomic-crm/activities/ActivityInputs.tsx",
-      "line": 27,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useFormState"
@@ -108,7 +108,7 @@
     {
       "name": "ActivityInputs",
       "file": "src/atomic-crm/activities/ActivityInputs.tsx",
-      "line": 27,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useFormState"
@@ -219,7 +219,7 @@
     {
       "name": "ActivitySinglePage",
       "file": "src/atomic-crm/activities/ActivitySinglePage.tsx",
-      "line": 24,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useWatch"
@@ -231,6 +231,7 @@
         "@/components/admin/autocomplete-input",
         "@/components/admin/boolean-input",
         "@/components/admin/form",
+        "@/components/admin/radio-button-group-input",
         "@/components/admin/reference-input",
         "@/components/admin/select-input",
         "@/components/admin/text-input",
@@ -381,7 +382,7 @@
     {
       "name": "ActivityCreate",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 24,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -411,7 +412,7 @@
     {
       "name": "ActivityInputs",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 27,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useFormState"

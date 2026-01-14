@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
+import { AlarmClock } from "lucide-react";
+import { format, isAfter } from "date-fns";
 import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
@@ -54,6 +56,7 @@ export function TaskSlideOverDetailsTab({
   const notify = useNotify();
   const queryClient = useQueryClient();
   const { taskTypes } = useFormOptions();
+  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Task>) => {
@@ -74,20 +77,38 @@ export function TaskSlideOverDetailsTab({
 
   // Handle inline completion toggle in view mode
   const handleCompletionToggle = async (checked: boolean) => {
+    if (checked) {
+      setShowCompletionDialog(true);
+    } else {
+      try {
+        await update("tasks", {
+          id: record.id,
+          data: { completed: false, completed_at: null },
+          previousData: record,
+        });
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        notify("Task marked incomplete", { type: "success" });
+      } catch (error: unknown) {
+        notify("Error updating task", { type: "error" });
+        console.error("Completion toggle error:", error);
+      }
+    }
+  };
+
+  const handleDialogComplete = async () => {
     try {
       await update("tasks", {
         id: record.id,
-        data: {
-          completed: checked,
-          completed_at: checked ? new Date().toISOString() : null,
-        },
+        data: { completed: true, completed_at: new Date().toISOString() },
         previousData: record,
       });
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      notify(checked ? "Task marked complete" : "Task marked incomplete", { type: "success" });
+      notify("Task marked complete", { type: "success" });
+      setShowCompletionDialog(false);
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
       console.error("Completion toggle error:", error);
+      setShowCompletionDialog(false);
     }
   };
 
@@ -200,6 +221,15 @@ export function TaskSlideOverDetailsTab({
                   />
                 </div>
               )}
+              {/* Snooze indicator - prominent icon indicator per Carbon Design System */}
+              {record.snooze_until && isAfter(new Date(record.snooze_until), new Date()) && (
+                <div className="flex items-center gap-2 text-amber-600 pt-1">
+                  <AlarmClock className="h-4 w-4" />
+                  <span className="text-sm font-medium">
+                    Snoozed until {format(new Date(record.snooze_until), "MMM d, h:mm a")}
+                  </span>
+                </div>
+              )}
             </div>
           </SidepaneSection>
 
@@ -236,6 +266,22 @@ export function TaskSlideOverDetailsTab({
           <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
         </div>
       </ScrollArea>
+
+      <TaskCompletionDialog
+        task={{
+          id: Number(record.id),
+          subject: record.title,
+          taskType: record.type || "",
+          relatedTo: {
+            id: Number(record.contact_id || record.opportunity_id || 0),
+            type: record.contact_id ? "contact" : "opportunity",
+            name: "",
+          },
+        }}
+        open={showCompletionDialog}
+        onClose={() => setShowCompletionDialog(false)}
+        onComplete={handleDialogComplete}
+      />
     </RecordContextProvider>
   );
 }

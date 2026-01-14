@@ -9,6 +9,7 @@ import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import ActivitySinglePage from "./ActivitySinglePage";
 
 const ACTIVITY_FIELD_LABELS: Record<string, string> = {
+  activity_type: "Activity Type",
   type: "Interaction Type",
   subject: "Subject",
   activity_date: "Date",

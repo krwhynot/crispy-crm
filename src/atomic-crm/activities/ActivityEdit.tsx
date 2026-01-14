@@ -45,6 +45,7 @@ const ActivityEditForm = () => {
     <Form
       defaultValues={record}
       mode="onBlur"
+      shouldUnregister
       key={record.id} // Force remount when record changes
     >
       <Card>

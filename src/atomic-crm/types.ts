@@ -332,6 +332,8 @@ export interface Task extends Pick<RaRecord, "id"> {
   opportunity_id?: Identifier;
   sales_id?: Identifier;
   opportunity_owner_id?: Identifier;
+  /** Snooze date - task is hidden from active list until this date */
+  snooze_until?: string | null;
   created_at?: string;
   updated_at?: string;
 }

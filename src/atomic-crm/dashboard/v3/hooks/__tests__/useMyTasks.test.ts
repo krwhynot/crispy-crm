@@ -461,15 +461,17 @@ describe("useMyTasks", () => {
   });
 
   describe("snoozeTask() - Optimistic Update", () => {
-    it("should optimistically update task due date", async () => {
+    it("should optimistically hide task when snoozed and call API with snooze_until", async () => {
       const dates = createTestDates();
       const mockTask = createMockTask({ id: 1, due_date: dates.today.toISOString() });
       baseTasksData = [mockTask];
-      // Return updated task with tomorrow's date when update is called
-      const tomorrowDate = addDays(dates.today, 1);
-      mockUpdate.mockResolvedValueOnce({
-        data: { ...mockTask, due_date: tomorrowDate.toISOString() },
+
+      // Use a promise we can control to verify optimistic state during the API call
+      let resolveUpdate: (value: unknown) => void;
+      const updatePromise = new Promise((resolve) => {
+        resolveUpdate = resolve;
       });
+      mockUpdate.mockImplementationOnce(() => updatePromise);
 
       const { result } = renderHook(() => useMyTasks(), { wrapper });
 
@@ -480,21 +482,40 @@ describe("useMyTasks", () => {
 
       // Small delay to ensure React effects have flushed and tasksRef is updated
       await act(async () => {
-        // Yield to allow effects to run
         await new Promise((resolve) => setTimeout(resolve, 0));
       });
 
-      await act(async () => {
-        await result.current.snoozeTask(1);
+      // Start snooze - this will set optimistic state but API is pending
+      let snoozePromise: Promise<void>;
+      act(() => {
+        snoozePromise = result.current.snoozeTask(1);
       });
 
-      // Should have moved to tomorrow status via optimistic update
-      await waitFor(
-        () => {
-          expect(result.current.tasks[0].status).toBe("tomorrow");
-        },
-        { timeout: 2000 }
+      // Task should be hidden immediately via optimistic update
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(0);
+      });
+
+      // Verify the API was called with snooze_until (not due_date)
+      expect(mockUpdate).toHaveBeenCalledWith(
+        "tasks",
+        expect.objectContaining({
+          id: 1,
+          data: expect.objectContaining({
+            snooze_until: expect.any(String),
+          }),
+        })
       );
+
+      // Resolve the API call
+      const snoozeUntil = addDays(dates.today, 1);
+      resolveUpdate!({
+        data: { ...mockTask, snooze_until: snoozeUntil.toISOString() },
+      });
+
+      await act(async () => {
+        await snoozePromise;
+      });
     });
 
     it("should rollback on API failure", async () => {
@@ -511,8 +532,6 @@ describe("useMyTasks", () => {
         expect(result.current.tasks).toHaveLength(1);
       });
 
-      const originalStatus = result.current.tasks[0].status;
-
       let error: Error | null = null;
       await act(async () => {
         try {
@@ -523,8 +542,11 @@ describe("useMyTasks", () => {
       });
 
       expect(error?.message).toBe("Snooze failed");
-      // Should rollback to original status
-      expect(result.current.tasks[0].status).toBe(originalStatus);
+      // Should rollback - task should reappear in the list
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(1);
+        expect(result.current.tasks[0]?.id).toBe(1);
+      });
 
       consoleErrorSpy.mockRestore();
     });

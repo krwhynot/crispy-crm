@@ -1,6 +1,6 @@
 {
   "chunk_name": "_root",
-  "generated_at": "2026-01-14T18:00:34.615Z",
+  "generated_at": "2026-01-14T21:47:28.592Z",
   "item_count": 30,
   "items": [
     {
@@ -1294,6 +1294,12 @@
           "readonly": false
         },
         {
+          "name": "snooze_until",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
           "name": "created_at",
           "type": "string",
           "optional": true,
@@ -1315,7 +1321,7 @@
     {
       "name": "DashboardSnapshot",
       "file": "src/atomic-crm/types.ts",
-      "line": 339,
+      "line": 341,
       "kind": "interface",
       "properties": [
         {
@@ -1394,7 +1400,7 @@
     {
       "name": "ActivityOrganizationCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 356,
+      "line": 358,
       "kind": "interface",
       "properties": [
         {
@@ -1437,7 +1443,7 @@
     {
       "name": "ActivityContactCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 364,
+      "line": 366,
       "kind": "interface",
       "properties": [
         {
@@ -1480,7 +1486,7 @@
     {
       "name": "ActivityContactNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 372,
+      "line": 374,
       "kind": "interface",
       "properties": [
         {
@@ -1517,7 +1523,7 @@
     {
       "name": "ActivityOpportunityCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 379,
+      "line": 381,
       "kind": "interface",
       "properties": [
         {
@@ -1557,7 +1563,7 @@
     {
       "name": "ActivityOpportunityNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 387,
+      "line": 389,
       "kind": "interface",
       "properties": [
         {
@@ -1591,7 +1597,7 @@
     {
       "name": "RAFile",
       "file": "src/atomic-crm/types.ts",
-      "line": 403,
+      "line": 405,
       "kind": "interface",
       "properties": [
         {
@@ -1631,7 +1637,7 @@
     {
       "name": "NoteStatus",
       "file": "src/atomic-crm/types.ts",
-      "line": 414,
+      "line": 416,
       "kind": "interface",
       "properties": [
         {
@@ -1659,7 +1665,7 @@
     {
       "name": "ContactGender",
       "file": "src/atomic-crm/types.ts",
-      "line": 420,
+      "line": 422,
       "kind": "interface",
       "properties": [
         {
@@ -1687,7 +1693,7 @@
     {
       "name": "Product",
       "file": "src/atomic-crm/types.ts",
-      "line": 430,
+      "line": 432,
       "kind": "interface",
       "properties": [
         {
@@ -1838,7 +1844,7 @@
     {
       "name": "Activity",
       "file": "src/atomic-crm/types.ts",
-      "line": 394,
+      "line": 396,
       "kind": "type_alias",
       "typeExpression": "RaRecord &\n  (\n    | ActivityOrganizationCreated\n    | ActivityContactCreated\n    | ActivityContactNoteCreated\n    | ActivityOpportunityCreated\n    | ActivityOpportunityNoteCreated\n  )",
       "isComplex": true,
@@ -1847,7 +1853,7 @@
     {
       "name": "AttachmentNote",
       "file": "src/atomic-crm/types.ts",
-      "line": 411,
+      "line": 413,
       "kind": "type_alias",
       "typeExpression": "RAFile",
       "isComplex": false,

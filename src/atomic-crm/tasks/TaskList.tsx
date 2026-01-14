@@ -9,6 +9,8 @@ import {
 } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import jsonExport from "jsonexport/dist";
+import { AlarmClock } from "lucide-react";
+import { isAfter } from "date-fns";
 
 import { FunctionField } from "react-admin";
 import { TruncatedText } from "@/components/ui/truncated-text";
@@ -125,6 +127,57 @@ const TaskListLayout = ({
   isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
+  const [update] = useUpdate();
+  const notify = useNotify();
+  const queryClient = useQueryClient();
+
+  // State for completion dialog
+  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
+  const [pendingTask, setPendingTask] = useState<Task | null>(null);
+
+  // Handler for when user clicks completion checkbox
+  const handleCompletionRequest = (task: Task, checked: boolean) => {
+    if (checked) {
+      // Show dialog for completion
+      setPendingTask(task);
+      setShowCompletionDialog(true);
+    } else {
+      // Unchecking - update directly without dialog
+      update("tasks", {
+        id: task.id,
+        data: { completed: false, completed_at: null },
+        previousData: task,
+      });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      notify("Task reopened", { type: "success" });
+    }
+  };
+
+  // Handler for dialog completion
+  const handleDialogComplete = async () => {
+    if (!pendingTask) return;
+    try {
+      await update("tasks", {
+        id: pendingTask.id,
+        data: { completed: true, completed_at: new Date().toISOString() },
+        previousData: pendingTask,
+      });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      notify("Task completed", { type: "success" });
+    } catch (error: unknown) {
+      notify("Error completing task", { type: "error" });
+      throw new Error(`Failed to complete task ${pendingTask.id}: ${error}`);
+    } finally {
+      setShowCompletionDialog(false);
+      setPendingTask(null);
+    }
+  };
+
+  // Handler for dialog close without completing
+  const handleDialogClose = () => {
+    setShowCompletionDialog(false);
+    setPendingTask(null);
+  };
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
@@ -160,7 +213,9 @@ const TaskListLayout = ({
           <FunctionField
             label="Done"
             sortable={false}
-            render={(record: Task) => <CompletionCheckbox task={record} />}
+            render={(record: Task) => (
+              <CompletionCheckbox task={record} onCompletionRequest={handleCompletionRequest} />
+            )}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
@@ -169,7 +224,19 @@ const TaskListLayout = ({
             label={<TaskTitleHeader />}
             sortBy="title"
             render={(record: Task) => (
-              <TruncatedText className="max-w-[250px]">{record.title}</TruncatedText>
+              <div className="flex items-center gap-2">
+                <TruncatedText className="max-w-[200px]">{record.title}</TruncatedText>
+                {/* Snooze badge - shown when task is snoozed */}
+                {record.snooze_until && isAfter(new Date(record.snooze_until), new Date()) && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs text-amber-600 border-amber-200 bg-amber-50 dark:bg-amber-950/20 shrink-0"
+                  >
+                    <AlarmClock className="h-3 w-3 mr-1" />
+                    Snoozed
+                  </Badge>
+                )}
+              </div>
             )}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
@@ -264,6 +331,25 @@ const TaskListLayout = ({
         </PremiumDatagrid>
       </StandardListLayout>
       <BulkActionsToolbar />
+
+      {/* Task Completion Dialog */}
+      {pendingTask && (
+        <TaskCompletionDialog
+          task={{
+            id: Number(pendingTask.id),
+            subject: pendingTask.title,
+            taskType: pendingTask.type || "Other",
+            relatedTo: {
+              id: Number(pendingTask.contact_id || pendingTask.opportunity_id || 0),
+              type: pendingTask.contact_id ? "contact" : "opportunity",
+              name: "",
+            },
+          }}
+          open={showCompletionDialog}
+          onClose={handleDialogClose}
+          onComplete={handleDialogComplete}
+        />
+      )}
     </>
   );
 };
@@ -274,34 +360,17 @@ const TaskListLayout = ({
  * CRITICAL: Prevents row click propagation to allow independent checkbox interaction.
  * Memoized to prevent re-renders when other rows update.
  */
-const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { task: Task }) {
-  const [update] = useUpdate();
-  const notify = useNotify();
-  const queryClient = useQueryClient();
-
-  const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+const CompletionCheckbox = React.memo(function CompletionCheckbox({
+  task,
+  onCompletionRequest,
+}: {
+  task: Task;
+  onCompletionRequest: (task: Task, checked: boolean) => void;
+}) {
+  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Prevent row click
     e.stopPropagation();
-
-    const checked = e.target.checked;
-
-    try {
-      await update("tasks", {
-        id: task.id,
-        data: {
-          completed: checked,
-          completed_at: checked ? new Date().toISOString() : null,
-        },
-        previousData: task,
-      });
-
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-
-      notify(checked ? "Task completed" : "Task reopened", { type: "success" });
-    } catch (error: unknown) {
-      notify("Error updating task", { type: "error" });
-      throw new Error(`Failed to update task ${task.id}: ${error}`);
-    }
+    onCompletionRequest(task, e.target.checked);
   };
 
   return (
