@@ -123,6 +123,7 @@ const COMPUTED_FIELDS = [...TYPED_COMPUTED_FIELDS, ...VIEW_ONLY_FIELDS] as const
  */
 const VIRTUAL_FIELDS = [
   "products", // Legacy field name, may come from some forms
+  "products_to_sync", // Virtual field for product sync - stripped as safety net (defense-in-depth)
 ] as const;
 
 /**
