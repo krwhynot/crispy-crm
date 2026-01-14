@@ -29,12 +29,17 @@ export const SALES_SEARCH_FIELDS = ["first_name", "last_name", "email"] as const
 
 /**
  * Transform q filter into ILIKE search on sales name/email fields
- * Uses shared factory from commonTransforms for DRY compliance
+ * Uses raw PostgREST mode to handle multi-word searches correctly
  *
- * @see createQToIlikeTransformer in commonTransforms.ts
+ * WORKAROUND for ra-data-postgrest library bug:
+ * The library splits multi-word ILIKE values on whitespace and has a bug
+ * handling 3+ words. Uses "or@" key with escaping to bypass this issue.
+ *
+ * @see createQToIlikeTransformer in commonTransforms.ts (useRawPostgrest mode)
  */
 export const transformQToIlikeSearch = createQToIlikeTransformer({
   searchFields: SALES_SEARCH_FIELDS,
+  useRawPostgrest: true,
 });
 
 /**

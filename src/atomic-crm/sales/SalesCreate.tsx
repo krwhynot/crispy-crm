@@ -3,15 +3,22 @@ import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import { useCanAccess, useDataProvider, useNotify, useRedirect } from "ra-core";
-import { useFormState } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { SalesService } from "../services";
 import type { SalesFormData } from "../types";
 import { createSalesSchema } from "../validation/sales";
 import { SalesInputs } from "./SalesInputs";
 import { SalesListSkeleton } from "@/components/ui/list-skeleton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
+import { isHttpError } from "@/lib/type-guards";
+
+interface ServerValidationError extends Error {
+  body?: {
+    errors?: Record<string, string | { serverError?: string }>;
+  };
+}
 
 export default function SalesCreate() {
   // ═══════════════════════════════════════════════════════════════════════════
@@ -22,6 +29,9 @@ export default function SalesCreate() {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const redirect = useRedirect();
+
+  // Server error state for form field error surfacing
+  const [serverError, setServerError] = useState<ServerValidationError | null>(null);
 
   // RBAC Guard: Only admins can access the create form
   const { canAccess, isPending: isCheckingAccess } = useCanAccess({
@@ -39,6 +49,8 @@ export default function SalesCreate() {
   const { mutate, isPending: isCreating } = useMutation({
     mutationKey: ["signup"],
     mutationFn: async (data: SalesFormData) => {
+      // Clear previous server errors before submitting
+      setServerError(null);
       return salesService.salesCreate(data);
     },
     onSuccess: () => {
@@ -49,24 +61,39 @@ export default function SalesCreate() {
       // Log for debugging
       console.error("[SalesCreate] Creation failed:", error);
 
-      // Provide specific messages based on error type
-      let message = "An error occurred while creating the user.";
-
+      // Handle authentication errors with redirect
       if (error.message?.includes("Not authenticated")) {
-        message = "Your session has expired. Please log in again.";
+        notify("Your session has expired. Please log in again.", { type: "error" });
         redirect("/login");
         return;
       }
 
+      // Check if error has body.errors format (HttpError from service layer)
+      if (isHttpError(error) && error.body?.errors) {
+        // Store server error for form field mapping
+        setServerError(error as ServerValidationError);
+
+        // Extract root server error message for toast notification
+        const rootError = error.body.errors.root;
+        const rootMessage =
+          typeof rootError === "object" && rootError?.serverError
+            ? rootError.serverError
+            : typeof rootError === "string"
+              ? rootError
+              : error.message;
+
+        notify(rootMessage, { type: "error" });
+        return;
+      }
+
+      // Fallback for errors without body.errors format
+      let message = "An error occurred while creating the user.";
+
       if (error.message?.includes("already exists") || error.message?.includes("duplicate")) {
         message = "A user with this email already exists.";
-      }
-
-      if (error.message?.includes("403") || error.message?.includes("Forbidden")) {
+      } else if (error.message?.includes("403") || error.message?.includes("Forbidden")) {
         message = "You don't have permission to create users.";
-      }
-
-      if (error.message?.includes("validation") || error.message?.includes("invalid")) {
+      } else if (error.message?.includes("validation") || error.message?.includes("invalid")) {
         message = "Please check your input. Some fields may be invalid.";
       }
 
@@ -112,7 +139,7 @@ export default function SalesCreate() {
             defaultValues={formDefaults}
             disabled={isCreating}
           >
-            <SalesFormContent />
+            <SalesFormContent serverError={serverError} />
           </SimpleForm>
         </CardContent>
       </Card>
@@ -120,9 +147,39 @@ export default function SalesCreate() {
   );
 }
 
-const SalesFormContent = () => {
+interface SalesFormContentProps {
+  serverError: ServerValidationError | null;
+}
+
+const SalesFormContent = ({ serverError }: SalesFormContentProps) => {
   useUnsavedChangesWarning();
+  const { setError, clearErrors } = useFormContext<SalesFormData>();
   const { errors } = useFormState();
+
+  // Apply server validation errors to form fields
+  useEffect(() => {
+    if (serverError?.body?.errors) {
+      // Clear previous errors before setting new ones
+      clearErrors();
+
+      // Map server errors to form fields, setting aria-invalid via setError
+      Object.entries(serverError.body.errors).forEach(([field, errorValue]) => {
+        // Skip root error as it's shown in toast
+        if (field === "root") return;
+
+        // Extract message from error value (can be string or { serverError: string })
+        const message =
+          typeof errorValue === "string"
+            ? errorValue
+            : typeof errorValue === "object" && errorValue?.serverError
+              ? errorValue.serverError
+              : "Invalid value";
+
+        // Set error on the field (this automatically sets aria-invalid on React Admin inputs)
+        setError(field as keyof SalesFormData, { type: "server", message });
+      });
+    }
+  }, [serverError, setError, clearErrors]);
 
   return (
     <>

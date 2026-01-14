@@ -12,6 +12,7 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { SalesService } from "../sales.service";
 import type { DataProvider } from "ra-core";
+import { HttpError } from "react-admin";
 import type { SalesFormData, Sale } from "../../types";
 import { createMockDataProvider } from "@/tests/utils/mock-providers";
 
@@ -89,9 +90,9 @@ describe("SalesService", () => {
     test("should handle Edge Function errors with enhanced error message", async () => {
       mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Email already exists"));
 
-      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
-        "Sales creation failed: Email already exists"
-      );
+      // Service now throws HttpError with body.errors format per React Admin server validation
+      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(HttpError);
+      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow("Email already exists");
     });
 
     test("should log error details on failure", async () => {
@@ -160,8 +161,10 @@ describe("SalesService", () => {
         .fn()
         .mockRejectedValue(new Error("Password must be at least 8 characters"));
 
+      // Service now throws HttpError with body.errors format per React Admin server validation
+      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(HttpError);
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
-        "Sales creation failed: Password must be at least 8 characters"
+        "Password must be at least 8 characters"
       );
     });
   });
@@ -448,8 +451,10 @@ describe("SalesService", () => {
     test("should handle network errors", async () => {
       mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Network request failed"));
 
+      // Service now throws HttpError with body.errors format per React Admin server validation
+      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(HttpError);
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
-        "Sales creation failed: Network request failed"
+        "Network request failed"
       );
     });
 
@@ -458,17 +463,19 @@ describe("SalesService", () => {
         .fn()
         .mockRejectedValue(new Error("new row violates row-level security policy"));
 
+      // Service now throws HttpError with body.errors format per React Admin server validation
+      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(HttpError);
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
-        "Sales creation failed: new row violates row-level security policy"
+        "new row violates row-level security policy"
       );
     });
 
     test("should handle auth errors", async () => {
       mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("JWT expired"));
 
-      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
-        "Sales creation failed: JWT expired"
-      );
+      // Service now throws HttpError with body.errors format per React Admin server validation
+      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(HttpError);
+      await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow("JWT expired");
     });
   });
 

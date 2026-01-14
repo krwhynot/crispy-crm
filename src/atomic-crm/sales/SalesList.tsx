@@ -12,7 +12,6 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { SalesSlideOver } from "./SalesSlideOver";
-import { SalesListFilter } from "./SalesListFilter";
 import { SALES_FILTER_CONFIG } from "./salesFilterConfig";
 
 /**
@@ -45,7 +44,6 @@ export default function SalesList() {
           actions={<SalesListActions />}
           sort={{ field: "first_name", order: "ASC" }}
           filterDefaultValues={{ disabled: false }}
-          aside={<SalesListFilter />}
         >
           <SalesListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
           <FloatingCreateButton />
@@ -156,21 +154,36 @@ const RoleBadgeField = ({
   switch (record.role) {
     case "admin":
       badge = (
-        <Badge variant="outline" className="border-primary text-primary">
+        <Badge
+          variant="outline"
+          className="border-primary text-primary"
+          role="status"
+          aria-label="Role: Admin"
+        >
           Admin
         </Badge>
       );
       break;
     case "manager":
       badge = (
-        <Badge variant="outline" className="border-success text-success">
+        <Badge
+          variant="outline"
+          className="border-success text-success"
+          role="status"
+          aria-label="Role: Manager"
+        >
           Manager
         </Badge>
       );
       break;
     case "rep":
       badge = (
-        <Badge variant="outline" className="border-muted-foreground text-muted-foreground">
+        <Badge
+          variant="outline"
+          className="border-muted-foreground text-muted-foreground"
+          role="status"
+          aria-label="Role: Rep"
+        >
           Rep
         </Badge>
       );
@@ -197,11 +210,21 @@ const StatusField = ({
   return (
     <div className="flex flex-row gap-1">
       {record.disabled ? (
-        <Badge variant="outline" className="border-warning text-warning">
+        <Badge
+          variant="outline"
+          className="border-warning text-warning"
+          role="status"
+          aria-label="Account status: Disabled"
+        >
           Disabled
         </Badge>
       ) : (
-        <Badge variant="outline" className="border-success text-success">
+        <Badge
+          variant="outline"
+          className="border-success text-success"
+          role="status"
+          aria-label="Account status: Active"
+        >
           Active
         </Badge>
       )}

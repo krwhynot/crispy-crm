@@ -1,6 +1,8 @@
 import type { DataProvider, Identifier } from "ra-core";
+import { HttpError } from "react-admin";
 import type { Sale, SalesFormData } from "../types";
 import { devError } from "@/lib/devLogger";
+import { getErrorMessage } from "@/lib/type-guards";
 
 /**
  * Sales service handles sales user management operations through Edge functions
@@ -43,7 +45,7 @@ export class SalesService {
     try {
       const data = await this.dataProvider.invoke<Sale>("users", {
         method: "POST",
-        body,
+        body: body as Record<string, unknown>,
       });
 
       if (!data) {
@@ -59,8 +61,60 @@ export class SalesService {
         body,
         error,
       });
-      const message = error instanceof Error ? error.message : "Unknown error";
-      throw new Error(`Sales creation failed: ${message}`);
+
+      // Extract message from error using type guards
+      const message = getErrorMessage(error);
+
+      // Determine appropriate HTTP status code
+      let status = 500;
+      if (error instanceof HttpError) {
+        status = error.status;
+      } else if (
+        message.toLowerCase().includes("already exists") ||
+        message.toLowerCase().includes("duplicate")
+      ) {
+        status = 409; // Conflict
+      } else if (
+        message.toLowerCase().includes("validation") ||
+        message.toLowerCase().includes("invalid")
+      ) {
+        status = 400; // Bad Request
+      } else if (
+        message.toLowerCase().includes("forbidden") ||
+        message.toLowerCase().includes("permission")
+      ) {
+        status = 403; // Forbidden
+      } else if (
+        message.toLowerCase().includes("not authenticated") ||
+        message.toLowerCase().includes("unauthorized")
+      ) {
+        status = 401; // Unauthorized
+      }
+
+      // Map error messages to field-specific errors per React Admin server-side validation format
+      const fieldErrors: Record<string, string> = {};
+      const lowerMessage = message.toLowerCase();
+
+      if (lowerMessage.includes("email")) {
+        fieldErrors.email = message;
+      }
+      if (lowerMessage.includes("first_name") || lowerMessage.includes("first name")) {
+        fieldErrors.first_name = message;
+      }
+      if (lowerMessage.includes("last_name") || lowerMessage.includes("last name")) {
+        fieldErrors.last_name = message;
+      }
+      if (lowerMessage.includes("role")) {
+        fieldErrors.role = message;
+      }
+
+      // Throw HttpError with body.errors format for React Admin form integration
+      throw new HttpError(message, status, {
+        errors: {
+          root: { serverError: message },
+          ...fieldErrors,
+        },
+      });
     }
   }
 
@@ -75,7 +129,7 @@ export class SalesService {
     data: Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }
   ): Promise<Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }> {
     // Destructure all fields that can be updated (avatar_url matches DB column name)
-    const { email, first_name, last_name, phone, role, avatar_url, disabled, deleted_at } = data;
+    const { email, first_name, last_name, role, avatar_url, disabled, deleted_at } = data;
 
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
@@ -95,7 +149,6 @@ export class SalesService {
       if (email) body.email = email;
       if (first_name) body.first_name = first_name;
       if (last_name) body.last_name = last_name;
-      if (phone) body.phone = phone;
       if (role !== undefined) body.role = role; // enum - keep !== undefined
       if (disabled !== undefined) body.disabled = disabled; // boolean - false is valid
       if (avatar_url) body.avatar_url = avatar_url;
