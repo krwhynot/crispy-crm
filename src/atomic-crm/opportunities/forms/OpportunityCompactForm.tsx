@@ -242,12 +242,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             />
           </div>
           <div data-tutorial="opp-close-date">
-            <TextInput
-              source="estimated_close_date"
-              label="Est. Close Date *"
-              helperText={false}
-              type="date"
-            />
+            <DateInput source="estimated_close_date" label="Est. Close Date *" helperText={false} />
           </div>
         </CompactFormRow>
 
@@ -457,12 +452,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               />
             </div>
             <div data-tutorial="opp-next-action-date">
-              <TextInput
-                source="next_action_date"
-                label="Next Action Date"
-                helperText={false}
-                type="date"
-              />
+              <DateInput source="next_action_date" label="Next Action Date" helperText={false} />
             </div>
           </CompactFormRow>
           <TextInput

@@ -259,11 +259,10 @@ export function OpportunityWizardStep2() {
         </FormFieldWrapper>
         <FormFieldWrapper name="estimated_close_date" isRequired>
           <div data-tutorial="opp-close-date">
-            <TextInput
+            <DateInput
               source="estimated_close_date"
               label="Est. Close Date"
               helperText="Defaults to 30 days from today"
-              type="date"
             />
           </div>
         </FormFieldWrapper>
@@ -548,12 +547,7 @@ export function OpportunityWizardStep4() {
           </FormFieldWrapper>
           <FormFieldWrapper name="next_action_date">
             <div data-tutorial="opp-next-action-date">
-              <TextInput
-                source="next_action_date"
-                label="Next Action Date"
-                helperText={false}
-                type="date"
-              />
+              <DateInput source="next_action_date" label="Next Action Date" helperText={false} />
             </div>
           </FormFieldWrapper>
         </CompactFormRow>

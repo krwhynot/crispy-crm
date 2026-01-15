@@ -118,12 +118,11 @@ export function OpportunityDetailsFormSection({
       <TextInput source="campaign" label="Campaign" helperText={false} fullWidth />
       <TextInput source="notes" label="Notes" multiline rows={2} helperText={false} fullWidth />
       <TextInput source="next_action" label="Next Action" helperText={false} fullWidth />
-      <TextInput
+      <DateInput
         source="next_action_date"
         label="Next Action Date"
-        type="date"
         helperText={false}
-        fullWidth
+        className="w-full"
       />
       <TextInput
         source="decision_criteria"
