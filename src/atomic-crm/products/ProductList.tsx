@@ -14,6 +14,7 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { Badge } from "@/components/ui/badge";
+import { ucFirst } from "@/atomic-crm/utils";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
@@ -256,7 +257,7 @@ function CertificationBadges({ certifications }: { certifications?: string[] }) 
 function formatSnakeCase(value: string): string {
   return value
     .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => ucFirst(word))
     .join(" ");
 }
 

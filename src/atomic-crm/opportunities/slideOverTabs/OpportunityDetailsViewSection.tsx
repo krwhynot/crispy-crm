@@ -6,6 +6,7 @@ import { getPriorityVariant } from "@/components/ui/priority-badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
+import { ucFirst } from "@/atomic-crm/utils";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
 import { formatDateDisplay } from "@/lib/formatDate";
@@ -141,9 +142,7 @@ export function OpportunityDetailsViewSection({
               <span className="text-xs text-muted-foreground">Priority</span>
               <div className="mt-1">
                 <Badge variant={getPriorityVariant(record.priority || "low")}>
-                  {record.priority
-                    ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
-                    : "Low"}
+                  {record.priority ? ucFirst(record.priority) : "Low"}
                 </Badge>
               </div>
             </div>

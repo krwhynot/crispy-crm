@@ -95,6 +95,7 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     },
     {
       staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );
 

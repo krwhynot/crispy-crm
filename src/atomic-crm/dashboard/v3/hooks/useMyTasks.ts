@@ -44,6 +44,7 @@ export function useMyTasks() {
     {
       enabled: !salesLoading && !!salesId,
       staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );
 
