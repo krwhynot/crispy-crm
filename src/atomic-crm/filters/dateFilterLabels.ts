@@ -11,7 +11,8 @@
  * @module filters/dateFilterLabels
  */
 
-import { startOfWeek, startOfMonth, subDays, endOfYesterday, isSameDay, format } from "date-fns";
+import { startOfWeek, startOfMonth, subDays, endOfYesterday, isSameDay } from "date-fns";
+import { formatDateDisplay } from "@/lib/formatDate";
 
 /**
  * Detect which sidebar date preset was selected based on filter values.

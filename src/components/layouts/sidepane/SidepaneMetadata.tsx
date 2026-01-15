@@ -14,7 +14,7 @@ export function SidepaneMetadata({ createdAt, updatedAt }: SidepaneMetadataProps
       <Separator className="my-4" />
       <section className="py-2">
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          {createdAt && <span>Created {formatDate(createdAt)}</span>}
+          {createdAt && <span>Created {formatDateLocale(createdAt)}</span>}
           {createdAt && updatedAt && <span>•</span>}
           {updatedAt && <span>Updated {formatDate(updatedAt)}</span>}
         </div>

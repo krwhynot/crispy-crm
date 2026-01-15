@@ -1,4 +1,4 @@
-import type { FunctionComponent } from "react";
+import type { ComponentType, MemoExoticComponent } from "react";
 import { memo } from "react";
 
 interface ComponentWithDisplayName {
@@ -10,12 +10,13 @@ interface ComponentWithDisplayName {
  * See {@link https://stackoverflow.com/a/70890101}
  * @deprecated Use genericMemo from "ra-core" when available.
  */
-export function genericMemo<T>(component: T): T {
-  const result = memo(component as FunctionComponent);
+export function genericMemo<P extends object>(
+  component: ComponentType<P>
+): MemoExoticComponent<ComponentType<P>> {
+  const result = memo(component);
 
-  // We have to set the displayName on both the field implementation and the memoized version.
-  // On the implementation so that the memoized version can pick them up and users may reference the defaultProps in their components.
-  // On the memoized version so that components that inspect their children props may read them.
+  // Preserve displayName for DevTools
   result.displayName = (component as ComponentWithDisplayName).displayName?.replace("Impl", "");
-  return result as unknown as T;
+
+  return result;
 }

@@ -3,6 +3,7 @@ import { useNotify, useStore } from "ra-core";
 import { z } from "zod";
 import { isValidFilterField } from "../providers/supabase/filterRegistry";
 import { safeJsonParse } from "../utils/safeJsonParse";
+import { devLog } from "@/lib/devLogger";
 
 /**
  * Default sort fields for each resource when stale sort is detected
@@ -133,9 +134,9 @@ export const useFilterCleanup = (resource: string) => {
         localStorage.setItem(key, JSON.stringify(params));
         storeApi.setItem(key, params);
 
-        console.info(
-          `[useFilterCleanup] Cleaned stale filters/sort for resource "${resource}". ` +
-            `localStorage and React Admin store updated.`
+        devLog(
+          "useFilterCleanup",
+          `Cleaned stale filters/sort for resource "${resource}". localStorage and React Admin store updated.`
         );
       }
     } catch (error: unknown) {

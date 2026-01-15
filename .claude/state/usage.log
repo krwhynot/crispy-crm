@@ -21,3 +21,4 @@
 [2026-01-10T23:02:58.548Z] ✓ search_code | query: "withLifecycle wrapper callbacks lifecycle hooks" | limit=5, type="function" | results: 5 | 2750ms
 [2026-01-11T00:18:13.356Z] ✓ search_code | query: "unifiedDataProvider" | limit=1, type="all" | results: 1 | 1187ms
 [2026-01-11T19:41:51.494Z] ✓ find_references | symbolName="useKPIMetrics", includeDefinition=false | results: 20 | 30ms
+[2026-01-15T16:45:11.245Z] ✓ find_references | symbolName="genericMemo", includeDefinition=true | results: 9 | 163ms

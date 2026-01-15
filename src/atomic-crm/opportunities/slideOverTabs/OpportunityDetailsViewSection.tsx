@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { ReferenceField, useGetOne } from "react-admin";
-import { format } from "date-fns";
 import { Building2, Trophy, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPriorityVariant } from "@/components/ui/priority-badge";
