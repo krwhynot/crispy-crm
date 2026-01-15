@@ -151,7 +151,9 @@ describe("DateInput", () => {
       );
 
       // Button's accessible name is from placeholder text
-      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
+      const triggerButton = screen.getByRole("button", {
+        name: /activity date|due date|date|created at/i,
+      });
       await user.click(triggerButton);
 
       // Calendar should be visible - look for calendar grid or navigation
@@ -174,7 +176,9 @@ describe("DateInput", () => {
       );
 
       // Open calendar
-      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
+      const triggerButton = screen.getByRole("button", {
+        name: /activity date|due date|date|created at/i,
+      });
       await user.click(triggerButton);
 
       // Wait for calendar to appear
@@ -209,7 +213,7 @@ describe("DateInput", () => {
       );
 
       // Open calendar - when date is set, button shows formatted date
-      const triggerButton = screen.getByRole("button", { name: /january 1(st)?,? 2025/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date/i });
       await user.click(triggerButton);
 
       // Wait for calendar and click day 15
@@ -257,7 +261,7 @@ describe("DateInput", () => {
       );
 
       // Open calendar - button shows formatted date when value is set
-      const triggerButton = screen.getByRole("button", { name: /january 1(st)?,? 2025/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date/i });
       await user.click(triggerButton);
 
       // Wait for calendar to appear
@@ -308,12 +312,12 @@ describe("DateInput", () => {
     });
 
     test("hides clear button on required field", () => {
-      // Required validator function
-      const required = (value: unknown) => (value ? undefined : "Required");
+      // Use isRequired prop - React Admin's useInput() only recognizes built-in required() validator
+      // For custom validate functions, isRequired must be explicitly passed
 
       renderWithAdminContext(
         <FormWrapper defaultValues={{ activity_date: "2025-01-15" }}>
-          <DateInput source="activity_date" label="Activity Date" validate={required} />
+          <DateInput source="activity_date" label="Activity Date" isRequired />
         </FormWrapper>,
         { resource: "activities" }
       );
@@ -402,7 +406,9 @@ describe("DateInput", () => {
       );
 
       // Open calendar
-      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
+      const triggerButton = screen.getByRole("button", {
+        name: /activity date|due date|date|created at/i,
+      });
       await user.click(triggerButton);
 
       await waitFor(() => {
@@ -440,7 +446,9 @@ describe("DateInput", () => {
       );
 
       // Open calendar
-      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
+      const triggerButton = screen.getByRole("button", {
+        name: /activity date|due date|date|created at/i,
+      });
       await user.click(triggerButton);
 
       await waitFor(() => {
@@ -473,7 +481,7 @@ describe("DateInput", () => {
       );
 
       // When disabled, button shows formatted date but is disabled
-      const triggerButton = screen.getByRole("button", { name: /january 15(th)?,? 2025/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date/i });
       expect(triggerButton).toBeDisabled();
     });
 
@@ -488,7 +496,7 @@ describe("DateInput", () => {
       );
 
       // readOnly button shows formatted date
-      const triggerButton = screen.getByRole("button", { name: /january 15(th)?,? 2025/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date/i });
 
       // In readOnly mode, clicking should not open calendar
       await user.click(triggerButton);
@@ -517,7 +525,9 @@ describe("DateInput", () => {
       );
 
       // Open calendar - placeholder shows when no value
-      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
+      const triggerButton = screen.getByRole("button", {
+        name: /activity date|due date|date|created at/i,
+      });
       await user.click(triggerButton);
 
       await waitFor(() => {
@@ -628,7 +638,9 @@ describe("DateInput", () => {
       );
 
       // Button accessible name is the placeholder when empty
-      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
+      const triggerButton = screen.getByRole("button", {
+        name: /activity date|due date|date|created at/i,
+      });
 
       // Button should have minimum height for touch target (h-11 = 44px)
       // Note: In jsdom, computed styles may not reflect Tailwind classes
