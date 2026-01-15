@@ -1,13 +1,34 @@
 // Utils barrel exports
 export { formatName, formatSingleName } from "./formatName";
 export { formatRelativeTime } from "./formatRelativeTime";
-export { rateLimiter, createRateLimiter } from "./rateLimiter";
-export { secureStorage } from "./secureStorage";
+export { ClientRateLimiter, contactImportLimiter, organizationImportLimiter } from "./rateLimiter";
+export {
+  getStorageItem,
+  setStorageItem,
+  removeStorageItem,
+  clearStorageByPrefix,
+  getKeysByPrefix,
+  type StorageType,
+  type StorageOptions,
+} from "./secureStorage";
 export { getActivityIcon } from "./getActivityIcon";
 // NOTE: contextMenu, exportScheduler, keyboardShortcuts removed from barrel - only used in tests
 // Tests import directly from the source files
 export { validateCsvFile, getSecurePapaParseConfig, sanitizeCsvValue } from "./csvUploadValidator";
-export { getAvatarUrl, getInitials } from "./avatar.utils";
+export {
+  hash,
+  getGravatarUrl,
+  getFaviconUrl,
+  getContactAvatar,
+  getOrganizationAvatar,
+  processContactAvatar,
+  processOrganizationLogo,
+  extractEmailDomain,
+  isValidEmailForAvatar,
+  getFallbackAvatarUrl,
+  getOrganizationName,
+  cleanWebsiteUrl,
+} from "./avatar.utils";
 export {
   levenshteinDistance,
   findSimilarOpportunities,
