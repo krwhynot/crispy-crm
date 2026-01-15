@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { STAGE_STALE_THRESHOLDS } from "@/atomic-crm/utils/stalenessCalculation";
+import { STAGE_STALE_THRESHOLDS, ucFirst } from "@/atomic-crm/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**

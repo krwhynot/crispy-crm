@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { AlertTriangle } from "lucide-react";
+import { ucFirst } from "@/atomic-crm/utils";
 
 /**
  * Related record counts for cascade warning display

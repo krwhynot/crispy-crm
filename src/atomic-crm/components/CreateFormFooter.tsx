@@ -70,10 +70,7 @@ export const CreateFormFooter = ({
           alwaysEnable
           mutationOptions={{
             onSuccess: () => {
-              notify(
-                `${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`,
-                { type: "success" }
-              );
+              notify(`${ucFirst(resourceName)} created successfully`, { type: "success" });
               // Preserve specified fields for rapid entry (e.g., organization_id)
               if (preserveFields.length > 0) {
                 const currentValues = getValues();

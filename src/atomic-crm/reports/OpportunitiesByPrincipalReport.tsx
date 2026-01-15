@@ -213,7 +213,7 @@ export default function OpportunitiesByPrincipalReport() {
   );
 
   const { data: salesReps } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 1000 },
+    pagination: { page: 1, perPage: 100 },
     filter: ownerIds.length > 0 ? { id: ownerIds } : undefined,
   });
 

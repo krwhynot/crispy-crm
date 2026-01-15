@@ -137,10 +137,7 @@ export function ProductDetailsTab({
 
     const productStatuses = PRODUCT_STATUSES.map((status) => ({
       id: status,
-      name: status
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" "),
+      name: status.split("_").map(ucFirst).join(" "),
     }));
 
     const handleCreateCategory = (categoryName?: string) => {

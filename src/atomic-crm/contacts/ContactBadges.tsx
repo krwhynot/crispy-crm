@@ -149,10 +149,7 @@ export const RoleBadge = memo(function RoleBadge({ role }: RoleBadgeProps) {
 
   const { label, className } = config[role] || {
     // Handle unknown roles gracefully with title case
-    label: role
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" "),
+    label: role.split("_").map(ucFirst).join(" "),
     className: "tag-gray",
   };
 
@@ -195,7 +192,7 @@ export const InfluenceBadge = memo(function InfluenceBadge({ influence }: Influe
     label:
       typeof influence === "number"
         ? `Level ${influence}`
-        : influence.charAt(0).toUpperCase() + influence.slice(1),
+        : ucFirst(influence),
     variant: "outline" as BadgeVariant,
   };
 

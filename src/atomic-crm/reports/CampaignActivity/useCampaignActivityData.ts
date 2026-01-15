@@ -43,7 +43,7 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
 
   const { data: allOpportunities = [], isPending: opportunitiesPending } =
     useGetList<CampaignOpportunity>("opportunities", {
-      pagination: { page: 1, perPage: 1000 },
+      pagination: { page: 1, perPage: 1000 }, // Report requires all records for campaign filtering
       filter: {
         "deleted_at@is": null,
       },

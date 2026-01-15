@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
+import { activityKeys, opportunityKeys, taskKeys } from "@/atomic-crm/queryKeys";
 import type { Task, Opportunity } from "../types";
 
 interface QuickLogActivityProps {

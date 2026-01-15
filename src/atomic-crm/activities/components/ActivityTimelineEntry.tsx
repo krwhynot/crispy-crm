@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ReferenceField } from "@/components/admin/reference-field";
 import type { ActivityRecord } from "../../types";
 import { parseDateSafely } from "@/lib/date-utils";
+import { ucFirst } from "@/atomic-crm/utils";
 
 interface ActivityTimelineEntryProps {
   activity: ActivityRecord;
