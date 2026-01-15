@@ -51,11 +51,7 @@ export const TaskCompactForm = () => {
         <CompactFormRow>
           <div data-tutorial="task-due-date">
             <FormFieldWrapper name="due_date" isRequired countDefaultAsFilled>
-              <DateInput
-                source="due_date"
-                label="Due Date *"
-                helperText="When is this due?"
-              />
+              <DateInput source="due_date" label="Due Date *" helperText="When is this due?" />
             </FormFieldWrapper>
           </div>
           <FormFieldWrapper name="reminder_date">

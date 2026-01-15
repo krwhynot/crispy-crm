@@ -122,8 +122,8 @@ export function TaskSlideOverDetailsTab({
             <div className="space-y-4">
               <TextInput source="title" label="Task Title" />
               <TextInput source="description" label="Description" multiline rows={3} />
-              <TextInput source="due_date" label="Due Date" type="date" />
-              <TextInput source="reminder_date" label="Reminder Date" type="date" />
+              <DateInput source="due_date" label="Due Date" />
+              <DateInput source="reminder_date" label="Reminder Date" />
 
               <SelectInput
                 source="priority"
