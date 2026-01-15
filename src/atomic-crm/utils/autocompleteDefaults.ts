@@ -22,9 +22,7 @@ export const AUTOCOMPLETE_MIN_CHARS = 2;
  */
 export const enableGetChoices = (filters: Record<string, unknown>) => {
   // Find the first string value in filters (handles q, name@ilike, title@ilike, etc.)
-  const searchValue = Object.values(filters).find(
-    (v): v is string => typeof v === "string"
-  );
+  const searchValue = Object.values(filters).find((v): v is string => typeof v === "string");
 
   if (!searchValue) return false;
 
