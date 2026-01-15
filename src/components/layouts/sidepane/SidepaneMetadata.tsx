@@ -1,20 +1,9 @@
 import { Separator } from "@/components/ui/separator";
+import { formatDateLocale } from "@/lib/formatDate";
 
 interface SidepaneMetadataProps {
   createdAt?: string | Date;
   updatedAt?: string | Date;
-}
-
-function formatDate(date: string | Date): string {
-  try {
-    return new Date(date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  } catch {
-    return String(date);
-  }
 }
 
 export function SidepaneMetadata({ createdAt, updatedAt }: SidepaneMetadataProps) {

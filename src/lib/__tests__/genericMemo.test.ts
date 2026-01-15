@@ -7,7 +7,7 @@ interface TestProps<T> {
   onSelect: (item: T) => void;
 }
 
-function TestComponent<T>(props: TestProps<T>) {
+function TestComponent<T>(_props: TestProps<T>) {
   return null;
 }
 TestComponent.displayName = "TestComponentImpl";
@@ -24,10 +24,11 @@ describe("genericMemo", () => {
   });
 
   it("handles component without displayName", () => {
-    function NoDisplayName<T>(props: TestProps<T>) {
+    function NoDisplayName<T>(_props: TestProps<T>) {
       return null;
     }
     const MemoizedComponent = genericMemo(NoDisplayName);
+    // displayName is undefined for components that don't have one set
     expect(MemoizedComponent.displayName).toBeUndefined();
   });
 });

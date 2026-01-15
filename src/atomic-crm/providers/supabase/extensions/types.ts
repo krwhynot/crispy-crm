@@ -38,6 +38,10 @@ import type {
   Activity,
 } from "../../../types";
 import type { QuickAddInput } from "../../../validation/quickAdd";
+import type {
+  LogActivityWithTaskParams,
+  LogActivityWithTaskResponse,
+} from "../../../validation/rpc";
 
 /**
  * Junction operation parameters
@@ -483,6 +487,47 @@ export interface ExtendedDataProvider extends DataProvider {
    * ```
    */
   rpc<T = unknown>(functionName: string, params?: Record<string, unknown>): Promise<T>;
+
+  /**
+   * Atomically log activity with optional follow-up task
+   *
+   * Creates an activity and optionally a follow-up task in a single database
+   * transaction. Uses the log_activity_with_task RPC function to ensure
+   * data consistency. Replaces direct supabase.rpc calls in QuickLogForm.
+   *
+   * @param params - Activity and optional task data
+   * @returns Result with success status, activity_id, and optional task_id
+   * @throws HttpError if RPC fails
+   *
+   * @example
+   * ```typescript
+   * const result = await dataProvider.logActivityWithTask({
+   *   p_activity: {
+   *     activity_type: "engagement",
+   *     type: "call",
+   *     outcome: "Connected",
+   *     subject: "Follow-up call with customer",
+   *     description: "Discussed Q1 order...",
+   *     activity_date: new Date().toISOString(),
+   *     duration_minutes: 15,
+   *     contact_id: 123,
+   *     organization_id: 456,
+   *     opportunity_id: null,
+   *     follow_up_required: true,
+   *     follow_up_date: "2026-01-20",
+   *   },
+   *   p_task: {
+   *     title: "Follow-up: Discussed Q1 order...",
+   *     due_date: "2026-01-20",
+   *     priority: "medium",
+   *     contact_id: 123,
+   *     opportunity_id: null,
+   *   },
+   * });
+   * // result: { success: true, activity_id: 789, task_id: 101 }
+   * ```
+   */
+  logActivityWithTask(params: LogActivityWithTaskParams): Promise<LogActivityWithTaskResponse>;
 
   // ==================== Storage Operations ====================
   // Direct Supabase Storage access
