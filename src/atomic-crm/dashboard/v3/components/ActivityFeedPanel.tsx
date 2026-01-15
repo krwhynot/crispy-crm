@@ -26,7 +26,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Activity } from "lucide-react";
 import { useTeamActivities, type TeamActivity } from "../hooks/useTeamActivities";
-import { getActivityIcon } from "@/atomic-crm/utils/getActivityIcon";
+import { getActivityIcon, ucFirst } from "@/atomic-crm/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**
@@ -36,7 +36,7 @@ import { parseDateSafely } from "@/lib/date-utils";
 function formatActivityType(type: string): string {
   return type
     .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => ucFirst(word))
     .join(" ");
 }
 

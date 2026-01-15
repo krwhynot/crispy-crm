@@ -149,7 +149,7 @@ const TaskListLayout = ({
         data: { completed: false, completed_at: null },
         previousData: task,
       });
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
       notify("Task reopened", { type: "success" });
     }
   };
@@ -163,7 +163,7 @@ const TaskListLayout = ({
         data: { completed: true, completed_at: new Date().toISOString() },
         previousData: pendingTask,
       });
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
       notify("Task completed", { type: "success" });
     } catch (error: unknown) {
       notify("Error completing task", { type: "error" });

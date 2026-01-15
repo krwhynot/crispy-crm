@@ -2,7 +2,7 @@ import { useCreate, useNotify, useDataProvider, Form, ReferenceInput } from "rea
 import { useQueryClient } from "@tanstack/react-query";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { getAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
-import { activityKeys } from "@/atomic-crm/queryKeys";
+import { activityKeys, opportunityKeys, contactKeys } from "@/atomic-crm/queryKeys";
 import {
   Dialog,
   DialogContent,

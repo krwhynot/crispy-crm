@@ -31,7 +31,7 @@ const ACTIVITY_ICONS: Record<string, string> = {
 const getActivityTypeLabel = (type: string): string => {
   return type
     .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => ucFirst(word))
     .join(" ");
 };
 

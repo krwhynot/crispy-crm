@@ -26,6 +26,7 @@ import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { logger } from "@/lib/logger";
+import { ucFirst } from "@/atomic-crm/utils";
 
 interface Props {
   children: ReactNode;
@@ -89,7 +90,7 @@ export class ResourceErrorBoundary extends Component<Props, State> {
   render(): ReactNode {
     if (this.state.hasError) {
       const { resource, page } = this.props;
-      const resourceLabel = resource.charAt(0).toUpperCase() + resource.slice(1);
+      const resourceLabel = ucFirst(resource);
       const pageLabel = page ? ` ${page}` : "";
 
       return (

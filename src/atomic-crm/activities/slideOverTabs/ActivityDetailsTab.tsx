@@ -23,6 +23,7 @@ import {
   SAMPLE_STATUS_OPTIONS,
 } from "../../validation/activities";
 import type { ActivityRecord } from "../../types";
+import { ucFirst } from "@/atomic-crm/utils";
 
 const ACTIVITY_TYPE_CHOICES = [
   { id: "engagement", name: "Engagement" },
@@ -210,7 +211,7 @@ export function ActivityDetailsTab({
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">Sentiment:</span>
                     <Badge variant={getSentimentVariant(record.sentiment)}>
-                      {record.sentiment.charAt(0).toUpperCase() + record.sentiment.slice(1)}
+                      {ucFirst(record.sentiment)}
                     </Badge>
                   </div>
                 )}

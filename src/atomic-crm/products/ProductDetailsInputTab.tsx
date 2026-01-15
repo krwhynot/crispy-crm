@@ -5,6 +5,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { FormFieldWrapper } from "@/components/admin/form";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
 import { enableGetChoices } from "../utils/autocompleteDefaults";
+import { ucFirst } from "@/atomic-crm/utils";
 
 /**
  * Product Details tab for ProductCreate/ProductEdit forms.
@@ -19,18 +20,12 @@ import { enableGetChoices } from "../utils/autocompleteDefaults";
 export const ProductDetailsInputTab = () => {
   const productCategories = PRODUCT_CATEGORIES.map((category) => ({
     id: category,
-    name: category
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" "),
+    name: category.split("_").map(ucFirst).join(" "),
   }));
 
   const productStatuses = PRODUCT_STATUSES.map((status) => ({
     id: status,
-    name: status
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" "),
+    name: status.split("_").map(ucFirst).join(" "),
   }));
 
   const handleCreateCategory = (categoryName?: string) => {
