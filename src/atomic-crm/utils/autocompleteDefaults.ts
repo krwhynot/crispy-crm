@@ -14,11 +14,27 @@ export const AUTOCOMPLETE_MIN_CHARS = 2;
  * ReferenceInput prop to prevent API calls until minimum chars typed.
  * IMPORTANT: shouldRenderSuggestions only hides dropdown, this actually blocks fetch.
  *
+ * FIX: Updated to handle both "q" and specific field filters (like "name@ilike").
+ * Previously, this only checked for 'q', causing filters like { "name@ilike": "%abc%" } to fail.
+ *
  * @example
  * <ReferenceInput enableGetChoices={enableGetChoices} ... />
  */
-export const enableGetChoices = ({ q }: { q?: string }) =>
-  !!(q && q.length >= AUTOCOMPLETE_MIN_CHARS);
+export const enableGetChoices = (filters: Record<string, unknown>) => {
+  // Find the first string value in filters (handles q, name@ilike, title@ilike, etc.)
+  const searchValue = Object.values(filters).find(
+    (v): v is string => typeof v === "string"
+  );
+
+  if (!searchValue) return false;
+
+  // Strip % wildcards from ILIKE patterns to get actual character count
+  // getAutocompleteProps adds %...%, so "a" becomes "%a%" (3 chars).
+  // We must strip them to ensure the user actually typed enough characters.
+  const realInput = searchValue.replace(/%/g, "");
+
+  return realInput.length >= AUTOCOMPLETE_MIN_CHARS;
+};
 
 /**
  * Standard shouldRenderSuggestions function
