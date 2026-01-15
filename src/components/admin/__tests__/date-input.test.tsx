@@ -74,8 +74,8 @@ describe("DateInput", () => {
       );
 
       expect(screen.getByText("Activity Date")).toBeInTheDocument();
-      // DateInput uses a button trigger for the popover - accessible name is the placeholder or date value
-      const triggerButton = screen.getByRole("button", { name: /pick a date/i });
+      // DateInput uses a button trigger for the popover - accessible name comes from the associated label
+      const triggerButton = screen.getByRole("button", { name: /activity date/i });
       expect(triggerButton).toBeInTheDocument();
     });
 
@@ -151,7 +151,7 @@ describe("DateInput", () => {
       );
 
       // Button's accessible name is from placeholder text
-      const triggerButton = screen.getByRole("button", { name: /pick a date/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
       await user.click(triggerButton);
 
       // Calendar should be visible - look for calendar grid or navigation
@@ -174,7 +174,7 @@ describe("DateInput", () => {
       );
 
       // Open calendar
-      const triggerButton = screen.getByRole("button", { name: /pick a date/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
       await user.click(triggerButton);
 
       // Wait for calendar to appear
@@ -402,7 +402,7 @@ describe("DateInput", () => {
       );
 
       // Open calendar
-      const triggerButton = screen.getByRole("button", { name: /pick a date/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
       await user.click(triggerButton);
 
       await waitFor(() => {
@@ -440,7 +440,7 @@ describe("DateInput", () => {
       );
 
       // Open calendar
-      const triggerButton = screen.getByRole("button", { name: /pick a date/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
       await user.click(triggerButton);
 
       await waitFor(() => {
@@ -517,7 +517,7 @@ describe("DateInput", () => {
       );
 
       // Open calendar - placeholder shows when no value
-      const triggerButton = screen.getByRole("button", { name: /pick a date/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
       await user.click(triggerButton);
 
       await waitFor(() => {
@@ -628,7 +628,7 @@ describe("DateInput", () => {
       );
 
       // Button accessible name is the placeholder when empty
-      const triggerButton = screen.getByRole("button", { name: /pick a date/i });
+      const triggerButton = screen.getByRole("button", { name: /activity date|due date|date|created at/i });
 
       // Button should have minimum height for touch target (h-11 = 44px)
       // Note: In jsdom, computed styles may not reflect Tailwind classes
