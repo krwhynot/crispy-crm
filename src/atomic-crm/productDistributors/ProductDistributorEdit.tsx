@@ -41,14 +41,9 @@ export const ProductDistributorEdit = () => (
         helperText={false}
       />
 
-      <TextInput source="valid_from" label="Valid From" type="date" helperText={false} />
+      <DateInput source="valid_from" label="Valid From" helperText={false} />
 
-      <TextInput
-        source="valid_to"
-        label="Valid To"
-        type="date"
-        helperText="Leave empty if ongoing"
-      />
+      <DateInput source="valid_to" label="Valid To" helperText="Leave empty if ongoing" />
 
       <TextInput source="notes" label="Notes" multiline rows={3} fullWidth helperText={false} />
     </SimpleForm>
