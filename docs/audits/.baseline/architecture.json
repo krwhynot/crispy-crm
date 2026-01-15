@@ -1,0 +1,161 @@
+{
+  "lastAudit": "2026-01-15T00:00:00Z",
+  "composedProviderLines": 255,
+  "findings": {
+    "critical": 0,
+    "high": 2,
+    "medium": 3
+  },
+  "featureCompliance": {
+    "contacts": {
+      "index": true,
+      "list": true,
+      "create": true,
+      "edit": true,
+      "slideOver": true,
+      "status": "compliant"
+    },
+    "organizations": {
+      "index": true,
+      "list": true,
+      "create": true,
+      "edit": true,
+      "slideOver": true,
+      "status": "compliant"
+    },
+    "opportunities": {
+      "index": true,
+      "list": true,
+      "create": true,
+      "edit": true,
+      "slideOver": true,
+      "status": "compliant"
+    },
+    "activities": {
+      "index": true,
+      "list": true,
+      "create": true,
+      "edit": true,
+      "slideOver": true,
+      "status": "compliant"
+    },
+    "tasks": {
+      "index": true,
+      "list": true,
+      "create": true,
+      "edit": true,
+      "slideOver": true,
+      "status": "compliant"
+    },
+    "products": {
+      "index": true,
+      "list": true,
+      "create": true,
+      "edit": true,
+      "slideOver": true,
+      "status": "compliant"
+    },
+    "sales": {
+      "index": true,
+      "list": true,
+      "create": true,
+      "edit": true,
+      "slideOver": true,
+      "status": "compliant"
+    },
+    "notes": {
+      "index": true,
+      "list": false,
+      "create": true,
+      "edit": false,
+      "slideOver": false,
+      "status": "incomplete"
+    },
+    "tags": {
+      "index": true,
+      "list": false,
+      "create": false,
+      "edit": false,
+      "slideOver": false,
+      "status": "incomplete"
+    }
+  },
+  "knownIssues": [
+    {
+      "id": "H005-1",
+      "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
+      "line": 157,
+      "check": "H005",
+      "severity": "high",
+      "description": "Form-level validation using validate prop",
+      "status": "new"
+    },
+    {
+      "id": "H005-2",
+      "check": "H005",
+      "severity": "high",
+      "description": "Form-level validation using zodResolver across 12 files",
+      "status": "new",
+      "files": [
+        "src/atomic-crm/organizations/QuickCreatePopover.tsx",
+        "src/atomic-crm/organizations/OrganizationCreate.tsx",
+        "src/atomic-crm/tasks/TaskCreate.tsx",
+        "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
+        "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
+        "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
+        "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
+        "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+        "src/atomic-crm/tags/TagDialog.tsx"
+      ]
+    },
+    {
+      "id": "M001-1",
+      "check": "M001",
+      "severity": "medium",
+      "description": "notes feature incomplete structure",
+      "status": "new",
+      "note": "May be intentional - notes embedded in parent resources"
+    },
+    {
+      "id": "M001-2",
+      "check": "M001",
+      "severity": "medium",
+      "description": "tags feature incomplete structure",
+      "status": "new",
+      "note": "May be intentional - tags managed via modals"
+    },
+    {
+      "id": "M002-1",
+      "check": "M002",
+      "severity": "medium",
+      "description": "Large test files over 500 lines (10 files)",
+      "status": "new",
+      "note": "Acceptable if comprehensive coverage, flagged for awareness"
+    }
+  ],
+  "resolvedIssues": [
+    {
+      "id": "ARCH-001",
+      "description": "Direct Supabase import in QuickLogForm",
+      "resolvedDate": "2026-01-15",
+      "note": "Not found in current audit"
+    },
+    {
+      "id": "H001",
+      "description": "Deprecated company_id usage",
+      "resolvedDate": "2026-01-15"
+    },
+    {
+      "id": "H002",
+      "description": "Deprecated archived_at usage",
+      "resolvedDate": "2026-01-15"
+    }
+  ],
+  "metadata": {
+    "handledResources": 24,
+    "compliantFeatures": 7,
+    "partialFeatures": 0,
+    "incompleteFeatures": 2,
+    "complianceScore": 92
+  }
+}

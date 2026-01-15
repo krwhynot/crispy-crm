@@ -25,7 +25,40 @@ export {
   formatTagsForExport,
   formatCount,
   EMPTY_PLACEHOLDER,
+  ucFirst,
 } from "./formatters";
+
+// Safe JSON parsing with Zod validation
+export { safeJsonParse } from "./safeJsonParse";
+
+// Staleness calculations (PRD Section 6.3)
+export {
+  STAGE_STALE_THRESHOLDS,
+  ACTIVE_PIPELINE_STAGES,
+  CLOSED_STAGES,
+  StageStaleThresholdsSchema,
+  isOpportunityStale,
+  getStaleThreshold,
+  getDaysSinceActivity,
+  countStaleOpportunities,
+  filterStaleOpportunities,
+  isClosedStage,
+  isActivePipelineStage,
+  type ActivePipelineStage,
+  type ClosedStage,
+  type StageStaleThresholds,
+} from "./stalenessCalculation";
+
+// Autocomplete defaults for ReferenceInput
+export {
+  AUTOCOMPLETE_DEBOUNCE_MS,
+  AUTOCOMPLETE_MIN_CHARS,
+  enableGetChoices,
+  shouldRenderSuggestions,
+  getAutocompleteProps,
+  getQSearchAutocompleteProps,
+  getContactSearchAutocompleteProps,
+} from "./autocompleteDefaults";
 
 // CSV export utilities
 export {
