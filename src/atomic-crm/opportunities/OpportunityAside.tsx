@@ -8,6 +8,7 @@ import { ShowButton } from "@/components/admin/show-button";
 import { Badge } from "@/components/ui/badge";
 import { getPriorityVariant } from "@/components/ui/priority-badge";
 import { AsideSection } from "@/components/ui";
+import { ucFirst } from "@/atomic-crm/utils";
 import { TasksIterator } from "../tasks/TasksIterator";
 import { SaleName } from "../sales/SaleName";
 import { SaleAvatar } from "../sales/SaleAvatar";
@@ -50,9 +51,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
             <span className="text-xs text-muted-foreground">Priority</span>
             <div className="mt-1">
               <Badge variant={getPriorityVariant(record.priority ?? "low")}>
-                {record.priority
-                  ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
-                  : "Unknown"}
+                {record.priority ? ucFirst(record.priority) : "Unknown"}
               </Badge>
             </div>
           </div>

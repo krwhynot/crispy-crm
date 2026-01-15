@@ -13,6 +13,7 @@ import {
   SAMPLE_STATUS_OPTIONS,
   sentimentSchema,
 } from "../validation/activities";
+import { ucFirst } from "../utils";
 
 /**
  * Convert validation options to filter choices format
@@ -29,7 +30,7 @@ const SAMPLE_STATUS_CHOICES = SAMPLE_STATUS_OPTIONS.map((opt) => ({
 
 const SENTIMENT_CHOICES = sentimentSchema.options.map((value) => ({
   id: value,
-  name: value.charAt(0).toUpperCase() + value.slice(1),
+  name: ucFirst(value),
 }));
 
 /**

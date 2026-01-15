@@ -6,6 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ucFirst } from "@/atomic-crm/utils";
 import { TaskActionMenu } from "@/atomic-crm/tasks/components/TaskActionMenu";
 import {
   Phone,
@@ -259,9 +260,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
       {/* Footer: Priority + Snooze Badge + Due Date */}
       <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/50">
         <div className="flex items-center gap-1.5">
-          <Badge className={`text-xs ${priorityClass}`}>
-            {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
-          </Badge>
+          <Badge className={`text-xs ${priorityClass}`}>{ucFirst(task.priority)}</Badge>
           {/* Snooze indicator - shown when task is snoozed */}
           {task.snoozeUntil && task.snoozeUntil > new Date() && (
             <Badge
