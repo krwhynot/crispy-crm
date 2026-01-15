@@ -204,9 +204,12 @@ describe("DateInput", () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
 
-      // Start with January 2025 to ensure we can find day 15 - button will show formatted date
+      // Use current year to avoid calendar navigation issues
+      const currentYear = new Date().getFullYear();
+      const testDate = `${currentYear}-01-01`;
+
       renderWithAdminContext(
-        <FormWrapper onSubmit={onSubmit} defaultValues={{ activity_date: "2025-01-01" }}>
+        <FormWrapper onSubmit={onSubmit} defaultValues={{ activity_date: testDate }}>
           <DateInput source="activity_date" label="Activity Date" />
         </FormWrapper>,
         { resource: "activities" }
@@ -233,7 +236,8 @@ describe("DateInput", () => {
       await waitFor(() => {
         expect(onSubmit).toHaveBeenCalledWith(
           expect.objectContaining({
-            activity_date: expect.stringMatching(/2025-01-15/),
+            // Verify date is in YYYY-MM-DD format with day 15 in the current year
+            activity_date: expect.stringMatching(new RegExp(`${currentYear}-01-15`)),
           }),
           expect.anything()
         );
