@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
-import { AlarmClock } from "lucide-react";
-import { format, isAfter } from "date-fns";
 import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
+import { SnoozeIndicator } from "@/components/ui/snooze-badge";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
 import { TextInput } from "@/components/admin/text-input";
@@ -223,14 +222,7 @@ export function TaskSlideOverDetailsTab({
                 </div>
               )}
               {/* Snooze indicator - prominent icon indicator per Carbon Design System */}
-              {record.snooze_until && isAfter(new Date(record.snooze_until), new Date()) && (
-                <div className="flex items-center gap-2 text-amber-600 pt-1">
-                  <AlarmClock className="h-4 w-4" />
-                  <span className="text-sm font-medium">
-                    Snoozed until {format(new Date(record.snooze_until), "MMM d, h:mm a")}
-                  </span>
-                </div>
-              )}
+              <SnoozeIndicator snoozeUntil={record.snooze_until} />
             </div>
           </SidepaneSection>
 

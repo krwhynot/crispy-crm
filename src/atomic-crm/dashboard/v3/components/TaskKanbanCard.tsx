@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Badge } from "@/components/ui/badge";
+import { SnoozeBadge } from "@/components/ui/snooze-badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ucFirst } from "@/atomic-crm/utils";
@@ -262,15 +263,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         <div className="flex items-center gap-1.5">
           <Badge className={`text-xs ${priorityClass}`}>{ucFirst(task.priority)}</Badge>
           {/* Snooze indicator - shown when task is snoozed */}
-          {task.snoozeUntil && task.snoozeUntil > new Date() && (
-            <Badge
-              variant="outline"
-              className="text-xs text-amber-600 border-amber-200 bg-amber-50 dark:bg-amber-950/20"
-            >
-              <AlarmClock className="h-3 w-3 mr-1" />
-              Snoozed
-            </Badge>
-          )}
+          <SnoozeBadge snoozeUntil={task.snoozeUntil} />
         </div>
         <span className="text-xs text-muted-foreground">{format(task.dueDate, "MMM d")}</span>
       </div>

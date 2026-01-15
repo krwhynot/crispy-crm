@@ -119,11 +119,15 @@ const COMPUTED_FIELDS = [...TYPED_COMPUTED_FIELDS, ...VIEW_ONLY_FIELDS] as const
  * 1. The handler layer (opportunitiesHandler.ts) needs to process it first
  * 2. Handler extracts products_to_sync and delegates to OpportunitiesService
  * 3. The service handles the atomic product sync and returns clean data
- * 4. By the time data reaches baseProvider.create/update, products_to_sync is already stripped
+ * 4. By the time data reaches baseProvider.create/update, products_to_sync is already handled
+ *
+ * IMPORTANT: products_to_sync was previously incorrectly listed here, causing test failures.
+ * The handler composition means beforeSave runs BEFORE the handler sees the data, so if
+ * we strip products_to_sync here, the handler never gets a chance to delegate to the service.
  */
 const VIRTUAL_FIELDS = [
   "products", // Legacy field name, may come from some forms
-  "products_to_sync", // Virtual field for product sync - stripped as safety net (defense-in-depth)
+  // products_to_sync intentionally NOT included - see NOTE above
 ] as const;
 
 /**
