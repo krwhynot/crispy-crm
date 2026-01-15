@@ -232,7 +232,13 @@ export const AutocompleteInput = (
                     }
                   }}
                 />
-                <CommandEmpty>No matching item found.</CommandEmpty>
+                <CommandEmpty>
+                  {filterValue.trim().length === 0
+                    ? "Type to search..."
+                    : filterValue.trim().length < AUTOCOMPLETE_MIN_CHARS
+                      ? `Enter ${AUTOCOMPLETE_MIN_CHARS - filterValue.trim().length} more character${AUTOCOMPLETE_MIN_CHARS - filterValue.trim().length > 1 ? "s" : ""}`
+                      : "No matching item found."}
+                </CommandEmpty>
                 <CommandGroup className="max-h-[280px] overflow-y-auto">
                   {finalChoices.map((choice) => {
                     const isCreateItem = !!createItem && choice?.id === createItem.id;
