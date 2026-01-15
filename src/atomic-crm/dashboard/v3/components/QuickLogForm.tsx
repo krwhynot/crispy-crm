@@ -25,6 +25,7 @@ import {
   type ActivityLogInput,
   ACTIVITY_TYPE_MAP,
 } from "@/atomic-crm/validation/activities";
+import type { LogActivityWithTaskParams } from "@/atomic-crm/validation/rpc";
 import { useCurrentSale } from "../hooks/useCurrentSale";
 import { useEntityData, type Contact } from "../hooks/useEntityData";
 import { EntityCombobox } from "./EntityCombobox";
@@ -151,11 +152,12 @@ export function QuickLogForm({
         const activityType = data.activityType ?? "Call";
         const activityDate = data.date ?? new Date();
 
-        // Build activity payload for RPC
-        const activityPayload = {
-          activity_type: (data.opportunityId ? "interaction" : "engagement") as
-            | "interaction"
-            | "engagement",
+        // Pre-compute follow-up date string using optional chaining for clean type inference
+        const followUpDateStr = data.followUpDate?.toISOString().split("T")[0] ?? null;
+
+        // Build activity payload for RPC (explicitly typed to avoid inference issues)
+        const activityPayload: LogActivityWithTaskParams["p_activity"] = {
+          activity_type: data.opportunityId ? "interaction" : "engagement",
           type: ACTIVITY_TYPE_MAP[activityType] ?? activityType,
           outcome: data.outcome || null,
           subject: data.notes.substring(0, 100) || `${activityType} update`,
@@ -166,20 +168,20 @@ export function QuickLogForm({
           organization_id: data.organizationId || null,
           opportunity_id: data.opportunityId || null,
           follow_up_required: data.createFollowUp === true,
-          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null,
+          follow_up_date: followUpDateStr,
         };
 
-        // Build optional task payload for RPC
-        const taskPayload =
-          data.createFollowUp && data.followUpDate
-            ? {
-                title: `Follow-up: ${data.notes.substring(0, 50)}`,
-                due_date: data.followUpDate!.toISOString().split("T")[0],
-                priority: "medium" as const,
-                contact_id: typeof data.contactId === "number" ? data.contactId : null,
-                opportunity_id: typeof data.opportunityId === "number" ? data.opportunityId : null,
-              }
-            : null;
+        // Build optional task payload for RPC using if statement for proper narrowing
+        let taskPayload: LogActivityWithTaskParams["p_task"] = null;
+        if (data.createFollowUp && followUpDateStr) {
+          taskPayload = {
+            title: `Follow-up: ${data.notes.substring(0, 50)}`,
+            due_date: followUpDateStr,
+            priority: "medium",
+            contact_id: typeof data.contactId === "number" ? data.contactId : null,
+            opportunity_id: typeof data.opportunityId === "number" ? data.opportunityId : null,
+          };
+        }
 
         // Single atomic RPC call for activity + optional task
         // Data provider throws HttpError on failure (fail-fast)
