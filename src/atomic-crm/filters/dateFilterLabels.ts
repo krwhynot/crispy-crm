@@ -66,12 +66,11 @@ export function detectDatePresetLabel(
 
 /**
  * Format a single date value for display (fallback for custom date ranges).
+ * Re-exported from centralized utility for backward compatibility.
  *
  * @param value - ISO date string
  * @returns Formatted date string like "Jan 4, 2026"
  */
 export function formatDateValue(value: string): string {
-  const date = new Date(value);
-  if (isNaN(date.getTime())) return value;
-  return format(date, "MMM d, yyyy");
+  return formatDateDisplay(value) || value;
 }

@@ -16,8 +16,12 @@ import userEvent from "@testing-library/user-event";
 import { QuickLogForm } from "../QuickLogForm";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 
+// Use vi.hoisted to create mock functions that can be referenced in vi.mock
+const { mockSupabaseRpc } = vi.hoisted(() => ({
+  mockSupabaseRpc: vi.fn(),
+}));
+
 // Mock the supabase module to track direct calls (should NOT be called)
-const mockSupabaseRpc = vi.fn();
 vi.mock("@/atomic-crm/providers/supabase/supabase", () => ({
   supabase: {
     rpc: mockSupabaseRpc,
@@ -87,7 +91,7 @@ describe("QuickLogForm provider integration", () => {
   it("calls data provider logActivityWithTask instead of direct supabase", async () => {
     const user = userEvent.setup();
 
-    const { dataProvider } = renderWithAdminContext(<QuickLogForm onComplete={mockOnComplete} />, {
+    renderWithAdminContext(<QuickLogForm onComplete={mockOnComplete} />, {
       dataProvider: {
         logActivityWithTask: mockLogActivityWithTask,
         getList: vi.fn().mockResolvedValue({ data: [], total: 0 }),
@@ -103,8 +107,9 @@ describe("QuickLogForm provider integration", () => {
     });
 
     // Wait for form to load (useEntityData mock returns immediately)
+    // Note: The form element doesn't have role="form" by default, so we check for form content
     await waitFor(() => {
-      expect(screen.getByRole("form")).toBeInTheDocument();
+      expect(screen.getByText("What happened?")).toBeInTheDocument();
     });
 
     // Fill in required notes field

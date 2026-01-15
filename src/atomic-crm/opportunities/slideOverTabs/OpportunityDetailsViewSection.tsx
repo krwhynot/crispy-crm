@@ -8,7 +8,7 @@ import { SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane
 import { Card } from "@/components/ui/card";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
-import { parseDateSafely } from "@/lib/date-utils";
+import { formatDateDisplay } from "@/lib/formatDate";
 import type { Opportunity } from "@/atomic-crm/types";
 
 interface OrganizationCardProps {
@@ -83,8 +83,8 @@ export function OpportunityDetailsViewSection({
 }: OpportunityDetailsViewSectionProps) {
   const formatDate = (date: string | null | undefined) => {
     if (!date) return "Not set";
-    const parsed = parseDateSafely(date);
-    return parsed ? format(parsed, "MMM d, yyyy") : "Invalid date";
+    const formatted = formatDateDisplay(date);
+    return formatted || "Invalid date";
   };
 
   const getStageBadgeVariant = (stage: string) => {

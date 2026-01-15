@@ -16,7 +16,7 @@ export function SidepaneMetadata({ createdAt, updatedAt }: SidepaneMetadataProps
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
           {createdAt && <span>Created {formatDateLocale(createdAt)}</span>}
           {createdAt && updatedAt && <span>•</span>}
-          {updatedAt && <span>Updated {formatDate(updatedAt)}</span>}
+          {updatedAt && <span>Updated {formatDateLocale(updatedAt)}</span>}
         </div>
       </section>
     </>

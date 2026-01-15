@@ -36,7 +36,8 @@ describe("formatDateForInput", () => {
   });
 
   it("formats ISO string to yyyy-MM-dd", () => {
-    expect(formatDateForInput("2026-01-15T00:00:00Z")).toBe("2026-01-15");
+    // Use midday UTC to avoid timezone boundary issues
+    expect(formatDateForInput("2026-01-15T12:00:00Z")).toBe("2026-01-15");
   });
 
   it("returns empty string for null/undefined", () => {
