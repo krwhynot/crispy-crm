@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Form, ReferenceField } from "react-admin";
 import { activityKeys } from "../../queryKeys";
 import { TextInput } from "@/components/admin/text-input";
+import { DateInput } from "@/components/admin/date-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
@@ -102,7 +103,7 @@ export function ActivityDetailsTab({
 
               <TextInput source="subject" label="Subject" />
 
-              <TextInput source="activity_date" label="Activity Date" type="date" />
+              <DateInput source="activity_date" label="Activity Date" disableFuture />
 
               <TextInput source="duration_minutes" label="Duration (minutes)" type="number" />
 

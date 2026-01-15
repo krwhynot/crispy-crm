@@ -155,12 +155,7 @@ export const AddTask = ({
                 )}
 
                 <div className="flex flex-row gap-4">
-                  <TextInput
-                    source="due_date"
-                    label="Due Date *"
-                    helperText="Required field"
-                    type="date"
-                  />
+                  <DateInput source="due_date" label="Due Date *" helperText="Required field" />
                   <SelectInput
                     source="type"
                     label="Type *"

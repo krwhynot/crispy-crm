@@ -1,5 +1,6 @@
 import { useWatch } from "react-hook-form";
 import { TextInput } from "@/components/admin/text-input";
+import { DateInput } from "@/components/admin/date-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
@@ -96,7 +97,7 @@ export default function ActivitySinglePage() {
 
         <FormGrid>
           <FormFieldWrapper name="activity_date" isRequired countDefaultAsFilled>
-            <TextInput source="activity_date" label="Date" type="date" isRequired />
+            <DateInput source="activity_date" label="Date" isRequired disableFuture />
           </FormFieldWrapper>
           <FormFieldWrapper name="duration_minutes">
             <TextInput
@@ -197,7 +198,7 @@ export default function ActivitySinglePage() {
 
         <FormGrid>
           <FormFieldWrapper name="follow_up_date">
-            <TextInput source="follow_up_date" label="Follow-up Date" type="date" />
+            <DateInput source="follow_up_date" label="Follow-up Date" />
           </FormFieldWrapper>
           <FormFieldWrapper name="follow_up_notes">
             <TextInput
