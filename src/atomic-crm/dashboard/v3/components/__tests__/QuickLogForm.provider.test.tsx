@@ -134,10 +134,9 @@ describe("QuickLogForm provider integration", () => {
     );
 
     // Verify data provider method was called instead
-    // This will also fail until Task 2.3 implements the fix
     expect(mockLogActivityWithTask).toHaveBeenCalledWith(
       expect.objectContaining({
-        activity: expect.objectContaining({
+        p_activity: expect.objectContaining({
           description: expect.stringContaining("Test activity notes"),
         }),
       })

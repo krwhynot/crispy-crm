@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { useNotify, useDataProvider } from "react-admin";
+import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/atomic-crm/providers/supabase/supabase";
 import { useMemo, useEffect, useCallback } from "react";
 import { activityKeys, opportunityKeys, taskKeys } from "@/atomic-crm/queryKeys";
 import { Button } from "@/components/ui/button";
@@ -76,6 +76,7 @@ export function QuickLogForm({
 }: QuickLogFormProps) {
   const notify = useNotify();
   const queryClient = useQueryClient();
+  const dataProvider = useDataProvider();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
 
   // Form initialization with schema-derived defaults (Constitution compliant)
@@ -179,14 +180,11 @@ export function QuickLogForm({
             : null;
 
         // Single atomic RPC call for activity + optional task
-        const { data: rpcResult, error } = await supabase.rpc("log_activity_with_task", {
+        // Data provider throws HttpError on failure (fail-fast)
+        const rpcResult = await dataProvider.logActivityWithTask({
           p_activity: activityPayload,
           p_task: taskPayload,
         });
-
-        if (error) {
-          throw error;
-        }
 
         // Invalidate relevant caches
         queryClient.invalidateQueries({ queryKey: activityKeys.all });
@@ -215,7 +213,7 @@ export function QuickLogForm({
         console.error("Activity log error:", error);
       }
     },
-    [salesId, notify, queryClient, form, onComplete, onRefresh]
+    [salesId, notify, queryClient, dataProvider, form, onComplete, onRefresh]
   );
 
   // Handle contact selection - auto-fill organization
