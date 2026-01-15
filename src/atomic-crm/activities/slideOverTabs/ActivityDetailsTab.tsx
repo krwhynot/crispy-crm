@@ -117,7 +117,7 @@ export function ActivityDetailsTab({
 
               <BooleanInput source="follow_up_required" label="Follow-up Required" />
 
-              <TextInput source="follow_up_date" label="Follow-up Date" type="date" />
+              <DateInput source="follow_up_date" label="Follow-up Date" />
 
               <TextInput source="follow_up_notes" label="Follow-up Notes" multiline rows={3} />
 

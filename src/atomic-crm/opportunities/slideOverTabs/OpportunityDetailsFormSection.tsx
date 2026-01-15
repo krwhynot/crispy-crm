@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ReferenceInput, SelectInput, TextInput } from "react-admin";
+import { DateInput } from "@/components/admin/date-input";
 import { useFormContext, useFormState } from "react-hook-form";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
@@ -101,19 +102,17 @@ export function OpportunityDetailsFormSection({
         />
       </ReferenceInput>
       <LeadSourceInput />
-      <TextInput
+      <DateInput
         source="estimated_close_date"
         label="Estimated Close Date"
-        type="date"
         helperText={false}
-        fullWidth
+        className="w-full"
       />
-      <TextInput
+      <DateInput
         source="actual_close_date"
         label="Actual Close Date"
-        type="date"
         helperText={false}
-        fullWidth
+        className="w-full"
       />
 
       <TextInput source="campaign" label="Campaign" helperText={false} fullWidth />

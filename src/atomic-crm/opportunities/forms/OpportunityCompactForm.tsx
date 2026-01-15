@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { TextInput } from "@/components/admin/text-input";
+import { DateInput } from "@/components/admin/date-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
