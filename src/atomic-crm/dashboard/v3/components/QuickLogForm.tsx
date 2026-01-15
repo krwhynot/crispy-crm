@@ -76,7 +76,7 @@ export function QuickLogForm({
 }: QuickLogFormProps) {
   const notify = useNotify();
   const queryClient = useQueryClient();
-  const dataProvider = useDataProvider();
+  const dataProvider = useDataProvider() as ExtendedDataProvider;
   const { salesId, loading: salesIdLoading } = useCurrentSale();
 
   // Form initialization with schema-derived defaults (Constitution compliant)

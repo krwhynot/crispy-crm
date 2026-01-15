@@ -129,6 +129,15 @@ export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataP
       // Tests can override this method to return specific data
       return [];
     },
+
+    // Custom method for atomic activity + task creation (QuickLogForm)
+    logActivityWithTask: async (_params: unknown) => {
+      return {
+        success: true,
+        activity_id: 1,
+        task_id: null,
+      };
+    },
   };
 
   // Merge overrides with defaults

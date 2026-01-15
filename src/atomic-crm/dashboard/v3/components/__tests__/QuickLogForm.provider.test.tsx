@@ -91,7 +91,7 @@ describe("QuickLogForm provider integration", () => {
   it("calls data provider logActivityWithTask instead of direct supabase", async () => {
     const user = userEvent.setup();
 
-    renderWithAdminContext(<QuickLogForm onComplete={mockOnComplete} />, {
+    renderWithAdminContext(<QuickLogForm onComplete={mockOnComplete} initialContactId={1} />, {
       dataProvider: {
         logActivityWithTask: mockLogActivityWithTask,
         getList: vi.fn().mockResolvedValue({ data: [], total: 0 }),
@@ -112,6 +112,12 @@ describe("QuickLogForm provider integration", () => {
       expect(screen.getByText("What happened?")).toBeInTheDocument();
     });
 
+    // Select outcome (required field)
+    const outcomeSelect = screen.getByRole("combobox", { name: /outcome/i });
+    await user.click(outcomeSelect);
+    const connectedOption = await screen.findByRole("option", { name: /connected/i });
+    await user.click(connectedOption);
+
     // Fill in required notes field
     const notesTextarea = screen.getByPlaceholderText(/summary of the interaction/i);
     await user.type(notesTextarea, "Test activity notes for provider integration");
@@ -120,26 +126,21 @@ describe("QuickLogForm provider integration", () => {
     const submitButton = screen.getByRole("button", { name: /save & close/i });
     await user.click(submitButton);
 
-    // Wait for submission to complete
+    // Wait for submission to complete - data provider method should be called
     await waitFor(
       () => {
-        // CURRENT BEHAVIOR (fails): Direct supabase.rpc is called
-        // EXPECTED BEHAVIOR (after Task 2.3): dataProvider.logActivityWithTask is called
-        //
-        // This assertion will FAIL until QuickLogForm is refactored in Task 2.3
-        // to use the data provider pattern instead of direct supabase calls.
+        // Verify direct supabase is NOT called (Single Source of Truth)
         expect(mockSupabaseRpc).not.toHaveBeenCalled();
+        // Verify data provider method WAS called
+        expect(mockLogActivityWithTask).toHaveBeenCalledWith(
+          expect.objectContaining({
+            p_activity: expect.objectContaining({
+              description: expect.stringContaining("Test activity notes"),
+            }),
+          })
+        );
       },
       { timeout: 3000 }
-    );
-
-    // Verify data provider method was called instead
-    expect(mockLogActivityWithTask).toHaveBeenCalledWith(
-      expect.objectContaining({
-        p_activity: expect.objectContaining({
-          description: expect.stringContaining("Test activity notes"),
-        }),
-      })
     );
   });
 
