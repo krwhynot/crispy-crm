@@ -51,6 +51,7 @@ export function usePrincipalOpportunities({
     {
       enabled: enabled && !!principalId,
       staleTime: 5 * 60 * 1000, // 5 minutes
+      refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );
 

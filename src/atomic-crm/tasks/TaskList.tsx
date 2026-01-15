@@ -9,10 +9,9 @@ import {
 } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import jsonExport from "jsonexport/dist";
-import { AlarmClock } from "lucide-react";
-import { isAfter } from "date-fns";
 
 import { FunctionField } from "react-admin";
+import { SnoozeBadge } from "@/components/ui/snooze-badge";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { List } from "@/components/admin/list";
 import { ListPagination } from "@/components/admin/list-pagination";
@@ -228,15 +227,7 @@ const TaskListLayout = ({
               <div className="flex items-center gap-2">
                 <TruncatedText className="max-w-[200px]">{record.title}</TruncatedText>
                 {/* Snooze badge - shown when task is snoozed */}
-                {record.snooze_until && isAfter(new Date(record.snooze_until), new Date()) && (
-                  <Badge
-                    variant="outline"
-                    className="text-xs text-amber-600 border-amber-200 bg-amber-50 dark:bg-amber-950/20 shrink-0"
-                  >
-                    <AlarmClock className="h-3 w-3 mr-1" />
-                    Snoozed
-                  </Badge>
-                )}
+                <SnoozeBadge snoozeUntil={record.snooze_until} />
               </div>
             )}
             {...COLUMN_VISIBILITY.alwaysVisible}
