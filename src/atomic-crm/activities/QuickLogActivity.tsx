@@ -148,6 +148,7 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
 
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
 
       notify("Activity logged successfully", { type: "success" });
       onClose();

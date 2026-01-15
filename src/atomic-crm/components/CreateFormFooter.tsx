@@ -4,6 +4,7 @@ import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { SaveButton } from "@/components/admin/form";
+import { ucFirst } from "@/atomic-crm/utils";
 
 interface CreateFormFooterProps {
   resourceName: string;
@@ -53,10 +54,7 @@ export const CreateFormFooter = ({
           data-tutorial={tutorialAttribute}
           mutationOptions={{
             onSuccess: (data: { id: string | number }) => {
-              notify(
-                `${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`,
-                { type: "success" }
-              );
+              notify(`${ucFirst(resourceName)} created successfully`, { type: "success" });
               if (redirect) {
                 redirectFn(redirect(resourceName + "s", data.id, data));
               } else {

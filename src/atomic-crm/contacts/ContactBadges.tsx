@@ -15,6 +15,7 @@
 
 import { memo } from "react";
 import { Badge } from "@/components/ui/badge";
+import { ucFirst } from "@/atomic-crm/utils";
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -110,7 +111,7 @@ export const ContactStatusBadge = memo(function ContactStatusBadge({
   };
 
   const { label, className } = config[status] || {
-    label: status.charAt(0).toUpperCase() + status.slice(1),
+    label: ucFirst(status),
     className: "tag-gray",
   };
 

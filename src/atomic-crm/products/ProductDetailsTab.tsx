@@ -17,6 +17,7 @@ import {
   DirtyStateTracker,
 } from "@/components/layouts/sidepane";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
+import { ucFirst } from "@/atomic-crm/utils";
 
 const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
   usf_code: "US Foods",
@@ -131,10 +132,7 @@ export function ProductDetailsTab({
     // Transform categories and statuses for SelectInput
     const productCategories = PRODUCT_CATEGORIES.map((category) => ({
       id: category,
-      name: category
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" "),
+      name: category.split("_").map(ucFirst).join(" "),
     }));
 
     const productStatuses = PRODUCT_STATUSES.map((status) => ({

@@ -2,6 +2,7 @@
 // Component + constant pattern: PriorityBadge + priorityChoices for SelectInput
 
 import { Badge } from "@/components/ui/badge";
+import { ucFirst } from "@/atomic-crm/utils";
 
 /**
  * PriorityBadge Component
@@ -46,7 +47,7 @@ interface PriorityBadgeProps {
 
 export function PriorityBadge({ priority, className }: PriorityBadgeProps) {
   const variant = priorityVariants[priority as PriorityLevel] || "outline";
-  const label = priority.charAt(0).toUpperCase() + priority.slice(1);
+  const label = ucFirst(priority);
 
   return (
     <Badge variant={variant} className={className}>

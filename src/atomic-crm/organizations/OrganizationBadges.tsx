@@ -12,6 +12,7 @@
 
 import { memo } from "react";
 import { Badge } from "@/components/ui/badge";
+import { ucFirst } from "@/atomic-crm/utils";
 import {
   ORG_TYPE_COLOR_MAP,
   PRIORITY_VARIANT_MAP,
@@ -47,11 +48,7 @@ export const OrganizationTypeBadge = memo(function OrganizationTypeBadge({
 }: OrganizationTypeBadgeProps) {
   const colorClass = ORG_TYPE_COLOR_MAP[type as OrganizationType] || "tag-gray";
 
-  return (
-    <Badge className={`text-xs px-2 py-1 ${colorClass}`}>
-      {type.charAt(0).toUpperCase() + type.slice(1)}
-    </Badge>
-  );
+  return <Badge className={`text-xs px-2 py-1 ${colorClass}`}>{ucFirst(type)}</Badge>;
 });
 
 OrganizationTypeBadge.displayName = "OrganizationTypeBadge";

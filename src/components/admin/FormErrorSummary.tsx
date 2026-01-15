@@ -167,7 +167,7 @@ export function FormErrorSummary({
               <button
                 type="button"
                 onClick={() => focusField(error.fieldPath)}
-                className="text-left hover:underline focus:underline focus:outline-none"
+                className="text-left hover:underline focus:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <span className="font-medium">{error.displayLabel}:</span> {error.message}
               </button>

@@ -28,6 +28,7 @@ import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
 import { SortButton } from "@/components/admin/sort-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { ActivitySlideOver } from "./ActivitySlideOver";
+import { ucFirst } from "@/atomic-crm/utils";
 
 /**
  * ActivityList - Standard list page for Activity records
@@ -199,7 +200,7 @@ const ActivityListLayout = ({
               };
               return (
                 <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">
-                  {record.sentiment.charAt(0).toUpperCase() + record.sentiment.slice(1)}
+                  {ucFirst(record.sentiment)}
                 </Badge>
               );
             }}
