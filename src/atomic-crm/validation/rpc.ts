@@ -156,6 +156,48 @@ export type CheckAuthorizationBatchResponse = z.infer<typeof checkAuthorizationB
  * Map of RPC function names to their validation schemas
  * Used by unifiedDataProvider to validate params before calling RPC
  */
+/**
+ * log_activity_with_task(p_activity jsonb, p_task jsonb DEFAULT NULL) RETURNS jsonb
+ * Atomically creates an activity and optionally a follow-up task in a single transaction.
+ * Used by QuickLogForm to ensure consistency.
+ */
+const logActivityWithTaskActivitySchema = z.strictObject({
+  activity_type: z.enum(["engagement", "interaction"]),
+  type: z.string().min(1, "Interaction type is required").max(50, "Type too long"),
+  outcome: z.string().max(2000, "Outcome too long").nullable(),
+  subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
+  description: z.string().max(5000, "Description too long").optional().nullable(),
+  activity_date: z.string().max(50, "Activity date too long"),
+  duration_minutes: z.number().int().positive().nullable(),
+  contact_id: z.number().int().positive().nullable(),
+  organization_id: z.number().int().positive().nullable(),
+  opportunity_id: z.number().int().positive().nullable(),
+  follow_up_required: z.boolean(),
+  follow_up_date: z.string().max(50, "Follow-up date too long").nullable(),
+});
+
+const logActivityWithTaskTaskSchema = z.strictObject({
+  title: z.string().min(1, "Task title is required").max(255, "Title too long"),
+  due_date: z.string().max(50, "Due date too long"),
+  priority: z.enum(["low", "medium", "high"]),
+  contact_id: z.number().int().positive().nullable(),
+  opportunity_id: z.number().int().positive().nullable(),
+});
+
+export const logActivityWithTaskParamsSchema = z.strictObject({
+  p_activity: logActivityWithTaskActivitySchema,
+  p_task: logActivityWithTaskTaskSchema.nullable(),
+});
+
+export const logActivityWithTaskResponseSchema = z.strictObject({
+  success: z.boolean(),
+  activity_id: z.number(),
+  task_id: z.number().nullable(),
+});
+
+export type LogActivityWithTaskParams = z.infer<typeof logActivityWithTaskParamsSchema>;
+export type LogActivityWithTaskResponse = z.infer<typeof logActivityWithTaskResponseSchema>;
+
 export const RPC_SCHEMAS = {
   get_or_create_segment: getOrCreateSegmentParamsSchema,
   set_primary_organization: setPrimaryOrganizationParamsSchema,
@@ -164,6 +206,7 @@ export const RPC_SCHEMAS = {
   sync_opportunity_with_products: syncOpportunityWithProductsParamsSchema,
   check_authorization: checkAuthorizationParamsSchema,
   check_authorization_batch: checkAuthorizationBatchParamsSchema,
+  log_activity_with_task: logActivityWithTaskParamsSchema,
 } as const;
 
 export type RPCFunctionName = keyof typeof RPC_SCHEMAS;

@@ -4,7 +4,7 @@
   "mode": "full",
   "duration_minutes": 8,
   "totals": {
-    "critical": 6,
+    "critical": 5,
     "high": 26,
     "medium": 109
   },
@@ -50,7 +50,9 @@
       "location": "src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts:3",
       "description": "Direct import of supabase client for auth.getUser()",
       "firstSeen": "2026-01-12",
-      "status": "open"
+      "status": "exception",
+      "exception_reason": "Auth state is outside data provider scope. Well-documented. See useCurrentSale.ts lines 104-108.",
+      "exception_approved_date": "2026-01-15"
     },
     {
       "source_audit": "architecture",

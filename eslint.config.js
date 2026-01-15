@@ -222,6 +222,16 @@ export default tseslint.config(
             "[DEPRECATED] Opportunity.archived_at is removed. Use deleted_at for soft deletes instead.",
         },
       ],
+
+      // Console statement restrictions (CQ-002 audit finding)
+      // Allow console.warn and console.error for actual warnings/errors
+      // Warn on console.log to encourage use of devLog from @/lib/devLogger
+      "no-console": [
+        "warn",
+        {
+          allow: ["warn", "error"],
+        },
+      ],
     },
     // Settings for future Tailwind v4 support
     // settings: {
