@@ -1,196 +1,229 @@
 {
-  "lastAudit": "2026-01-12",
-  "lastAuditTime": "18:00",
+  "lastAudit": "2026-01-15",
+  "lastAuditTime": "08:35",
   "mode": "full",
-  "duration_minutes": 14,
+  "duration_minutes": 8,
   "totals": {
     "critical": 6,
-    "high": 40,
-    "medium": 74
+    "high": 26,
+    "medium": 109
   },
   "by_category": {
-    "security": { "critical": 0, "high": 1, "medium": 5 },
-    "data-integrity": { "critical": 1, "high": 3, "medium": 2 },
-    "error-handling": { "critical": 1, "high": 4, "medium": 7 },
-    "db-hardening": { "critical": 0, "high": 4, "medium": 8 },
-    "stale-state": { "critical": 0, "high": 6, "medium": 8 },
-    "workflow-gaps": { "critical": 0, "high": 3, "medium": 8 },
-    "architecture": { "critical": 0, "high": 2, "medium": 11 },
-    "typescript": { "critical": 2, "high": 5, "medium": 10 },
-    "accessibility": { "critical": 0, "high": 2, "medium": 0 },
-    "performance": { "critical": 0, "high": 4, "medium": 7 },
-    "code-quality": { "critical": 2, "high": 6, "medium": 8 }
+    "security": { "critical": 0, "high": 3, "medium": 5 },
+    "data-integrity": { "critical": 0, "high": 1, "medium": 2 },
+    "error-handling": { "critical": 0, "high": 0, "medium": 3 },
+    "db-hardening": { "critical": 0, "high": 3, "medium": 8 },
+    "stale-state": { "critical": 0, "high": 2, "medium": 4 },
+    "workflow-gaps": { "critical": 0, "high": 1, "medium": 2 },
+    "architecture": { "critical": 3, "high": 3, "medium": 7 },
+    "typescript": { "critical": 1, "high": 3, "medium": 55 },
+    "accessibility": { "critical": 0, "high": 0, "medium": 2 },
+    "performance": { "critical": 0, "high": 2, "medium": 6 },
+    "code-quality": { "critical": 2, "high": 8, "medium": 15 }
   },
   "critical_findings": [
     {
       "source_audit": "typescript",
       "id": "TS-001",
       "severity": "critical",
-      "check": "z.any() in Zod Schemas",
-      "location": "src/atomic-crm/validation/opportunities/opportunities-core.ts, opportunities-operations.ts",
-      "description": "z.any() used for products field bypasses type safety at API boundary",
+      "check": "Double-cast pattern",
+      "location": "src/lib/genericMemo.ts:14",
+      "description": "Uses `as unknown as T` double-cast pattern which bypasses type safety",
       "firstSeen": "2026-01-11",
       "status": "open"
     },
     {
-      "source_audit": "typescript",
-      "id": "TS-002",
+      "source_audit": "architecture",
+      "id": "ARCH-001",
       "severity": "critical",
-      "check": "as unknown Type Assertions",
-      "location": "segmentsHandler.ts (4), storageCleanup.ts (4), usePapaParse.tsx (2)",
-      "description": "Double-cast pattern (as unknown as T) bypasses type checking",
-      "firstSeen": "2026-01-11",
+      "check": "Direct Supabase Import",
+      "location": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:5",
+      "description": "Direct import of supabase client bypasses unifiedDataProvider",
+      "firstSeen": "2026-01-12",
       "status": "open"
+    },
+    {
+      "source_audit": "architecture",
+      "id": "ARCH-002",
+      "severity": "critical",
+      "check": "Direct Supabase Import",
+      "location": "src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts:3",
+      "description": "Direct import of supabase client for auth.getUser()",
+      "firstSeen": "2026-01-12",
+      "status": "open"
+    },
+    {
+      "source_audit": "architecture",
+      "id": "ARCH-003",
+      "severity": "critical",
+      "check": "Missing Handlers Directory",
+      "location": "src/providers/supabase/handlers/",
+      "description": "Composed handler pattern directory not created in providers folder",
+      "firstSeen": "2026-01-15",
+      "status": "open",
+      "notes": "Handlers exist in atomic-crm/providers/supabase but not in top-level providers"
     },
     {
       "source_audit": "code-quality",
       "id": "CQ-001",
       "severity": "critical",
-      "check": "DRY Violation - formatFullName",
-      "location": "formatters.ts, formatName.ts, contacts/formatters.ts",
-      "description": "3 different formatFullName implementations with inconsistent behavior",
-      "firstSeen": "2026-01-12",
+      "check": "DRY Violation - formatDate",
+      "location": "5 files with different implementations",
+      "description": "5 different formatDate implementations with inconsistent formatting patterns",
+      "firstSeen": "2026-01-15",
       "status": "open"
     },
     {
       "source_audit": "code-quality",
       "id": "CQ-002",
       "severity": "critical",
-      "check": "Large Files Over 500 Lines",
-      "location": "29 files over 500 lines",
-      "description": "Test files up to 1301 lines, production up to 670 lines",
+      "check": "Console Statements",
+      "location": "src/ (220 occurrences)",
+      "description": "220 console.log/warn/error statements in production code",
       "firstSeen": "2026-01-12",
       "status": "open"
-    },
-    {
-      "source_audit": "error-handling",
-      "id": "EH-001",
-      "severity": "critical",
-      "check": "User-Facing Retry Utility",
-      "location": "useNotifyWithRetry.tsx:31",
-      "description": "Provides retry button (user-initiated, not automatic) - needs JSDoc clarification",
-      "firstSeen": "2026-01-11",
-      "status": "open",
-      "notes": "Lower priority - user-initiated retry follows fail-fast principle"
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-001",
-      "severity": "critical",
-      "check": "Hard DELETE in merge_duplicate_contacts()",
-      "location": "supabase/migrations/20251123214721_add_contact_duplicates_view.sql:101",
-      "description": "Uses hard DELETE (converted to soft delete in migration 20260111000001)",
-      "firstSeen": "2026-01-11",
-      "status": "resolved",
-      "resolvedDate": "2026-01-11",
-      "notes": "Migration 20260111000001_convert_merge_to_soft_delete.sql already deployed"
     }
   ],
   "high_findings_top_20": [
     {
+      "source_audit": "security",
+      "id": "SEC-001",
+      "check": "Zod .passthrough() Usage",
+      "location": "src/atomic-crm/validation/*.ts",
+      "description": "Zod passthrough() usage bypasses strict validation"
+    },
+    {
+      "source_audit": "security",
+      "id": "SEC-002",
+      "check": "Missing .max() Limits",
+      "location": "src/atomic-crm/validation/",
+      "description": "4 string fields missing .max() limits"
+    },
+    {
+      "source_audit": "security",
+      "id": "SEC-003",
+      "check": "Git-tracked Env Files",
+      "location": ".env.example, .env.local.example",
+      "description": "Template env files in git (low risk)"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-001",
+      "check": "Obsolete Hard DELETE",
+      "location": "supabase/migrations/20251123214721_*.sql:101",
+      "description": "Obsolete hard DELETE function (superseded by soft delete migration)"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-001",
+      "check": "Missing FK Indexes",
+      "location": "tutorial_progress table",
+      "description": "Missing indexes on user_id and step_key foreign keys"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-002",
+      "check": "Missing deleted_at",
+      "location": "tutorial_progress table",
+      "description": "Table missing soft delete column"
+    },
+    {
+      "source_audit": "db-hardening",
+      "id": "DB-003",
+      "check": "Missing Triggers",
+      "location": "All tables",
+      "description": "No set_updated_at() trigger function"
+    },
+    {
       "source_audit": "stale-state",
       "id": "SS-001",
-      "check": "Missing Cache Invalidation",
-      "location": "SampleStatusBadge.tsx:205",
-      "description": "useUpdate doesn't invalidate activities cache"
+      "check": "Inconsistent Query Keys",
+      "location": "TaskList.tsx, TaskSlideOverDetailsTab.tsx",
+      "description": "Inconsistent task query key patterns"
     },
     {
       "source_audit": "stale-state",
       "id": "SS-002",
       "check": "Missing Cache Invalidation",
-      "location": "TaskSlideOverDetailsTab.tsx:55",
-      "description": "handleSave without taskKeys invalidation"
+      "location": "SalesCreate.tsx",
+      "description": "Missing cache invalidation after sales rep creation"
     },
     {
-      "source_audit": "stale-state",
-      "id": "SS-003",
-      "check": "Missing Cache Invalidation",
-      "location": "TaskActionMenu.tsx:79",
-      "description": "Postpone/delete without cache invalidation"
+      "source_audit": "workflow-gaps",
+      "id": "WF-001",
+      "check": "Missing Audit Trail",
+      "location": "WorkflowManagementSection.tsx:51",
+      "description": "Stage updates bypass audit trail"
     },
     {
-      "source_audit": "stale-state",
-      "id": "SS-004",
-      "check": "Missing Cache Invalidation",
-      "location": "TaskList.tsx:275",
-      "description": "CompletionCheckbox without cache invalidation"
+      "source_audit": "architecture",
+      "id": "ARCH-004",
+      "check": "Form-Level Validation",
+      "location": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
+      "description": "Inline Zod schema in form component"
     },
     {
-      "source_audit": "stale-state",
-      "id": "SS-005",
-      "check": "Missing Cache Invalidation",
-      "location": "ProductDetailsTab.tsx:108",
-      "description": "handleSave without productKeys invalidation"
+      "source_audit": "architecture",
+      "id": "ARCH-005",
+      "check": "Form-Level Validation",
+      "location": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
+      "description": "Inline Zod schema in form component"
     },
     {
-      "source_audit": "stale-state",
-      "id": "SS-006",
-      "check": "Missing Cache Invalidation",
-      "location": "ActivityDetailsTab.tsx:62",
-      "description": "handleSave without activityKeys invalidation"
+      "source_audit": "architecture",
+      "id": "ARCH-006",
+      "check": "Form-Level Validation",
+      "location": "src/atomic-crm/contacts/ContactCompactForm.tsx",
+      "description": "Inline email validation schema"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-002",
+      "check": "Type Assertions",
+      "location": "src/atomic-crm/services/opportunities.service.ts",
+      "description": "Multiple `as Opportunity` assertions"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-003",
+      "check": "Type Assertions",
+      "location": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "description": "`as Record<string, unknown>` assertions"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-004",
+      "check": "Type Assertions",
+      "location": "src/components/ui/form.tsx",
+      "description": "Context creation with empty object cast"
     },
     {
       "source_audit": "performance",
       "id": "PERF-001",
       "check": "Large Pagination",
-      "location": "OpportunityArchivedList.tsx:25",
-      "description": "perPage: 1000 without virtualization"
+      "location": "UserDisableReassignDialog.tsx:275-296",
+      "description": "4 queries with perPage: 1000"
     },
     {
       "source_audit": "performance",
       "id": "PERF-002",
       "check": "Large Pagination",
-      "location": "UserDisableReassignDialog.tsx:275",
-      "description": "4 queries with perPage: 1000"
+      "location": "WeeklyActivitySummary.tsx:53,64",
+      "description": "Report fetches 1000 records without virtualization"
     },
     {
       "source_audit": "code-quality",
       "id": "CQ-003",
-      "check": "Console Statements",
-      "location": "50+ production files",
-      "description": "190 console.* calls need structured logging"
+      "check": "Cyclomatic Complexity",
+      "location": "src/atomic-crm/filters/useFilterChipBar.ts",
+      "description": "13 else-if chains"
     },
     {
       "source_audit": "code-quality",
-      "id": "CQ-004",
+      "id": "CQ-010",
       "check": "Magic Numbers",
-      "location": "24 staleTime occurrences",
-      "description": "No centralized cache configuration"
-    },
-    {
-      "source_audit": "db-hardening",
-      "id": "DB-001",
-      "check": "Missing Audit Triggers",
-      "location": "Multiple tables",
-      "description": "Only org/contacts/opportunities have audit triggers"
-    },
-    {
-      "source_audit": "db-hardening",
-      "id": "DB-002",
-      "check": "Missing updated_at Triggers",
-      "location": "All tables",
-      "description": "No set_updated_at() trigger function"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WF-001",
-      "check": "Missing Activity Logging",
-      "location": "WorkflowManagementSection.tsx:51",
-      "description": "Updates bypass audit trail"
-    },
-    {
-      "source_audit": "architecture",
-      "id": "ARCH-001",
-      "check": "Direct Supabase RPC",
-      "location": "QuickLogForm.tsx:182",
-      "description": "Bypasses data provider pattern"
-    },
-    {
-      "source_audit": "architecture",
-      "id": "ARCH-002",
-      "check": "Direct Supabase Import",
-      "location": "QuickLogForm.tsx:5",
-      "description": "Violates Single Source of Truth"
+      "location": "Multiple files",
+      "description": "staleTime magic numbers (13+ occurrences)"
     }
   ],
   "strangler_fig_status": {
@@ -201,8 +234,8 @@
   },
   "feature_compliance": {
     "compliant": 6,
-    "partial": 3,
-    "incomplete": 0
+    "partial": 2,
+    "incomplete": 2
   },
   "db_consistency": {
     "orphaned_opportunities": "Protected by NOT NULL constraint",
@@ -211,20 +244,20 @@
   },
   "excellence_areas": [
     "Strangler Fig: 100% COMPLETE - 24 composed handlers",
-    "Architecture: 99.5% compliant - All features follow pattern",
-    "Accessibility: WCAG 2.1 AA PASS - 0 hardcoded colors",
-    "Security: 97% RLS coverage, no hardcoded secrets",
-    "Error Handling: 82% fail-fast compliant",
+    "Accessibility: WCAG 2.1 AA PASS - 0 hardcoded colors in TSX",
+    "Security: 100% RLS coverage on all 35 tables",
+    "Error Handling: 94% fail-fast compliant, 0 high issues",
     "Form Validation: Constitution compliant - onSubmit/onBlur modes",
-    "Data Integrity: 100% - Soft delete enforced"
+    "Data Integrity: 100% - Soft delete enforced",
+    "TypeScript: 95% type safety - 0 any in production"
   ],
   "trend": {
     "direction": "IMPROVING",
-    "note": "Total issues decreased 233 → 120 (-48%). High issues decreased 63 → 40 (-37%). More granular detection added 2 critical code-quality findings. Workflow gaps remediation completed (6 issues fixed).",
-    "previous_total": 233,
-    "current_total": 120,
-    "critical_delta": 2,
-    "high_delta": -23,
-    "medium_delta": -92
+    "note": "High issues decreased 40→26 (-35%). Error handling now at 0 high. Stale state reduced 6→2. Medium increased due to more granular TypeScript/code-quality detection.",
+    "previous_total": 120,
+    "current_total": 141,
+    "critical_delta": 0,
+    "high_delta": -14,
+    "medium_delta": 35
   }
 }
