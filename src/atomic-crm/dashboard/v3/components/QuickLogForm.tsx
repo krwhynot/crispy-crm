@@ -153,7 +153,7 @@ export function QuickLogForm({
 
         // Build activity payload for RPC
         const activityPayload = {
-          activity_type: data.opportunityId ? "interaction" : "engagement",
+          activity_type: (data.opportunityId ? "interaction" : "engagement") as "interaction" | "engagement",
           type: ACTIVITY_TYPE_MAP[activityType],
           outcome: data.outcome || null,
           subject: data.notes.substring(0, 100) || `${activityType} update`,
