@@ -51,7 +51,7 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
 
   const { data: allCampaignActivities = [], isPending: allActivitiesPending } =
     useGetList<CampaignActivity>("activities", {
-      pagination: { page: 1, perPage: 1000 },
+      pagination: { page: 1, perPage: 1000 }, // Report requires all records for activity type breakdown
       filter: {
         "opportunities.campaign": selectedCampaign,
         "opportunities.deleted_at@is": null,

@@ -189,10 +189,7 @@ export const InfluenceBadge = memo(function InfluenceBadge({ influence }: Influe
   };
 
   const { label, variant } = config[normalizedInfluence] || {
-    label:
-      typeof influence === "number"
-        ? `Level ${influence}`
-        : ucFirst(influence),
+    label: typeof influence === "number" ? `Level ${influence}` : ucFirst(influence),
     variant: "outline" as BadgeVariant,
   };
 

@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import type { ActivityRecord } from "../types";
 import { ActivityInputs } from "./ActivityInputs";
+import { ucFirst } from "@/atomic-crm/utils";
 
 const ActivityEdit = () => {
   const queryClient = useQueryClient();

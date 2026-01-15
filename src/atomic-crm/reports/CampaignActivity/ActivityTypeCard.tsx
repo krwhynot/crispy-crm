@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { ActivityGroup } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
 import { pluralize } from "@/lib/utils/pluralize";
+import { ucFirst } from "@/atomic-crm/utils";
 
 interface ActivityTypeCardProps {
   group: ActivityGroup;

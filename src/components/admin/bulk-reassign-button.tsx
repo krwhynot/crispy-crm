@@ -21,6 +21,7 @@ import {
 import { UserPlus } from "lucide-react";
 import type { Sale } from "@/atomic-crm/types";
 import { formatName } from "@/atomic-crm/utils/formatName";
+import { ucFirst } from "@/atomic-crm/utils";
 
 interface ResourceItem {
   id: string | number;
@@ -178,7 +179,7 @@ export const BulkReassignButton = <T extends ResourceItem>({
   if (!selectedIds?.length) return null;
 
   const resourceLabel = resource.replace(/_/g, " ");
-  const capitalizedResource = resourceLabel.charAt(0).toUpperCase() + resourceLabel.slice(1);
+  const capitalizedResource = ucFirst(resourceLabel);
 
   return (
     <>

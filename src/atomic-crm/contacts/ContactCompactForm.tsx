@@ -12,6 +12,7 @@ import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
 import { z } from "zod";
+import { ucFirst } from "@/atomic-crm/utils";
 
 const emailSchema = z.string().email("Invalid email address");
 
@@ -34,8 +35,8 @@ export const ContactCompactForm = () => {
     if (!localPart) return;
     const [first, last] = localPart.split(".");
     if (!first) return;
-    setValue("first_name", first.charAt(0).toUpperCase() + first.slice(1));
-    setValue("last_name", last ? last.charAt(0).toUpperCase() + last.slice(1) : "");
+    setValue("first_name", ucFirst(first));
+    setValue("last_name", last ? ucFirst(last) : "");
   };
 
   const handleEmailPaste: React.ClipboardEventHandler<HTMLTextAreaElement | HTMLInputElement> = (

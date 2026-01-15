@@ -47,7 +47,7 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
     if (!stage) return "Unknown";
     return stage
       .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => ucFirst(word))
       .join(" ");
   };
 

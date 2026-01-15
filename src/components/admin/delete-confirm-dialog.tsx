@@ -63,10 +63,7 @@ export function DeleteConfirmDialog({
           </AlertDialogTitle>
           <AlertDialogDescription asChild>
             <div className="space-y-3">
-              <p>
-                This action cannot be undone. {itemText.charAt(0).toUpperCase() + itemText.slice(1)}{" "}
-                will be permanently deleted.
-              </p>
+              <p>This action cannot be undone. {ucFirst(itemText)} will be permanently deleted.</p>
 
               {/* FIX [WF-C06]: Show cascade warning with child counts */}
               {isLoadingRelated ? (

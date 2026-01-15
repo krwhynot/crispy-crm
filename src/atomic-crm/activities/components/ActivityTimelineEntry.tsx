@@ -41,7 +41,7 @@ export const ActivityTimelineEntry = ({ activity }: ActivityTimelineEntryProps) 
           <div className="flex items-start justify-between mb-1">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-medium text-sm">
-                {activity.type.charAt(0).toUpperCase() + activity.type.slice(1).replace("_", " ")}
+                {ucFirst(activity.type).replace("_", " ")}
               </span>
               {activity.created_by && (
                 <span className="text-sm text-muted-foreground">

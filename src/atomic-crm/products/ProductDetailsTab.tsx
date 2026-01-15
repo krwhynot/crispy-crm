@@ -195,12 +195,7 @@ export function ProductDetailsTab({
 
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Category:</span>
-                <Badge variant="outline">
-                  {record.category
-                    .split("_")
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ")}
-                </Badge>
+                <Badge variant="outline">{record.category.split("_").map(ucFirst).join(" ")}</Badge>
               </div>
 
               <div className="flex items-center gap-2">
@@ -265,12 +260,5 @@ function StatusBadge({ status }: { status: string }) {
       variant = "outline";
   }
 
-  return (
-    <Badge variant={variant}>
-      {status
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")}
-    </Badge>
-  );
+  return <Badge variant={variant}>{status.split("_").map(ucFirst).join(" ")}</Badge>;
 }

@@ -50,7 +50,7 @@ export default function WeeklyActivitySummary() {
   );
 
   const { data: sales } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 1000 },
+    pagination: { page: 1, perPage: 100 },
     filter: { id: createdByIds },
   });
 

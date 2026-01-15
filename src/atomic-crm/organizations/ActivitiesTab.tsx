@@ -14,11 +14,18 @@ interface ActivitiesTabProps {
 export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps): JSX.Element => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data, isPending, error, refetch } = useGetList<ActivityRecord>("activities", {
-    filter: { organization_id: organizationId },
-    sort: { field: "created_at", order: "DESC" },
-    pagination: { page: 1, perPage: ACTIVITY_PAGE_SIZE },
-  });
+  const { data, isPending, error, refetch } = useGetList<ActivityRecord>(
+    "activities",
+    {
+      filter: { organization_id: organizationId },
+      sort: { field: "created_at", order: "DESC" },
+      pagination: { page: 1, perPage: ACTIVITY_PAGE_SIZE },
+    },
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: true,
+    }
+  );
 
   // Convert organizationId to number for the dialog (handles both string and number)
   const numericOrganizationId =

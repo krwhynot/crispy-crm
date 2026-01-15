@@ -45,6 +45,7 @@ import { TaskActionMenu } from "./components/TaskActionMenu";
 import { SortButton } from "@/components/admin/sort-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
+import { taskKeys } from "../queryKeys";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
