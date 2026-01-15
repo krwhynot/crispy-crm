@@ -153,8 +153,10 @@ export function QuickLogForm({
 
         // Build activity payload for RPC
         const activityPayload = {
-          activity_type: (data.opportunityId ? "interaction" : "engagement") as "interaction" | "engagement",
-          type: ACTIVITY_TYPE_MAP[activityType],
+          activity_type: (data.opportunityId ? "interaction" : "engagement") as
+            | "interaction"
+            | "engagement",
+          type: ACTIVITY_TYPE_MAP[activityType] ?? activityType,
           outcome: data.outcome || null,
           subject: data.notes.substring(0, 100) || `${activityType} update`,
           description: data.notes,
@@ -163,7 +165,7 @@ export function QuickLogForm({
           contact_id: data.contactId || null,
           organization_id: data.organizationId || null,
           opportunity_id: data.opportunityId || null,
-          follow_up_required: data.createFollowUp || false,
+          follow_up_required: data.createFollowUp === true,
           follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null,
         };
 
@@ -172,8 +174,8 @@ export function QuickLogForm({
           data.createFollowUp && data.followUpDate
             ? {
                 title: `Follow-up: ${data.notes.substring(0, 50)}`,
-                due_date: data.followUpDate.toISOString().split("T")[0],
-                priority: "medium",
+                due_date: data.followUpDate!.toISOString().split("T")[0],
+                priority: "medium" as const,
                 contact_id: typeof data.contactId === "number" ? data.contactId : null,
                 opportunity_id: typeof data.opportunityId === "number" ? data.opportunityId : null,
               }
