@@ -18,6 +18,7 @@ import { format, isValid, isPast, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ControlledDatePicker } from "@/components/admin/controlled-date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -194,18 +195,13 @@ export const WorkflowManagementSection: React.FC = () => {
               </Badge>
             )}
           </div>
-          <Input
-            type="date"
+          <ControlledDatePicker
             value={nextActionDate}
-            onChange={(e) => setNextActionDate(e.target.value)}
+            onChange={(date) => setNextActionDate(date || "")}
             onBlur={handleNextActionDateBlur}
-            className={`text-sm ${isNextActionOverdue ? "border-destructive" : ""}`}
+            clearable
+            className={isNextActionOverdue ? "border-destructive" : ""}
           />
-          {nextActionDate && isValid(parseISO(nextActionDate)) && (
-            <span className="text-xs text-muted-foreground">
-              {format(parseISO(nextActionDate), "PPP")}
-            </span>
-          )}
         </div>
 
         {/* Decision Criteria Section (Collapsible) */}

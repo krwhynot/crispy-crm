@@ -1,5 +1,6 @@
 import { Edit, SimpleForm, ReferenceField, TextField } from "react-admin";
 import { TextInput } from "@/components/admin/text-input";
+import { DateInput } from "@/components/admin/date-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
 

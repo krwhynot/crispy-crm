@@ -64,10 +64,7 @@ export interface ControlledDatePickerProps {
  *   )}
  * />
  */
-export const ControlledDatePicker = React.forwardRef<
-  HTMLButtonElement,
-  ControlledDatePickerProps
->(
+export const ControlledDatePicker = React.forwardRef<HTMLButtonElement, ControlledDatePickerProps>(
   (
     {
       value,

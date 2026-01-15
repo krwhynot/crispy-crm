@@ -7,7 +7,7 @@ import { opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import { ControlledDatePicker } from "@/components/admin/controlled-date-picker";
 import { getOpportunityStageLabel } from "./constants/stageConstants";
 import {
   Select,
@@ -148,14 +148,15 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
             name="activity_date"
             control={control}
             render={({ field }) => (
-              <Input
+              <ControlledDatePicker
                 id="activity_date"
-                type="date"
                 value={field.value instanceof Date ? field.value.toISOString().split("T")[0] : ""}
-                onChange={(e) => {
-                  const date = e.target.value ? new Date(e.target.value) : new Date();
+                onChange={(dateString) => {
+                  const date = dateString ? new Date(dateString) : new Date();
                   field.onChange(date);
                 }}
+                onBlur={field.onBlur}
+                disableFuture
               />
             )}
           />
