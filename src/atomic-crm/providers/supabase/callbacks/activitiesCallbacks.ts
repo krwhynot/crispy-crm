@@ -13,7 +13,11 @@
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import { createResourceCallbacks, type ResourceCallbacks, type TransformFn } from "./createResourceCallbacks";
+import {
+  createResourceCallbacks,
+  type ResourceCallbacks,
+  type TransformFn,
+} from "./createResourceCallbacks";
 
 /**
  * Computed fields that should be stripped before saving to database

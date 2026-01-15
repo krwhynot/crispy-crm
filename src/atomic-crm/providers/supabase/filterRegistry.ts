@@ -629,9 +629,20 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
     return true;
   }
 
-  // Extract base field name, handling React Admin's filter operators
-  // Examples: "last_seen@gte" -> "last_seen", "name@like" -> "name"
-  const baseField = filterKey.split("@")[0];
+  // Extract base field name, handling BOTH filter operator conventions:
+  // 1. PostgREST style: "last_seen@gte" -> "last_seen"
+  // 2. React Admin style: "last_seen_gte" -> "last_seen" (per RA FilteringTutorial docs)
+  let baseField = filterKey.split("@")[0]; // PostgREST style
+
+  // Handle React Admin underscore convention (field_operator)
+  // Per React Admin docs: "suffix the filter name with an operator, e.g. '_gte'"
+  const RA_OPERATORS = ["_gte", "_lte", "_gt", "_lt", "_neq", "_like", "_ilike", "_in", "_nin"];
+  for (const op of RA_OPERATORS) {
+    if (filterKey.endsWith(op)) {
+      baseField = filterKey.slice(0, -op.length);
+      break;
+    }
+  }
 
   return allowedFields.includes(baseField) || allowedFields.includes(filterKey);
 }

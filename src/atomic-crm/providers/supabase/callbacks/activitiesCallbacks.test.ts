@@ -191,4 +191,63 @@ describe("activitiesCallbacks", () => {
       expect(COMPUTED_FIELDS).toContain("opportunity_name");
     });
   });
+
+  describe("beforeSave - sample status preservation", () => {
+    it("should add type=sample when sample_status is provided but type is missing", async () => {
+      // This handles partial updates where only sample_status is changed
+      const data = {
+        id: 1,
+        sample_status: "received",
+        // type is NOT provided - simulating partial update
+      };
+
+      const result = await activitiesCallbacks.beforeSave!(data, mockDataProvider, "activities");
+
+      expect(result.type).toBe("sample");
+      expect(result.sample_status).toBe("received");
+    });
+
+    it("should preserve existing type when sample_status is provided", async () => {
+      // When both type and sample_status are provided, preserve the type
+      const data = {
+        id: 1,
+        type: "sample",
+        sample_status: "feedback_pending",
+      };
+
+      const result = await activitiesCallbacks.beforeSave!(data, mockDataProvider, "activities");
+
+      expect(result.type).toBe("sample");
+      expect(result.sample_status).toBe("feedback_pending");
+    });
+
+    it("should not modify type when sample_status is not provided", async () => {
+      // Regular activity update without sample_status
+      const data = {
+        id: 1,
+        type: "call",
+        subject: "Updated subject",
+      };
+
+      const result = await activitiesCallbacks.beforeSave!(data, mockDataProvider, "activities");
+
+      expect(result.type).toBe("call");
+      expect(result).not.toHaveProperty("sample_status");
+    });
+
+    it("should handle sample_status set to null explicitly", async () => {
+      // When clearing sample_status (e.g., changing from sample to non-sample type)
+      // type should NOT be auto-set to sample because null !== undefined
+      const data = {
+        id: 1,
+        sample_status: null,
+        type: "call",
+      };
+
+      const result = await activitiesCallbacks.beforeSave!(data, mockDataProvider, "activities");
+
+      expect(result.type).toBe("call");
+      expect(result.sample_status).toBeNull();
+    });
+  });
 });
