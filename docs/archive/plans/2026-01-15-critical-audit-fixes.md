@@ -374,17 +374,23 @@ export function formatDateForInput(date: DateInput): string {
 
 /**
  * Format date with locale (for metadata displays)
+ *
+ * NOTE: Hardcoded to "en-US" locale for consistency with existing implementations.
+ * If i18n support is added in the future, this should be refactored to:
+ * - Accept locale as parameter, OR
+ * - Read from app-wide i18n context/config
  */
 export function formatDateLocale(
   date: DateInput,
-  options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric" }
+  options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric" },
+  locale: string = "en-US" // Configurable for future i18n support
 ): string {
   if (!date) return "";
 
   const parsed = typeof date === "string" ? new Date(date) : date;
   if (!isValid(parsed)) return String(date);
 
-  return parsed.toLocaleDateString("en-US", options);
+  return parsed.toLocaleDateString(locale, options);
 }
 ```
 
