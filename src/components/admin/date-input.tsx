@@ -1,6 +1,6 @@
 import * as React from "react";
 import { type InputProps, useInput, useResourceContext, FieldTitle } from "ra-core";
-import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
+import { FormError, FormField, FormLabel, useFormField } from "@/components/admin/form";
 import { InputHelperText } from "@/components/admin/input-helper-text";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,10 +10,20 @@ import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 
 export type DateInputProps = InputProps & {
+  /** Disable future dates (e.g., for activity logging) */
   disableFuture?: boolean;
+  /** Disable past dates (e.g., for deadlines) */
   disablePast?: boolean;
+  /** Custom date format for display (defaults to "PPP" - Jan 1, 2025) */
   dateFormat?: string;
+  /** Placeholder text when no date selected */
   placeholder?: string;
+  /** Custom className for the field wrapper */
+  className?: string;
+  /** Disable the entire input */
+  disabled?: boolean;
+  /** Make the input read-only (prevents opening calendar) */
+  readOnly?: boolean;
 };
 
 /**
@@ -41,9 +51,10 @@ export const DateInput = React.forwardRef<HTMLButtonElement, DateInputProps>((pr
     disablePast = false,
     dateFormat = "PPP",
     placeholder = "Pick a date",
+    disabled = false,
+    readOnly = false,
     validate: _validateProp,
     format: _formatProp,
-    ...rest
   } = props;
 
   const { id, field, isRequired } = useInput(props);
@@ -104,7 +115,18 @@ export const DateInput = React.forwardRef<HTMLButtonElement, DateInputProps>((pr
     return false;
   };
 
-  const showClearButton = !isRequired && selectedDate != null;
+  /**
+   * Handle popover open/close - respects readOnly and disabled states
+   */
+  const handleOpenChange = (newOpen: boolean) => {
+    if (readOnly || disabled) {
+      setOpen(false);
+      return;
+    }
+    setOpen(newOpen);
+  };
+
+  const showClearButton = !isRequired && selectedDate != null && !disabled && !readOnly;
 
   return (
     <FormField id={id} className={cn(className, "w-full")} name={field.name}>
@@ -113,54 +135,23 @@ export const DateInput = React.forwardRef<HTMLButtonElement, DateInputProps>((pr
           <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
         </FormLabel>
       )}
-      <FormControl>
-        <Popover open={open} onOpenChange={setOpen}>
-          <div className="relative flex items-center">
-            <PopoverTrigger asChild>
-              <Button
-                ref={ref}
-                type="button"
-                variant="outline"
-                className={cn(
-                  "h-11 w-full justify-start text-left font-normal",
-                  !selectedDate && "text-muted-foreground",
-                  showClearButton && "pr-10"
-                )}
-                onBlur={field.onBlur}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {selectedDate ? format(selectedDate, dateFormat) : placeholder}
-              </Button>
-            </PopoverTrigger>
-            {showClearButton && (
-              <button
-                type="button"
-                aria-label="Clear date"
-                className="absolute right-3 p-1 text-muted-foreground opacity-50 hover:opacity-100 transition-opacity"
-                onClick={handleClear}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    handleClear(e);
-                  }
-                }}
-                tabIndex={0}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleSelect}
-              disabled={isDateDisabled}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-      </FormControl>
+      {/* FormControl wrapper for aria attributes - uses inner component to access form context */}
+      <DateInputControl
+        ref={ref}
+        id={id}
+        open={open}
+        onOpenChange={handleOpenChange}
+        selectedDate={selectedDate}
+        dateFormat={dateFormat}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        showClearButton={showClearButton}
+        onSelect={handleSelect}
+        onClear={handleClear}
+        onBlur={field.onBlur}
+        isDateDisabled={isDateDisabled}
+      />
       <InputHelperText helperText={helperText} />
       <FormError />
     </FormField>
@@ -168,3 +159,108 @@ export const DateInput = React.forwardRef<HTMLButtonElement, DateInputProps>((pr
 });
 
 DateInput.displayName = "DateInput";
+
+/**
+ * Inner component that has access to FormField context for aria attributes
+ */
+interface DateInputControlProps {
+  id: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  selectedDate: Date | undefined;
+  dateFormat: string;
+  placeholder: string;
+  disabled: boolean;
+  readOnly: boolean;
+  showClearButton: boolean;
+  onSelect: (date: Date | undefined) => void;
+  onClear: (e: React.MouseEvent | React.KeyboardEvent) => void;
+  onBlur: () => void;
+  isDateDisabled: (date: Date) => boolean;
+}
+
+const DateInputControl = React.forwardRef<HTMLButtonElement, DateInputControlProps>(
+  (
+    {
+      id,
+      open,
+      onOpenChange,
+      selectedDate,
+      dateFormat,
+      placeholder,
+      disabled,
+      readOnly,
+      showClearButton,
+      onSelect,
+      onClear,
+      onBlur,
+      isDateDisabled,
+    },
+    ref
+  ) => {
+    // Access form field state for aria-invalid
+    const { error, formDescriptionId, formMessageId } = useFormField();
+    const hasError = !!error;
+
+    return (
+      <Popover open={open} onOpenChange={onOpenChange}>
+        <div className="relative flex items-center">
+          <PopoverTrigger asChild disabled={disabled || readOnly}>
+            <Button
+              ref={ref}
+              data-slot="form-control"
+              id={id}
+              type="button"
+              variant="outline"
+              disabled={disabled}
+              aria-readonly={readOnly || undefined}
+              aria-invalid={hasError ? "true" : undefined}
+              aria-describedby={
+                hasError ? `${formDescriptionId} ${formMessageId}` : formDescriptionId
+              }
+              className={cn(
+                "h-11 w-full justify-start text-left font-normal",
+                !selectedDate && "text-muted-foreground",
+                showClearButton && "pr-10",
+                disabled && "opacity-50 cursor-not-allowed",
+                readOnly && "cursor-default"
+              )}
+              onBlur={onBlur}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {selectedDate ? format(selectedDate, dateFormat) : placeholder}
+            </Button>
+          </PopoverTrigger>
+          {showClearButton && (
+            <button
+              type="button"
+              aria-label="Clear date"
+              className="absolute right-3 p-1 text-muted-foreground opacity-50 hover:opacity-100 transition-opacity"
+              onClick={onClear}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onClear(e);
+                }
+              }}
+              tabIndex={0}
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={onSelect}
+            disabled={isDateDisabled}
+            autoFocus
+          />
+        </PopoverContent>
+      </Popover>
+    );
+  }
+);
+
+DateInputControl.displayName = "DateInputControl";
