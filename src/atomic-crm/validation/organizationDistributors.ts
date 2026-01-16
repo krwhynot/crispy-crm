@@ -16,36 +16,41 @@ import { VALIDATION_LIMITS } from "./constants";
  */
 
 /**
+ * Base schema without refinements - Zod v4 compatible
+ * Use this for .omit(), .partial(), .pick() operations
+ */
+export const baseOrganizationDistributorSchema = z.strictObject({
+  id: z.union([z.string(), z.number()]).optional(),
+
+  // Required foreign keys
+  organization_id: z.coerce.number().int().positive("Organization is required"),
+  distributor_id: z.coerce.number().int().positive("Distributor is required"),
+
+  // Primary flag (only one per organization can be true)
+  is_primary: z.coerce.boolean().default(false),
+
+  // Optional metadata
+  notes: z.string().max(2000, "Notes cannot exceed 2000 characters").optional().nullable(),
+
+  // Audit fields (system-managed)
+  created_by: z.coerce.number().int().optional().nullable(),
+  created_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
+  updated_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
+  deleted_at: z
+    .string()
+    .max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long")
+    .optional()
+    .nullable(),
+});
+
+/**
  * Schema for creating/updating an organization-distributor relationship
  * Follows Engineering Constitution: Single validation at API boundary
  */
-export const organizationDistributorSchema = z
-  .strictObject({
-    id: z.union([z.string(), z.number()]).optional(),
-
-    // Required foreign keys
-    organization_id: z.coerce.number().int().positive("Organization is required"),
-    distributor_id: z.coerce.number().int().positive("Distributor is required"),
-
-    // Primary flag (only one per organization can be true)
-    is_primary: z.coerce.boolean().default(false),
-
-    // Optional metadata
-    notes: z.string().max(2000, "Notes cannot exceed 2000 characters").optional().nullable(),
-
-    // Audit fields (system-managed)
-    created_by: z.coerce.number().int().optional().nullable(),
-    created_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
-    updated_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
-    deleted_at: z
-      .string()
-      .max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long")
-      .optional()
-      .nullable(),
-  })
-  .refine((data) => data.organization_id !== data.distributor_id, {
-    message: "Organization cannot be its own distributor",
-  });
+export const organizationDistributorSchema = baseOrganizationDistributorSchema.refine(
+  (data) => data.organization_id !== data.distributor_id,
+  { message: "Organization cannot be its own distributor" }
+);
 
 /**
  * Type inference from schema
