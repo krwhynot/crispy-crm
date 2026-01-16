@@ -35,8 +35,9 @@ import { isValidFilterField } from "../../providers/supabase/filterRegistry";
 
 describe("useFilterCleanup", () => {
   // Spy on console methods
+  // NOTE: devLog() uses console.log, not console.info
   const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-  const consoleInfoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+  const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
   const _consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
   beforeEach(() => {
@@ -59,7 +60,7 @@ describe("useFilterCleanup", () => {
       // Assert
       expect(mockSetItem).not.toHaveBeenCalled();
       expect(consoleWarnSpy).not.toHaveBeenCalled();
-      expect(consoleInfoSpy).not.toHaveBeenCalled();
+      expect(consoleLogSpy).not.toHaveBeenCalled();
     });
   });
 
@@ -124,7 +125,7 @@ describe("useFilterCleanup", () => {
       // Assert - should NOT update because nothing changed
       expect(mockSetItem).not.toHaveBeenCalled();
       expect(consoleWarnSpy).not.toHaveBeenCalled();
-      expect(consoleInfoSpy).not.toHaveBeenCalled();
+      expect(consoleLogSpy).not.toHaveBeenCalled();
 
       // Verify localStorage unchanged
       const stored = JSON.parse(localStorage.getItem("RaStoreCRM.organizations.listParams")!);
@@ -221,8 +222,8 @@ describe("useFilterCleanup", () => {
       renderHook(() => useFilterCleanup("organizations"));
 
       // Assert
-      expect(consoleInfoSpy).toHaveBeenCalledWith(expect.stringContaining("Cleaned stale filters"));
-      expect(consoleInfoSpy).toHaveBeenCalledWith(expect.stringContaining("organizations"));
+      expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("Cleaned stale filters"));
+      expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("organizations"));
     });
 
     it("should handle removal of all filters", () => {

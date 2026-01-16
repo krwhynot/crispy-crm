@@ -219,6 +219,19 @@ vi.mock("date-fns", () => ({
 
 // Mock activity schema - must include ALL exports used by QuickLogForm
 vi.mock("@/atomic-crm/validation/activities", () => ({
+  // Zod v4: quickLogFormBaseSchema used for form defaults (.partial() on refined schema not allowed)
+  quickLogFormBaseSchema: {
+    partial: () => ({
+      parse: () => ({
+        activityType: "Call",
+        outcome: "Connected",
+        notes: "",
+        date: new Date(),
+        createFollowUp: false,
+      }),
+    }),
+  },
+  // activityLogSchema used for form validation (refined schema with cross-field validation)
   activityLogSchema: {
     partial: () => ({
       parse: () => ({

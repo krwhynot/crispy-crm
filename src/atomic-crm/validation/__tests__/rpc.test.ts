@@ -565,6 +565,7 @@ describe("RPC Validation Schemas", () => {
         "sync_opportunity_with_products",
         "check_authorization",
         "check_authorization_batch",
+        "log_activity_with_task", // Added for atomic activity+task creation
       ];
 
       expectedFunctions.forEach((funcName) => {
@@ -572,8 +573,8 @@ describe("RPC Validation Schemas", () => {
       });
     });
 
-    it("should have exactly 7 RPC function schemas", () => {
-      expect(Object.keys(RPC_SCHEMAS).length).toBe(7);
+    it("should have exactly 8 RPC function schemas", () => {
+      expect(Object.keys(RPC_SCHEMAS).length).toBe(8);
     });
 
     it("should map function names to valid Zod schemas", () => {

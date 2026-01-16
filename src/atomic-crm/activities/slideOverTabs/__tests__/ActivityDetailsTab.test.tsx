@@ -115,6 +115,16 @@ vi.mock("@/components/admin/date-field", () => ({
   DateField: ({ source }: any) => <span data-testid={`date-field-${source}`}>Date Value</span>,
 }));
 
+// Mock DateInput to avoid FormProvider requirement in edit mode
+vi.mock("@/components/admin/date-input", () => ({
+  DateInput: ({ source, label }: { source: string; label?: string }) => (
+    <div data-testid={`date-input-${source}`}>
+      <label>{label}</label>
+      <input type="text" name={source} placeholder="Date input mock" />
+    </div>
+  ),
+}));
+
 /**
  * Factory function to create mock ActivityRecord for testing
  */
