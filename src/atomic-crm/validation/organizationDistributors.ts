@@ -75,9 +75,9 @@ export interface OrganizationDistributorWithNames extends OrganizationDistributo
 
 /**
  * Create-specific schema (stricter requirements)
- * Omits system-managed fields
+ * Omits system-managed fields, uses base schema for Zod v4 compatibility
  */
-export const createOrganizationDistributorSchema = organizationDistributorSchema
+export const createOrganizationDistributorSchema = baseOrganizationDistributorSchema
   .omit({
     id: true,
     created_at: true,
@@ -91,8 +91,9 @@ export const createOrganizationDistributorSchema = organizationDistributorSchema
 /**
  * Update-specific schema (more flexible)
  * ID is required, other fields are optional
+ * Uses base schema for Zod v4 compatibility
  */
-export const updateOrganizationDistributorSchema = organizationDistributorSchema
+export const updateOrganizationDistributorSchema = baseOrganizationDistributorSchema
   .partial()
   .required({ id: true })
   .refine(
