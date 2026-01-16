@@ -167,11 +167,7 @@ describe("createOpportunitiesHandler", () => {
     });
 
     it("should NOT delegate to service when products_to_sync is absent", async () => {
-      const updateData = {
-        id: 123,
-        name: "Updated Opportunity",
-        stage: "demo_scheduled",
-      };
+      const updateData = createMockUpdateData({ stage: "demo_scheduled" });
 
       await handler.update("opportunities", {
         id: 123,
@@ -187,11 +183,7 @@ describe("createOpportunitiesHandler", () => {
       // because OpportunitiesService requires ExtendedDataProvider with rpc/storage/invoke
       // methods that are not available when handlers are created.
       // The baseProvider path is the correct path for empty products.
-      const updateData = {
-        id: 123,
-        name: "Updated Opportunity",
-        products_to_sync: [],
-      };
+      const updateData = createMockUpdateData({ products_to_sync: [] });
 
       await handler.update("opportunities", {
         id: 123,
@@ -205,12 +197,9 @@ describe("createOpportunitiesHandler", () => {
 
     it("should pass empty array when previousData.products is missing", async () => {
       // products_to_sync shape must match updateOpportunitySchema (API boundary)
-      const products = [{ product_id_reference: "101" }];
-      const updateData = {
-        id: 123,
-        products_to_sync: products,
-      };
-      const updatedOpportunity = { id: 123 };
+      const products = [createMockProduct()];
+      const updateData = createMockUpdateData({ products_to_sync: products });
+      const updatedOpportunity = createMockOpportunity();
 
       mockUpdateWithProducts.mockResolvedValue(updatedOpportunity);
 
@@ -245,34 +234,7 @@ describe("createOpportunitiesHandler", () => {
 describe("opportunitiesCallbacks - view field stripping", () => {
   describe("stripComputedFields()", () => {
     it("should strip typed computed fields (from Opportunity type)", () => {
-      const data = {
-        id: 1,
-        name: "Test Opportunity",
-        stage: "new_lead",
-        // Typed computed fields that should be stripped
-        principal_organization_name: "Acme Corp",
-        customer_organization_name: "Customer Inc",
-        distributor_organization_name: "Distributor LLC",
-        days_in_stage: 5,
-        days_since_last_activity: 2,
-        pending_task_count: 3,
-        overdue_task_count: 1,
-        nb_interactions: 10,
-        last_interaction_date: "2026-01-01",
-        next_task_id: 42,
-        next_task_title: "Follow up",
-        next_task_due_date: "2026-01-10",
-        next_task_priority: "high",
-        stage_changed_at: "2026-01-01",
-        created_by: "user-123",
-        status: "active",
-        actual_close_date: null,
-        founding_interaction_id: 1,
-        stage_manual: false,
-        status_manual: false,
-        competition: null,
-        // NOTE: opportunity_owner_id moved to UPDATE_ONLY_STRIP_FIELDS (FIX WF-E2E-001)
-      };
+      const data = createMockOpportunityWithComputedFields();
 
       const result = stripComputedFields(data);
 
@@ -343,19 +305,7 @@ describe("opportunitiesCallbacks - view field stripping", () => {
     });
 
     it("should strip view-only fields (not on Opportunity type)", () => {
-      const data = {
-        id: 1,
-        name: "Test Opportunity",
-        // View-only fields that should be stripped
-        search_tsv: "tsvector_value",
-        updated_by: "user-789",
-        index: 0,
-        total_value: 50000,
-        participant_count: 3,
-        contact_count: 2,
-        product_count: 5,
-        last_activity_date: "2026-01-05",
-      };
+      const data = createMockOpportunityWithViewOnlyFields();
 
       const result = stripComputedFields(data);
 
@@ -378,8 +328,8 @@ describe("opportunitiesCallbacks - view field stripping", () => {
       const data = {
         id: 1,
         name: "Test Opportunity",
-        products_to_sync: [{ product_id_reference: "101" }],
-        products: [{ id: 1, name: "Product A" }], // Legacy field, stripped
+        products_to_sync: [createMockProduct()],
+        products: [createMockViewProduct()], // Legacy field, stripped
       };
 
       const result = stripComputedFields(data);
@@ -393,27 +343,7 @@ describe("opportunitiesCallbacks - view field stripping", () => {
     });
 
     it("should preserve all editable fields", () => {
-      const data = {
-        id: 1,
-        name: "Test Opportunity",
-        description: "A description",
-        stage: "initial_outreach",
-        priority: "high",
-        estimated_close_date: "2026-03-01",
-        customer_organization_id: 10,
-        principal_organization_id: 20,
-        distributor_organization_id: 30,
-        account_manager_id: "mgr-123",
-        contact_ids: [1, 2, 3],
-        campaign: "Q1 Campaign",
-        related_opportunity_id: 99,
-        tags: ["enterprise", "priority"],
-        next_action: "Schedule demo",
-        next_action_date: "2026-01-15",
-        decision_criteria: "Budget approval",
-        lead_source: "referral",
-        notes: "Important notes here",
-      };
+      const data = createMockEditableOpportunity();
 
       const result = stripComputedFields(data);
 
