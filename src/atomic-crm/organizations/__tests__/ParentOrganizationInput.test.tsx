@@ -10,6 +10,7 @@
  * - New record handling (create mode)
  */
 
+import type { ReactNode } from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ParentOrganizationInput } from "../ParentOrganizationInput";
