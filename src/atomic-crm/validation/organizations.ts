@@ -286,3 +286,17 @@ export async function validateUpdateOrganization(data: unknown): Promise<void> {
 
 // Alias for form validation (used in tests)
 export const validateOrganizationForm = validateOrganizationForSubmission;
+
+/**
+ * Form-level validation for QuickCreatePopover (Organizations)
+ * Uses simple types matching form inputs for react-hook-form validation.
+ */
+export const organizationQuickCreateSchema = z.strictObject({
+  name: z.string().trim().min(1, "Name required").max(255),
+  organization_type: organizationTypeSchema,
+  priority: organizationPrioritySchema.default("C"),
+  city: z.string().max(100).optional(),
+  state: z.string().max(50).optional(),
+});
+
+export type OrganizationQuickCreateInput = z.infer<typeof organizationQuickCreateSchema>;

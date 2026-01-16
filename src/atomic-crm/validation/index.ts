@@ -40,3 +40,6 @@ export * from "./segments";
 export * from "./activities";
 export * from "./distributorAuthorizations";
 export * from "./productDistributors";
+
+// Filter schemas
+export * from "./filters";

@@ -1,5 +1,18 @@
-import { KPICard } from "./KPICard";
+import { useNavigate } from "react-router-dom";
+import { AlertCircle, Activity, Briefcase, AlertTriangle } from "lucide-react";
+import { KPICard } from "@/components/ui/kpi-card";
 import { useKPIMetrics } from "../hooks/useKPIMetrics";
+
+/**
+ * KPI navigation URLs (preserved from original KPI_CONFIG)
+ */
+const KPI_NAVIGATION = {
+  openOpportunities:
+    "/opportunities?filter=%7B%22stage%40not_in%22%3A%5B%22closed_won%22%2C%22closed_lost%22%5D%7D",
+  overdueTasks: "/tasks?filter=%7B%22completed%22%3Afalse%2C%22due_date%40lt%22%3A%22today%22%7D",
+  activitiesThisWeek: "/reports",
+  staleDeals: "/opportunities?filter=%7B%22stale%22%3Atrue%7D",
+} as const;
 
 /**
  * KPISummaryRow - Dashboard KPI metrics header row (PRD v1.9 Section 9.2.1)
@@ -20,6 +33,7 @@ import { useKPIMetrics } from "../hooks/useKPIMetrics";
  * - Uses useKPIMetrics hook for single aggregated query
  */
 export function KPISummaryRow() {
+  const navigate = useNavigate();
   const { metrics, loading } = useKPIMetrics();
 
   return (
@@ -30,33 +44,43 @@ export function KPISummaryRow() {
     >
       {/* KPI #1: Open Opportunities (count, not $ value) */}
       <KPICard
-        type="openOpportunities"
-        value={metrics.openOpportunitiesCount}
+        title="Open Opportunities"
+        value={metrics.openOpportunitiesCount.toLocaleString()}
+        icon={Briefcase}
         loading={loading}
+        onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
         data-tutorial="dashboard-kpi-open-opportunities"
       />
 
       {/* KPI #2: Overdue Tasks (red accent when > 0) */}
       <KPICard
-        type="overdueTasks"
-        value={metrics.overdueTasksCount}
+        title="Overdue Tasks"
+        value={metrics.overdueTasksCount.toLocaleString()}
+        icon={AlertCircle}
         loading={loading}
+        variant={metrics.overdueTasksCount > 0 ? "destructive" : "default"}
+        onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
         data-tutorial="dashboard-kpi-overdue-tasks"
       />
 
       {/* KPI #3: Activities This Week */}
       <KPICard
-        type="activitiesThisWeek"
-        value={metrics.activitiesThisWeek}
+        title="Activities This Week"
+        value={metrics.activitiesThisWeek.toLocaleString()}
+        icon={Activity}
         loading={loading}
+        onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
         data-tutorial="dashboard-kpi-activities"
       />
 
       {/* KPI #4: Stale Deals (amber/warning when > 0) */}
       <KPICard
-        type="staleDeals"
-        value={metrics.staleDealsCount}
+        title="Stale Deals"
+        value={metrics.staleDealsCount.toLocaleString()}
+        icon={AlertTriangle}
         loading={loading}
+        variant={metrics.staleDealsCount > 0 ? "warning" : "default"}
+        onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
         data-tutorial="dashboard-kpi-stale-deals"
       />
     </section>

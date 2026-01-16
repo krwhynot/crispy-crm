@@ -1,22 +1,14 @@
 import type { FilterValues, FilterValue } from "./types";
 import { FILTER_KEYS } from "./types";
 import { getStorageItem, setStorageItem, removeStorageItem } from "../utils/secureStorage";
-import { z } from "zod";
 import { safeJsonParse } from "../utils/safeJsonParse";
+import { filterValueSchema } from "../validation/filters";
 
 /**
  * Filter precedence utilities
  * Simplifies the complex logic for determining filter default values
  * Phase 1 Security Remediation: Uses sessionStorage instead of localStorage
  */
-
-const filterValueSchema = z.union([
-  z.string().max(1000),
-  z.array(z.string().max(1000)).max(100),
-  z.number(),
-  z.boolean(),
-  z.null(),
-]);
 
 /**
  * Parse filter values from URL search params

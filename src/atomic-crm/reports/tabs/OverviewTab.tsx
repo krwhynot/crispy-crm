@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useGetList } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
-import { KPICard } from "../components/KPICard";
+import { KPICard } from "@/components/ui/kpi-card";
 import { ChartWrapper } from "../components/ChartWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TabFilterBar } from "../components/TabFilterBar";
@@ -416,8 +416,7 @@ export default function OverviewTab() {
           <KPICard
             title="Total Opportunities"
             value={kpis.totalOpportunities}
-            change={kpis.opportunityChange}
-            trend={kpis.opportunityTrend}
+            trend={{ value: kpis.opportunityChange, direction: kpis.opportunityTrend }}
             icon={TrendingUp}
             subtitle="Active opportunities in pipeline"
             onClick={handleTotalOpportunitiesClick}
@@ -425,8 +424,7 @@ export default function OverviewTab() {
           <KPICard
             title="Activities This Week"
             value={kpis.weekActivities}
-            change={kpis.activityChange}
-            trend={kpis.activityTrend}
+            trend={{ value: kpis.activityChange, direction: kpis.activityTrend }}
             icon={Activity}
             subtitle="Calls, emails, meetings logged"
             onClick={handleActivitiesClick}
@@ -434,8 +432,7 @@ export default function OverviewTab() {
           <KPICard
             title="Stale Leads"
             value={kpis.staleLeads}
-            change={0}
-            trend="neutral"
+            trend={{ value: 0, direction: "neutral" }}
             icon={AlertCircle}
             subtitle={`New leads with no activity in ${STAGE_STALE_THRESHOLDS.new_lead}+ days`}
             onClick={handleStaleLeadsClick}
@@ -444,8 +441,7 @@ export default function OverviewTab() {
           <KPICard
             title="Stale Deals"
             value={kpis.staleDeals}
-            change={0}
-            trend="neutral"
+            trend={{ value: 0, direction: "neutral" }}
             icon={Clock}
             subtitle="Deals exceeding stage thresholds"
             variant={kpis.staleDeals > 0 ? "warning" : "default"}

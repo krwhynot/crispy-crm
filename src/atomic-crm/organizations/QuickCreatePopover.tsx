@@ -3,7 +3,6 @@ import { useForm, useWatch } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useCreateSuggestionContext } from "@/hooks/useSupportCreateSuggestion";
 import { Button } from "@/components/ui/button";
@@ -18,24 +17,18 @@ import {
 import { Label } from "@/components/ui/label";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
 import { organizationKeys } from "@/atomic-crm/queryKeys";
-
-const quickCreateSchema = z.object({
-  name: z.string().trim().min(1).max(255),
-  organization_type: z.enum(["customer", "prospect", "principal", "distributor"]),
-  priority: z.enum(["A", "B", "C", "D"]).default("C"),
-  city: z.string().max(100).optional(),
-  state: z.string().max(50).optional(),
-});
-
-type QuickCreateInput = z.infer<typeof quickCreateSchema>;
+import {
+  organizationQuickCreateSchema,
+  type OrganizationQuickCreateInput,
+} from "@/atomic-crm/validation/organizations";
 
 /**
  * P5: Isolated sub-components using useWatch for performance
  * These only re-render when their specific field changes, NOT on every keystroke
  */
 interface SelectFieldProps {
-  control: ReturnType<typeof useForm<QuickCreateInput>>["control"];
-  setValue: ReturnType<typeof useForm<QuickCreateInput>>["setValue"];
+  control: ReturnType<typeof useForm<OrganizationQuickCreateInput>>["control"];
+  setValue: ReturnType<typeof useForm<OrganizationQuickCreateInput>>["setValue"];
   id: string;
 }
 
@@ -105,8 +98,8 @@ export function QuickCreatePopover({
   const notify = useNotify();
   const queryClient = useQueryClient();
 
-  const methods = useForm<QuickCreateInput>({
-    resolver: zodResolver(quickCreateSchema),
+  const methods = useForm<OrganizationQuickCreateInput>({
+    resolver: zodResolver(organizationQuickCreateSchema),
     defaultValues: {
       name,
       organization_type: organizationType,
@@ -133,7 +126,7 @@ export function QuickCreatePopover({
     },
     // Focus first error field on validation failure (WCAG 3.3.1)
     (errors) => {
-      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateInput;
+      const firstErrorField = Object.keys(errors)[0] as keyof OrganizationQuickCreateInput;
       if (firstErrorField) {
         methods.setFocus(firstErrorField);
       }
@@ -285,8 +278,8 @@ export function QuickCreateOrganizationRA({
 
   const name = filter || "";
 
-  const methods = useForm<QuickCreateInput>({
-    resolver: zodResolver(quickCreateSchema),
+  const methods = useForm<OrganizationQuickCreateInput>({
+    resolver: zodResolver(organizationQuickCreateSchema),
     defaultValues: {
       name,
       organization_type: organizationType,
@@ -312,7 +305,7 @@ export function QuickCreateOrganizationRA({
       }
     },
     (errors) => {
-      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateInput;
+      const firstErrorField = Object.keys(errors)[0] as keyof OrganizationQuickCreateInput;
       if (firstErrorField) {
         methods.setFocus(firstErrorField);
       }

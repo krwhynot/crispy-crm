@@ -2,10 +2,32 @@ import { z } from "zod";
 import { emailAndTypeSchema, phoneNumberAndTypeSchema } from "./contacts-communication";
 
 /**
- * Quick create contact validation schema
- * Reduced requirements but maintains security
+ * Quick create contact validation schemas
+ *
+ * Two schemas for different layers:
+ * 1. quickCreateContactFormSchema - For form validation (react-hook-form)
+ *    Uses simple string types matching form inputs
+ * 2. quickCreateContactSchema - For API boundary validation
+ *    Uses array structures matching database format
  */
 
+/**
+ * Form-level validation for QuickCreateContactPopover
+ * Uses simple string types because form inputs are individual strings,
+ * not the array structures used at the API boundary.
+ */
+export const quickCreateContactFormSchema = z.strictObject({
+  first_name: z.string().min(1, "First name required").max(100),
+  last_name: z.string().min(1, "Last name required").max(100),
+  email: z.string().email("Invalid email").max(255),
+});
+
+export type QuickCreateContactFormInput = z.infer<typeof quickCreateContactFormSchema>;
+
+/**
+ * API boundary validation for quick create contacts
+ * Reduced requirements but maintains security
+ */
 export const quickCreateContactSchema = z.strictObject({
   // REQUIRED: Security-critical fields
   first_name: z.string().trim().min(1, "First name required").max(100),

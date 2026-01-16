@@ -1,7 +1,7 @@
-import { z } from "zod";
 import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 import { safeJsonParse } from "../utils/safeJsonParse";
+import { urlFilterSchema } from "../validation/filters";
 
 /**
  * Storage key for opportunity stage preferences
@@ -9,16 +9,6 @@ import { safeJsonParse } from "../utils/safeJsonParse";
  * (cleared on tab close for better privacy)
  */
 const STORAGE_KEY = "filter.opportunity_stages";
-
-/**
- * Schema for validating URL filter parameters
- * Prevents JSON.parse attacks from malicious URL parameters
- */
-const urlFilterSchema = z
-  .object({
-    stage: z.union([z.string(), z.array(z.string())]).optional(),
-  })
-  .passthrough(); // Allow other filter fields
 
 /**
  * Default visible stages - excludes closed stages by default

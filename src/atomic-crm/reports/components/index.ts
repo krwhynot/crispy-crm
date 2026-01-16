@@ -3,8 +3,9 @@ export { FilterChip } from "./FilterChip";
 export { AppliedFiltersBar } from "./AppliedFiltersBar";
 export { EmptyState } from "./EmptyState";
 
-// Existing components
-export { KPICard } from "./KPICard";
+// KPICard is now centralized in @/components/ui/kpi-card
+// Re-export for backwards compatibility with existing imports
+export { KPICard } from "@/components/ui/kpi-card";
 export { ChartWrapper } from "./ChartWrapper";
 export { ReportPageShell } from "./ReportPageShell";
 export { TabFilterBar } from "./TabFilterBar";

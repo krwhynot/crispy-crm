@@ -3,21 +3,16 @@ import { useForm } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCreateSuggestionContext } from "@/hooks/useSupportCreateSuggestion";
 import { contactKeys } from "@/atomic-crm/queryKeys";
-
-const quickCreateContactSchema = z.object({
-  first_name: z.string().min(1, "First name required").max(100),
-  last_name: z.string().min(1, "Last name required").max(100),
-  email: z.string().email("Invalid email").max(255),
-});
-
-type QuickCreateContactInput = z.infer<typeof quickCreateContactSchema>;
+import {
+  quickCreateContactFormSchema,
+  type QuickCreateContactFormInput,
+} from "@/atomic-crm/validation/contacts";
 
 interface QuickCreateContactPopoverProps {
   name: string;
@@ -42,8 +37,8 @@ export function QuickCreateContactPopover({
   const notify = useNotify();
   const queryClient = useQueryClient();
 
-  const methods = useForm<QuickCreateContactInput>({
-    resolver: zodResolver(quickCreateContactSchema),
+  const methods = useForm<QuickCreateContactFormInput>({
+    resolver: zodResolver(quickCreateContactFormSchema),
     defaultValues: {
       first_name: name,
       last_name: "",
@@ -78,7 +73,7 @@ export function QuickCreateContactPopover({
       }
     },
     (errors) => {
-      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateContactInput;
+      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateContactFormInput;
       if (firstErrorField) {
         methods.setFocus(firstErrorField);
       }
@@ -222,8 +217,8 @@ export function QuickCreateContactRA({
   const notify = useNotify();
   const queryClient = useQueryClient();
 
-  const methods = useForm<QuickCreateContactInput>({
-    resolver: zodResolver(quickCreateContactSchema),
+  const methods = useForm<QuickCreateContactFormInput>({
+    resolver: zodResolver(quickCreateContactFormSchema),
     defaultValues: {
       first_name: filter || "",
       last_name: "",
@@ -258,7 +253,7 @@ export function QuickCreateContactRA({
       }
     },
     (errors) => {
-      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateContactInput;
+      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateContactFormInput;
       if (firstErrorField) {
         methods.setFocus(firstErrorField);
       }
