@@ -16,6 +16,7 @@ import {
   usePrincipalOpportunities,
   type OpportunitySummary,
 } from "../hooks/usePrincipalOpportunities";
+import { formatCurrency } from "@/atomic-crm/utils/formatters";
 
 interface PipelineDrillDownSheetProps {
   /** Principal (organization) ID to show opportunities for */

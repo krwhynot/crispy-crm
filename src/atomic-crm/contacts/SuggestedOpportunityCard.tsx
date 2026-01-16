@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
+import { formatCurrency } from "@/atomic-crm/utils/formatters";
 
 interface SuggestedOpportunityCardProps {
   opportunity: {
@@ -21,10 +22,10 @@ export function SuggestedOpportunityCard({ opportunity, onLink }: SuggestedOppor
           <StageBadgeWithHealth stage={opportunity.stage} health={opportunity.health_status} />
           {opportunity.amount && (
             <span className="text-sm text-muted-foreground">
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(opportunity.amount)}
+              {formatCurrency(opportunity.amount, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </span>
           )}
         </div>

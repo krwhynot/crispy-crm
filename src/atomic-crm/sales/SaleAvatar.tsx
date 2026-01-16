@@ -20,8 +20,7 @@ export const SaleAvatar = (props: { record?: Sale; size?: "sm" | "md" | "lg"; ti
     <ShadcnAvatar className={sizeClass} title={props.title}>
       <AvatarImage src={record.avatar?.src ?? undefined} />
       <AvatarFallback className={textSizeClass}>
-        {record.first_name?.charAt(0).toUpperCase()}
-        {record.last_name?.charAt(0).toUpperCase()}
+        {getInitials(record.first_name, record.last_name)}
       </AvatarFallback>
     </ShadcnAvatar>
   );

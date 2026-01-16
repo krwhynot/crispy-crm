@@ -56,8 +56,7 @@ const SalesAvatar = () => {
     <ShadcnAvatar className="w-11 h-11">
       <AvatarImage src={record.avatar?.src ?? undefined} alt={altText} />
       <AvatarFallback className="text-sm">
-        {record.first_name?.charAt(0).toUpperCase()}
-        {record.last_name?.charAt(0).toUpperCase()}
+        {getInitials(record.first_name, record.last_name)}
       </AvatarFallback>
     </ShadcnAvatar>
   );

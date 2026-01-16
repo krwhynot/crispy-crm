@@ -134,7 +134,7 @@ export const ChangeLogTab = () => {
       parseDateSafely(entry.changed_at)
         ? format(parseDateSafely(entry.changed_at)!, "yyyy-MM-dd HH:mm:ss")
         : "Unknown",
-      formatFieldName(entry.field_name),
+      formatFieldLabel(entry.field_name),
       formatValue(entry.old_value),
       formatValue(entry.new_value),
       entry.sales_name || `User #${entry.changed_by}` || "System",
@@ -158,11 +158,6 @@ export const ChangeLogTab = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  // Helper functions for export (hoist these for use in both component and export)
-  const formatFieldName = (fieldName: string): string => {
-    return fieldName.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   };
 
   const formatValue = (value: string | null): string => {
@@ -287,7 +282,7 @@ export const ChangeLogTab = () => {
                     <SelectItem value="all">All fields</SelectItem>
                     {uniqueFields.map((field) => (
                       <SelectItem key={field} value={field}>
-                        {formatFieldName(field)}
+                        {formatFieldLabel(field)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -357,7 +352,6 @@ export const ChangeLogTab = () => {
             <ChangeLogEntry
               key={entry.audit_id}
               entry={entry}
-              formatFieldName={formatFieldName}
               formatValue={formatValue}
             />
           ))}
@@ -395,7 +389,7 @@ const ChangeLogEntry = ({
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm font-semibold">{formatFieldName(entry.field_name)}</span>
+              <span className="text-sm font-semibold">{formatFieldLabel(entry.field_name)}</span>
               {isCreation && (
                 <Badge variant="default" className="text-xs">
                   Created

@@ -16,7 +16,7 @@ export function SidepaneContactRow({
   email,
   onClick,
 }: SidepaneContactRowProps) {
-  const initials = `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
+  const initials = getInitials(firstName, lastName);
   const fullName = `${firstName} ${lastName}`.trim();
 
   return (
