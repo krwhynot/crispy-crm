@@ -10,7 +10,7 @@
  * - New record handling (create mode)
  */
 
-import type { ReactNode } from "react";
+import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ParentOrganizationInput } from "../ParentOrganizationInput";
@@ -30,7 +30,7 @@ vi.mock("@/hooks", () => ({
 // Mock ReferenceInput - capture props to verify filter configuration
 const mockReferenceInputProps = vi.fn();
 vi.mock("@/components/admin/reference-input", () => ({
-  ReferenceInput: (props: Record<string, unknown>) => {
+  ReferenceInput: (props: { children?: React.ReactNode; filter?: Record<string, string> }) => {
     mockReferenceInputProps(props);
     return (
       <div data-testid="reference-input" data-filter={JSON.stringify(props.filter)}>
@@ -110,7 +110,7 @@ describe("ParentOrganizationInput", () => {
 
       // Expect: ReferenceInput filter includes self exclusion
       expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0][0];
+      const props = mockReferenceInputProps.mock.calls[0]![0];
       expect(props.filter).toEqual({ "id@not.in": "(5)" });
     });
   });
@@ -129,7 +129,7 @@ describe("ParentOrganizationInput", () => {
 
       // Expect: filter excludes self + all descendants
       expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0][0];
+      const props = mockReferenceInputProps.mock.calls[0]![0];
       expect(props.filter).toEqual({ "id@not.in": "(5,10,15,20)" });
     });
 
@@ -146,7 +146,7 @@ describe("ParentOrganizationInput", () => {
 
       // Initial render - verify filter
       expect(mockReferenceInputProps).toHaveBeenCalled();
-      let props = mockReferenceInputProps.mock.calls[0][0];
+      let props = mockReferenceInputProps.mock.calls[0]![0];
       expect(props.filter).toEqual({ "id@not.in": "(1,2,3)" });
 
       // Clear mocks and update descendants
@@ -162,7 +162,7 @@ describe("ParentOrganizationInput", () => {
 
       // Expect: filter is updated with new descendants
       expect(mockReferenceInputProps).toHaveBeenCalled();
-      props = mockReferenceInputProps.mock.calls[0][0];
+      props = mockReferenceInputProps.mock.calls[0]![0];
       expect(props.filter).toEqual({ "id@not.in": "(1,2,3,4,5)" });
     });
   });
@@ -240,7 +240,7 @@ describe("ParentOrganizationInput", () => {
 
       // Expect: empty filter (no exclusions needed)
       expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0][0];
+      const props = mockReferenceInputProps.mock.calls[0]![0];
       expect(props.filter).toEqual({});
     });
 
@@ -272,7 +272,7 @@ describe("ParentOrganizationInput", () => {
       render(<ParentOrganizationInput />);
 
       expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0][0];
+      const props = mockReferenceInputProps.mock.calls[0]![0];
       expect(props.source).toBe("parent_organization_id");
       expect(props.reference).toBe("organizations");
     });
