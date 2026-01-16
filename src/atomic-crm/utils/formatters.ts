@@ -53,15 +53,51 @@ export function ucFirst(str: string): string {
 }
 
 /**
+ * Converts snake_case field names to Title Case labels.
+ * Example: "first_name" → "First Name"
+ */
+export function formatFieldLabel(fieldName: string): string {
+  if (!fieldName) return "";
+  return fieldName.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+/**
  * Generates initials from first and last name.
  * Example: ("John", "Doe") → "JD"
  * Handles null/undefined gracefully, returns "?" if both empty.
  */
-export function getInitials(
-  firstName?: string | null,
-  lastName?: string | null
-): string {
+export function getInitials(firstName?: string | null, lastName?: string | null): string {
   const first = firstName?.trim().charAt(0)?.toUpperCase() || "";
   const last = lastName?.trim().charAt(0)?.toUpperCase() || "";
   return first + last || "?";
+}
+
+/**
+ * Formats a number as currency using Intl.NumberFormat.
+ * Defaults to USD with no decimal places.
+ */
+export function formatCurrency(
+  amount: number | null | undefined,
+  options?: {
+    currency?: string;
+    locale?: string;
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+  }
+): string {
+  if (amount == null || isNaN(amount)) return EMPTY_PLACEHOLDER;
+
+  const {
+    currency = "USD",
+    locale = "en-US",
+    minimumFractionDigits = 0,
+    maximumFractionDigits = 0,
+  } = options ?? {};
+
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits,
+    maximumFractionDigits,
+  }).format(amount);
 }

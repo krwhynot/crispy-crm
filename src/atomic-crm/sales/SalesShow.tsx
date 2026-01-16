@@ -3,6 +3,7 @@ import { ShowBase, useShowContext } from "ra-core";
 import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from "@/components/ui/avatar";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
+import { getInitials } from "@/atomic-crm/utils/formatters";
 
 export const SalesShow = () => (
   <ShowBase>

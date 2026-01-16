@@ -47,6 +47,7 @@ export {
   formatCount,
   EMPTY_PLACEHOLDER,
   ucFirst,
+  formatFieldLabel,
 } from "./formatters";
 
 // Safe JSON parsing with Zod validation

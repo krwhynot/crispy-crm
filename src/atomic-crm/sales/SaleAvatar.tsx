@@ -2,6 +2,7 @@ import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from "@/component
 import { useRecordContext } from "ra-core";
 
 import type { Sale } from "../types";
+import { getInitials } from "@/atomic-crm/utils/formatters";
 
 export const SaleAvatar = (props: { record?: Sale; size?: "sm" | "md" | "lg"; title?: string }) => {
   const record = useRecordContext<Sale>(props);

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/atomic-crm/utils/formatters";
 
 // =============================================================================
 // DATA ROW
@@ -87,15 +88,10 @@ export interface DataCellProps extends React.TdHTMLAttributes<HTMLTableCellEleme
 
 const DataCell = React.forwardRef<HTMLTableCellElement, DataCellProps>(
   ({ className, type = "text", truncate = false, maxWidth = 200, children, ...props }, ref) => {
-    // Currency formatting via Intl API (Engineering Constitution P13)
+    // Currency formatting via centralized formatCurrency utility
     const formattedChildren = React.useMemo(() => {
       if (type === "currency" && typeof children === "number") {
-        return new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        }).format(children);
+        return formatCurrency(children);
       }
       return children;
     }, [type, children]);

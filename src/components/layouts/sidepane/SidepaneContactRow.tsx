@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getInitials } from "@/atomic-crm/utils/formatters";
 
 interface SidepaneContactRowProps {
   firstName: string;

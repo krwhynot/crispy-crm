@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import type { Opportunity } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
+import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
 
 interface AuditTrailEntry {
   audit_id: number;
