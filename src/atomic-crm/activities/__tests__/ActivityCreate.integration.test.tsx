@@ -72,20 +72,21 @@ describe("ActivityCreate with Progress Tracking", () => {
     expect(screen.getByText(/Relationships/i)).toBeInTheDocument();
   });
 
-  test("maintains completion state when subject modified", async () => {
-    // With Zod v4 base schema providing defaults, form starts complete
-    // This test verifies it stays complete when user interacts with fields
+  test("reaches completion when subject is filled", async () => {
+    // Subject is the only required field without a default
+    // Filling it should complete the form
     const user = userEvent.setup();
     renderActivityCreate();
 
     const subjectInput = await screen.findByLabelText(/subject/i);
-    await user.clear(subjectInput);
     await user.type(subjectInput, "Test subject");
     await user.tab();
 
     await waitFor(() => {
-      // Should remain complete after user modifies the subject
-      expect(screen.getByTestId("section-complete-badge")).toBeInTheDocument();
+      // Progress bar should show 100% completion
+      const progressBar = screen.getByRole("progressbar");
+      const value = Number(progressBar.getAttribute("aria-valuenow"));
+      expect(value).toBe(100);
     });
   });
 });

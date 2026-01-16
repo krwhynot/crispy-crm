@@ -156,7 +156,9 @@ describe("FormControl", () => {
     const input = screen.getByRole("textbox");
     expect(input).toHaveAttribute("id", "username");
     expect(input).toHaveAttribute("aria-describedby", "username-description");
-    expect(input).toHaveAttribute("aria-invalid", "false");
+    // ARIA spec: absence of aria-invalid is equivalent to aria-invalid="false"
+    // Component correctly omits the attribute when there's no error
+    expect(input).not.toHaveAttribute("aria-invalid", "true");
   });
 
   test("updates aria-invalid when field has error", async () => {
