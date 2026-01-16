@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-14T21:47:43.047Z",
+  "generated_at": "2026-01-16T13:25:09.891Z",
   "items": {
     "nodes": [
       {
@@ -67,19 +67,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactBadges.tsx:213:numericToLevel",
+        "id": "src/atomic-crm/contacts/ContactBadges.tsx:208:numericToLevel",
         "name": "numericToLevel",
         "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-        "line": 213,
+        "line": 208,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactBadges.tsx:246:ContactBadgeGroup",
+        "id": "src/atomic-crm/contacts/ContactBadges.tsx:241:ContactBadgeGroup",
         "name": "ContactBadgeGroup",
         "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-        "line": 246,
+        "line": 241,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -94,19 +94,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:18:validateEmailOnBlur",
+        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
         "name": "validateEmailOnBlur",
         "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-        "line": 18,
+        "line": 19,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "name": "ContactCompactForm",
         "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-        "line": 27,
+        "line": 28,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -382,28 +382,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "id": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "name": "QuickCreateContactPopover",
         "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-        "line": 31,
+        "line": 26,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "id": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "name": "QuickCreateContactRA",
         "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-        "line": 212,
+        "line": 207,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:15:SuggestedOpportunityCard",
+        "id": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:16:SuggestedOpportunityCard",
         "name": "SuggestedOpportunityCard",
         "file": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx",
-        "line": 15,
+        "line": 16,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1806,29 +1806,29 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactBadges.tsx:246:ContactBadgeGroup",
+        "source": "src/atomic-crm/contacts/ContactBadges.tsx:241:ContactBadgeGroup",
         "target": "ContactStatusBadge",
         "targetName": "ContactStatusBadge",
         "edgeType": "render",
-        "line": 256,
+        "line": 251,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactBadges.tsx:246:ContactBadgeGroup",
+        "source": "src/atomic-crm/contacts/ContactBadges.tsx:241:ContactBadgeGroup",
         "target": "RoleBadge",
         "targetName": "RoleBadge",
         "edgeType": "render",
-        "line": 257,
+        "line": 252,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactBadges.tsx:246:ContactBadgeGroup",
+        "source": "src/atomic-crm/contacts/ContactBadges.tsx:241:ContactBadgeGroup",
         "target": "InfluenceBadge",
         "targetName": "InfluenceBadge",
         "edgeType": "render",
-        "line": 258,
+        "line": 253,
         "conditional": false,
         "inLoop": false
       },
@@ -1878,106 +1878,70 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:18:validateEmailOnBlur",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 19,
+        "line": 20,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:18:validateEmailOnBlur",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 20,
+        "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:18:validateEmailOnBlur",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 20,
+        "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "useFormContext",
         "targetName": "useFormContext",
         "edgeType": "hook",
-        "line": 28,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "getValues",
         "targetName": "getValues",
         "edgeType": "call",
-        "line": 31,
+        "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "extractEmailLocalPart",
+        "targetName": "extractEmailLocalPart",
+        "edgeType": "call",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 33,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "split",
-        "targetName": "split",
-        "edgeType": "call",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "charAt",
-        "targetName": "charAt",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "slice",
-        "targetName": "slice",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "setValue",
         "targetName": "setValue",
         "edgeType": "call",
@@ -1986,308 +1950,308 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "ucFirst",
+        "targetName": "ucFirst",
         "edgeType": "call",
         "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "ucFirst",
+        "targetName": "ucFirst",
+        "edgeType": "call",
+        "line": 39,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "charAt",
-        "targetName": "charAt",
-        "edgeType": "call",
-        "line": 38,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "slice",
-        "targetName": "slice",
-        "edgeType": "call",
-        "line": 38,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "getData",
         "targetName": "getData",
-        "edgeType": "call",
-        "line": 44,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "handleEmailChange",
-        "targetName": "handleEmailChange",
         "edgeType": "call",
         "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "handleEmailChange",
         "targetName": "handleEmailChange",
         "edgeType": "call",
-        "line": 50,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "handleEmailChange",
+        "targetName": "handleEmailChange",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "FormSectionWithProgress",
         "targetName": "FormSectionWithProgress",
         "edgeType": "render",
-        "line": 55,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 60,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 62,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 72,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "FormSectionWithProgress",
-        "targetName": "FormSectionWithProgress",
-        "edgeType": "render",
-        "line": 87,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 94,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 95,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 109,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 110,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "FormSectionWithProgress",
-        "targetName": "FormSectionWithProgress",
-        "edgeType": "render",
-        "line": 129,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 136,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "ArrayInput",
-        "targetName": "ArrayInput",
-        "edgeType": "render",
-        "line": 137,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "SimpleFormIterator",
-        "targetName": "SimpleFormIterator",
-        "edgeType": "render",
-        "line": 142,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 175,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "ArrayInput",
-        "targetName": "ArrayInput",
-        "edgeType": "render",
-        "line": 176,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "SimpleFormIterator",
-        "targetName": "SimpleFormIterator",
-        "edgeType": "render",
-        "line": 177,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
         "edgeType": "render",
         "line": 63,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
         "edgeType": "render",
         "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "Avatar",
-        "targetName": "Avatar",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
         "edgeType": "render",
-        "line": 82,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "AutocompleteOrganizationInput",
-        "targetName": "AutocompleteOrganizationInput",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 102,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "SelectInput",
-        "targetName": "SelectInput",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 119,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
+        "edgeType": "render",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "ArrayInput",
+        "targetName": "ArrayInput",
+        "edgeType": "render",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "SimpleFormIterator",
+        "targetName": "SimpleFormIterator",
+        "edgeType": "render",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 176,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "ArrayInput",
+        "targetName": "ArrayInput",
+        "edgeType": "render",
+        "line": 177,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "SimpleFormIterator",
+        "targetName": "SimpleFormIterator",
+        "edgeType": "render",
+        "line": 178,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 148,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "Avatar",
+        "targetName": "Avatar",
+        "edgeType": "render",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "AutocompleteOrganizationInput",
+        "targetName": "AutocompleteOrganizationInput",
+        "edgeType": "render",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "SelectInput",
+        "targetName": "SelectInput",
+        "edgeType": "render",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 149,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "handleEmailPaste",
         "targetName": "handleEmailPaste",
-        "edgeType": "callback",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "handleEmailBlur",
-        "targetName": "handleEmailBlur",
         "edgeType": "callback",
         "line": 155,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
-        "target": "SelectInput",
-        "targetName": "SelectInput",
-        "edgeType": "render",
-        "line": 159,
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "handleEmailBlur",
+        "targetName": "handleEmailBlur",
+        "edgeType": "callback",
+        "line": 156,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "target": "SelectInput",
+        "targetName": "SelectInput",
+        "edgeType": "render",
+        "line": 160,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 183,
+        "line": 184,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 191,
+        "line": 192,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:27:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
         "target": "ContactAdditionalDetails",
         "targetName": "ContactAdditionalDetails",
         "edgeType": "render",
-        "line": 206,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
@@ -3148,10 +3112,10 @@
       },
       {
         "source": "src/atomic-crm/contacts/ContactEmpty.tsx:5:ContactEmpty",
-        "target": "useAppBarHeight",
-        "targetName": "useAppBarHeight",
-        "edgeType": "hook",
-        "line": 6,
+        "target": "EmptyState",
+        "targetName": "EmptyState",
+        "edgeType": "render",
+        "line": 7,
         "conditional": false,
         "inLoop": false
       },
@@ -3160,7 +3124,7 @@
         "target": "CreateButton",
         "targetName": "CreateButton",
         "edgeType": "render",
-        "line": 22,
+        "line": 14,
         "conditional": false,
         "inLoop": false
       },
@@ -3169,7 +3133,7 @@
         "target": "ContactImportButton",
         "targetName": "ContactImportButton",
         "edgeType": "render",
-        "line": 23,
+        "line": 15,
         "conditional": false,
         "inLoop": false
       },
@@ -8269,8 +8233,17 @@
       },
       {
         "source": "src/atomic-crm/contacts/LinkOpportunityModal.tsx:30:LinkOpportunityModal",
-        "target": "error",
-        "targetName": "error",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/LinkOpportunityModal.tsx:30:LinkOpportunityModal",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
         "line": 89,
         "conditional": false,
@@ -8278,10 +8251,10 @@
       },
       {
         "source": "src/atomic-crm/contacts/LinkOpportunityModal.tsx:30:LinkOpportunityModal",
-        "target": "notify",
-        "targetName": "notify",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
-        "line": 96,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
@@ -8290,7 +8263,16 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 101,
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/LinkOpportunityModal.tsx:30:LinkOpportunityModal",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
@@ -8299,7 +8281,7 @@
         "target": "getAutocompleteProps",
         "targetName": "getAutocompleteProps",
         "edgeType": "call",
-        "line": 118,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
@@ -8308,7 +8290,7 @@
         "target": "Dialog",
         "targetName": "Dialog",
         "edgeType": "render",
-        "line": 106,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -8317,7 +8299,7 @@
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 106,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -8326,7 +8308,7 @@
         "target": "DialogContent",
         "targetName": "DialogContent",
         "edgeType": "render",
-        "line": 107,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
@@ -8335,7 +8317,7 @@
         "target": "DialogHeader",
         "targetName": "DialogHeader",
         "edgeType": "render",
-        "line": 108,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
@@ -8344,7 +8326,7 @@
         "target": "DialogTitle",
         "targetName": "DialogTitle",
         "edgeType": "render",
-        "line": 109,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
@@ -8353,7 +8335,7 @@
         "target": "DialogDescription",
         "targetName": "DialogDescription",
         "edgeType": "render",
-        "line": 110,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
@@ -8362,7 +8344,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 115,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
@@ -8371,7 +8353,7 @@
         "target": "handleLink",
         "targetName": "handleLink",
         "edgeType": "callback",
-        "line": 115,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
@@ -8380,7 +8362,7 @@
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 116,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
@@ -8389,7 +8371,7 @@
         "target": "DialogFooter",
         "targetName": "DialogFooter",
         "edgeType": "render",
-        "line": 126,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
@@ -8398,7 +8380,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 127,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
@@ -8407,7 +8389,7 @@
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 127,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
@@ -8416,7 +8398,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 130,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
@@ -8425,7 +8407,7 @@
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 117,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
@@ -9042,646 +9024,673 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 39,
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "useState",
         "targetName": "useState",
+        "edgeType": "hook",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "useForm",
+        "targetName": "useForm",
         "edgeType": "hook",
         "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
-        "edgeType": "hook",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "zodResolver",
+        "targetName": "zodResolver",
+        "edgeType": "call",
         "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
-        "edgeType": "hook",
-        "line": 43,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "useForm",
-        "targetName": "useForm",
-        "edgeType": "hook",
-        "line": 45,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
-        "edgeType": "call",
-        "line": 46,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
+        "edgeType": "call",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "setIsPending",
+        "targetName": "setIsPending",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "create",
+        "targetName": "create",
         "edgeType": "call",
         "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "setIsPending",
-        "targetName": "setIsPending",
-        "edgeType": "call",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "create",
-        "targetName": "create",
-        "edgeType": "call",
-        "line": 59,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "onCreated",
+        "targetName": "onCreated",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "setOpen",
+        "targetName": "setOpen",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 71,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "onCreated",
-        "targetName": "onCreated",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "setIsPending",
+        "targetName": "setIsPending",
         "edgeType": "call",
         "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "setOpen",
-        "targetName": "setOpen",
-        "edgeType": "call",
-        "line": 73,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 75,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "setIsPending",
-        "targetName": "setIsPending",
-        "edgeType": "call",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 81,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "setFocus",
         "targetName": "setFocus",
         "edgeType": "call",
-        "line": 83,
+        "line": 78,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "setIsPending",
         "targetName": "setIsPending",
         "edgeType": "call",
-        "line": 89,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 91,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 92,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "onCreated",
+        "targetName": "onCreated",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "setOpen",
+        "targetName": "setOpen",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 104,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "notify",
         "targetName": "notify",
-        "edgeType": "call",
-        "line": 105,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "onCreated",
-        "targetName": "onCreated",
         "edgeType": "call",
         "line": 106,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "setOpen",
-        "targetName": "setOpen",
-        "edgeType": "call",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 109,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 111,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "setIsPending",
         "targetName": "setIsPending",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "onCancel",
+        "targetName": "onCancel",
         "edgeType": "call",
         "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "onCancel",
-        "targetName": "onCancel",
-        "edgeType": "call",
-        "line": 118,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 128,
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 145,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 161,
+        "line": 156,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "setOpen",
         "targetName": "setOpen",
         "edgeType": "call",
-        "line": 189,
+        "line": 184,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "onCancel",
         "targetName": "onCancel",
         "edgeType": "call",
-        "line": 190,
+        "line": 185,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "Popover",
         "targetName": "Popover",
         "edgeType": "render",
-        "line": 118,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "PopoverTrigger",
         "targetName": "PopoverTrigger",
         "edgeType": "render",
-        "line": 119,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "PopoverContent",
         "targetName": "PopoverContent",
+        "edgeType": "render",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "handleSubmit",
+        "targetName": "handleSubmit",
+        "edgeType": "callback",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "Label",
+        "targetName": "Label",
         "edgeType": "render",
         "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "handleSubmit",
-        "targetName": "handleSubmit",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 168,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "handleQuickCreate",
+        "targetName": "handleQuickCreate",
         "edgeType": "callback",
+        "line": 172,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 179,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
+        "target": "Input",
+        "targetName": "Input",
+        "edgeType": "render",
         "line": 121,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 125,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 142,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 173,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "handleQuickCreate",
-        "targetName": "handleQuickCreate",
-        "edgeType": "callback",
-        "line": 177,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 184,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 196,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 126,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:26:QuickCreateContactPopover",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 143,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:31:QuickCreateContactPopover",
-        "target": "Input",
-        "targetName": "Input",
-        "edgeType": "render",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "useCreateSuggestionContext",
         "targetName": "useCreateSuggestionContext",
         "edgeType": "hook",
-        "line": 219,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "useState",
         "targetName": "useState",
+        "edgeType": "hook",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 216,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 218,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "useForm",
+        "targetName": "useForm",
         "edgeType": "hook",
         "line": 220,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
-        "edgeType": "hook",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "zodResolver",
+        "targetName": "zodResolver",
+        "edgeType": "call",
         "line": 221,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 222,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
-        "edgeType": "hook",
-        "line": 223,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "useForm",
-        "targetName": "useForm",
-        "edgeType": "hook",
-        "line": 225,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
-        "edgeType": "call",
-        "line": 226,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "setIsPending",
+        "targetName": "setIsPending",
+        "edgeType": "call",
+        "line": 231,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "create",
+        "targetName": "create",
         "edgeType": "call",
         "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "setIsPending",
-        "targetName": "setIsPending",
-        "edgeType": "call",
-        "line": 236,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 238,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "create",
-        "targetName": "create",
-        "edgeType": "call",
-        "line": 239,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 250,
+        "line": 245,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 251,
+        "line": 246,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "onCreate",
         "targetName": "onCreate",
+        "edgeType": "call",
+        "line": 247,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 249,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "setIsPending",
+        "targetName": "setIsPending",
         "edgeType": "call",
         "line": 252,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 254,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "setIsPending",
-        "targetName": "setIsPending",
-        "edgeType": "call",
-        "line": 257,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 261,
+        "line": 256,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "setFocus",
         "targetName": "setFocus",
         "edgeType": "call",
-        "line": 263,
+        "line": 258,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "setIsPending",
         "targetName": "setIsPending",
         "edgeType": "call",
-        "line": 269,
+        "line": 264,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 271,
+        "line": 266,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 272,
+        "line": 267,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 284,
+        "line": 279,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 280,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "onCreate",
+        "targetName": "onCreate",
+        "edgeType": "call",
+        "line": 281,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 283,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
@@ -9690,245 +9699,218 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "onCreate",
-        "targetName": "onCreate",
-        "edgeType": "call",
-        "line": 286,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "setIsPending",
+        "targetName": "setIsPending",
         "edgeType": "call",
         "line": 288,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 290,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "setIsPending",
-        "targetName": "setIsPending",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "onCancel",
+        "targetName": "onCancel",
         "edgeType": "call",
         "line": 293,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
+        "line": 303,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
+        "line": 320,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
+        "line": 338,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "onCancel",
         "targetName": "onCancel",
         "edgeType": "call",
-        "line": 298,
+        "line": 365,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "register",
-        "targetName": "register",
-        "edgeType": "call",
-        "line": 308,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "register",
-        "targetName": "register",
-        "edgeType": "call",
-        "line": 325,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "register",
-        "targetName": "register",
-        "edgeType": "call",
-        "line": 343,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "onCancel",
-        "targetName": "onCancel",
-        "edgeType": "call",
-        "line": 370,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "Popover",
         "targetName": "Popover",
         "edgeType": "render",
-        "line": 298,
+        "line": 293,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "PopoverContent",
         "targetName": "PopoverContent",
+        "edgeType": "render",
+        "line": 295,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "handleSubmit",
+        "targetName": "handleSubmit",
+        "edgeType": "callback",
+        "line": 296,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "Label",
+        "targetName": "Label",
         "edgeType": "render",
         "line": 300,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "handleSubmit",
-        "targetName": "handleSubmit",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 317,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 334,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 350,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "handleQuickCreate",
+        "targetName": "handleQuickCreate",
         "edgeType": "callback",
+        "line": 354,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 361,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 371,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "PopoverAnchor",
+        "targetName": "PopoverAnchor",
+        "edgeType": "render",
+        "line": 294,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
+        "target": "Input",
+        "targetName": "Input",
+        "edgeType": "render",
         "line": 301,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 305,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 322,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 339,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 355,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "handleQuickCreate",
-        "targetName": "handleQuickCreate",
-        "edgeType": "callback",
-        "line": 359,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 366,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 376,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "PopoverAnchor",
-        "targetName": "PopoverAnchor",
-        "edgeType": "render",
-        "line": 299,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 306,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
+        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:207:QuickCreateContactRA",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 323,
+        "line": 335,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:212:QuickCreateContactRA",
-        "target": "Input",
-        "targetName": "Input",
-        "edgeType": "render",
-        "line": 340,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:15:SuggestedOpportunityCard",
-        "target": "format",
-        "targetName": "format",
+        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:16:SuggestedOpportunityCard",
+        "target": "formatCurrency",
+        "targetName": "formatCurrency",
         "edgeType": "call",
-        "line": 24,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:15:SuggestedOpportunityCard",
+        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:16:SuggestedOpportunityCard",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 32,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:15:SuggestedOpportunityCard",
+        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:16:SuggestedOpportunityCard",
         "target": "onLink",
         "targetName": "onLink",
         "edgeType": "callback",
-        "line": 32,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:15:SuggestedOpportunityCard",
+        "source": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx:16:SuggestedOpportunityCard",
         "target": "StageBadgeWithHealth",
         "targetName": "StageBadgeWithHealth",
         "edgeType": "render",
-        "line": 21,
+        "line": 22,
         "conditional": false,
         "inLoop": false
       },

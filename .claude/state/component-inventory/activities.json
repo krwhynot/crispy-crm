@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-14T21:46:36.725Z",
+  "generated_at": "2026-01-16T13:25:01.400Z",
   "item_count": 29,
   "items": [
     {
@@ -36,7 +36,7 @@
     {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/ActivityEdit.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -46,6 +46,7 @@
         "../types",
         "./ActivityInputs",
         "@/atomic-crm/layout/FormToolbar",
+        "@/atomic-crm/utils",
         "@/components/ui/card",
         "@tanstack/react-query",
         "ra-core"
@@ -61,7 +62,7 @@
     {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/ActivityEdit.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -71,6 +72,7 @@
         "../types",
         "./ActivityInputs",
         "@/atomic-crm/layout/FormToolbar",
+        "@/atomic-crm/utils",
         "@/components/ui/card",
         "@tanstack/react-query",
         "ra-core"
@@ -130,7 +132,7 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/ActivityList.tsx",
-      "line": 51,
+      "line": 52,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -149,6 +151,7 @@
         "./ActivityListFilter",
         "./ActivitySlideOver",
         "./activityFilterConfig",
+        "@/atomic-crm/utils",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListSearchBar",
         "@/components/admin/PremiumDatagrid",
@@ -219,7 +222,7 @@
     {
       "name": "ActivitySinglePage",
       "file": "src/atomic-crm/activities/ActivitySinglePage.tsx",
-      "line": 31,
+      "line": 32,
       "type": "presentational",
       "hooks": [
         "useWatch"
@@ -230,6 +233,7 @@
         "../validation/activities",
         "@/components/admin/autocomplete-input",
         "@/components/admin/boolean-input",
+        "@/components/admin/date-input",
         "@/components/admin/form",
         "@/components/admin/radio-button-group-input",
         "@/components/admin/reference-input",
@@ -343,11 +347,12 @@
     {
       "name": "ActivityTimelineEntry",
       "file": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../../types",
+        "@/atomic-crm/utils",
         "@/components/admin/reference-field",
         "@/components/ui/badge",
         "@/lib/date-utils",
@@ -366,7 +371,7 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 51,
+      "line": 52,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -398,7 +403,7 @@
     {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -469,7 +474,7 @@
     {
       "name": "ActivityTimelineEntry",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -598,7 +603,7 @@
     {
       "name": "ActivityDetailsTab",
       "file": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx",
-      "line": 55,
+      "line": 57,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -610,9 +615,11 @@
         "../../queryKeys",
         "../../types",
         "../../validation/activities",
+        "@/atomic-crm/utils",
         "@/components/admin/autocomplete-input",
         "@/components/admin/boolean-input",
         "@/components/admin/date-field",
+        "@/components/admin/date-input",
         "@/components/admin/reference-input",
         "@/components/admin/select-input",
         "@/components/admin/text-input",

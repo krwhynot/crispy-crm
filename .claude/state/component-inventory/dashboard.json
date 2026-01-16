@@ -1,7 +1,7 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-14T21:46:36.762Z",
-  "item_count": 31,
+  "generated_at": "2026-01-16T13:25:01.409Z",
+  "item_count": 30,
   "items": [
     {
       "name": "RecentItemsWidget",
@@ -95,7 +95,7 @@
       ],
       "imports": [
         "../hooks/useTeamActivities",
-        "@/atomic-crm/utils/getActivityIcon",
+        "@/atomic-crm/utils",
         "@/components/ui/avatar",
         "@/components/ui/button",
         "@/components/ui/skeleton",
@@ -122,7 +122,7 @@
       ],
       "imports": [
         "../hooks/useTeamActivities",
-        "@/atomic-crm/utils/getActivityIcon",
+        "@/atomic-crm/utils",
         "@/components/ui/avatar",
         "@/components/ui/button",
         "@/components/ui/skeleton",
@@ -255,17 +255,17 @@
       "componentRole": "leaf"
     },
     {
-      "name": "KPICard",
-      "file": "src/atomic-crm/dashboard/v3/components/KPICard.tsx",
-      "line": 98,
+      "name": "KPISummaryRow",
+      "file": "src/atomic-crm/dashboard/v3/components/KPISummaryRow.tsx",
+      "line": 35,
       "type": "presentational",
       "hooks": [
+        "useKPIMetrics",
         "useNavigate"
       ],
       "imports": [
-        "@/components/ui/card",
-        "@/components/ui/skeleton",
-        "@/lib/utils",
+        "../hooks/useKPIMetrics",
+        "@/components/ui/kpi-card",
         "lucide-react",
         "react-router-dom"
       ],
@@ -273,25 +273,6 @@
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
-    },
-    {
-      "name": "KPISummaryRow",
-      "file": "src/atomic-crm/dashboard/v3/components/KPISummaryRow.tsx",
-      "line": 22,
-      "type": "presentational",
-      "hooks": [
-        "useKPIMetrics"
-      ],
-      "imports": [
-        "../hooks/useKPIMetrics",
-        "./KPICard"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "KPICard"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
     },
     {
       "name": "LogActivityFAB",
@@ -391,7 +372,7 @@
     {
       "name": "PipelineDrillDownSheet",
       "file": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx",
-      "line": 40,
+      "line": 41,
       "type": "presentational",
       "hooks": [
         "useNavigate",
@@ -399,6 +380,7 @@
       ],
       "imports": [
         "../hooks/usePrincipalOpportunities",
+        "@/atomic-crm/utils/formatters",
         "@/components/ui/badge",
         "@/components/ui/button",
         "@/components/ui/scroll-area",
@@ -516,11 +498,12 @@
     {
       "name": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 68,
+      "line": 69,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useCurrentSale",
+        "useDataProvider",
         "useEffect",
         "useEntityData",
         "useForm",
@@ -535,9 +518,10 @@
         "./ActivityTypeSection",
         "./EntityCombobox",
         "./FollowUpSection",
-        "@/atomic-crm/providers/supabase/supabase",
+        "@/atomic-crm/providers/supabase/extensions/types",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
+        "@/atomic-crm/validation/rpc",
         "@/components/ui/button",
         "@/components/ui/calendar",
         "@/components/ui/form",
@@ -560,6 +544,7 @@
         "FollowUpSection"
       ],
       "contextDependencies": [
+        "useDataProvider",
         "useWatch"
       ],
       "componentRole": "wrapper"
@@ -620,7 +605,7 @@
     {
       "name": "TaskKanbanCard",
       "file": "src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx",
-      "line": 110,
+      "line": 112,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -631,9 +616,11 @@
         "../types",
         "@/atomic-crm/tasks/components/TaskActionMenu",
         "@/atomic-crm/tasks/components/TaskCompletionDialog",
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "@/components/ui/button",
         "@/components/ui/checkbox",
+        "@/components/ui/snooze-badge",
         "@dnd-kit/sortable",
         "@dnd-kit/utilities",
         "date-fns",

@@ -1,16 +1,17 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-14T21:46:36.808Z",
-  "item_count": 25,
+  "generated_at": "2026-01-16T13:25:01.418Z",
+  "item_count": 23,
   "items": [
     {
       "name": "ActivityTypeCard",
       "file": "src/atomic-crm/reports/CampaignActivity/ActivityTypeCard.tsx",
-      "line": 37,
+      "line": 38,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
+        "@/atomic-crm/utils",
         "@/components/ui/card",
         "@/lib/date-utils",
         "@/lib/utils/pluralize",
@@ -48,7 +49,7 @@
     {
       "name": "CampaignActivityReport",
       "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
-      "line": 51,
+      "line": 52,
       "type": "presentational",
       "hooks": [
         "useCampaignActivityData",
@@ -69,6 +70,7 @@
         "@/atomic-crm/validation/activities",
         "@/components/ui/button",
         "@/components/ui/card",
+        "@/components/ui/empty-state",
         "@/components/ui/label",
         "@/components/ui/select",
         "@/lib/date-utils",
@@ -110,7 +112,7 @@
         "useNavigate"
       ],
       "imports": [
-        "@/atomic-crm/utils/stalenessCalculation",
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "@/components/ui/button",
         "@/components/ui/card",
@@ -230,11 +232,11 @@
         "./ReportLayout",
         "./components",
         "./hooks",
+        "@/atomic-crm/utils",
         "@/atomic-crm/utils/csvUploadValidator",
         "@/components/ui/badge",
         "@/components/ui/card",
         "@/lib/utils/pluralize",
-        "date-fns",
         "jsonexport/dist",
         "lucide-react",
         "ra-core",
@@ -377,43 +379,12 @@
       "componentRole": "leaf"
     },
     {
-      "name": "EmptyState",
-      "file": "src/atomic-crm/reports/components/EmptyState.tsx",
-      "line": 14,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "@/components/ui/button",
-        "lucide-react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
       "name": "FilterChip",
       "file": "src/atomic-crm/reports/components/FilterChip.tsx",
       "line": 9,
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "lucide-react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "KPICard",
-      "file": "src/atomic-crm/reports/components/KPICard.tsx",
-      "line": 19,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "@/components/ui/card",
-        "@/lib/utils",
         "lucide-react"
       ],
       "isDefaultExport": false,
@@ -528,11 +499,11 @@
         "../charts/chartSetup",
         "../components",
         "../components/ChartWrapper",
-        "../components/KPICard",
         "../components/TabFilterBar",
         "../hooks",
         "../types",
         "@/atomic-crm/utils/stalenessCalculation",
+        "@/components/ui/kpi-card",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
         "date-fns",
@@ -543,7 +514,6 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "KPICard",
         "ChartWrapper",
         "TabFilterBar",
         "AppliedFiltersBar",

@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-14T21:47:27.879Z",
+  "generated_at": "2026-01-16T13:25:07.510Z",
   "item_count": 3,
   "items": [
     {
@@ -442,6 +442,7 @@
         "createContactSchema",
         "contactDepartmentSchema",
         "importContactSchema",
+        "quickCreateContactFormSchema",
         "quickCreateContactSchema",
         "contactOrganizationSchema",
         "contactNoteSchema",
@@ -462,6 +463,7 @@
         "contactSchema",
         "contactDepartmentSchema",
         "importContactSchema",
+        "quickCreateContactFormSchema",
         "quickCreateContactSchema",
         "contactOrganizationSchema",
         "contactNoteSchema",

@@ -1,12 +1,12 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-14T21:46:36.815Z",
+  "generated_at": "2026-01-16T13:25:01.420Z",
   "item_count": 27,
   "items": [
     {
       "name": "AddTask",
       "file": "src/atomic-crm/tasks/AddTask.tsx",
-      "line": 34,
+      "line": 35,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -23,6 +23,7 @@
         "../validation/task",
         "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
+        "@/components/admin/date-input",
         "@/components/admin/form",
         "@/components/admin/reference-input",
         "@/components/admin/select-input",
@@ -86,7 +87,7 @@
     {
       "name": "TaskCompactForm",
       "file": "src/atomic-crm/tasks/TaskCompactForm.tsx",
-      "line": 25,
+      "line": 26,
       "type": "presentational",
       "hooks": [
         "useFormOptions"
@@ -96,6 +97,7 @@
         "../root/ConfigurationContext",
         "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/autocomplete-input",
+        "@/components/admin/date-input",
         "@/components/admin/form",
         "@/components/admin/reference-input",
         "@/components/admin/select-input",
@@ -193,12 +195,10 @@
       "file": "src/atomic-crm/tasks/TaskEmpty.tsx",
       "line": 4,
       "type": "presentational",
-      "hooks": [
-        "useAppBarHeight"
-      ],
+      "hooks": [],
       "imports": [
-        "../hooks/useAppBarHeight",
-        "@/components/admin/create-button"
+        "@/components/admin/create-button",
+        "@/components/ui/empty-state"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -237,6 +237,7 @@
         "../contacts/ContactOption",
         "../hooks/useFilterCleanup",
         "../layout/TopToolbar",
+        "../queryKeys",
         "../sales/SaleName",
         "../tutorial",
         "../types",
@@ -264,13 +265,12 @@
         "@/components/ui/badge",
         "@/components/ui/list-skeleton",
         "@/components/ui/priority-badge",
+        "@/components/ui/snooze-badge",
         "@/components/ui/truncated-text",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "@tanstack/react-query",
-        "date-fns",
         "jsonexport/dist",
-        "lucide-react",
         "ra-core",
         "react",
         "react-admin"
@@ -411,6 +411,7 @@
         "@/components/admin/autocomplete-input",
         "@/components/admin/boolean-input",
         "@/components/admin/date-field",
+        "@/components/admin/date-input",
         "@/components/admin/reference-field",
         "@/components/admin/reference-input",
         "@/components/admin/select-input",
@@ -419,9 +420,8 @@
         "@/components/ui/badge",
         "@/components/ui/priority-badge",
         "@/components/ui/scroll-area",
+        "@/components/ui/snooze-badge",
         "@tanstack/react-query",
-        "date-fns",
-        "lucide-react",
         "ra-core",
         "react",
         "react-admin"

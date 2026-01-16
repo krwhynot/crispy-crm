@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-14T21:46:36.802Z",
+  "generated_at": "2026-01-16T13:25:01.417Z",
   "item_count": 30,
   "items": [
     {
@@ -91,12 +91,13 @@
     {
       "name": "ProductDetailsInputTab",
       "file": "src/atomic-crm/products/ProductDetailsInputTab.tsx",
-      "line": 19,
+      "line": 20,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../utils/autocompleteDefaults",
         "../validation/products",
+        "@/atomic-crm/utils",
         "@/components/admin/autocomplete-input",
         "@/components/admin/form",
         "@/components/admin/reference-input",
@@ -114,7 +115,7 @@
     {
       "name": "ProductDetailsTab",
       "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-      "line": 97,
+      "line": 98,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -124,6 +125,7 @@
       ],
       "imports": [
         "../validation/products",
+        "@/atomic-crm/utils",
         "@/components/admin/autocomplete-input",
         "@/components/admin/reference-field",
         "@/components/admin/reference-input",
@@ -255,7 +257,7 @@
       "hooks": [],
       "imports": [
         "@/components/admin/create-button",
-        "@/components/ui/card",
+        "@/components/ui/empty-state",
         "lucide-react"
       ],
       "isDefaultExport": false,
@@ -307,7 +309,7 @@
     {
       "name": "ProductList",
       "file": "src/atomic-crm/products/ProductList.tsx",
-      "line": 42,
+      "line": 43,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -325,6 +327,7 @@
         "./ProductSlideOver",
         "./ProductsDatagridHeader",
         "./productFilterConfig",
+        "@/atomic-crm/utils",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListSearchBar",
@@ -363,7 +366,7 @@
     {
       "name": "ProductList",
       "file": "src/atomic-crm/products/ProductList.tsx",
-      "line": 42,
+      "line": 43,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -381,6 +384,7 @@
         "./ProductSlideOver",
         "./ProductsDatagridHeader",
         "./productFilterConfig",
+        "@/atomic-crm/utils",
         "@/components/admin/FilterableBadge",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListSearchBar",

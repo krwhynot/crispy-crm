@@ -1,18 +1,19 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-14T21:46:36.811Z",
+  "generated_at": "2026-01-16T13:25:01.418Z",
   "item_count": 23,
   "items": [
     {
       "name": "SaleAvatar",
       "file": "src/atomic-crm/sales/SaleAvatar.tsx",
-      "line": 6,
+      "line": 7,
       "type": "presentational",
       "hooks": [
         "useRecordContext"
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/utils/formatters",
         "@/components/ui/avatar",
         "ra-core"
       ],
@@ -282,7 +283,7 @@
     {
       "name": "SalesProfileTab",
       "file": "src/atomic-crm/sales/SalesProfileTab.tsx",
-      "line": 38,
+      "line": 39,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -292,6 +293,7 @@
       ],
       "imports": [
         "@/atomic-crm/types",
+        "@/atomic-crm/utils/formatters",
         "@/atomic-crm/validation/sales",
         "@/components/ui/avatar",
         "@/components/ui/input",
@@ -308,12 +310,13 @@
     {
       "name": "SalesShow",
       "file": "src/atomic-crm/sales/SalesShow.tsx",
-      "line": 7,
+      "line": 8,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
+        "@/atomic-crm/utils/formatters",
         "@/components/ui/avatar",
         "@/components/ui/card",
         "ra-core"
@@ -328,12 +331,13 @@
     {
       "name": "SalesShow",
       "file": "src/atomic-crm/sales/SalesShow.tsx",
-      "line": 7,
+      "line": 8,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
+        "@/atomic-crm/utils/formatters",
         "@/components/ui/avatar",
         "@/components/ui/card",
         "ra-core"

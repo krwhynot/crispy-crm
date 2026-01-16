@@ -1,12 +1,65 @@
 {
   "chunk_name": "contacts-quick-create",
-  "generated_at": "2026-01-14T21:47:27.892Z",
-  "item_count": 1,
+  "generated_at": "2026-01-16T13:25:07.511Z",
+  "item_count": 2,
   "items": [
+    {
+      "name": "quickCreateContactFormSchema",
+      "file": "src/atomic-crm/validation/contacts/contacts-quick-create.ts",
+      "line": 19,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"First name required\")",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"Last name required\")",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email",
+          "zodType": "string",
+          "constraints": [
+            "email(\"Invalid email\")",
+            "max(255)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "createContactSchema",
+        "importContactSchema",
+        "quickCreateContactSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
     {
       "name": "quickCreateContactSchema",
       "file": "src/atomic-crm/validation/contacts/contacts-quick-create.ts",
-      "line": 9,
+      "line": 31,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -116,7 +169,8 @@
       "relatedSchemas": [
         "contactSchema",
         "createContactSchema",
-        "importContactSchema"
+        "importContactSchema",
+        "quickCreateContactFormSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,

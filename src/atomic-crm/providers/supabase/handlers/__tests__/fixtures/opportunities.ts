@@ -106,7 +106,7 @@ export function createMockOpportunityData(
     name: "Test Opportunity",
     customer_organization_id: "1",
     principal_organization_id: "2",
-    estimated_close_date: "2026-02-01",
+    estimated_close_date: new Date("2026-02-01"),
     stage: "new_lead",
     priority: "medium",
     contact_ids: [1],

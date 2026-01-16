@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-14T21:47:44.064Z",
+  "generated_at": "2026-01-16T13:25:09.911Z",
   "items": {
     "nodes": [
       {
@@ -13,10 +13,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "id": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "name": "useFilterCleanup",
         "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
-        "line": 64,
+        "line": 46,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -285,155 +285,155 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "useStore",
-        "targetName": "useStore",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
+        "target": "useStoreContext",
+        "targetName": "useStoreContext",
         "edgeType": "hook",
-        "line": 65,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 66,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 68,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "getItem",
         "targetName": "getItem",
         "edgeType": "call",
-        "line": 73,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "safeJsonParse",
         "targetName": "safeJsonParse",
         "edgeType": "call",
-        "line": 79,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 82,
+        "line": 64,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "call",
         "targetName": "call",
         "edgeType": "call",
-        "line": 98,
+        "line": 80,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
+        "target": "isValidFilterField",
+        "targetName": "isValidFilterField",
+        "edgeType": "call",
+        "line": 81,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "isValidFilterField",
         "targetName": "isValidFilterField",
         "edgeType": "call",
         "line": 99,
         "conditional": true,
-        "inLoop": true
+        "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 104,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "isValidFilterField",
-        "targetName": "isValidFilterField",
-        "edgeType": "call",
-        "line": 117,
+        "line": 100,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "warn",
-        "targetName": "warn",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 116,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
+        "target": "devLog",
+        "targetName": "devLog",
         "edgeType": "call",
         "line": 118,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "setItem",
-        "targetName": "setItem",
-        "edgeType": "call",
-        "line": 133,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "stringify",
-        "targetName": "stringify",
-        "edgeType": "call",
-        "line": 133,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "setItem",
-        "targetName": "setItem",
-        "edgeType": "call",
-        "line": 134,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
-        "target": "info",
-        "targetName": "info",
-        "edgeType": "call",
-        "line": 136,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 142,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:64:useFilterCleanup",
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:46:useFilterCleanup",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 146,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },

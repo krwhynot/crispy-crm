@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-import",
-  "generated_at": "2026-01-14T21:47:27.891Z",
+  "generated_at": "2026-01-16T13:25:07.511Z",
   "item_count": 1,
   "items": [
     {
@@ -224,6 +224,7 @@
         "contactSchema",
         "createContactSchema",
         "contactDepartmentSchema",
+        "quickCreateContactFormSchema",
         "quickCreateContactSchema",
         "contactOrganizationSchema",
         "contactNoteSchema",

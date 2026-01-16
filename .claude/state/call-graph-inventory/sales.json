@@ -1,13 +1,13 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-14T21:47:45.456Z",
+  "generated_at": "2026-01-16T13:25:09.970Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
+        "id": "src/atomic-crm/sales/SaleAvatar.tsx:7:SaleAvatar",
         "name": "SaleAvatar",
         "file": "src/atomic-crm/sales/SaleAvatar.tsx",
-        "line": 6,
+        "line": 7,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -166,37 +166,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "id": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "name": "SalesProfileTab",
         "file": "src/atomic-crm/sales/SalesProfileTab.tsx",
-        "line": 38,
+        "line": 39,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesShow.tsx:7:SalesShow",
+        "id": "src/atomic-crm/sales/SalesShow.tsx:8:SalesShow",
         "name": "SalesShow",
         "file": "src/atomic-crm/sales/SalesShow.tsx",
-        "line": 7,
+        "line": 8,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesShow.tsx:13:SalesShowContent",
+        "id": "src/atomic-crm/sales/SalesShow.tsx:14:SalesShowContent",
         "name": "SalesShowContent",
         "file": "src/atomic-crm/sales/SalesShow.tsx",
-        "line": 13,
+        "line": 14,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
+        "id": "src/atomic-crm/sales/SalesShow.tsx:45:SalesAvatar",
         "name": "SalesAvatar",
         "file": "src/atomic-crm/sales/SalesShow.tsx",
-        "line": 44,
+        "line": 45,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -267,74 +267,47 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
+        "source": "src/atomic-crm/sales/SaleAvatar.tsx:7:SaleAvatar",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 7,
+        "line": 8,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
-        "edgeType": "call",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
-        "target": "charAt",
-        "targetName": "charAt",
-        "edgeType": "call",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
+        "source": "src/atomic-crm/sales/SaleAvatar.tsx:7:SaleAvatar",
+        "target": "getInitials",
+        "targetName": "getInitials",
         "edgeType": "call",
         "line": 23,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
-        "target": "charAt",
-        "targetName": "charAt",
-        "edgeType": "call",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
+        "source": "src/atomic-crm/sales/SaleAvatar.tsx:7:SaleAvatar",
         "target": "ShadcnAvatar",
         "targetName": "ShadcnAvatar",
         "edgeType": "render",
-        "line": 19,
+        "line": 20,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
+        "source": "src/atomic-crm/sales/SaleAvatar.tsx:7:SaleAvatar",
         "target": "AvatarFallback",
         "targetName": "AvatarFallback",
         "edgeType": "render",
-        "line": 21,
+        "line": 22,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SaleAvatar.tsx:6:SaleAvatar",
+        "source": "src/atomic-crm/sales/SaleAvatar.tsx:7:SaleAvatar",
         "target": "AvatarImage",
         "targetName": "AvatarImage",
         "edgeType": "render",
-        "line": 20,
+        "line": 21,
         "conditional": false,
         "inLoop": false
       },
@@ -2211,533 +2184,497 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "useUpdate",
         "targetName": "useUpdate",
-        "edgeType": "hook",
-        "line": 44,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 50,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
         "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 60,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 65,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "onDirtyChange",
         "targetName": "onDirtyChange",
         "edgeType": "call",
-        "line": 75,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "setFormData",
         "targetName": "setFormData",
         "edgeType": "call",
-        "line": 80,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 98,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 103,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 104,
+        "line": 105,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 107,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 110,
+        "line": 111,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "setErrors",
         "targetName": "setErrors",
-        "edgeType": "call",
-        "line": 118,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 119,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 121,
+        "line": 120,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 130,
-        "conditional": false,
+        "line": 122,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 145,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "handleSave",
         "targetName": "handleSave",
         "edgeType": "call",
-        "line": 146,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "getInitials",
         "targetName": "getInitials",
         "edgeType": "call",
-        "line": 159,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 168,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 190,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 209,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 232,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 252,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Avatar",
-        "targetName": "Avatar",
-        "edgeType": "render",
         "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "AvatarFallback",
-        "targetName": "AvatarFallback",
-        "edgeType": "render",
-        "line": 159,
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 208,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 231,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Avatar",
+        "targetName": "Avatar",
+        "edgeType": "render",
+        "line": 148,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "AvatarFallback",
+        "targetName": "AvatarFallback",
+        "edgeType": "render",
+        "line": 153,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "Label",
         "targetName": "Label",
+        "edgeType": "render",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 181,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 222,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 242,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "handleFormSubmit",
+        "targetName": "handleFormSubmit",
+        "edgeType": "callback",
+        "line": 266,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 130,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 131,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 132,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "AvatarImage",
+        "targetName": "AvatarImage",
+        "edgeType": "render",
+        "line": 149,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Input",
+        "targetName": "Input",
         "edgeType": "render",
         "line": 163,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 182,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 201,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 223,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 243,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "handleFormSubmit",
-        "targetName": "handleFormSubmit",
-        "edgeType": "callback",
-        "line": 267,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 136,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 137,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 138,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "AvatarImage",
-        "targetName": "AvatarImage",
-        "edgeType": "render",
-        "line": 155,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 164,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
-        "target": "Input",
-        "targetName": "Input",
-        "edgeType": "render",
-        "line": 187,
+        "line": 186,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 206,
+        "line": 205,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 228,
+        "line": 227,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:38:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 248,
+        "line": 247,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:7:SalesShow",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:8:SalesShow",
         "target": "ShowBase",
         "targetName": "ShowBase",
-        "edgeType": "render",
-        "line": 8,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:7:SalesShow",
-        "target": "SalesShowContent",
-        "targetName": "SalesShowContent",
         "edgeType": "render",
         "line": 9,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:13:SalesShowContent",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:8:SalesShow",
+        "target": "SalesShowContent",
+        "targetName": "SalesShowContent",
+        "edgeType": "render",
+        "line": 10,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesShow.tsx:14:SalesShowContent",
         "target": "useShowContext",
         "targetName": "useShowContext",
         "edgeType": "hook",
-        "line": 14,
+        "line": 15,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:13:SalesShowContent",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:14:SalesShowContent",
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 26,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:13:SalesShowContent",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:14:SalesShowContent",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 20,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:13:SalesShowContent",
-        "target": "CardContent",
-        "targetName": "CardContent",
         "edgeType": "render",
         "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:13:SalesShowContent",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:14:SalesShowContent",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesShow.tsx:14:SalesShowContent",
         "target": "SalesAvatar",
         "targetName": "SalesAvatar",
         "edgeType": "render",
-        "line": 23,
+        "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:45:SalesAvatar",
         "target": "useShowContext",
         "targetName": "useShowContext",
         "edgeType": "hook",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:45:SalesAvatar",
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
-        "target": "charAt",
-        "targetName": "charAt",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:45:SalesAvatar",
+        "target": "getInitials",
+        "targetName": "getInitials",
         "edgeType": "call",
         "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
-        "target": "charAt",
-        "targetName": "charAt",
-        "edgeType": "call",
-        "line": 59,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:45:SalesAvatar",
         "target": "ShadcnAvatar",
         "targetName": "ShadcnAvatar",
         "edgeType": "render",
-        "line": 55,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:45:SalesAvatar",
         "target": "AvatarFallback",
         "targetName": "AvatarFallback",
         "edgeType": "render",
-        "line": 57,
+        "line": 58,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesShow.tsx:44:SalesAvatar",
+        "source": "src/atomic-crm/sales/SalesShow.tsx:45:SalesAvatar",
         "target": "AvatarImage",
         "targetName": "AvatarImage",
         "edgeType": "render",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },

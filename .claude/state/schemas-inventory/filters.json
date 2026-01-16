@@ -1,0 +1,100 @@
+{
+  "chunk_name": "filters",
+  "generated_at": "2026-01-16T13:25:07.513Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "filterValueSchema",
+      "file": "src/atomic-crm/validation/filters.ts",
+      "line": 7,
+      "schemaType": "union",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "listParamsSchema",
+      "file": "src/atomic-crm/validation/filters.ts",
+      "line": 21,
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "filter",
+          "zodType": "record",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sort",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "page",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "perPage",
+          "zodType": "number",
+          "constraints": [
+            "max(1000)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "displayedFilters",
+          "zodType": "record",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "urlFilterSchema",
+      "file": "src/atomic-crm/validation/filters.ts",
+      "line": 41,
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "stage",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

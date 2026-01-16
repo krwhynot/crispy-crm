@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-14T21:47:26.161Z",
+  "generated_at": "2026-01-16T13:25:07.181Z",
   "item_count": 7,
   "items": [
     {
@@ -17,7 +17,7 @@
     {
       "name": "useFilterCleanup",
       "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
-      "line": 64,
+      "line": 46,
       "parameters": [
         "resource"
       ],
@@ -25,7 +25,7 @@
       "dependencies": [
         "useEffect",
         "useNotify",
-        "useStore"
+        "useStoreContext"
       ],
       "isReact19Action": false
     },

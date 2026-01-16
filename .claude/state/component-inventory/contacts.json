@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-14T21:46:36.753Z",
+  "generated_at": "2026-01-16T13:25:01.408Z",
   "item_count": 58,
   "items": [
     {
@@ -173,10 +173,11 @@
     {
       "name": "ContactBadgeGroup",
       "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-      "line": 246,
+      "line": 241,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "react"
       ],
@@ -188,10 +189,11 @@
     {
       "name": "ContactStatusBadge",
       "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-      "line": 97,
+      "line": 98,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "react"
       ],
@@ -203,10 +205,11 @@
     {
       "name": "RoleBadge",
       "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-      "line": 137,
+      "line": 138,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "react"
       ],
@@ -218,10 +221,11 @@
     {
       "name": "InfluenceBadge",
       "file": "src/atomic-crm/contacts/ContactBadges.tsx",
-      "line": 179,
+      "line": 177,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "react"
       ],
@@ -277,7 +281,7 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 27,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useFormContext"
@@ -288,6 +292,7 @@
         "../utils/saleOptionRenderer",
         "./Avatar",
         "./ContactAdditionalDetails",
+        "@/atomic-crm/utils",
         "@/components/admin/array-input",
         "@/components/admin/form",
         "@/components/admin/reference-input",
@@ -488,13 +493,11 @@
       "file": "src/atomic-crm/contacts/ContactEmpty.tsx",
       "line": 5,
       "type": "presentational",
-      "hooks": [
-        "useAppBarHeight"
-      ],
+      "hooks": [],
       "imports": [
-        "../hooks/useAppBarHeight",
         "./ContactImportButton",
-        "@/components/admin/create-button"
+        "@/components/admin/create-button",
+        "@/components/ui/empty-state"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -1186,7 +1189,7 @@
     {
       "name": "QuickCreateContactPopover",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 31,
+      "line": 26,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1197,6 +1200,7 @@
       ],
       "imports": [
         "@/atomic-crm/queryKeys",
+        "@/atomic-crm/validation/contacts",
         "@/components/ui/button",
         "@/components/ui/input",
         "@/components/ui/label",
@@ -1206,8 +1210,7 @@
         "@tanstack/react-query",
         "ra-core",
         "react",
-        "react-hook-form",
-        "zod"
+        "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -1219,7 +1222,7 @@
     {
       "name": "QuickCreateContactRA",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 212,
+      "line": 207,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1231,6 +1234,7 @@
       ],
       "imports": [
         "@/atomic-crm/queryKeys",
+        "@/atomic-crm/validation/contacts",
         "@/components/ui/button",
         "@/components/ui/input",
         "@/components/ui/label",
@@ -1240,8 +1244,7 @@
         "@tanstack/react-query",
         "ra-core",
         "react",
-        "react-hook-form",
-        "zod"
+        "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -1269,11 +1272,12 @@
     {
       "name": "SuggestedOpportunityCard",
       "file": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./StageBadgeWithHealth",
+        "@/atomic-crm/utils/formatters",
         "@/components/ui/button"
       ],
       "isDefaultExport": false,

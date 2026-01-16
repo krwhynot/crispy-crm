@@ -1,49 +1,49 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-14T21:47:45.490Z",
+  "generated_at": "2026-01-16T13:25:09.994Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:20:enableGetChoices",
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:23:enableGetChoices",
         "name": "enableGetChoices",
         "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
-        "line": 20,
+        "line": 23,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:27:shouldRenderSuggestions",
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:41:shouldRenderSuggestions",
         "name": "shouldRenderSuggestions",
         "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
-        "line": 27,
+        "line": 41,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:36:getAutocompleteProps",
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:50:getAutocompleteProps",
         "name": "getAutocompleteProps",
         "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
-        "line": 36,
+        "line": 50,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:51:getQSearchAutocompleteProps",
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:65:getQSearchAutocompleteProps",
         "name": "getQSearchAutocompleteProps",
         "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
-        "line": 51,
+        "line": 65,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:64:getContactSearchAutocompleteProps",
+        "id": "src/atomic-crm/utils/autocompleteDefaults.ts:78:getContactSearchAutocompleteProps",
         "name": "getContactSearchAutocompleteProps",
         "file": "src/atomic-crm/utils/autocompleteDefaults.ts",
-        "line": 64,
+        "line": 78,
         "nodeType": "arrow",
         "exported": true,
         "async": false
@@ -130,37 +130,46 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:206:isValidEmailForAvatar",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:212:extractEmailLocalPart",
+        "name": "extractEmailLocalPart",
+        "file": "src/atomic-crm/utils/avatar.utils.ts",
+        "line": 212,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/avatar.utils.ts:226:isValidEmailForAvatar",
         "name": "isValidEmailForAvatar",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 206,
+        "line": 226,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:217:getFallbackAvatarUrl",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
         "name": "getFallbackAvatarUrl",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 217,
+        "line": 237,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:232:getOrganizationName",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:252:getOrganizationName",
         "name": "getOrganizationName",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 232,
+        "line": 252,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:244:cleanWebsiteUrl",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:264:cleanWebsiteUrl",
         "name": "cleanWebsiteUrl",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 244,
+        "line": 264,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -242,6 +251,15 @@
         "name": "formatDuplicateSummary",
         "file": "src/atomic-crm/utils/csvUploadValidator.ts",
         "line": 459,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/dateUtils.ts:31:getWeekRange",
+        "name": "getWeekRange",
+        "file": "src/atomic-crm/utils/dateUtils.ts",
+        "line": 31,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -368,6 +386,33 @@
         "name": "ucFirst",
         "file": "src/atomic-crm/utils/formatters.ts",
         "line": 51,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
+        "name": "formatFieldLabel",
+        "file": "src/atomic-crm/utils/formatters.ts",
+        "line": 59,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "name": "getInitials",
+        "file": "src/atomic-crm/utils/formatters.ts",
+        "line": 69,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/formatters.ts:79:formatCurrency",
+        "name": "formatCurrency",
+        "file": "src/atomic-crm/utils/formatters.ts",
+        "line": 79,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -573,11 +618,38 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/utils/autocompleteDefaults.ts:27:shouldRenderSuggestions",
+        "source": "src/atomic-crm/utils/autocompleteDefaults.ts:23:enableGetChoices",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/autocompleteDefaults.ts:23:enableGetChoices",
+        "target": "values",
+        "targetName": "values",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/autocompleteDefaults.ts:23:enableGetChoices",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/autocompleteDefaults.ts:41:shouldRenderSuggestions",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 27,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
@@ -789,83 +861,101 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:206:isValidEmailForAvatar",
-        "target": "safeParse",
-        "targetName": "safeParse",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:212:extractEmailLocalPart",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
-        "line": 207,
-        "conditional": false,
+        "line": 213,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:217:getFallbackAvatarUrl",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:217:getFallbackAvatarUrl",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:217:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:212:extractEmailLocalPart",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 219,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:217:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:226:isValidEmailForAvatar",
+        "target": "safeParse",
+        "targetName": "safeParse",
+        "edgeType": "call",
+        "line": 227,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 239,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 239,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 239,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 221,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:217:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 221,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:217:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
         "target": "encodeURIComponent",
         "targetName": "encodeURIComponent",
         "edgeType": "call",
-        "line": 223,
+        "line": 243,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:244:cleanWebsiteUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:264:cleanWebsiteUrl",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 245,
+        "line": 265,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:244:cleanWebsiteUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:264:cleanWebsiteUrl",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 245,
+        "line": 265,
         "conditional": false,
         "inLoop": false
       },
@@ -1581,6 +1671,42 @@
         "inLoop": false
       },
       {
+        "source": "src/atomic-crm/utils/dateUtils.ts:31:getWeekRange",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/dateUtils.ts:31:getWeekRange",
+        "target": "startOfWeek",
+        "targetName": "startOfWeek",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/dateUtils.ts:31:getWeekRange",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/dateUtils.ts:31:getWeekRange",
+        "target": "endOfWeek",
+        "targetName": "endOfWeek",
+        "edgeType": "call",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
         "source": "src/atomic-crm/utils/exportHelpers.ts:10:extractEmailByType",
         "target": "find",
         "targetName": "find",
@@ -1928,6 +2054,105 @@
         "targetName": "slice",
         "edgeType": "call",
         "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "target": "charAt",
+        "targetName": "charAt",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "target": "charAt",
+        "targetName": "charAt",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:79:formatCurrency",
+        "target": "isNaN",
+        "targetName": "isNaN",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:79:formatCurrency",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },

@@ -1,12 +1,12 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-14T21:46:36.746Z",
+  "generated_at": "2026-01-16T13:25:01.407Z",
   "item_count": 25,
   "items": [
     {
       "name": "CreateFormFooter",
       "file": "src/atomic-crm/components/CreateFormFooter.tsx",
-      "line": 16,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -16,6 +16,7 @@
         "useRedirect"
       ],
       "imports": [
+        "@/atomic-crm/utils",
         "@/components/admin/form",
         "@/components/ui/button",
         "ra-core",

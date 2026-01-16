@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-14T21:47:27.925Z",
-  "item_count": 7,
+  "generated_at": "2026-01-16T13:25:07.516Z",
+  "item_count": 8,
   "items": [
     {
       "name": "organizationTypeSchema",
@@ -722,12 +722,80 @@
         "organizationDistributorSchema",
         "organizationTypeSchema",
         "organizationPrioritySchema",
+        "organizationQuickCreateSchema",
         "setPrimaryOrganizationParamsSchema"
       ],
       "validationFunctions": [
         "validateOrganizationForSubmission"
       ],
       "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "organizationQuickCreateSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 294,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Name required\")",
+            "max(255)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_type",
+          "zodType": "ref:organizationTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "priority",
+          "zodType": "ref:organizationPrioritySchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "city",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "state",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "organizationSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
       "hasSuperRefine": false
     }
   ]

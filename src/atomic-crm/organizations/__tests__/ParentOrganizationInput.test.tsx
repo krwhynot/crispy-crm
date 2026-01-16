@@ -181,7 +181,7 @@ describe("ParentOrganizationInput", () => {
 
       // Get the filterToQuery function from AutocompleteInput props
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0][0];
+      const props = mockAutocompleteInputProps.mock.calls[0]![0];
       const filterToQuery = props.filterToQuery as (searchText: string) => Record<string, string>;
 
       // Expect: empty search returns root org filter
@@ -201,7 +201,7 @@ describe("ParentOrganizationInput", () => {
 
       // Get the filterToQuery function from AutocompleteInput props
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0][0];
+      const props = mockAutocompleteInputProps.mock.calls[0]![0];
       const filterToQuery = props.filterToQuery as (searchText: string) => Record<string, string>;
 
       // Expect: search text returns name ilike filter
@@ -290,7 +290,7 @@ describe("ParentOrganizationInput", () => {
       render(<ParentOrganizationInput />);
 
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0][0];
+      const props = mockAutocompleteInputProps.mock.calls[0]![0];
       expect(props.label).toBe("Parent Organization");
       expect(props.emptyText).toBe("No parent organization");
       expect(props.helperText).toBe("Select a parent organization if this is a branch location");
@@ -308,7 +308,7 @@ describe("ParentOrganizationInput", () => {
       render(<ParentOrganizationInput />);
 
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0][0];
+      const props = mockAutocompleteInputProps.mock.calls[0]![0];
       expect(props.debounce).toBe(300);
     });
   });

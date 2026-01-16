@@ -1,7 +1,7 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-14T21:47:27.938Z",
-  "item_count": 10,
+  "generated_at": "2026-01-16T13:25:07.518Z",
+  "item_count": 12,
   "items": [
     {
       "name": "getOrCreateSegmentParamsSchema",
@@ -459,9 +459,82 @@
       "hasSuperRefine": false
     },
     {
+      "name": "logActivityWithTaskParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 187,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "p_activity",
+          "zodType": "ref:logActivityWithTaskActivitySchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "p_task",
+          "zodType": "ref:logActivityWithTaskTaskSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "taskSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "logActivityWithTaskResponseSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 192,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "success",
+          "zodType": "boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "activity_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "task_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "taskSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
       "name": "edgeFunctionSchemas",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 175,
+      "line": 218,
       "schemaType": "object",
       "fields": [],
       "relatedSchemas": [],

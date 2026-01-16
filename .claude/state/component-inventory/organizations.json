@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-14T21:46:36.798Z",
+  "generated_at": "2026-01-16T13:25:01.414Z",
   "item_count": 76,
   "items": [
     {
@@ -275,11 +275,12 @@
     {
       "name": "OrganizationTypeBadge",
       "file": "src/atomic-crm/organizations/OrganizationBadges.tsx",
-      "line": 45,
+      "line": 46,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "react"
       ],
@@ -297,11 +298,12 @@
     {
       "name": "PriorityBadge",
       "file": "src/atomic-crm/organizations/OrganizationBadges.tsx",
-      "line": 68,
+      "line": 65,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/utils",
         "@/components/ui/badge",
         "react"
       ],
@@ -1261,7 +1263,7 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
-      "line": 12,
+      "line": 32,
       "type": "presentational",
       "hooks": [
         "useOrganizationDescendants",
@@ -1378,7 +1380,7 @@
     {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 95,
+      "line": 88,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1389,6 +1391,7 @@
       ],
       "imports": [
         "@/atomic-crm/queryKeys",
+        "@/atomic-crm/validation/organizations",
         "@/atomic-crm/validation/segments",
         "@/components/ui/button",
         "@/components/ui/input",
@@ -1400,8 +1403,7 @@
         "@tanstack/react-query",
         "ra-core",
         "react",
-        "react-hook-form",
-        "zod"
+        "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -1413,7 +1415,7 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 277,
+      "line": 270,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1425,6 +1427,7 @@
       ],
       "imports": [
         "@/atomic-crm/queryKeys",
+        "@/atomic-crm/validation/organizations",
         "@/atomic-crm/validation/segments",
         "@/components/ui/button",
         "@/components/ui/input",
@@ -1436,8 +1439,7 @@
         "@tanstack/react-query",
         "ra-core",
         "react",
-        "react-hook-form",
-        "zod"
+        "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -1670,7 +1672,7 @@
     {
       "name": "ParentOrganizationInput",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 12,
+      "line": 32,
       "type": "presentational",
       "hooks": [
         "useOrganizationDescendants",
@@ -1726,7 +1728,7 @@
     {
       "name": "OrganizationTypeBadge",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 45,
+      "line": 46,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1738,7 +1740,7 @@
     {
       "name": "PriorityBadge",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 68,
+      "line": 65,
       "type": "presentational",
       "hooks": [],
       "imports": [],
