@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Sale } from "@/atomic-crm/types";
 import { salesProfileSchema } from "@/atomic-crm/validation/sales";
+import { getInitials } from "@/atomic-crm/utils/formatters";
 // NOTE: Client-side validation removed (2025-12-12)
 // Edge Function /users PATCH handles validation with patchUserSchema
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
@@ -123,13 +124,6 @@ export function SalesProfileTab({
     }
   };
 
-  // Get initials for avatar fallback
-  const getInitials = () => {
-    const firstName = mode === "edit" ? formData.first_name : record?.first_name;
-    const lastName = mode === "edit" ? formData.last_name : record?.last_name;
-    return `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
-  };
-
   if (!record) {
     return (
       <div className="space-y-4">
@@ -156,7 +150,12 @@ export function SalesProfileTab({
             src={mode === "edit" ? formData.avatar_url : record.avatar_url}
             alt={`${record.first_name} ${record.last_name}`}
           />
-          <AvatarFallback>{getInitials()}</AvatarFallback>
+          <AvatarFallback>
+            {getInitials(
+              mode === "edit" ? formData.first_name : record?.first_name,
+              mode === "edit" ? formData.last_name : record?.last_name
+            )}
+          </AvatarFallback>
         </Avatar>
         {mode === "edit" && (
           <div className="w-full">

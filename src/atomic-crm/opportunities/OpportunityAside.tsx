@@ -8,7 +8,7 @@ import { ShowButton } from "@/components/admin/show-button";
 import { Badge } from "@/components/ui/badge";
 import { getPriorityVariant } from "@/components/ui/priority-badge";
 import { AsideSection } from "@/components/ui";
-import { ucFirst } from "@/atomic-crm/utils";
+import { ucFirst, formatFieldLabel } from "@/atomic-crm/utils";
 import { TasksIterator } from "../tasks/TasksIterator";
 import { SaleName } from "../sales/SaleName";
 import { SaleAvatar } from "../sales/SaleAvatar";
@@ -58,9 +58,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
           <div>
             <span className="text-xs text-muted-foreground">Status</span>
             <div className="mt-1 text-sm">
-              {record.status
-                ? record.status.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
-                : "Unknown"}
+              {record.status ? formatFieldLabel(record.status) : "Unknown"}
             </div>
           </div>
         </div>
@@ -163,9 +161,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
 
       {record.lead_source && (
         <AsideSection title="Lead Source">
-          <div className="text-sm text-foreground">
-            {record.lead_source.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-          </div>
+          <div className="text-sm text-foreground">{formatFieldLabel(record.lead_source)}</div>
         </AsideSection>
       )}
 

@@ -349,11 +349,7 @@ export const ChangeLogTab = () => {
           </div>
 
           {entries.map((entry) => (
-            <ChangeLogEntry
-              key={entry.audit_id}
-              entry={entry}
-              formatValue={formatValue}
-            />
+            <ChangeLogEntry key={entry.audit_id} entry={entry} formatValue={formatValue} />
           ))}
         </div>
       ))}
@@ -373,11 +369,9 @@ export const ChangeLogTab = () => {
  */
 const ChangeLogEntry = ({
   entry,
-  formatFieldName,
   formatValue,
 }: {
   entry: AuditTrailEntry;
-  formatFieldName: (fieldName: string) => string;
   formatValue: (value: string | null) => string;
 }) => {
   const isCreation = !entry.old_value && entry.new_value;

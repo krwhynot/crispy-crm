@@ -26,7 +26,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Activity } from "lucide-react";
 import { useTeamActivities, type TeamActivity } from "../hooks/useTeamActivities";
-import { getActivityIcon, ucFirst } from "@/atomic-crm/utils";
+import { getActivityIcon, ucFirst, getInitials } from "@/atomic-crm/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**
@@ -74,18 +74,18 @@ function formatRelativeTime(dateString: string): string {
 }
 
 /**
- * Get initials from first and last name, with fallback to email or "TM"
+ * Get initials with email fallback for activity feed.
+ * Uses canonical getInitials for name-based initials,
+ * falls back to email username initial or "TM" as last resort.
  */
-function getInitials(
+function getInitialsWithEmailFallback(
   firstName: string | null,
   lastName: string | null,
   email: string | null
 ): string {
-  // Use actual names if available
+  // Use canonical getInitials if names are available
   if (firstName || lastName) {
-    const first = firstName?.charAt(0)?.toUpperCase() || "";
-    const last = lastName?.charAt(0)?.toUpperCase() || "";
-    return first + last || "?";
+    return getInitials(firstName, lastName);
   }
 
   // Fallback to email username initial

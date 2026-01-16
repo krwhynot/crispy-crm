@@ -65,15 +65,6 @@ export function PipelineDrillDownSheet({
     return "outline";
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
-
   const totalPipeline = opportunities.reduce((sum, opp) => sum + opp.amount, 0);
   const weightedPipeline = opportunities.reduce(
     (sum, opp) => sum + opp.amount * (opp.probability / 100),
@@ -151,7 +142,6 @@ export function PipelineDrillDownSheet({
                   opportunity={opp}
                   onView={() => handleViewOpportunity(opp.id)}
                   getStageColor={getStageColor}
-                  formatCurrency={formatCurrency}
                 />
               ))
             )}
@@ -169,12 +159,10 @@ function OpportunityCard({
   opportunity,
   onView,
   getStageColor,
-  formatCurrency,
 }: {
   opportunity: OpportunitySummary;
   onView: () => void;
   getStageColor: (stage: string) => "default" | "secondary" | "destructive" | "outline";
-  formatCurrency: (amount: number) => string;
 }) {
   return (
     <div
