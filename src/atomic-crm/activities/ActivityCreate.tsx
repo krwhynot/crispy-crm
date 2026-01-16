@@ -5,7 +5,7 @@ import { useFormState } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { CreateFormFooter } from "@/atomic-crm/components";
-import { activitiesSchema } from "../validation/activities";
+import { baseActivitiesSchema, activitiesSchema } from "../validation/activities";
 import ActivitySinglePage from "./ActivitySinglePage";
 import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
@@ -24,7 +24,8 @@ export default function ActivityCreate() {
 
   const defaultValues = useMemo(
     () => ({
-      ...activitiesSchema.partial().parse({}),
+      // Use base schema for defaults (Zod v4 - refined schemas don't support .partial())
+      ...baseActivitiesSchema.partial().parse({}),
       // Set current user as creator - ensures proper audit trail
       created_by: identity?.id,
       // Default to engagement - doesn't require opportunity_id like "interaction" does

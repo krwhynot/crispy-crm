@@ -17,6 +17,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { cn } from "@/lib/utils";
 
 import {
+  closeOpportunityBaseSchema,
   closeOpportunitySchema,
   WIN_REASONS,
   LOSS_REASONS,

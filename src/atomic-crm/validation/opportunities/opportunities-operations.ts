@@ -392,22 +392,28 @@ export const updateOpportunitySchema = opportunityBaseSchema
   );
 
 /**
- * Close Opportunity Schema (TODO-004a)
- * Dedicated schema for the CloseOpportunityModal component
- * Enforces win/loss reason based on target stage
+ * Close Opportunity BASE Schema (TODO-004a)
+ * IMPORTANT: Exported for Zod v4 compatibility - use closeOpportunityBaseSchema.partial().parse({}) for defaults
+ * Dedicated base schema for the CloseOpportunityModal component
  */
-export const closeOpportunitySchema = z
-  .strictObject({
-    id: z.union([z.string(), z.number()]),
-    stage: z.enum(["closed_won", "closed_lost"]),
-    win_reason: winReasonSchema.optional().nullable(),
-    loss_reason: lossReasonSchema.optional().nullable(),
-    close_reason_notes: z
-      .string()
-      .max(500, "Close reason notes must be 500 characters or less")
-      .optional()
-      .nullable(),
-  })
+export const closeOpportunityBaseSchema = z.strictObject({
+  id: z.union([z.string(), z.number()]),
+  stage: z.enum(["closed_won", "closed_lost"]),
+  win_reason: winReasonSchema.optional().nullable(),
+  loss_reason: lossReasonSchema.optional().nullable(),
+  close_reason_notes: z
+    .string()
+    .max(500, "Close reason notes must be 500 characters or less")
+    .optional()
+    .nullable(),
+});
+
+/**
+ * Close Opportunity Schema with refinements - for validation
+ * Enforces win/loss reason based on target stage
+ * Use closeOpportunityBaseSchema.partial().parse({}) for form defaults
+ */
+export const closeOpportunitySchema = closeOpportunityBaseSchema
   .refine(
     (data) => {
       if (data.stage === "closed_won") {

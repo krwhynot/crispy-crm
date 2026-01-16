@@ -672,7 +672,8 @@ export type QuickLogFormInput = z.input<typeof quickLogFormSchema>;
 export type QuickLogFormOutput = z.output<typeof quickLogFormSchema>;
 
 // Legacy aliases for backward compatibility during migration
-// NOTE: activityLogSchema uses BASE schema (no refinements) for Zod v4 .partial() compatibility
-export const activityLogSchema = quickLogFormBaseSchema;
+// NOTE: activityLogSchema points to refined schema for validation
+// Use quickLogFormBaseSchema.partial().parse({}) for extracting form defaults
+export const activityLogSchema = quickLogFormSchema;
 export type ActivityLogInput = QuickLogFormInput;
 export type ActivityLog = QuickLogFormOutput;
