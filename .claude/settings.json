@@ -7,6 +7,11 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/session-init.sh",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/daily_briefing.py",
+            "timeout": 10
           }
         ]
       }
@@ -60,6 +65,11 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/prefer-cli-tools.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/kaizen_gate.py",
+            "timeout": 5
           }
         ]
       },
@@ -75,6 +85,11 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/migration-guard.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/kintsugi_guard.py",
+            "timeout": 10
           }
         ]
       },
