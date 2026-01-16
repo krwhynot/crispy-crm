@@ -76,9 +76,7 @@ export interface UpdateOpportunityData {
  * @param overrides - Partial opportunity to merge with defaults
  * @returns Complete opportunity matching Opportunity type
  */
-export function createMockOpportunity(
-  overrides: Partial<Opportunity> = {}
-): Opportunity {
+export function createMockOpportunity(overrides: Partial<Opportunity> = {}): Opportunity {
   return {
     id: 123,
     name: "Test Opportunity",
@@ -144,9 +142,7 @@ export function createMockUpdateData(
  * @param overrides - Partial product to merge with defaults
  * @returns Product item for products_to_sync array
  */
-export function createMockProduct(
-  overrides: Partial<ProductToSync> = {}
-): ProductToSync {
+export function createMockProduct(overrides: Partial<ProductToSync> = {}): ProductToSync {
   return {
     product_id_reference: "101",
     ...overrides,
@@ -162,9 +158,7 @@ export function createMockProduct(
  * @param overrides - Partial product to merge with defaults
  * @returns Product item matching view structure
  */
-export function createMockViewProduct(
-  overrides: Partial<ViewProductItem> = {}
-): ViewProductItem {
+export function createMockViewProduct(overrides: Partial<ViewProductItem> = {}): ViewProductItem {
   return {
     id: 1,
     product_id_reference: "101",

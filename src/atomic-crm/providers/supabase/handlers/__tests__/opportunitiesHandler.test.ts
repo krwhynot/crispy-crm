@@ -22,6 +22,16 @@ import {
   VIEW_ONLY_FIELDS,
   UPDATE_ONLY_STRIP_FIELDS,
 } from "../../callbacks/opportunitiesCallbacks";
+import {
+  createMockOpportunity,
+  createMockOpportunityData,
+  createMockUpdateData,
+  createMockProduct,
+  createMockViewProduct,
+  createMockOpportunityWithComputedFields,
+  createMockOpportunityWithViewOnlyFields,
+  createMockEditableOpportunity,
+} from "./fixtures/opportunities";
 
 // Mock service methods using vi.hoisted to ensure they're available when vi.mock runs
 // (vi.mock is hoisted to the top of the file, so regular const won't be defined yet)
@@ -76,20 +86,11 @@ describe("createOpportunitiesHandler", () => {
       // products_to_sync shape must match createOpportunitySchema (API boundary)
       // Schema: { product_id_reference: string|number (optional), notes: string (optional) }
       const products = [
-        { product_id_reference: "101" },
-        { product_id_reference: "102", notes: "Premium grade" },
+        createMockProduct(),
+        createMockProduct({ product_id_reference: "102", notes: "Premium grade" }),
       ];
-      const opportunityData = {
-        name: "Test Opportunity",
-        customer_organization_id: "1", // Required by createOpportunitySchema
-        principal_organization_id: "2",
-        estimated_close_date: "2026-02-01",
-        stage: "new_lead", // Required - no default after WG-003 fix
-        priority: "medium", // Required - no default after WG-002 fix
-        contact_ids: [1], // WG-001: At least one contact required
-        products_to_sync: products,
-      };
-      const createdOpportunity = { id: 123, ...opportunityData };
+      const opportunityData = createMockOpportunityData({ products_to_sync: products });
+      const createdOpportunity = createMockOpportunity(opportunityData);
 
       mockCreateWithProducts.mockResolvedValue(createdOpportunity);
 
@@ -105,15 +106,7 @@ describe("createOpportunitiesHandler", () => {
     });
 
     it("should NOT delegate to service when products_to_sync is absent", async () => {
-      const opportunityData = {
-        name: "Test Opportunity",
-        customer_organization_id: "1", // Required by createOpportunitySchema
-        principal_organization_id: "2",
-        estimated_close_date: "2026-02-01",
-        stage: "new_lead", // Required - no default after WG-003 fix
-        priority: "medium", // Required - no default after WG-002 fix
-        contact_ids: [1], // WG-001: At least one contact required
-      };
+      const opportunityData = createMockOpportunityData();
 
       // Note: mockBaseProvider.create is called through the composed handler chain
       // which includes lifecycle callbacks - the call goes through the wrapper
@@ -127,16 +120,7 @@ describe("createOpportunitiesHandler", () => {
       // because OpportunitiesService requires ExtendedDataProvider with rpc/storage/invoke
       // methods that are not available when handlers are created.
       // The baseProvider path is the correct path for empty products.
-      const opportunityData = {
-        name: "Test Opportunity",
-        customer_organization_id: "1", // Required by createOpportunitySchema
-        principal_organization_id: "2",
-        estimated_close_date: "2026-02-01",
-        stage: "new_lead", // Required - no default after WG-003 fix
-        priority: "medium", // Required - no default after WG-002 fix
-        contact_ids: [1], // WG-001: At least one contact required
-        products_to_sync: [],
-      };
+      const opportunityData = createMockOpportunityData({ products_to_sync: [] });
 
       await handler.create("opportunities", { data: opportunityData });
 
@@ -158,14 +142,10 @@ describe("createOpportunitiesHandler", () => {
     it("should delegate to OpportunitiesService.updateWithProducts when products_to_sync is present", async () => {
       // products_to_sync shape must match updateOpportunitySchema (API boundary)
       // Schema: { product_id_reference: string|number (optional), notes: string (optional) }
-      const products = [{ product_id_reference: "101", notes: "Updated notes" }];
-      const previousProducts = [{ product_id_reference: "101", product_name: "Product A" }];
-      const updateData = {
-        id: 123,
-        name: "Updated Opportunity",
-        products_to_sync: products,
-      };
-      const updatedOpportunity = { id: 123, name: "Updated Opportunity" };
+      const products = [createMockProduct({ notes: "Updated notes" })];
+      const previousProducts = [createMockViewProduct()];
+      const updateData = createMockUpdateData({ products_to_sync: products });
+      const updatedOpportunity = createMockOpportunity({ name: "Updated Opportunity" });
 
       mockUpdateWithProducts.mockResolvedValue(updatedOpportunity);
 
