@@ -51,3 +51,17 @@ export function formatCount(count?: number | null): number {
 export function ucFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+/**
+ * Generates initials from first and last name.
+ * Example: ("John", "Doe") → "JD"
+ * Handles null/undefined gracefully, returns "?" if both empty.
+ */
+export function getInitials(
+  firstName?: string | null,
+  lastName?: string | null
+): string {
+  const first = firstName?.trim().charAt(0)?.toUpperCase() || "";
+  const last = lastName?.trim().charAt(0)?.toUpperCase() || "";
+  return first + last || "?";
+}
