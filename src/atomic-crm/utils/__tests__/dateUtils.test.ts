@@ -51,7 +51,8 @@ describe("dateUtils", () => {
 
     describe("edge cases", () => {
       it("handles Monday edge case (date IS a Monday)", () => {
-        const monday = new Date("2026-01-12");
+        // Use local time constructor to avoid UTC parsing gotcha
+        const monday = new Date(2026, 0, 12); // Jan 12, 2026 (Monday)
 
         const result = getWeekRange(monday);
 
@@ -60,7 +61,8 @@ describe("dateUtils", () => {
       });
 
       it("handles Sunday edge case (date IS a Sunday)", () => {
-        const sunday = new Date("2026-01-18");
+        // Use local time constructor to avoid UTC parsing gotcha
+        const sunday = new Date(2026, 0, 18); // Jan 18, 2026 (Sunday)
 
         const result = getWeekRange(sunday);
 
@@ -69,7 +71,8 @@ describe("dateUtils", () => {
       });
 
       it("handles year boundary (Dec 31 mid-week)", () => {
-        const dec31 = new Date("2025-12-31");
+        // Use local time constructor to avoid UTC parsing gotcha
+        const dec31 = new Date(2025, 11, 31); // Dec 31, 2025 (Wednesday)
 
         const result = getWeekRange(dec31);
 
@@ -78,7 +81,8 @@ describe("dateUtils", () => {
       });
 
       it("handles year boundary (Jan 1 mid-week)", () => {
-        const jan1 = new Date("2026-01-01");
+        // Use local time constructor to avoid UTC parsing gotcha
+        const jan1 = new Date(2026, 0, 1); // Jan 1, 2026 (Thursday)
 
         const result = getWeekRange(jan1);
 
@@ -89,7 +93,8 @@ describe("dateUtils", () => {
 
     describe("date formatting", () => {
       it("formats dates as yyyy-MM-dd", () => {
-        const date = new Date("2026-03-15");
+        // Use local time constructor to avoid UTC parsing gotcha
+        const date = new Date(2026, 2, 15); // Mar 15, 2026 (Sunday)
 
         const result = getWeekRange(date);
 
@@ -98,12 +103,14 @@ describe("dateUtils", () => {
       });
 
       it("zero-pads single digit months and days", () => {
-        const earlyDate = new Date("2026-01-05");
+        // Use local time constructor to avoid UTC parsing gotcha
+        // Jan 5, 2026 is a Monday - starts a new week (Jan 5-11)
+        const earlyDate = new Date(2026, 0, 5);
 
         const result = getWeekRange(earlyDate);
 
-        expect(result.start).toBe("2025-12-29");
-        expect(result.end).toBe("2026-01-04");
+        expect(result.start).toBe("2026-01-05");
+        expect(result.end).toBe("2026-01-11");
       });
     });
   });
