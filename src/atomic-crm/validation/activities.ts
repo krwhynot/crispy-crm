@@ -68,8 +68,9 @@ export const SAMPLE_STATUS_OPTIONS = [
   { value: "feedback_received", label: "Feedback Received" },
 ] as const;
 
-// Base schema without refinements - can be extended
-const baseActivitiesSchema = z.strictObject({
+// Base schema without refinements - can be extended and used with .partial() for form defaults
+// IMPORTANT: Exported for Zod v4 compatibility - use baseActivitiesSchema.partial().parse({}) for defaults
+export const baseActivitiesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   activity_type: activityTypeSchema.default("interaction"), // Default to interaction
   type: interactionTypeSchema.default("call"), // Default to call
@@ -606,7 +607,8 @@ export const activityOutcomeSchema = z.enum([
 ]);
 
 /**
- * QuickLogForm schema - UI-friendly version with Title Case activity types
+ * QuickLogForm BASE schema - UI-friendly version with Title Case activity types
+ * IMPORTANT: Exported for Zod v4 compatibility - use quickLogFormBaseSchema.partial().parse({}) for defaults
  *
  * This schema is designed for the QuickLogForm component and uses:
  * - Title Case activity types (for display)
@@ -615,25 +617,30 @@ export const activityOutcomeSchema = z.enum([
  *
  * When submitting, use ACTIVITY_TYPE_TO_API to convert activityType to API format
  */
-export const quickLogFormSchema = z
-  .object({
-    activityType: activityDisplayTypeSchema,
-    outcome: activityOutcomeSchema,
-    date: z.date().default(() => new Date()),
-    duration: z.number().min(0).optional(),
-    contactId: z.number().optional(),
-    organizationId: z.number().optional(),
-    opportunityId: z.number().optional(),
-    notes: z
-      .string()
-      .trim()
-      .min(1, "Notes are required")
-      .transform((val) => sanitizeHtml(val)),
-    createFollowUp: z.coerce.boolean().default(false),
-    followUpDate: z.date().optional(),
-    // Sample tracking field (PRD §4.4)
-    sampleStatus: sampleStatusSchema.optional(),
-  })
+export const quickLogFormBaseSchema = z.object({
+  activityType: activityDisplayTypeSchema,
+  outcome: activityOutcomeSchema,
+  date: z.date().default(() => new Date()),
+  duration: z.number().min(0).optional(),
+  contactId: z.number().optional(),
+  organizationId: z.number().optional(),
+  opportunityId: z.number().optional(),
+  notes: z
+    .string()
+    .trim()
+    .min(1, "Notes are required")
+    .transform((val) => sanitizeHtml(val)),
+  createFollowUp: z.coerce.boolean().default(false),
+  followUpDate: z.date().optional(),
+  // Sample tracking field (PRD §4.4)
+  sampleStatus: sampleStatusSchema.optional(),
+});
+
+/**
+ * QuickLogForm schema with refinements - for validation
+ * Use quickLogFormBaseSchema.partial().parse({}) for form defaults
+ */
+export const quickLogFormSchema = quickLogFormBaseSchema
   .refine((data) => data.contactId || data.organizationId, {
     message: "Select a contact or organization before logging",
     path: ["contactId"],
@@ -665,6 +672,7 @@ export type QuickLogFormInput = z.input<typeof quickLogFormSchema>;
 export type QuickLogFormOutput = z.output<typeof quickLogFormSchema>;
 
 // Legacy aliases for backward compatibility during migration
-export const activityLogSchema = quickLogFormSchema;
+// NOTE: activityLogSchema uses BASE schema (no refinements) for Zod v4 .partial() compatibility
+export const activityLogSchema = quickLogFormBaseSchema;
 export type ActivityLogInput = QuickLogFormInput;
 export type ActivityLog = QuickLogFormOutput;
