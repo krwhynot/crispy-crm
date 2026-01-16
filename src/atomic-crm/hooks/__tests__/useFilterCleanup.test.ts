@@ -221,9 +221,18 @@ describe("useFilterCleanup", () => {
       // Act
       renderHook(() => useFilterCleanup("organizations"));
 
-      // Assert
-      expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("Cleaned stale filters"));
-      expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("organizations"));
+      // Assert - devLog() calls console.log with: prefix, message, empty string
+      // Check that console.log was called with the message containing expected strings
+      expect(consoleLogSpy).toHaveBeenCalledWith(
+        expect.any(String), // "[useFilterCleanup]" prefix
+        expect.stringContaining("Cleaned stale filters"),
+        expect.any(String) // empty string suffix
+      );
+      expect(consoleLogSpy).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.stringContaining("organizations"),
+        expect.any(String)
+      );
     });
 
     it("should handle removal of all filters", () => {
