@@ -5,7 +5,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { FormFieldWrapper } from "@/components/admin/form";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
 import { enableGetChoices } from "../utils/autocompleteDefaults";
-import { ucFirst } from "@/atomic-crm/utils";
+import { formatFieldLabel } from "@/atomic-crm/utils";
 
 /**
  * Product Details tab for ProductCreate/ProductEdit forms.
@@ -20,12 +20,12 @@ import { ucFirst } from "@/atomic-crm/utils";
 export const ProductDetailsInputTab = () => {
   const productCategories = PRODUCT_CATEGORIES.map((category) => ({
     id: category,
-    name: category.split("_").map(ucFirst).join(" "),
+    name: formatFieldLabel(category),
   }));
 
   const productStatuses = PRODUCT_STATUSES.map((status) => ({
     id: status,
-    name: status.split("_").map(ucFirst).join(" "),
+    name: formatFieldLabel(status),
   }));
 
   const handleCreateCategory = (categoryName?: string) => {

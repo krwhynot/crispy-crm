@@ -19,6 +19,7 @@ import {
   processOrganizationLogo,
   getContactAvatar,
   getOrganizationAvatar,
+  extractEmailLocalPart,
 } from "../avatar.utils";
 import { fetchWithTimeout } from "../avatar";
 
@@ -427,5 +428,27 @@ describe("getOrganizationAvatar", () => {
     });
 
     expect(result?.src).toBe("https://favicon.show/example.com");
+  });
+});
+
+describe("extractEmailLocalPart", () => {
+  it("should return local part for valid email", () => {
+    expect(extractEmailLocalPart("john.doe@example.com")).toBe("john.doe");
+  });
+
+  it("should return empty string for empty input", () => {
+    expect(extractEmailLocalPart("")).toBe("");
+  });
+
+  it("should return empty string for email without @", () => {
+    expect(extractEmailLocalPart("notanemail")).toBe("");
+  });
+
+  it("should return first segment when email has multiple @", () => {
+    expect(extractEmailLocalPart("a@b@c.com")).toBe("a");
+  });
+
+  it("should preserve special characters in local part", () => {
+    expect(extractEmailLocalPart("john+test@example.com")).toBe("john+test");
   });
 });

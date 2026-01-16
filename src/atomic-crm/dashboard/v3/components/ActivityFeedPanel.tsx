@@ -26,7 +26,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Activity } from "lucide-react";
 import { useTeamActivities, type TeamActivity } from "../hooks/useTeamActivities";
-import { getActivityIcon, ucFirst, getInitials } from "@/atomic-crm/utils";
+import { getActivityIcon, ucFirst, getInitials, extractEmailLocalPart } from "@/atomic-crm/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**
@@ -90,7 +90,7 @@ function getInitialsWithEmailFallback(
 
   // Fallback to email username initial
   if (email) {
-    const username = email.split("@")[0];
+    const username = extractEmailLocalPart(email);
     return username.charAt(0).toUpperCase() || "?";
   }
 
@@ -115,7 +115,7 @@ function getDisplayName(
   }
   // Extract username from email (before @)
   if (email) {
-    return email.split("@")[0];
+    return extractEmailLocalPart(email);
   }
   return "Team Member";
 }

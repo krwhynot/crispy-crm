@@ -47,7 +47,7 @@ export function detectDatePresetLabel(
   // Only @gte set (no @lte) - "since" filters
   if (gteDate && !lteDate) {
     if (isSameDay(gteDate, endOfYesterday())) return "Today";
-    if (isSameDay(gteDate, startOfWeek(now))) return "This week";
+    if (isSameDay(gteDate, startOfWeek(now, { weekStartsOn: 1 }))) return "This week";
     if (isSameDay(gteDate, startOfMonth(now))) return "This month";
   }
 

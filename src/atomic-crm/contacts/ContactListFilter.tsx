@@ -44,7 +44,7 @@ export const ContactListFilter = () => {
             className="w-full justify-between"
             label="This week"
             value={{
-              "last_seen@gte": startOfWeek(new Date()).toISOString(),
+              "last_seen@gte": startOfWeek(new Date(), { weekStartsOn: 1 }).toISOString(),
               "last_seen@lte": undefined,
             }}
           />

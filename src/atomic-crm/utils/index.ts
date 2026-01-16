@@ -1,5 +1,6 @@
 // Utils barrel exports
 export { formatName, formatSingleName } from "./formatName";
+export { getWeekRange } from "./dateUtils";
 export { formatRelativeTime } from "./formatRelativeTime";
 export { ClientRateLimiter, contactImportLimiter, organizationImportLimiter } from "./rateLimiter";
 export {
@@ -24,6 +25,7 @@ export {
   processContactAvatar,
   processOrganizationLogo,
   extractEmailDomain,
+  extractEmailLocalPart,
   isValidEmailForAvatar,
   getFallbackAvatarUrl,
   getOrganizationName,

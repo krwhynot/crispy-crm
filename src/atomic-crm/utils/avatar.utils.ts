@@ -87,7 +87,7 @@ export async function getContactAvatar(record: Partial<Contact>): Promise<string
     }
 
     // Step 2: Try to get favicon from email domain
-    const domain = email.split("@")[1];
+    const domain = email.split("@")[1] ?? "";
     const faviconUrl = await getFaviconUrl(domain);
     if (faviconUrl) {
       return faviconUrl;
@@ -191,7 +191,27 @@ export async function processOrganizationLogo(
  * @returns Domain part of the email address
  */
 export function extractEmailDomain(email: string): string {
-  return email.split("@")[1];
+  return email.split("@")[1] ?? "";
+}
+
+/**
+ * Extract local part (username) from email address.
+ * Counterpart to extractEmailDomain().
+ *
+ * @param email - Email address to extract local part from
+ * @returns Local part (username) of the email, or empty string if invalid
+ *
+ * @example
+ * extractEmailLocalPart("john.doe@example.com")
+ * // => "john.doe"
+ *
+ * @example
+ * extractEmailLocalPart("")
+ * // => ""
+ */
+export function extractEmailLocalPart(email: string): string {
+  if (!email || !email.includes("@")) return "";
+  return email.split("@")[0] ?? "";
 }
 
 /**

@@ -17,7 +17,7 @@ import {
   DirtyStateTracker,
 } from "@/components/layouts/sidepane";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
-import { ucFirst } from "@/atomic-crm/utils";
+import { formatFieldLabel } from "@/atomic-crm/utils";
 
 const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
   usf_code: "US Foods",
@@ -132,12 +132,12 @@ export function ProductDetailsTab({
     // Transform categories and statuses for SelectInput
     const productCategories = PRODUCT_CATEGORIES.map((category) => ({
       id: category,
-      name: category.split("_").map(ucFirst).join(" "),
+      name: formatFieldLabel(category),
     }));
 
     const productStatuses = PRODUCT_STATUSES.map((status) => ({
       id: status,
-      name: status.split("_").map(ucFirst).join(" "),
+      name: formatFieldLabel(status),
     }));
 
     const handleCreateCategory = (categoryName?: string) => {
@@ -195,7 +195,7 @@ export function ProductDetailsTab({
 
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Category:</span>
-                <Badge variant="outline">{record.category.split("_").map(ucFirst).join(" ")}</Badge>
+                <Badge variant="outline">{formatFieldLabel(record.category)}</Badge>
               </div>
 
               <div className="flex items-center gap-2">
@@ -260,5 +260,5 @@ function StatusBadge({ status }: { status: string }) {
       variant = "outline";
   }
 
-  return <Badge variant={variant}>{status.split("_").map(ucFirst).join(" ")}</Badge>;
+  return <Badge variant={variant}>{formatFieldLabel(status)}</Badge>;
 }

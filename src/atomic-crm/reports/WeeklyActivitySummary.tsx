@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useGetList, useGetIdentity, downloadCSV, useNotify } from "ra-core";
-import { startOfWeek, endOfWeek, format } from "date-fns";
+import { getWeekRange } from "@/atomic-crm/utils";
 import jsonExport from "jsonexport/dist";
 import { Activity } from "lucide-react";
 import { ReportLayout } from "./ReportLayout";
@@ -25,10 +25,7 @@ import type { ActivityRecord, Organization, Sale } from "../types";
 export default function WeeklyActivitySummary() {
   const { data: identity } = useGetIdentity();
   const notify = useNotify();
-  const [dateRange, setDateRange] = useState(() => ({
-    start: format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
-    end: format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
-  }));
+  const [dateRange, setDateRange] = useState(() => getWeekRange());
 
   // Fetch activities for date range
   const {
@@ -83,10 +80,7 @@ export default function WeeklyActivitySummary() {
       value: `${dateRange.start} to ${dateRange.end}`,
       onRemove: () => {
         // Reset to current week
-        setDateRange({
-          start: format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
-          end: format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
-        });
+        setDateRange(getWeekRange());
       },
     });
 
@@ -95,18 +89,16 @@ export default function WeeklyActivitySummary() {
 
   // Check if we're viewing current week (not a non-default filter)
   const isCurrentWeek = useMemo(() => {
-    const currentStart = format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
-    const currentEnd = format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
+    const currentWeek = getWeekRange();
+    const currentStart = currentWeek.start;
+    const currentEnd = currentWeek.end;
     return dateRange.start === currentStart && dateRange.end === currentEnd;
   }, [dateRange]);
 
   const hasActiveFilters = !isCurrentWeek;
 
   const handleResetAllFilters = () => {
-    setDateRange({
-      start: format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
-      end: format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
-    });
+    setDateRange(getWeekRange());
   };
 
   // Group activities by rep → principal → type

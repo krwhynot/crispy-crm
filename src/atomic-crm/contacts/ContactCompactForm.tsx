@@ -12,7 +12,7 @@ import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
 import { z } from "zod";
-import { ucFirst } from "@/atomic-crm/utils";
+import { ucFirst, extractEmailLocalPart } from "@/atomic-crm/utils";
 
 const emailSchema = z.string().email("Invalid email address");
 
@@ -31,7 +31,7 @@ export const ContactCompactForm = () => {
   const handleEmailChange = (email: string) => {
     const { first_name, last_name } = getValues();
     if (first_name || last_name || !email) return;
-    const localPart = email.split("@")[0];
+    const localPart = extractEmailLocalPart(email);
     if (!localPart) return;
     const [first, last] = localPart.split(".");
     if (!first) return;
