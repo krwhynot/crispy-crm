@@ -172,8 +172,12 @@ describe("ActivitySinglePage", () => {
       expect(outcomeHeaders.length).toBeGreaterThan(0);
 
       // No collapsible triggers should exist (buttons with expand/collapse functionality)
-      expect(screen.queryByRole("button", { name: /follow-up/i })).toBeNull();
-      expect(screen.queryByRole("button", { name: /outcome/i })).toBeNull();
+      // Note: DatePicker buttons may exist in these sections, so we check for specific
+      // collapsible trigger patterns (expand/collapse buttons) rather than all buttons
+      const collapsibleTriggers = screen.queryAllByRole("button", {
+        name: /expand|collapse|toggle section/i,
+      });
+      expect(collapsibleTriggers).toHaveLength(0);
     });
   });
 

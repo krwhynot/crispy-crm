@@ -20,10 +20,13 @@ describe("ActivityCreate with Progress Tracking", () => {
     });
   });
 
-  test("shows 2 of 3 required fields initially due to schema defaults", async () => {
+  test("shows all required fields complete initially due to schema defaults", async () => {
+    // Zod v4 base schema provides defaults for type, activity_date, and subject
+    // so all required fields are satisfied by default now
     renderActivityCreate();
     await waitFor(() => {
-      expect(screen.getByText(/2 of 3 required fields/i)).toBeInTheDocument();
+      // The section should show "Complete" badge when all required fields have defaults
+      expect(screen.getByTestId("section-complete-badge")).toBeInTheDocument();
     });
   });
 
