@@ -9,9 +9,8 @@
 -- Using the first admin user as the default attribution for historical records
 UPDATE segments
 SET created_by = (
-  SELECT au.id
-  FROM auth.users au
-  JOIN sales s ON s.auth_user_id = au.id
+  SELECT s.id
+  FROM sales s
   WHERE s.role = 'admin'
   ORDER BY s.created_at ASC
   LIMIT 1

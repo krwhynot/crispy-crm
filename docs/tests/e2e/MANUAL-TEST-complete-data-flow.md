@@ -72,7 +72,7 @@
 | 3.1.2 | Click "Create" button | Create form opens | [ ] | [ ] | |
 | 3.1.3 | Fill Name: "Curry Blend" | Name field populated | [ ] | [ ] | |
 | 3.1.4 | Fill SKU: "SUN-CRY-001" | SKU populated | [ ] | [ ] | |
-| 3.1.5 | Select Category: "spices" | Category dropdown | [ ] | [ ] | |
+| 3.1.5 | Select Category: "spices_seasonings" | Category dropdown | [ ] | [ ] | |
 | 3.1.6 | Select Principal: "Sunrise Spice Co." | Principal autocomplete | [ ] | [ ] | |
 | 3.1.7 | Fill Description: "Traditional Indian curry blend" | Description populated | [ ] | [ ] | |
 | 3.1.8 | Click "Save" | Product created | [ ] | [ ] | |
@@ -83,7 +83,7 @@
 | 3.2.1 | Click "Create" button | Create form opens | [ ] | [ ] | |
 | 3.2.2 | Fill Name: "Turmeric Paste" | Name populated | [ ] | [ ] | |
 | 3.2.3 | Fill SKU: "SUN-TUR-002" | SKU populated | [ ] | [ ] | |
-| 3.2.4 | Select Category: "spices" | Category selected | [ ] | [ ] | |
+| 3.2.4 | Select Category: "spices_seasonings" | Category selected | [ ] | [ ] | |
 | 3.2.5 | Select Principal: "Sunrise Spice Co." | Principal selected | [ ] | [ ] | |
 | 3.2.6 | Click "Save" | Product created | [ ] | [ ] | |
 
@@ -93,7 +93,7 @@
 | 3.3.1 | Click "Create" button | Create form opens | [ ] | [ ] | |
 | 3.3.2 | Fill Name: "Garam Masala" | Name populated | [ ] | [ ] | |
 | 3.3.3 | Fill SKU: "SUN-GAR-003" | SKU populated | [ ] | [ ] | |
-| 3.3.4 | Select Category: "spices" | Category selected | [ ] | [ ] | |
+| 3.3.4 | Select Category: "spices_seasonings" | Category selected | [ ] | [ ] | |
 | 3.3.5 | Select Principal: "Sunrise Spice Co." | Principal selected | [ ] | [ ] | |
 | 3.3.6 | Click "Save" | Product created | [ ] | [ ] | |
 
