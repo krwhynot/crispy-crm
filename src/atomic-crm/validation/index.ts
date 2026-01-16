@@ -33,7 +33,7 @@ export * from "./organizations";
 export * from "./contacts";
 
 // Supporting entity schemas
-export * from "./tasks";
+// Note: tasks validation is inline in the task feature module
 export * from "./tags";
 export * from "./notes";
 export * from "./segments";

@@ -90,6 +90,7 @@ export type {
   ActivityOutcome,
 } from "./types";
 
-// Export KPI-related types and components for external use
+// Export KPI-related types for external use
 export type { KPIMetrics } from "./hooks/useKPIMetrics";
-export type { KPIMetricType } from "./components/KPICard";
+// KPICard is now centralized in @/components/ui/kpi-card
+export type { KPICardProps } from "@/components/ui/kpi-card";

@@ -1,13 +1,18 @@
 // src/atomic-crm/reports/components/KPICard.test.tsx
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { KPICard } from "./KPICard";
+import { KPICard } from "@/components/ui/kpi-card";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 describe("KPICard", () => {
   it("renders title and value", () => {
     render(
-      <KPICard title="Total Opportunities" value="42" change={15} trend="up" icon={TrendingUp} />
+      <KPICard
+        title="Total Opportunities"
+        value="42"
+        trend={{ value: 15, direction: "up" }}
+        icon={TrendingUp}
+      />
     );
 
     expect(screen.getByText("Total Opportunities")).toBeInTheDocument();
@@ -15,16 +20,32 @@ describe("KPICard", () => {
   });
 
   it("shows positive trend with green color", () => {
-    render(<KPICard title="Revenue" value="$100k" change={25} trend="up" icon={TrendingUp} />);
+    render(
+      <KPICard
+        title="Revenue"
+        value="$100k"
+        trend={{ value: 25, direction: "up" }}
+        icon={TrendingUp}
+      />
+    );
 
-    const changeElement = screen.getByText("+25%");
+    // The new component shows "↑25%" format
+    const changeElement = screen.getByText(/↑25%/);
     expect(changeElement).toHaveClass("text-success");
   });
 
   it("shows negative trend with red color", () => {
-    render(<KPICard title="Leads" value="10" change={-10} trend="down" icon={TrendingDown} />);
+    render(
+      <KPICard
+        title="Leads"
+        value="10"
+        trend={{ value: 10, direction: "down" }}
+        icon={TrendingDown}
+      />
+    );
 
-    const changeElement = screen.getByText("-10%");
+    // The new component shows "↓10%" format
+    const changeElement = screen.getByText(/↓10%/);
     expect(changeElement).toHaveClass("text-destructive");
   });
 
@@ -117,6 +138,16 @@ describe("KPICard", () => {
       expect(card).not.toHaveClass("border-warning/50");
       expect(card).not.toHaveClass("border-success/50");
       expect(card).not.toHaveClass("border-destructive/50");
+    });
+  });
+
+  describe("loading state", () => {
+    it("shows loading skeleton when loading is true", () => {
+      render(<KPICard title="Loading KPI" value="0" loading={true} />);
+
+      // Should show aria-busy attribute
+      const card = screen.getByLabelText(/Loading Loading KPI/i);
+      expect(card).toHaveAttribute("aria-busy", "true");
     });
   });
 });

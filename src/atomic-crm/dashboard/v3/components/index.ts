@@ -7,7 +7,8 @@ export { LogActivityFAB } from "./LogActivityFAB";
 export { QuickLogForm } from "./QuickLogForm";
 export { PrincipalPipelineTable } from "./PrincipalPipelineTable";
 export { PipelineDrillDownSheet } from "./PipelineDrillDownSheet";
-export { KPICard, type KPIMetricType } from "./KPICard";
+// KPICard is now centralized in @/components/ui/kpi-card
+export { KPICard } from "@/components/ui/kpi-card";
 export { KPISummaryRow } from "./KPISummaryRow";
 export { MyPerformanceWidget } from "./MyPerformanceWidget";
 export { EntityCombobox } from "./EntityCombobox";

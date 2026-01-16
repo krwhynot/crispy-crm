@@ -294,7 +294,8 @@ export const validateOrganizationForm = validateOrganizationForSubmission;
 export const organizationQuickCreateSchema = z.strictObject({
   name: z.string().trim().min(1, "Name required").max(255),
   organization_type: organizationTypeSchema,
-  priority: organizationPrioritySchema.default("C"),
+  // Note: priority is required in the schema, default provided in form's defaultValues
+  priority: organizationPrioritySchema,
   city: z.string().max(100).optional(),
   state: z.string().max(50).optional(),
 });

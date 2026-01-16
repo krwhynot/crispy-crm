@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNotify, useStore } from "ra-core";
+import { useNotify, useStoreContext } from "ra-core";
 import { isValidFilterField } from "../providers/supabase/filterRegistry";
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { devLog } from "@/lib/devLogger";
@@ -44,7 +44,7 @@ const DEFAULT_SORT_FIELDS: Record<string, string> = {
  * if invalid filters or sorts are detected and removed.
  */
 export const useFilterCleanup = (resource: string) => {
-  const [, storeApi] = useStore();
+  const store = useStoreContext();
   const notify = useNotify();
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export const useFilterCleanup = (resource: string) => {
       if (modified) {
         params.filter = cleanedFilter;
         localStorage.setItem(key, JSON.stringify(params));
-        storeApi.setItem(key, params);
+        store.setItem(key, params);
 
         devLog(
           "useFilterCleanup",

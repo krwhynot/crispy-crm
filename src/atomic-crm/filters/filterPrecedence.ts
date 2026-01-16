@@ -149,9 +149,11 @@ export const getInitialStageFilter = (urlFilters?: FilterValues): string[] => {
     getStoredFilterPreferences<string[]>("opportunity_hidden_stages") ??
     getDefaultVisibleStages();
 
-  // Ensure it's always an array
+  // Ensure it's always a string array
   if (Array.isArray(stageFilter)) {
-    return stageFilter;
+    // Type guard: filter values could be number[] from FilterValue type
+    // but stages are always strings in our domain
+    return stageFilter.map(String);
   }
 
   if (typeof stageFilter === "string") {
