@@ -35,5 +35,4 @@ export const TextField = <RecordType extends Record<string, any> = Record<string
 };
 
 export interface TextFieldProps<RecordType extends Record<string, any> = Record<string, any>>
-  extends FieldProps<RecordType>,
-    HTMLAttributes<HTMLSpanElement> {}
+  extends FieldProps<RecordType>, HTMLAttributes<HTMLSpanElement> {}

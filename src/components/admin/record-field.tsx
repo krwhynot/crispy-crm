@@ -80,8 +80,9 @@ export const RecordField = <RecordType extends Record<string, any> = Record<stri
 // FIXME remove custom type when using TypeScript >= 5.4 as it is now native
 type NoInfer<T> = T extends infer U ? U : never;
 
-export interface RecordFieldProps<RecordType extends Record<string, any> = Record<string, any>>
-  extends HTMLAttributes<HTMLDivElement> {
+export interface RecordFieldProps<
+  RecordType extends Record<string, any> = Record<string, any>,
+> extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   className?: string;
   empty?: ReactNode;

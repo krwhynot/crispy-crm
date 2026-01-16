@@ -101,8 +101,7 @@ DateFieldImpl.displayName = "DateFieldImpl";
 export const DateField = genericMemo(DateFieldImpl);
 
 export interface DateFieldProps<RecordType extends Record<string, any> = Record<string, any>>
-  extends FieldProps<RecordType>,
-    HTMLAttributes<HTMLSpanElement> {
+  extends FieldProps<RecordType>, HTMLAttributes<HTMLSpanElement> {
   locales?: Intl.LocalesArgument;
   options?: Intl.DateTimeFormatOptions;
   showTime?: boolean;

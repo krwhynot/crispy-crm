@@ -48,8 +48,7 @@ export const NumberField = <RecordType extends Record<string, any> = Record<stri
 };
 
 export interface NumberFieldProps<RecordType extends Record<string, any> = Record<string, any>>
-  extends FieldProps<RecordType>,
-    HTMLAttributes<HTMLSpanElement> {
+  extends FieldProps<RecordType>, HTMLAttributes<HTMLSpanElement> {
   locales?: string | string[];
   options?: object;
   transform?: (value: unknown) => number;

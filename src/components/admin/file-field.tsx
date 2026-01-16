@@ -105,8 +105,7 @@ export const FileField = <RecordType extends Record<string, any> = Record<string
 };
 
 export interface FileFieldProps<RecordType extends Record<string, any> = Record<string, any>>
-  extends FieldProps<RecordType>,
-    Omit<HTMLAttributes<HTMLElement>, "defaultValue"> {
+  extends FieldProps<RecordType>, Omit<HTMLAttributes<HTMLElement>, "defaultValue"> {
   /**
    * The source of the link to the file, for an array of files.
    */

@@ -5,8 +5,10 @@ import { SelectUI, type SelectUIProps, type SelectOption } from "@/components/ui
 // =============================================================================
 // SHARED BASE PROPS
 // =============================================================================
-interface GenericSelectInputBaseProps
-  extends Omit<SelectUIProps, "value" | "onChange" | "hasError" | "options"> {
+interface GenericSelectInputBaseProps extends Omit<
+  SelectUIProps,
+  "value" | "onChange" | "hasError" | "options"
+> {
   choices: Array<Record<string, unknown>>;
   optionValue?: string;
   optionLabel?: string;
@@ -16,8 +18,7 @@ interface GenericSelectInputBaseProps
 // FORM MODE (React Admin context)
 // =============================================================================
 interface GenericSelectInputFormProps
-  extends GenericSelectInputBaseProps,
-    Omit<InputProps, "source"> {
+  extends GenericSelectInputBaseProps, Omit<InputProps, "source"> {
   source: string;
   value?: never;
   onChange?: never;

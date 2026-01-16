@@ -2,6 +2,7 @@ import { AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import type { FieldErrors } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
 
 interface FormErrorSummaryProps {
   /**
@@ -41,7 +42,8 @@ function extractErrors(
     const fieldPath = prefix ? `${prefix}.${key}` : key;
 
     if (value?.message && typeof value.message === "string") {
-      const displayLabel = fieldLabels[fieldPath] || fieldLabels[key] || formatFieldName(key);
+      const displayLabel =
+        fieldLabels[fieldPath] || fieldLabels[key] || formatFormFieldLabel(key);
       result.push({ fieldPath, displayLabel, message: value.message });
     } else if (value && typeof value === "object") {
       result.push(...extractErrors(value as FieldErrors, fieldLabels, fieldPath));

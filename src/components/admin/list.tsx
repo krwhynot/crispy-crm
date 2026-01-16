@@ -57,8 +57,7 @@ export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<Re
 };
 
 export interface ListProps<RecordType extends RaRecord = RaRecord>
-  extends ListBaseProps<RecordType>,
-    ListViewProps<RecordType> {}
+  extends ListBaseProps<RecordType>, ListViewProps<RecordType> {}
 
 /**
  * ListView - Fixed page layout with scrollable list content

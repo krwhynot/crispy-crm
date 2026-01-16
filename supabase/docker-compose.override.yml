@@ -147,6 +147,7 @@ services:
     profiles:
       - email-testing # Only starts with: --profile email-testing
 
+
 # ============================================================================
 # Resource Summary:
 # - PostgreSQL:      2.0 GB

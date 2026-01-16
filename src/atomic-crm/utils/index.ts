@@ -48,6 +48,7 @@ export {
   EMPTY_PLACEHOLDER,
   ucFirst,
   formatFieldLabel,
+  getInitials,
 } from "./formatters";
 
 // Safe JSON parsing with Zod validation
