@@ -129,5 +129,5 @@ export const useFilterCleanup = (resource: string) => {
         type: "warning",
       });
     }
-  }, [resource, storeApi, notify]);
+  }, [resource, store, notify]);
 };

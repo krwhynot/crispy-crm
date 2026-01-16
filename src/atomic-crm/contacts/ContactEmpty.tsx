@@ -1,27 +1,19 @@
 import { CreateButton } from "@/components/admin/create-button";
-import useAppBarHeight from "../hooks/useAppBarHeight";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ContactImportButton } from "./ContactImportButton";
 
 export const ContactEmpty = () => {
-  const appbarHeight = useAppBarHeight();
   return (
-    <div
-      className="flex flex-col justify-center items-center gap-3"
-      style={{
-        height: `calc(100dvh - ${appbarHeight}px)`,
-      }}
+    <EmptyState
+      variant="fullscreen"
+      image="./img/empty.svg"
+      title="No contacts found"
+      description="It seems your contact list is empty."
     >
-      <img src="./img/empty.svg" alt="No contacts found" />
-      <div className="flex flex-col gap-0 items-center">
-        <h2 className="text-lg font-bold">No contacts found</h2>
-        <p className="text-sm text-muted-foreground text-center mb-4">
-          It seems your contact list is empty.
-        </p>
-      </div>
-      <div className="flex flex-row gap-2">
+      <div className="mt-4 flex flex-row gap-2">
         <CreateButton label="New Contact" />
         <ContactImportButton />
       </div>
-    </div>
+    </EmptyState>
   );
 };
