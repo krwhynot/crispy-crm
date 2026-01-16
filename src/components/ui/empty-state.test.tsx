@@ -91,7 +91,11 @@ describe("EmptyState", () => {
 
   it("renders image when provided", () => {
     render(
-      <EmptyState title="No Data Found" description="Try adjusting your filters." image="./test.svg" />
+      <EmptyState
+        title="No Data Found"
+        description="Try adjusting your filters."
+        image="./test.svg"
+      />
     );
 
     const img = screen.getByRole("img", { name: "No Data Found" });

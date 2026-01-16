@@ -24,23 +24,28 @@ describe("dateUtils", () => {
 
     describe("ISO 8601 week boundaries", () => {
       it("starts week on Monday (ISO 8601 standard)", () => {
-        const wednesday = new Date("2026-01-14");
+        // Use local time constructor to avoid UTC parsing gotcha
+        const wednesday = new Date(2026, 0, 14); // Jan 14, 2026 (Wednesday)
 
         const result = getWeekRange(wednesday);
 
         expect(result.start).toBe("2026-01-12");
-        const startDate = new Date(result.start);
-        expect(startDate.getDay()).toBe(1);
+        // Verify the returned string represents a Monday by parsing in local time
+        const startParts = result.start.split("-").map(Number) as [number, number, number];
+        const startDate = new Date(startParts[0], startParts[1] - 1, startParts[2]);
+        expect(startDate.getDay()).toBe(1); // Monday
       });
 
       it("ends week on Sunday", () => {
-        const wednesday = new Date("2026-01-14");
+        const wednesday = new Date(2026, 0, 14); // Jan 14, 2026 (Wednesday)
 
         const result = getWeekRange(wednesday);
 
         expect(result.end).toBe("2026-01-18");
-        const endDate = new Date(result.end);
-        expect(endDate.getDay()).toBe(0);
+        // Verify the returned string represents a Sunday by parsing in local time
+        const endParts = result.end.split("-").map(Number) as [number, number, number];
+        const endDate = new Date(endParts[0], endParts[1] - 1, endParts[2]);
+        expect(endDate.getDay()).toBe(0); // Sunday
       });
     });
 
