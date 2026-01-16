@@ -551,7 +551,7 @@ describe("ActivityDetailsTab", () => {
         <ActivityDetailsTab record={record} mode="edit" onModeToggle={mockOnModeToggle} />
       );
 
-      expect(screen.getByTestId("text-input-activity_date")).toBeInTheDocument();
+      expect(screen.getByTestId("date-input-activity_date")).toBeInTheDocument();
       expect(screen.getByText("Activity Date")).toBeInTheDocument();
     });
 
@@ -606,7 +606,7 @@ describe("ActivityDetailsTab", () => {
         <ActivityDetailsTab record={record} mode="edit" onModeToggle={mockOnModeToggle} />
       );
 
-      expect(screen.getByTestId("text-input-follow_up_date")).toBeInTheDocument();
+      expect(screen.getByTestId("date-input-follow_up_date")).toBeInTheDocument();
       expect(screen.getByText("Follow-up Date")).toBeInTheDocument();
     });
 
