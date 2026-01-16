@@ -8,6 +8,26 @@ import { useOrganizationDescendants } from "@/hooks";
  * Parent organization input that prevents hierarchy cycles.
  * Excludes self AND all descendants from the dropdown to prevent
  * users from selecting a child/grandchild as a parent.
+ *
+ * ## Architectural Decisions (Kintsugi Stabilization 2026-01-16)
+ *
+ * 1. **useOrganizationDescendants hook** - Complies with PROVIDER_RULES.md
+ *    (Strangler Fig pattern: no direct Supabase imports in components).
+ *    The hook encapsulates the `get_organization_descendants` RPC call.
+ *
+ * 2. **Loading state pattern** - Prevents race condition where user could
+ *    open dropdown before descendants filter is ready. The `isReady` guard
+ *    ensures the exclusion filter is populated before ReferenceInput renders.
+ *
+ * 3. **PostgREST string format** - Uses `@not.in` with pre-formatted string
+ *    `(1,2,3)` rather than array format. This is the reliable PostgREST syntax
+ *    for multi-value exclusion filters.
+ *
+ * 4. **filterKey for refetch** - Forces ReferenceInput to remount when
+ *    descendants change, preventing stale cached results.
+ *
+ * 5. **Smart default (root orgs)** - When search is empty, shows only root
+ *    organizations (`parent_organization_id IS NULL`) for better UX.
  */
 export const ParentOrganizationInput = () => {
   const record = useRecordContext<{ id?: number; parent_organization_id?: number }>();
