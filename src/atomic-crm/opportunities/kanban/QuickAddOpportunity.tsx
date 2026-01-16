@@ -3,6 +3,7 @@ import { useCreate, useNotify, useRefresh, useGetIdentity, useGetList } from "re
 import { Loader2, X } from "lucide-react";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
 import type { OpportunityStageValue, Organization, Opportunity } from "../../types";
+import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
 
 interface QuickAddOpportunityProps {
   stage: OpportunityStageValue;
@@ -140,7 +141,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
   };
 
   // Format stage for display
-  const stageLabel = stage.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const stageLabel = formatFieldLabel(stage);
 
   // ESC key handler for modal dismissal
   useEffect(() => {

@@ -255,7 +255,7 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
     sales?.last_name || null,
     sales?.email || null
   );
-  const initials = getInitials(
+  const initials = getInitialsWithEmailFallback(
     sales?.first_name || null,
     sales?.last_name || null,
     sales?.email || null
