@@ -21,6 +21,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import {
+  quickLogFormBaseSchema,
   activityLogSchema,
   type ActivityLogInput,
   ACTIVITY_TYPE_MAP,
@@ -82,8 +83,9 @@ export function QuickLogForm({
 
   // Form initialization with schema-derived defaults (Constitution compliant)
   // Priority: initialEntityId props > initialDraft > schema defaults
+  // Use base schema for defaults (Zod v4 - refined schemas don't support .partial())
   const defaultValues = useMemo(() => {
-    const schemaDefaults = activityLogSchema.partial().parse({});
+    const schemaDefaults = quickLogFormBaseSchema.partial().parse({});
 
     // Merge in order of precedence: schema < draft < explicit props
     const merged = {

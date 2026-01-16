@@ -3,7 +3,11 @@ import { useRef, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { quickAddSchema, type QuickAddInput } from "@/atomic-crm/validation/quickAdd";
+import {
+  quickAddBaseSchema,
+  quickAddSchema,
+  type QuickAddInput,
+} from "@/atomic-crm/validation/quickAdd";
 import { useQuickAdd } from "../hooks/useQuickAdd";
 import { useFilteredProducts } from "../hooks/useFilteredProducts";
 import { useGetList } from "ra-core";
@@ -85,8 +89,9 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     sort: { field: "name", order: "ASC" },
   });
 
-  // Derive defaults from schema first (single source of truth)
-  const schemaDefaults = quickAddSchema.partial().parse({});
+  // Derive defaults from base schema first (single source of truth)
+  // Use base schema for defaults (Zod v4 - refined schemas don't support .partial())
+  const schemaDefaults = quickAddBaseSchema.partial().parse({});
 
   // Then merge with validated localStorage for persistence
   // Use getStorageItem (which JSON-parses) since setStorageItem JSON-stringifies

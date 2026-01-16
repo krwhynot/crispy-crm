@@ -82,9 +82,9 @@ export const CloseOpportunityModal = ({
 }: CloseOpportunityModalProps) => {
   const isWin = targetStage === "closed_won";
 
-  // P5: Form defaults from closeOpportunitySchema.partial().parse({})
-  // This ensures Zod-defined defaults are used, not hardcoded values
-  const defaultValues = closeOpportunitySchema.partial().parse({
+  // P5: Form defaults from closeOpportunityBaseSchema.partial().parse({})
+  // Use base schema for defaults (Zod v4 - refined schemas don't support .partial())
+  const defaultValues = closeOpportunityBaseSchema.partial().parse({
     id: opportunityId,
     stage: targetStage,
   });

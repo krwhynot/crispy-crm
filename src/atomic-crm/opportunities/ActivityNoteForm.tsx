@@ -20,7 +20,7 @@ import { SelectUI } from "@/components/ui/select-ui";
 import { usePipelineConfig } from "../root/ConfigurationContext";
 import {
   activityNoteFormSchema,
-  activitiesSchema,
+  baseActivitiesSchema,
   INTERACTION_TYPE_OPTIONS,
   type ActivityNoteFormData,
 } from "../validation/activities";
@@ -50,9 +50,9 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
     label: `${contact.first_name} ${contact.last_name}`,
   }));
 
-  // Extract form defaults from schema per Constitution #5
-  // activitiesSchema provides defaults for activity_date and type
-  const schemaDefaults = activitiesSchema.partial().parse({});
+  // Extract form defaults from base schema per Constitution #5
+  // Use base schema for defaults (Zod v4 - refined schemas don't support .partial())
+  const schemaDefaults = baseActivitiesSchema.partial().parse({});
 
   const {
     control,
