@@ -42,8 +42,7 @@ function extractErrors(
     const fieldPath = prefix ? `${prefix}.${key}` : key;
 
     if (value?.message && typeof value.message === "string") {
-      const displayLabel =
-        fieldLabels[fieldPath] || fieldLabels[key] || formatFormFieldLabel(key);
+      const displayLabel = fieldLabels[fieldPath] || fieldLabels[key] || formatFormFieldLabel(key);
       result.push({ fieldPath, displayLabel, message: value.message });
     } else if (value && typeof value === "object") {
       result.push(...extractErrors(value as FieldErrors, fieldLabels, fieldPath));
@@ -54,13 +53,12 @@ function extractErrors(
 }
 
 /**
- * Converts field_name to "Field Name" format
+ * Converts field_name to "Field Name" format for form errors.
+ * Extends formatFieldLabel with camelCase handling and Id suffix removal.
  */
-function formatFieldName(field: string): string {
-  return field
-    .replace(/_/g, " ")
+function formatFormFieldLabel(field: string): string {
+  return formatFieldLabel(field)
     .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/\b\w/g, (char) => char.toUpperCase())
     .replace(/Id$/, "");
 }
 

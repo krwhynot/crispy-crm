@@ -16,6 +16,33 @@
 -- ============================================================================
 
 -- ============================================================================
+-- SECTION 0: CLEANUP EXISTING E2E DATA (Idempotency)
+-- ============================================================================
+-- Remove any existing E2E test data to allow re-running this seed file
+
+-- Delete in reverse order of dependencies
+-- First: delete notes linked to E2E opportunities
+DELETE FROM opportunity_notes WHERE opportunity_id BETWEEN 100 AND 113;
+
+-- Second: delete tasks linked to E2E opportunities or with E2E IDs
+DELETE FROM tasks WHERE opportunity_id BETWEEN 100 AND 113;
+DELETE FROM tasks WHERE id BETWEEN 100 AND 120;
+
+-- Third: delete activities linked to E2E opportunities or with E2E IDs
+DELETE FROM activities WHERE opportunity_id BETWEEN 100 AND 113;
+DELETE FROM activities WHERE id BETWEEN 200 AND 260;
+
+-- Fourth: delete opportunities with E2E IDs
+DELETE FROM opportunities WHERE id BETWEEN 100 AND 113;
+
+-- Fifth: delete contacts - both E2E IDs and any linked to E2E orgs
+DELETE FROM contacts WHERE id BETWEEN 200 AND 211;
+DELETE FROM contacts WHERE organization_id BETWEEN 100 AND 107;
+
+-- Sixth: delete E2E organizations
+DELETE FROM organizations WHERE id BETWEEN 100 AND 107;
+
+-- ============================================================================
 -- SECTION 1: E2E CUSTOMER ORGANIZATIONS (IDs 100-107)
 -- ============================================================================
 -- Each E2E flow gets a dedicated customer to avoid interference
@@ -760,31 +787,31 @@ SELECT setval(pg_get_serial_sequence('tasks', 'id'), GREATEST(120, (SELECT MAX(i
 -- ============================================================================
 -- Key decision points and context notes
 
-INSERT INTO "public"."notes" (
-  opportunity_id, contact_id, text, sales_id, created_at, updated_at
+INSERT INTO "public"."opportunity_notes" (
+  opportunity_id, text, sales_id, date, created_at, updated_at
 )
 VALUES
   -- Happy Path A
-  (100, 200, 'E2E Note: Initial discovery revealed competitor quality issues. Strong opportunity.',
-   1, NOW() - INTERVAL '85 days', NOW()),
-  (100, 201, 'E2E Note: Chef champion identified. Very enthusiastic about product quality.',
-   1, NOW() - INTERVAL '70 days', NOW()),
-  (100, 200, 'E2E Note: Deal closed! 3-year agreement. Excellent relationship built.',
-   1, NOW() - INTERVAL '5 days', NOW()),
+  (100, 'E2E Note: Initial discovery revealed competitor quality issues. Strong opportunity.',
+   1, NOW() - INTERVAL '85 days', NOW() - INTERVAL '85 days', NOW()),
+  (100, 'E2E Note: Chef champion identified. Very enthusiastic about product quality.',
+   1, NOW() - INTERVAL '70 days', NOW() - INTERVAL '70 days', NOW()),
+  (100, 'E2E Note: Deal closed! 3-year agreement. Excellent relationship built.',
+   1, NOW() - INTERVAL '5 days', NOW() - INTERVAL '5 days', NOW()),
 
   -- Lost Deal - Price
-  (102, 203, 'E2E Note: Budget constraints identified early. Risk factor for price sensitivity.',
-   1, NOW() - INTERVAL '45 days', NOW()),
-  (102, 203, 'E2E Note: Lost due to 15% price gap. Will revisit next fiscal year.',
-   1, NOW() - INTERVAL '20 days', NOW()),
+  (102, 'E2E Note: Budget constraints identified early. Risk factor for price sensitivity.',
+   1, NOW() - INTERVAL '45 days', NOW() - INTERVAL '45 days', NOW()),
+  (102, 'E2E Note: Lost due to 15% price gap. Will revisit next fiscal year.',
+   1, NOW() - INTERVAL '20 days', NOW() - INTERVAL '20 days', NOW()),
 
   -- Stalled
-  (110, 208, 'E2E Note: Contact has gone dark. Multiple attempts with no response.',
-   1, NOW() - INTERVAL '40 days', NOW()),
+  (110, 'E2E Note: Contact has gone dark. Multiple attempts with no response.',
+   1, NOW() - INTERVAL '40 days', NOW() - INTERVAL '40 days', NOW()),
 
   -- On-Hold
-  (113, 209, 'E2E Note: Customer pausing all vendor decisions during renovation. Expected Q2 restart.',
-   1, NOW() - INTERVAL '20 days', NOW());
+  (113, 'E2E Note: Customer pausing all vendor decisions during renovation. Expected Q2 restart.',
+   1, NOW() - INTERVAL '20 days', NOW() - INTERVAL '20 days', NOW());
 
 
 -- ============================================================================
