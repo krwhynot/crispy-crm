@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-16T13:25:07.516Z",
+  "generated_at": "2026-01-17T20:21:43.559Z",
   "item_count": 8,
   "items": [
     {
@@ -719,7 +719,7 @@
       "relatedSchemas": [
         "contactOrganizationSchema",
         "organizationNoteSchema",
-        "organizationDistributorSchema",
+        "baseOrganizationDistributorSchema",
         "organizationTypeSchema",
         "organizationPrioritySchema",
         "organizationQuickCreateSchema",

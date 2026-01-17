@@ -32,6 +32,7 @@ import { useEntityData, type Contact } from "../hooks/useEntityData";
 import { EntityCombobox } from "./EntityCombobox";
 import { ActivityTypeSection } from "./ActivityTypeSection";
 import { FollowUpSection } from "./FollowUpSection";
+import { SidepaneSection } from "@/components/layouts/sidepane";
 
 interface QuickLogFormProps {
   onComplete: () => void;
@@ -331,10 +332,9 @@ export function QuickLogForm({
         />
 
         {/* Group 2: Who was involved? */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium">Who was involved?</h3>
-
-          <FormField
+        <SidepaneSection label="Who Was Involved">
+          <div className="space-y-3">
+            <FormField
             control={form.control}
             name="contactId"
             render={({ field }) => (
@@ -419,7 +419,8 @@ export function QuickLogForm({
               />
             )}
           />
-        </div>
+          </div>
+        </SidepaneSection>
 
         {/* Group 3: Notes */}
         <FormField

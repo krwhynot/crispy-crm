@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-17T20:17:43.455Z",
+  "generated_at": "2026-01-17T20:21:43.545Z",
   "item_count": 12,
   "items": [
     {
@@ -587,7 +587,8 @@
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
-        "quickLogFormBaseSchema"
+        "quickLogFormBaseSchema",
+        "quickLogFormPropsSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,

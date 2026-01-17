@@ -1,6 +1,6 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-16T13:25:07.518Z",
+  "generated_at": "2026-01-17T20:21:43.567Z",
   "item_count": 12,
   "items": [
     {
@@ -81,7 +81,6 @@
       "relatedSchemas": [
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
         "unarchiveOpportunityWithRelationsParamsSchema"
       ],
       "validationFunctions": [],
@@ -107,7 +106,6 @@
       "relatedSchemas": [
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
         "archiveOpportunityWithRelationsParamsSchema"
       ],
       "validationFunctions": [],
@@ -160,7 +158,6 @@
       "relatedSchemas": [
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
         "productSchema"
       ],
       "validationFunctions": [],

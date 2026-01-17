@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-16T13:25:07.518Z",
+  "generated_at": "2026-01-17T20:21:43.566Z",
   "item_count": 5,
   "items": [
     {
@@ -587,7 +587,6 @@
       "relatedSchemas": [
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
         "productSchema"
       ],
       "validationFunctions": [

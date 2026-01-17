@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-core",
-  "generated_at": "2026-01-16T13:25:07.513Z",
+  "generated_at": "2026-01-17T20:21:43.558Z",
   "item_count": 6,
   "items": [
     {
@@ -21,7 +21,6 @@
       "relatedSchemas": [
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
         "tagSchema"
       ],
       "validationFunctions": [],
@@ -42,8 +41,7 @@
       ],
       "relatedSchemas": [
         "createOpportunitySchema",
-        "updateOpportunitySchema",
-        "closeOpportunitySchema"
+        "updateOpportunitySchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -117,7 +115,6 @@
       "relatedSchemas": [
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
         "productSchema"
       ],
       "validationFunctions": [

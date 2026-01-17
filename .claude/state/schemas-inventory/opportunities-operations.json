@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-17T20:17:43.456Z",
+  "generated_at": "2026-01-17T20:21:43.558Z",
   "item_count": 4,
   "items": [
     {
@@ -56,9 +56,16 @@
         }
       ],
       "relatedSchemas": [
+        "opportunityNoteSchema",
+        "opportunityStageSchema",
+        "opportunityPrioritySchema",
+        "opportunityProductSchema",
         "quickCreateOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunityBaseSchema"
+        "closeOpportunityBaseSchema",
+        "archiveOpportunityWithRelationsParamsSchema",
+        "unarchiveOpportunityWithRelationsParamsSchema",
+        "syncOpportunityWithProductsParamsSchema"
       ],
       "validationFunctions": [
         "validateCreateOpportunity"
@@ -194,9 +201,16 @@
         }
       ],
       "relatedSchemas": [
+        "opportunityNoteSchema",
+        "opportunityStageSchema",
+        "opportunityPrioritySchema",
+        "opportunityProductSchema",
         "createOpportunitySchema",
         "quickCreateOpportunitySchema",
-        "closeOpportunityBaseSchema"
+        "closeOpportunityBaseSchema",
+        "archiveOpportunityWithRelationsParamsSchema",
+        "unarchiveOpportunityWithRelationsParamsSchema",
+        "syncOpportunityWithProductsParamsSchema"
       ],
       "validationFunctions": [
         "validateUpdateOpportunity"
