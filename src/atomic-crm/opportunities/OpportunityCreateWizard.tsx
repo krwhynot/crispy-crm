@@ -170,7 +170,7 @@ const OpportunityCreateWizard = () => {
 };
 
 interface OpportunityWizardContentProps {
-  checkForSimilar: (name: string) => Promise<void>;
+  checkForSimilar: (name: string) => { hasSimilar: boolean; matches: unknown[] };
   hasConfirmed: boolean;
   resetConfirmation: () => void;
   contextAwareRedirect: (resource: string, id?: string | number) => string;
