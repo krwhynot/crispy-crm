@@ -134,6 +134,14 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       // FIX [WF-E2E-001]: Handle both Error instances and React Admin validation errors
       // React Admin validation errors have shape: { message: string, body: { errors: {...} } }
       console.log("[QuickAdd] create() threw error:", error);
+
+      // Handle Zod validation errors with specific field messages (fail-fast principle)
+      if (error instanceof z.ZodError) {
+        const fieldErrors = error.issues.map((issue) => issue.message).join(", ");
+        notify(`Validation failed: ${fieldErrors}`, { type: "error" });
+        return;
+      }
+
       let message = "Error creating opportunity";
       if (error instanceof Error) {
         message = error.message;
