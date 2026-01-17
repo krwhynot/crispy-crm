@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-16T13:25:09.915Z",
+  "generated_at": "2026-01-17T20:17:45.824Z",
   "items": {
     "nodes": [
       {
@@ -49,10 +49,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/notes/NotesIterator.tsx:8:NotesIterator",
+        "id": "src/atomic-crm/notes/NotesIterator.tsx:16:NotesIterator",
         "name": "NotesIterator",
         "file": "src/atomic-crm/notes/NotesIterator.tsx",
-        "line": 8,
+        "line": 16,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notes/NotesList.tsx:19:NotesList",
+        "name": "NotesList",
+        "file": "src/atomic-crm/notes/NotesList.tsx",
+        "line": 19,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -906,56 +915,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NotesIterator.tsx:8:NotesIterator",
-        "target": "useListContext",
-        "targetName": "useListContext",
-        "edgeType": "hook",
-        "line": 13,
+        "source": "src/atomic-crm/notes/NotesIterator.tsx:16:NotesIterator",
+        "target": "NoteCreate",
+        "targetName": "NoteCreate",
+        "edgeType": "render",
+        "line": 19,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NotesIterator.tsx:8:NotesIterator",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
+        "source": "src/atomic-crm/notes/NotesIterator.tsx:16:NotesIterator",
+        "target": "NotesList",
+        "targetName": "NotesList",
+        "edgeType": "render",
         "line": 20,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NotesIterator.tsx:8:NotesIterator",
+        "source": "src/atomic-crm/notes/NotesList.tsx:19:NotesList",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notes/NotesList.tsx:19:NotesList",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notes/NotesList.tsx:19:NotesList",
         "target": "React.Fragment",
         "targetName": "React.Fragment",
         "edgeType": "render",
-        "line": 21,
+        "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NotesIterator.tsx:8:NotesIterator",
-        "target": "NoteCreate",
-        "targetName": "NoteCreate",
+        "source": "src/atomic-crm/notes/NotesList.tsx:19:NotesList",
+        "target": "SidepaneEmptyState",
+        "targetName": "SidepaneEmptyState",
         "edgeType": "render",
-        "line": 17,
-        "conditional": false,
+        "line": 28,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NotesIterator.tsx:8:NotesIterator",
+        "source": "src/atomic-crm/notes/NotesList.tsx:19:NotesList",
         "target": "Note",
         "targetName": "Note",
         "edgeType": "render",
-        "line": 22,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NotesIterator.tsx:8:NotesIterator",
+        "source": "src/atomic-crm/notes/NotesList.tsx:19:NotesList",
         "target": "Separator",
         "targetName": "Separator",
         "edgeType": "render",
-        "line": 23,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },

@@ -1,10 +1,10 @@
 {
   "chunk_name": "quickAdd",
-  "generated_at": "2026-01-16T13:25:07.518Z",
+  "generated_at": "2026-01-17T20:17:43.457Z",
   "item_count": 1,
   "items": [
     {
-      "name": "quickAddSchema",
+      "name": "quickAddBaseSchema",
       "file": "src/atomic-crm/validation/quickAdd.ts",
       "line": 17,
       "schemaType": "strictObject",

@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-16T13:25:09.891Z",
+  "generated_at": "2026-01-17T20:17:45.804Z",
   "items": {
     "nodes": [
       {
@@ -697,10 +697,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:21:ContactNotesTab",
+        "id": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:23:ContactNotesTab",
         "name": "ContactNotesTab",
         "file": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx",
-        "line": 21,
+        "line": 23,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -11706,38 +11706,29 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:21:ContactNotesTab",
+        "source": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:23:ContactNotesTab",
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
-        "edgeType": "render",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:21:ContactNotesTab",
-        "target": "ReferenceManyField",
-        "targetName": "ReferenceManyField",
         "edgeType": "render",
         "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:21:ContactNotesTab",
-        "target": "SidepaneEmptyState",
-        "targetName": "SidepaneEmptyState",
+        "source": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:23:ContactNotesTab",
+        "target": "ReferenceManyField",
+        "targetName": "ReferenceManyField",
         "edgeType": "render",
-        "line": 30,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:21:ContactNotesTab",
+        "source": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx:23:ContactNotesTab",
         "target": "NotesIterator",
         "targetName": "NotesIterator",
         "edgeType": "render",
-        "line": 36,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },

@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-16T13:25:07.514Z",
+  "generated_at": "2026-01-17T20:17:43.456Z",
   "item_count": 4,
   "items": [
     {
@@ -56,16 +56,9 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityNoteSchema",
-        "opportunityStageSchema",
-        "opportunityPrioritySchema",
-        "opportunityProductSchema",
         "quickCreateOpportunitySchema",
         "updateOpportunitySchema",
-        "closeOpportunitySchema",
-        "archiveOpportunityWithRelationsParamsSchema",
-        "unarchiveOpportunityWithRelationsParamsSchema",
-        "syncOpportunityWithProductsParamsSchema"
+        "closeOpportunityBaseSchema"
       ],
       "validationFunctions": [
         "validateCreateOpportunity"
@@ -167,8 +160,7 @@
       ],
       "relatedSchemas": [
         "createOpportunitySchema",
-        "updateOpportunitySchema",
-        "closeOpportunitySchema"
+        "updateOpportunitySchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -202,16 +194,9 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityNoteSchema",
-        "opportunityStageSchema",
-        "opportunityPrioritySchema",
-        "opportunityProductSchema",
         "createOpportunitySchema",
         "quickCreateOpportunitySchema",
-        "closeOpportunitySchema",
-        "archiveOpportunityWithRelationsParamsSchema",
-        "unarchiveOpportunityWithRelationsParamsSchema",
-        "syncOpportunityWithProductsParamsSchema"
+        "closeOpportunityBaseSchema"
       ],
       "validationFunctions": [
         "validateUpdateOpportunity"
@@ -220,7 +205,7 @@
       "hasSuperRefine": false
     },
     {
-      "name": "closeOpportunitySchema",
+      "name": "closeOpportunityBaseSchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
       "line": 399,
       "schemaType": "strictObject",
@@ -278,20 +263,10 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityNoteSchema",
-        "opportunityStageSchema",
-        "opportunityPrioritySchema",
-        "opportunityProductSchema",
         "createOpportunitySchema",
-        "quickCreateOpportunitySchema",
-        "updateOpportunitySchema",
-        "archiveOpportunityWithRelationsParamsSchema",
-        "unarchiveOpportunityWithRelationsParamsSchema",
-        "syncOpportunityWithProductsParamsSchema"
+        "updateOpportunitySchema"
       ],
-      "validationFunctions": [
-        "validateCloseOpportunity"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     }

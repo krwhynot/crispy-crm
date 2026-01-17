@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-16T13:25:01.413Z",
+  "generated_at": "2026-01-17T20:17:35.567Z",
   "item_count": 81,
   "items": [
     {
@@ -1223,7 +1223,7 @@
     {
       "name": "CloseOpportunityModal",
       "file": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
-      "line": 73,
+      "line": 74,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1253,7 +1253,7 @@
     {
       "name": "CloseOpportunityModal",
       "file": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
-      "line": 73,
+      "line": 74,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2135,7 +2135,7 @@
     {
       "name": "QuickAddOpportunity",
       "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -2152,7 +2152,8 @@
         "@/atomic-crm/utils/formatters",
         "lucide-react",
         "react",
-        "react-admin"
+        "react-admin",
+        "zod"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -2220,7 +2221,7 @@
     {
       "name": "QuickAddForm",
       "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
-      "line": 77,
+      "line": 81,
       "type": "presentational",
       "hooks": [
         "useEffect",

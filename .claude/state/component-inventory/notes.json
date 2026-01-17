@@ -1,7 +1,7 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-16T13:25:01.412Z",
-  "item_count": 4,
+  "generated_at": "2026-01-17T20:17:35.566Z",
+  "item_count": 5,
   "items": [
     {
       "name": "Note",
@@ -99,22 +99,40 @@
     {
       "name": "NotesIterator",
       "file": "src/atomic-crm/notes/NotesIterator.tsx",
-      "line": 8,
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./NoteCreate",
+        "./NotesList"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "NoteCreate",
+        "NotesList"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "NotesList",
+      "file": "src/atomic-crm/notes/NotesList.tsx",
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useListContext"
       ],
       "imports": [
         "./Note",
-        "./NoteCreate",
+        "@/components/layouts/sidepane/SidepaneEmptyState",
+        "@/components/layouts/sidepane/empty-state-content",
         "@/components/ui/separator",
         "ra-core",
         "react"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "Note",
-        "NoteCreate"
+        "Note"
       ],
       "contextDependencies": [
         "useListContext"

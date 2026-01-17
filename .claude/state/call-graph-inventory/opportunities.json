@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-16T13:25:09.917Z",
+  "generated_at": "2026-01-17T20:17:45.825Z",
   "items": {
     "nodes": [
       {
@@ -454,10 +454,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "id": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "name": "CloseOpportunityModal",
         "file": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
-        "line": 73,
+        "line": 74,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -967,10 +967,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "id": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "name": "QuickAddOpportunity",
         "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-        "line": 14,
+        "line": 15,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1039,19 +1039,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:39:AccessibleField",
+        "id": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:43:AccessibleField",
         "name": "AccessibleField",
         "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
-        "line": 39,
+        "line": 43,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "id": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "name": "QuickAddForm",
         "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
-        "line": 77,
+        "line": 81,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -6139,7 +6139,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 203,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
@@ -6148,7 +6148,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 208,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
@@ -6157,7 +6157,7 @@
         "target": "contextAwareRedirect",
         "targetName": "contextAwareRedirect",
         "edgeType": "call",
-        "line": 210,
+        "line": 215,
         "conditional": false,
         "inLoop": false
       },
@@ -6166,7 +6166,7 @@
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 211,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
@@ -6175,7 +6175,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 216,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
@@ -6184,7 +6184,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 222,
+        "line": 227,
         "conditional": true,
         "inLoop": false
       },
@@ -6193,7 +6193,7 @@
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 222,
+        "line": 227,
         "conditional": true,
         "inLoop": false
       },
@@ -6202,7 +6202,7 @@
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 223,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
@@ -6211,7 +6211,7 @@
         "target": "handlePotentialDiscard",
         "targetName": "handlePotentialDiscard",
         "edgeType": "call",
-        "line": 235,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
@@ -6220,7 +6220,7 @@
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 235,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
@@ -6229,7 +6229,7 @@
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 241,
+        "line": 246,
         "conditional": false,
         "inLoop": false
       },
@@ -6238,7 +6238,7 @@
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 245,
+        "line": 250,
         "conditional": false,
         "inLoop": false
       },
@@ -6247,7 +6247,7 @@
         "target": "FormProgressProvider",
         "targetName": "FormProgressProvider",
         "edgeType": "render",
-        "line": 239,
+        "line": 244,
         "conditional": false,
         "inLoop": false
       },
@@ -6256,7 +6256,7 @@
         "target": "FormWizard",
         "targetName": "FormWizard",
         "edgeType": "render",
-        "line": 253,
+        "line": 258,
         "conditional": false,
         "inLoop": false
       },
@@ -6265,16 +6265,7 @@
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "callback",
-        "line": 253,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
-        "target": "WizardStep",
-        "targetName": "WizardStep",
-        "edgeType": "render",
-        "line": 257,
+        "line": 258,
         "conditional": false,
         "inLoop": false
       },
@@ -6307,10 +6298,19 @@
       },
       {
         "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
+        "target": "WizardStep",
+        "targetName": "WizardStep",
+        "edgeType": "render",
+        "line": 277,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx:179:OpportunityWizardContent",
         "target": "FormErrorSummary",
         "targetName": "FormErrorSummary",
         "edgeType": "render",
-        "line": 242,
+        "line": 247,
         "conditional": false,
         "inLoop": false
       },
@@ -6319,7 +6319,7 @@
         "target": "FormProgressBar",
         "targetName": "FormProgressBar",
         "edgeType": "render",
-        "line": 250,
+        "line": 255,
         "conditional": false,
         "inLoop": false
       },
@@ -6328,7 +6328,7 @@
         "target": "StepIndicator",
         "targetName": "StepIndicator",
         "edgeType": "render",
-        "line": 255,
+        "line": 260,
         "conditional": false,
         "inLoop": false
       },
@@ -6337,7 +6337,7 @@
         "target": "OpportunityWizardStep1",
         "targetName": "OpportunityWizardStep1",
         "edgeType": "render",
-        "line": 258,
+        "line": 263,
         "conditional": false,
         "inLoop": false
       },
@@ -6346,7 +6346,7 @@
         "target": "OpportunityWizardStep2",
         "targetName": "OpportunityWizardStep2",
         "edgeType": "render",
-        "line": 263,
+        "line": 268,
         "conditional": false,
         "inLoop": false
       },
@@ -6355,7 +6355,7 @@
         "target": "OpportunityWizardStep3",
         "targetName": "OpportunityWizardStep3",
         "edgeType": "render",
-        "line": 268,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },
@@ -6364,7 +6364,7 @@
         "target": "OpportunityWizardStep4",
         "targetName": "OpportunityWizardStep4",
         "edgeType": "render",
-        "line": 273,
+        "line": 278,
         "conditional": false,
         "inLoop": false
       },
@@ -6373,7 +6373,7 @@
         "target": "WizardNavigation",
         "targetName": "WizardNavigation",
         "edgeType": "render",
-        "line": 277,
+        "line": 282,
         "conditional": false,
         "inLoop": false
       },
@@ -6382,7 +6382,7 @@
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 277,
+        "line": 282,
         "conditional": false,
         "inLoop": false
       },
@@ -6391,7 +6391,7 @@
         "target": "UnsavedChangesDialog",
         "targetName": "UnsavedChangesDialog",
         "edgeType": "render",
-        "line": 281,
+        "line": 286,
         "conditional": false,
         "inLoop": false
       },
@@ -12003,52 +12003,43 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 86,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 86,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "useForm",
         "targetName": "useForm",
         "edgeType": "hook",
-        "line": 91,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
-        "edgeType": "call",
         "line": 92,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "useWatch",
-        "targetName": "useWatch",
-        "edgeType": "hook",
-        "line": 101,
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "zodResolver",
+        "targetName": "zodResolver",
+        "edgeType": "call",
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "useWatch",
         "targetName": "useWatch",
         "edgeType": "hook",
@@ -12057,7 +12048,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "useWatch",
         "targetName": "useWatch",
         "edgeType": "hook",
@@ -12066,272 +12057,281 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "useEffect",
-        "targetName": "useEffect",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "useWatch",
+        "targetName": "useWatch",
         "edgeType": "hook",
-        "line": 112,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "trigger",
-        "targetName": "trigger",
-        "edgeType": "call",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
         "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 120,
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "trigger",
+        "targetName": "trigger",
+        "edgeType": "call",
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 122,
+        "line": 123,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 133,
+        "line": 134,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "onConfirm",
         "targetName": "onConfirm",
         "edgeType": "call",
-        "line": 135,
+        "line": 136,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 141,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "onOpenChange",
-        "targetName": "onOpenChange",
-        "edgeType": "call",
         "line": 142,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 146,
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "onOpenChange",
+        "targetName": "onOpenChange",
+        "edgeType": "call",
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 147,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "onOpenChange",
         "targetName": "onOpenChange",
         "edgeType": "call",
-        "line": 150,
+        "line": 151,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 187,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 223,
+        "line": 224,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 248,
+        "line": 249,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "Dialog",
         "targetName": "Dialog",
-        "edgeType": "render",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "handleOpenChange",
-        "targetName": "handleOpenChange",
-        "edgeType": "callback",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "DialogContent",
-        "targetName": "DialogContent",
         "edgeType": "render",
         "line": 158,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "handleOpenChange",
+        "targetName": "handleOpenChange",
+        "edgeType": "callback",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "DialogContent",
+        "targetName": "DialogContent",
+        "edgeType": "render",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "DialogHeader",
         "targetName": "DialogHeader",
         "edgeType": "render",
-        "line": 162,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "DialogTitle",
         "targetName": "DialogTitle",
         "edgeType": "render",
-        "line": 174,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "DialogDescription",
         "targetName": "DialogDescription",
         "edgeType": "render",
-        "line": 179,
+        "line": 180,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "FormProvider",
         "targetName": "FormProvider",
         "edgeType": "render",
-        "line": 186,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "DialogFooter",
         "targetName": "DialogFooter",
-        "edgeType": "render",
-        "line": 235,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "Button",
-        "targetName": "Button",
         "edgeType": "render",
         "line": 236,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
-        "target": "handleCancel",
-        "targetName": "handleCancel",
-        "edgeType": "callback",
-        "line": 239,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 245,
+        "line": 237,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "handleCancel",
+        "targetName": "handleCancel",
+        "edgeType": "callback",
+        "line": 240,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "Trophy",
         "targetName": "Trophy",
         "edgeType": "render",
-        "line": 167,
+        "line": 168,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "XCircle",
         "targetName": "XCircle",
         "edgeType": "render",
-        "line": 171,
+        "line": 172,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 190,
+        "line": 191,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 198,
+        "line": 199,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 210,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:73:CloseOpportunityModal",
+        "source": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx:74:CloseOpportunityModal",
         "target": "AlertCircle",
         "targetName": "AlertCircle",
         "edgeType": "render",
-        "line": 225,
+        "line": 226,
         "conditional": false,
         "inLoop": false
       },
@@ -20040,16 +20040,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 15,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -20058,7 +20049,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -20067,7 +20058,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -20076,461 +20067,560 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 20,
+        "line": 19,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "useCreate",
         "targetName": "useCreate",
-        "edgeType": "hook",
-        "line": 25,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "useGetIdentity",
-        "targetName": "useGetIdentity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
         "edgeType": "hook",
         "line": 28,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "useGetList",
-        "targetName": "useGetList",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 31,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 41,
+        "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 56,
+        "line": 58,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 69,
+        "line": 71,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "setErrors",
-        "targetName": "setErrors",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "log",
+        "targetName": "log",
         "edgeType": "call",
-        "line": 70,
+        "line": 72,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 75,
+        "line": 73,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "setErrors",
+        "targetName": "setErrors",
+        "edgeType": "call",
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "parse",
-        "targetName": "parse",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "log",
+        "targetName": "log",
         "edgeType": "call",
         "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 80,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 82,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "Number",
-        "targetName": "Number",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "parse",
+        "targetName": "parse",
         "edgeType": "call",
         "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "find",
-        "targetName": "find",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "trim",
+        "targetName": "trim",
         "edgeType": "call",
-        "line": 90,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 90,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 91,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 91,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 94,
+        "line": 102,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "log",
+        "targetName": "log",
         "edgeType": "call",
-        "line": 100,
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 113,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "onOpportunityCreated",
         "targetName": "onOpportunityCreated",
         "edgeType": "call",
-        "line": 115,
+        "line": 129,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 118,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 119,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setName",
         "targetName": "setName",
         "edgeType": "call",
-        "line": 120,
+        "line": 134,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setPrincipalId",
         "targetName": "setPrincipalId",
         "edgeType": "call",
-        "line": 121,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setCustomerId",
         "targetName": "setCustomerId",
         "edgeType": "call",
-        "line": 122,
+        "line": 136,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 123,
+        "line": 137,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 139,
+        "line": 146,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "formatFieldLabel",
         "targetName": "formatFieldLabel",
         "edgeType": "call",
-        "line": 144,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 147,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 149,
+        "line": 172,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "addEventListener",
         "targetName": "addEventListener",
         "edgeType": "call",
-        "line": 151,
+        "line": 174,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "removeEventListener",
         "targetName": "removeEventListener",
         "edgeType": "call",
-        "line": 152,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 159,
+        "line": 182,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 171,
+        "line": 194,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 181,
+        "line": 204,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setName",
         "targetName": "setName",
         "edgeType": "call",
-        "line": 201,
+        "line": 224,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 203,
+        "line": 226,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setPrincipalId",
         "targetName": "setPrincipalId",
         "edgeType": "call",
-        "line": 230,
+        "line": 253,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 233,
+        "line": 256,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 245,
+        "line": 268,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setCustomerId",
         "targetName": "setCustomerId",
         "edgeType": "call",
-        "line": 266,
+        "line": 289,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 269,
+        "line": 292,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 281,
+        "line": 304,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setIsOpen",
         "targetName": "setIsOpen",
         "edgeType": "call",
-        "line": 311,
+        "line": 334,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "setName",
         "targetName": "setName",
         "edgeType": "call",
-        "line": 312,
+        "line": 335,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "callback",
-        "line": 191,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "X",
         "targetName": "X",
         "edgeType": "render",
-        "line": 185,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:14:QuickAddOpportunity",
+        "source": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:15:QuickAddOpportunity",
         "target": "Loader2",
         "targetName": "Loader2",
         "edgeType": "render",
-        "line": 326,
+        "line": 349,
         "conditional": true,
         "inLoop": false
       },
@@ -20841,196 +20931,169 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:39:AccessibleField",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:43:AccessibleField",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 50,
+        "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:39:AccessibleField",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:43:AccessibleField",
         "target": "cloneElement",
         "targetName": "cloneElement",
         "edgeType": "call",
-        "line": 61,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:39:AccessibleField",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:43:AccessibleField",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 51,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "useQuickAdd",
         "targetName": "useQuickAdd",
-        "edgeType": "hook",
-        "line": 78,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "useRef",
-        "targetName": "useRef",
-        "edgeType": "hook",
-        "line": 79,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "useGetList",
-        "targetName": "useGetList",
         "edgeType": "hook",
         "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 89,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 89,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "getStorageItem",
         "targetName": "getStorageItem",
         "edgeType": "call",
-        "line": 96,
+        "line": 101,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 98,
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "getStorageItem",
         "targetName": "getStorageItem",
         "edgeType": "call",
-        "line": 98,
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "useForm",
         "targetName": "useForm",
         "edgeType": "hook",
-        "line": 111,
+        "line": 116,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "zodResolver",
         "targetName": "zodResolver",
         "edgeType": "call",
-        "line": 112,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "useWatch",
-        "targetName": "useWatch",
-        "edgeType": "hook",
         "line": 117,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "useWatch",
+        "targetName": "useWatch",
+        "edgeType": "hook",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "useFilteredProducts",
         "targetName": "useFilteredProducts",
         "edgeType": "hook",
-        "line": 127,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 130,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "clearErrors",
         "targetName": "clearErrors",
         "edgeType": "call",
-        "line": 135,
+        "line": 140,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 141,
+        "line": 146,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 143,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 144,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 147,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "setValue",
         "targetName": "setValue",
         "edgeType": "call",
@@ -21039,493 +21102,502 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 149,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 153,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "mutate",
         "targetName": "mutate",
         "edgeType": "call",
-        "line": 154,
+        "line": 159,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "call",
-        "line": 157,
+        "line": 162,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 160,
+        "line": 165,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "setTimeout",
         "targetName": "setTimeout",
         "edgeType": "call",
-        "line": 174,
+        "line": 179,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "focus",
         "targetName": "focus",
         "edgeType": "call",
-        "line": 174,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 182,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "setFocus",
         "targetName": "setFocus",
         "edgeType": "call",
-        "line": 184,
+        "line": 189,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 190,
+        "line": 195,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "toString",
         "targetName": "toString",
-        "edgeType": "call",
-        "line": 191,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "map",
-        "targetName": "map",
         "edgeType": "call",
         "line": 196,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "toString",
-        "targetName": "toString",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "map",
+        "targetName": "map",
         "edgeType": "call",
-        "line": 197,
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "toString",
+        "targetName": "toString",
         "edgeType": "call",
         "line": 202,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 207,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 215,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 230,
+        "line": 235,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "setValue",
         "targetName": "setValue",
         "edgeType": "call",
-        "line": 231,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 231,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 244,
+        "line": 249,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 264,
+        "line": 269,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 264,
+        "line": 269,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "setValue",
         "targetName": "setValue",
         "edgeType": "call",
-        "line": 266,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 268,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 268,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 290,
+        "line": 295,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 294,
+        "line": 299,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 298,
+        "line": 303,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 302,
+        "line": 307,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 322,
+        "line": 327,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "handleCitySelect",
         "targetName": "handleCitySelect",
         "edgeType": "call",
-        "line": 332,
+        "line": 337,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 348,
+        "line": 353,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 350,
+        "line": 355,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 351,
+        "line": 356,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 351,
+        "line": 356,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "register",
         "targetName": "register",
         "edgeType": "call",
-        "line": 365,
+        "line": 370,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 380,
+        "line": 385,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "call",
-        "line": 380,
+        "line": 385,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 389,
+        "line": 394,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "call",
-        "line": 389,
+        "line": 394,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 213,
+        "line": 218,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 222,
+        "line": 227,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Select",
         "targetName": "Select",
-        "edgeType": "render",
-        "line": 229,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
         "edgeType": "render",
         "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 239,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "SelectContent",
         "targetName": "SelectContent",
         "edgeType": "render",
-        "line": 243,
+        "line": 248,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 245,
+        "line": 250,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 260,
+        "line": 265,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 289,
+        "line": 294,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 293,
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 297,
+        "line": 302,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 301,
+        "line": 306,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 316,
+        "line": 321,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 327,
+        "line": 332,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "AccessibleField",
         "targetName": "AccessibleField",
         "edgeType": "render",
-        "line": 346,
+        "line": 351,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 362,
+        "line": 367,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 373,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
-        "edgeType": "callback",
-        "line": 373,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
@@ -21534,110 +21606,128 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
+        "edgeType": "callback",
+        "line": 378,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 386,
+        "line": 383,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 391,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 214,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 241,
+        "line": 246,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "MultiSelectCombobox",
         "targetName": "MultiSelectCombobox",
         "edgeType": "render",
-        "line": 262,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 290,
+        "line": 295,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 294,
+        "line": 299,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 298,
+        "line": 303,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 302,
+        "line": 307,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 322,
+        "line": 327,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Combobox",
         "targetName": "Combobox",
         "edgeType": "render",
-        "line": 328,
+        "line": 333,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 347,
+        "line": 352,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:77:QuickAddForm",
+        "source": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:81:QuickAddForm",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 363,
+        "line": 368,
         "conditional": false,
         "inLoop": false
       },
@@ -22870,7 +22960,7 @@
         "target": "NotesIterator",
         "targetName": "NotesIterator",
         "edgeType": "render",
-        "line": 57,
+        "line": 58,
         "conditional": false,
         "inLoop": false
       },

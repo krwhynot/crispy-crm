@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 import { ACTIVITY_TYPE_GROUPS, SAMPLE_STATUS_OPTIONS } from "@/atomic-crm/validation/activities";
+import { SidepaneSection } from "@/components/layouts/sidepane";
 
 // Activity types that should show duration field
 const DURATION_ACTIVITY_TYPES = ["Call", "Meeting", "Demo", "Site Visit", "Trade Show"];

@@ -1,7 +1,7 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-16T13:25:07.506Z",
-  "item_count": 10,
+  "generated_at": "2026-01-17T20:17:43.455Z",
+  "item_count": 12,
   "items": [
     {
       "name": "activityTypeSchema",
@@ -52,12 +52,288 @@
       "hasSuperRefine": false
     },
     {
+      "name": "baseActivitiesSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 73,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "activity_type",
+          "zodType": "ref:activityTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "type",
+          "zodType": "ref:interactionTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "subject",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Subject is required\")",
+            "max(255, \"Subject too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "description",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "max(5000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "sanitizeHtml",
+            "isSecurity": true
+          }
+        },
+        {
+          "name": "activity_date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "duration_minutes",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "contact_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "opportunity_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "follow_up_required",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "follow_up_date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "follow_up_notes",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "max(5000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "sanitizeHtml",
+            "isSecurity": true
+          }
+        },
+        {
+          "name": "outcome",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "max(2000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "sanitizeHtml",
+            "isSecurity": true
+          }
+        },
+        {
+          "name": "sentiment",
+          "zodType": "ref:sentimentSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "attachments",
+          "zodType": "array",
+          "constraints": [
+            "max(2048)",
+            "max(20)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "location",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(255)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "attendees",
+          "zodType": "array",
+          "constraints": [
+            "trim()",
+            "max(255)",
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "tags",
+          "zodType": "union",
+          "constraints": [
+            "max(100)",
+            "max(20)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sample_status",
+          "zodType": "ref:sampleStatusSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_by",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "activitiesSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
       "name": "activitiesSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 135,
+      "line": 136,
       "schemaType": "other",
       "fields": [],
-      "relatedSchemas": [],
+      "relatedSchemas": [
+        "baseActivitiesSchema"
+      ],
       "validationFunctions": [
         "validateActivitiesForm"
       ],
@@ -67,7 +343,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 227,
+      "line": 228,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -80,7 +356,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 309,
+      "line": 310,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -93,7 +369,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 516,
+      "line": 517,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -156,7 +432,7 @@
     {
       "name": "activityDisplayTypeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 552,
+      "line": 553,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [],
@@ -167,7 +443,7 @@
     {
       "name": "activityOutcomeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 600,
+      "line": 601,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -183,9 +459,9 @@
       "hasSuperRefine": false
     },
     {
-      "name": "quickLogFormSchema",
+      "name": "quickLogFormBaseSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 618,
+      "line": 620,
       "schemaType": "object",
       "fields": [
         {
@@ -298,10 +574,23 @@
         }
       ],
       "relatedSchemas": [
-        "quickLogFormPropsSchema"
+        "quickLogFormSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "quickLogFormSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 643,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "quickLogFormBaseSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
       "hasSuperRefine": true
     }
   ]

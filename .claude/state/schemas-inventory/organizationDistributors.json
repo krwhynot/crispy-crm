@@ -1,10 +1,10 @@
 {
   "chunk_name": "organizationDistributors",
-  "generated_at": "2026-01-16T13:25:07.516Z",
+  "generated_at": "2026-01-17T20:17:43.457Z",
   "item_count": 1,
   "items": [
     {
-      "name": "organizationDistributorSchema",
+      "name": "baseOrganizationDistributorSchema",
       "file": "src/atomic-crm/validation/organizationDistributors.ts",
       "line": 22,
       "schemaType": "strictObject",
@@ -99,12 +99,8 @@
           "hasDefault": false
         }
       ],
-      "relatedSchemas": [
-        "organizationSchema"
-      ],
-      "validationFunctions": [
-        "validateOrganizationDistributor"
-      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     }

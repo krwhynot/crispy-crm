@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-16T13:25:01.408Z",
+  "generated_at": "2026-01-17T20:17:35.565Z",
   "item_count": 58,
   "items": [
     {
@@ -1457,15 +1457,13 @@
     {
       "name": "ContactNotesTab",
       "file": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx",
-      "line": 21,
+      "line": 23,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../../notes",
         "@/atomic-crm/validation/contacts/contacts-core",
         "@/components/admin/reference-many-field",
-        "@/components/layouts/sidepane/SidepaneEmptyState",
-        "@/components/layouts/sidepane/empty-state-content",
         "ra-core"
       ],
       "isDefaultExport": false,

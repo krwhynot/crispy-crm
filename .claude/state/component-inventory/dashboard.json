@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-16T13:25:01.409Z",
+  "generated_at": "2026-01-17T20:17:35.566Z",
   "item_count": 30,
   "items": [
     {
@@ -498,7 +498,7 @@
     {
       "name": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 69,
+      "line": 70,
       "type": "presentational",
       "hooks": [
         "useCallback",
