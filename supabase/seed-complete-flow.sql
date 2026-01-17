@@ -110,7 +110,7 @@ VALUES (
 -- PHASE 3: Products (6 products from Principal)
 -- ============================================================================
 
-INSERT INTO products (id, principal_id, name, description, sku, category, status, created_at, updated_at)
+INSERT INTO products (id, principal_id, name, description, manufacturer_part_number, category, status, created_at, updated_at)
 OVERRIDING SYSTEM VALUE
 VALUES
     (1001, 10001, 'BBQ Sauce Classic', 'Our signature smoky BBQ sauce with a perfect balance of sweet and tangy', 'ACME-BBQ-001', 'condiments', 'active', NOW(), NOW()),
@@ -123,7 +123,7 @@ ON CONFLICT (id) DO UPDATE SET
     principal_id = EXCLUDED.principal_id,
     name = EXCLUDED.name,
     description = EXCLUDED.description,
-    sku = EXCLUDED.sku,
+    manufacturer_part_number = EXCLUDED.manufacturer_part_number,
     category = EXCLUDED.category,
     status = EXCLUDED.status,
     updated_at = NOW();
