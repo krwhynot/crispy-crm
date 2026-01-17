@@ -218,7 +218,8 @@ export function useRelatedRecordCounts({
     return () => {
       cancelled = true;
     };
-  }, [resource, ids, enabled, dataProvider]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- dataProvider is referentially unstable but logically stable
+  }, [resource, ids, enabled]);
 
   return { relatedCounts, isLoading, error };
 }
