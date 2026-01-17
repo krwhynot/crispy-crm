@@ -54,7 +54,7 @@ export function OpportunityNotesTab({ record, mode: _mode }: OpportunityNotesTab
               reference="opportunity_notes"
               sort={{ field: "created_at", order: "DESC" }}
             >
-              <NotesIterator reference="opportunities" />
+              <NotesIterator reference="opportunities" showEmptyState />
             </ReferenceManyField>
           </SidepaneSection>
         </div>

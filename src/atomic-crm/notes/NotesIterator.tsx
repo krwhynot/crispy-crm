@@ -13,10 +13,7 @@ interface NotesIteratorProps {
  * when there are no notes. This should be true when using ReferenceManyField
  * without the `empty` prop (to avoid hiding the create form).
  */
-export const NotesIterator = ({
-  reference,
-  showEmptyState = false,
-}: NotesIteratorProps) => {
+export const NotesIterator = ({ reference, showEmptyState = false }: NotesIteratorProps) => {
   return (
     <div className="mt-4">
       <NoteCreate reference={reference} />

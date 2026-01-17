@@ -28,7 +28,7 @@ export function OrganizationNotesTab({ record, mode: _mode }: OrganizationNotesT
             reference="organization_notes"
             sort={{ field: "created_at", order: "DESC" }}
           >
-            <NotesIterator reference="organizations" />
+            <NotesIterator reference="organizations" showEmptyState />
           </ReferenceManyField>
         </div>
       </ScrollArea>

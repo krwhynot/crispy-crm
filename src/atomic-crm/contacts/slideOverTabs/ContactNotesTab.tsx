@@ -1,8 +1,6 @@
 import { RecordContextProvider } from "ra-core";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { NotesIterator } from "../../notes";
-import { SidepaneEmptyState } from "@/components/layouts/sidepane/SidepaneEmptyState";
-import { EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane/empty-state-content";
 import type { Contact } from "@/atomic-crm/validation/contacts/contacts-core";
 
 interface ContactNotesTabProps {
@@ -17,6 +15,10 @@ interface ContactNotesTabProps {
  * Displays contact notes with create/edit/delete functionality.
  *
  * Both view and edit modes allow note creation and editing.
+ *
+ * Note: We don't use ReferenceManyField's `empty` prop because it would
+ * hide the NoteCreate form when there are no notes. Instead, NotesIterator
+ * handles the empty state internally while always showing the create form.
  */
 export function ContactNotesTab({ record, mode: _mode }: ContactNotesTabProps) {
   return (
@@ -26,14 +28,8 @@ export function ContactNotesTab({ record, mode: _mode }: ContactNotesTabProps) {
           target="contact_id"
           reference="contact_notes"
           sort={{ field: "created_at", order: "DESC" }}
-          empty={
-            <SidepaneEmptyState
-              title={EMPTY_STATE_CONTENT.notes.title}
-              description={EMPTY_STATE_CONTENT.notes.description}
-            />
-          }
         >
-          <NotesIterator reference="contacts" />
+          <NotesIterator reference="contacts" showEmptyState />
         </ReferenceManyField>
       </div>
     </RecordContextProvider>
