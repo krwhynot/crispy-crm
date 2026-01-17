@@ -102,8 +102,10 @@ human_readable() {
 # Get directory size in bytes (fast)
 get_dir_size_bytes() {
     local dir="$1"
+    local result
     if [[ -d "$dir" ]]; then
-        du -sb "$dir" 2>/dev/null | cut -f1 || echo 0
+        result=$(du -sb "$dir" 2>/dev/null | cut -f1 | tr -d '[:space:]')
+        [[ -n "$result" && "$result" =~ ^[0-9]+$ ]] && echo "$result" || echo 0
     else
         echo 0
     fi
@@ -545,7 +547,8 @@ analyze_system() {
     for tmp_dir in "/tmp" "/var/tmp"; do
         if [[ -d "$tmp_dir" ]]; then
             local dir_bytes
-            dir_bytes=$(get_dir_size_bytes "$tmp_dir")
+            dir_bytes=$(get_dir_size_bytes "$tmp_dir" | tr -d '[:space:]')
+            [[ -n "$dir_bytes" && "$dir_bytes" =~ ^[0-9]+$ ]] || dir_bytes=0
             tmp_bytes=$((tmp_bytes + dir_bytes))
         fi
     done

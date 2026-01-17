@@ -167,3 +167,18 @@ tool_response: {"stdout": "krwhynot 29943  0.0  0.0   4888  3456 ?        Ss   0
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "kill 29967 29943 2>/dev/null || true; echo \"Killed\"", "description": "Kill slow analysis process"}
 tool_response: {"stdout": "Killed", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T09:56:28.885941 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "/home/krwhynot/projects/crispy-crm/scripts/analyze_disk.sh analyze 2>&1", "timeout": 180000, "description": "Run full analysis with all fixes"}
+tool_response: {"stdout": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u
+
+--- 2026-01-17T09:57:52.911752 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "/home/krwhynot/projects/crispy-crm/scripts/analyze_disk.sh system 2>&1", "timeout": 60000, "description": "Test system cleanup section"}
+tool_response: {"stdout": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u
+
+--- 2026-01-17T09:58:19.472367 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "echo \"\" | /home/krwhynot/projects/crispy-crm/scripts/analyze_disk.sh clean 2>&1 | head -100", "timeout": 120000, "description": "Test clean command in dry-run mode"}
+tool_response: {"stdout": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u
