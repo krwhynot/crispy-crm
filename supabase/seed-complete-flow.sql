@@ -43,14 +43,12 @@ END $$;
 -- Note: Using OVERRIDING SYSTEM VALUE for IDENTITY columns
 
 -- 10001: Principal (Manufacturer)
-INSERT INTO organizations (id, name, organization_type, is_principal, is_distributor, city, state, priority, notes, created_at, updated_at)
+INSERT INTO organizations (id, name, organization_type, city, state, priority, notes, created_at, updated_at)
 OVERRIDING SYSTEM VALUE
 VALUES (
     10001,
     'Acme Food Manufacturing',
     'principal',
-    true,
-    false,
     'Chicago',
     'IL',
     'A',
@@ -60,8 +58,6 @@ VALUES (
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     organization_type = EXCLUDED.organization_type,
-    is_principal = EXCLUDED.is_principal,
-    is_distributor = EXCLUDED.is_distributor,
     city = EXCLUDED.city,
     state = EXCLUDED.state,
     priority = EXCLUDED.priority,
@@ -69,14 +65,12 @@ VALUES (
     updated_at = NOW();
 
 -- 10002: Distributor
-INSERT INTO organizations (id, name, organization_type, is_principal, is_distributor, city, state, priority, created_at, updated_at)
+INSERT INTO organizations (id, name, organization_type, city, state, priority, created_at, updated_at)
 OVERRIDING SYSTEM VALUE
 VALUES (
     10002,
     'Metro Foodservice Distribution',
     'distributor',
-    false,
-    true,
     'Grand Rapids',
     'MI',
     'B',
@@ -85,22 +79,18 @@ VALUES (
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     organization_type = EXCLUDED.organization_type,
-    is_principal = EXCLUDED.is_principal,
-    is_distributor = EXCLUDED.is_distributor,
     city = EXCLUDED.city,
     state = EXCLUDED.state,
     priority = EXCLUDED.priority,
     updated_at = NOW();
 
 -- 10003: Customer (Restaurant)
-INSERT INTO organizations (id, name, organization_type, is_principal, is_distributor, city, state, priority, notes, created_at, updated_at)
+INSERT INTO organizations (id, name, organization_type, city, state, priority, notes, created_at, updated_at)
 OVERRIDING SYSTEM VALUE
 VALUES (
     10003,
     'Riverfront Grill & Bar',
     'customer',
-    false,
-    false,
     'Kalamazoo',
     'MI',
     'A',
@@ -110,8 +100,6 @@ VALUES (
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     organization_type = EXCLUDED.organization_type,
-    is_principal = EXCLUDED.is_principal,
-    is_distributor = EXCLUDED.is_distributor,
     city = EXCLUDED.city,
     state = EXCLUDED.state,
     priority = EXCLUDED.priority,

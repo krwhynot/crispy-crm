@@ -188,6 +188,66 @@ INSERT INTO segments (id, name, segment_type, display_order, created_at, created
 ON CONFLICT (id) DO NOTHING;
 
 -- ============================================================================
+-- OPERATOR SEGMENTS (Hierarchical classification for foodservice operators)
+-- ============================================================================
+-- These operator segments provide detailed classification beyond playbook categories.
+-- Parent segments (Commercial: 1-9, Institutional: 10-16) and their children.
+
+-- Parent segments: Commercial (display_order 1-9)
+INSERT INTO segments (id, name, segment_type, parent_id, display_order, created_at, created_by) VALUES
+  ('33333333-3333-4333-8333-000000000001', 'Full-Service Restaurant', 'operator', NULL, 1, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000002', 'Limited-Service Restaurant', 'operator', NULL, 2, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000003', 'Bars & Lounges', 'operator', NULL, 3, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000004', 'Entertainment', 'operator', NULL, 4, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000005', 'Hotels & Lodging', 'operator', NULL, 5, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000006', 'Catering', 'operator', NULL, 6, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000007', 'Travel', 'operator', NULL, 7, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000008', 'Restaurant Group', 'operator', NULL, 8, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000009', 'Meal Prep Service', 'operator', NULL, 9, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+ON CONFLICT (id) DO NOTHING;
+
+-- Parent segments: Institutional (display_order 10-16)
+INSERT INTO segments (id, name, segment_type, parent_id, display_order, created_at, created_by) VALUES
+  ('33333333-3333-4333-8333-000000000010', 'Education - K-12', 'operator', NULL, 10, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000011', 'Education - Higher Ed', 'operator', NULL, 11, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000012', 'Healthcare', 'operator', NULL, 12, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000013', 'Business & Industry', 'operator', NULL, 13, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000014', 'Military/Government', 'operator', NULL, 14, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000015', 'Recreation/Clubs', 'operator', NULL, 15, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000016', 'Vending Services', 'operator', NULL, 16, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+ON CONFLICT (id) DO NOTHING;
+
+-- Child segments: Full-Service Restaurant
+INSERT INTO segments (id, name, segment_type, parent_id, display_order, created_at, created_by) VALUES
+  ('33333333-3333-4333-8333-000000000101', 'Fine Dining', 'operator', '33333333-3333-4333-8333-000000000001', 101, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000102', 'Casual Dining', 'operator', '33333333-3333-4333-8333-000000000001', 102, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000103', 'Family Dining', 'operator', '33333333-3333-4333-8333-000000000001', 103, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000104', 'Gastropub', 'operator', '33333333-3333-4333-8333-000000000001', 104, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+ON CONFLICT (id) DO NOTHING;
+
+-- Child segments: Limited-Service Restaurant
+INSERT INTO segments (id, name, segment_type, parent_id, display_order, created_at, created_by) VALUES
+  ('33333333-3333-4333-8333-000000000201', 'Fast Food/QSR', 'operator', '33333333-3333-4333-8333-000000000002', 201, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000202', 'Fast Casual', 'operator', '33333333-3333-4333-8333-000000000002', 202, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000203', 'Pizza', 'operator', '33333333-3333-4333-8333-000000000002', 203, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000204', 'Food Truck', 'operator', '33333333-3333-4333-8333-000000000002', 204, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+ON CONFLICT (id) DO NOTHING;
+
+-- Child segments: Entertainment
+INSERT INTO segments (id, name, segment_type, parent_id, display_order, created_at, created_by) VALUES
+  ('33333333-3333-4333-8333-000000000401', 'Casinos', 'operator', '33333333-3333-4333-8333-000000000004', 401, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000402', 'Theaters', 'operator', '33333333-3333-4333-8333-000000000004', 402, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000000403', 'Stadiums', 'operator', '33333333-3333-4333-8333-000000000004', 403, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+ON CONFLICT (id) DO NOTHING;
+
+-- Child segments: Recreation/Clubs
+INSERT INTO segments (id, name, segment_type, parent_id, display_order, created_at, created_by) VALUES
+  ('33333333-3333-4333-8333-000000001501', 'Country Clubs', 'operator', '33333333-3333-4333-8333-000000000015', 1501, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000001502', 'Golf Courses', 'operator', '33333333-3333-4333-8333-000000000015', 1502, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('33333333-3333-4333-8333-000000001503', 'Fitness Centers', 'operator', '33333333-3333-4333-8333-000000000015', 1503, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+ON CONFLICT (id) DO NOTHING;
+
+-- ============================================================================
 -- ORGANIZATIONS (2023 records)
 -- ============================================================================
 -- Pre-step: Soft-delete any organizations from migrations that have names
