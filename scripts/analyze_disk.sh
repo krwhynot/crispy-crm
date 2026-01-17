@@ -245,7 +245,7 @@ analyze_caches() {
                 printf "  ${YELLOW}%-18s${NC} %10s  ${DIM}%s${NC}\n" "$cache_name" "$size_human" "$clean_cmd"
 
                 total_cache_bytes=$((total_cache_bytes + size_bytes))
-                ((found_count++))
+                found_count=$((found_count + 1))
 
                 add_to_category "Developer Caches" "$size_bytes"
             fi

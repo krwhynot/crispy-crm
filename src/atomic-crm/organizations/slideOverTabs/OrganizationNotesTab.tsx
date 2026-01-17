@@ -27,6 +27,7 @@ export function OrganizationNotesTab({ record, mode: _mode }: OrganizationNotesT
             target="organization_id"
             reference="organization_notes"
             sort={{ field: "created_at", order: "DESC" }}
+            empty={false}
           >
             <NotesIterator reference="organizations" showEmptyState />
           </ReferenceManyField>

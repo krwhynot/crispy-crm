@@ -28,6 +28,7 @@ export function ContactNotesTab({ record, mode: _mode }: ContactNotesTabProps) {
           target="contact_id"
           reference="contact_notes"
           sort={{ field: "created_at", order: "DESC" }}
+          empty={false}
         >
           <NotesIterator reference="contacts" showEmptyState />
         </ReferenceManyField>
