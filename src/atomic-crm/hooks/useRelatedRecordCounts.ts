@@ -133,46 +133,60 @@ export function useRelatedRecordCounts({
         const countsByLabel: Record<string, number> = {};
 
         // Fetch counts in parallel for all relationships and all parent IDs
+        // FIX [WF-C06]: Each query wrapped with timeout to prevent infinite hang
         const promises = relationships.flatMap((rel) =>
-          ids.map(async (id) => {
-            try {
-              // Use getManyReference to get count of related records
-              const result = await dataProvider.getManyReference(rel.resource, {
-                target: rel.field,
-                id,
-                pagination: { page: 1, perPage: 1 }, // Only need count, not data
-                sort: { field: "id", order: "ASC" },
-                filter: {},
-              });
-              return { label: rel.label, count: result.total ?? 0 };
-            } catch (error: unknown) {
-              // EH-001 FIX: Structured logging with error categorization
-              const errorMessage = error instanceof Error ? error.message : String(error);
-              const isPermissionError =
-                errorMessage.toLowerCase().includes("permission") ||
-                errorMessage.includes("403") ||
-                errorMessage.includes("RLS");
+          ids.map((id) => {
+            const queryPromise = (async () => {
+              try {
+                // Use getManyReference to get count of related records
+                const result = await dataProvider.getManyReference(rel.resource, {
+                  target: rel.field,
+                  id,
+                  pagination: { page: 1, perPage: 1 }, // Only need count, not data
+                  sort: { field: "id", order: "ASC" },
+                  filter: {},
+                });
+                return { label: rel.label, count: result.total ?? 0 };
+              } catch (error: unknown) {
+                // EH-001 FIX: Structured logging with error categorization
+                const errorMessage = error instanceof Error ? error.message : String(error);
+                const isPermissionError =
+                  errorMessage.toLowerCase().includes("permission") ||
+                  errorMessage.includes("403") ||
+                  errorMessage.includes("RLS");
 
-              if (isPermissionError) {
-                // Expected case: user doesn't have access to this resource type
-                console.debug(
-                  `[useRelatedRecordCounts] Permission denied for ${rel.resource}:`,
-                  errorMessage
-                );
-              } else {
-                // Unexpected error: log as warning for visibility
-                console.warn(
-                  `[useRelatedRecordCounts] Failed to fetch count for ${rel.resource}:`,
-                  { error: errorMessage, resourceId: id, relationship: rel }
-                );
+                if (isPermissionError) {
+                  // Expected case: user doesn't have access to this resource type
+                  console.debug(
+                    `[useRelatedRecordCounts] Permission denied for ${rel.resource}:`,
+                    errorMessage
+                  );
+                } else {
+                  // Unexpected error: log as warning for visibility
+                  console.warn(
+                    `[useRelatedRecordCounts] Failed to fetch count for ${rel.resource}:`,
+                    { error: errorMessage, resourceId: id, relationship: rel }
+                  );
+                }
+
+                return { label: rel.label, count: 0 };
               }
+            })();
 
-              return { label: rel.label, count: 0 };
-            }
+            // Wrap with timeout - resolves to 0 count on timeout (graceful degradation)
+            return withTimeout(queryPromise, QUERY_TIMEOUT_MS, { label: rel.label, count: 0 });
           })
         );
 
-        const results = await Promise.all(promises);
+        // Use Promise.allSettled for extra safety - ensures we get all available results
+        // even if some promises reject unexpectedly (belt-and-suspenders with try/catch above)
+        const settledResults = await Promise.allSettled(promises);
+        const results = settledResults
+          .filter(
+            (r): r is PromiseFulfilledResult<{ label: string; count: number }> =>
+              r.status === "fulfilled"
+          )
+          .map((r) => r.value);
 
         if (cancelled) return;
 

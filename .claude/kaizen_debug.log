@@ -342,3 +342,53 @@ tool_response: {"stdout": "4e030d594 fix(data-integrity): complete critical audi
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "git show 4e030d594 --stat | head -50"}
 tool_response: {"stdout": "commit 4e030d59490b0b6a4b3b606001d8b997ff77634c\nAuthor: Kyle Ramsy <kjramsy@gmail.com>\nDate:   Sun Jan 11 03:38:04 2026 -0600\n\n    fix(data-integrity): complete critical audit remediat
+
+--- 2026-01-17T15:59:30.458278 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit src/atomic-crm/hooks/useRelatedRecordCounts.ts 2>&1 | head -30", "description": "Type-check the updated hook file"}
+tool_response: {"stdout": "node_modules/@mui/utils/requirePropFactory/requirePropFactory.d.ts(2,8): error TS1259: Module '\"/home/krwhynot/projects/crispy-crm/node_modules/@types/prop-types/index\"' can only be defa
+
+--- 2026-01-17T15:59:51.814469 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just typecheck 2>&1 | grep -E \"(useRelatedRecordCounts|error)\" | head -20", "description": "Run project typecheck for useRelatedRecordCounts"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T16:00:24.648579 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list | head -20", "description": "List available just recipes"}
+tool_response: {"stdout": "Available recipes:\n    build                       # Build for production (includes typecheck)\n    cache-clear                 # Clear application cache\n    callgraph-render            
+
+--- 2026-01-17T16:00:54.235859 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just test 2>&1 | head -5", "description": "Check test recipe syntax"}
+tool_response: {"stdout": "npm test\n\n> atomic-crm@0.1.0 test\n> vitest", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T16:01:10.103866 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --testPathPattern=\"useRelatedRecordCounts\" 2>&1 | tail -30", "timeout": 60000, "description": "Run tests for useRelatedRecordCounts hook"}
+tool_response: {"stdout": "file:///home/krwhynot/projects/crispy-crm/node_modules/vitest/dist/chunks/cac.Cb-PYCCB.js:404\n          throw new CACError(`Unknown option \\`${name.length > 1 ? `--${name}` : `-${name}`}
+
+--- 2026-01-17T16:02:45.155685 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just check 2>&1 | tail -20", "timeout": 120000, "description": "Run full quality check"}
+tool_response: {"stdout": "  370:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console\n  371:5   warning  Unexpected console statement. Only these console method
+
+--- 2026-01-17T16:03:04.751201 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx eslint src/atomic-crm/hooks/useRelatedRecordCounts.ts 2>&1", "description": "Lint the updated hook file"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/hooks/useRelatedRecordCounts.ts\n  160:19  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-
+
+--- 2026-01-17T16:03:17.767104 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just typecheck 2>&1", "timeout": 60000, "description": "Run TypeScript type check"}
+tool_response: {"stdout": "npm run typecheck\n\n> atomic-crm@0.1.0 typecheck\n> ./node_modules/.bin/tsc --noEmit", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T16:22:03.453174 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -20 -- src/atomic-crm/hooks/useRelatedRecordCounts.ts src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx src/components/admin/delete-confirm-dialog.tsx 2>/dev
+tool_response: {"stdout": "92aaa4d6b chore(checkpoint): 4 file(s) - checkpoint-state,kaizen_debug.log QuickLogActiv...\n3088052e8 chore(checkpoint): Automatic save of 14 file(s)\n834f51e09 chore(checkpoint): Automat
+
+--- 2026-01-17T16:22:13.680327 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git diff HEAD~5 -- src/atomic-crm/hooks/useRelatedRecordCounts.ts 2>/dev/null | head -100"}
+tool_response: {"stdout": "diff --git a/src/atomic-crm/hooks/useRelatedRecordCounts.ts b/src/atomic-crm/hooks/useRelatedRecordCounts.ts\nindex 6f26d73f8..cfa4347f2 100644\n--- a/src/atomic-crm/hooks/useRelatedRecord
