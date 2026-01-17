@@ -1,30 +1,26 @@
-import { useListContext } from "ra-core";
-import * as React from "react";
-
-import { Separator } from "@/components/ui/separator";
-import { Note } from "./Note";
 import { NoteCreate } from "./NoteCreate";
+import { NotesList } from "./NotesList";
 
+interface NotesIteratorProps {
+  reference: "contacts" | "opportunities" | "organizations";
+  showEmptyState?: boolean;
+}
+
+/**
+ * Combines NoteCreate form with NotesList.
+ *
+ * The showEmptyState prop controls whether to display an empty state message
+ * when there are no notes. This should be true when using ReferenceManyField
+ * without the `empty` prop (to avoid hiding the create form).
+ */
 export const NotesIterator = ({
   reference,
-}: {
-  reference: "contacts" | "opportunities" | "organizations";
-}) => {
-  const { data, error, isPending } = useListContext();
-  if (isPending || error) return null;
+  showEmptyState = false,
+}: NotesIteratorProps) => {
   return (
     <div className="mt-4">
       <NoteCreate reference={reference} />
-      {data && (
-        <div className="mt-4 space-y-4">
-          {data.map((note, index) => (
-            <React.Fragment key={index}>
-              <Note note={note} isLast={index === data.length - 1} key={index} />
-              {index < data.length - 1 && <Separator />}
-            </React.Fragment>
-          ))}
-        </div>
-      )}
+      <NotesList showEmptyState={showEmptyState} />
     </div>
   );
 };
