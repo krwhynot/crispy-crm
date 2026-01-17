@@ -537,27 +537,25 @@ analyze_system() {
         log_info "No old log files found"
     fi
 
-    # Temp files
+    # Temp files (use fast du instead of slow find iteration)
     print_section "Temporary Files"
     local tmp_bytes=0
 
-    for tmp_dir in "/tmp" "/var/tmp" "$HOME/.cache"; do
+    # Only check /tmp and /var/tmp (skip ~/.cache - already covered in caches section)
+    for tmp_dir in "/tmp" "/var/tmp"; do
         if [[ -d "$tmp_dir" ]]; then
-            # Find files older than 7 days
-            while IFS= read -r -d '' file; do
-                local size
-                size=$(stat -c %s "$file" 2>/dev/null || echo 0)
-                tmp_bytes=$((tmp_bytes + size))
-            done < <(find "$tmp_dir" -type f -mtime +7 -print0 2>/dev/null)
+            local dir_bytes
+            dir_bytes=$(get_dir_size_bytes "$tmp_dir")
+            tmp_bytes=$((tmp_bytes + dir_bytes))
         fi
     done
 
-    if (( tmp_bytes > 1048576 )); then  # >1MB
-        echo "  Old temp files (>7 days): $(human_readable "$tmp_bytes")"
-        echo -e "  ${DIM}Clean: find /tmp -type f -mtime +7 -delete${NC}"
+    if (( tmp_bytes > 10485760 )); then  # >10MB
+        echo "  Temp directories: $(human_readable "$tmp_bytes")"
+        echo -e "  ${DIM}Clean: sudo rm -rf /tmp/* /var/tmp/*${NC}"
         total_system_bytes=$((total_system_bytes + tmp_bytes))
     else
-        log_info "Minimal temp files found"
+        log_info "Temp directories are small (< 10MB)"
     fi
 
     # Core dumps
