@@ -282,3 +282,63 @@ tool_response: {"stdout": "                \u001b[33maria-hidden\u001b[39m=\u001
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm*.test.tsx 2>&1 | tail -30", "description": "Re-run tests to verify fixes"}
 tool_response: {"stdout": "    <Form control={{}} handleSubmit={function handleSubmit} watch={function watch} getValues={function getValues} ...>\n>     <form data-testid=\"form-wrapper\" onSubmit={function onSubmit
+
+--- 2026-01-17T14:52:24.585738 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/activities/__tests__/QuickLogActivityDialog.test.tsx 2>&1 | tail -30", "description": "Run QuickLogActivityDialog tests"}
+tool_response: {"stdout": "For more information, see https://radix-ui.com/primitives/docs/components/dialog\nWarning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.\n\nstderr | src/atom
+
+--- 2026-01-17T14:52:38.307509 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | head -20", "description": "TypeScript type check"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T15:47:17.805822 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"sku\" supabase/migrations/ --ignore-case", "description": "Search for SKU references in database migrations"}
+tool_response: {"stdout": "supabase/migrations/20251104044122_add_products_summary_view.sql:  p.sku,\nsupabase/migrations/20251207000001_make_sku_optional.sql:-- Make SKU optional for product creation\nsupabase/migr
+
+--- 2026-01-17T15:47:30.979129 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -A 50 \"CREATE TABLE.*products\" supabase/migrations/20251215023234_drop_product_legacy_columns.sql || grep -A 50 \"CREATE TABLE.*products\" supabase/migrations/*.sql | head -100", "
+tool_response: {"stdout": "supabase/migrations/20251018152315_cloud_schema_fresh.sql:CREATE TABLE IF NOT EXISTS \"public\".\"products\" (\nsupabase/migrations/20251018152315_cloud_schema_fresh.sql-    \"id\" bigint 
+
+--- 2026-01-17T15:47:40.976799 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"SKU\\|sku\" src/atomic-crm/products/__tests__/ --include=\"*.test.tsx\" --include=\"*.test.ts\"", "description": "Search for SKU references in product test files"}
+tool_response: {"stdout": "src/atomic-crm/products/__tests__/ProductShow.test.tsx: * - Field display (name, SKU, description, status, principal, category)\nsrc/atomic-crm/products/__tests__/ProductShow.test.tsx:    
+
+--- 2026-01-17T15:47:55.495763 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"archive_organization_with_relations\" /home/krwhynot/projects/crispy-crm/supabase --include=\"*.sql\""}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "returnCodeInterpretation": "No matches found"}
+
+--- 2026-01-17T15:48:07.119694 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -l \"archive_organization_with_relations\\|getManyReference\" /home/krwhynot/projects/crispy-crm/supabase/migrations/* 2>/dev/null | head -5"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T15:48:20.213282 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -n \"archive_organization_with_relations\" /home/krwhynot/projects/crispy-crm/supabase/migrations/*.sql | head -1"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T15:48:30.400983 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -n \"CREATE.*FUNCTION.*archive_organization\" /home/krwhynot/projects/crispy-crm/supabase/migrations/*.sql 2>/dev/null"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "returnCodeInterpretation": "No matches found"}
+
+--- 2026-01-17T15:49:03.200307 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline --all --grep=\"Sunrise\\|delete\\|stuck\\|hang\\|related.*record\" -i | head -20"}
+tool_response: {"stdout": "ccb87c08e fix(products): allow view fields in update schema to prevent silent validation failure\naa4738bc2 fix: rename skill files to remove colons for Windows compatibility\nfee1a187e fi
+
+--- 2026-01-17T15:49:11.014840 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --all --oneline --all | grep -i \"delete\\|related\" | head -20"}
+tool_response: {"stdout": "4e030d594 fix(data-integrity): complete critical audit remediation - soft deletes & parallelization\n1b1156390 fix(products): resolve ProductEdit crash and soft delete persistence\nf1e2989
+
+--- 2026-01-17T15:49:18.351708 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git show 4e030d594 --stat | head -50"}
+tool_response: {"stdout": "commit 4e030d59490b0b6a4b3b606001d8b997ff77634c\nAuthor: Kyle Ramsy <kjramsy@gmail.com>\nDate:   Sun Jan 11 03:38:04 2026 -0600\n\n    fix(data-integrity): complete critical audit remediat

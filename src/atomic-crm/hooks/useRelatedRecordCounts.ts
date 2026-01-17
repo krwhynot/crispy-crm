@@ -20,6 +20,27 @@ import { useDataProvider, type Identifier } from "react-admin";
 import type { RelatedRecordCount } from "@/components/admin/delete-confirm-dialog";
 
 /**
+ * Per-query timeout in milliseconds
+ *
+ * FIX [WF-C06]: Prevents infinite hang when a single getManyReference query stalls.
+ * 5 seconds balances user experience with allowing slow queries to complete.
+ */
+const QUERY_TIMEOUT_MS = 5000;
+
+/**
+ * Wrap a promise with a timeout that resolves to a fallback value
+ *
+ * Uses Promise.race pattern (https://javascript.info/promise-api#promise-race)
+ * Instead of rejecting on timeout, resolves with fallback for graceful degradation.
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
+  ]);
+}
+
+/**
  * Relationship definitions for cascade counting
  *
  * Maps parent resource → child resources with their FK fields
