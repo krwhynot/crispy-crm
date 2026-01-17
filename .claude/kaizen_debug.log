@@ -182,3 +182,13 @@ tool_response: {"stdout": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "echo \"\" | /home/krwhynot/projects/crispy-crm/scripts/analyze_disk.sh clean 2>&1 | head -100", "timeout": 120000, "description": "Test clean command in dry-run mode"}
 tool_response: {"stdout": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u
+
+--- 2026-01-17T10:30:43.979943 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "mkdir -p ~/.local/bin && cp /home/krwhynot/projects/crispy-crm/scripts/analyze_disk.sh ~/.local/bin/analyze_disk.sh && chmod +x ~/.local/bin/analyze_disk.sh && echo \"\u2713 Script copied
+tool_response: {"stdout": "\u2713 Script copied to ~/.local/bin/\n\u26a0 Add to ~/.bashrc: export PATH=\"$HOME/.local/bin:$PATH\"", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T10:30:53.771396 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -q '.local/bin' ~/.bashrc || echo 'export PATH=\"$HOME/.local/bin:$PATH\"' >> ~/.bashrc && echo \"\u2713 PATH updated in ~/.bashrc\"", "description": "Add ~/.local/bin to PATH in bas
+tool_response: {"stdout": "\u2713 PATH updated in ~/.bashrc", "stderr": "", "interrupted": false, "isImage": false}
