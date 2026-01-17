@@ -97,15 +97,20 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       const selectedPrincipal = principals?.find((p) => p.id === Number(principalId));
 
       // Create returns the new record - use it for optimistic updates
+      // NOTE: returnPromise: true is REQUIRED to get the created record back
       console.log("[QuickAdd] Calling create() with data:", validatedData);
-      const result = await create("opportunities", { data: validatedData });
+      const result = await create(
+        "opportunities",
+        { data: validatedData },
+        { returnPromise: true }
+      );
       console.log("[QuickAdd] create() returned:", result);
 
       // FIX [WF-E2E-001]: Only show success when create actually succeeds
-      // React Admin's useCreate can resolve without throwing but with no data on error
-      if (!result?.data) {
+      // With returnPromise: true, result IS the record (not wrapped in { data })
+      if (!result) {
         // Create failed silently - show error and don't close dialog
-        console.log("[QuickAdd] No data in result, showing error");
+        console.log("[QuickAdd] No result from create, showing error");
         notify("Failed to create opportunity. Please try again.", { type: "error" });
         return;
       }
@@ -114,7 +119,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       // This ensures the new opportunity appears instantly in the UI
       if (onOpportunityCreated) {
         const newOpportunity: Opportunity = {
-          ...result.data,
+          ...result,
           // Add computed fields that the summary view would provide
           customer_organization_name: selectedCustomer?.name || "",
           principal_organization_name: selectedPrincipal?.name || "",
