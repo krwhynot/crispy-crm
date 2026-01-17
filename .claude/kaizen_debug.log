@@ -62,3 +62,48 @@ TOOL_OUTPUT: NOT SET
 --- 2026-01-16T22:54:00.010962 ---
 TOOL_INPUT: NOT SET
 TOOL_OUTPUT: NOT SET
+
+--- 2026-01-16T22:55:08.220510 ---
+CLAUDE_* vars: {'CLAUDE_CODE_ENTRYPOINT': 'cli', 'CLAUDE_CODE_MAX_OUTPUT_TOKENS': '64000', 'CLAUDE_CODE_SSE_PORT': '18748', 'CLAUDE_PROJECT_DIR': '/home/krwhynot/projects/crispy-crm'}
+TOOL_INPUT raw: NOT SET
+All env keys: ['CLAUDE_CODE_ENTRYPOINT', 'CLAUDE_CODE_MAX_OUTPUT_TOKENS', 'CLAUDE_CODE_SSE_PORT', 'CLAUDE_PROJECT_DIR']
+
+--- 2026-01-16T22:55:19.274084 ---
+CLAUDE_* vars: {'CLAUDE_CODE_ENTRYPOINT': 'cli', 'CLAUDE_CODE_MAX_OUTPUT_TOKENS': '64000', 'CLAUDE_CODE_SSE_PORT': '18748', 'CLAUDE_PROJECT_DIR': '/home/krwhynot/projects/crispy-crm'}
+TOOL_INPUT raw: NOT SET
+All env keys: ['CLAUDE_CODE_ENTRYPOINT', 'CLAUDE_CODE_MAX_OUTPUT_TOKENS', 'CLAUDE_CODE_SSE_PORT', 'CLAUDE_PROJECT_DIR']
+
+--- 2026-01-16T22:57:59.664104 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "echo \"trigger hook test\"", "description": "Test hook with new stdin API"}
+tool_response: {"stdout": "trigger hook test", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-16T22:58:11.323973 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -10 .claude/kaizen_debug.log", "description": "Check debug log for stdin data"}
+tool_response: {"stdout": "--- 2026-01-16T22:55:19.274084 ---\nCLAUDE_* vars: {'CLAUDE_CODE_ENTRYPOINT': 'cli', 'CLAUDE_CODE_MAX_OUTPUT_TOKENS': '64000', 'CLAUDE_CODE_SSE_PORT': '18748', 'CLAUDE_PROJECT_DIR': '/home
+
+--- 2026-01-16T22:58:24.491108 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status", "description": "Check current git status"}
+tool_response: {"stdout": "On branch main\nYour branch is ahead of 'origin/main' by 6 commits.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to u
+
+--- 2026-01-16T22:58:36.938661 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git commit --allow-empty -m \"test(kaizen): verify hook tracking works with stdin API\"", "description": "Create test commit to verify Kaizen tracking"}
+tool_response: {"stdout": "[main 573d7a0d5] test(kaizen): verify hook tracking works with stdin API\n-e \u001b[0;32m\u2713 Pre-commit checks passed\u001b[0m", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-16T22:58:51.297437 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -15 .claude/kaizen_debug.log && echo \"---\" && cat .claude/kaizen_metrics.json", "description": "Verify debug log and metrics"}
+tool_response: {"stdout": "--- 2026-01-16T22:58:11.323973 ---\nhook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id'
+
+--- 2026-01-16T22:59:04.360650 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git commit --allow-empty -m \"chore(checkpoint): test checkpoint tracking\"", "description": "Test checkpoint tracking"}
+tool_response: {"stdout": "[main b2a96f654] chore(checkpoint): test checkpoint tracking\n-e \u001b[0;32m\u2713 Pre-commit checks passed\u001b[0m", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-16T22:59:15.462751 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat .claude/kaizen_metrics.json", "description": "Verify checkpoint tracking"}
+tool_response: {"stdout": "{\n  \"score\": 1,\n  \"streak\": 1,\n  \"last_commit_date\": \"2026-01-16\",\n  \"checkpoint_count\": 1,\n  \"checkpoint_streak\": 1,\n  \"last_checkpoint_date\": \"2026-01-16\",\n  \"int
