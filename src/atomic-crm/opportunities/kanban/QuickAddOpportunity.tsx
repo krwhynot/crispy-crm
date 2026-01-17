@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useCreate, useNotify, useRefresh, useGetIdentity, useGetList } from "react-admin";
 import { Loader2, X } from "lucide-react";
+import { z } from "zod";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
 import type { OpportunityStageValue, Organization, Opportunity } from "../../types";
 import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
@@ -82,6 +83,8 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       const validatedData = quickCreateOpportunitySchema.parse({
         name: name.trim(),
         stage,
+        status: "active", // Required by schema - new opportunities are always active
+        priority: "medium", // Sensible default - user can change via edit form later
         principal_organization_id: Number(principalId),
         customer_organization_id: Number(customerId),
         // Set current user as owner - ensures opportunity shows in "My Opportunities"
