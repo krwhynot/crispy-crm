@@ -335,90 +335,89 @@ export function QuickLogForm({
         <SidepaneSection label="Who Was Involved">
           <div className="space-y-3">
             <FormField
-            control={form.control}
-            name="contactId"
-            render={({ field }) => (
-              <EntityCombobox
-                value={field.value}
-                onChange={field.onChange}
-                options={entityData.filteredContacts.map((c) => ({
-                  id: c.id,
-                  name: c.name,
-                  subtitle: c.company_name,
-                }))}
-                fallbackOptions={entityData.contactsForAnchorOrg.map((c) => ({
-                  id: c.id,
-                  name: c.name,
-                  subtitle: c.company_name,
-                }))}
-                loading={entityData.contactsLoading}
-                searchTerm={entityData.contactSearch.searchTerm}
-                onSearchChange={entityData.contactSearch.setSearchTerm}
-                placeholder="Select contact"
-                emptyMessage="No contact found. Type to search."
-                filteredEmptyMessage="No contacts found for this organization"
-                isFiltered={!!entityData.anchorOrganizationId}
-                label="Contact"
-                description="Select a contact and/or organization (must be from same company)"
-                onSelect={handleContactSelect}
-                onClear={handleContactClear}
-                listId="contact-list"
-              />
-            )}
-          />
+              control={form.control}
+              name="contactId"
+              render={({ field }) => (
+                <EntityCombobox
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={entityData.filteredContacts.map((c) => ({
+                    id: c.id,
+                    name: c.name,
+                    subtitle: c.company_name,
+                  }))}
+                  fallbackOptions={entityData.contactsForAnchorOrg.map((c) => ({
+                    id: c.id,
+                    name: c.name,
+                    subtitle: c.company_name,
+                  }))}
+                  loading={entityData.contactsLoading}
+                  searchTerm={entityData.contactSearch.searchTerm}
+                  onSearchChange={entityData.contactSearch.setSearchTerm}
+                  placeholder="Select contact"
+                  emptyMessage="No contact found. Type to search."
+                  filteredEmptyMessage="No contacts found for this organization"
+                  isFiltered={!!entityData.anchorOrganizationId}
+                  label="Contact"
+                  description="Select a contact and/or organization (must be from same company)"
+                  onSelect={handleContactSelect}
+                  onClear={handleContactClear}
+                  listId="contact-list"
+                />
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="organizationId"
-            render={({ field }) => (
-              <EntityCombobox
-                value={field.value}
-                onChange={field.onChange}
-                options={entityData.filteredOrganizations.map((o) => ({
-                  id: o.id,
-                  name: o.name,
-                }))}
-                loading={entityData.organizationsLoading}
-                searchTerm={entityData.orgSearch.searchTerm}
-                onSearchChange={entityData.orgSearch.setSearchTerm}
-                placeholder="Select organization"
-                emptyMessage="No organization found. Type to search."
-                label="Organization"
-                description="Select a contact and/or organization (must be from same company)"
-                onSelect={handleOrganizationSelect}
-                onClear={handleOrganizationClear}
-                listId="organization-list"
-              />
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="organizationId"
+              render={({ field }) => (
+                <EntityCombobox
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={entityData.filteredOrganizations.map((o) => ({
+                    id: o.id,
+                    name: o.name,
+                  }))}
+                  loading={entityData.organizationsLoading}
+                  searchTerm={entityData.orgSearch.searchTerm}
+                  onSearchChange={entityData.orgSearch.setSearchTerm}
+                  placeholder="Select organization"
+                  emptyMessage="No organization found. Type to search."
+                  label="Organization"
+                  onSelect={handleOrganizationSelect}
+                  onClear={handleOrganizationClear}
+                  listId="organization-list"
+                />
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="opportunityId"
-            render={({ field }) => (
-              <EntityCombobox
-                value={field.value}
-                onChange={field.onChange}
-                options={entityData.filteredOpportunities.map((o) => ({
-                  id: o.id,
-                  name: o.name,
-                }))}
-                fallbackOptions={entityData.oppsForAnchorOrg.map((o) => ({
-                  id: o.id,
-                  name: o.name,
-                }))}
-                loading={entityData.opportunitiesLoading}
-                searchTerm={entityData.oppSearch.searchTerm}
-                onSearchChange={entityData.oppSearch.setSearchTerm}
-                placeholder="Select opportunity (optional)"
-                emptyMessage="No opportunity found. Type to search."
-                filteredEmptyMessage="No opportunities for this organization"
-                isFiltered={!!entityData.anchorOrganizationId}
-                label="Opportunity"
-                listId="opportunity-list"
-              />
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="opportunityId"
+              render={({ field }) => (
+                <EntityCombobox
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={entityData.filteredOpportunities.map((o) => ({
+                    id: o.id,
+                    name: o.name,
+                  }))}
+                  fallbackOptions={entityData.oppsForAnchorOrg.map((o) => ({
+                    id: o.id,
+                    name: o.name,
+                  }))}
+                  loading={entityData.opportunitiesLoading}
+                  searchTerm={entityData.oppSearch.searchTerm}
+                  onSearchChange={entityData.oppSearch.setSearchTerm}
+                  placeholder="Select opportunity (optional)"
+                  emptyMessage="No opportunity found. Type to search."
+                  filteredEmptyMessage="No opportunities for this organization"
+                  isFiltered={!!entityData.anchorOrganizationId}
+                  label="Opportunity"
+                  listId="opportunity-list"
+                />
+              )}
+            />
           </div>
         </SidepaneSection>
 

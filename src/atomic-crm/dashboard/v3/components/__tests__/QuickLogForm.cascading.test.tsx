@@ -465,8 +465,8 @@ describe("QuickLogForm - Cascading Filter Behavior", () => {
       renderQuickLogForm();
 
       // Check section headings exist (useGetList data is mocked and returns immediately)
-      expect(screen.getByText("What happened?")).toBeInTheDocument();
-      expect(screen.getByText("Who was involved?")).toBeInTheDocument();
+      expect(screen.getByText("What Happened")).toBeInTheDocument();
+      expect(screen.getByText("Who Was Involved")).toBeInTheDocument();
 
       // Check form labels exist
       expect(screen.getByText("Activity Type")).toBeInTheDocument();
@@ -546,8 +546,8 @@ describe("QuickLogForm - Cascading Filter Behavior", () => {
       renderQuickLogForm();
 
       // Verify the form renders (useGetList mock provides data immediately)
-      expect(screen.getByText("What happened?")).toBeInTheDocument();
-      expect(screen.getByText("Who was involved?")).toBeInTheDocument();
+      expect(screen.getByText("What Happened")).toBeInTheDocument();
+      expect(screen.getByText("Who Was Involved")).toBeInTheDocument();
     });
 
     it("should render with initial page size of 100 records", async () => {
@@ -565,7 +565,7 @@ describe("QuickLogForm - Cascading Filter Behavior", () => {
 
       // All mock opportunities are active (not closed), so all should render
       // This verifies the filter logic is working
-      expect(screen.getByText("What happened?")).toBeInTheDocument();
+      expect(screen.getByText("What Happened")).toBeInTheDocument();
     });
   });
 

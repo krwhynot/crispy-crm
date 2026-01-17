@@ -222,3 +222,58 @@ tool_response: {"stdout": "added 1122 packages, and audited 1123 packages in 1m\
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "just discover-incr 2>&1 | head -20", "description": "Verify the discover script now runs"}
 tool_response: {"stdout": "npx tsx scripts/discover/index.ts --incremental\n\ud83d\udcc2 Project Root: /home/krwhynot/projects/crispy-crm\n\n\ud83d\udd04 Incremental Discovery Mode\n\n\ud83d\udcdd Components: Updati
+
+--- 2026-01-17T14:28:04.610705 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"7 days ago\" --oneline | head -50", "description": "Get recent commit history for type distribution"}
+tool_response: {"stdout": "130754f60 chore(checkpoint): 149 file(s) - checkpoint-state,_root.json activities.json\nddc59170f chore(checkpoint): 47 file(s) - checkpoint-state,kaizen_debug.log activities.json\n849ed3b
+
+--- 2026-01-17T14:28:05.525224 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: | grep -v '^$' | sort | uniq -c | sort -rn | head -20", "description": "Get top churned files in last 14 days"}
+tool_response: {"stdout": "    444 .claude/checkpoint-state\n     28 .claude/state/schemas-inventory/manifest.json\n     27 .claude/state/forms-inventory.json\n     27 .claude/state/component-inventory/opportunities
+
+--- 2026-01-17T14:28:19.641926 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"30 days ago\" --oneline | grep -E '^[a-f0-9]+ (feat|fix|refactor|docs|perf|test)' | head -50", "description": "Get conventional commits in last 30 days"}
+tool_response: {"stdout": "573d7a0d5 test(kaizen): verify hook tracking works with stdin API\nf1a6ec49b fix(deps): override jose version to fix Vercel deployment\nc5a53087b fix(seed): use manufacturer_part_number in
+
+--- 2026-01-17T14:28:19.675157 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --oneline -- 'src/**' 'supabase/**' | grep -v 'checkpoint' | head -30", "description": "Get meaningful source commits"}
+tool_response: {"stdout": "c5a53087b fix(seed): use manufacturer_part_number instead of sku in products\n389c16abf feat(activities): add activity type selector and conditional opportunity field\nccb87c08e fix(produc
+
+--- 2026-01-17T14:28:20.124147 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: -- 'src/**' 'supabase/**' | grep -v '^$' | sort | uniq -c | sort -rn | head -20", "description": "Get source code churn exclud
+tool_response: {"stdout": "     16 src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts\n     14 src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx\n     13 src/atomic-crm/providers
+
+--- 2026-01-17T14:28:33.365523 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx 2>/dev/null || echo \"Files not found\"", "description": "
+tool_response: {"stdout": "  233 src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts\n  492 src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx\n  725 total", "stderr": "", "interrupted": false, "
+
+--- 2026-01-17T14:28:35.448490 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: -- 'src/**/*.test.ts' 'src/**/*.test.tsx' | grep -v '^$' | sort | uniq -c | sort -rn | head -10", "description": "Get test fil
+tool_response: {"stdout": "     16 src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts\n      6 src/components/admin/__tests__/date-input.test.tsx\n      6 src/atomic-crm/providers/supa
+
+--- 2026-01-17T14:28:42.411120 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --format='' --name-only | grep -v '^$' | cut -d'/' -f1-3 | sort | uniq -c | sort -rn | head -10", "description": "Identify coupled directories changing tog
+tool_response: {"stdout": "    693 .claude/state/call-graph-inventory\n    591 .claude/state/component-inventory\n    574 .claude/state/schemas-inventory\n    544 .claude/state/validation-services-inventory\n    444
+
+--- 2026-01-17T14:29:15.978150 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | head -50", "description": "TypeScript type check to verify changes"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T14:29:38.533345 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx eslint --max-warnings=0 src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx 2>&1 | head -20", "description": "Lint c
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T14:30:33.294554 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm*.test.tsx src/atomic-crm/dashboard/v3/components/__tests__/ActivityTypeSection*.test.tsx 2>
+tool_response: {"stdout": "                \u001b[33maria-hidden\u001b[39m=\u001b[32m\"true\"\u001b[39m\n                \u001b[33mstyle\u001b[39m=\u001b[32m\"position: absolute; border: 0px; width: 1px; height: 1px
