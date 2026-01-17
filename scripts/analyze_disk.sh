@@ -409,7 +409,7 @@ analyze_projects() {
                         printf "  ${YELLOW}%-50s${NC} %8s  ${DIM}(%d days old)${NC}\n" \
                             "${project_dir/#$HOME/~}" "$size_human" "$pkg_age"
                         total_stale_bytes=$((total_stale_bytes + size_bytes))
-                        ((stale_count++))
+                        stale_count=$((stale_count + 1))
                     fi
                 fi
             fi
@@ -448,7 +448,7 @@ analyze_projects() {
                     size_human=$(human_readable "$size_bytes")
                     printf "  ${YELLOW}%-50s${NC} %8s\n" "${artifact/#$HOME/~}" "$size_human"
                     total_build_bytes=$((total_build_bytes + size_bytes))
-                    ((build_count++))
+                    build_count=$((build_count + 1))
                 fi
             done < <(find "$search_path" -maxdepth 5 -type d -name "$build_dir" -print0 2>/dev/null)
         done
@@ -483,7 +483,7 @@ analyze_projects() {
                 repo_path=$(dirname "$git_dir")
                 printf "  ${YELLOW}%-50s${NC} %8s\n" "${repo_path/#$HOME/~}" "$size_human"
                 total_git_bytes=$((total_git_bytes + size_bytes))
-                ((git_count++))
+                git_count=$((git_count + 1))
             fi
         done < <(find "$search_path" -maxdepth 4 -type d -name ".git" -print0 2>/dev/null)
     done
@@ -666,7 +666,7 @@ interactive_cleanup() {
         if (( size > 0 )); then
             printf "  ${BOLD}%d.${NC} %-25s %10s\n" "$i" "$category" "$(human_readable "$size")"
             categories+=("$category")
-            ((i++))
+            i=$((i + 1))
         fi
     done
 
