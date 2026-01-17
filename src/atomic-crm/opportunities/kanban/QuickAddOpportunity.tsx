@@ -49,6 +49,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[QuickAdd] handleSubmit called");
 
     // FIX [WF-E2E-001]: Collect all validation errors for inline display
     const newErrors: typeof errors = {};
@@ -67,12 +68,14 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
 
     // If any errors, set state and show inline (no toast spam)
     if (Object.keys(newErrors).length > 0) {
+      console.log("[QuickAdd] Validation failed:", newErrors);
       setErrors(newErrors);
       return;
     }
 
     // Clear errors on successful validation
     setErrors({});
+    console.log("[QuickAdd] Validation passed, calling create()");
 
     try {
       // MFB business rule: Name + Principal + Customer + Stage required
@@ -91,12 +94,15 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       const selectedPrincipal = principals?.find((p) => p.id === Number(principalId));
 
       // Create returns the new record - use it for optimistic updates
+      console.log("[QuickAdd] Calling create() with data:", validatedData);
       const result = await create("opportunities", { data: validatedData });
+      console.log("[QuickAdd] create() returned:", result);
 
       // FIX [WF-E2E-001]: Only show success when create actually succeeds
       // React Admin's useCreate can resolve without throwing but with no data on error
       if (!result?.data) {
         // Create failed silently - show error and don't close dialog
+        console.log("[QuickAdd] No data in result, showing error");
         notify("Failed to create opportunity. Please try again.", { type: "error" });
         return;
       }
@@ -124,6 +130,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
     } catch (error: unknown) {
       // FIX [WF-E2E-001]: Handle both Error instances and React Admin validation errors
       // React Admin validation errors have shape: { message: string, body: { errors: {...} } }
+      console.log("[QuickAdd] create() threw error:", error);
       let message = "Error creating opportunity";
       if (error instanceof Error) {
         message = error.message;

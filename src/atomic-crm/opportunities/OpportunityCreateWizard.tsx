@@ -195,14 +195,19 @@ const OpportunityWizardContent = ({
     // Check for similar opportunities before creating
     const formData = data as Record<string, unknown>;
     if (!hasConfirmed && formData.name) {
-      await checkForSimilar(formData.name as string);
+      const result = checkForSimilar(formData.name as string);
+      // If similar opportunities found, dialog will show via hook state
+      // Return early to prevent create() call - user must confirm first
+      if (result.hasSimilar) {
+        return;
+      }
     }
 
-    // Create the opportunity
+    // Create the opportunity (only reached if no duplicates OR user confirmed)
     try {
       await create(
         "opportunities",
-        { data },
+        { data: formData },
         {
           onSuccess: (record) => {
             notify("Opportunity created successfully", { type: "success" });
