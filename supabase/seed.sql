@@ -175,16 +175,16 @@ SELECT setval('sales_id_seq', COALESCE((SELECT MAX(id) FROM sales), 0) + 1, fals
 -- These are the 9 playbook categories with fixed UUIDs
 -- Insert only if they don't exist (idempotent)
 
-INSERT INTO segments (id, name, segment_type, display_order, created_at) VALUES
-  ('22222222-2222-4222-8222-000000000001', 'Major Broadline', 'playbook', 1, NOW()),
-  ('22222222-2222-4222-8222-000000000002', 'Specialty/Regional', 'playbook', 2, NOW()),
-  ('22222222-2222-4222-8222-000000000003', 'Management Company', 'playbook', 3, NOW()),
-  ('22222222-2222-4222-8222-000000000004', 'GPO', 'playbook', 4, NOW()),
-  ('22222222-2222-4222-8222-000000000005', 'University', 'playbook', 5, NOW()),
-  ('22222222-2222-4222-8222-000000000006', 'Restaurant Group', 'playbook', 6, NOW()),
-  ('22222222-2222-4222-8222-000000000007', 'Chain Restaurant', 'playbook', 7, NOW()),
-  ('22222222-2222-4222-8222-000000000008', 'Hotel & Aviation', 'playbook', 8, NOW()),
-  ('22222222-2222-4222-8222-000000000009', 'Unknown', 'playbook', 9, NOW())
+INSERT INTO segments (id, name, segment_type, display_order, created_at, created_by) VALUES
+  ('22222222-2222-4222-8222-000000000001', 'Major Broadline', 'playbook', 1, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000002', 'Specialty/Regional', 'playbook', 2, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000003', 'Management Company', 'playbook', 3, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000004', 'GPO', 'playbook', 4, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000005', 'University', 'playbook', 5, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000006', 'Restaurant Group', 'playbook', 6, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000007', 'Chain Restaurant', 'playbook', 7, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000008', 'Hotel & Aviation', 'playbook', 8, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('22222222-2222-4222-8222-000000000009', 'Unknown', 'playbook', 9, NOW(), 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
 ON CONFLICT (id) DO NOTHING;
 
 -- ============================================================================
