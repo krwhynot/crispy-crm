@@ -557,7 +557,7 @@ export function QuickLogActivityDialog({
           {/* Locked Entity Display Section */}
           {hasLockedFields && (
             <div className="mb-6 space-y-3 rounded-lg border border-border bg-muted/50 p-4">
-              <h3 className="text-sm font-medium text-muted-foreground">Logging activity for:</h3>
+              <h4 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Logging Activity For</h4>
 
               {entityContext?.contactId && (
                 <LockedEntityDisplay

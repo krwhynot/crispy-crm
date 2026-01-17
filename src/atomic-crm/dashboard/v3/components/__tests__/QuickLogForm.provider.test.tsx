@@ -111,7 +111,7 @@ describe("QuickLogForm provider integration", () => {
 
     // Wait for form to load
     await waitFor(() => {
-      expect(screen.getByText("What happened?")).toBeInTheDocument();
+      expect(screen.getByText("What Happened")).toBeInTheDocument();
     });
 
     // Verify supabase.rpc was never called (the import was removed)
