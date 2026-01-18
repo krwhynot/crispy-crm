@@ -36,7 +36,7 @@ const PERMISSIONS: PermissionCategory[] = [
   {
     category: "Administration",
     permissions: [
-      { name: "View user list", rep: false, manager: true, admin: true },
+      { name: "View user list", rep: false, manager: false, admin: true },
       { name: "Create users", rep: false, manager: false, admin: true },
       { name: "Modify user roles", rep: false, manager: false, admin: true },
       { name: "Remove users", rep: false, manager: false, admin: true },
