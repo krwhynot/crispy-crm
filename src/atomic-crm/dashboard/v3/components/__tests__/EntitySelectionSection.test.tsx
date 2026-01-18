@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { useForm, FormProvider } from "react-hook-form";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { EntitySelectionSection } from "../EntitySelectionSection";
 import type { UseEntitySelectionReturn } from "../../hooks/useEntitySelection";
 
@@ -117,21 +118,21 @@ describe("EntitySelectionSection", () => {
   let mockEntityData: ReturnType<typeof createMockEntityData>;
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockHandlers = createMockHandlers();
     mockEntityData = createMockEntityData();
   });
 
   describe("Rendering", () => {
     it("renders SidepaneSection with 'Who Was Involved' label", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       const sidepane = screen.getByTestId("sidepane-section");
       expect(sidepane).toHaveAttribute("data-label", "Who Was Involved");
     });
 
     it("renders Contact, Organization, Opportunity comboboxes", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       expect(screen.getByTestId("entity-combobox-contact")).toBeInTheDocument();
       expect(screen.getByTestId("entity-combobox-organization")).toBeInTheDocument();
@@ -141,28 +142,28 @@ describe("EntitySelectionSection", () => {
 
   describe("Handlers", () => {
     it("passes handleContactSelect to Contact combobox", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("select-contact").click();
       expect(mockHandlers.handleContactSelect).toHaveBeenCalled();
     });
 
     it("passes handleContactClear to Contact combobox", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("clear-contact").click();
       expect(mockHandlers.handleContactClear).toHaveBeenCalled();
     });
 
     it("passes handleOrganizationSelect to Organization combobox", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("select-organization").click();
       expect(mockHandlers.handleOrganizationSelect).toHaveBeenCalled();
     });
 
     it("passes handleOrganizationClear to Organization combobox", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("clear-organization").click();
       expect(mockHandlers.handleOrganizationClear).toHaveBeenCalled();
@@ -171,7 +172,7 @@ describe("EntitySelectionSection", () => {
 
   describe("Entity Data", () => {
     it("passes filtered entities from entityData", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       expect(screen.getByTestId("options-count-contact")).toHaveTextContent("2");
       expect(screen.getByTestId("options-count-organization")).toHaveTextContent("2");
@@ -181,7 +182,7 @@ describe("EntitySelectionSection", () => {
 
   describe("Accessibility", () => {
     it("all listId attributes are unique for accessibility", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       const contactCombobox = screen.getByTestId("entity-combobox-contact");
       const orgCombobox = screen.getByTestId("entity-combobox-organization");
@@ -203,7 +204,7 @@ describe("EntitySelectionSection", () => {
 
   describe("Placeholders", () => {
     it("renders correct placeholders for each combobox", () => {
-      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
+      renderWithAdminContext(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       expect(screen.getByTestId("placeholder-contact")).toHaveTextContent("Select contact");
       expect(screen.getByTestId("placeholder-organization")).toHaveTextContent(
