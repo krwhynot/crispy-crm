@@ -76,19 +76,11 @@ describe("ActionButtons", () => {
       expect(spinner).toBeInTheDocument();
     });
 
-    it("shows 'Saving...' text on Save & Close button when submitting", () => {
+    it("shows 'Saving...' text on both save buttons when submitting", () => {
       render(<ActionButtons {...defaultProps} isSubmitting={true} />);
 
-      expect(screen.getByRole("button", { name: /saving/i })).toBeInTheDocument();
-    });
-
-    it("shows 'Saving...' text on Save & New button when submitting", () => {
-      render(<ActionButtons {...defaultProps} isSubmitting={true} />);
-
-      const saveNewButton = screen.getAllByRole("button").find(
-        (btn) => btn.textContent?.includes("Saving...")
-      );
-      expect(saveNewButton).toBeDefined();
+      const savingButtons = screen.getAllByRole("button", { name: /saving/i });
+      expect(savingButtons).toHaveLength(2);
     });
   });
 

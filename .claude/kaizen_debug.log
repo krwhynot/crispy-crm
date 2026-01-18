@@ -1527,3 +1527,103 @@ tool_response: {"stdout": "total 208\ndrwxr-xr-x 3 krwhynot krwhynot  4096 Jan 1
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/", "description": "List existing test files in hooks directory"}
 tool_response: {"stdout": "total 108\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 14 15:40 .\ndrwxr-xr-x 3 krwhynot krwhynot  4096 Jan 15 12:36 ..\n-rw------- 1 krwhynot krwhynot  3794 Jan  8 10:35 useCurrentSale.test.
+
+--- 2026-01-18T00:48:21.551311 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | head -50", "description": "List available just recipes"}
+tool_response: {"stdout": "Available recipes:\n    build                       # Build for production (includes typecheck)\n    cache-clear                 # Clear application cache\n    callgraph-render            
+
+--- 2026-01-18T00:48:25.198124 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "pnpm vitest run NotesSection --reporter=verbose 2>&1 | head -100", "timeout": 120000, "description": "Run NotesSection tests"}
+tool_response: {"stdout": "/bin/bash: line 2: pnpm: command not found", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T00:48:30.861429 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"new DataProvider\\|fallback\\|bypass\" /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/*.ts 2>/dev/null | head -20", "description": "Search for fallback beh
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/authProvider.ts:   * - Previous vulnerability: Users could bypass auth by navigating to public URLs\n/home/krwhynot/pro
+
+--- 2026-01-18T00:48:33.381998 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | grep -i test", "description": "List test-related just recipes"}
+tool_response: {"stdout": "    mcp-inspect                 # Interactive MCP testing with inspector\n    mcp-start                   # Start MCP server (for testing)\n    mcp-test                    # Test MCP tools
+
+--- 2026-01-18T00:48:34.333925 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/composedDataProvider.ts"}
+tool_response: {"stdout": "255 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/composedDataProvider.ts", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T00:48:34.950630 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/providers/supabase/ 2>/dev/null | head -20"}
+tool_response: {"stdout": "total 12\ndrwxr-xr-x 3 krwhynot krwhynot 4096 Jan 15 10:33 .\ndrwxr-xr-x 3 krwhynot krwhynot 4096 Jan 15 10:33 ..\ndrwxr-xr-x 2 krwhynot krwhynot 4096 Jan 15 10:34 handlers", "stderr": "",
+
+--- 2026-01-18T00:48:46.256274 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --follow --oneline -- \"*unifiedDataProvider*\" 2>/dev/null | head -20"}
+tool_response: {"stdout": "3a51401a0 chore(checkpoint): Automatic save of 7 file(s)\nb6cc6216b chore(checkpoint): Automatic save of 5 file(s)\n3e636d458 chore(checkpoint): Automatic save of 3 file(s)\n4315f8e0c chor
+
+--- 2026-01-18T00:48:47.395542 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --all --name-status | grep -i \"unified\\|dataprovider\" | head -30"}
+tool_response: {"stdout": "M\tsrc/atomic-crm/tests/dataProviderErrors.test.ts\nM\tsrc/atomic-crm/providers/supabase/composedDataProvider.test.ts\nM\tsrc/atomic-crm/providers/supabase/composedDataProvider.ts\nM\tsrc/
+
+--- 2026-01-18T00:48:47.720298 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | head -30", "description": "List available just recipes"}
+tool_response: {"stdout": "Available recipes:\n    build                       # Build for production (includes typecheck)\n    cache-clear                 # Clear application cache\n    callgraph-render            
+
+--- 2026-01-18T00:48:57.134637 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git show HEAD~50:src/atomic-crm/providers/supabase/unifiedDataProvider.ts 2>/dev/null | head -100 || echo \"File not in recent history\""}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T00:48:57.318464 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log -1 --name-only -- \"src/atomic-crm/providers/supabase/unifiedDataProvider.ts\" | head -10"}
+tool_response: {"stdout": "commit b6cc6216b953cd19b887f3b7c371c8010efbda31\nAuthor: Kyle Ramsy <kjramsy@gmail.com>\nDate:   Tue Jan 6 00:28:07 2026 -0600\n\n    chore(checkpoint): Automatic save of 5 file(s)\n\nsrc/
+
+--- 2026-01-18T00:48:57.529507 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -- \"src/atomic-crm/providers/supabase/unifiedDataProvider.ts\" | head -5"}
+tool_response: {"stdout": "b6cc6216b chore(checkpoint): Automatic save of 5 file(s)\n3e636d458 chore(checkpoint): Automatic save of 3 file(s)\n4315f8e0c chore(checkpoint): Automatic save of 4 file(s)\nf1e2989b9 Fix 
+
+--- 2026-01-18T00:48:57.746944 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | head -40", "description": "List available just recipes"}
+tool_response: {"stdout": "Available recipes:\n    build                       # Build for production (includes typecheck)\n    cache-clear                 # Clear application cache\n    callgraph-render            
+
+--- 2026-01-18T00:48:58.797537 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | head -50", "description": "List available just recipes"}
+tool_response: {"stdout": "Available recipes:\n    build                       # Build for production (includes typecheck)\n    cache-clear                 # Clear application cache\n    callgraph-render            
+
+--- 2026-01-18T00:48:59.841535 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | grep -i test", "description": "Find test recipes"}
+tool_response: {"stdout": "    mcp-inspect                 # Interactive MCP testing with inspector\n    mcp-start                   # Start MCP server (for testing)\n    mcp-test                    # Test MCP tools
+
+--- 2026-01-18T00:49:07.067076 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git show b6cc6216b:src/atomic-crm/providers/supabase/unifiedDataProvider.ts 2>/dev/null | wc -l"}
+tool_response: {"stdout": "0", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T00:49:07.241332 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git show b6cc6216b:src/atomic-crm/providers/supabase/unifiedDataProvider.ts 2>/dev/null | head -150"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T00:49:07.532480 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --all --full-history --name-status -- \"*unifiedDataProvider*\" | head -50"}
+tool_response: {"stdout": "commit 532028f14652c6c04b14e9578323a9799bf133ff\nMerge: dc6bbfcb6 2b6b9ac87 78c441360\nAuthor: Kyle Ramsy <kjramsy@gmail.com>\nDate:   Sun Jan 11 16:54:40 2026 -0600\n\n    On main: checkp
+
+--- 2026-01-18T00:49:08.823882 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | grep -i test", "description": "Find test-related just recipes"}
+tool_response: {"stdout": "    mcp-inspect                 # Interactive MCP testing with inspector\n    mcp-start                   # Start MCP server (for testing)\n    mcp-test                    # Test MCP tools
+
+--- 2026-01-18T00:49:09.973040 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | grep -i test", "description": "Find test-related just recipes"}
+tool_response: {"stdout": "    mcp-inspect                 # Interactive MCP testing with inspector\n    mcp-start                   # Start MCP server (for testing)\n    mcp-test                    # Test MCP tools
