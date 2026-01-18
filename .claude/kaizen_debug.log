@@ -2372,3 +2372,38 @@ tool_response: {"stdout": "COMMAND   PID     USER   FD   TYPE  DEVICE SIZE/OFF N
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "curl -s -m 3 http://localhost:5173 -o /dev/null -w \"%{http_code}\" 2>&1", "description": "Test dev server responds"}
 tool_response: {"stdout": "200", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T13:27:39.490450 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "~/.claude/checkpoint-manager.sh force", "description": "Create checkpoint before execution"}
+tool_response: {"stdout": "[main 3607aaaa9] chore(checkpoint): 1 file(s) - checkpoint-state\n 1 file changed, 2 insertions(+), 2 deletions(-)\nCheckpoint created.", "stderr": "", "interrupted": false, "isImage": fal
+
+--- 2026-01-18T13:27:44.138526 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git rev-parse HEAD", "description": "Get checkpoint commit hash"}
+tool_response: {"stdout": "3607aaaa951fcf43efcfc5be2581d6f74e31cfa9", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T13:28:14.107260 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la supabase/tests/database/ 2>/dev/null || echo \"Directory not found\"", "description": "Check existing test files"}
+tool_response: {"stdout": "total 80\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 18 11:25 .\ndrwxr-xr-x 3 krwhynot krwhynot  4096 Jan 18 11:13 ..\n-rw-r--r-- 1 krwhynot krwhynot  1524 Jan 11 03:40 000-setup-test-hooks.
+
+--- 2026-01-18T13:28:32.974355 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"CREATE TYPE.*role|role.*enum\" supabase/migrations/ --type sql -A2", "description": "Find role enum definition"}
+tool_response: {"stdout": "supabase/migrations/20251111121526_add_role_based_permissions.sql:CREATE TYPE user_role AS ENUM ('admin', 'manager', 'rep');\nsupabase/migrations/20251111121526_add_role_based_permissions.
+
+--- 2026-01-18T13:28:33.293343 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg -l \"sales.*role|role.*enum\" supabase/migrations/ --type sql | head -5", "description": "Find migrations with role enum"}
+tool_response: {"stdout": "supabase/migrations/20251211060000_add_get_sale_by_id_function.sql\nsupabase/migrations/20251212061722_document_cloud_objects.sql\nsupabase/migrations/20251111121526_add_role_based_permiss
+
+--- 2026-01-18T13:32:19.302211 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -1t /home/krwhynot/projects/crispy-crm/supabase/migrations/*.sql | head -15", "description": "List most recent migrations by modification time"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/supabase/migrations/20260118000010_fix_helper_function_null_safety.sql\n/home/krwhynot/projects/crispy-crm/supabase/migrations/20260118130000_add_campaig
+
+--- 2026-01-18T13:32:31.578478 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -1 /home/krwhynot/projects/crispy-crm/supabase/migrations/ | sort -r | head -5", "description": "Get the most recent migration files by name for timestamp ordering"}
+tool_response: {"stdout": "PATTERNS.md\n20260118130000_add_campaign_report_stats_rpc.sql\n20260118120000_add_check_similar_opportunities_rpc.sql\n20260118000010_fix_helper_function_null_safety.sql\n20260118000005_fi
