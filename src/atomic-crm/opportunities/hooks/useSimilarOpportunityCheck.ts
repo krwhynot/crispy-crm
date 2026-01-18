@@ -2,55 +2,31 @@
  * useSimilarOpportunityCheck Hook
  *
  * Manages the state and logic for checking if an opportunity name is similar
- * to existing opportunities using Levenshtein distance algorithm.
+ * to existing opportunities using server-side pg_trgm similarity matching.
  *
  * Features:
- * - Debounced checking to avoid excessive API calls
- * - Caches opportunity list with React Query
+ * - Server-side similarity check via RPC (check_similar_opportunities)
+ * - Async API for integration with form submission handlers
  * - Returns dialog state and handlers for integration with forms
  *
  * Per Engineering Constitution:
  * - P1: Fail-fast - no retry logic or circuit breakers
- * - P2: Uses React Admin's useGetList as single entry point for data
+ * - P2: Uses React Admin's dataProvider.rpc as single entry point for data
  */
 
-import { useState, useCallback, useMemo } from "react";
-import { useGetList } from "ra-core";
-import {
-  findSimilarOpportunities,
-  type SimilarOpportunity,
-  type SimilarityCheckResult,
-} from "../../utils/levenshtein";
-
-/** Default Levenshtein distance threshold for similarity detection */
-const DEFAULT_THRESHOLD = 3;
-
-/**
- * Opportunity record shape expected from the API
- */
-interface OpportunityRecord {
-  id: string | number;
-  name: string;
-  stage: string;
-  customer_organization_id?: string | number;
-  principal_organization_id?: string | number;
-  deleted_at?: string | null;
-}
-
-/**
- * Extended opportunity with organization names for display
- */
-interface OpportunityWithOrgs extends OpportunityRecord {
-  customer_organization_name?: string;
-  principal_organization_name?: string;
-}
+import { useState, useCallback } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useDataProvider } from "ra-core";
+import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
+import type { CheckSimilarOpportunitiesResponse } from "../../validation/rpc";
+import { type SimilarOpportunity, type SimilarityCheckResult } from "../../utils/levenshtein";
 
 /**
  * Hook return type
  */
 export interface UseSimilarOpportunityCheckResult {
   /** Check if a name has similar opportunities and show dialog if found */
-  checkForSimilar: (name: string) => SimilarityCheckResult;
+  checkForSimilar: (name: string) => Promise<SimilarityCheckResult>;
   /** Whether the dialog should be shown */
   showDialog: boolean;
   /** Close the dialog (user clicked "Go Back") */
@@ -61,7 +37,7 @@ export interface UseSimilarOpportunityCheckResult {
   proposedName: string;
   /** List of similar opportunities found */
   similarOpportunities: SimilarOpportunity[];
-  /** Whether the initial opportunity list is loading */
+  /** Whether the RPC call is in progress */
   isLoading: boolean;
   /** Whether the user has confirmed to proceed despite warning */
   hasConfirmed: boolean;
@@ -73,12 +49,20 @@ export interface UseSimilarOpportunityCheckResult {
  * Hook options
  */
 export interface UseSimilarOpportunityCheckOptions {
-  /** Levenshtein distance threshold (default: 3) */
-  threshold?: number;
   /** Opportunity ID to exclude from check (for edit mode) */
   excludeId?: string | number;
   /** Whether to skip the check entirely */
   disabled?: boolean;
+}
+
+/**
+ * Map pg_trgm similarity (0-1) to Levenshtein-like distance (1-3)
+ * Higher similarity = lower distance
+ */
+function mapSimilarityToDistance(similarity: number): number {
+  if (similarity >= 0.9) return 1;
+  if (similarity >= 0.7) return 2;
+  return 3;
 }
 
 /**
@@ -96,8 +80,8 @@ export interface UseSimilarOpportunityCheckOptions {
  *   hasConfirmed,
  * } = useSimilarOpportunityCheck();
  *
- * const handleSubmit = (values) => {
- *   const result = checkForSimilar(values.name);
+ * const handleSubmit = async (values) => {
+ *   const result = await checkForSimilar(values.name);
  *   if (result.hasSimilar && !hasConfirmed) {
  *     return; // Dialog will be shown
  *   }
@@ -108,7 +92,7 @@ export interface UseSimilarOpportunityCheckOptions {
 export function useSimilarOpportunityCheck(
   options: UseSimilarOpportunityCheckOptions = {}
 ): UseSimilarOpportunityCheckResult {
-  const { threshold = DEFAULT_THRESHOLD, excludeId, disabled = false } = options;
+  const { excludeId, disabled = false } = options;
 
   // State for dialog management
   const [showDialog, setShowDialog] = useState(false);
@@ -116,63 +100,49 @@ export function useSimilarOpportunityCheck(
   const [similarOpportunities, setSimilarOpportunities] = useState<SimilarOpportunity[]>([]);
   const [hasConfirmed, setHasConfirmed] = useState(false);
 
-  // Fetch all active opportunities for comparison
-  // Using a large perPage to get all opportunities for client-side comparison
-  // In production with many opportunities, consider a server-side endpoint
-  const { data: opportunities = [], isLoading } = useGetList<OpportunityWithOrgs>(
-    "opportunities",
-    {
-      pagination: { page: 1, perPage: 1000 },
-      sort: { field: "name", order: "ASC" },
-      filter: {
-        // Exclude soft-deleted and closed opportunities
-        "deleted_at@is": null,
-        // Only check against active opportunities
-        "stage@not_in": ["closed_won", "closed_lost"],
-      },
-    },
-    {
-      enabled: !disabled,
-      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    }
-  );
+  const dataProvider = useDataProvider();
 
-  // Memoize the opportunity list for comparison
-  const opportunityList = useMemo(() => {
-    return opportunities.map((opp) => ({
-      id: opp.id,
-      name: opp.name,
-      stage: opp.stage,
-      customer_organization_name: opp.customer_organization_name,
-      principal_organization_name: opp.principal_organization_name,
-    }));
-  }, [opportunities]);
+  const { mutateAsync: checkSimilarityRpc, isPending } = useMutation({
+    mutationFn: async (name: string) => {
+      return dataProvider.rpc<CheckSimilarOpportunitiesResponse>("check_similar_opportunities", {
+        p_name: name,
+        p_threshold: 0.3,
+        p_exclude_id: excludeId ? Number(excludeId) : null,
+        p_limit: 10,
+      });
+    },
+    gcTime: 5 * 60 * 1000, // 5 minute cache
+  });
 
   /**
    * Check if the given name is similar to existing opportunities
    */
   const checkForSimilar = useCallback(
-    (name: string): SimilarityCheckResult => {
+    async (name: string): Promise<SimilarityCheckResult> => {
       // Skip if disabled, already confirmed, or name is empty
-      if (disabled || hasConfirmed || !name || name.trim().length === 0) {
+      if (disabled || hasConfirmed || !name?.trim()) {
         return { hasSimilar: false, matches: [] };
       }
 
-      const result = findSimilarOpportunities(opportunityList, {
-        name,
-        threshold,
-        excludeId,
-      });
+      const results = await checkSimilarityRpc(name);
+      const matches: SimilarOpportunity[] = results.map((r) => ({
+        id: r.id,
+        name: r.name,
+        stage: r.stage,
+        distance: mapSimilarityToDistance(r.similarity_score),
+        principal_organization_name: r.principal_organization_name ?? undefined,
+        customer_organization_name: r.customer_organization_name ?? undefined,
+      }));
 
-      if (result.hasSimilar) {
+      if (matches.length > 0) {
         setProposedName(name);
-        setSimilarOpportunities(result.matches);
+        setSimilarOpportunities(matches);
         setShowDialog(true);
       }
 
-      return result;
+      return { hasSimilar: matches.length > 0, matches };
     },
-    [disabled, hasConfirmed, opportunityList, threshold, excludeId]
+    [disabled, hasConfirmed, checkSimilarityRpc]
   );
 
   /**
@@ -206,7 +176,7 @@ export function useSimilarOpportunityCheck(
     confirmCreate,
     proposedName,
     similarOpportunities,
-    isLoading,
+    isLoading: isPending,
     hasConfirmed,
     resetConfirmation,
   };

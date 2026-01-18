@@ -198,6 +198,30 @@ export const logActivityWithTaskResponseSchema = z.strictObject({
 export type LogActivityWithTaskParams = z.infer<typeof logActivityWithTaskParamsSchema>;
 export type LogActivityWithTaskResponse = z.infer<typeof logActivityWithTaskResponseSchema>;
 
+// check_similar_opportunities RPC schema
+export const checkSimilarOpportunitiesParamsSchema = z.strictObject({
+  p_name: z.string().trim().min(1).max(500),
+  p_threshold: z.number().min(0).max(1).default(0.3),
+  p_exclude_id: z.number().int().positive().nullable().optional(),
+  p_limit: z.number().int().positive().max(50).default(10),
+});
+
+export const checkSimilarOpportunitiesResponseSchema = z.array(
+  z.strictObject({
+    id: z.number(),
+    name: z.string(),
+    stage: z.string(),
+    similarity_score: z.number(),
+    principal_organization_name: z.string().nullable(),
+    customer_organization_name: z.string().nullable(),
+  })
+);
+
+export type CheckSimilarOpportunitiesParams = z.infer<typeof checkSimilarOpportunitiesParamsSchema>;
+export type CheckSimilarOpportunitiesResponse = z.infer<
+  typeof checkSimilarOpportunitiesResponseSchema
+>;
+
 export const RPC_SCHEMAS = {
   get_or_create_segment: getOrCreateSegmentParamsSchema,
   set_primary_organization: setPrimaryOrganizationParamsSchema,
@@ -207,6 +231,7 @@ export const RPC_SCHEMAS = {
   check_authorization: checkAuthorizationParamsSchema,
   check_authorization_batch: checkAuthorizationBatchParamsSchema,
   log_activity_with_task: logActivityWithTaskParamsSchema,
+  check_similar_opportunities: checkSimilarOpportunitiesParamsSchema,
 } as const;
 
 export type RPCFunctionName = keyof typeof RPC_SCHEMAS;
