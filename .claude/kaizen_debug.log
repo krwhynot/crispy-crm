@@ -2892,3 +2892,33 @@ tool_response: {"stdout": "=== Checking git history for deleted migrations ===\n
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "echo \"=== Checking for deleted files matching cloud migration names ===\" && \\\ngit log --all --diff-filter=D --summary -- \"supabase/migrations/*.sql\" 2>/dev/null | grep -E \"(2026010
 tool_response: {"stdout": "=== Checking for deleted files matching cloud migration names ===", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T17:37:36.459805 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "echo \"=== Checking if local migrations define these functions ===\" && \\\ngrep -l \"archive_contact_with_relations\\|archive_opportunity_with_relations\\|archive_organization_with_relat
+tool_response: {"stdout": "=== Checking if local migrations define these functions ===\nsupabase/migrations/20251028213032_add_soft_delete_cascade_functions.sql\nsupabase/migrations/20251129031410_activity_contact_c
+
+--- 2026-01-18T17:37:53.448214 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db diff --linked 2>&1 | tail -50", "timeout": 180000, "description": "Get actual schema diff output"}
+tool_response: {"stdout": "Loading config override: [remotes.production]\nWARN: no SMS provider is enabled. Disabling phone login\nInitialising login role...\nCreating shadow database...\nfailed to start docker cont
+
+--- 2026-01-18T17:38:11.616906 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "echo \"=== Local schema object counts ===\" && \\\nPGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres -c \"\nSELECT \n  'tables' as type,\n  COUNT(*) as count\nFROM in
+tool_response: {"stdout": "=== Local schema object counts ===\n   type    | count \n-----------+-------\n tables    |    27\n views     |    20\n functions |    99\n(3 rows)", "stderr": "", "interrupted": false, "is
+
+--- 2026-01-18T17:38:27.695181 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres -t -c \"\nSELECT table_name FROM information_schema.views \nWHERE table_schema = 'public' \nORDER BY table_name;\" 2
+tool_response: {"stdout": " authorization_status\n campaign_choices\n contactNotes\n contacts_summary\n contacts_with_account_manager\n dashboard_pipeline_summary\n dashboard_principal_summary\n distinct_opportuniti
+
+--- 2026-01-18T17:40:02.874919 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "echo \"=== Checking for migration safeguards ===\" && \\\necho \"\" && \\\necho \"1. Git hooks:\" && \\\nls -la .git/hooks/ 2>/dev/null | grep -v \".sample\" | head -10 && \\\necho \"\" &
+tool_response: {"stdout": "=== Checking for migration safeguards ===\n\n1. Git hooks:\ntotal 72\ndrwxr-xr-x 2 krwhynot krwhynot 4096 Nov 11 01:27 .\ndrwxr-xr-x 8 krwhynot krwhynot 4096 Jan 18 17:37 ..\n\n2. CI/CD wo
+
+--- 2026-01-18T17:40:41.646120 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la ./scripts/validate-migrations.sh 2>/dev/null || echo \"Script doesn't exist!\" && \\\necho \"\" && \\\necho \"=== Checking for any migration-related scripts ===\" && \\\nfd -t f \"
+tool_response: {"stdout": "-rwxr-xr-x 1 krwhynot krwhynot 11992 Jan 11 03:40 ./scripts/validate-migrations.sh\n\n=== Checking for any migration-related scripts ===", "stderr": "", "interrupted": false, "isImage": fa

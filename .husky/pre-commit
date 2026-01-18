@@ -98,6 +98,53 @@ if [ -n "$migration_files" ]; then
   fi
 fi
 
+# ═══════════════════════════════════════════════════════════════
+# 6. MIGRATION DRIFT: Detect local vs cloud schema divergence
+# ═══════════════════════════════════════════════════════════════
+# Only run when migration files are staged to catch drift early
+# This prevents the scenario where local and cloud schemas diverge
+
+if [ -n "$migration_files" ]; then
+  echo "🔄 Checking migration drift (local vs cloud)..."
+
+  # Check if supabase is linked (has .supabase directory or config)
+  if [ -f "supabase/.temp/project-ref" ] || npx supabase projects list &>/dev/null; then
+
+    # Run dry-run to detect drift - this is the authoritative check
+    drift_output=$(npx supabase db push --dry-run 2>&1 || true)
+
+    # Check for history mismatch (critical - cloud has migrations not in local)
+    if echo "$drift_output" | grep -q "migration history does not match"; then
+      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+      echo -e "${RED}❌ MIGRATION DRIFT DETECTED${NC}"
+      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+      echo
+      echo -e "${YELLOW}Local and cloud migration histories have diverged.${NC}"
+      echo -e "${YELLOW}This typically happens when migrations are applied directly to cloud.${NC}"
+      echo
+      echo "To investigate:"
+      echo "  npx supabase db pull    # See what cloud has"
+      echo "  npx supabase db push --dry-run  # See full diff"
+      echo
+      echo "To fix (after investigation):"
+      echo "  npx supabase migration repair --status reverted <version>  # For cloud-only"
+      echo "  npx supabase migration repair --status applied <version>   # For local-only"
+      echo
+      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+      exit 1
+    fi
+
+    # Check for pending migrations (warning only - local migrations not yet in cloud)
+    if echo "$drift_output" | grep -qE "Would apply|migrations? to apply"; then
+      echo -e "${YELLOW}⚠ Pending migrations will be applied on next deploy${NC}"
+    fi
+
+    echo -e "${GREEN}✓ Migration sync OK${NC}"
+  else
+    echo -e "${YELLOW}⚠ Supabase not linked, skipping drift check${NC}"
+  fi
+fi
+
 # Full test suite: Run 'npm test' manually or rely on CI
 
 echo -e "${GREEN}✓ Pre-commit checks passed${NC}"
