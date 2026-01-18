@@ -123,26 +123,26 @@ SELECT is_empty(
 -- SECTION 4: Ownership policy existence verification
 -- ============================================================================
 
--- Test 10: Activities has ownership INSERT policy
+-- Test 10: Activities has ownership INSERT policy (role-based SELECT)
 SELECT policies_are(
   'public', 'activities',
   ARRAY[
     'activities_delete_policy',
     'activities_insert_owner',
     'activities_update_owner_or_privileged',
-    'authenticated_select_activities'
+    'activities_select_role_based'
   ],
   'activities table has correct ownership policies'
 );
 
--- Test 11: Contacts has ownership policies
+-- Test 11: Contacts has ownership policies (role-based SELECT)
 SELECT policies_are(
   'public', 'contacts',
   ARRAY[
     'contacts_delete_owner_or_privileged',
     'contacts_insert_owner',
     'contacts_update_owner_or_privileged',
-    'select_contacts'
+    'contacts_select_role_based'
   ],
   'contacts table has correct ownership policies'
 );

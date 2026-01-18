@@ -2627,3 +2627,18 @@ tool_response: {"stdout": "BEGIN\nINSERT 0 2\nDO\nSET\nSET\nUPDATE 0\nERROR:  co
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx supabase test db supabase/tests/database/070-role-based-rls.test.sql 2>&1", "timeout": 120000, "description": "Run pgTAP tests for role-based RLS policies"}
 tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\n/home/krwhynot/projects/crispy-crm/supabase/tests/database/070-role-based-rls.test.sql .. ok\nAll 
+
+--- 2026-01-18T14:05:40.949892 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase test db supabase/tests/database/060-null-safety-rls.test.sql 2>&1", "timeout": 120000, "description": "Re-run null-safety RLS tests after updating Test 16"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\npsql:/home/krwhynot/projects/crispy-crm/supabase/tests/database/060-null-safety-rls.test.sql:25: N
+
+--- 2026-01-18T14:06:51.588083 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase test db supabase/tests/database/040-ownership-rls.test.sql 2>&1", "timeout": 120000, "description": "Run ownership RLS tests with updated policy names"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\n/home/krwhynot/projects/crispy-crm/supabase/tests/database/040-ownership-rls.test.sql .. ok\nAll t
+
+--- 2026-01-18T14:07:04.335151 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase test db supabase/tests/database/040-ownership-rls.test.sql supabase/tests/database/060-null-safety-rls.test.sql supabase/tests/database/070-role-based-rls.test.sql 2>&1", "ti
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\n/home/krwhynot/projects/crispy-crm/supabase/tests/database/040-ownership-rls.test.sql .... ok\npsq

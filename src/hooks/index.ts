@@ -6,6 +6,8 @@
 // RBAC
 export { useUserRole } from "./useUserRole";
 export type { UserRole, UserIdentity } from "./useUserRole";
+export { usePermissions } from "./usePermissions";
+export type { PermissionAction, PermissionResource, UsePermissionsReturn } from "./usePermissions";
 export { useTeamMembers } from "./useTeamMembers";
 export type { TeamMember, UseTeamMembersReturn } from "./useTeamMembers";
 
