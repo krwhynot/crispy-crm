@@ -12,7 +12,7 @@ Standard patterns for business logic services in Crispy CRM.
                                    │
                                    ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      unifiedDataProvider                             │
+│                      composedDataProvider                            │
 │     ┌─────────────────────────────────────────────────────────┐     │
 │     │                   Service Registry                       │     │
 │     │  ┌──────────────┬──────────────┬──────────────────────┐ │     │
@@ -37,7 +37,7 @@ Standard patterns for business logic services in Crispy CRM.
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Key principle:** Components NEVER import services directly. All access flows through `unifiedDataProvider`.
+**Key principle:** Components NEVER import services directly. All access flows through `composedDataProvider`.
 
 ---
 
@@ -322,7 +322,7 @@ async addOpportunityParticipant(
 How services are initialized and exposed through the data provider.
 
 ```typescript
-// src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+// src/atomic-crm/providers/supabase/composedDataProvider.ts
 
 // 1. Import service classes
 import {
@@ -341,7 +341,7 @@ const junctionsService = new JunctionsService(baseDataProvider);
 const segmentsService = new SegmentsService(baseDataProvider);
 
 // 3. Expose through extended data provider methods
-export const unifiedDataProvider: ExtendedDataProvider = {
+export const composedDataProvider: ExtendedDataProvider = {
   ...baseDataProvider,
 
   // Service delegation for opportunities
@@ -399,7 +399,7 @@ export const unifiedDataProvider: ExtendedDataProvider = {
 - Add custom methods for operations outside standard CRUD
 - Keep the registry in one place for discoverability
 
-**Example:** `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+**Example:** `src/atomic-crm/providers/supabase/composedDataProvider.ts`
 
 ---
 

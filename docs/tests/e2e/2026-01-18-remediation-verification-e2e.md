@@ -1,4 +1,4 @@
-# E2E Test: Remediation Verification Protocol
+# E2E Test: Remediation Verification Protocol (UI-Only)
 
 **Date:** 2026-01-18
 **Tester:** _______________
@@ -9,117 +9,119 @@
 
 ## Overview
 
-This E2E test verifies three critical fixes from the January 2026 remediation cycle:
+This E2E test verifies three critical fixes through the CRM UI only (no direct database access required).
 
-| Test | Fix | Migration/File |
-|------|-----|----------------|
-| A | Zombie Segment Fix (soft-delete name reuse) | `20260118000001_fix_segments_indexes.sql` |
-| B | Product Re-Link Fix | `OpportunityProductsTab.tsx` |
-| C | Activity Partial Update Fix | `ActivityDetailsTab.tsx` |
+| Test | Fix | UI Workflow |
+|------|-----|-------------|
+| A | Soft-Delete Archive/Restore Cycle | Opportunity Archive → View Archived → Restore |
+| B | Product Re-Link Fix | Products Tab Remove → Re-Add |
+| C | Activity Partial Update Fix | Activity Edit Single Field |
 
 ---
 
 ## Prerequisites
 
 - [ ] Logged in as user with Admin or Manager role
-- [ ] Database migration `20260118000001_fix_segments_indexes.sql` applied
-- [ ] At least 1 existing Opportunity with products
-- [ ] At least 1 existing Activity record
+- [ ] At least 1 existing Opportunity (can be created fresh for testing)
+- [ ] At least 1 existing Opportunity with products linked
+- [ ] At least 1 existing Activity record with multiple fields populated
 
 ---
 
-## Test A: Zombie Segment Soft-Delete Verification
+## Test A: Opportunity Archive/Restore Cycle
 
-**Objective:** Verify that soft-deleted segment names can be reused for new segments.
+**Objective:** Verify opportunities can be archived (soft-deleted) and restored through the UI without data loss.
 
-> **Note:** Segments are fixed Playbook categories in Crispy CRM (not user-creatable via UI). This test requires SQL execution.
+### Setup
 
-### Setup (SQL Console)
+1. Navigate to: **`/opportunities`**
+2. Either select an existing opportunity OR create a new test opportunity
 
-```sql
--- 1. Check current active segments
-SELECT id, name, segment_type, deleted_at
-FROM segments
-WHERE deleted_at IS NULL
-ORDER BY name;
-```
-
-- [ ] Query executes successfully
-- [ ] Note segment count: ___
+- [ ] Opportunities list/board loads
+- [ ] Test Opportunity: _______________
 
 ### Test Steps
 
-#### Step A.1: Create a test segment
+#### Step A.1: Document Opportunity Details
 
-```sql
--- Create test segment
-INSERT INTO segments (name, segment_type, color, created_at, updated_at)
-VALUES ('E2E-Test-Segment-2026', 'industry', '#FF5733', NOW(), NOW())
-RETURNING id, name;
-```
+1. Click on the opportunity to open the slide-over
+2. Record the key details:
 
-- [ ] Insert succeeds
-- [ ] Record ID: ___
+| Field | Value |
+|-------|-------|
+| Name | |
+| Stage | |
+| Principal | |
+| Expected Close Date | |
+| Products (if any) | |
 
-#### Step A.2: Soft-delete the segment
+- [ ] Details documented
+- [ ] **Screenshot checkpoint:** Take screenshot of opportunity details
 
-```sql
--- Soft delete the segment
-UPDATE segments
-SET deleted_at = NOW(), updated_at = NOW()
-WHERE name = 'E2E-Test-Segment-2026';
-```
+#### Step A.2: Archive the Opportunity
 
-- [ ] Update affects 1 row
-- [ ] Segment is soft-deleted (deleted_at is NOT NULL)
+1. In the opportunity slide-over or show view, locate the **"Archive"** button
+   - Button has an Archive icon (box with down arrow)
+2. Click the **"Archive"** button
 
-#### Step A.3: Verify reuse (THE FIX)
+**Expected Result:**
+- [ ] ✅ Notification appears: "Opportunity archived"
+- [ ] ✅ Redirected to opportunities list
+- [ ] ✅ Opportunity no longer visible in main list/board
 
-```sql
--- Attempt to create a new segment with the SAME name
-INSERT INTO segments (name, segment_type, color, created_at, updated_at)
-VALUES ('E2E-Test-Segment-2026', 'industry', '#33FF57', NOW(), NOW())
-RETURNING id, name;
-```
+#### Step A.3: View Archived Opportunities
+
+1. On the opportunities page, look for **"View archived opportunities"** button
+   - Located at the bottom of the list/board view
+2. Click the button to open the archived opportunities dialog
+
+**Expected Result:**
+- [ ] ✅ Dialog opens with title "Archived Opportunities"
+- [ ] ✅ Your archived opportunity appears in the list
+- [ ] ✅ Shows archive date and stage information
+
+- [ ] Test opportunity visible in archived list
+
+#### Step A.4: Restore the Opportunity (THE FIX)
+
+1. Click on the archived opportunity to open its detail view
+2. Locate the **"Send back to the board"** button
+   - Button has an ArchiveRestore icon (box with up arrow)
+3. Click the restore button
 
 **Expected Result (After Fix):**
-- [ ] ✅ Insert succeeds (NEW id returned)
-- [ ] Two segments exist with same name (one active, one soft-deleted)
+- [ ] ✅ Notification appears: "Opportunity unarchived"
+- [ ] ✅ Redirected back to opportunities list
+- [ ] ✅ Opportunity now visible in main list/board again
 
 **Failure Indicator (Before Fix):**
-- ❌ Error: `duplicate key value violates unique constraint`
+- ❌ Error notification on restore
+- ❌ Opportunity remains in archived state
+- ❌ Data corruption or missing fields after restore
 
-#### Step A.4: Verify index behavior
+#### Step A.5: Verify Data Integrity
 
-```sql
--- Verify both records exist
-SELECT id, name, segment_type, deleted_at,
-       CASE WHEN deleted_at IS NULL THEN 'ACTIVE' ELSE 'DELETED' END as status
-FROM segments
-WHERE LOWER(name) = 'e2e-test-segment-2026'
-ORDER BY created_at;
-```
+1. Click on the restored opportunity to open slide-over
+2. Compare all fields to values documented in Step A.1
 
-- [ ] Returns 2 rows
-- [ ] 1 row has status = 'ACTIVE'
-- [ ] 1 row has status = 'DELETED'
+| Field | Expected | Actual | Match? |
+|-------|----------|--------|--------|
+| Name | (from A.1) | | ☐ |
+| Stage | (from A.1) | | ☐ |
+| Principal | (from A.1) | | ☐ |
+| Expected Close Date | (from A.1) | | ☐ |
+| Products | (from A.1) | | ☐ |
 
-### Cleanup
-
-```sql
--- Permanent cleanup for test data
-DELETE FROM segments WHERE name = 'E2E-Test-Segment-2026';
-```
-
-- [ ] Cleanup complete
+- [ ] All fields match original values
+- [ ] No data was lost during archive/restore cycle
 
 ### Test A Result
 
 | Status | Notes |
 |--------|-------|
-| ☐ PASS | Soft-deleted names can be reused |
-| ☐ FAIL | Unique constraint error occurred |
-| ☐ BLOCKED | Migration not applied |
+| ☐ PASS | Archive/restore cycle works with no data loss |
+| ☐ FAIL | Restore failed or data was corrupted |
+| ☐ BLOCKED | Cannot access archive functionality |
 
 ---
 
@@ -139,7 +141,7 @@ DELETE FROM segments WHERE name = 'E2E-Test-Segment-2026';
 
 #### Step B.1: Open Opportunity Slide-Over
 
-1. Click on the opportunity row in the list
+1. Click on the opportunity row/card in the list or board
 2. Wait for slide-over panel to open
 
 - [ ] Slide-over opens
@@ -156,9 +158,11 @@ DELETE FROM segments WHERE name = 'E2E-Test-Segment-2026';
 
 **Screenshot checkpoint:** Take screenshot of current products state
 
+**Product(s) currently linked:** _______________
+
 #### Step B.3: Remove a Product
 
-1. In the Products section, locate the product autocomplete field
+1. In the Products section, locate the product autocomplete/chip area
 2. Click the **"X"** button next to an existing product to remove it
 3. Click **"Save Changes"** button
 
@@ -246,7 +250,7 @@ Record the current values before editing:
 
 #### Step C.3: Enter Edit Mode
 
-1. Click the **"Edit"** button (pencil icon) in the slide-over header
+1. Click the **"Edit"** button (pencil icon ✏️) in the slide-over header
 
 - [ ] Form switches to edit mode
 - [ ] All fields become editable
@@ -259,6 +263,7 @@ Record the current values before editing:
    - If currently "Positive" → change to "Neutral"
    - If currently "Neutral" → change to "Negative"
    - If currently "Negative" → change to "Positive"
+   - If empty → select "Positive"
 3. **DO NOT** modify any other fields
 4. Click **"Save Changes"** button in the slide-over footer
 
@@ -297,9 +302,9 @@ Compare current values to documented values from Step C.2:
 
 #### Step C.6: Verify Database Persistence
 
-1. Refresh the page (F5)
-2. Navigate back to the same activity
-3. Open the slide-over
+1. Refresh the browser (F5 or Cmd+R)
+2. Navigate back to **`/activities`**
+3. Open the same activity slide-over
 
 - [ ] Changes persisted after refresh
 - [ ] No data loss
@@ -320,7 +325,7 @@ Compare current values to documented values from Step C.2:
 
 | Test | Description | Status | Tester Initials |
 |------|-------------|--------|-----------------|
-| A | Zombie Segment Soft-Delete | ☐ PASS ☐ FAIL ☐ BLOCKED | |
+| A | Opportunity Archive/Restore Cycle | ☐ PASS ☐ FAIL ☐ BLOCKED | |
 | B | Product Re-Link | ☐ PASS ☐ FAIL ☐ BLOCKED | |
 | C | Activity Partial Update | ☐ PASS ☐ FAIL ☐ BLOCKED | |
 
@@ -342,7 +347,7 @@ Compare current values to documented values from Step C.2:
 
 ### Screenshots Collected
 
-- [ ] Test A: N/A (SQL-based)
+- [ ] Test A: Opportunity before archive, archived list, after restore
 - [ ] Test B: Products tab before/after
 - [ ] Test C: Activity view mode before edit
 
@@ -360,13 +365,19 @@ Compare current values to documented values from Step C.2:
 
 ## Appendix: UI Element Reference
 
-| Element | Location | Selector/Label |
-|---------|----------|----------------|
-| Opportunities List | `/opportunities` | Left nav "Opportunities" |
-| Activities List | `/activities` | Left nav "Activities" |
-| Slide-Over Edit Button | Header right | Pencil icon |
-| Slide-Over Save Button | Footer | "Save Changes" |
-| Products Tab | Opportunity slide-over | 3rd tab, Package icon |
-| Sentiment Dropdown | Activity edit form | "Sentiment" label |
-| Success Toast | Top-right | Green notification |
-| Error Toast | Top-right | Red notification |
+| Element | Location | How to Find |
+|---------|----------|-------------|
+| Opportunities List | `/opportunities` | Left nav → "Opportunities" |
+| Activities List | `/activities` | Left nav → "Activities" |
+| Opportunity Slide-Over | Opportunities page | Click any opportunity row/card |
+| Activity Slide-Over | Activities page | Click any activity row |
+| Products Tab | Opportunity slide-over | 3rd tab with 📦 Package icon |
+| Archive Button | Opportunity detail | Button with box+down-arrow icon, label "Archive" |
+| View Archived Button | Opportunities page footer | Ghost button "View archived opportunities" |
+| Unarchive Button | Archived opportunity detail | Button "Send back to the board" |
+| Edit Button | Slide-over header | Pencil icon ✏️ |
+| Cancel Button | Slide-over header (edit mode) | "Cancel" text button |
+| Save Changes Button | Slide-over footer (edit mode) | Primary button "Save Changes" |
+| Sentiment Dropdown | Activity edit form | Field labeled "Sentiment" |
+| Success Toast | Top-right corner | Green notification bar |
+| Error Toast | Top-right corner | Red notification bar |
