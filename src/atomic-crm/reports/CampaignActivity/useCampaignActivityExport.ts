@@ -28,14 +28,6 @@ interface CampaignActivityGroup {
   mostActiveCount: number;
 }
 
-interface CampaignOpportunity {
-  id: number;
-  name: string;
-  campaign: string | null;
-  customer_organization_name?: string;
-  stage?: string;
-}
-
 interface StaleOpportunity {
   id: number;
   name: string;
@@ -103,9 +95,6 @@ export function useCampaignActivityExport(selectedCampaign: string, salesMap: Ma
 
       const exportData = activityGroups.flatMap((group) =>
         group.activities.map((activity) => {
-          const opportunity = activity.opportunity_id
-            ? opportunityMap.get(activity.opportunity_id)
-            : null;
           const createdAtDate = parseDateSafely(activity.created_at);
           const daysSinceActivity = createdAtDate
             ? Math.floor((Date.now() - createdAtDate.getTime()) / (1000 * 60 * 60 * 24))
@@ -121,8 +110,7 @@ export function useCampaignActivityExport(selectedCampaign: string, salesMap: Ma
             date: createdAtDate ? format(createdAtDate, "yyyy-MM-dd") : "",
             sales_rep: sanitizeCsvValue(salesMap.get(activity.created_by!) || "Unassigned"),
             days_since_activity: daysSinceActivity,
-            opportunity_name: sanitizeCsvValue(opportunity?.name || ""),
-            opportunity_stage: sanitizeCsvValue(opportunity?.stage || ""),
+            opportunity_name: sanitizeCsvValue(activity.opportunity_name || ""),
           };
         })
       );
@@ -142,7 +130,7 @@ export function useCampaignActivityExport(selectedCampaign: string, salesMap: Ma
         notify(`${exportData.length} activities exported successfully`, { type: "success" });
       });
     },
-    [selectedCampaign, salesMap, opportunityMap, notify]
+    [selectedCampaign, salesMap, notify]
   );
 
   return { exportStaleLeads, exportActivities };

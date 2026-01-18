@@ -34,6 +34,7 @@ interface CampaignActivity {
   contact_id: number | null;
   contact_name?: string;
   opportunity_id?: number | null;
+  opportunity_name?: string | null;
   created_by: number;
   created_at: string;
 }
@@ -146,79 +147,19 @@ export default function CampaignActivityReport() {
     return result.sort((a, b) => b.totalCount - a.totalCount);
   }, [activities]);
 
-  // Helper function: Get last activity date for an opportunity
-  const getLastActivityForOpportunity = (
-    oppId: number,
-    activities: CampaignActivity[]
-  ): string | null => {
-    const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
-    if (oppActivities.length === 0) return null;
-
-    const sortedActivities = oppActivities.sort((a, b) => {
-      const dateA = parseDateSafely(a.created_at);
-      const dateB = parseDateSafely(b.created_at);
-      if (!dateA || !dateB) return 0;
-      return dateB.getTime() - dateA.getTime();
-    });
-
-    const firstActivity = sortedActivities[0];
-    return firstActivity?.created_at ?? null;
-  };
-
-  // Calculate stale opportunities using per-stage thresholds (PRD Section 6.3)
-  // Closed stages (closed_won, closed_lost) are excluded from staleness calculations
-  const staleOpportunities = useMemo(() => {
-    if (!showStaleLeads || !allOpportunities) return [];
-
-    const opportunitiesForCampaign = allOpportunities.filter(
-      (o) => o.campaign === selectedCampaign
-    );
-    const now = new Date();
-
-    return (
-      opportunitiesForCampaign
-        .filter((opp) => {
-          if (!opp.stage) {
-            console.error(
-              `[DATA INTEGRITY] Opportunity ID ${opp.id} has no stage. ` +
-                `Excluding from stale leads calculation. ` +
-                `This indicates database corruption or a bug in the data layer.`
-            );
-            return false;
-          }
-          return true;
-        })
-        .map((opp) => {
-          const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
-          const lastActivityDateObj = lastActivityDate ? parseDateSafely(lastActivityDate) : null;
-          const daysInactive = lastActivityDateObj
-            ? Math.floor((now.getTime() - lastActivityDateObj.getTime()) / (1000 * 60 * 60 * 24))
-            : 999999; // Never had activity - sort to end
-
-          // Get per-stage threshold (undefined for closed stages)
-          // Stage is guaranteed to exist due to filter above, but TypeScript needs assertion
-          const stage = opp.stage!;
-          const stageThreshold = getStaleThreshold(stage);
-
-          return {
-            ...opp,
-            lastActivityDate,
-            daysInactive,
-            stageThreshold, // Include threshold for display
-            isStale: isOpportunityStale(stage, lastActivityDate ?? null, now),
-          };
-        })
-        // Exclude closed stages (stageThreshold is undefined for them)
-        // Only include opportunities that are actually stale per their stage threshold
-        .filter((opp) => opp.isStale && opp.stageThreshold !== undefined)
-        .sort((a, b) => {
-          // Sort by "days over threshold" (most urgent first)
-          const aOverage = a.daysInactive - (a.stageThreshold || 0);
-          const bOverage = b.daysInactive - (b.stageThreshold || 0);
-          return bOverage - aOverage;
-        })
-    );
-  }, [showStaleLeads, allOpportunities, selectedCampaign, allCampaignActivities]);
+  // TODO: Stale leads feature requires server-side RPC (get_stale_opportunities)
+  // The previous client-side implementation used perPage: 1000 which was a time bomb.
+  // Temporarily returning empty array until RPC is implemented.
+  const staleOpportunities: Array<{
+    id: number;
+    name: string;
+    stage?: string;
+    customer_organization_name?: string;
+    lastActivityDate: string | null;
+    daysInactive: number;
+    stageThreshold?: number;
+    isStale: boolean;
+  }> = [];
 
   // Auto-expand top 3 activity types on load
   React.useEffect(() => {
@@ -248,8 +189,7 @@ export default function CampaignActivityReport() {
   // Calculate summary metrics
   const totalActivities = activities.length;
   const uniqueOrgs = new Set(activities.map((a) => a.organization_id)).size;
-  const totalOpportunities =
-    allOpportunities.filter((opp) => opp.campaign === selectedCampaign).length || 1;
+  const totalOpportunities = totalCampaignOpportunities || 1;
   const coverageRate =
     totalOpportunities > 0 ? Math.round((uniqueOrgs / totalOpportunities) * 100) : 0;
   const avgActivitiesPerLead =
@@ -469,7 +409,7 @@ export default function CampaignActivityReport() {
           selectedSalesRep={selectedSalesRep}
           setSelectedSalesRep={setSelectedSalesRep}
           salesRepOptions={salesRepOptions}
-          allCampaignActivitiesCount={allCampaignActivities.length}
+          allCampaignActivitiesCount={totalCampaignActivitiesCount}
           showStaleLeads={showStaleLeads}
           setShowStaleLeads={setShowStaleLeads}
           staleOpportunitiesCount={staleOpportunities.length}

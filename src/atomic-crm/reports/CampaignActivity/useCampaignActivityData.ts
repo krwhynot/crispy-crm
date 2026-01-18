@@ -15,6 +15,7 @@ interface CampaignActivity {
   contact_id: number | null;
   contact_name?: string;
   opportunity_id?: number | null;
+  opportunity_name?: string | null;
   created_by: number;
   created_at: string;
 }
