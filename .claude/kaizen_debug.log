@@ -2597,3 +2597,33 @@ tool_response: {"stdout": "    relname    | rls_enabled | rls_forced \n---------
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "psql \"postgresql://postgres:postgres@localhost:54322/postgres\" -c \"\nSELECT \n  polname,\n  CASE polcmd \n    WHEN 'r' THEN 'SELECT'\n    WHEN 'a' THEN 'INSERT'  \n    WHEN 'w' THEN 'U
 tool_response: {"stdout": "       polname        | command |     using_clause     \n----------------------+---------+----------------------\n select_organizations | SELECT  | (deleted_at IS NULL)\n(1 row)", "stderr"
+
+--- 2026-01-18T13:59:42.204060 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db reset 2>&1 | tail -30", "timeout": 180000, "description": "Reset database to apply new migration"}
+tool_response: {"stdout": "NOTICE (00000): policy \"organization_notes_select_policy\" for relation \"public.organization_notes\" does not exist, skipping\nNOTICE (00000): policy \"opportunity_notes_select_policy\" 
+
+--- 2026-01-18T13:59:53.218809 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "psql \"postgresql://postgres:postgres@localhost:54322/postgres\" -c \"\nSELECT \n  polname,\n  CASE polcmd \n    WHEN 'r' THEN 'SELECT'\n    WHEN 'a' THEN 'INSERT'  \n    WHEN 'w' THEN 'U
+tool_response: {"stdout": "                 polname                  | command |                               using_clause_preview                               \n------------------------------------------+--------
+
+--- 2026-01-18T14:01:17.042330 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db reset 2>&1 | tail -15", "timeout": 180000, "description": "Reset database with fixed migration"}
+tool_response: {"stdout": "NOTICE (00000):   - Admin/Manager: Full access\nNOTICE (00000):   - Rep: Own records only (sales_id OR created_by)\nNOTICE (00000): ========================================\nSeeding data f
+
+--- 2026-01-18T14:01:43.251384 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "psql \"postgresql://postgres:postgres@localhost:54322/postgres\" -c \"\nSELECT \n  polname,\n  CASE polcmd WHEN 'w' THEN 'UPDATE' END as command,\n  pg_get_expr(polqual, polrelid) as usin
+tool_response: {"stdout": "             polname             | command |                                                  using_clause                                                  \n------------------------------
+
+--- 2026-01-18T14:02:03.700830 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "psql \"postgresql://postgres:postgres@localhost:54322/postgres\" -c \"\nBEGIN;\n\n-- Create test users\nINSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_
+tool_response: {"stdout": "BEGIN\nINSERT 0 2\nDO\nSET\nSET\nUPDATE 0\nERROR:  column \"found\" does not exist\nLINE 33: SELECT 'Rows updated: ' || FOUND::text;\n                                    ^", "stderr": "", 
+
+--- 2026-01-18T14:04:31.979999 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase test db supabase/tests/database/070-role-based-rls.test.sql 2>&1", "timeout": 120000, "description": "Run pgTAP tests for role-based RLS policies"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\n/home/krwhynot/projects/crispy-crm/supabase/tests/database/070-role-based-rls.test.sql .. ok\nAll 

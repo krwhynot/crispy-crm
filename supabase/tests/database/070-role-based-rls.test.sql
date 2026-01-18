@@ -187,13 +187,24 @@ SELECT lives_ok(
   'Test 7: Rep can update their own organizations'
 );
 
--- Test 8: Rep CANNOT update other's records (RLS violation)
-SELECT throws_ok(
-  $$ UPDATE public.organizations SET name = 'Hacked Org' WHERE id = 70002 $$,
-  '42501', -- RLS policy violation error code
-  NULL,
-  'Test 8: Rep cannot update other rep organizations (RLS enforced)'
+-- Test 8: Rep CANNOT update other's records (RLS filters silently)
+-- Note: PostgreSQL RLS silently filters UPDATE to 0 rows rather than throwing
+-- We verify by attempting update as rep, then switching to admin to check data
+DO $$ BEGIN
+  UPDATE public.organizations SET name = 'Hacked Org' WHERE id = 70002;
+END $$;
+
+-- Switch to admin to verify the data wasn't changed
+SET LOCAL request.jwt.claim.sub = '70000001-aaaa-aaaa-aaaa-000000000001';
+
+SELECT results_eq(
+  $$ SELECT name FROM public.organizations WHERE id = 70002 $$,
+  ARRAY['Other Rep Organization'::text],
+  'Test 8: Rep cannot update other rep organizations (RLS filtered - data unchanged)'
 );
+
+-- Switch back to rep for remaining tests
+SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
 
 -- ============================================================================
 -- SECTION 3: Tasks Visibility Tests (Tests 9-11)

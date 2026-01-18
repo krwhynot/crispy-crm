@@ -47,9 +47,10 @@ CREATE POLICY "organizations_select_role_based" ON public.organizations
 -- PART 2: Organizations - Update UPDATE Policy for Role-Based Access
 -- =====================================================================
 
--- Drop old update policy
+-- Drop old update policy (try all known names)
 DROP POLICY IF EXISTS "update_organizations" ON public.organizations;
 DROP POLICY IF EXISTS "organizations_update_policy" ON public.organizations;
+DROP POLICY IF EXISTS "organizations_update_owner_or_privileged" ON public.organizations;
 
 -- Create role-based UPDATE policy
 CREATE POLICY "organizations_update_role_based" ON public.organizations

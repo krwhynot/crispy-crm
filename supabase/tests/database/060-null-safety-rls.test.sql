@@ -268,16 +268,17 @@ SELECT results_eq(
 
 
 -- ============================================================================
--- SECTION 3: Contact Notes RLS Policy Tests (Team Shared Access)
+-- SECTION 3: Contact Notes RLS Policy Tests (Role-Based Access)
 -- ============================================================================
+-- Note: With role-based RLS, reps only see notes they created or own
 
--- Test 16: All authenticated users can read contact_notes (team shared)
+-- Test 16: Rep sees only their own contact_notes (role-based access)
 SET LOCAL request.jwt.claim.sub = '33333333-3333-3333-3333-333333333333';
 
 SELECT results_eq(
   $$ SELECT COUNT(*)::integer FROM public.contact_notes WHERE id IN (888801, 888802, 888803, 888804) $$,
-  ARRAY[4],
-  'Rep1 can see all 4 contact notes (team shared read access)'
+  ARRAY[1],
+  'Rep1 can only see their own contact note (role-based access)'
 );
 
 -- Test 17: Anonymous users cannot access contact_notes
