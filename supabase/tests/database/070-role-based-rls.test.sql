@@ -94,11 +94,11 @@ VALUES
 -- Opportunity: Rep (70003) is owner, Other Rep (70004) is account manager
 
 INSERT INTO public.opportunities (
-  id, name, principal_organization_id, opportunity_owner_id, account_manager_id,
+  id, name, customer_organization_id, principal_organization_id, opportunity_owner_id, account_manager_id,
   stage, created_by, created_at, updated_at
 )
 VALUES (
-  70001, 'Dual Owner Opportunity', 70001, 70003, 70004,
+  70001, 'Dual Owner Opportunity', 70001, 70002, 70003, 70004,
   'new_lead', 70003, NOW(), NOW()
 );
 
@@ -107,10 +107,10 @@ VALUES (
 -- ============================================================================
 -- Activities only have created_by, no sales_id column
 
-INSERT INTO public.activities (id, type, subject, created_by, created_at, updated_at)
+INSERT INTO public.activities (id, activity_type, type, subject, organization_id, created_by, created_at, updated_at)
 VALUES
-  (70001, 'call', 'Rep Activity', 70003, NOW(), NOW()),
-  (70002, 'call', 'Other Rep Activity', 70004, NOW(), NOW());
+  (70001, 'engagement', 'call', 'Rep Activity', 70001, 70003, NOW(), NOW()),
+  (70002, 'engagement', 'call', 'Other Rep Activity', 70002, 70004, NOW(), NOW());
 
 -- ============================================================================
 -- SECTION 1: Basic Role Visibility Tests (Tests 1-5)
