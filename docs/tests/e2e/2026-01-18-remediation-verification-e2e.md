@@ -33,7 +33,9 @@ This E2E test verifies three critical fixes through the CRM UI only (no direct d
 **Objective:** Verify opportunities can be archived (soft-deleted) and restored through the UI without data loss.
 
 > **IMPORTANT:** The Archive button is on the **full-page Show view**, NOT the slide-over panel.
-> Navigate to: `/opportunities/{id}/show` (via "View Details" action)
+> Navigate to: `/opportunities/{id}/show` (via "View Details" action from the card's three-dot menu)
+>
+> **Note:** The card menu has "Delete" (permanent) - Archive is only on the Show page.
 
 ### Setup
 
@@ -47,12 +49,17 @@ This E2E test verifies three critical fixes through the CRM UI only (no direct d
 
 #### Step A.1: Navigate to Opportunity Show Page
 
-1. Click on an opportunity card/row to open the **slide-over** panel
-2. In the slide-over header, click the **three-dot menu (⋮)** or **"View Details"** action
-3. This navigates to the **full-page Show view** at `/opportunities/{id}/show`
+**Option A - From Kanban Card:**
+1. On the Kanban board, locate an opportunity card
+2. Click the **three-dot menu (⋮)** in the card corner
+3. Select **"View Details"** (Eye icon) from the dropdown
 
-- [ ] Full-page Show view loads
+**Option B - Direct URL:**
+1. Navigate directly to: `/opportunities/{id}/show`
+
+- [ ] Full-page Show view loads (card layout with tabs: Details, Notes & Activity, Change Log)
 - [ ] URL shows `/opportunities/{id}/show`
+- [ ] Header displays opportunity name with action buttons
 
 #### Step A.2: Document Opportunity Details
 
