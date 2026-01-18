@@ -78,7 +78,9 @@ export const useAppBranding = () => useContext(AppBrandingContext);
 **Consumer usage**:
 ```tsx
 // src/atomic-crm/layout/Header.tsx
-import { useAppBranding } from "../root/ConfigurationContext";
+// Preferred: Use alias import for cleaner paths
+import { useAppBranding } from "@/atomic-crm/contexts";
+// Legacy: import { useAppBranding } from "../root/ConfigurationContext";
 
 const Header = () => {
   const { darkModeLogo, lightModeLogo, title } = useAppBranding();

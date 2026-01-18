@@ -1197,3 +1197,33 @@ tool_response: {"stdout": "PATTERNS.md documentation claims (File Reference tabl
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "cd /home/krwhynot/projects/crispy-crm/scripts/validation && find . -maxdepth 1 \\( -name \"*.js\" -o -name \"*.sql\" \\) -type f | sort"}
 tool_response: {"stdout": "./capture-current-state.sql\n./data-quality.js\n./go-no-go.js\n./pre-migration-validation.sql\n./referential-integrity.js\n./required-fields.js\n./run-pre-validation.js\n./test-validation-
+
+--- 2026-01-17T22:42:15.147269 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db reset 2>&1", "timeout": 180000, "description": "Reset local Supabase database and apply all migrations"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nResetting local database...\nRecreating database...\nInitialising schema...\nSeeding globals from roles.sql...\nSkipping migration 
+
+--- 2026-01-17T22:42:27.561305 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -50 /home/krwhynot/.claude/projects/-home-krwhynot-projects-crispy-crm/673845b3-e2c7-4bb4-865f-d264aa2dcb77/tool-results/toolu_01TeVgp1G2eQKRRrrm5d9HCe.txt", "description": "Check en
+tool_response: {"stdout": "Applying migration 20260105203724_add_soft_delete_product_rpc.sql...\nApplying migration 20260106001702_fix_lead_source_enum.sql...\nApplying migration 20260109000001_fix_function_search_p
+
+--- 2026-01-17T22:45:09.131840 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run 2>&1 | tail -100", "timeout": 120000, "description": "Run test suite to verify code changes"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "b510d68"}
+
+--- 2026-01-17T22:46:32.117047 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/ | grep -E \"^d\"", "description": "List all directories in the project root"}
+tool_response: {"stdout": "drwxr-xr-x  24 krwhynot krwhynot   4096 Jan 17 21:59 .\ndrwxr-xr-x  13 krwhynot krwhynot   4096 Dec 22 00:14 ..\ndrwxr-xr-x  15 krwhynot krwhynot   4096 Jan 17 22:46 .claude\ndrwxr-xr-x   
+
+--- 2026-01-17T22:46:56.135953 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/", "description": "List documentation directories in the docs folder"}
+tool_response: {"stdout": "total 228\ndrwxr-xr-x 18 krwhynot krwhynot  4096 Jan 11 21:26 .\ndrwxr-xr-x 24 krwhynot krwhynot  4096 Jan 17 21:59 ..\n-rw-r--r--  1 krwhynot krwhynot 15466 Jan 11 03:40 MCP-DOCKER-GATEWA
+
+--- 2026-01-17T22:47:31.475291 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -80 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b510d68.output 2>/dev/null || echo \"Waiting for output...\"", "description": "Check test progress"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}

@@ -290,6 +290,79 @@ When adding/modifying git hooks:
 
 ---
 
+## Pattern E: Semantic Colors Validation
+
+Prevents theme drift by blocking commits with hardcoded Tailwind colors. This gate was added after 243 color-fix commits revealed widespread theme inconsistency.
+
+**When to use**: Enforcing design system compliance on all TSX files
+
+### Color Validation Gate
+
+```bash
+# .husky/pre-commit
+# Only check staged TSX files for performance
+tsx_files=$(echo "$STAGED_FILES" | grep -E '\.tsx$' || true)
+
+if [ -n "$tsx_files" ]; then
+  echo "🎨 Validating semantic colors..."
+  if ! npm run validate:semantic-colors 2>/dev/null; then
+    echo -e "${RED}❌ Hardcoded colors detected. Run 'npm run validate:semantic-colors' for details.${NC}"
+    echo -e "${YELLOW}Fix: Replace legacy Tailwind colors with semantic tokens (bg-warning, text-destructive, etc.)${NC}"
+    exit 1
+  fi
+  echo -e "${GREEN}✓ Semantic colors OK${NC}"
+fi
+```
+
+**Key points:**
+- Only runs on `.tsx` files (performance optimization)
+- Uses project's `validate:semantic-colors` npm script
+- Blocks hardcoded colors like `text-gray-500`, `bg-red-600`
+- Enforces semantic tokens: `text-muted-foreground`, `bg-destructive`
+- Clear remediation message guides developers to fix
+
+**Example:** `.husky/pre-commit` (lines 66-79)
+
+---
+
+## Pattern F: SQL Migration Validation
+
+Validates migration files against project standards before commit. Checks for idempotent policies, soft-delete patterns, and required columns.
+
+**When to use**: Enforcing database migration quality gates
+
+### Migration Validation Gate
+
+```bash
+# .husky/pre-commit
+# Only check staged SQL files in migrations directory
+migration_files=$(echo "$STAGED_FILES" | grep -E '^supabase/migrations/.*\.sql$' || true)
+
+if [ -n "$migration_files" ]; then
+  echo "🗄️ Validating migration files..."
+  if [ -x "./scripts/validate-migrations.sh" ]; then
+    if ! ./scripts/validate-migrations.sh --staged 2>/dev/null; then
+      echo -e "${RED}❌ Migration validation failed. Run './scripts/validate-migrations.sh' for details.${NC}"
+      echo -e "${YELLOW}Fix: Check for missing columns, idempotent policies, and soft-delete patterns${NC}"
+      exit 1
+    fi
+    echo -e "${GREEN}✓ Migrations OK${NC}"
+  else
+    echo -e "${YELLOW}⚠ Migration validator not found, skipping...${NC}"
+  fi
+fi
+```
+
+**Key points:**
+- Targets only `supabase/migrations/*.sql` files
+- Uses project's `validate-migrations.sh` script with `--staged` flag
+- Graceful degradation: skips if validator script not found
+- Validates: required columns, RLS policies, soft-delete patterns
+
+**Example:** `.husky/pre-commit` (lines 81-99)
+
+---
+
 ## File Reference
 
 | Pattern | Primary Files |
@@ -298,4 +371,6 @@ When adding/modifying git hooks:
 | **B: Staged Filtering** | `.husky/pre-commit` (lines 12, 35, 51) |
 | **C: Auto-Regeneration** | `.husky/pre-commit` (lines 47-63) |
 | **D: Post-Merge Notify** | `.husky/post-merge` |
+| **E: Semantic Colors** | `.husky/pre-commit` (lines 66-79) |
+| **F: Migration Validation** | `.husky/pre-commit` (lines 81-99) |
 | **Hook Dispatcher** | `.husky/_/h` |

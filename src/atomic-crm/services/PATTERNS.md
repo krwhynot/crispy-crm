@@ -640,8 +640,8 @@ async getOpportunityParticipants(opportunityId: Identifier) {
 3. [ ] Implement methods with try/catch and `devError` logging
 4. [ ] Add Zod schemas for any RPC responses in `src/atomic-crm/validation/`
 5. [ ] Export from `src/atomic-crm/services/index.ts`
-6. [ ] Initialize in `unifiedDataProvider.ts` with `baseDataProvider`
-7. [ ] Add delegation methods to `unifiedDataProvider` (custom or override CRUD)
+6. [ ] Initialize in `composedDataProvider.ts` with `baseDataProvider`
+7. [ ] Add delegation methods to `composedDataProvider` (custom or override CRUD)
 8. [ ] Update `ExtendedDataProvider` type if adding new methods
 9. [ ] Add unit tests in `src/atomic-crm/services/__tests__/`
 10. [ ] Document complex methods with JSDoc comments
