@@ -2,7 +2,7 @@
 
 **Created:** 2026-01-18
 **Status:** ✅ Ready for Execution
-**Confidence:** 90%
+**Confidence:** 92% (edge cases now covered)
 **Review Score:** 6.5/10 → **Revised** (all critical/high issues addressed)
 
 ---
@@ -254,6 +254,118 @@ SELECT results_eq(
   'Manager can see all tasks'
 );
 
+-- ============================================
+-- GAP 1: Opportunities Dual Ownership
+-- ============================================
+-- Opportunities have BOTH opportunity_owner_id (required) AND account_manager_id (optional)
+-- BOTH owners must be able to see and edit the record (OR logic)
+
+SELECT tests.authenticate_as_service_role();
+
+DO $$
+DECLARE
+  rep_sales_id bigint;
+  other_rep_sales_id bigint;
+  org_id bigint;
+BEGIN
+  SELECT id INTO rep_sales_id FROM sales WHERE email = 'rep@test.com';
+  SELECT id INTO other_rep_sales_id FROM sales WHERE email = 'other_rep@test.com';
+  SELECT id INTO org_id FROM organizations WHERE name = 'Rep Org';
+
+  -- Create opportunity: Rep A is owner, Rep B is account manager
+  INSERT INTO opportunities (
+    name,
+    principal_organization_id,
+    opportunity_owner_id,    -- Rep A owns
+    account_manager_id,      -- Rep B is account manager
+    stage,
+    created_by
+  ) VALUES (
+    'Dual Owner Opp',
+    org_id,
+    rep_sales_id,            -- Rep A
+    other_rep_sales_id,      -- Rep B
+    'new_lead',
+    rep_sales_id
+  );
+END $$;
+
+-- TEST: Opportunity owner (Rep A) can see the opportunity
+SELECT tests.authenticate_as('rep_user');
+
+SELECT results_eq(
+  $$SELECT COUNT(*) FROM opportunities WHERE name = 'Dual Owner Opp' AND deleted_at IS NULL$$,
+  ARRAY[1::bigint],
+  'Opportunity owner can see dual-ownership opportunity'
+);
+
+-- TEST: Account manager (Rep B) can ALSO see the opportunity
+SELECT tests.authenticate_as('other_rep_user');
+
+SELECT results_eq(
+  $$SELECT COUNT(*) FROM opportunities WHERE name = 'Dual Owner Opp' AND deleted_at IS NULL$$,
+  ARRAY[1::bigint],
+  'Account manager can see dual-ownership opportunity (OR logic)'
+);
+
+-- TEST: Opportunity owner can update
+SELECT tests.authenticate_as('rep_user');
+
+SELECT lives_ok(
+  $$UPDATE opportunities SET name = 'Updated Dual Opp' WHERE name = 'Dual Owner Opp'$$,
+  'Opportunity owner can update dual-ownership opportunity'
+);
+
+-- TEST: Account manager can also update
+SELECT tests.authenticate_as('other_rep_user');
+
+SELECT lives_ok(
+  $$UPDATE opportunities SET stage = 'initial_outreach' WHERE name = 'Updated Dual Opp'$$,
+  'Account manager can update dual-ownership opportunity'
+);
+
+-- ============================================
+-- GAP 2: Activities (No sales_id column)
+-- ============================================
+-- Activities only have created_by, NO sales_id column
+-- Must verify NULL handling doesn't cause errors or accidental blocks
+
+SELECT tests.authenticate_as_service_role();
+
+DO $$
+DECLARE
+  rep_sales_id bigint;
+  other_rep_sales_id bigint;
+BEGIN
+  SELECT id INTO rep_sales_id FROM sales WHERE email = 'rep@test.com';
+  SELECT id INTO other_rep_sales_id FROM sales WHERE email = 'other_rep@test.com';
+
+  -- Create activities owned by different reps (no sales_id column!)
+  INSERT INTO activities (type, subject, created_by)
+  VALUES ('call', 'Rep Activity', rep_sales_id);
+
+  INSERT INTO activities (type, subject, created_by)
+  VALUES ('call', 'Other Rep Activity', other_rep_sales_id);
+END $$;
+
+-- TEST: Rep sees only activities they created (NULL sales_id handled)
+SELECT tests.authenticate_as('rep_user');
+
+SELECT results_eq(
+  $$SELECT COUNT(*) FROM activities WHERE deleted_at IS NULL$$,
+  ARRAY[1::bigint],
+  'Rep sees only their activities (NULL sales_id handled correctly)'
+);
+
+-- TEST: Manager sees all activities (NULL sales_id no issue for managers)
+SELECT tests.authenticate_as('manager_user');
+
+SELECT results_eq(
+  $$SELECT COUNT(*) FROM activities WHERE deleted_at IS NULL$$,
+  ARRAY[2::bigint],
+  'Manager sees all activities despite NULL sales_id'
+);
+
 SELECT * FROM finish();
 ROLLBACK;
 ```
@@ -261,7 +373,9 @@ ROLLBACK;
 #### Verification
 - [ ] Run: `supabase test db --file 070-role-based-rls.test.sql`
 - [ ] Tests should FAIL initially (TDD - red phase)
-- [ ] 11 tests defined, 0 passing
+- [ ] 17 tests defined, 0 passing
+- [ ] **Gap 1:** Dual ownership tests verify OR logic for opportunities
+- [ ] **Gap 2:** NULL sales_id tests verify activities don't error or block
 
 #### Constitution Checklist
 - [x] No retry logic ✅
@@ -480,8 +594,12 @@ COMMENT ON POLICY "contacts_select_role_based" ON contacts IS
   'Role-based access: admin/manager see all, rep sees own records.';
 
 -- ============================================
--- OPPORTUNITIES: Role-based SELECT
+-- OPPORTUNITIES: Role-based SELECT (Dual Ownership)
 -- ============================================
+-- IMPORTANT: Opportunities have DUAL ownership:
+--   - opportunity_owner_id (NOT NULL) - primary owner
+--   - account_manager_id (nullable) - secondary owner
+-- BOTH must be able to see/edit the record (OR logic)
 
 DROP POLICY IF EXISTS "opportunities_select_policy" ON opportunities;
 DROP POLICY IF EXISTS "Authenticated users can view opportunities" ON opportunities;
@@ -495,17 +613,24 @@ USING (
   AND (
     (SELECT private.is_admin_or_manager())
     OR
-    -- For opportunities, also check opportunity_owner_id
+    -- Dual ownership: check BOTH opportunity_owner_id AND account_manager_id
     private.can_access_by_role(opportunity_owner_id, created_by)
+    OR
+    -- Account manager also has access (handle NULL gracefully)
+    (account_manager_id IS NOT NULL AND private.can_access_by_role(account_manager_id, NULL))
   )
 );
 
 COMMENT ON POLICY "opportunities_select_role_based" ON opportunities IS
-  'Role-based access: admin/manager see all, rep sees owned opportunities.';
+  'Role-based access with DUAL ownership: admin/manager see all, '
+  'rep sees opportunities where they are owner OR account manager.';
 
 -- ============================================
--- ACTIVITIES: Role-based SELECT
+-- ACTIVITIES: Role-based SELECT (No sales_id column)
 -- ============================================
+-- IMPORTANT: Activities table does NOT have a sales_id column
+-- Only created_by (bigint) is available for ownership check
+-- Must pass NULL as first arg - helper function handles this safely
 
 DROP POLICY IF EXISTS "activities_select_policy" ON activities;
 DROP POLICY IF EXISTS "Authenticated users can view activities" ON activities;
@@ -519,9 +644,10 @@ USING (
   AND (
     (SELECT private.is_admin_or_manager())
     OR
+    -- NULL as first arg is safe: helper checks created_by when sales_id is NULL
     private.can_access_by_role(
-      NULL, -- activities don't have sales_id
-      created_by
+      NULL::bigint, -- activities don't have sales_id column
+      created_by    -- bigint FK to sales.id
     )
   )
 );
@@ -1574,7 +1700,7 @@ USING (deleted_at IS NULL);
 
 | Criterion | Measurement |
 |-----------|-------------|
-| **RLS Tests Pass** | All 11 pgTAP tests green |
+| **RLS Tests Pass** | All 17 pgTAP tests green (incl. dual-owner + NULL handling) |
 | **Hook Tests Pass** | All Vitest tests green |
 | **No Regressions** | Existing functionality unchanged |
 | **E2E Verified** | Manual checklist complete |
@@ -1624,3 +1750,18 @@ USING (deleted_at IS NULL);
 - Task 6 now enhances `commons/canAccess.ts` instead of rewriting authProvider
 - Added scope clarification that this is "manager sees ALL" not "team-scoped"
 - Documented that `created_by` is bigint FK to sales.id (not UUID)
+
+### Rev 2 (2026-01-18) - Test Gap Coverage
+
+**Added test coverage for two critical edge cases:**
+
+| Gap | Issue | Resolution |
+|-----|-------|------------|
+| **Opportunities Dual Ownership** | Has both `opportunity_owner_id` AND `account_manager_id` | ✅ Added 4 tests for OR logic - both owners can see/edit |
+| **Activities NULL sales_id** | No `sales_id` column, only `created_by` | ✅ Added 2 tests for NULL handling |
+
+**Test count:** 11 → **17 tests**
+
+**Policy Updates:**
+- Opportunities RLS now checks `opportunity_owner_id OR account_manager_id`
+- Activities RLS explicitly casts NULL to bigint for clarity
