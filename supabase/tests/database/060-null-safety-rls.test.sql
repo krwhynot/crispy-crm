@@ -313,15 +313,21 @@ SELECT isnt_empty(
 );
 
 -- Test 20: Soft-deleted opportunities are filtered out
--- First soft-delete the test opportunity
+-- Use admin role who has full permission to modify any opportunity
+SET LOCAL request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+
 UPDATE public.opportunities SET deleted_at = NOW() WHERE id = 888801;
+
+-- Switch to rep1 to verify they can't see deleted opportunity
+SET LOCAL request.jwt.claim.sub = '33333333-3333-3333-3333-333333333333';
 
 SELECT is_empty(
   $$ SELECT id FROM public.opportunities WHERE id = 888801 $$,
   'Soft-deleted opportunity is filtered by RLS (deleted_at IS NOT NULL)'
 );
 
--- Restore for cleanup
+-- Restore for cleanup (as admin)
+SET LOCAL request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
 UPDATE public.opportunities SET deleted_at = NULL WHERE id = 888801;
 
 

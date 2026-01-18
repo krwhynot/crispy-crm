@@ -575,8 +575,8 @@ describe("RPC Validation Schemas", () => {
       });
     });
 
-    it("should have exactly 9 RPC function schemas", () => {
-      expect(Object.keys(RPC_SCHEMAS).length).toBe(9);
+    it("should have exactly 10 RPC function schemas", () => {
+      expect(Object.keys(RPC_SCHEMAS).length).toBe(10);
     });
 
     it("should map function names to valid Zod schemas", () => {

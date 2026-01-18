@@ -2077,3 +2077,38 @@ tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone log
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "grep -E \"^(test|db)\" /home/krwhynot/projects/crispy-crm/justfile | head -20", "description": "Check justfile for test commands"}
 tool_response: {"stdout": "test:\ntest-ci:\ntest-cov:\ntest-ui:\ntest-smoke:\ndb-start:\ndb-stop:\ndb-restart:\ndb-reset:\ndb-status:\ndb-migrate name:\ndb-types:\ndb-types-force:\ndb-link:", "stderr": "", "interrup
+
+--- 2026-01-18T11:17:26.659922 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase status 2>&1 | head -20", "description": "Check Supabase local status"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nStopped services: [supabase_inbucket_crispy-crm supabase_storage_crispy-crm supabase_imgproxy_crispy-crm supabase_analytics_crispy-
+
+--- 2026-01-18T11:17:47.355027 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/supabase/migrations/ | grep \"20260118\" | head -10", "description": "Check January 18 migrations"}
+tool_response: {"stdout": "-rw-r--r--  1 krwhynot krwhynot   1740 Jan 17 22:39 20260118000001_fix_segments_indexes.sql\n-rw-r--r--  1 krwhynot krwhynot    903 Jan 17 21:58 20260118000002_fix_opp_products_constraint.
+
+--- 2026-01-18T11:18:10.255862 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase migration list 2>&1 | tail -30", "description": "List migration status"}
+tool_response: {"stdout": "                  | 20260109043948 | 2026-01-09 04:39:48 \n                  | 20260109121758 | 2026-01-09 12:17:58 \n                  | 20260109124444 | 2026-01-09 12:44:44 \n           
+
+--- 2026-01-18T11:18:29.515157 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase migration up 2>&1 | tail -50", "timeout": 120000, "description": "Apply pending migrations"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\nSkipping migration PATTERNS.md... (file name must match pattern \"<timestamp>_name.sql\")\nFound l
+
+--- 2026-01-18T11:18:47.155618 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase migration up --include-all 2>&1 | tail -100", "timeout": 180000, "description": "Apply all pending migrations including out-of-order"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\nSkipping migration PATTERNS.md... (file name must match pattern \"<timestamp>_name.sql\")\nApplyin
+
+--- 2026-01-18T11:19:09.530283 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase test db 2>&1 | tail -80", "timeout": 120000, "description": "Run database tests"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\npsql:/home/krwhynot/projects/crispy-crm/supabase/tests/database/000-setup-test-hooks.test.sql:19: 
+
+--- 2026-01-18T11:21:37.011480 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/validation/__tests__/rpc.test.ts 2>&1 | tail -30", "timeout": 60000, "description": "Run RPC validation tests again"}
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/validation/__tests__/rpc.test.ts (60 tests) 148ms\n\n Test Files  1 passed (1)\n      Tests  60 passed (60)\n   St
