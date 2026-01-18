@@ -15,9 +15,12 @@
 --   Tests 12-15: GAP 1 - Opportunities dual ownership (OR logic)
 --   Tests 16-17: GAP 2 - Activities NULL sales_id handling
 --
+-- STRATEGY: Use DO blocks to capture auto-generated sales.id values
+-- and use them when creating test data. This ensures RLS checks match.
+--
 -- References:
 --   - Plan: docs/archive/plans/2026-01-18-role-based-access-control.md
---   - Helper functions: is_admin(), is_manager(), is_manager_or_admin(), current_sales_id()
+--   - Helper functions: private.is_admin_or_manager(), private.can_access_by_role()
 --   - Role enum: user_role (admin | manager | rep)
 -- ============================================================================
 
@@ -35,7 +38,6 @@ DELETE FROM public.activities WHERE id IN (70001, 70002);
 DELETE FROM public.opportunities WHERE id IN (70001);
 DELETE FROM public.tasks WHERE id IN (70001, 70002);
 DELETE FROM public.organizations WHERE id IN (70001, 70002, 70003);
-DELETE FROM public.sales WHERE id IN (70001, 70002, 70003, 70004);
 DELETE FROM public.sales WHERE user_id IN (
   '70000001-aaaa-aaaa-aaaa-000000000001',
   '70000002-bbbb-bbbb-bbbb-000000000002',
@@ -62,55 +64,58 @@ VALUES
   ('70000004-dddd-dddd-dddd-000000000004', 'other-rep-rls-test@test.local', 'password', NOW(), NOW(), NOW(), 'authenticated', 'authenticated');
 
 -- ============================================================================
--- SETUP: Update sales records with test IDs and roles
+-- SETUP: Update roles and create test data using DO block
 -- ============================================================================
--- Sales records auto-created by trigger - update with predictable IDs and roles
+-- Use DO block to capture auto-generated sales.id values and create test data
+-- with matching foreign keys. This ensures RLS checks will work correctly.
 
-UPDATE public.sales SET id = 70001, role = 'admin' WHERE user_id = '70000001-aaaa-aaaa-aaaa-000000000001';
-UPDATE public.sales SET id = 70002, role = 'manager' WHERE user_id = '70000002-bbbb-bbbb-bbbb-000000000002';
-UPDATE public.sales SET id = 70003, role = 'rep' WHERE user_id = '70000003-cccc-cccc-cccc-000000000003';
-UPDATE public.sales SET id = 70004, role = 'rep' WHERE user_id = '70000004-dddd-dddd-dddd-000000000004';
+DO $$
+DECLARE
+  v_admin_sales_id BIGINT;
+  v_manager_sales_id BIGINT;
+  v_rep_sales_id BIGINT;
+  v_other_rep_sales_id BIGINT;
+BEGIN
+  -- Get auto-generated sales IDs
+  SELECT id INTO v_admin_sales_id FROM public.sales WHERE user_id = '70000001-aaaa-aaaa-aaaa-000000000001';
+  SELECT id INTO v_manager_sales_id FROM public.sales WHERE user_id = '70000002-bbbb-bbbb-bbbb-000000000002';
+  SELECT id INTO v_rep_sales_id FROM public.sales WHERE user_id = '70000003-cccc-cccc-cccc-000000000003';
+  SELECT id INTO v_other_rep_sales_id FROM public.sales WHERE user_id = '70000004-dddd-dddd-dddd-000000000004';
 
--- ============================================================================
--- SETUP: Create test organizations owned by different reps
--- ============================================================================
+  -- Update roles (trigger creates all as 'rep' by default)
+  UPDATE public.sales SET role = 'admin' WHERE id = v_admin_sales_id;
+  UPDATE public.sales SET role = 'manager' WHERE id = v_manager_sales_id;
+  -- rep and other_rep stay as 'rep' (default)
 
-INSERT INTO public.organizations (id, name, sales_id, created_by, created_at, updated_at)
-VALUES
-  (70001, 'Rep Organization', 70003, 70003, NOW(), NOW()),
-  (70002, 'Other Rep Organization', 70004, 70004, NOW(), NOW());
+  -- Create test organizations owned by different reps
+  INSERT INTO public.organizations (id, name, sales_id, created_by, created_at, updated_at)
+  VALUES
+    (70001, 'Rep Organization', v_rep_sales_id, v_rep_sales_id, NOW(), NOW()),
+    (70002, 'Other Rep Organization', v_other_rep_sales_id, v_other_rep_sales_id, NOW(), NOW());
 
--- ============================================================================
--- SETUP: Create test tasks for task visibility tests
--- ============================================================================
+  -- Create test tasks for task visibility tests
+  INSERT INTO public.tasks (id, title, sales_id, created_by, created_at, updated_at)
+  VALUES
+    (70001, 'Rep Task', v_rep_sales_id, v_rep_sales_id, NOW(), NOW());
 
-INSERT INTO public.tasks (id, title, sales_id, created_by, created_at, updated_at)
-VALUES
-  (70001, 'Rep Task', 70003, 70003, NOW(), NOW());
+  -- Create test opportunity with dual ownership (GAP 1)
+  -- Opportunity: Rep is owner, Other Rep is account manager
+  INSERT INTO public.opportunities (
+    id, name, customer_organization_id, principal_organization_id, opportunity_owner_id, account_manager_id,
+    stage, created_by, created_at, updated_at
+  )
+  VALUES (
+    70001, 'Dual Owner Opportunity', 70001, 70002, v_rep_sales_id, v_other_rep_sales_id,
+    'new_lead', v_rep_sales_id, NOW(), NOW()
+  );
 
--- ============================================================================
--- SETUP: Create test opportunity with dual ownership (GAP 1)
--- ============================================================================
--- Opportunity: Rep (70003) is owner, Other Rep (70004) is account manager
-
-INSERT INTO public.opportunities (
-  id, name, customer_organization_id, principal_organization_id, opportunity_owner_id, account_manager_id,
-  stage, created_by, created_at, updated_at
-)
-VALUES (
-  70001, 'Dual Owner Opportunity', 70001, 70002, 70003, 70004,
-  'new_lead', 70003, NOW(), NOW()
-);
-
--- ============================================================================
--- SETUP: Create test activities for NULL sales_id tests (GAP 2)
--- ============================================================================
--- Activities only have created_by, no sales_id column
-
-INSERT INTO public.activities (id, activity_type, type, subject, organization_id, created_by, created_at, updated_at)
-VALUES
-  (70001, 'engagement', 'call', 'Rep Activity', 70001, 70003, NOW(), NOW()),
-  (70002, 'engagement', 'call', 'Other Rep Activity', 70002, 70004, NOW(), NOW());
+  -- Create test activities for NULL sales_id tests (GAP 2)
+  -- Activities only have created_by, no sales_id column
+  INSERT INTO public.activities (id, activity_type, type, subject, organization_id, created_by, created_at, updated_at)
+  VALUES
+    (70001, 'engagement', 'call', 'Rep Activity', 70001, v_rep_sales_id, NOW(), NOW()),
+    (70002, 'engagement', 'call', 'Other Rep Activity', 70002, v_other_rep_sales_id, NOW(), NOW());
+END $$;
 
 -- ============================================================================
 -- SECTION 1: Basic Role Visibility Tests (Tests 1-5)
@@ -169,7 +174,10 @@ SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
 
 SELECT lives_ok(
   $$ INSERT INTO public.organizations (id, name, sales_id, created_by, created_at, updated_at)
-     VALUES (70003, 'New Rep Org', 70003, 70003, NOW(), NOW()) $$,
+     VALUES (70003, 'New Rep Org',
+             (SELECT id FROM public.sales WHERE user_id = '70000003-cccc-cccc-cccc-000000000003'),
+             (SELECT id FROM public.sales WHERE user_id = '70000003-cccc-cccc-cccc-000000000003'),
+             NOW(), NOW()) $$,
   'Test 6: Rep can create new organizations'
 );
 
