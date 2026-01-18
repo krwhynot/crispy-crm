@@ -15,7 +15,7 @@ import {
 } from "@/atomic-crm/validation/activities";
 import type { LogActivityWithTaskParams } from "@/atomic-crm/validation/rpc";
 import { useCurrentSale } from "../hooks/useCurrentSale";
-import { useEntityData, type Contact } from "../hooks/useEntityData";
+import { useEntityData } from "../hooks/useEntityData";
 import { useEntitySelection } from "../hooks/useEntitySelection";
 import { ActivityTypeSection } from "./ActivityTypeSection";
 import { ActivityDateSection } from "./ActivityDateSection";
@@ -247,197 +247,27 @@ export function QuickLogForm({
         <ActivityTypeSection control={form.control} activityType={activityType ?? "Call"} />
 
         {/* Activity Date */}
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Activity Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "h-11 w-full justify-start text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {field.value ? format(field.value, "PPP") : <span>Select date</span>}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date > new Date()}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <ActivityDateSection control={form.control} />
 
         {/* Group 2: Who was involved? */}
-        <SidepaneSection label="Who Was Involved">
-          <div className="space-y-3">
-            <FormField
-              control={form.control}
-              name="contactId"
-              render={({ field }) => (
-                <EntityCombobox
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={entityData.filteredContacts.map((c) => ({
-                    id: c.id,
-                    name: c.name,
-                    subtitle: c.company_name,
-                  }))}
-                  fallbackOptions={entityData.contactsForAnchorOrg.map((c) => ({
-                    id: c.id,
-                    name: c.name,
-                    subtitle: c.company_name,
-                  }))}
-                  loading={entityData.contactsLoading}
-                  searchTerm={entityData.contactSearch.searchTerm}
-                  onSearchChange={entityData.contactSearch.setSearchTerm}
-                  placeholder="Select contact"
-                  emptyMessage="No contact found. Type to search."
-                  filteredEmptyMessage="No contacts found for this organization"
-                  isFiltered={!!entityData.anchorOrganizationId}
-                  label="Contact"
-                  description="Select a contact and/or organization (must be from same company)"
-                  onSelect={handleContactSelect}
-                  onClear={handleContactClear}
-                  listId="contact-list"
-                />
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="organizationId"
-              render={({ field }) => (
-                <EntityCombobox
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={entityData.filteredOrganizations.map((o) => ({
-                    id: o.id,
-                    name: o.name,
-                  }))}
-                  loading={entityData.organizationsLoading}
-                  searchTerm={entityData.orgSearch.searchTerm}
-                  onSearchChange={entityData.orgSearch.setSearchTerm}
-                  placeholder="Select organization"
-                  emptyMessage="No organization found. Type to search."
-                  label="Organization"
-                  onSelect={handleOrganizationSelect}
-                  onClear={handleOrganizationClear}
-                  listId="organization-list"
-                />
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="opportunityId"
-              render={({ field }) => (
-                <EntityCombobox
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={entityData.filteredOpportunities.map((o) => ({
-                    id: o.id,
-                    name: o.name,
-                  }))}
-                  fallbackOptions={entityData.oppsForAnchorOrg.map((o) => ({
-                    id: o.id,
-                    name: o.name,
-                  }))}
-                  loading={entityData.opportunitiesLoading}
-                  searchTerm={entityData.oppSearch.searchTerm}
-                  onSearchChange={entityData.oppSearch.setSearchTerm}
-                  placeholder="Select opportunity (optional)"
-                  emptyMessage="No opportunity found. Type to search."
-                  filteredEmptyMessage="No opportunities for this organization"
-                  isFiltered={!!entityData.anchorOrganizationId}
-                  label="Opportunity"
-                  listId="opportunity-list"
-                />
-              )}
-            />
-          </div>
-        </SidepaneSection>
+        <EntitySelectionSection
+          control={form.control}
+          entityData={entityData}
+          handlers={entityHandlers}
+        />
 
         {/* Group 3: Notes */}
-        <FormField
-          control={form.control}
-          name="notes"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Notes</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Summary of the interaction..."
-                  className="min-h-24"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <NotesSection control={form.control} />
 
         {/* Group 4: Follow-up */}
         <FollowUpSection control={form.control} showFollowUpDate={createFollowUp ?? false} />
 
         {/* Action buttons */}
-        <div className="flex justify-between pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onComplete}
-            disabled={form.formState.isSubmitting}
-          >
-            Cancel
-          </Button>
-          <div className="flex gap-2">
-            <Button type="submit" className="h-11" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Save & Close"
-              )}
-            </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              className="h-11"
-              disabled={form.formState.isSubmitting}
-              onClick={() => {
-                form.handleSubmit((data) => {
-                  submitActivity(data, false);
-                })();
-              }}
-            >
-              {form.formState.isSubmitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Save & New"
-              )}
-            </Button>
-          </div>
-        </div>
+        <ActionButtons
+          isSubmitting={form.formState.isSubmitting}
+          onCancel={onComplete}
+          onSaveAndNew={() => form.handleSubmit((data) => submitActivity(data, false))()}
+        />
       </form>
     </Form>
   );

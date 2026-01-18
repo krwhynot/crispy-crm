@@ -82,8 +82,14 @@ function createMockEntityData() {
   };
 }
 
-// Test wrapper that provides form context
-function TestWrapper({ children }: { children: React.ReactNode }) {
+// Test component that provides real form context
+function TestComponent({
+  entityData,
+  handlers,
+}: {
+  entityData: ReturnType<typeof createMockEntityData>;
+  handlers: UseEntitySelectionReturn;
+}) {
   const methods = useForm<ActivityLogInput>({
     defaultValues: {
       contactId: undefined,
@@ -95,7 +101,15 @@ function TestWrapper({ children }: { children: React.ReactNode }) {
     },
   });
 
-  return <FormProvider {...methods}>{children}</FormProvider>;
+  return (
+    <FormProvider {...methods}>
+      <EntitySelectionSection
+        control={methods.control}
+        entityData={entityData}
+        handlers={handlers}
+      />
+    </FormProvider>
+  );
 }
 
 describe("EntitySelectionSection", () => {
