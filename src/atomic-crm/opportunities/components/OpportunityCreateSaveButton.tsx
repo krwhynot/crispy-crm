@@ -19,7 +19,7 @@ import type { SimilarityCheckResult } from "../../utils/levenshtein";
 
 export interface OpportunityCreateSaveButtonProps {
   /** Function to check for similar opportunities */
-  checkForSimilar: (name: string) => SimilarityCheckResult;
+  checkForSimilar: (name: string) => Promise<SimilarityCheckResult>;
   /** Whether user has confirmed to proceed despite warning */
   hasConfirmed: boolean;
   /** Reset confirmation state when form values change */
@@ -100,7 +100,7 @@ export function OpportunityCreateSaveButton({
 
       // Skip check if already confirmed or name is empty
       if (!hasConfirmed && name && name.trim().length > 0) {
-        const result = checkForSimilar(name);
+        const result = await checkForSimilar(name);
 
         // If similar opportunities found, don't submit - dialog will show
         if (result.hasSimilar) {

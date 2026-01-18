@@ -170,7 +170,7 @@ const OpportunityCreateWizard = () => {
 };
 
 interface OpportunityWizardContentProps {
-  checkForSimilar: (name: string) => { hasSimilar: boolean; matches: unknown[] };
+  checkForSimilar: (name: string) => Promise<{ hasSimilar: boolean; matches: unknown[] }>;
   hasConfirmed: boolean;
   resetConfirmation: () => void;
   contextAwareRedirect: (resource: string, id?: string | number) => string;
@@ -195,7 +195,7 @@ const OpportunityWizardContent = ({
     // Check for similar opportunities before creating
     const formData = data as Record<string, unknown>;
     if (!hasConfirmed && formData.name) {
-      const result = checkForSimilar(formData.name as string);
+      const result = await checkForSimilar(formData.name as string);
       // If similar opportunities found, dialog will show via hook state
       // Return early to prevent create() call - user must confirm first
       if (result.hasSimilar) {

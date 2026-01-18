@@ -100,10 +100,11 @@ export function useSimilarOpportunityCheck(
   const [similarOpportunities, setSimilarOpportunities] = useState<SimilarOpportunity[]>([]);
   const [hasConfirmed, setHasConfirmed] = useState(false);
 
-  const dataProvider = useDataProvider();
+  // Cast to ExtendedDataProvider to access the rpc method with proper typing
+  const dataProvider = useDataProvider() as ExtendedDataProvider;
 
   const { mutateAsync: checkSimilarityRpc, isPending } = useMutation({
-    mutationFn: async (name: string) => {
+    mutationFn: async (name: string): Promise<CheckSimilarOpportunitiesResponse> => {
       return dataProvider.rpc<CheckSimilarOpportunitiesResponse>("check_similar_opportunities", {
         p_name: name,
         p_threshold: 0.3,

@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import type { SimilarityCheckResult } from "../../utils/levenshtein";
 
 interface OpportunityCreateFormFooterProps {
-  checkForSimilar: (name: string) => SimilarityCheckResult;
+  checkForSimilar: (name: string) => Promise<SimilarityCheckResult>;
   hasConfirmed: boolean;
   resetConfirmation: () => void;
   redirectPath?: string;
@@ -103,13 +103,13 @@ export function OpportunityCreateFormFooter({
    * Check for similar opportunities before submitting
    * Returns true if we should proceed with save, false if blocked by dialog
    */
-  const checkBeforeSubmit = useCallback((): boolean => {
+  const checkBeforeSubmit = useCallback(async (): Promise<boolean> => {
     const values = form.getValues();
     const name = values.name;
 
     // Skip check if already confirmed or name is empty
     if (!hasConfirmed && name && name.trim().length > 0) {
-      const result = checkForSimilar(name);
+      const result = await checkForSimilar(name);
 
       // If similar opportunities found, don't submit - dialog will show
       if (result.hasSimilar) {
@@ -129,7 +129,7 @@ export function OpportunityCreateFormFooter({
       event.stopPropagation();
 
       // Check for similar opportunities first
-      if (!checkBeforeSubmit()) {
+      if (!(await checkBeforeSubmit())) {
         return;
       }
 
