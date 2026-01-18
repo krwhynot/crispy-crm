@@ -31,10 +31,8 @@ export {
   getOrganizationName,
   cleanWebsiteUrl,
 } from "./avatar.utils";
+// Levenshtein types only - similarity matching moved to PostgreSQL pg_trgm
 export {
-  levenshteinDistance,
-  findSimilarOpportunities,
-  hasSimilarOpportunity,
   type SimilarOpportunity,
   type FindSimilarParams,
   type SimilarityCheckResult,
