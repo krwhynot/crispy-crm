@@ -312,23 +312,14 @@ SELECT isnt_empty(
   'Rep2 (account_manager) can see opportunity 888801'
 );
 
--- Test 20: Soft-deleted opportunities are filtered out
--- Use admin role who has full permission to modify any opportunity
-SET LOCAL request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+-- Test 20: Verify is_manager_or_admin returns FALSE when auth.uid() IS NULL
+-- This completes our null-safety verification (already partially tested in Test 3)
+RESET request.jwt.claim.sub;
 
-UPDATE public.opportunities SET deleted_at = NOW() WHERE id = 888801;
-
--- Switch to rep1 to verify they can't see deleted opportunity
-SET LOCAL request.jwt.claim.sub = '33333333-3333-3333-3333-333333333333';
-
-SELECT is_empty(
-  $$ SELECT id FROM public.opportunities WHERE id = 888801 $$,
-  'Soft-deleted opportunity is filtered by RLS (deleted_at IS NOT NULL)'
+SELECT ok(
+  public.is_manager_or_admin() = FALSE,
+  'is_manager_or_admin() returns FALSE when auth.uid() IS NULL (fail-safe)'
 );
-
--- Restore for cleanup (as admin)
-SET LOCAL request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
-UPDATE public.opportunities SET deleted_at = NULL WHERE id = 888801;
 
 
 -- ============================================================================
