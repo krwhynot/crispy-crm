@@ -13,6 +13,7 @@ interface CampaignActivity {
   organization_name: string;
   contact_name?: string | null;
   opportunity_id?: number | null;
+  opportunity_name?: string | null;
   created_by: number;
   created_at: string;
 }
@@ -46,11 +47,7 @@ interface StaleOpportunity {
   isStale: boolean;
 }
 
-export function useCampaignActivityExport(
-  selectedCampaign: string,
-  salesMap: Map<number, string>,
-  opportunityMap: Map<number, CampaignOpportunity>
-) {
+export function useCampaignActivityExport(selectedCampaign: string, salesMap: Map<number, string>) {
   const notify = useNotify();
 
   const exportStaleLeads = useCallback(

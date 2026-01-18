@@ -1,7 +1,10 @@
 import { useMemo } from "react";
-import { useGetList } from "ra-core";
+import { useGetList, useDataProvider } from "ra-core";
+import { useQuery } from "@tanstack/react-query";
 import { useReportData } from "@/atomic-crm/reports/hooks";
 import type { Sale } from "../types";
+import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
+import type { GetCampaignReportStatsResponse } from "../../validation/rpc";
 
 interface CampaignActivity {
   id: number;
@@ -14,14 +17,6 @@ interface CampaignActivity {
   opportunity_id?: number | null;
   created_by: number;
   created_at: string;
-}
-
-interface CampaignOpportunity {
-  id: number;
-  name: string;
-  campaign: string | null;
-  customer_organization_name?: string;
-  stage?: string;
 }
 
 interface DateRange {
@@ -41,23 +36,16 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
   const { selectedCampaign, dateRange, selectedActivityTypes, selectedSalesRep, allActivityTypes } =
     options;
 
-  const { data: allOpportunities = [], isPending: opportunitiesPending } =
-    useGetList<CampaignOpportunity>("opportunities", {
-      pagination: { page: 1, perPage: 1000 }, // Report requires all records for campaign filtering
-      filter: {
-        "deleted_at@is": null,
-      },
-    });
+  const dataProvider = useDataProvider() as ExtendedDataProvider;
 
-  const { data: allCampaignActivities = [], isPending: allActivitiesPending } =
-    useGetList<CampaignActivity>("activities", {
-      pagination: { page: 1, perPage: 1000 }, // Report requires all records for activity type breakdown
-      filter: {
-        "opportunities.campaign": selectedCampaign,
-        "opportunities.deleted_at@is": null,
-      },
-      sort: { field: "created_at", order: "DESC" },
-    });
+  const { data: reportStats, isPending: reportStatsPending } = useQuery({
+    queryKey: ["campaign-report-stats", selectedCampaign],
+    queryFn: () =>
+      dataProvider.rpc<GetCampaignReportStatsResponse>("get_campaign_report_stats", {
+        p_campaign: selectedCampaign || null,
+      }),
+    staleTime: 5 * 60 * 1000,
+  });
 
   const activitiesFilter = useMemo(
     () => ({
@@ -108,65 +96,35 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
     [salesReps]
   );
 
-  const opportunityMap = useMemo(
-    () => new Map((allOpportunities || []).map((o) => [o.id, o])),
-    [allOpportunities]
+  const campaignOptions = reportStats?.campaign_options ?? [];
+  const salesRepOptions = reportStats?.sales_rep_options ?? [];
+  const activityTypeCounts = useMemo(
+    () => new Map(Object.entries(reportStats?.activity_type_counts ?? {})),
+    [reportStats?.activity_type_counts]
   );
 
-  const campaignOptions = useMemo(() => {
-    const campaigns = new Map<string, number>();
+  const totalCampaignActivitiesCount = useMemo(
+    () => salesRepOptions.reduce((sum, rep) => sum + rep.count, 0),
+    [salesRepOptions]
+  );
 
-    allOpportunities.forEach((opp) => {
-      if (opp.campaign) {
-        campaigns.set(opp.campaign, (campaigns.get(opp.campaign) || 0) + 1);
-      }
-    });
+  const totalCampaignOpportunities = useMemo(() => {
+    const selected = campaignOptions.find((c) => c.name === selectedCampaign);
+    return selected?.count ?? 0;
+  }, [campaignOptions, selectedCampaign]);
 
-    return Array.from(campaigns.entries())
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count);
-  }, [allOpportunities]);
-
-  const salesRepOptions = useMemo(() => {
-    const repCounts = new Map<number, number>();
-
-    allCampaignActivities.forEach((activity) => {
-      if (activity.created_by) {
-        repCounts.set(activity.created_by, (repCounts.get(activity.created_by) || 0) + 1);
-      }
-    });
-
-    return Array.from(repCounts.entries())
-      .map(([id, count]) => ({
-        id,
-        name: salesMap.get(id) || `Rep ${id}`,
-        count,
-      }))
-      .sort((a, b) => b.count - a.count);
-  }, [allCampaignActivities, salesMap]);
-
-  const activityTypeCounts = useMemo(() => {
-    const counts = new Map<string, number>();
-    allCampaignActivities.forEach((activity) => {
-      const type = activity.type || "Unknown";
-      counts.set(type, (counts.get(type) || 0) + 1);
-    });
-    return counts;
-  }, [allCampaignActivities]);
-
-  const isLoadingCampaigns = opportunitiesPending;
-  const isLoadingActivities = activitiesLoading || allActivitiesPending;
+  const isLoadingCampaigns = reportStatsPending;
+  const isLoadingActivities = activitiesLoading;
 
   return {
     activities,
     activitiesError,
-    allOpportunities,
-    allCampaignActivities,
-    opportunityMap,
     salesMap,
     campaignOptions,
     salesRepOptions,
     activityTypeCounts,
+    totalCampaignActivitiesCount,
+    totalCampaignOpportunities,
     isLoadingCampaigns,
     isLoadingActivities,
   };

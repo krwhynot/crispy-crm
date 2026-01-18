@@ -222,6 +222,35 @@ export type CheckSimilarOpportunitiesResponse = z.infer<
   typeof checkSimilarOpportunitiesResponseSchema
 >;
 
+/**
+ * get_campaign_report_stats(p_campaign TEXT DEFAULT NULL) RETURNS JSONB
+ * Get campaign report statistics including campaign options, sales rep options, and activity type counts.
+ * Optional p_campaign filters results to a specific campaign.
+ */
+export const getCampaignReportStatsParamsSchema = z.strictObject({
+  p_campaign: z.string().max(255, "Campaign name too long").optional().nullable(),
+});
+
+const campaignOptionSchema = z.strictObject({
+  name: z.string().max(255, "Campaign name too long"),
+  count: z.number().int().nonnegative(),
+});
+
+const salesRepOptionSchema = z.strictObject({
+  id: z.number().int().positive(),
+  name: z.string().max(255, "Sales rep name too long"),
+  count: z.number().int().nonnegative(),
+});
+
+export const getCampaignReportStatsResponseSchema = z.strictObject({
+  campaign_options: z.array(campaignOptionSchema),
+  sales_rep_options: z.array(salesRepOptionSchema),
+  activity_type_counts: z.record(z.string(), z.number().int().nonnegative()),
+});
+
+export type GetCampaignReportStatsParams = z.infer<typeof getCampaignReportStatsParamsSchema>;
+export type GetCampaignReportStatsResponse = z.infer<typeof getCampaignReportStatsResponseSchema>;
+
 export const RPC_SCHEMAS = {
   get_or_create_segment: getOrCreateSegmentParamsSchema,
   set_primary_organization: setPrimaryOrganizationParamsSchema,
@@ -232,6 +261,7 @@ export const RPC_SCHEMAS = {
   check_authorization_batch: checkAuthorizationBatchParamsSchema,
   log_activity_with_task: logActivityWithTaskParamsSchema,
   check_similar_opportunities: checkSimilarOpportunitiesParamsSchema,
+  get_campaign_report_stats: getCampaignReportStatsParamsSchema,
 } as const;
 
 export type RPCFunctionName = keyof typeof RPC_SCHEMAS;

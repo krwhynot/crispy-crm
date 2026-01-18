@@ -67,13 +67,12 @@ export default function CampaignActivityReport() {
   const {
     activities,
     activitiesError,
-    allOpportunities,
-    allCampaignActivities,
-    opportunityMap,
     salesMap,
     campaignOptions,
     salesRepOptions,
     activityTypeCounts,
+    totalCampaignActivitiesCount,
+    totalCampaignOpportunities,
     isLoadingCampaigns,
     isLoadingActivities,
   } = useCampaignActivityData({
@@ -86,8 +85,7 @@ export default function CampaignActivityReport() {
 
   const { exportStaleLeads, exportActivities } = useCampaignActivityExport(
     selectedCampaign,
-    salesMap,
-    opportunityMap
+    salesMap
   );
 
   // Group activities by type

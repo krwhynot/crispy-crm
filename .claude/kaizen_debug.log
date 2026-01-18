@@ -1967,3 +1967,8 @@ tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "rg \"FAIL.*test\" /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/ba5ab11.output 2>&1 | head -10", "timeout": 10000, "description": "Find failing test files"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T10:51:05.066754 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --skipLibCheck src/atomic-crm/validation/rpc.ts 2>&1 | head -50", "description": "Check TypeScript compilation for rpc.ts"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
