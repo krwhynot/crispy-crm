@@ -1922,3 +1922,48 @@ tool_response: {"stdout": "> atomic-crm@0.1.0 test\n> vitest --run --testPathPat
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "rm /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/levenshtein.test.ts && echo \"Deleted obsolete test file\"", "timeout": 10000, "description": "Remove obsolete Levensh
 tool_response: {"stdout": "Deleted obsolete test file", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T02:49:55.760073 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run rpc 2>&1", "timeout": 60000, "description": "Re-run RPC tests to verify fix"}
+tool_response: {"stdout": "> atomic-crm@0.1.0 test\n> vitest --run rpc\n\n\n RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/validation/__tests__/rpc.test.ts (60 tests) 34ms\n\n Test Files  
+
+--- 2026-01-18T02:50:08.996890 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git diff --stat HEAD 2>&1", "timeout": 10000, "description": "Show summary of all changes made"}
+tool_response: {"stdout": " .claude/checkpoint-state | 2 +-\n .claude/kaizen_debug.log | 5 +++++\n 2 files changed, 6 insertions(+), 1 deletion(-)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T02:50:18.955665 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status 2>&1", "timeout": 10000, "description": "Show git status with all changes"}
+tool_response: {"stdout": "On branch main\nYour branch is ahead of 'origin/main' by 59 commits.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to 
+
+--- 2026-01-18T02:50:29.719517 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/supabase/migrations/20260118120000_add_check_similar_opportunities_rpc.sql 2>&1", "timeout": 10000, "description": "Verify migration file exists"
+tool_response: {"stdout": "-rw-r--r-- 1 krwhynot krwhynot 2016 Jan 18 02:39 /home/krwhynot/projects/crispy-crm/supabase/migrations/20260118120000_add_check_similar_opportunities_rpc.sql", "stderr": "", "interrupted"
+
+--- 2026-01-18T02:50:38.886400 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -10 2>&1", "timeout": 10000, "description": "Check recent commits"}
+tool_response: {"stdout": "30e534f61 chore(checkpoint): 6 file(s) - checkpoint-state,kaizen_debug.log OpportunityCr...\n79251dfd9 chore(checkpoint): 6 file(s) - checkpoint-state,OpportunityCreateWizard.tsx Op...\nf9
+
+--- 2026-01-18T02:51:17.876981 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -30 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/ba5ab11.output 2>&1", "timeout": 10000, "description": "Check final test output"}
+tool_response: {"stdout": "      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mdata-testid\u001b[39m=\u001b[32m\"form-date-value\"\u001b[39m\n    \u001b[36
+
+--- 2026-01-18T02:51:31.030908 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -E \"FAIL|failed\" /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/ba5ab11.output 2>&1 | head -20", "timeout": 10000, "description": "Check which test files failed"}
+tool_response: {"stdout": " Test Files  3 failed | 263 passed (266)\n      Tests  33 failed | 3748 passed (3781)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T02:51:57.602316 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"test.ts.*failed\" /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/ba5ab11.output 2>&1 | head -10", "timeout": 10000, "description": "Find failing test files"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T02:52:08.650783 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"FAIL.*test\" /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/ba5ab11.output 2>&1 | head -10", "timeout": 10000, "description": "Find failing test files"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
