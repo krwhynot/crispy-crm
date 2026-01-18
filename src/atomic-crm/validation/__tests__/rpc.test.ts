@@ -567,6 +567,7 @@ describe("RPC Validation Schemas", () => {
         "check_authorization_batch",
         "log_activity_with_task", // Added for atomic activity+task creation
         "check_similar_opportunities", // Server-side fuzzy matching using pg_trgm
+        "get_campaign_report_stats", // Server-side aggregation for Campaign Activity Report
       ];
 
       expectedFunctions.forEach((funcName) => {
