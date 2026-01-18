@@ -1522,3 +1522,8 @@ tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/lib/type-guard
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/ | head -30"}
 tool_response: {"stdout": "total 208\ndrwxr-xr-x 3 krwhynot krwhynot  4096 Jan 17 14:27 .\ndrwxr-xr-x 7 krwhynot krwhynot  4096 Jan 15 21:33 ..\n-rw-r--r-- 1 krwhynot krwhynot  9709 Jan 16 00:12 ActivityFeedPanel.ts
+
+--- 2026-01-18T00:42:54.365232 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/", "description": "List existing test files in hooks directory"}
+tool_response: {"stdout": "total 108\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 14 15:40 .\ndrwxr-xr-x 3 krwhynot krwhynot  4096 Jan 15 12:36 ..\n-rw------- 1 krwhynot krwhynot  3794 Jan  8 10:35 useCurrentSale.test.
