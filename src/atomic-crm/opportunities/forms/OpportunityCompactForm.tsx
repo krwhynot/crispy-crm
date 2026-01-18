@@ -32,6 +32,7 @@ import { DEFAULT_SEGMENT_ID } from "../../constants";
 import { organizationSchema } from "../../validation/organizations";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { enableGetChoices } from "../../utils/autocompleteDefaults";
+import { LeadSourceInput } from "../LeadSourceInput";
 
 const priorityChoices = [
   { id: "low", name: "Low" },
@@ -411,7 +412,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
         <div className="space-y-4">
           <CompactFormRow>
             <div data-tutorial="opp-lead-source">
-              <TextInput source="lead_source" label="Lead Source" helperText={false} />
+              <LeadSourceInput />
             </div>
             <div data-tutorial="opp-campaign">
               <TextInput
