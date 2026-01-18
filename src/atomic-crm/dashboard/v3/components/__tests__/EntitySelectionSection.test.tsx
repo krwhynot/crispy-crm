@@ -124,30 +124,14 @@ describe("EntitySelectionSection", () => {
 
   describe("Rendering", () => {
     it("renders SidepaneSection with 'Who Was Involved' label", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       const sidepane = screen.getByTestId("sidepane-section");
       expect(sidepane).toHaveAttribute("data-label", "Who Was Involved");
     });
 
     it("renders Contact, Organization, Opportunity comboboxes", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       expect(screen.getByTestId("entity-combobox-contact")).toBeInTheDocument();
       expect(screen.getByTestId("entity-combobox-organization")).toBeInTheDocument();
@@ -157,60 +141,28 @@ describe("EntitySelectionSection", () => {
 
   describe("Handlers", () => {
     it("passes handleContactSelect to Contact combobox", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("select-contact").click();
       expect(mockHandlers.handleContactSelect).toHaveBeenCalled();
     });
 
     it("passes handleContactClear to Contact combobox", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("clear-contact").click();
       expect(mockHandlers.handleContactClear).toHaveBeenCalled();
     });
 
     it("passes handleOrganizationSelect to Organization combobox", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("select-organization").click();
       expect(mockHandlers.handleOrganizationSelect).toHaveBeenCalled();
     });
 
     it("passes handleOrganizationClear to Organization combobox", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       screen.getByTestId("clear-organization").click();
       expect(mockHandlers.handleOrganizationClear).toHaveBeenCalled();
@@ -219,15 +171,7 @@ describe("EntitySelectionSection", () => {
 
   describe("Entity Data", () => {
     it("passes filtered entities from entityData", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       expect(screen.getByTestId("options-count-contact")).toHaveTextContent("2");
       expect(screen.getByTestId("options-count-organization")).toHaveTextContent("2");
@@ -237,15 +181,7 @@ describe("EntitySelectionSection", () => {
 
   describe("Accessibility", () => {
     it("all listId attributes are unique for accessibility", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       const contactCombobox = screen.getByTestId("entity-combobox-contact");
       const orgCombobox = screen.getByTestId("entity-combobox-organization");
@@ -267,15 +203,7 @@ describe("EntitySelectionSection", () => {
 
   describe("Placeholders", () => {
     it("renders correct placeholders for each combobox", () => {
-      render(
-        <TestWrapper>
-          <EntitySelectionSection
-            control={{} as ReturnType<typeof useForm<ActivityLogInput>>["control"]}
-            entityData={mockEntityData}
-            handlers={mockHandlers}
-          />
-        </TestWrapper>
-      );
+      render(<TestComponent entityData={mockEntityData} handlers={mockHandlers} />);
 
       expect(screen.getByTestId("placeholder-contact")).toHaveTextContent("Select contact");
       expect(screen.getByTestId("placeholder-organization")).toHaveTextContent(

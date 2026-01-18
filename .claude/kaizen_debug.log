@@ -1757,3 +1757,13 @@ tool_response: {"stdout": "npm run typecheck\n\n> atomic-crm@0.1.0 typecheck\n> 
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/dashboard/v3/components/__tests__/ActivityDateSection.test.tsx src/atomic-crm/dashboard/v3/components/__tests__/NotesSection.test.tsx src/
 tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/dashboard/v3/hooks/__tests__/useEntitySelection.test.ts > useEntitySelection > handleContactSelect > auto-fills or
+
+--- 2026-01-18T01:36:03.776283 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/dashboard/v3/components/__tests__/EntitySelectionSection.test.tsx 2>&1 | head -100", "timeout": 120000, "description": "Run EntitySelectio
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/dashboard/v3/components/__tests__/EntitySelectionSection.test.tsx > EntitySelectionSection > Rendering > renders S
+
+--- 2026-01-18T01:37:22.017386 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "pnpm lint 2>&1 | head -100", "timeout": 120000, "description": "Run ESLint check for code quality verification"}
+tool_response: {"stdout": "/bin/bash: line 2: pnpm: command not found", "stderr": "", "interrupted": false, "isImage": false}
