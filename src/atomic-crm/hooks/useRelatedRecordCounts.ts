@@ -125,6 +125,7 @@ export function useRelatedRecordCounts({
     let cancelled = false;
 
     const fetchCounts = async () => {
+      if (isLoading) return; // Guard against redundant runs during rapid dependency changes
       setIsLoading(true);
       setError(null);
 

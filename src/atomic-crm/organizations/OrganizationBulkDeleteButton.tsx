@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   useListContext,
   useDeleteMany,
@@ -37,7 +37,11 @@ export const OrganizationBulkDeleteButton = () => {
 
   // FIX [WF-C06]: Fetch related record counts when dialog is open
   // Filter out undefined values and cast to Identifier[] for type safety
-  const validIds = (selectedIds ?? []).filter((id): id is number => id !== undefined);
+  // Memoize to prevent new array reference each render (avoids triggering useEffect)
+  const validIds = useMemo(
+    () => (selectedIds ?? []).filter((id): id is number => id !== undefined),
+    [selectedIds]
+  );
   const { relatedCounts, isLoading: isLoadingRelated } = useRelatedRecordCounts({
     resource: "organizations",
     ids: validIds,
