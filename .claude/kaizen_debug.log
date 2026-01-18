@@ -1972,3 +1972,48 @@ tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx tsc --noEmit --skipLibCheck src/atomic-crm/validation/rpc.ts 2>&1 | head -50", "description": "Check TypeScript compilation for rpc.ts"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T11:01:39.097048 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --pretty 2>&1 | head -100", "timeout": 120000, "description": "Run TypeScript type check to verify changes"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T11:02:01.923663 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx eslint src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx src/atomic-crm/reports/CampaignActivity/us
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts\n  100:9  warning  The 'campaignOptions' logical expression could make the dependencie
+
+--- 2026-01-18T11:02:52.236692 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | grep -A2 \"CampaignActivity\\|useCampaignActivity\" | head -50", "description": "Check TypeScript errors in campaign files"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T11:03:02.613050 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | head -30", "description": "Full TypeScript type check"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T11:03:33.045714 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list | grep -i test", "description": "List available test commands"}
+tool_response: {"stdout": "    mcp-inspect                 # Interactive MCP testing with inspector\n    mcp-start                   # Start MCP server (for testing)\n    mcp-test                    # Test MCP tools
+
+--- 2026-01-18T11:05:44.556183 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just test-ci 2>&1 | tail -80", "timeout": 120000, "description": "Run tests in CI mode"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "bc4435a"}
+
+--- 2026-01-18T11:06:22.811838 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd -e sql . supabase/migrations | sort"}
+tool_response: {"stdout": "supabase/migrations/20251018152315_cloud_schema_fresh.sql\nsupabase/migrations/20251018203500_update_rls_for_shared_team_access.sql\nsupabase/migrations/20251018204500_add_helper_function_
+
+--- 2026-01-18T11:08:02.127506 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -50 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/bc4435a.output", "description": "Check test output"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T11:09:17.757547 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just test-smoke 2>&1 | tail -50", "timeout": 60000, "description": "Run quick smoke test"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "ba07c4a"}

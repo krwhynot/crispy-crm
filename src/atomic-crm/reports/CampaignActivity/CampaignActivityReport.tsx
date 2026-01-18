@@ -21,8 +21,6 @@ import { format, subDays, startOfMonth } from "date-fns";
 import { AppliedFiltersBar } from "@/atomic-crm/reports/components";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Activity, CheckCircle } from "lucide-react";
-import { getStaleThreshold, isOpportunityStale } from "@/atomic-crm/utils/stalenessCalculation";
-import { parseDateSafely } from "@/lib/date-utils";
 
 /** Activity type matching useCampaignActivityData return type and Activity from types.ts */
 interface CampaignActivity {
