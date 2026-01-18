@@ -49,6 +49,9 @@ export const OpportunityListFilter = () => {
   // Handle principal filter change via Select dropdown
   const handlePrincipalChange = (value: string) => {
     if (value === "all") {
+      // SAFETY WARNING: UI-ONLY PATTERN
+      // This destructuring drops keys (principal_organization_id).
+      // DO NOT use this pattern in Data Providers or Services where data loss could persist to DB.
       const { principal_organization_id: _, ...rest } = filterValues || {};
       setFilters(rest);
     } else {

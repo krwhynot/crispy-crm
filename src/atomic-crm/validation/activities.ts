@@ -435,9 +435,15 @@ export async function validateCreateActivities(data: unknown): Promise<void> {
   return validateActivitiesForm(data);
 }
 
+// Schema for Updates - .partial() makes all fields optional
+// This allows PATCH-style updates where only changed fields are sent
+export const updateActivitiesSchema = baseActivitiesSchema.partial().extend({
+  id: z.string().optional(), // ID might be in URL, not body
+});
+
 // Update validation function matching expected signature from unifiedDataProvider
 export async function validateUpdateActivities(data: unknown): Promise<void> {
-  return validateActivitiesForm(data);
+  await updateActivitiesSchema.parseAsync(data);
 }
 
 // Validation function for engagements specifically
