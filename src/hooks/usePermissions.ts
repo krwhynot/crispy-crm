@@ -3,17 +3,6 @@ import { canAccess } from "../atomic-crm/providers/commons/canAccess";
 import type { UserRole } from "./useUserRole";
 
 /**
- * Extended identity interface that includes the numeric sales_id
- * for ownership checks in canAccess
- */
-interface PermissionIdentity {
-  id: number; // This is sales.id (numeric, used for ownership checks)
-  fullName: string;
-  avatar?: string;
-  role: UserRole;
-}
-
-/**
  * Supported actions for permission checks
  */
 export type PermissionAction = "list" | "show" | "create" | "edit" | "delete" | "export";
@@ -71,10 +60,12 @@ export interface UsePermissionsReturn {
  * ```
  */
 export const usePermissions = (): UsePermissionsReturn => {
-  const { data: identity, isLoading } = useGetIdentity<PermissionIdentity>();
+  const { identity, isLoading } = useGetIdentity();
 
-  const role: UserRole = identity?.role || "rep";
-  const salesId = identity?.id ?? null;
+  // Identity from authProvider includes role (custom field) and id (sales.id as number)
+  const role: UserRole = (identity?.role as UserRole) || "rep";
+  // identity.id is sales.id (bigint in DB, number in JS) - used for ownership checks
+  const salesId = typeof identity?.id === "number" ? identity.id : null;
 
   const isAdmin = role === "admin";
   const isManager = role === "manager";

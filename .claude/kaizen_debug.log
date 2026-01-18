@@ -2642,3 +2642,18 @@ tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone log
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx supabase test db supabase/tests/database/040-ownership-rls.test.sql supabase/tests/database/060-null-safety-rls.test.sql supabase/tests/database/070-role-based-rls.test.sql 2>&1", "ti
 tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\n/home/krwhynot/projects/crispy-crm/supabase/tests/database/040-ownership-rls.test.sql .... ok\npsq
+
+--- 2026-01-18T14:14:28.094543 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit src/hooks/usePermissions.ts src/atomic-crm/providers/commons/canAccess.ts 2>&1 | head -30", "description": "Type check the permission files"}
+tool_response: {"stdout": "node_modules/@mui/utils/requirePropFactory/requirePropFactory.d.ts(2,8): error TS1259: Module '\"/home/krwhynot/projects/crispy-crm/node_modules/@types/prop-types/index\"' can only be defa
+
+--- 2026-01-18T14:15:38.258191 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vite build --mode production 2>&1 | tail -40", "timeout": 180000, "description": "Run production build to check TypeScript compilation"}
+tool_response: {"stdout": "dist/js/chunk-DQ0o1Myk.js                            12.51 kB \u2502 gzip:   4.09 kB \u2502 map:    45.81 kB\ndist/js/chunk-C6nVMo7a.js                            13.24 kB \u2502 gzip:   4
+
+--- 2026-01-18T14:16:41.537387 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/components/", "description": "List files in components directory to check for index.ts"}
+tool_response: {"stdout": "total 60\ndrwxr-xr-x  8 krwhynot krwhynot 4096 Jan 15 12:21 .\ndrwxr-xr-x 16 krwhynot krwhynot 4096 Jan 15 10:33 ..\n-rw-------  1 krwhynot krwhynot 5196 Dec 30 06:54 ErrorBoundary.tsx\n-r
