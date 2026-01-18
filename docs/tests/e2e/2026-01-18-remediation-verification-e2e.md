@@ -32,6 +32,9 @@ This E2E test verifies three critical fixes through the CRM UI only (no direct d
 
 **Objective:** Verify opportunities can be archived (soft-deleted) and restored through the UI without data loss.
 
+> **IMPORTANT:** The Archive button is on the **full-page Show view**, NOT the slide-over panel.
+> Navigate to: `/opportunities/{id}/show` (via "View Details" action)
+
 ### Setup
 
 1. Navigate to: **`/opportunities`**
@@ -42,10 +45,18 @@ This E2E test verifies three critical fixes through the CRM UI only (no direct d
 
 ### Test Steps
 
-#### Step A.1: Document Opportunity Details
+#### Step A.1: Navigate to Opportunity Show Page
 
-1. Click on the opportunity to open the slide-over
-2. Record the key details:
+1. Click on an opportunity card/row to open the **slide-over** panel
+2. In the slide-over header, click the **three-dot menu (⋮)** or **"View Details"** action
+3. This navigates to the **full-page Show view** at `/opportunities/{id}/show`
+
+- [ ] Full-page Show view loads
+- [ ] URL shows `/opportunities/{id}/show`
+
+#### Step A.2: Document Opportunity Details
+
+1. On the Show page, record the key details:
 
 | Field | Value |
 |-------|-------|

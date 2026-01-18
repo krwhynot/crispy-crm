@@ -1242,3 +1242,58 @@ tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx vitest run 2>&1", "timeout": 180000, "description": "Run Vitest tests in foreground"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "b38e4cc"}
+
+--- 2026-01-17T22:55:13.881165 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -100 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b38e4cc.output", "description": "Check test results"}
+tool_response: {"stdout": "   \u2713 PrincipalDashboardV3 > should have KPI row with 4-column desktop grid  301ms\n   \u2713 PrincipalDashboardV3 > should have tabbed interface for all sections  353ms\n   \u2713 Pri
+
+--- 2026-01-17T22:55:29.543480 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -E \"(Tests|passed|failed|PASS|FAIL)\" /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b38e4cc.output | tail -20", "description": "Get test summary"}
+tool_response: {"stdout": "   \u2713 DateInput > Critical Bug Tests > saves date in YYYY-MM-DD format without timezone shift (CRITICAL)  1949ms\n   \u2713 DateInput > Critical Bug Tests > clears value when clear but
+
+--- 2026-01-17T22:55:46.447753 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status", "description": "Show working tree status"}
+tool_response: {"stdout": "On branch main\nYour branch is ahead of 'origin/main' by 37 commits.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to 
+
+--- 2026-01-17T22:55:47.567221 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -5", "description": "Show recent commit messages"}
+tool_response: {"stdout": "98f43b037 chore(checkpoint): 2 file(s) - checkpoint-state,kaizen_debug.log\nd620a6bbb chore(checkpoint): 5 file(s) - checkpoint-state,kaizen_debug.log PATTERNS.md\nf9ba47dee chore(checkpoi
+
+--- 2026-01-17T22:55:47.656380 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git diff --stat", "description": "Show diff statistics for unstaged changes"}
+tool_response: {"stdout": " .claude/checkpoint-state |  2 +-\n .claude/kaizen_debug.log | 10 ++++++++++\n 2 files changed, 11 insertions(+), 1 deletion(-)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T22:56:00.116525 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg -A 30 \"FAIL|failed\" /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b38e4cc.output | head -60", "description": "Check test failure details with rg"}
+tool_response: {"stdout": " \u276f src/atomic-crm/opportunities/components/__tests__/NextTaskBadge.test.tsx (21 tests | 1 failed) 1112ms\n   \u2713 NextTaskBadge > empty states > renders 'No tasks' when taskId is nu
+
+--- 2026-01-17T22:56:08.105246 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git diff HEAD -- src/atomic-crm/services/PATTERNS.md src/atomic-crm/contexts/PATTERNS.md .husky/PATTERNS.md", "description": "Check diff for PATTERNS.md files against HEAD"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T22:56:15.999226 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -30 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b38e4cc.output", "description": "Check final test summary"}
+tool_response: {"stdout": "   \u2713 TextInput > preserves form field name from source prop  306ms\n \u2713 src/components/admin/form/__tests__/StepIndicator.test.tsx (11 tests) 4549ms\n   \u2713 StepIndicator > ren
+
+--- 2026-01-17T22:56:31.547457 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"Test Files|Tests.*passed\" /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b38e4cc.output", "description": "Get final test count summary"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "returnCodeInterpretation": "No matches found"}
+
+--- 2026-01-17T22:56:48.287712 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -3 -- src/atomic-crm/services/PATTERNS.md src/atomic-crm/contexts/PATTERNS.md .husky/PATTERNS.md", "description": "Check recent commits for PATTERNS.md files"}
+tool_response: {"stdout": "d620a6bbb chore(checkpoint): 5 file(s) - checkpoint-state,kaizen_debug.log PATTERNS.md\nf9ba47dee chore(checkpoint): 4 file(s) - checkpoint-state,2026-01-18-remediation-verific...\n8750454
+
+--- 2026-01-17T23:00:04.731694 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "sleep 60 && tail -20 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b38e4cc.output", "timeout": 90000, "description": "Wait for tests to finish and check summary"}
+tool_response: {"stdout": "  \u001b[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)\u001b[39m\n      at runSuite \u001b[90m(file:///home/krwhynot/projects/crispy-crm/\u001b[39mnode_modu
