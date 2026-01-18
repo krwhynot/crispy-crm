@@ -1227,3 +1227,18 @@ tool_response: {"stdout": "total 228\ndrwxr-xr-x 18 krwhynot krwhynot  4096 Jan 
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "tail -80 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b510d68.output 2>/dev/null || echo \"Waiting for output...\"", "description": "Check test progress"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T22:50:47.586022 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --reporter=verbose 2>&1 | tail -150", "timeout": 180000, "description": "Run Vitest directly with verbose output"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "b971aa0"}
+
+--- 2026-01-17T22:51:34.376284 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "sleep 30 && tail -100 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b971aa0.output 2>/dev/null", "timeout": 60000, "description": "Wait and check test output"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-17T22:54:58.576631 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run 2>&1", "timeout": 180000, "description": "Run Vitest tests in foreground"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "b38e4cc"}
