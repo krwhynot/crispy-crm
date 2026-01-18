@@ -36,9 +36,7 @@ export interface CanAccessProps<
  * </CanAccess>
  * ```
  */
-export const CanAccess = <
-  RecordType extends Record<string, unknown> = Record<string, unknown>,
->({
+export const CanAccess = <RecordType extends Record<string, unknown> = Record<string, unknown>>({
   action,
   resource,
   record,
