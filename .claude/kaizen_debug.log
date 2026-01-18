@@ -2922,3 +2922,38 @@ tool_response: {"stdout": "=== Checking for migration safeguards ===\n\n1. Git h
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "ls -la ./scripts/validate-migrations.sh 2>/dev/null || echo \"Script doesn't exist!\" && \\\necho \"\" && \\\necho \"=== Checking for any migration-related scripts ===\" && \\\nfd -t f \"
 tool_response: {"stdout": "-rwxr-xr-x 1 krwhynot krwhynot 11992 Jan 11 03:40 ./scripts/validate-migrations.sh\n\n=== Checking for any migration-related scripts ===", "stderr": "", "interrupted": false, "isImage": fa
+
+--- 2026-01-18T17:44:16.504624 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "chmod +x /home/krwhynot/projects/crispy-crm/scripts/check-migration-drift.sh", "description": "Make drift check script executable"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T17:47:02.367732 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -1 supabase/migrations/*.sql | sort | tail -30", "description": "List last 30 migration files"}
+tool_response: {"stdout": "supabase/migrations/20260104132335_add_brent_ramsy.sql\nsupabase/migrations/20260105172343_consolidate_rls_policies.sql\nsupabase/migrations/20260105203724_add_soft_delete_product_rpc.sql\
+
+--- 2026-01-18T17:47:07.300328 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -1 supabase/migrations/*.sql | wc -l", "description": "Count total migration files"}
+tool_response: {"stdout": "262", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T17:47:30.449223 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -1 supabase/migrations/*.sql | head -30", "description": "List first 30 migration files to see the start sequence"}
+tool_response: {"stdout": "supabase/migrations/20251018152315_cloud_schema_fresh.sql\nsupabase/migrations/20251018203500_update_rls_for_shared_team_access.sql\nsupabase/migrations/20251018204500_add_helper_function_
+
+--- 2026-01-18T17:47:36.974693 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -1 supabase/migrations/*.sql | grep \"20260109\\|20260111\\|20260118\" | sort", "description": "List all recent local migrations from these series"}
+tool_response: {"stdout": "supabase/migrations/20260109000001_fix_function_search_paths.sql\nsupabase/migrations/20260109000002_move_pg_trgm_to_extensions.sql\nsupabase/migrations/20260109000003_require_principal_or
+
+--- 2026-01-18T17:47:45.596814 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -1 supabase/migrations/*.sql | sed 's/.*\\///' | sort > /tmp/local_migrations.txt && wc -l /tmp/local_migrations.txt", "description": "Save local migration list"}
+tool_response: {"stdout": "262 /tmp/local_migrations.txt", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T17:48:14.704497 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat <<'EOF' > /tmp/analyze_migrations.sh\n#!/bin/bash\n\n# Cloud migrations from the list_migrations output (250 migrations total)\n# Extract the version names and compare\n\n# Get local 
+tool_response: {"stdout": "=== LOCAL MIGRATIONS NOT IN CLOUD (26 files) ===\n20260105203724\n20260109000001\n20260109000002\n20260109000003\n20260109000004\n20260110000001\n20260111000001\n20260111000002\n2026011100

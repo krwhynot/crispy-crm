@@ -140,6 +140,18 @@ db-types-force:
 db-link:
     npm run db:link
 
+# Check for migration drift between local and cloud
+db-drift:
+    ./scripts/check-migration-drift.sh
+
+# Quick drift check (pass/fail only)
+db-drift-quick:
+    ./scripts/check-migration-drift.sh --quick
+
+# Show migration repair commands
+db-drift-repair:
+    ./scripts/check-migration-drift.sh --repair
+
 # ─────────────────────────────────────────────────────────────
 # 🧹 Maintenance
 # ─────────────────────────────────────────────────────────────
