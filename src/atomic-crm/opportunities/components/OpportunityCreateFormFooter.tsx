@@ -153,7 +153,7 @@ export function OpportunityCreateFormFooter({
       event.stopPropagation();
 
       // Check for similar opportunities first
-      if (!checkBeforeSubmit()) {
+      if (!(await checkBeforeSubmit())) {
         return;
       }
 

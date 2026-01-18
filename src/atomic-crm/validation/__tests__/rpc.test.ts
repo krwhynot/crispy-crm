@@ -566,6 +566,7 @@ describe("RPC Validation Schemas", () => {
         "check_authorization",
         "check_authorization_batch",
         "log_activity_with_task", // Added for atomic activity+task creation
+        "check_similar_opportunities", // Server-side fuzzy matching using pg_trgm
       ];
 
       expectedFunctions.forEach((funcName) => {
@@ -573,8 +574,8 @@ describe("RPC Validation Schemas", () => {
       });
     });
 
-    it("should have exactly 8 RPC function schemas", () => {
-      expect(Object.keys(RPC_SCHEMAS).length).toBe(8);
+    it("should have exactly 9 RPC function schemas", () => {
+      expect(Object.keys(RPC_SCHEMAS).length).toBe(9);
     });
 
     it("should map function names to valid Zod schemas", () => {

@@ -18,7 +18,7 @@ RETURNS TABLE (
   id BIGINT,
   name TEXT,
   stage TEXT,
-  similarity_score FLOAT,
+  similarity_score REAL,  -- pg_trgm similarity() returns REAL, not FLOAT
   principal_organization_name TEXT,
   customer_organization_name TEXT
 )
