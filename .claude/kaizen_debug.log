@@ -2157,3 +2157,28 @@ tool_response: {"stdout": "scripts/discover/scip/query.test.ts\nsrc/__tests__/cs
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "fd -e test.ts -e test.tsx -e spec.ts -e spec.tsx | grep -i hook", "description": "Find hook test files"}
 tool_response: {"stdout": "src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts\nsrc/atomic-crm/dashboard/v3/hooks/__tests__/useEntitySelection.test.ts\nsrc/atomic-crm/dashboard/v3/hooks/__tests__/useH
+
+--- 2026-01-18T12:01:59.639771 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | head -30", "description": "List available just recipes"}
+tool_response: {"stdout": "Available recipes:\n    build                       # Build for production (includes typecheck)\n    cache-clear                 # Clear application cache\n    callgraph-render            
+
+--- 2026-01-18T12:02:09.440974 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --list 2>&1 | grep -i test", "description": "Find test-related just recipes"}
+tool_response: {"stdout": "    mcp-inspect                 # Interactive MCP testing with inspector\n    mcp-start                   # Start MCP server (for testing)\n    mcp-test                    # Test MCP tools
+
+--- 2026-01-18T12:02:26.672259 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just --show test-ci 2>&1", "description": "Show test-ci recipe details"}
+tool_response: {"stdout": "# Run tests once (CI mode)\ntest-ci:\n    npm run test:ci", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T12:02:40.768114 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/dashboard/v3/hooks/__tests__/useEntitySelection.test.ts 2>&1", "description": "Run specific test file using npx vitest directly"}
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/dashboard/v3/hooks/__tests__/useEntitySelection.test.ts (17 tests) 93ms\n\n Test Files  1 passed (1)\n      Tests 
+
+--- 2026-01-18T12:05:47.532004 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/dashboard/v3/components/__tests__/EntitySelectionSection.test.tsx 2>&1", "description": "Run EntitySelectionSection tests"}
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\nstderr | src/atomic-crm/dashboard/v3/components/__tests__/EntitySelectionSection.test.tsx > EntitySelectionSection > Rendering > renders 
