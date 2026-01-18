@@ -160,21 +160,25 @@ describe("ActivityDateSection", () => {
     it("has h-11 class on button (44px touch target)", () => {
       render(<TestWrapperWithControl />);
 
-      const button = screen.getByRole("button");
+      // Get the trigger button (inside popover-trigger, not the calendar mock buttons)
+      const triggerContainer = screen.getByTestId("popover-trigger");
+      const button = triggerContainer.querySelector("button");
       expect(button).toHaveClass("h-11");
     });
 
     it("uses text-muted-foreground when no date selected", () => {
       render(<TestWrapperWithControl defaultValues={{ date: undefined }} />);
 
-      const button = screen.getByRole("button");
+      const triggerContainer = screen.getByTestId("popover-trigger");
+      const button = triggerContainer.querySelector("button");
       expect(button).toHaveClass("text-muted-foreground");
     });
 
     it("does not use text-muted-foreground when date is selected", () => {
       render(<TestWrapperWithControl defaultValues={{ date: new Date("2025-01-10") }} />);
 
-      const button = screen.getByRole("button");
+      const triggerContainer = screen.getByTestId("popover-trigger");
+      const button = triggerContainer.querySelector("button");
       expect(button).not.toHaveClass("text-muted-foreground");
     });
 
@@ -234,9 +238,10 @@ describe("ActivityDateSection", () => {
     it("displays calendar icon", () => {
       render(<TestWrapperWithControl />);
 
-      // The CalendarIcon should be present in the button
-      const button = screen.getByRole("button");
-      const svg = button.querySelector("svg");
+      // The CalendarIcon should be present in the trigger button
+      const triggerContainer = screen.getByTestId("popover-trigger");
+      const button = triggerContainer.querySelector("button");
+      const svg = button?.querySelector("svg");
       expect(svg).toBeInTheDocument();
     });
   });
