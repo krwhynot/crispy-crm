@@ -7,7 +7,8 @@ BEGIN;
 -- Drop existing rigid indexes
 DROP INDEX IF EXISTS industries_name_case_insensitive_idx;
 DROP INDEX IF EXISTS segments_name_type_case_insensitive_idx;
-DROP INDEX IF EXISTS segments_name_type_unique;
+-- Note: segments_name_type_unique is a CONSTRAINT, not just an index
+ALTER TABLE segments DROP CONSTRAINT IF EXISTS segments_name_type_unique;
 
 -- Create partial unique index on segment name (case-insensitive, only active records)
 CREATE UNIQUE INDEX segments_name_case_insensitive_idx

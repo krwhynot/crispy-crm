@@ -479,7 +479,13 @@ export async function validateCreateEngagements(data: unknown): Promise<void> {
 
 // Update validation function for engagements
 export async function validateUpdateEngagements(data: unknown): Promise<void> {
-  return validateEngagementsForm(data);
+  // FIXED: Use partial schema for updates to allow patching single fields
+  await baseActivitiesSchema
+    .partial()
+    .extend({
+      activity_type: z.literal("engagement").optional(),
+    })
+    .parseAsync(data);
 }
 
 // Validation function for interactions specifically
@@ -515,7 +521,13 @@ export async function validateCreateInteractions(data: unknown): Promise<void> {
 
 // Update validation function for interactions
 export async function validateUpdateInteractions(data: unknown): Promise<void> {
-  return validateInteractionsForm(data);
+  // FIXED: Use partial schema for updates to allow patching single fields
+  await baseActivitiesSchema
+    .partial()
+    .extend({
+      activity_type: z.literal("interaction").optional(),
+    })
+    .parseAsync(data);
 }
 
 // Activity note form schema - simplified schema for quick note capture
