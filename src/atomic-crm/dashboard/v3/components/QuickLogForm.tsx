@@ -5,21 +5,8 @@ import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/exten
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useEffect, useCallback } from "react";
 import { activityKeys, opportunityKeys, taskKeys } from "@/atomic-crm/queryKeys";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { Form } from "@/components/ui/form";
+import { Loader2 } from "lucide-react";
 import {
   quickLogFormBaseSchema,
   activityLogSchema,
@@ -29,10 +16,13 @@ import {
 import type { LogActivityWithTaskParams } from "@/atomic-crm/validation/rpc";
 import { useCurrentSale } from "../hooks/useCurrentSale";
 import { useEntityData, type Contact } from "../hooks/useEntityData";
-import { EntityCombobox } from "./EntityCombobox";
+import { useEntitySelection } from "../hooks/useEntitySelection";
 import { ActivityTypeSection } from "./ActivityTypeSection";
+import { ActivityDateSection } from "./ActivityDateSection";
+import { EntitySelectionSection } from "./EntitySelectionSection";
+import { NotesSection } from "./NotesSection";
 import { FollowUpSection } from "./FollowUpSection";
-import { SidepaneSection } from "@/components/layouts/sidepane";
+import { ActionButtons } from "./ActionButtons";
 
 interface QuickLogFormProps {
   onComplete: () => void;
@@ -223,55 +213,17 @@ export function QuickLogForm({
     [salesId, notify, queryClient, dataProvider, form, onComplete, onRefresh]
   );
 
-  // Handle contact selection - auto-fill organization
-  const handleContactSelect = useCallback(
-    (contact: { id: number; name: string; organization_id?: number }) => {
-      if ((contact as Contact).organization_id) {
-        form.setValue("organizationId", (contact as Contact).organization_id);
-      }
+  // Cascading entity selection handlers
+  const entityHandlers = useEntitySelection({
+    setValue: form.setValue,
+    getValues: form.getValues,
+    entityStores: {
+      contacts: entityData.contacts,
+      organizations: entityData.organizations,
+      opportunities: entityData.opportunities,
     },
-    [form]
-  );
-
-  // Handle contact clear - cascade clear org and opp
-  const handleContactClear = useCallback(() => {
-    form.setValue("organizationId", undefined);
-    form.setValue("opportunityId", undefined);
-  }, [form]);
-
-  // Handle organization selection - clear mismatched entities
-  const handleOrganizationSelect = useCallback(
-    (org: { id: number; name: string }) => {
-      const currentContactId = form.getValues("contactId");
-      if (currentContactId) {
-        const contact = entityData.contacts.find((c) => c.id === currentContactId);
-        if (contact && contact.organization_id !== org.id) {
-          form.setValue("contactId", undefined);
-          notify("Contact cleared - doesn't belong to selected organization", { type: "info" });
-        }
-      }
-      const oppId = form.getValues("opportunityId");
-      if (oppId) {
-        const opp = entityData.opportunities.find((o) => o.id === oppId);
-        if (opp && opp.customer_organization_id !== org.id) {
-          form.setValue("opportunityId", undefined);
-        }
-      }
-    },
-    [form, entityData.contacts, entityData.opportunities, notify]
-  );
-
-  // Handle organization clear - cascade clear opportunity
-  const handleOrganizationClear = useCallback(() => {
-    const oppId = form.getValues("opportunityId");
-    const orgId = form.getValues("organizationId");
-    if (oppId) {
-      const opp = entityData.opportunities.find((o) => o.id === oppId);
-      if (opp && opp.customer_organization_id === orgId) {
-        form.setValue("opportunityId", undefined);
-      }
-    }
-  }, [form, entityData.opportunities]);
+    notify,
+  });
 
   // Loading state
   if (entityData.isInitialLoading || salesIdLoading) {
