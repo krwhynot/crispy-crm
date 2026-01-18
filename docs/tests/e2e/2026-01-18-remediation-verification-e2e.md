@@ -69,10 +69,11 @@ This E2E test verifies three critical fixes through the CRM UI only (no direct d
 - [ ] Details documented
 - [ ] **Screenshot checkpoint:** Take screenshot of opportunity details
 
-#### Step A.2: Archive the Opportunity
+#### Step A.3: Archive the Opportunity
 
-1. In the opportunity slide-over or show view, locate the **"Archive"** button
-   - Button has an Archive icon (box with down arrow)
+1. On the **Show page header**, locate the **"Archive"** button
+   - Button is in the header area, next to Edit button
+   - Has an Archive icon (box with down arrow) and label "Archive"
 2. Click the **"Archive"** button
 
 **Expected Result:**
@@ -80,25 +81,31 @@ This E2E test verifies three critical fixes through the CRM UI only (no direct d
 - [ ] ✅ Redirected to opportunities list
 - [ ] ✅ Opportunity no longer visible in main list/board
 
-#### Step A.3: View Archived Opportunities
+#### Step A.4: View Archived Opportunities
 
-1. On the opportunities page, look for **"View archived opportunities"** button
-   - Located at the bottom of the list/board view
-2. Click the button to open the archived opportunities dialog
+1. After archiving, you're redirected to `/opportunities`
+2. Scroll to the **bottom** of the opportunities list/board view
+3. Look for **"View archived opportunities"** ghost button
+   - ⚠️ **Note:** This button only appears if archived opportunities exist
+4. Click the button to open the archived opportunities dialog
 
 **Expected Result:**
+- [ ] ✅ Ghost button visible at bottom of page
 - [ ] ✅ Dialog opens with title "Archived Opportunities"
 - [ ] ✅ Your archived opportunity appears in the list
 - [ ] ✅ Shows archive date and stage information
 
 - [ ] Test opportunity visible in archived list
 
-#### Step A.4: Restore the Opportunity (THE FIX)
+#### Step A.5: Restore the Opportunity (THE FIX)
 
-1. Click on the archived opportunity to open its detail view
-2. Locate the **"Send back to the board"** button
+1. In the archived dialog, click on the archived opportunity card
+2. This opens the **Show page** for the archived opportunity
+3. You should see an **"Archived" banner** at the top
+4. Locate the **"Send back to the board"** button
    - Button has an ArchiveRestore icon (box with up arrow)
-3. Click the restore button
+   - Label: "Send back to the board"
+5. Click the restore button
 
 **Expected Result (After Fix):**
 - [ ] ✅ Notification appears: "Opportunity unarchived"
@@ -110,18 +117,18 @@ This E2E test verifies three critical fixes through the CRM UI only (no direct d
 - ❌ Opportunity remains in archived state
 - ❌ Data corruption or missing fields after restore
 
-#### Step A.5: Verify Data Integrity
+#### Step A.6: Verify Data Integrity
 
-1. Click on the restored opportunity to open slide-over
-2. Compare all fields to values documented in Step A.1
+1. After restore, navigate to the opportunity (now visible in the main list)
+2. Open the **Show page** again to compare all fields to values documented in Step A.2
 
 | Field | Expected | Actual | Match? |
 |-------|----------|--------|--------|
-| Name | (from A.1) | | ☐ |
-| Stage | (from A.1) | | ☐ |
-| Principal | (from A.1) | | ☐ |
-| Expected Close Date | (from A.1) | | ☐ |
-| Products | (from A.1) | | ☐ |
+| Name | (from A.2) | | ☐ |
+| Stage | (from A.2) | | ☐ |
+| Principal | (from A.2) | | ☐ |
+| Expected Close Date | (from A.2) | | ☐ |
+| Products | (from A.2) | | ☐ |
 
 - [ ] All fields match original values
 - [ ] No data was lost during archive/restore cycle
@@ -380,12 +387,14 @@ Compare current values to documented values from Step C.2:
 |---------|----------|-------------|
 | Opportunities List | `/opportunities` | Left nav → "Opportunities" |
 | Activities List | `/activities` | Left nav → "Activities" |
+| **Opportunity Show Page** | `/opportunities/{id}/show` | Slide-over → "View Details" or three-dot menu |
 | Opportunity Slide-Over | Opportunities page | Click any opportunity row/card |
 | Activity Slide-Over | Activities page | Click any activity row |
 | Products Tab | Opportunity slide-over | 3rd tab with 📦 Package icon |
-| Archive Button | Opportunity detail | Button with box+down-arrow icon, label "Archive" |
-| View Archived Button | Opportunities page footer | Ghost button "View archived opportunities" |
-| Unarchive Button | Archived opportunity detail | Button "Send back to the board" |
+| **Archive Button** | **Opportunity Show page header** | Button with box+down-arrow icon, label "Archive" |
+| **Archived Banner** | Opportunity Show page (archived) | Red/orange banner at top of page |
+| View Archived Button | Opportunities page (bottom) | Ghost button "View archived opportunities" (only visible if archived records exist) |
+| **Unarchive Button** | Archived opportunity Show page | Button "Send back to the board" with restore icon |
 | Edit Button | Slide-over header | Pencil icon ✏️ |
 | Cancel Button | Slide-over header (edit mode) | "Cancel" text button |
 | Save Changes Button | Slide-over footer (edit mode) | Primary button "Save Changes" |
