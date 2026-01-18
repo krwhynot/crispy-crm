@@ -1,8 +1,9 @@
-# Implementation Plan: Role-based UI Controls & Manager-sees-team-data
+# Implementation Plan: Role-based UI Controls & Manager-sees-all-data
 
 **Created:** 2026-01-18
-**Status:** Draft
+**Status:** Draft → **Revised after Zen Review**
 **Confidence:** 85%
+**Review Score:** 6.5/10 → Revised to address critical issues
 
 ---
 
@@ -20,19 +21,26 @@
 ### Goal
 Implement role-based access control with:
 1. Custom `usePermissions` hook for UI control (menu + buttons + fields)
-2. Enhanced RLS policies for defense-in-depth (managers/admins see all, reps see own)
+2. Enhanced RLS policies for defense-in-depth (**managers/admins see ALL data**, reps see own)
 3. Flat role hierarchy: `admin > manager > rep`
+
+> **⚠️ Scope Clarification:** This plan implements "Manager sees ALL data" (global visibility),
+> NOT "Manager sees team data" (team-scoped). Team-based scoping would require a `team_id` or
+> `manager_id` FK which is out of scope for this iteration.
 
 ### Architecture Decisions
 - **Hierarchy Model:** Flat role check (no explicit manager_id FK)
 - **UI Approach:** Custom `usePermissions` hook (no ra-rbac package)
 - **RLS Strategy:** Defense-in-depth (UI hides + RLS enforces)
+- **AuthProvider Pattern:** Uses existing caching + `canAccess` from `commons/canAccess.ts` ✅
 
 ### Existing Foundation
 - `sales.role` enum: `admin | manager | rep` ✅
-- `created_by` columns on most tables ✅
+- `created_by` columns on most tables (**bigint** referencing `sales.id`) ✅
 - `is_manager()` helper function ✅
 - RLS enabled on all 27 public tables ✅
+- AuthProvider already includes `role` in identity ✅
+- `canAccess()` helper already exists in `src/atomic-crm/providers/commons/canAccess.ts` ✅
 
 ---
 
@@ -86,7 +94,7 @@ Create failing pgTAP tests that define the expected role-based access behavior:
 -- supabase/tests/database/070-role-based-rls.test.sql
 BEGIN;
 
-SELECT plan(12);
+SELECT plan(11); -- Updated: 5 results_eq + 2 lives_ok + 1 throws_ok + 3 tasks tests = 11
 
 -- ============================================
 -- SETUP: Create test users with different roles
