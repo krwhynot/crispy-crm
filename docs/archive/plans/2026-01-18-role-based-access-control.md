@@ -1,9 +1,9 @@
 # Implementation Plan: Role-based UI Controls & Manager-sees-all-data
 
 **Created:** 2026-01-18
-**Status:** Draft → **Revised after Zen Review**
-**Confidence:** 85%
-**Review Score:** 6.5/10 → Revised to address critical issues
+**Status:** ✅ Ready for Execution
+**Confidence:** 90%
+**Review Score:** 6.5/10 → **Revised** (all critical/high issues addressed)
 
 ---
 
@@ -94,7 +94,7 @@ Create failing pgTAP tests that define the expected role-based access behavior:
 -- supabase/tests/database/070-role-based-rls.test.sql
 BEGIN;
 
-SELECT plan(11); -- Updated: 5 results_eq + 2 lives_ok + 1 throws_ok + 3 tasks tests = 11
+SELECT plan(17); -- 11 base tests + 4 opportunity dual-owner + 2 activities NULL sales_id
 
 -- ============================================
 -- SETUP: Create test users with different roles
