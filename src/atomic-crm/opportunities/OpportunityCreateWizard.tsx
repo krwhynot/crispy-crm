@@ -263,9 +263,6 @@ const OpportunityWizardContent = ({
 
   return (
     <FormProgressProvider initialProgress={10}>
-      {/* TEMPORARY: Diagnostic logging - remove after fix */}
-      <ProgressDiagnostic />
-
       {/* Error Summary */}
       {Object.keys(errors || {}).length > 0 && (
         <FormErrorSummary

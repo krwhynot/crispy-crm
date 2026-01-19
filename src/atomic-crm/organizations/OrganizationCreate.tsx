@@ -180,8 +180,6 @@ const OrganizationCreate = () => {
   // Use .partial() to make all fields optional during default generation
   // This extracts fields with .default() (organization_type, priority)
   // Note: Only use sales_id from smartDefaults - activity_date is for activities only
-  // IMPORTANT: formDefaults computed here but form created AFTER loading check
-  // to ensure useForm is always called in same order (React rules-of-hooks)
   const formDefaults = {
     ...organizationSchema.partial().parse({}),
     sales_id: smartDefaults?.sales_id ?? null, // Handle loading state
