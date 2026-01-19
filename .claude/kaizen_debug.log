@@ -3852,3 +3852,123 @@ tool_response: {"stdout": "obsidian:\n  Scope: Local config (private to you in t
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "cat ~/.claude/mcpServers.json 2>/dev/null || cat ~/.claude/mcp-servers.json 2>/dev/null || echo \"Global MCP config not found at expected paths\"", "description": "Check global MCP server
 tool_response: {"stdout": "Global MCP config not found at expected paths", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:12:40.152211 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm view obsidian-mcp-server 2>/dev/null | head -30", "description": "Get npm package info for obsidian-mcp-server"}
+tool_response: {"stdout": "obsidian-mcp-server@2.0.7 | Apache-2.0 | deps: 23 | versions: 27\nObsidian Knowledge-Management MCP (Model Context Protocol) server that enables AI agents and development tools to interact
+
+--- 2026-01-18T22:12:53.061027 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat ~/.claude/projects/*/mcp.json 2>/dev/null | grep -A5 obsidian || find ~/.claude/projects -name \"mcp.json\" -exec grep -l obsidian {} \\; 2>/dev/null", "description": "Find obsidian c
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:12:59.353737 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la ~/.claude/projects/*/mcp.json 2>/dev/null | head -10", "description": "List project MCP configs"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:13:19.466311 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd -e json . ~/.claude/projects 2>/dev/null | head -10", "description": "Find JSON files in claude projects"}
+tool_response: {"stdout": "/home/krwhynot/.claude/projects/-home-krwhynot-projects-crispy-crm/sessions-index.json", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:13:27.816403 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"obsidian\" ~/.claude/ --glob \"*.json\" 2>/dev/null | head -20", "description": "Search for obsidian config"}
+tool_response: {"stdout": "/home/krwhynot/.claude/projects/-home-krwhynot-projects-crispy-crm/sessions-index.json:      \"firstPrompt\": \"uninstall the current obsidian mcp tool and install this one https://mcp.so/
+
+--- 2026-01-18T22:13:40.411236 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"obsidian\" ~/.claude/projects/-home-krwhynot-projects-crispy-crm/ --glob \"*.json\" -l 2>/dev/null", "description": "Find obsidian config files"}
+tool_response: {"stdout": "/home/krwhynot/.claude/projects/-home-krwhynot-projects-crispy-crm/sessions-index.json", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:14:02.162595 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"obsidian\" ~/.claude/projects/-home-krwhynot-projects-crispy-crm/ --glob \"*.json\" -A10 -B2 2>/dev/null | head -50", "description": "Show obsidian config context"}
+tool_response: {"stdout": "/home/krwhynot/.claude/projects/-home-krwhynot-projects-crispy-crm/sessions-index.json-      \"fullPath\": \"/home/krwhynot/.claude/projects/-home-krwhynot-projects-crispy-crm/81b95772-6ca
+
+--- 2026-01-18T22:14:14.453056 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status && git diff vercel.json", "description": "Check git status and vercel.json diff"}
+tool_response: {"stdout": "On branch main\nYour branch is ahead of 'origin/main' by 1 commit.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to up
+
+--- 2026-01-18T22:14:14.657117 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat ~/.claude/projects/-home-krwhynot-projects-crispy-crm/mcpServers.json 2>/dev/null || cat ~/.claude/projects/-home-krwhynot-projects-crispy-crm/mcp-servers.json 2>/dev/null || echo \"C
+tool_response: {"stdout": "Checking alternate locations...", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:14:15.182622 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la ~/.claude/projects/-home-krwhynot-projects-crispy-crm/ 2>/dev/null", "description": "List project-specific Claude config directory"}
+tool_response: {"stdout": "total 2579232\ndrwx------ 236 krwhynot krwhynot    270336 Jan 18 22:13 .\ndrwx------   7 krwhynot krwhynot      4096 Jan 18 22:11 ..\n-rw-------   1 krwhynot krwhynot    528088 Dec 21 13:2
+
+--- 2026-01-18T22:14:27.149231 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log -2 --oneline && git show HEAD --stat | head -20", "description": "Check recent commits"}
+tool_response: {"stdout": "c6c1f77c7 chore(checkpoint): 3 file(s) - checkpoint-state,kaizen_debug.log vercel.json\n91d583fc0 chore(checkpoint): 3 file(s) - checkpoint-state,kaizen_debug.log vercel.json\ncommit c6c1f
+
+--- 2026-01-18T22:14:28.951864 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg -l \"obsidian\" ~/.claude/ --glob \"*.json\" -g \"!sessions-index.json\" -g \"!*.jsonl\" 2>/dev/null | head -10", "description": "Find obsidian config excluding sessions"}
+tool_response: {"stdout": "/home/krwhynot/.claude/todos/8a7a1a97-737d-4ba8-b1a2-b62bbbdf1aba-agent-8a7a1a97-737d-4ba8-b1a2-b62bbbdf1aba.json", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:14:38.106727 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "claude mcp --help 2>/dev/null | head -50", "description": "Check Claude MCP help"}
+tool_response: {"stdout": "Usage: claude mcp [options] [command]\n\nConfigure and manage MCP servers\n\nOptions:\n  -h, --help                                     Display help for command\n\nCommands:\n  add [option
+
+--- 2026-01-18T22:14:39.943872 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git push origin main", "description": "Push the --include=dev fix"}
+tool_response: {"stdout": "To github.com:krwhynot/crispy-crm.git\n   91d583fc0..c6c1f77c7  main -> main", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:15:04.843996 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "claude mcp get obsidian --json 2>/dev/null || claude mcp get obsidian 2>/dev/null", "description": "Get full obsidian MCP config"}
+tool_response: {"stdout": "obsidian:\n  Scope: Local config (private to you in this project)\n  Status: \u2713 Connected\n\nTo remove this server, run: claude mcp remove \"obsidian\" -s local", "stderr": "", "interr
+
+--- 2026-01-18T22:15:15.765508 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"npx.*obsidian\" ~/.claude/ --glob \"*.json\" 2>/dev/null | head -10", "description": "Find obsidian npx command in configs"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:15:21.825163 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd \"local\" ~/.claude/projects/-home-krwhynot-projects-crispy-crm/ -t f 2>/dev/null | head -5", "description": "Find local config files"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:15:33.842953 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd \"mcp\" ~/.claude/ -t f 2>/dev/null | head -20", "description": "Find all MCP-related files"}
+tool_response: {"stdout": "/home/krwhynot/.claude/mcp-audit.log\n/home/krwhynot/.claude/plugins/marketplaces/anthropic-agent-skills/skills/mcp-builder/reference/mcp_best_practices.md\n/home/krwhynot/.claude/plugins/
+
+--- 2026-01-18T22:15:39.465909 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat ~/.mcp.json 2>/dev/null || echo \"No global .mcp.json in home\"", "description": "Check global mcp.json in home"}
+tool_response: {"stdout": "{\n  \"mcpServers\": {\n    \"shadcn\": {\n      \"command\": \"npx\",\n      \"args\": [\"shadcn@latest\", \"mcp\"]\n    }\n  }\n}", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:15:49.917422 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "mkdir -p /home/krwhynot/projects/crispy-crm/.claude/hooks/state", "description": "Create state directory for todo queue"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:15:51.538339 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg \"OBSIDIAN\" ~/.claude/ --glob \"*.json\" 2>/dev/null | head -10", "description": "Search for OBSIDIAN env vars"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:16:01.802581 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "chmod +x /home/krwhynot/projects/crispy-crm/.claude/hooks/td-generator.sh", "description": "Make td-generator.sh executable"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:18:28.897666 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "chmod +x /home/krwhynot/projects/crispy-crm/.claude/hooks/todo-debt-tracker.sh", "description": "Make todo-debt-tracker.sh executable"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:18:43.512889 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg -l \"obsidian-mcp-server\" ~/.claude/ 2>/dev/null", "description": "Find file containing obsidian config"}
+tool_response: {"stdout": "/home/krwhynot/.claude/plans/cozy-crafting-tower.md\n/home/krwhynot/.claude/paste-cache/8a88f0225bf70fce.txt\n/home/krwhynot/.claude/paste-cache/7a343bcdb5a2913e.txt\n/home/krwhynot/.claud

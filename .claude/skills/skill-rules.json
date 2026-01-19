@@ -1652,6 +1652,44 @@
           "z\\.infer.*Props"
         ]
       }
+    },
+    "td-add": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Quick slash command to add new technical debt entries to docs/technical-debt.md with auto-generated IDs. Integrates with todo-debt-tracker hook for TODO/FIXME detection.",
+      "promptTriggers": {
+        "keywords": [
+          "/td add",
+          "/td",
+          "add technical debt",
+          "log debt",
+          "track debt",
+          "new debt entry",
+          "technical debt entry",
+          "td entry",
+          "add todo",
+          "log todo",
+          "add fixme",
+          "log fixme"
+        ],
+        "intentPatterns": [
+          "add.*?technical.*?debt",
+          "create.*?td.*?entry",
+          "log.*?(issue|debt|todo|fixme)",
+          "track.*?(debt|issue|todo)",
+          "(new|add).*?debt.*?entry"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "docs/technical-debt.md"
+        ],
+        "contentPatterns": [
+          "Technical Debt Tracker",
+          "\\| ID \\| Category \\|"
+        ]
+      }
     }
   },
   "keywordOwnership": {
