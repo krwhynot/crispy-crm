@@ -64,7 +64,7 @@ function extractErrors(
 
     if (value?.message && typeof value.message === "string") {
       const displayLabel = fieldLabels[fieldPath] || fieldLabels[key] || formatFormFieldLabel(key);
-      result.push({ fieldPath, displayLabel, message: value.message });
+      result.push({ fieldPath, displayLabel, message: sanitizeErrorMessage(value.message) });
     } else if (value && typeof value === "object") {
       result.push(...extractErrors(value as FieldErrors, fieldLabels, fieldPath));
     }

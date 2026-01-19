@@ -4427,3 +4427,8 @@ tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "grep -r \"aria-invalid\\|aria-required\\|aria-describedby\" src/components/admin --include=\"*.tsx\" | head -15"}
 tool_response: {"stdout": "src/components/admin/autocomplete-array-input.tsx:            <div className=\"group rounded-md bg-transparent dark:bg-input/30 border border-input px-3 py-1.75 text-sm transition-all ring
+
+--- 2026-01-18T23:54:36.556263 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"Form.*ra-core\\|from.*ra-core.*Form\" --include=\"*.tsx\" -l | head -5", "description": "Find files importing Form from ra-core"}
+tool_response: {"stdout": "node_modules/react-admin/node_modules/ra-ui-materialui/src/auth/LoginForm.tsx\nnode_modules/react-admin/node_modules/ra-ui-materialui/src/auth/AuthLayout.stories.tsx\nnode_modules/react-ad
