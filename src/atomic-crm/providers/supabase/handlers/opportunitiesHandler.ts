@@ -55,13 +55,13 @@ import {
 
 const handlerInputSchema = z
   .object({
-    products_to_sync: z.array(productSchema).optional(),
+    products_to_sync: z.array(opportunityProductSyncHandlerSchema).optional(),
   })
   .passthrough();
 
 const previousDataSchema = z
   .object({
-    products: z.array(productSchema).optional(),
+    products: z.array(opportunityProductSyncHandlerSchema).optional(),
     version: z.number().optional(), // FIX [SF-C12]: Extract version for optimistic locking
   })
   .passthrough();
@@ -126,7 +126,8 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
     ) => {
       if (resource === "opportunities") {
         const validatedData = handlerInputSchema.parse(params.data);
-        const productsToSync: ProductFromSchema[] | undefined = validatedData.products_to_sync;
+        const productsToSync: OpportunityProductSyncHandler[] | undefined =
+          validatedData.products_to_sync;
 
         // Only use OpportunitiesService when there are actual products to sync
         // Empty arrays should use the standard create path (avoids ExtendedDataProvider requirement)
@@ -159,13 +160,15 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
     ) => {
       if (resource === "opportunities") {
         const validatedData = handlerInputSchema.parse(params.data);
-        const productsToSync: ProductFromSchema[] | undefined = validatedData.products_to_sync;
+        const productsToSync: OpportunityProductSyncHandler[] | undefined =
+          validatedData.products_to_sync;
 
         // Only use OpportunitiesService when there are actual products to sync
         // Empty arrays should use the standard update path (avoids ExtendedDataProvider requirement)
         if (Array.isArray(productsToSync) && productsToSync.length > 0) {
           const validatedPreviousData = previousDataSchema.parse(params.previousData);
-          const previousProducts: ProductFromSchema[] = validatedPreviousData.products ?? [];
+          const previousProducts: OpportunityProductSyncHandler[] =
+            validatedPreviousData.products ?? [];
           // FIX [SF-C12]: Pass version for optimistic locking concurrency check
           const previousVersion: number | undefined = validatedPreviousData.version;
 

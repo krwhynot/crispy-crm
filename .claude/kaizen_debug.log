@@ -6632,3 +6632,128 @@ tool_response: {"stdout": "# Form Input Components \u2014 Inventory\n\n> Generat
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "head -20 /home/krwhynot/projects/crispy-crm/docs/archive/research/discover-scripts-audit.md", "description": "Check research archive file"}
 tool_response: {"stdout": "# Ultra-Deep Audit: `scripts/discover` Codebase Introspection System\n\n## Executive Summary\n\nThe `scripts/discover` directory contains a **production-grade, AI-optimized metadata extrac
+
+--- 2026-01-19T17:54:51.270516 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/ 2>/dev/null | head -50", "description": "List contents of .claude directory"}
+tool_response: {"stdout": "total 828\ndrwxr-xr-x  15 krwhynot krwhynot   4096 Jan 19 17:53 .\ndrwxr-xr-x  21 krwhynot krwhynot   4096 Jan 19 17:43 ..\n-rw-------   1 krwhynot krwhynot   6316 Dec 17 18:45 NOTES.md\n-
+
+--- 2026-01-19T17:55:08.295759 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -lh /home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log", "description": "Check size of kaizen debug log"}
+tool_response: {"stdout": "-rw-r--r-- 1 krwhynot krwhynot 681K Jan 19 17:54 /home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:55:08.377889 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/state/ 2>/dev/null", "description": "List state directory contents"}
+tool_response: {"stdout": "total 105500\ndrwxr-xr-x  9 krwhynot krwhynot     4096 Jan 19 17:19 .\ndrwxr-xr-x 15 krwhynot krwhynot     4096 Jan 19 17:53 ..\n-rw-------  1 krwhynot krwhynot    22050 Dec 22 12:43 busin
+
+--- 2026-01-19T17:55:21.485977 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/skills/ | grep -i kaizen", "description": "Find Kaizen-related skills"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "returnCodeInterpretation": "No matches found"}
+
+--- 2026-01-19T17:55:21.543475 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/skills/ | grep -i health", "description": "Find health-summary skill"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "returnCodeInterpretation": "No matches found"}
+
+--- 2026-01-19T17:55:35.698051 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/skills/ | head -40", "description": "List all skills directories"}
+tool_response: {"stdout": "total 192\ndrwx------ 22 krwhynot krwhynot  4096 Jan 18 22:18 .\ndrwxr-xr-x 15 krwhynot krwhynot  4096 Jan 19 17:55 ..\n-rw-r--r--  1 krwhynot krwhynot  1944 Jan 11 03:40 audit-rls-soft-de
+
+--- 2026-01-19T17:55:46.867410 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/hooks/*.py", "description": "List Python hook files"}
+tool_response: {"stdout": "-rwxr-xr-x 1 krwhynot krwhynot 3134 Jan 16 22:45 /home/krwhynot/projects/crispy-crm/.claude/hooks/daily_briefing.py\n-rwxr-xr-x 1 krwhynot krwhynot 3137 Jan 16 05:54 /home/krwhynot/project
+
+--- 2026-01-19T17:55:55.677041 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"health.summary\\|health-summary\" /home/krwhynot/projects/crispy-crm/.claude/ 2>/dev/null | head -10", "description": "Search for health-summary references"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log:tool_response: {\"stdout\": \"audit\\nbest-practices.md\\nbrainstorm.md\\ncode-review.md\\ncommit.md\\ncrispy-note.md\\ndb-migra
+
+--- 2026-01-19T17:56:12.552499 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/ 2>/dev/null", "description": "List docs directory"}
+tool_response: {"stdout": "total 216\ndrwxr-xr-x 19 krwhynot krwhynot  4096 Jan 19 17:16 .\ndrwxr-xr-x 21 krwhynot krwhynot  4096 Jan 19 17:43 ..\n-rw-r--r--  1 krwhynot krwhynot 71204 Jan  8 21:04 PROVIDER_AUDIT_RE
+
+--- 2026-01-19T17:56:13.045605 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"slack\\|obsidian\\|note\" /home/krwhynot/projects/crispy-crm/.claude/hooks/ --include=\"*.py\" --include=\"*.sh\" 2>/dev/null | head -20", "description": "Search for Obsidian/Sl
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:56:13.447577 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"slack\\|webhook\\|integration\\|notification\" /home/krwhynot/projects/crispy-crm/.claude/ --include=\"*.py\" --include=\"*.sh\" --include=\"*.md\" 2>/dev/null | grep -i kaizen 
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:56:25.640377 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"recommend\\|suggestion\\|action\" /home/krwhynot/projects/crispy-crm/.claude/hooks/*.py 2>/dev/null | head -10", "description": "Search for recommendation generation logic"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:56:32.120408 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat /home/krwhynot/projects/crispy-crm/.claude/kaizen_metrics.json", "description": "Show current kaizen metrics"}
+tool_response: {"stdout": "{\n  \"score\": 1,\n  \"streak\": 1,\n  \"last_commit_date\": \"2026-01-16\",\n  \"checkpoint_count\": 1,\n  \"checkpoint_streak\": 1,\n  \"last_checkpoint_date\": \"2026-01-16\",\n  \"int
+
+--- 2026-01-19T17:56:46.004515 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"Obsidian\\|obsidian\" /home/krwhynot/projects/crispy-crm/.claude/hooks/ --include=\"*.py\" --include=\"*.sh\" 2>/dev/null", "description": "Search for Obsidian integration in ho
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "returnCodeInterpretation": "No matches found"}
+
+--- 2026-01-19T17:56:46.640308 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/state/call-graph-inventory/ 2>/dev/null", "description": "Check discovery state"}
+tool_response: {"stdout": "total 3976\ndrwxr-xr-x 3 krwhynot krwhynot   4096 Jan 19 17:20 .\ndrwxr-xr-x 9 krwhynot krwhynot   4096 Jan 19 17:19 ..\n-rw-r--r-- 1 krwhynot krwhynot    380 Jan 19 17:20 _root.json\ndrwx
+
+--- 2026-01-19T17:56:49.714763 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -500 /home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log | grep -A5 -B5 \"health\\|summary\\|recommend\" 2>/dev/null | head -40", "description": "Search debug log for health/
+tool_response: {"stdout": "tool_response: {\"stdout\": \"5d06f5b26 refactor(opportunities): simplify form by removing CreateInDialogButton pattern\\n469ad7dde chore(checkpoint): 4 file(s) - checkpoint-state,kaizen_d
+
+--- 2026-01-19T17:57:00.212164 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"crispy-note\\|Obsidian\" /home/krwhynot/projects/crispy-crm/.claude/skills/ --include=\"*.md\" 2>/dev/null | head -10", "description": "Search for Obsidian integration in skills
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:57:12.518263 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"crispy-note\\|recommendation\\|suggest\" /home/krwhynot/projects/crispy-crm/justfile 2>/dev/null | head -20", "description": "Search for Kaizen recommendations in justfile"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:57:12.638365 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -A10 \"health-summary\\|kaizen\" /home/krwhynot/projects/crispy-crm/justfile 2>/dev/null | head -30", "description": "Search for health summary in justfile"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:57:22.000364 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/justfile", "description": "Count lines in justfile"}
+tool_response: {"stdout": "362 /home/krwhynot/projects/crispy-crm/justfile", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:57:33.287973 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/commands/ 2>/dev/null", "description": "List all command files"}
+tool_response: {"stdout": "total 136\ndrwxr-xr-x  3 krwhynot krwhynot  4096 Jan 18 22:16 .\ndrwxr-xr-x 15 krwhynot krwhynot  4096 Jan 19 17:57 ..\ndrwxr-xr-x  2 krwhynot krwhynot  4096 Jan 18 20:37 audit\n-rw-r--r--
+
+--- 2026-01-19T17:57:33.818028 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "jq '.[] | select(.name | contains(\"health\")) | .' /home/krwhynot/projects/crispy-crm/.claude/skills/skill-rules.json 2>/dev/null | head -50", "description": "Search for health-summary i
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:57:34.129526 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "jq '.[] | select(.command | contains(\"health\")) | .' /home/krwhynot/projects/crispy-crm/.claude/skills/skill-rules.json 2>/dev/null | head -50", "description": "Search for health comman
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:57:47.695640 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "jq 'length' /home/krwhynot/projects/crispy-crm/.claude/skills/skill-rules.json", "description": "Count entries in skill-rules.json"}
+tool_response: {"stdout": "5", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:57:56.611739 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat /home/krwhynot/projects/crispy-crm/.claude/commands/crispy-note.md", "description": "Read crispy-note command"}
+tool_response: {"stdout": "---\ndescription: Capture session knowledge to Crispy CRM Obsidian notes (merge or create)\n---\n\nCapture knowledge from this session to the Crispy CRM Obsidian vault. Use Obsidian MCP to
