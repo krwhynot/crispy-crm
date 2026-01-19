@@ -29,6 +29,17 @@ vi.mock("ra-core", () => ({
   useNotify: vi.fn(() => vi.fn()),
 }));
 
+// Mock useFilteredProducts - required when dialog opens and form renders
+vi.mock("../hooks/useFilteredProducts", () => ({
+  useFilteredProducts: vi.fn(() => ({
+    products: [],
+    isLoading: false,
+    error: null,
+    isReady: false,
+    isEmpty: true,
+  })),
+}));
+
 // Test wrapper
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
@@ -65,9 +76,9 @@ describe("QuickAddButton", () => {
     // Click the button
     fireEvent.click(button);
 
-    // Dialog should now be visible
+    // Dialog should now be visible with new title
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(screen.getByText("Quick Add Booth Visitor")).toBeInTheDocument();
+    expect(screen.getByText("Quick Add Opportunity")).toBeInTheDocument();
   });
 
   it("ensures minimum touch target size", () => {

@@ -31,7 +31,6 @@ const mockProductsPrincipalA: Product[] = [
   {
     id: 1,
     name: "Product A1",
-    sku: "SKU-A1",
     principal_id: 100,
     category: "beverages",
     status: "active",
@@ -39,7 +38,6 @@ const mockProductsPrincipalA: Product[] = [
   {
     id: 2,
     name: "Product A2",
-    sku: "SKU-A2",
     principal_id: 100,
     category: "snacks",
     status: "active",
@@ -50,7 +48,6 @@ const mockProductsPrincipalB: Product[] = [
   {
     id: 3,
     name: "Product B1",
-    sku: "SKU-B1",
     principal_id: 200,
     category: "beverages",
     status: "active",
@@ -58,7 +55,6 @@ const mockProductsPrincipalB: Product[] = [
   {
     id: 4,
     name: "Product B2",
-    sku: "SKU-B2",
     principal_id: 200,
     category: "snacks",
     status: "active",
@@ -71,6 +67,14 @@ const mockUseQuickAddMutate = vi.fn();
 
 vi.mock("ra-core", () => ({
   useGetList: (...args: any[]) => mockUseGetList(...args),
+  useGetIdentity: () => ({
+    data: { id: 100, fullName: "John Sales" },
+    isLoading: false,
+  }),
+  useDataProvider: () => ({
+    create: vi.fn().mockResolvedValue({ data: { id: 1, name: "Test" } }),
+  }),
+  useNotify: () => vi.fn(),
 }));
 
 vi.mock("../hooks/useQuickAdd", () => ({
@@ -117,16 +121,50 @@ const createTestWrapper = () => {
   );
 };
 
+// Mock customer organizations
+const mockCustomerOrgs = [
+  { id: 10, name: "Customer Corp", organization_type: "customer" },
+  { id: 11, name: "Prospect Inc", organization_type: "prospect" },
+];
+
+// Mock sales team
+const mockSalesList = [
+  { id: 100, name: "John Sales", email: "john@sales.com" },
+  { id: 101, name: "Jane Rep", email: "jane@sales.com" },
+];
+
 describe("Quick Add Flow with Product Filtering", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
 
-    // Default mock: return principals list
-    mockUseGetList.mockReturnValue({
-      data: mockPrincipals,
-      isLoading: false,
-      error: null,
+    // Mock useGetList to handle different resources
+    mockUseGetList.mockImplementation((resource: string, params?: any) => {
+      if (resource === "organizations") {
+        // Check filter to determine if this is principals or customers/prospects
+        if (params?.filter?.organization_type === "principal") {
+          return { data: mockPrincipals, isLoading: false, error: null };
+        }
+        if (params?.filter?.["organization_type@in"]) {
+          return { data: mockCustomerOrgs, isLoading: false, error: null };
+        }
+        // Default: return all organizations
+        return { data: [...mockPrincipals, ...mockCustomerOrgs], isLoading: false, error: null };
+      }
+      if (resource === "sales") {
+        return { data: mockSalesList, isLoading: false, error: null };
+      }
+      if (resource === "products") {
+        const principalId = params?.filter?.principal_id;
+        if (principalId === 100) {
+          return { data: mockProductsPrincipalA, isLoading: false, error: null };
+        }
+        if (principalId === 200) {
+          return { data: mockProductsPrincipalB, isLoading: false, error: null };
+        }
+        return { data: [], isLoading: false, error: null };
+      }
+      return { data: [], isLoading: false, error: null };
     });
   });
 
@@ -146,7 +184,7 @@ describe("Quick Add Flow with Product Filtering", () => {
         expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
 
-      expect(screen.getByText("Quick Add Booth Visitor")).toBeInTheDocument();
+      expect(screen.getByText("Quick Add Opportunity")).toBeInTheDocument();
     });
 
     it("displays all form sections in correct order", async () => {
@@ -157,11 +195,10 @@ describe("Quick Add Flow with Product Filtering", () => {
         expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
 
-      // Verify form sections exist (using actual section headers from QuickAddForm.tsx)
-      expect(screen.getByText("Pre-filled Information")).toBeInTheDocument();
-      expect(screen.getByText("Contact Information")).toBeInTheDocument();
-      expect(screen.getByText("Organization Information")).toBeInTheDocument();
-      expect(screen.getByText("Optional Details")).toBeInTheDocument();
+      // Verify form sections exist (using actual section headers from updated QuickAddForm.tsx)
+      expect(screen.getByText("Opportunity Details")).toBeInTheDocument();
+      expect(screen.getByText("Contact Information (Optional)")).toBeInTheDocument();
+      expect(screen.getByText("Location & Notes (Optional)")).toBeInTheDocument();
     });
   });
 
@@ -178,7 +215,7 @@ describe("Quick Add Flow with Product Filtering", () => {
       });
 
       // Product section should show "Select a Principal first" message
-      expect(screen.getByText("Select a Principal first to filter products")).toBeInTheDocument();
+      expect(screen.getByText(/select a principal first/i)).toBeInTheDocument();
     });
 
     it("form contains all required field labels", async () => {

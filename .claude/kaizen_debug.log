@@ -5377,3 +5377,13 @@ tool_response: {"stdout": " Test Files  2 failed | 34 passed (36)", "stderr": ""
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npm test -- --run src/atomic-crm/opportunities 2>&1 | grep -E \"FAIL\" | head -10", "timeout": 120000, "description": "Find failing tests"}
 tool_response: {"stdout": " FAIL  src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx > QuickAddButton > opens dialog when clicked\n FAIL  src/atomic-crm/opportunities/__tests__/quick-add-product-filterin
+
+--- 2026-01-19T14:30:14.352744 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx 2>&1 | tail -30", "timeou
+tool_response: {"stdout": "     \u2192 Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested up
+
+--- 2026-01-19T14:32:46.841384 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx 2>&1 | tail -25", "timeou
+tool_response: {"stdout": " FAIL  src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx > QuickAddButton > opens dialog when clicked\n FAIL  src/atomic-crm/opportunities/__tests__/quick-add-product-filterin
