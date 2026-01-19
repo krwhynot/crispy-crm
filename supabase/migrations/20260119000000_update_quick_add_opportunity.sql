@@ -171,7 +171,7 @@ BEGIN
 
   -- Link products if provided
   IF _data->'product_ids' IS NOT NULL THEN
-    INSERT INTO opportunity_products (opportunity_id, product_id)
+    INSERT INTO opportunity_products (opportunity_id, product_id_reference)
     SELECT _opp_id, (jsonb_array_elements_text(_data->'product_ids'))::BIGINT;
   END IF;
 

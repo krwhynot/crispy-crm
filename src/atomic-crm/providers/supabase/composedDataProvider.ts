@@ -145,6 +145,8 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
     user_favorites: createUserFavoritesHandler(baseProvider),
     // Notifications
     notifications: createNotificationsHandler(baseProvider),
+    // Timeline (read-only view)
+    entity_timeline: createTimelineHandler(baseProvider),
   };
 
   /**

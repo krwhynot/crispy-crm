@@ -5452,3 +5452,98 @@ tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx supabase db execute --sql \"SELECT routine_definition FROM information_schema.routines WHERE routine_name = 'create_booth_visitor_opportunity' LIMIT 1\" 2>&1 | head -50", "timeout": 3
 tool_response: {"stdout": "Usage:\n  supabase db [command]\n\nAvailable Commands:\n  diff        Diffs the local database for schema changes\n  dump        Dumps data or schemas from the remote database\n  lint     
+
+--- 2026-01-19T14:56:12.534167 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase status 2>&1 | head -20", "timeout": 15000, "description": "Check if local Supabase is running"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nStopped services: [supabase_inbucket_crispy-crm supabase_storage_crispy-crm supabase_imgproxy_crispy-crm supabase_analytics_crispy-
+
+--- 2026-01-19T14:56:23.691565 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | head -50", "timeout": 60000, "description": "Run TypeScript check on codebase"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T14:57:59.866876 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase status 2>&1", "description": "Check local Supabase status"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nStopped services: [supabase_inbucket_crispy-crm supabase_storage_crispy-crm supabase_imgproxy_crispy-crm supabase_analytics_crispy-
+
+--- 2026-01-19T14:58:02.992799 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just build 2>&1 | tail -30", "timeout": 120000, "description": "Run production build using just"}
+tool_response: {"stdout": "dist/js/ProductDistributorEdit-DwQjg8R4.js           22.98 kB \u2502 gzip:   6.88 kB \u2502 map:    85.23 kB\ndist/js/chunk-C3TGnPwL.js                            23.14 kB \u2502 gzip:   8
+
+--- 2026-01-19T14:58:05.880637 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "docker ps --format \"table {{.Names}}\\t{{.Status}}\\t{{.Ports}}\" 2>&1 | head -20", "description": "Check Docker container status"}
+tool_response: {"stdout": "NAMES                              STATUS                        PORTS\nsupabase_db_crispy-crm             Up About a minute (healthy)   0.0.0.0:54322->5432/tcp, [::]:54322->5432/tcp\nsupa
+
+--- 2026-01-19T14:58:15.360109 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la src/atomic-crm/timeline/", "description": "Verify timeline component files"}
+tool_response: {"stdout": "total 24\ndrwxr-xr-x  2 krwhynot krwhynot 4096 Jan 19 14:50 .\ndrwxr-xr-x 34 krwhynot krwhynot 4096 Jan 19 14:46 ..\n-rw-r--r--  1 krwhynot krwhynot 4947 Jan 19 14:47 TimelineEntry.tsx\n-r
+
+--- 2026-01-19T14:58:15.543762 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la src/atomic-crm/providers/supabase/handlers/timelineHandler.ts", "description": "Verify handler file"}
+tool_response: {"stdout": "-rw-r--r-- 1 krwhynot krwhynot 6202 Jan 19 14:48 src/atomic-crm/providers/supabase/handlers/timelineHandler.ts", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T14:58:16.193199 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la supabase/migrations/ | grep 20260119", "description": "Verify migration files were created"}
+tool_response: {"stdout": "-rw-r--r--  1 krwhynot krwhynot   6196 Jan 19 12:36 20260119000000_update_quick_add_opportunity.sql\n-rw-r--r--  1 krwhynot krwhynot   4435 Jan 19 14:46 20260119000001_create_entity_timeli
+
+--- 2026-01-19T14:58:29.283717 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -f /home/krwhynot/projects/crispy-crm/supabase/migrations/20260119000000_update_quick_add_opportunity.sql 2>&1", "de
+tool_response: {"stdout": "psql:/home/krwhynot/projects/crispy-crm/supabase/migrations/20260119000000_update_quick_add_opportunity.sql:188: ERROR:  type \"organization_type\" does not exist\nLINE 18:   _principal_ty
+
+--- 2026-01-19T14:58:57.193751 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db push --local 2>&1 | head -100", "timeout": 120000, "description": "Push migrations to local database"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nConnecting to local database...\nSkipping migration PATTERNS.md... (file name must match pattern \"<timestamp>_name.sql\")\nDo you 
+
+--- 2026-01-19T14:59:41.178597 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase stop 2>&1", "timeout": 60000, "description": "Stop local Supabase - app will use remote DB"}
+tool_response: {"stdout": "WARN: no SMS provider is enabled. Disabling phone login\nStopping containers...\nStopped supabase local development setup.\nLocal data are backed up to docker volume. Use docker to show th
+
+--- 2026-01-19T14:59:46.999587 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat /home/krwhynot/projects/crispy-crm/.env.local 2>/dev/null | grep -E \"SUPABASE|VITE.*SUPA\" | head -10", "description": "Check environment config for Supabase URL"}
+tool_response: {"stdout": "VITE_SUPABASE_URL=http://127.0.0.1:54321\nVITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.-7wL35-YnDVoh
+
+--- 2026-01-19T14:59:49.399674 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/providers/supabase/handlers/ 2>&1 | tail -50", "timeout": 120000, "description": "Run handler tests"}
+tool_response: {"stdout": "  resource: \u001b[32m'organizations'\u001b[39m,\n  params: {\n    id: \u001b[33m1\u001b[39m,\n    ids: \u001b[90mundefined\u001b[39m,\n    filter: \u001b[90mundefined\u001b[39m,\n    sort
+
+--- 2026-01-19T15:00:52.230536 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase start 2>&1 | tail -30", "timeout": 180000, "description": "Restart local Supabase"}
+tool_response: {"stdout": "\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u
+
+--- 2026-01-19T15:01:04.709637 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -c \"SELECT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'organization_type');\" 2>&1", "description": "Check if or
+tool_response: {"stdout": " exists \n--------\n t\n(1 row)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:01:18.271062 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -f /home/krwhynot/projects/crispy-crm/supabase/migrations/20260119000000_update_quick_add_opportunity.sql 2>&1", "de
+tool_response: {"stdout": "CREATE FUNCTION\nGRANT", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:01:28.790853 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -c \"SELECT prosrc FROM pg_proc WHERE proname = 'create_booth_visitor_opportunity';\" 2>&1 | head -30", "description
+tool_response: {"stdout": "                                                                      prosrc                                                                       \n---------------------------------------
+
+--- 2026-01-19T15:01:40.334336 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -c \"SELECT prosrc FROM pg_proc WHERE proname = 'create_booth_visitor_opportunity';\" 2>&1 | grep -i \"city and stat
+tool_response: {"stdout": "\u2705 No city/state validation found - function is correct", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:08:44.255149 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -c \"\\d opportunity_products\" 2>&1", "description": "Check opportunity_products table schema"}
+tool_response: {"stdout": "                                            Table \"public.opportunity_products\"\n        Column        |           Type           | Collation | Nullable |                     Default    

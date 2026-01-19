@@ -4,7 +4,7 @@ interface ActivitiesTabProps {
   organizationId: string | number;
 }
 
-export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps): JSX.Element => {
+export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
   // Convert organizationId to number (handles both string and number)
   const numericOrganizationId =
     typeof organizationId === "string" ? parseInt(organizationId, 10) : organizationId;
