@@ -43,11 +43,7 @@ const ActivityEditForm = () => {
   if (!record) return null;
 
   return (
-    <Form
-      defaultValues={record}
-      mode="onBlur"
-      shouldUnregister
-    >
+    <Form defaultValues={record} mode="onBlur" shouldUnregister>
       <Card>
         <CardContent className="space-y-6 p-6">
           <div className="flex items-center justify-between mb-4">

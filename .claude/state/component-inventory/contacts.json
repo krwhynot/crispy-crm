@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-19T02:37:50.976Z",
+  "generated_at": "2026-01-19T15:30:40.856Z",
   "item_count": 58,
   "items": [
     {
@@ -111,7 +111,7 @@
     {
       "name": "ContactAdditionalDetails",
       "file": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx",
-      "line": 7,
+      "line": 24,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -281,7 +281,7 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 28,
+      "line": 29,
       "type": "presentational",
       "hooks": [
         "useFormContext"
@@ -300,6 +300,7 @@
         "@/components/admin/simple-form-iterator",
         "@/components/admin/text-input",
         "react",
+        "react-admin",
         "react-hook-form",
         "zod"
       ],

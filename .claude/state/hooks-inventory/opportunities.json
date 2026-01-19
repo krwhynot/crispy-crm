@@ -1,12 +1,12 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-19T02:38:05.396Z",
+  "generated_at": "2026-01-19T15:30:51.272Z",
   "item_count": 12,
   "items": [
     {
       "name": "useAutoGenerateName",
       "file": "src/atomic-crm/opportunities/hooks/useAutoGenerateName.ts",
-      "line": 16,
+      "line": 43,
       "parameters": [
         "mode"
       ],

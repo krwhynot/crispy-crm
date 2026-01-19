@@ -250,7 +250,7 @@ export const SelectInput = (props: SelectInputProps) => {
                   ) : null}
                 </SelectValue>
 
-                {field.value && field.value !== emptyValue ? (
+                {!isRequired && field.value && field.value !== emptyValue ? (
                   <div
                     role="button"
                     aria-label="Clear selection"

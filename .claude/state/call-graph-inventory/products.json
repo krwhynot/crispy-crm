@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-19T02:38:15.225Z",
+  "generated_at": "2026-01-19T15:30:54.981Z",
   "items": {
     "nodes": [
       {
@@ -1360,7 +1360,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 56,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
@@ -1369,7 +1369,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 57,
+        "line": 54,
         "conditional": false,
         "inLoop": false
       },
@@ -1378,7 +1378,7 @@
         "target": "FormToolbar",
         "targetName": "FormToolbar",
         "edgeType": "render",
-        "line": 65,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
@@ -1387,7 +1387,7 @@
         "target": "ProductInputs",
         "targetName": "ProductInputs",
         "edgeType": "render",
-        "line": 63,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
@@ -1396,7 +1396,7 @@
         "target": "DeleteButton",
         "targetName": "DeleteButton",
         "edgeType": "render",
-        "line": 67,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },
@@ -1405,7 +1405,7 @@
         "target": "CancelButton",
         "targetName": "CancelButton",
         "edgeType": "render",
-        "line": 69,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
@@ -1414,7 +1414,7 @@
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 70,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },

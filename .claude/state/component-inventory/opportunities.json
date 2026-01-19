@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-19T02:37:50.981Z",
+  "generated_at": "2026-01-19T15:30:40.859Z",
   "item_count": 81,
   "items": [
     {
@@ -420,11 +420,14 @@
     {
       "name": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 61,
+      "line": 70,
       "type": "presentational",
       "hooks": [
+        "useCanAccess",
+        "useEffect",
         "useGetIdentity",
         "useMemo",
+        "useNotify",
         "useSearchParams",
         "useSimilarOpportunityCheck"
       ],
@@ -462,11 +465,14 @@
     {
       "name": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 61,
+      "line": 70,
       "type": "presentational",
       "hooks": [
+        "useCanAccess",
+        "useEffect",
         "useGetIdentity",
         "useMemo",
+        "useNotify",
         "useSearchParams",
         "useSimilarOpportunityCheck"
       ],

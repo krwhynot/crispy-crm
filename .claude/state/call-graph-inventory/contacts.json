@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-19T02:38:15.155Z",
+  "generated_at": "2026-01-19T15:30:54.939Z",
   "items": {
     "nodes": [
       {
@@ -40,10 +40,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "id": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:9:validateLinkedInUrl",
+        "name": "validateLinkedInUrl",
+        "file": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx",
+        "line": 9,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "name": "ContactAdditionalDetails",
         "file": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx",
-        "line": 7,
+        "line": 24,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -94,19 +103,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
+        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:20:validateEmailOnBlur",
         "name": "validateEmailOnBlur",
         "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-        "line": 19,
+        "line": 20,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "id": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "name": "ContactCompactForm",
         "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-        "line": 28,
+        "line": 29,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1356,52 +1365,52 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:9:validateLinkedInUrl",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 10,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:9:validateLinkedInUrl",
+        "target": "test",
+        "targetName": "test",
+        "edgeType": "call",
+        "line": 14,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "FormSection",
         "targetName": "FormSection",
         "edgeType": "render",
-        "line": 10,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 12,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 13,
+        "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 16,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 26,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
@@ -1410,25 +1419,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
-        "target": "FormSection",
-        "targetName": "FormSection",
-        "edgeType": "render",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
-        "target": "CompactFormRow",
-        "targetName": "CompactFormRow",
-        "edgeType": "render",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
@@ -1437,61 +1428,70 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 46,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
+        "target": "FormSection",
+        "targetName": "FormSection",
+        "edgeType": "render",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
+        "target": "CompactFormRow",
+        "targetName": "CompactFormRow",
+        "edgeType": "render",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 14,
+        "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "SelectInput",
         "targetName": "SelectInput",
-        "edgeType": "render",
-        "line": 17,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 27,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
-        "target": "TextInput",
-        "targetName": "TextInput",
         "edgeType": "render",
         "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
-        "target": "ContactManagerInput",
-        "targetName": "ContactManagerInput",
-        "edgeType": "render",
-        "line": 41,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
@@ -1500,11 +1500,38 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:7:ContactAdditionalDetails",
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 47,
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
+        "target": "ContactManagerInput",
+        "targetName": "ContactManagerInput",
+        "edgeType": "render",
+        "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx:24:ContactAdditionalDetails",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
@@ -1878,88 +1905,70 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:20:validateEmailOnBlur",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 20,
+        "line": 21,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:20:validateEmailOnBlur",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 21,
+        "line": 22,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:19:validateEmailOnBlur",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:20:validateEmailOnBlur",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 21,
+        "line": 22,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "useFormContext",
         "targetName": "useFormContext",
         "edgeType": "hook",
-        "line": 29,
+        "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "getValues",
         "targetName": "getValues",
         "edgeType": "call",
-        "line": 32,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "extractEmailLocalPart",
         "targetName": "extractEmailLocalPart",
         "edgeType": "call",
-        "line": 34,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 36,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 38,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "ucFirst",
-        "targetName": "ucFirst",
-        "edgeType": "call",
-        "line": 38,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "setValue",
         "targetName": "setValue",
         "edgeType": "call",
@@ -1968,290 +1977,326 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "ucFirst",
         "targetName": "ucFirst",
         "edgeType": "call",
         "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "ucFirst",
+        "targetName": "ucFirst",
+        "edgeType": "call",
+        "line": 40,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "getData",
         "targetName": "getData",
-        "edgeType": "call",
-        "line": 45,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "handleEmailChange",
-        "targetName": "handleEmailChange",
         "edgeType": "call",
         "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "handleEmailChange",
         "targetName": "handleEmailChange",
         "edgeType": "call",
-        "line": 51,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "handleEmailChange",
+        "targetName": "handleEmailChange",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "required",
+        "targetName": "required",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "required",
+        "targetName": "required",
+        "edgeType": "call",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "FormSectionWithProgress",
         "targetName": "FormSectionWithProgress",
         "edgeType": "render",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 61,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 63,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 73,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "FormSectionWithProgress",
-        "targetName": "FormSectionWithProgress",
-        "edgeType": "render",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 95,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 96,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 110,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 111,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "FormSectionWithProgress",
-        "targetName": "FormSectionWithProgress",
-        "edgeType": "render",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 137,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "ArrayInput",
-        "targetName": "ArrayInput",
-        "edgeType": "render",
-        "line": 138,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "SimpleFormIterator",
-        "targetName": "SimpleFormIterator",
-        "edgeType": "render",
-        "line": 143,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 176,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "ArrayInput",
-        "targetName": "ArrayInput",
-        "edgeType": "render",
-        "line": 177,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "SimpleFormIterator",
-        "targetName": "SimpleFormIterator",
-        "edgeType": "render",
-        "line": 178,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
         "edgeType": "render",
         "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 74,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
+        "edgeType": "render",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
+        "edgeType": "render",
+        "line": 135,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "ArrayInput",
+        "targetName": "ArrayInput",
+        "edgeType": "render",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "SimpleFormIterator",
+        "targetName": "SimpleFormIterator",
+        "edgeType": "render",
+        "line": 148,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 181,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "ArrayInput",
+        "targetName": "ArrayInput",
+        "edgeType": "render",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "SimpleFormIterator",
+        "targetName": "SimpleFormIterator",
+        "edgeType": "render",
+        "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 76,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "Avatar",
         "targetName": "Avatar",
         "edgeType": "render",
-        "line": 83,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "AutocompleteOrganizationInput",
         "targetName": "AutocompleteOrganizationInput",
         "edgeType": "render",
-        "line": 103,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 120,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 149,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "handleEmailPaste",
         "targetName": "handleEmailPaste",
         "edgeType": "callback",
-        "line": 155,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "handleEmailBlur",
-        "targetName": "handleEmailBlur",
-        "edgeType": "callback",
-        "line": 156,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "SelectInput",
-        "targetName": "SelectInput",
-        "edgeType": "render",
         "line": 160,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 184,
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "handleEmailBlur",
+        "targetName": "handleEmailBlur",
+        "edgeType": "callback",
+        "line": 161,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 192,
+        "line": 165,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:28:ContactCompactForm",
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
+        "target": "SelectInput",
+        "targetName": "SelectInput",
+        "edgeType": "render",
+        "line": 197,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactCompactForm.tsx:29:ContactCompactForm",
         "target": "ContactAdditionalDetails",
         "targetName": "ContactAdditionalDetails",
         "edgeType": "render",
-        "line": 207,
+        "line": 212,
         "conditional": false,
         "inLoop": false
       },
@@ -3070,7 +3115,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 60,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
@@ -3079,7 +3124,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 61,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
@@ -3088,7 +3133,7 @@
         "target": "ContactInputs",
         "targetName": "ContactInputs",
         "edgeType": "render",
-        "line": 62,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
@@ -3097,7 +3142,7 @@
         "target": "FormToolbar",
         "targetName": "FormToolbar",
         "edgeType": "render",
-        "line": 63,
+        "line": 58,
         "conditional": false,
         "inLoop": false
       },
@@ -3106,7 +3151,7 @@
         "target": "ContactAside",
         "targetName": "ContactAside",
         "edgeType": "render",
-        "line": 70,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },

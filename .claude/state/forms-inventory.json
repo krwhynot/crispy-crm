@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-19T02:38:08.542Z",
+  "generated_at": "2026-01-19T15:30:52.056Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,10 +8,10 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:4f26bb0bfa676bd9",
+  "checksum": "sha256:b94c0c3d8ebaf424",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "776ba2efe7f5",
-    "src/atomic-crm/activities/ActivityEdit.tsx": "d6b798bd46c2",
+    "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
     "src/atomic-crm/activities/ActivityInputs.tsx": "8837676b4b69",
     "src/atomic-crm/activity-log/ActivityLogContactCreated.tsx": "2bf2a909a4af",
     "src/atomic-crm/activity-log/ActivityLogContactNoteCreated.tsx": "e3939537f007",
@@ -19,9 +19,9 @@
     "src/atomic-crm/activity-log/ActivityLogOpportunityNoteCreated.tsx": "2c5ed84847a9",
     "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx": "776329f3726e",
     "src/atomic-crm/components/CreateFormFooter.tsx": "284a282bd34b",
-    "src/atomic-crm/contacts/ContactCompactForm.tsx": "adb597930d9e",
+    "src/atomic-crm/contacts/ContactCompactForm.tsx": "38c757492e26",
     "src/atomic-crm/contacts/ContactCreate.tsx": "c5ffe4a2a440",
-    "src/atomic-crm/contacts/ContactEdit.tsx": "816ceac308e1",
+    "src/atomic-crm/contacts/ContactEdit.tsx": "fa229a9839ef",
     "src/atomic-crm/contacts/ContactFormTutorial.tsx": "c8b35aa930c8",
     "src/atomic-crm/contacts/ContactInputs.tsx": "fb76a9c82f8b",
     "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "81fe1dd6ac4e",
@@ -33,8 +33,8 @@
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "b318064ed7bf",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "36e217f92bd9",
-    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "c264cab1f827",
-    "src/atomic-crm/opportunities/OpportunityEdit.tsx": "368e3d4d0789",
+    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "cfcbf8775a43",
+    "src/atomic-crm/opportunities/OpportunityEdit.tsx": "720972626061",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
     "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "623186d207d7",
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "2bd7c8cf8cab",
@@ -42,16 +42,16 @@
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
     "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "85a959d8c3f9",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "068f9e784aa1",
-    "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "6074da481779",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "debb8ae3e79b",
+    "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "2876b2b3a554",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "f3a0850c778e",
     "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "b44ca74125b6",
-    "src/atomic-crm/organizations/OrganizationEdit.tsx": "235b3913db5b",
-    "src/atomic-crm/organizations/OrganizationInputs.tsx": "a22f8f2b9cb9",
+    "src/atomic-crm/organizations/OrganizationEdit.tsx": "c3719606f37e",
+    "src/atomic-crm/organizations/OrganizationInputs.tsx": "11007c9e30ee",
     "src/atomic-crm/organizations/QuickCreatePopover.tsx": "baa60823651d",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "1bf664861df7",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "2845008adb18",
     "src/atomic-crm/products/ProductCreate.tsx": "eb11b8cea84b",
-    "src/atomic-crm/products/ProductEdit.tsx": "b612c4d44714",
+    "src/atomic-crm/products/ProductEdit.tsx": "d3fdb1527f9e",
     "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
     "src/atomic-crm/products/ProductInputs.tsx": "7404ed9b661a",
     "src/atomic-crm/sales/SalesCreate.tsx": "db53dc01c561",
@@ -63,7 +63,7 @@
     "src/atomic-crm/tags/TagSelectWithCreate.tsx": "a3e06ae5a0e9",
     "src/atomic-crm/tasks/TaskCompactForm.tsx": "355fda0147a4",
     "src/atomic-crm/tasks/TaskCreate.tsx": "e3ca6983168f",
-    "src/atomic-crm/tasks/TaskEdit.tsx": "bd4d341ed269",
+    "src/atomic-crm/tasks/TaskEdit.tsx": "fe3f620112fa",
     "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "aad9f5488661"
   },
   "summary": {
@@ -177,7 +177,7 @@
     {
       "componentName": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 28,
+      "line": 29,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -508,7 +508,7 @@
     {
       "componentName": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 61,
+      "line": 70,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -535,7 +535,7 @@
     {
       "componentName": "OpportunityCreateWizard",
       "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 61,
+      "line": 70,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -779,13 +779,12 @@
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 57,
+      "line": 65,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
         "secondary": [
-          "CreateBase",
-          "useForm"
+          "CreateBase"
         ]
       },
       "inputComponents": [],
@@ -808,13 +807,12 @@
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 57,
+      "line": 65,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
         "secondary": [
-          "CreateBase",
-          "useForm"
+          "CreateBase"
         ]
       },
       "inputComponents": [],

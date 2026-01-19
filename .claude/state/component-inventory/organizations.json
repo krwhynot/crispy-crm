@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-19T02:37:50.985Z",
+  "generated_at": "2026-01-19T15:30:40.861Z",
   "item_count": 76,
   "items": [
     {
@@ -431,7 +431,7 @@
     {
       "name": "OrganizationCompactForm",
       "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
-      "line": 19,
+      "line": 23,
       "type": "presentational",
       "hooks": [
         "useCityStateMapping"
@@ -463,16 +463,18 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 57,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useCanAccess",
         "useCreate",
         "useDuplicateOrgCheck",
-        "useForm",
+        "useEffect",
         "useGetList",
         "useLocation",
         "useNotify",
+        "usePermissions",
         "useRedirect",
         "useRef",
         "useSmartDefaults",
@@ -488,12 +490,12 @@
         "@/atomic-crm/hooks/useSmartDefaults",
         "@/components/admin/form",
         "@/components/ui/card",
+        "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
         "@/types/database.generated",
         "@hookform/resolvers/zod",
         "ra-core",
         "react",
-        "react-hook-form",
         "react-router-dom"
       ],
       "isDefaultExport": false,
@@ -510,16 +512,18 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 57,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useCanAccess",
         "useCreate",
         "useDuplicateOrgCheck",
-        "useForm",
+        "useEffect",
         "useGetList",
         "useLocation",
         "useNotify",
+        "usePermissions",
         "useRedirect",
         "useRef",
         "useSmartDefaults",
@@ -535,12 +539,12 @@
         "@/atomic-crm/hooks/useSmartDefaults",
         "@/components/admin/form",
         "@/components/ui/card",
+        "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
         "@/types/database.generated",
         "@hookform/resolvers/zod",
         "ra-core",
         "react",
-        "react-hook-form",
         "react-router-dom"
       ],
       "isDefaultExport": true,
@@ -925,7 +929,7 @@
     {
       "name": "OrganizationInputs",
       "file": "src/atomic-crm/organizations/OrganizationInputs.tsx",
-      "line": 21,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useFormState"
@@ -1624,16 +1628,18 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 57,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useCanAccess",
         "useCreate",
         "useDuplicateOrgCheck",
-        "useForm",
+        "useEffect",
         "useGetList",
         "useLocation",
         "useNotify",
+        "usePermissions",
         "useRedirect",
         "useRef",
         "useSmartDefaults",

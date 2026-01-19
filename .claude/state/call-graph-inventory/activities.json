@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-19T02:38:15.144Z",
+  "generated_at": "2026-01-19T15:30:54.936Z",
   "items": {
     "nodes": [
       {
@@ -577,7 +577,7 @@
         "target": "ucFirst",
         "targetName": "ucFirst",
         "edgeType": "call",
-        "line": 57,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
@@ -586,7 +586,7 @@
         "target": "toLocaleDateString",
         "targetName": "toLocaleDateString",
         "edgeType": "call",
-        "line": 58,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
@@ -604,7 +604,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 52,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
@@ -613,7 +613,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 53,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
@@ -622,7 +622,7 @@
         "target": "ActivityInputs",
         "targetName": "ActivityInputs",
         "edgeType": "render",
-        "line": 61,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
@@ -631,7 +631,7 @@
         "target": "FormToolbar",
         "targetName": "FormToolbar",
         "edgeType": "render",
-        "line": 62,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },

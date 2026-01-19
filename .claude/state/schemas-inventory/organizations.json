@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-19T02:38:06.772Z",
+  "generated_at": "2026-01-19T15:30:51.589Z",
   "item_count": 8,
   "items": [
     {
@@ -117,7 +117,7 @@
     {
       "name": "organizationSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 98,
+      "line": 117,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -201,7 +201,7 @@
         },
         {
           "name": "phone",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "trim()",
             "max(30, \"Phone number too long\")"
@@ -225,7 +225,7 @@
         },
         {
           "name": "postal_code",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
             "trim()",
             "max(20, \"Postal code too long\")"
@@ -734,7 +734,7 @@
     {
       "name": "organizationQuickCreateSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 294,
+      "line": 327,
       "schemaType": "strictObject",
       "fields": [
         {
