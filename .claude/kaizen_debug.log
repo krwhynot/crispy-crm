@@ -5432,3 +5432,23 @@ tool_response: {"stdout": "Directory does not exist", "stderr": "", "interrupted
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "mkdir -p /home/krwhynot/projects/crispy-crm/src/atomic-crm/timeline", "description": "Create timeline directory"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T14:48:15.585038 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase migration list 2>&1 | tail -30", "timeout": 30000, "description": "Check migration status"}
+tool_response: {"stdout": "   20260109000001 | 20260109000001 | 2026-01-09 00:00:01 \n   20260109000002 | 20260109000002 | 2026-01-09 00:00:02 \n   20260109000003 | 20260109000003 | 2026-01-09 00:00:03 \n   20260109
+
+--- 2026-01-19T14:48:38.983319 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db push 2>&1", "timeout": 60000, "description": "Apply pending migrations to remote database"}
+tool_response: {"stdout": "Loading config override: [remotes.production]\nWARN: no SMS provider is enabled. Disabling phone login\nInitialising login role...\nConnecting to remote database...\nSkipping migration PAT
+
+--- 2026-01-19T14:48:59.650451 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db execute --sql \"SELECT prosrc FROM pg_proc WHERE proname = 'create_booth_visitor_opportunity'\" 2>&1 | grep -E \"(city and state|organization_id|account_manager_id)\" | he
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T14:49:19.536188 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx supabase db execute --sql \"SELECT routine_definition FROM information_schema.routines WHERE routine_name = 'create_booth_visitor_opportunity' LIMIT 1\" 2>&1 | head -50", "timeout": 3
+tool_response: {"stdout": "Usage:\n  supabase db [command]\n\nAvailable Commands:\n  diff        Diffs the local database for schema changes\n  dump        Dumps data or schemas from the remote database\n  lint     

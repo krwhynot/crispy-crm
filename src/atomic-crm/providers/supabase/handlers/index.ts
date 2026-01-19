@@ -52,3 +52,6 @@ export {
 
 // Notifications
 export { createNotificationsHandler } from "./notificationsHandler";
+
+// Timeline (read-only view)
+export { createTimelineHandler } from "./timelineHandler";

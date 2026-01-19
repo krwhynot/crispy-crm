@@ -35,6 +35,7 @@ import {
   createOrganizationDistributorsHandler,
   createUserFavoritesHandler,
   createNotificationsHandler,
+  createTimelineHandler,
 } from "./handlers";
 import { applySearchParams, getDatabaseResource } from "./dataProviderUtils";
 import { supportsSoftDelete } from "./resources";
@@ -72,6 +73,8 @@ export const HANDLED_RESOURCES = [
   "user_favorites",
   // Notifications
   "notifications",
+  // Timeline (read-only view)
+  "entity_timeline",
 ] as const;
 
 export type HandledResource = (typeof HANDLED_RESOURCES)[number];
