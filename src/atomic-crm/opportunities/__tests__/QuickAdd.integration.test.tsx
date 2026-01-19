@@ -1,7 +1,7 @@
 /**
  * QuickAdd Integration Tests
  *
- * Tests the complete end-to-end flow of the Quick Add Booth Visitor feature,
+ * Tests the complete end-to-end flow of the Quick Add Opportunity feature,
  * including atomic transaction behavior, form validation, error handling,
  * and state management across multiple components.
  *
@@ -9,23 +9,38 @@
  * [ ] Quick Add button visible in opportunities list header
  * [ ] Button opens dialog on click
  * [ ] Form fields render correctly on iPad
- * [ ] Campaign/Principal pre-fill from localStorage on second entry
+ * [ ] Campaign/Principal/Account Manager pre-fill from localStorage/identity
  * [ ] City autocomplete filters as typing
  * [ ] State auto-fills when city selected
  * [ ] Products filter by selected Principal
- * [ ] Phone OR Email validation works (at least one required)
+ * [ ] Organization autocomplete with inline creation works
  * [ ] Save & Close creates record and closes dialog
- * [ ] Save & Add Another creates record, clears form, keeps campaign/principal
+ * [ ] Save & Add Another creates record, clears form, keeps campaign/principal/account_manager
  * [ ] Success toast shows for 2 seconds
  * [ ] Error toast shows on failure, data preserved
  * [ ] Touch targets are 44x44px minimum
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { screen, waitFor, fireEvent, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { QuickAddButton } from "../quick-add/QuickAddButton";
+import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
+import { useQuickAdd } from "../hooks/useQuickAdd";
+
+// Mock the external dependencies
+vi.mock("../hooks/useQuickAdd");
+vi.mock("ra-core", async () => {
+  const actual = await vi.importActual("ra-core");
+  return {
+    ...actual,
+    useGetList: vi.fn(),
+    useGetIdentity: vi.fn(),
+    useDataProvider: vi.fn(),
+    useNotify: vi.fn(),
+  };
+});
 
 /**
  * Helper to find a cmdk CommandItem by text content.
@@ -40,6 +55,18 @@ function findCommandItem(text: string): HTMLElement | null {
   }
   return null;
 }
+
+/**
+ * Helper to open a Radix UI Select dropdown.
+ * Uses pointerDown because Radix relies on PointerEvent, not click.
+ */
+const openSelectDropdown = (trigger: HTMLElement) => {
+  fireEvent.pointerDown(trigger, {
+    button: 0,
+    pointerType: "mouse",
+    pointerId: 1,
+  });
+};
 
 /**
  * Helper to select a city from the city combobox.
@@ -107,6 +134,39 @@ async function changeCity(
     throw new Error(`City "${newCity}" not found after wait`);
   }
   await user.click(cityItem);
+}
+
+/**
+ * Helper to select an organization from the organization combobox.
+ */
+async function selectOrganization(
+  orgName: string,
+  user: ReturnType<typeof userEvent.setup>
+): Promise<void> {
+  // Find the organization combobox trigger
+  const orgTrigger = screen.getByText("Select or create organization...");
+  await user.click(orgTrigger);
+
+  // Wait for and type in the search input
+  const searchInput = await screen.findByPlaceholderText("Search organizations...");
+  await user.type(searchInput, orgName);
+
+  // Wait for the org option to appear and click it
+  await waitFor(
+    () => {
+      const item = findCommandItem(orgName);
+      if (!item) {
+        throw new Error(`Organization "${orgName}" not found in options`);
+      }
+    },
+    { timeout: 5000 }
+  );
+
+  const orgItem = findCommandItem(orgName);
+  if (!orgItem) {
+    throw new Error(`Organization "${orgName}" not found after wait`);
+  }
+  await user.click(orgItem);
 }
 
 // Mock the useNotify hook for toast notifications
