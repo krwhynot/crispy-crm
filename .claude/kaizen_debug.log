@@ -3737,3 +3737,18 @@ tool_response: {"stdout": "total 280\ndrwxr-xr-x  4 krwhynot krwhynot   4096 Jan
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx tsc --noEmit 2>&1", "timeout": 120000, "description": "TypeScript type check"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T21:44:11.629526 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run 2>&1 | tail -60", "timeout": 180000, "description": "Run Vitest tests"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "b0a0fb0"}
+
+--- 2026-01-18T21:47:30.582727 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -80 /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b0a0fb0.output", "description": "Check test progress"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T21:47:45.392136 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ps aux | grep vitest | head -5", "description": "Check if vitest is running"}
+tool_response: {"stdout": "krwhynot 21943  0.0  0.0   4888  3200 ?        Ss   21:41   0:00 /bin/bash -c -l source /home/krwhynot/.claude/shell-snapshots/snapshot-bash-1768792714930-duk0eo.sh && PROJECT_TYPE=react-a
