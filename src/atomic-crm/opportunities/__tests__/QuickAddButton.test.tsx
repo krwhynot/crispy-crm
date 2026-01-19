@@ -3,41 +3,15 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddButton } from "../quick-add/QuickAddButton";
 
-// Mock dependencies
-vi.mock("../hooks/useQuickAdd", () => ({
-  useQuickAdd: vi.fn(() => ({
-    mutate: vi.fn(),
-    isPending: false,
-  })),
-}));
-
-vi.mock("ra-core", () => ({
-  useGetList: vi.fn(() => ({
-    data: [
-      { id: 1, name: "Principal A" },
-      { id: 2, name: "Principal B" },
-    ],
-    isLoading: false,
-  })),
-  useGetIdentity: vi.fn(() => ({
-    data: { id: 100, fullName: "John Sales" },
-    isLoading: false,
-  })),
-  useDataProvider: vi.fn(() => ({
-    create: vi.fn().mockResolvedValue({ data: { id: 1, name: "Test" } }),
-  })),
-  useNotify: vi.fn(() => vi.fn()),
-}));
-
-// Mock useFilteredProducts - required when dialog opens and form renders
-vi.mock("../hooks/useFilteredProducts", () => ({
-  useFilteredProducts: vi.fn(() => ({
-    products: [],
-    isLoading: false,
-    error: null,
-    isReady: false,
-    isEmpty: true,
-  })),
+// Mock QuickAddForm to isolate button tests - form is tested separately in QuickAddForm.test.tsx
+vi.mock("../quick-add/QuickAddForm", () => ({
+  QuickAddForm: ({ onSuccess }: { onSuccess: () => void }) => (
+    <div data-testid="quick-add-form-mock">
+      <button type="button" onClick={onSuccess}>
+        Mock Submit
+      </button>
+    </div>
+  ),
 }));
 
 // Test wrapper
