@@ -14,6 +14,48 @@ import {
  * Create, update, close, and quick-create schemas with validation
  */
 
+// ============================================================================
+// CANONICAL PRODUCT SYNC SCHEMAS (Single Source of Truth)
+// ============================================================================
+// These schemas consolidate product validation that was previously scattered
+// across opportunitiesHandler.ts, this file, and diffProducts.ts.
+//
+// Key design decisions:
+// 1. Input schema REQUIRES product_id_reference - fail at API boundary with
+//    user-friendly "Product is required" error, not cryptic 500 in handler.
+// 2. Handler schema uses .optional().nullable() for notes to match DB reality
+//    where empty columns return null, not undefined.
+// ============================================================================
+
+/**
+ * Input schema: What forms send (API boundary validation)
+ *
+ * product_id_reference is REQUIRED - if UI fails to filter empty rows,
+ * validation fails here with field-level error, not 500 in handler.
+ */
+export const opportunityProductSyncInputSchema = z.strictObject({
+  product_id_reference: z.union([z.string(), z.number()]),
+  notes: z.string().max(2000).optional().nullable(),
+});
+
+/**
+ * Handler schema: What handler processes (includes denormalized view fields)
+ *
+ * Uses .optional().nullable() for notes to handle both:
+ * - Key missing from payload (undefined)
+ * - Key present but empty in DB (null)
+ */
+export const opportunityProductSyncHandlerSchema = z.object({
+  id: z.union([z.string(), z.number()]).optional(),
+  product_id_reference: z.union([z.string(), z.number()]),
+  product_name: z.string().optional(),
+  product_category: z.string().optional(),
+  notes: z.string().max(2000).optional().nullable(),
+});
+
+export type OpportunityProductSyncInput = z.infer<typeof opportunityProductSyncInputSchema>;
+export type OpportunityProductSyncHandler = z.infer<typeof opportunityProductSyncHandlerSchema>;
+
 // Re-create the base schema here to avoid circular dependency issues
 // This is a copy of opportunityBaseSchema from opportunities-core.ts
 const opportunityBaseSchema = z.strictObject({
@@ -184,14 +226,8 @@ export const createOpportunitySchema = opportunityBaseSchema
       }),
 
     // Products are optional for opportunity creation
-    products_to_sync: z
-      .array(
-        z.strictObject({
-          product_id_reference: z.union([z.string(), z.number()]).optional(),
-          notes: z.string().max(2000).optional().nullable(),
-        })
-      )
-      .optional(),
+    // Uses canonical input schema - product_id_reference is REQUIRED per product
+    products_to_sync: z.array(opportunityProductSyncInputSchema).optional(),
 
     // Customer REQUIRED (Salesforce standard + business rule Q12)
     customer_organization_id: z.union([z.string(), z.number()]),
@@ -286,14 +322,8 @@ export const updateOpportunitySchema = opportunityBaseSchema
 
     // Virtual field: products_to_sync (stripped by TransformService before DB save)
     // Must be declared here since opportunityBaseSchema uses strictObject()
-    products_to_sync: z
-      .array(
-        z.strictObject({
-          product_id_reference: z.union([z.string(), z.number()]).optional(),
-          notes: z.string().max(2000).optional().nullable(),
-        })
-      )
-      .optional(),
+    // Uses canonical input schema - product_id_reference is REQUIRED per product
+    products_to_sync: z.array(opportunityProductSyncInputSchema).optional(),
   })
   .required({
     id: true,

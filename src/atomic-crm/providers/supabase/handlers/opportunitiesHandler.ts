@@ -40,23 +40,18 @@ import { withErrorLogging, withValidation } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
 import { OpportunitiesService } from "../../../services/opportunities.service";
 import { assertExtendedDataProvider } from "../typeGuards";
+import {
+  opportunityProductSyncHandlerSchema,
+  type OpportunityProductSyncHandler,
+} from "../../../validation/opportunities";
 
 /**
  * Schema for validating handler input data with products_to_sync virtual field.
  * Uses .passthrough() to preserve all opportunity fields while type-checking the products array.
  *
- * Note: productSchema mirrors the Product interface from diffProducts.ts
- * The inferred type from Zod validation flows to Product[] without casting.
+ * Uses canonical opportunityProductSyncHandlerSchema from validation layer.
+ * This ensures consistency with API boundary validation and diffProducts.ts.
  */
-const productSchema = z.object({
-  id: z.union([z.string(), z.number()]).optional(),
-  product_id_reference: z.union([z.string(), z.number()]),
-  product_name: z.string().optional(),
-  product_category: z.string().optional(),
-  notes: z.string().optional(),
-});
-
-type ProductFromSchema = z.infer<typeof productSchema>;
 
 const handlerInputSchema = z
   .object({

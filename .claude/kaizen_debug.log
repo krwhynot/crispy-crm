@@ -6552,3 +6552,83 @@ tool_response: {"stdout": "total 36\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 18
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/audits/.baseline/", "description": "Check baseline directory contents"}
 tool_response: {"stdout": "total 36\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 18 00:20 .\ndrwxr-xr-x 4 krwhynot krwhynot  4096 Jan 18 00:18 ..\n-rw-r--r-- 1 krwhynot krwhynot     0 Jan  8 20:53 .gitkeep\n-rw-r--r-- 
+
+--- 2026-01-19T17:47:24.207425 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/audits/.baseline/ && cat /home/krwhynot/projects/crispy-crm/docs/audits/.baseline/full-audit.json | head -100", "description": "Check baseli
+tool_response: {"stdout": "total 40\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 19 17:47 .\ndrwxr-xr-x 4 krwhynot krwhynot  4096 Jan 18 00:18 ..\n-rw-r--r-- 1 krwhynot krwhynot     0 Jan  8 20:53 .gitkeep\n-rw-r--r-- 
+
+--- 2026-01-19T17:47:40.757277 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -3", "description": "Check recent commits"}
+tool_response: {"stdout": "b4974e978 chore(checkpoint): 40 file(s) - checkpoint-state,kaizen_debug.log gotrue-null-t...\nd6a2e2331 chore(checkpoint): 4 file(s) - checkpoint-state,PATTERNS.md PATTERNS.md\nba3b3abc1 c
+
+--- 2026-01-19T17:47:41.760323 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status", "description": "Check current status"}
+tool_response: {"stdout": "On branch main\nYour branch is ahead of 'origin/main' by 3 commits.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to u
+
+--- 2026-01-19T17:47:59.505500 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls health-audit-report.md 2>/dev/null || echo \"health-audit-report.md deleted\"", "description": "Verify health-audit-report.md deleted"}
+tool_response: {"stdout": "health-audit-report.md deleted", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:47:59.845662 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la archive/ 2>/dev/null || echo \"archive/ does not exist\"", "description": "Verify archive directory state"}
+tool_response: {"stdout": "total 8\ndrwxr-xr-x  2 krwhynot krwhynot 4096 Jan 19 17:43 .\ndrwxr-xr-x 21 krwhynot krwhynot 4096 Jan 19 17:43 ..", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T17:48:03.234088 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git show --stat b4974e978 | head -40", "description": "Check what the checkpoint commit contains"}
+tool_response: {"stdout": "commit b4974e97855f5565dc0decde5a4afb3f2109b78b\nAuthor: Kyle Ramsy <kjramsy@gmail.com>\nDate:   Mon Jan 19 17:47:23 2026 -0600\n\n    chore(checkpoint): 40 file(s) - checkpoint-state,kaiz
+
+--- 2026-01-19T17:49:56.759690 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat /home/krwhynot/projects/crispy-crm/docs/audits/.baseline/data-integrity.json", "description": "Verify the created file content"}
+tool_response: {"stdout": "{\n  \"lastAudit\": \"2026-01-19T00:00:00Z\",\n  \"composedDataProviderLines\": 260,\n  \"unifiedProviderLines\": 0,\n  \"findings\": {\n    \"critical\": 0,\n    \"high\": 7,\n    \"mediu
+
+--- 2026-01-19T17:50:18.325636 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/ 2>/dev/null | head -30", "description": "List top-level contents of docs folder"}
+tool_response: {"stdout": "total 216\ndrwxr-xr-x 19 krwhynot krwhynot  4096 Jan 19 17:16 .\ndrwxr-xr-x 21 krwhynot krwhynot  4096 Jan 19 17:43 ..\n-rw-r--r--  1 krwhynot krwhynot 71204 Jan  8 21:04 PROVIDER_AUDIT_RE
+
+--- 2026-01-19T17:50:33.224360 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/docs/audits/2026-01-19-data-integrity.md && head -50 /home/krwhynot/projects/crispy-crm/docs/audits/2026-01-19-data-integrity.md", "description": 
+tool_response: {"stdout": "221 /home/krwhynot/projects/crispy-crm/docs/audits/2026-01-19-data-integrity.md\n# Data Integrity Audit Report\n**Date:** 2026-01-19\n**Mode:** Focused (Data Integrity)\n**Baseline:** Firs
+
+--- 2026-01-19T17:50:46.005126 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -lt /home/krwhynot/projects/crispy-crm/docs/*.md 2>/dev/null | head -20", "description": "List root level markdown files sorted by modification time"}
+tool_response: {"stdout": "-rw------- 1 krwhynot krwhynot 11305 Jan 18 21:18 /home/krwhynot/projects/crispy-crm/docs/technical-debt.md\n-rw-r--r-- 1 krwhynot krwhynot  6769 Jan 11 03:40 /home/krwhynot/projects/crisp
+
+--- 2026-01-19T17:50:52.393386 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -lt /home/krwhynot/projects/crispy-crm/docs/*/*.md 2>/dev/null | head -40", "description": "List nested markdown files sorted by modification time"}
+tool_response: {"stdout": "-rw-r--r-- 1 krwhynot krwhynot  7600 Jan 19 17:48 /home/krwhynot/projects/crispy-crm/docs/audits/2026-01-19-data-integrity.md\n-rw-r--r-- 1 krwhynot krwhynot  9565 Jan 19 08:29 /home/krwhy
+
+--- 2026-01-19T17:51:10.490210 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -lt /home/krwhynot/projects/crispy-crm/docs/archive/audits/ 2>/dev/null | head -20", "description": "List archived audit files sorted by date"}
+tool_response: {"stdout": "total 100\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Dec 26 15:37 ui-ux\n-rw------- 1 krwhynot krwhynot 16868 Dec 26 15:36 organizations-architecture-audit.md\n-rw------- 1 krwhynot krwhynot 14
+
+--- 2026-01-19T17:51:25.671473 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -lt /home/krwhynot/projects/crispy-crm/docs/_state/ 2>/dev/null", "description": "Check state files in _state directory"}
+tool_response: {"stdout": "total 68\n-rw------- 1 krwhynot krwhynot  5177 Dec 26 16:34 verification-summary.md\n-rw------- 1 krwhynot krwhynot 14175 Dec 26 16:29 decisions-verification.md\n-rw------- 1 krwhynot krwh
+
+--- 2026-01-19T17:51:40.171345 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "head -20 /home/krwhynot/projects/crispy-crm/docs/archive/audits/code-quality/tier-1/01-data-provider-audit.md", "description": "Check tier-1 audit file"}
+tool_response: {"stdout": "# Data Provider Audit Report\n\n**Agent:** 1 - unifiedDataProvider Deep Dive\n**Date:** 2025-12-24\n**Files Analyzed:** 72+ files in provider layer, 215 pattern matches reviewed\n**Auditor
+
+--- 2026-01-19T17:51:40.441311 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "head -20 /home/krwhynot/projects/crispy-crm/docs/component-inventory/form-inputs.md", "description": "Check component inventory file"}
+tool_response: {"stdout": "# Form Input Components \u2014 Inventory\n\n> Generated: 2025-12-29\n> Source: `src/components/ui/`\n> Design System: OKLCH-based semantic colors, Tailwind v4\n\n## Overview\n\n| Component
+
+--- 2026-01-19T17:51:40.472015 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "head -20 /home/krwhynot/projects/crispy-crm/docs/archive/research/discover-scripts-audit.md", "description": "Check research archive file"}
+tool_response: {"stdout": "# Ultra-Deep Audit: `scripts/discover` Codebase Introspection System\n\n## Executive Summary\n\nThe `scripts/discover` directory contains a **production-grade, AI-optimized metadata extrac
