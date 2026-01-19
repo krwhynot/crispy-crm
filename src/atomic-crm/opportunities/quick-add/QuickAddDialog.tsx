@@ -27,9 +27,9 @@ export const QuickAddDialog = ({ open, onOpenChange }: QuickAddDialogProps) => {
         aria-describedby="quick-add-description"
       >
         <DialogHeader>
-          <DialogTitle>Quick Add Booth Visitor</DialogTitle>
+          <DialogTitle>Quick Add Opportunity</DialogTitle>
           <DialogDescription id="quick-add-description">
-            Quickly capture lead information from trade show booth conversations
+            Create a new opportunity with optional contact details
           </DialogDescription>
         </DialogHeader>
 

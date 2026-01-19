@@ -8,48 +8,46 @@ import { z } from "zod";
  * which atomically creates an organization, contact, and opportunity record.
  *
  * Requirements:
- * - Contact first_name, last_name are optional
- * - Contact must have at least one of phone OR email (validated in refined schema)
- * - Organization must have name; city and state are optional
- * - Opportunity must have campaign and principal_id
- * - Products and notes are optional
+ * - Organization: Either organization_id (existing) OR org_name (new) must be provided
+ * - principal_id and account_manager_id are required
+ * - All contact fields (first_name, last_name, phone, email) are optional
+ * - Products, notes, campaign, city, and state are optional
  */
 export const quickAddBaseSchema = z.strictObject({
-  // Contact fields (optional)
+  // Organization - either existing or new (one required, validated in refined schema)
+  organization_id: z.number().optional(),
+  org_name: z.string().max(255).optional(),
+
+  // Required fields
+  principal_id: z.number({ error: "Principal is required" }),
+  account_manager_id: z.number({ error: "Account Manager is required" }),
+
+  // Optional contact fields
   first_name: z.string().max(100).optional(),
   last_name: z.string().max(100).optional(),
-
-  // Contact information (at least one required, validated in refined schema)
   phone: z.string().max(50).optional(),
   email: z.union([z.string().email("Invalid email address").max(254), z.literal("")]).optional(),
 
-  // Organization fields (org_name required, city/state optional)
-  org_name: z
-    .string({ error: "Organization name required" })
-    .trim()
-    .min(1, "Organization name required")
-    .max(255),
+  // Optional location/detail fields
   city: z.string().max(100).optional(),
   state: z.string().max(50).optional(),
-
-  // Opportunity fields (required)
-  campaign: z.string({ error: "Campaign required" }).trim().min(1, "Campaign required").max(255),
-  principal_id: z.number({ error: "Principal required" }),
-
-  // Optional fields
+  campaign: z.string().max(255).optional(),
   product_ids: z.array(z.number()).optional().default([]),
   quick_note: z.string().max(2000).optional(),
 });
 
 /**
  * Quick Add schema with refinements - for validation
- * Enforces phone OR email requirement
+ * Enforces: organization_id OR org_name must be provided
  * Use quickAddBaseSchema.partial().parse({}) for form defaults
  */
-export const quickAddSchema = quickAddBaseSchema.refine((data) => !!data.phone || !!data.email, {
-  message: "Phone or Email required (at least one)",
-  path: ["phone"],
-});
+export const quickAddSchema = quickAddBaseSchema.refine(
+  (data) => data.organization_id != null || (data.org_name && data.org_name.trim() !== ""),
+  {
+    message: "Organization is required",
+    path: ["organization_id"],
+  }
+);
 
 /**
  * Type inference for QuickAdd input

@@ -265,6 +265,7 @@ export function QuickCreatePopover({
 
 interface QuickCreateOrganizationRAProps {
   organizationType?: "customer" | "prospect" | "principal" | "distributor";
+  minimalMode?: boolean;
 }
 
 export function QuickCreateOrganizationRA({
