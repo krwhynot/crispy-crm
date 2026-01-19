@@ -4917,3 +4917,58 @@ tool_response: {"stdout": "=== Final Verification ===\n\n1. Supabase Services:\n
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "rg \"path:\" src/atomic-crm/validation/organizations.ts -A 2 -B 1"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "returnCodeInterpretation": "No matches found"}
+
+--- 2026-01-19T11:53:08.720458 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just build 2>&1 | tail -30", "timeout": 120000, "description": "Build project using just"}
+tool_response: {"stdout": "dist/js/CampaignActivityReport-BwpBGdva.js           22.89 kB \u2502 gzip:   6.81 kB \u2502 map:    75.70 kB\ndist/js/ProductDistributorEdit-7rdhYP0L.js           22.98 kB \u2502 gzip:   6
+
+--- 2026-01-19T11:53:21.605480 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/validation/__tests__/organizations.test.ts 2>&1", "timeout": 60000, "description": "Run organization validation tests"}
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/validation/__tests__/organizations.test.ts > Organization Validation Schemas (organizations.ts) > organizationType
+
+--- 2026-01-19T11:56:00.928679 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd -e tsx \"OrganizationEdit\" /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations", "description": "Find OrganizationEdit file"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationEdit.tsx", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T11:56:08.504479 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la supabase/migrations/ | grep -i organization | tail -10", "description": "List recent organization-related migrations"}
+tool_response: {"stdout": "-rw-r--r--  1 krwhynot krwhynot   3965 Nov 30 11:36 20251130173357_add_nb_notes_to_organizations_summary.sql\n-rw-r--r--  1 krwhynot krwhynot   8884 Dec  8 14:38 20251207211946_add_organiz
+
+--- 2026-01-19T11:56:13.599280 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"CREATE TABLE.*organizations\" supabase/migrations/ --include=\"*.sql\" | head -5", "description": "Find the original organizations table creation"}
+tool_response: {"stdout": "supabase/migrations/20251018152315_cloud_schema_fresh.sql:CREATE TABLE IF NOT EXISTS \"public\".\"contact_organizations\" (\nsupabase/migrations/20251018152315_cloud_schema_fresh.sql:CREAT
+
+--- 2026-01-19T11:56:20.622962 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -A 100 'CREATE TABLE IF NOT EXISTS \"public\".\"organizations\"' supabase/migrations/20251018152315_cloud_schema_fresh.sql | head -120", "description": "Find organizations table sche
+tool_response: {"stdout": "CREATE TABLE IF NOT EXISTS \"public\".\"organizations\" (\n    \"id\" bigint NOT NULL,\n    \"name\" \"text\" NOT NULL,\n    \"organization_type\" \"public\".\"organization_type\" DEFAULT 
+
+--- 2026-01-19T11:56:26.284705 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd -e ts \"types.tsx\" /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations", "description": "Find types file in organizations folder"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T11:56:30.761242 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd -e ts \"types\" /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations", "description": "Find types file"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/components/authorization-types.ts\n/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/types.ts", "stderr": "", 
+
+--- 2026-01-19T11:56:40.245384 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -n \"required\\|Required\\|isRequired\\|FormFieldWrapper\" /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationCompactForm.tsx | head -20", "description": "Se
+tool_response: {"stdout": "7:  FormFieldWrapper,\n28:      <FormSectionWithProgress id=\"basic-info\" title=\"Basic Information\" requiredFields={[\"name\"]}>\n31:            <FormFieldWrapper name=\"name\" isRequir
+
+--- 2026-01-19T11:56:46.908024 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd -e tsx \"FormFieldWrapper\" /home/krwhynot/projects/crispy-crm/src/components/admin", "description": "Find FormFieldWrapper component"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/components/admin/form/FormFieldWrapper.tsx\n/home/krwhynot/projects/crispy-crm/src/components/admin/form/__tests__/FormFieldWrapper.test.tsx", "stder
+
+--- 2026-01-19T11:56:54.416203 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -n \"isRequired\\|requiredFields\" /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactCompactForm.tsx | head -25", "description": "Check contact form required fields p
+tool_response: {"stdout": "60:        requiredFields={[\"first_name\", \"last_name\"]}\n64:            <FormFieldWrapper name=\"first_name\" isRequired>\n75:            <FormFieldWrapper name=\"last_name\" isRequire
