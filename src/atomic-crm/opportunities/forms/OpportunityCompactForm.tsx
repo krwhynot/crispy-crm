@@ -131,49 +131,21 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
           </div>
         </div>
 
-        {/* Row 2: Customer | Principal with inline create buttons */}
+        {/* Row 2: Customer | Principal (type-to-create via AutocompleteOrganizationInput) */}
         <CompactFormRow>
-          <CompactFormFieldWithButton
-            button={
-              <CreateInDialogButton
-                resource="organizations"
-                label="New Customer"
-                title="Create new Customer Organization"
-                description="Create a new customer organization and select it automatically"
-                defaultValues={{
-                  ...organizationDefaults,
-                  organization_type: "customer",
-                  sales_id: identity?.id,
-                  segment_id: DEFAULT_SEGMENT_ID,
-                }}
-                onSave={(record) => {
-                  setValue("customer_organization_id", record.id);
-                }}
-                transform={(values) => {
-                  if (values.website && !values.website.startsWith("http")) {
-                    values.website = `https://${values.website}`;
-                  }
-                  return values;
-                }}
-              >
-                <OrganizationInputs />
-              </CreateInDialogButton>
-            }
-          >
-            <div data-tutorial="opp-customer">
-              <ReferenceInput
-                source="customer_organization_id"
-                reference="organizations"
-                filter={{ "organization_type@in": "(prospect,customer)" }}
-                enableGetChoices={enableGetChoices}
-              >
-                <AutocompleteOrganizationInput
-                  label="Customer Organization *"
-                  organizationType="customer"
-                />
-              </ReferenceInput>
-            </div>
-          </CompactFormFieldWithButton>
+          <div data-tutorial="opp-customer">
+            <ReferenceInput
+              source="customer_organization_id"
+              reference="organizations"
+              filter={{ "organization_type@in": "(prospect,customer)" }}
+              enableGetChoices={enableGetChoices}
+            >
+              <AutocompleteOrganizationInput
+                label="Customer Organization *"
+                organizationType="customer"
+              />
+            </ReferenceInput>
+          </div>
           <CompactFormFieldWithButton
             button={
               <CreateInDialogButton
