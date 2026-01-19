@@ -17,37 +17,52 @@ export function ActivityDateSection({ control }: ActivityDateSectionProps) {
     <FormField
       control={control}
       name="date"
-      render={({ field }) => (
-        <FormItem className="flex flex-col">
-          <FormLabel>Activity Date</FormLabel>
-          <Popover>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "h-11 w-full justify-start text-left font-normal",
-                    !field.value && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {field.value ? format(field.value, "PPP") : <span>Select date</span>}
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={field.value}
-                onSelect={field.onChange}
-                disabled={(date) => date > new Date()}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        // Ensure field.value is always a Date object (handles string from draft restore)
+        const dateValue =
+          field.value instanceof Date
+            ? field.value
+            : field.value
+              ? new Date(field.value)
+              : undefined;
+
+        return (
+          <FormItem className="flex flex-col">
+            <FormLabel>Activity Date</FormLabel>
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "h-11 w-full justify-start text-left font-normal",
+                      !dateValue && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {dateValue ? format(dateValue, "PPP") : <span>Select date</span>}
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={dateValue}
+                  onSelect={(date) => {
+                    // Ensure we always store a Date object
+                    if (date) {
+                      field.onChange(date);
+                    }
+                  }}
+                  disabled={(date) => date > new Date()}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 }

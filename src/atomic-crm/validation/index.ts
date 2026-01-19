@@ -26,6 +26,7 @@
 
 // Constants and utilities
 export * from "./constants";
+export * from "./utils";
 
 // Core entity schemas
 export * from "./opportunities";
