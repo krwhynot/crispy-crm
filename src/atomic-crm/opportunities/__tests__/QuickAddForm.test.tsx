@@ -4,13 +4,16 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddForm } from "../quick-add/QuickAddForm";
 import { useQuickAdd } from "../hooks/useQuickAdd";
-import { useGetList } from "ra-core";
+import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
 import { selectCityAndVerifyState } from "@/tests/utils/combobox";
 
 // Mock the external dependencies
 vi.mock("../hooks/useQuickAdd");
 vi.mock("ra-core", () => ({
   useGetList: vi.fn(),
+  useGetIdentity: vi.fn(),
+  useDataProvider: vi.fn(),
+  useNotify: vi.fn(),
 }));
 
 // Mock localStorage
@@ -42,9 +45,34 @@ describe("QuickAddForm", () => {
 
   const mockOnSuccess = vi.fn();
   const mockMutate = vi.fn();
+  const mockNotify = vi.fn();
+  const mockDataProvider = {
+    create: vi.fn().mockResolvedValue({ data: { id: 100, name: "New Org" } }),
+  };
+
+  // Test data
+  const principals = [
+    { id: 1, name: "Principal A", organization_type: "principal" },
+    { id: 2, name: "Principal B", organization_type: "principal" },
+  ];
+
+  const customerOrgs = [
+    { id: 10, name: "Acme Corp", organization_type: "customer" },
+    { id: 11, name: "Beta Inc", organization_type: "prospect" },
+  ];
+
+  const salesList = [
+    { id: 100, name: "John Sales", email: "john@sales.com" },
+    { id: 101, name: "Jane Rep", email: "jane@sales.com" },
+  ];
+
+  const products = [
+    { id: 201, name: "Product 1" },
+    { id: 202, name: "Product 2" },
+  ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Setup default mocks
     (useQuickAdd as Mock).mockReturnValue({
@@ -52,24 +80,39 @@ describe("QuickAddForm", () => {
       isPending: false,
     });
 
-    (useGetList as Mock).mockImplementation((resource) => {
+    // Mock useGetIdentity - returns current user
+    (useGetIdentity as Mock).mockReturnValue({
+      data: { id: 100, fullName: "John Sales" },
+      isLoading: false,
+    });
+
+    // Mock useDataProvider for inline organization creation
+    (useDataProvider as Mock).mockReturnValue(mockDataProvider);
+
+    // Mock useNotify for toast notifications
+    (useNotify as Mock).mockReturnValue(mockNotify);
+
+    // Mock useGetList for organizations (principals and customers), sales, and products
+    (useGetList as Mock).mockImplementation((resource, params) => {
       if (resource === "organizations") {
-        return {
-          data: [
-            { id: 1, name: "Principal A" },
-            { id: 2, name: "Principal B" },
-          ],
-          isLoading: false,
-        };
+        // Check filter to determine if this is principals or customers/prospects
+        if (params?.filter?.organization_type === "principal") {
+          return { data: principals, isLoading: false };
+        }
+        if (params?.filter?.["organization_type@in"]) {
+          return { data: customerOrgs, isLoading: false };
+        }
+        return { data: [...principals, ...customerOrgs], isLoading: false };
+      }
+      if (resource === "sales") {
+        return { data: salesList, isLoading: false };
       }
       if (resource === "products") {
-        return {
-          data: [
-            { id: 101, name: "Product 1" },
-            { id: 102, name: "Product 2" },
-          ],
-          isLoading: false,
-        };
+        const principalId = params?.filter?.principal_id;
+        if (principalId) {
+          return { data: products, isLoading: false };
+        }
+        return { data: [], isLoading: false };
       }
       return { data: [], isLoading: false };
     });

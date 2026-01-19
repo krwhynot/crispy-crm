@@ -78,10 +78,8 @@ describe("QuickAddDialog", () => {
     const dialogContent = document.querySelector('[data-slot="dialog-content"]');
     expect(dialogContent).toHaveAttribute("aria-describedby", "quick-add-description");
 
-    // Check that description has correct id
-    const description = screen.getByText(
-      "Quickly capture lead information from trade show booth conversations"
-    );
+    // Check that description has correct id (updated for opportunity-focused flow)
+    const description = screen.getByText("Create a new opportunity with optional contact details");
     expect(description).toHaveAttribute("id", "quick-add-description");
   });
 });
