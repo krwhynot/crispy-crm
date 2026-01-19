@@ -271,6 +271,22 @@ vi.mock("@/atomic-crm/validation/activities", () => ({
     { value: "feedback_pending", label: "Feedback Pending" },
     { value: "feedback_received", label: "Feedback Received" },
   ],
+  // OUTCOME_OPTIONS_BY_TYPE - context-specific outcomes per activity type
+  OUTCOME_OPTIONS_BY_TYPE: {
+    Call: ["Connected", "Left Voicemail", "No Answer", "Wrong Number"],
+    Email: ["Sent", "Replied", "No Reply", "Bounced"],
+    "Check-in": ["Connected", "Left Voicemail", "No Answer"],
+    Social: ["Engaged", "No Response"],
+    Meeting: ["Held", "Rescheduled", "Cancelled", "No Show"],
+    Demo: ["Held", "Rescheduled", "Cancelled", "No Show"],
+    "Site Visit": ["Completed", "Rescheduled", "Cancelled"],
+    "Trade Show": ["Attended", "Engaged", "Collected Leads"],
+    Proposal: ["Sent", "Accepted", "Rejected", "Revised"],
+    "Contract Review": ["Completed", "Pending Changes", "Approved"],
+    "Follow-up": ["Completed", "Rescheduled"],
+    Note: ["Completed"],
+    Sample: ["Sent", "Received", "Feedback Pending", "Feedback Received"],
+  },
 }));
 
 // Mock @hookform/resolvers/zod
@@ -344,6 +360,12 @@ vi.mock("react-hook-form", async (importOriginal) => {
     useFormContext: () => ({
       getFieldState: () => ({}),
       formState: { isSubmitting: false, errors: {} },
+      // Added for ActivityTypeSection context-specific outcomes feature
+      getValues: (field?: string) => {
+        if (field === "outcome") return "Connected";
+        return {};
+      },
+      setValue: vi.fn(),
     }),
   };
 });
