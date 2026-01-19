@@ -3797,3 +3797,58 @@ tool_response: {"stdout": "[main 14052d1fc] chore(checkpoint): Update tracking f
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "git push origin main", "description": "Push commits to origin"}
 tool_response: {"stdout": "To github.com:krwhynot/crispy-crm.git\n   1801314f4..14052d1fc  main -> main", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:07:11.956097 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status", "description": "Check git status for changes"}
+tool_response: {"stdout": "On branch main\nYour branch is ahead of 'origin/main' by 1 commit.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to up
+
+--- 2026-01-18T22:07:12.079002 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git diff vercel.json", "description": "Show vercel.json changes"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:07:22.032967 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log -1 --stat", "description": "Check last commit contents"}
+tool_response: {"stdout": "commit 91d583fc00badc572b7a0143a9178b7fd3440afd\nAuthor: Kyle Ramsy <kjramsy@gmail.com>\nDate:   Sun Jan 18 22:02:55 2026 -0600\n\n    chore(checkpoint): 3 file(s) - checkpoint-state,kaize
+
+--- 2026-01-18T22:07:46.060741 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit", "timeout": 120000, "description": "TypeScript type checking"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:09:14.189302 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just build", "timeout": 180000, "description": "Run production build via just"}
+tool_response: {"stdout": "> atomic-crm@0.1.0 build\n> ./node_modules/.bin/tsc --noEmit && vite build\n\nvite v7.3.1 building client environment for production...\ntransforming...\n\u2713 6700 modules transformed.\n
+
+--- 2026-01-18T22:09:24.559506 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git push origin main", "description": "Push to remote"}
+tool_response: {"stdout": "To github.com:krwhynot/crispy-crm.git\n   14052d1fc..91d583fc0  main -> main", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:11:15.497803 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la ~/.config/claude/ 2>/dev/null || echo \"Directory not found\"", "description": "List Claude config directory"}
+tool_response: {"stdout": "Directory not found", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:11:27.439062 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la ~/.claude/ | head -30", "description": "List Claude home directory"}
+tool_response: {"stdout": "total 11740\ndrwxr-xr-x  22 krwhynot krwhynot    4096 Jan 18 22:10 .\ndrwxr-x---  27 krwhynot krwhynot  102400 Jan 18 22:10 ..\n-rw-------   1 krwhynot krwhynot    1531 Jan 18 18:49 .crede
+
+--- 2026-01-18T22:12:04.595245 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "claude mcp list 2>/dev/null || claude code mcp list 2>/dev/null || echo \"Command not found\"", "description": "List configured MCP servers"}
+tool_response: {"stdout": "Checking MCP server health...\n\nserena: uvx --from git+https://github.com/oraios/serena serena start-mcp-server --context ide-assistant --enable-web-dashboard false --enable-gui-log-windo
+
+--- 2026-01-18T22:12:27.512781 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "claude mcp get obsidian 2>/dev/null || echo \"No get command available\"", "description": "Get details about obsidian MCP server"}
+tool_response: {"stdout": "obsidian:\n  Scope: Local config (private to you in this project)\n  Status: \u2713 Connected\n\nTo remove this server, run: claude mcp remove \"obsidian\" -s local", "stderr": "", "interr
+
+--- 2026-01-18T22:12:32.820189 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat ~/.claude/mcpServers.json 2>/dev/null || cat ~/.claude/mcp-servers.json 2>/dev/null || echo \"Global MCP config not found at expected paths\"", "description": "Check global MCP server
+tool_response: {"stdout": "Global MCP config not found at expected paths", "stderr": "", "interrupted": false, "isImage": false}
