@@ -5342,3 +5342,8 @@ tool_response: {"stdout": "                \u001b[33mfill\u001b[39m=\u001b[32m\"
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx vitest run src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx --reporter=verbose 2>&1 | head -500", "timeout": 180000, "description": "Run current integration tests 
 tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\nstderr | src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx > QuickAdd Integration > completes full atomic creation flo
+
+--- 2026-01-19T14:11:05.772520 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx --reporter=verbose 2>&1 | head -300", "timeout": 180000, "description": "Run updated integration tests 
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\nstderr | src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx > QuickAdd Integration > completes full atomic creation flo
