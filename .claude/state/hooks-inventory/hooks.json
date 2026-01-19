@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-17T20:21:42.683Z",
+  "generated_at": "2026-01-19T02:38:05.395Z",
   "item_count": 7,
   "items": [
     {
@@ -68,7 +68,7 @@
     {
       "name": "useRelatedRecordCounts",
       "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
-      "line": 81,
+      "line": 102,
       "parameters": [
         "{\n  resource,\n  ids,\n  enabled = true,\n}"
       ],

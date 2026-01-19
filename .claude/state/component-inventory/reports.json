@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-17T20:21:28.520Z",
+  "generated_at": "2026-01-19T02:37:50.989Z",
   "item_count": 23,
   "items": [
     {
@@ -49,7 +49,7 @@
     {
       "name": "CampaignActivityReport",
       "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
-      "line": 52,
+      "line": 51,
       "type": "presentational",
       "hooks": [
         "useCampaignActivityData",
@@ -66,14 +66,12 @@
         "./useCampaignActivityExport",
         "@/atomic-crm/reports/ReportLayout",
         "@/atomic-crm/reports/components",
-        "@/atomic-crm/utils/stalenessCalculation",
         "@/atomic-crm/validation/activities",
         "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/empty-state",
         "@/components/ui/label",
         "@/components/ui/select",
-        "@/lib/date-utils",
         "date-fns",
         "lucide-react",
         "react"

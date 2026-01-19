@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-17T20:21:48.617Z",
+  "generated_at": "2026-01-19T02:38:15.188Z",
   "items": {
     "nodes": [
       {
@@ -58,10 +58,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "id": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:36:withTimeout",
+        "name": "withTimeout",
+        "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
+        "line": 36,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
         "name": "useRelatedRecordCounts",
         "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
-        "line": 81,
+        "line": 102,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -215,6 +224,15 @@
         "name": "useOrganizationDescendants",
         "file": "src/hooks/useOrganizationDescendants.ts",
         "line": 21,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/usePermissions.ts:62:usePermissions",
+        "name": "usePermissions",
+        "file": "src/hooks/usePermissions.ts",
+        "line": 62,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -789,263 +807,317 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:36:withTimeout",
+        "target": "race",
+        "targetName": "race",
+        "edgeType": "call",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:36:withTimeout",
+        "target": "setTimeout",
+        "targetName": "setTimeout",
+        "edgeType": "call",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:36:withTimeout",
+        "target": "resolve",
+        "targetName": "resolve",
+        "edgeType": "call",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
         "edgeType": "hook",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 87,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 91,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "setRelatedCounts",
-        "targetName": "setRelatedCounts",
-        "edgeType": "call",
-        "line": 94,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "setRelatedCounts",
-        "targetName": "setRelatedCounts",
-        "edgeType": "call",
-        "line": 100,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "setIsLoading",
-        "targetName": "setIsLoading",
-        "edgeType": "call",
         "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "setError",
-        "targetName": "setError",
-        "edgeType": "call",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
         "line": 108,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "flatMap",
-        "targetName": "flatMap",
-        "edgeType": "call",
-        "line": 115,
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 116,
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "getManyReference",
-        "targetName": "getManyReference",
-        "edgeType": "call",
-        "line": 119,
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 129,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 131,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 131,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 132,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "debug",
-        "targetName": "debug",
-        "edgeType": "call",
-        "line": 137,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "warn",
-        "targetName": "warn",
-        "edgeType": "call",
-        "line": 143,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "all",
-        "targetName": "all",
-        "edgeType": "call",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 159,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "sort",
-        "targetName": "sort",
-        "edgeType": "call",
-        "line": 164,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 164,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 164,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
-        "target": "entries",
-        "targetName": "entries",
-        "edgeType": "call",
-        "line": 164,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
         "target": "setRelatedCounts",
         "targetName": "setRelatedCounts",
         "edgeType": "call",
-        "line": 169,
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "setRelatedCounts",
+        "targetName": "setRelatedCounts",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "setIsLoading",
+        "targetName": "setIsLoading",
+        "edgeType": "call",
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
         "target": "setError",
         "targetName": "setError",
         "edgeType": "call",
-        "line": 172,
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "flatMap",
+        "targetName": "flatMap",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "getManyReference",
+        "targetName": "getManyReference",
+        "edgeType": "call",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 153,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "debug",
+        "targetName": "debug",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 167,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "withTimeout",
+        "targetName": "withTimeout",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "allSettled",
+        "targetName": "allSettled",
+        "edgeType": "call",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 185,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 185,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "setRelatedCounts",
+        "targetName": "setRelatedCounts",
+        "edgeType": "call",
+        "line": 205,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
+        "target": "setError",
+        "targetName": "setError",
+        "edgeType": "call",
+        "line": 208,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
         "target": "setIsLoading",
         "targetName": "setIsLoading",
         "edgeType": "call",
-        "line": 176,
+        "line": 212,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:81:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:102:useRelatedRecordCounts",
         "target": "fetchCounts",
         "targetName": "fetchCounts",
         "edgeType": "call",
-        "line": 181,
+        "line": 217,
         "conditional": false,
         "inLoop": false
       },
@@ -2765,6 +2837,24 @@
         "targetName": "invoke",
         "edgeType": "call",
         "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/usePermissions.ts:62:usePermissions",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/usePermissions.ts:62:usePermissions",
+        "target": "canAccess",
+        "targetName": "canAccess",
+        "edgeType": "call",
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },

@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-17T20:21:48.583Z",
+  "generated_at": "2026-01-19T02:38:15.144Z",
   "items": {
     "nodes": [
       {
@@ -3430,7 +3430,7 @@
         "target": "Suspense",
         "targetName": "Suspense",
         "edgeType": "render",
-        "line": 589,
+        "line": 591,
         "conditional": false,
         "inLoop": false
       },
@@ -3439,7 +3439,7 @@
         "target": "LockedEntityDisplay",
         "targetName": "LockedEntityDisplay",
         "edgeType": "render",
-        "line": 563,
+        "line": 565,
         "conditional": false,
         "inLoop": false
       },
@@ -3448,7 +3448,7 @@
         "target": "LockedEntityDisplay",
         "targetName": "LockedEntityDisplay",
         "edgeType": "render",
-        "line": 571,
+        "line": 573,
         "conditional": false,
         "inLoop": false
       },
@@ -3457,7 +3457,7 @@
         "target": "LockedEntityDisplay",
         "targetName": "LockedEntityDisplay",
         "edgeType": "render",
-        "line": 579,
+        "line": 581,
         "conditional": false,
         "inLoop": false
       },
@@ -3466,7 +3466,7 @@
         "target": "QuickLogFormSkeleton",
         "targetName": "QuickLogFormSkeleton",
         "edgeType": "render",
-        "line": 589,
+        "line": 591,
         "conditional": false,
         "inLoop": false
       },
@@ -3475,7 +3475,7 @@
         "target": "QuickLogForm",
         "targetName": "QuickLogForm",
         "edgeType": "render",
-        "line": 590,
+        "line": 592,
         "conditional": false,
         "inLoop": false
       },
@@ -3484,7 +3484,7 @@
         "target": "handleComplete",
         "targetName": "handleComplete",
         "edgeType": "callback",
-        "line": 591,
+        "line": 593,
         "conditional": false,
         "inLoop": false
       },

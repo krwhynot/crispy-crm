@@ -1,29 +1,30 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-17T20:21:42.687Z",
+  "generated_at": "2026-01-19T02:38:05.413Z",
   "item_count": 5,
   "items": [
     {
       "name": "useCampaignActivityData",
       "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts",
-      "line": 40,
+      "line": 36,
       "parameters": [
         "options"
       ],
-      "returnType": "{ activities: CampaignActivity[]; activitiesError: Error; allOpportunities: CampaignOpportunity[]; allCampaignActivities: CampaignActivity[]; opportunityMap: Map<number, CampaignOpportunity>; salesMap: Map<number, string>; campaignOptions: { name: string; count: number; }[]; salesRepOptions: { id: number; name: string; count: number; }[]; activityTypeCounts: Map<string, number>; isLoadingCampaigns: boolean; isLoadingActivities: boolean; }",
+      "returnType": "{ activities: CampaignActivity[]; activitiesError: Error; salesMap: Map<number, string>; campaignOptions: { name: string; count: number; }[]; salesRepOptions: { id: number; name: string; count: number; }[]; activityTypeCounts: Map<string, number>; totalCampaignActivitiesCount: number; totalCampaignOpportunities: number; isLoadingCampaigns: boolean; isLoadingActivities: boolean; }",
       "dependencies": [
-        "useMemo"
+        "useDataProvider",
+        "useMemo",
+        "useQuery"
       ],
       "isReact19Action": false
     },
     {
       "name": "useCampaignActivityExport",
       "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts",
-      "line": 49,
+      "line": 42,
       "parameters": [
         "selectedCampaign",
-        "salesMap",
-        "opportunityMap"
+        "salesMap"
       ],
       "returnType": "{ exportStaleLeads: (staleOpportunities: StaleOpportunity[]) => void; exportActivities: (activityGroups: CampaignActivityGroup[], activities: CampaignActivity[]) => void; }",
       "dependencies": [

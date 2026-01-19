@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-17T20:21:48.737Z",
+  "generated_at": "2026-01-19T02:38:15.265Z",
   "items": {
     "nodes": [
       {
@@ -441,33 +441,6 @@
         "file": "src/atomic-crm/utils/getContextAwareRedirect.ts",
         "line": 58,
         "nodeType": "arrow",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
-        "name": "levenshteinDistance",
-        "file": "src/atomic-crm/utils/levenshtein.ts",
-        "line": 31,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "name": "findSimilarOpportunities",
-        "file": "src/atomic-crm/utils/levenshtein.ts",
-        "line": 134,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/utils/levenshtein.ts:193:hasSimilarOpportunity",
-        "name": "hasSimilarOpportunity",
-        "file": "src/atomic-crm/utils/levenshtein.ts",
-        "line": 193,
-        "nodeType": "function",
         "exported": true,
         "async": false
       },
@@ -2252,150 +2225,6 @@
         "targetName": "get",
         "edgeType": "call",
         "line": 72,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 34,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 34,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:31:levenshteinDistance",
-        "target": "min",
-        "targetName": "min",
-        "edgeType": "call",
-        "line": 59,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 147,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 151,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 151,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "sort",
-        "targetName": "sort",
-        "edgeType": "call",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 161,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:134:findSimilarOpportunities",
-        "target": "levenshteinDistance",
-        "targetName": "levenshteinDistance",
-        "edgeType": "call",
-        "line": 169,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/levenshtein.ts:193:hasSimilarOpportunity",
-        "target": "findSimilarOpportunities",
-        "targetName": "findSimilarOpportunities",
-        "edgeType": "call",
-        "line": 198,
         "conditional": false,
         "inLoop": false
       },

@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-17T20:21:48.604Z",
+  "generated_at": "2026-01-19T02:38:15.168Z",
   "items": {
     "nodes": [
       {
@@ -35,6 +35,24 @@
         "name": "PrincipalDashboardV3",
         "file": "src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
         "line": 25,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx:10:ActionButtons",
+        "name": "ActionButtons",
+        "file": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx",
+        "line": 10,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "name": "ActivityDateSection",
+        "file": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx",
+        "line": 15,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -85,10 +103,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "id": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "name": "ActivityTypeSection",
         "file": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx",
-        "line": 41,
+        "line": 48,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -134,6 +152,15 @@
         "name": "EntityCombobox",
         "file": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx",
         "line": 71,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "name": "EntitySelectionSection",
+        "file": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx",
+        "line": 39,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -238,6 +265,15 @@
         "async": false
       },
       {
+        "id": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx:16:NotesSection",
+        "name": "NotesSection",
+        "file": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx",
+        "line": 16,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
         "id": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx:41:PipelineDrillDownSheet",
         "name": "PipelineDrillDownSheet",
         "file": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx",
@@ -319,10 +355,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "id": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "name": "QuickLogForm",
         "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-        "line": 70,
+        "line": 61,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -449,6 +485,15 @@
         "name": "useEntityData",
         "file": "src/atomic-crm/dashboard/v3/hooks/useEntityData.ts",
         "line": 52,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "name": "useEntitySelection",
+        "file": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts",
+        "line": 38,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -1014,6 +1059,186 @@
         "inLoop": false
       },
       {
+        "source": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx:10:ActionButtons",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 13,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx:10:ActionButtons",
+        "target": "onCancel",
+        "targetName": "onCancel",
+        "edgeType": "callback",
+        "line": 16,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx:10:ActionButtons",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx:10:ActionButtons",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx:10:ActionButtons",
+        "target": "onSaveAndNew",
+        "targetName": "onSaveAndNew",
+        "edgeType": "callback",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx:10:ActionButtons",
+        "target": "Loader2",
+        "targetName": "Loader2",
+        "edgeType": "render",
+        "line": 26,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "onChange",
+        "targetName": "onChange",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "FormItem",
+        "targetName": "FormItem",
+        "edgeType": "render",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "FormLabel",
+        "targetName": "FormLabel",
+        "edgeType": "render",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "Popover",
+        "targetName": "Popover",
+        "edgeType": "render",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "PopoverTrigger",
+        "targetName": "PopoverTrigger",
+        "edgeType": "render",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "FormControl",
+        "targetName": "FormControl",
+        "edgeType": "render",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "PopoverContent",
+        "targetName": "PopoverContent",
+        "edgeType": "render",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 17,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "CalendarIcon",
+        "targetName": "CalendarIcon",
+        "edgeType": "render",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "Calendar",
+        "targetName": "Calendar",
+        "edgeType": "render",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx:15:ActivityDateSection",
+        "target": "FormMessage",
+        "targetName": "FormMessage",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
         "source": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx:36:formatActivityType",
         "target": "join",
         "targetName": "join",
@@ -1311,524 +1536,551 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "useFormContext",
+        "targetName": "useFormContext",
+        "edgeType": "hook",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 42,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 65,
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "getValues",
+        "targetName": "getValues",
         "edgeType": "call",
-        "line": 77,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "onChange",
-        "targetName": "onChange",
-        "edgeType": "call",
-        "line": 141,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "parseInt",
-        "targetName": "parseInt",
-        "edgeType": "call",
-        "line": 141,
+        "line": 61,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 167,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 109,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 135,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "onChange",
+        "targetName": "onChange",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "parseInt",
+        "targetName": "parseInt",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 187,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "FormItem",
         "targetName": "FormItem",
         "edgeType": "render",
-        "line": 53,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "FormLabel",
         "targetName": "FormLabel",
         "edgeType": "render",
-        "line": 54,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "Select",
         "targetName": "Select",
-        "edgeType": "render",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormControl",
-        "targetName": "FormControl",
-        "edgeType": "render",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 57,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 61,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectGroup",
-        "targetName": "SelectGroup",
-        "edgeType": "render",
-        "line": 63,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectLabel",
-        "targetName": "SelectLabel",
-        "edgeType": "render",
-        "line": 64,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 66,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectGroup",
-        "targetName": "SelectGroup",
         "edgeType": "render",
         "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectLabel",
-        "targetName": "SelectLabel",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormControl",
+        "targetName": "FormControl",
         "edgeType": "render",
         "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 78,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "SelectGroup",
         "targetName": "SelectGroup",
         "edgeType": "render",
-        "line": 87,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "SelectLabel",
         "targetName": "SelectLabel",
-        "edgeType": "render",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 90,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormItem",
-        "targetName": "FormItem",
-        "edgeType": "render",
-        "line": 106,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormLabel",
-        "targetName": "FormLabel",
-        "edgeType": "render",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 108,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormControl",
-        "targetName": "FormControl",
-        "edgeType": "render",
-        "line": 109,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 110,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 114,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 115,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 116,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 117,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 118,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormItem",
-        "targetName": "FormItem",
-        "edgeType": "render",
-        "line": 132,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormLabel",
-        "targetName": "FormLabel",
-        "edgeType": "render",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormControl",
-        "targetName": "FormControl",
-        "edgeType": "render",
-        "line": 134,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormItem",
-        "targetName": "FormItem",
-        "edgeType": "render",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormLabel",
-        "targetName": "FormLabel",
-        "edgeType": "render",
-        "line": 159,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 160,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormControl",
-        "targetName": "FormControl",
-        "edgeType": "render",
-        "line": 161,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 162,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 166,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 168,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormDescription",
-        "targetName": "FormDescription",
-        "edgeType": "render",
-        "line": 174,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormField",
-        "targetName": "FormField",
-        "edgeType": "render",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
-        "edgeType": "render",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectSeparator",
-        "targetName": "SelectSeparator",
-        "edgeType": "render",
-        "line": 72,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectSeparator",
-        "targetName": "SelectSeparator",
         "edgeType": "render",
         "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormMessage",
-        "targetName": "FormMessage",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 97,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormField",
-        "targetName": "FormField",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectGroup",
+        "targetName": "SelectGroup",
         "edgeType": "render",
-        "line": 102,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectLabel",
+        "targetName": "SelectLabel",
         "edgeType": "render",
-        "line": 111,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormMessage",
-        "targetName": "FormMessage",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 122,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormField",
-        "targetName": "FormField",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectGroup",
+        "targetName": "SelectGroup",
+        "edgeType": "render",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectLabel",
+        "targetName": "SelectLabel",
+        "edgeType": "render",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormItem",
+        "targetName": "FormItem",
+        "edgeType": "render",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormLabel",
+        "targetName": "FormLabel",
+        "edgeType": "render",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "Select",
+        "targetName": "Select",
         "edgeType": "render",
         "line": 128,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "Input",
-        "targetName": "Input",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormControl",
+        "targetName": "FormControl",
         "edgeType": "render",
-        "line": 135,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormMessage",
-        "targetName": "FormMessage",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 146,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "FormField",
-        "targetName": "FormField",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 134,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormItem",
+        "targetName": "FormItem",
+        "edgeType": "render",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormLabel",
+        "targetName": "FormLabel",
+        "edgeType": "render",
+        "line": 153,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormControl",
+        "targetName": "FormControl",
         "edgeType": "render",
         "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormItem",
+        "targetName": "FormItem",
         "edgeType": "render",
-        "line": 163,
+        "line": 178,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:41:ActivityTypeSection",
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormLabel",
+        "targetName": "FormLabel",
+        "edgeType": "render",
+        "line": 179,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 180,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormControl",
+        "targetName": "FormControl",
+        "edgeType": "render",
+        "line": 181,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 186,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 188,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormDescription",
+        "targetName": "FormDescription",
+        "edgeType": "render",
+        "line": 194,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectSeparator",
+        "targetName": "SelectSeparator",
+        "edgeType": "render",
+        "line": 92,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectSeparator",
+        "targetName": "SelectSeparator",
+        "edgeType": "render",
+        "line": 104,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
         "target": "FormMessage",
         "targetName": "FormMessage",
         "edgeType": "render",
-        "line": 177,
+        "line": 117,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormMessage",
+        "targetName": "FormMessage",
+        "edgeType": "render",
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 148,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "Input",
+        "targetName": "Input",
+        "edgeType": "render",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormMessage",
+        "targetName": "FormMessage",
+        "edgeType": "render",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 174,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx:48:ActivityTypeSection",
+        "target": "FormMessage",
+        "targetName": "FormMessage",
+        "edgeType": "render",
+        "line": 197,
         "conditional": false,
         "inLoop": false
       },
@@ -2603,6 +2855,114 @@
         "targetName": "FormMessage",
         "edgeType": "render",
         "line": 197,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "EntityCombobox",
+        "targetName": "EntityCombobox",
+        "edgeType": "render",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "EntityCombobox",
+        "targetName": "EntityCombobox",
+        "edgeType": "render",
+        "line": 84,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 104,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx:39:EntitySelectionSection",
+        "target": "EntityCombobox",
+        "targetName": "EntityCombobox",
+        "edgeType": "render",
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -4101,6 +4461,60 @@
         "inLoop": false
       },
       {
+        "source": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx:16:NotesSection",
+        "target": "FormItem",
+        "targetName": "FormItem",
+        "edgeType": "render",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx:16:NotesSection",
+        "target": "FormLabel",
+        "targetName": "FormLabel",
+        "edgeType": "render",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx:16:NotesSection",
+        "target": "FormControl",
+        "targetName": "FormControl",
+        "edgeType": "render",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx:16:NotesSection",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx:16:NotesSection",
+        "target": "Textarea",
+        "targetName": "Textarea",
+        "edgeType": "render",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx:16:NotesSection",
+        "target": "FormMessage",
+        "targetName": "FormMessage",
+        "edgeType": "render",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
         "source": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx:41:PipelineDrillDownSheet",
         "target": "useNavigate",
         "targetName": "useNavigate",
@@ -5325,876 +5739,489 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "useCurrentSale",
+        "targetName": "useCurrentSale",
+        "edgeType": "hook",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
         "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
-        "edgeType": "hook",
-        "line": 80,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 81,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useCurrentSale",
-        "targetName": "useCurrentSale",
-        "edgeType": "hook",
-        "line": 82,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 87,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 88,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "useForm",
         "targetName": "useForm",
         "edgeType": "hook",
-        "line": 103,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "zodResolver",
         "targetName": "zodResolver",
         "edgeType": "call",
-        "line": 104,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "useWatch",
         "targetName": "useWatch",
         "edgeType": "hook",
-        "line": 109,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "useWatch",
         "targetName": "useWatch",
         "edgeType": "hook",
-        "line": 116,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 128,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "onDraftChange",
         "targetName": "onDraftChange",
         "edgeType": "call",
-        "line": 130,
+        "line": 121,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "useEntityData",
         "targetName": "useEntityData",
         "edgeType": "hook",
-        "line": 135,
+        "line": 126,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 143,
+        "line": 134,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "notify",
         "targetName": "notify",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "some",
+        "targetName": "some",
         "edgeType": "call",
         "line": 146,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "split",
-        "targetName": "split",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "substring",
-        "targetName": "substring",
-        "edgeType": "call",
-        "line": 165,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 167,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "substring",
-        "targetName": "substring",
-        "edgeType": "call",
-        "line": 180,
+        "line": 148,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "logActivityWithTask",
-        "targetName": "logActivityWithTask",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "setValue",
+        "targetName": "setValue",
         "edgeType": "call",
-        "line": 190,
+        "line": 151,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "some",
+        "targetName": "some",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 167,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "some",
+        "targetName": "some",
+        "edgeType": "call",
+        "line": 173,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 175,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "substring",
+        "targetName": "substring",
         "edgeType": "call",
         "line": 196,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "toISOString",
+        "targetName": "toISOString",
         "edgeType": "call",
-        "line": 197,
+        "line": 198,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "substring",
+        "targetName": "substring",
         "edgeType": "call",
-        "line": 199,
+        "line": 211,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "logActivityWithTask",
+        "targetName": "logActivityWithTask",
         "edgeType": "call",
-        "line": 203,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 227,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 228,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 230,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 234,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "reset",
         "targetName": "reset",
-        "edgeType": "call",
-        "line": 207,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "onComplete",
-        "targetName": "onComplete",
-        "edgeType": "call",
-        "line": 210,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "onRefresh",
-        "targetName": "onRefresh",
-        "edgeType": "call",
-        "line": 214,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 218,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 226,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 229,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 236,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 237,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "setValue",
-        "targetName": "setValue",
         "edgeType": "call",
         "line": 238,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 242,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "getValues",
-        "targetName": "getValues",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "onComplete",
+        "targetName": "onComplete",
         "edgeType": "call",
-        "line": 244,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 246,
+        "line": 241,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "setValue",
-        "targetName": "setValue",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "onRefresh",
+        "targetName": "onRefresh",
         "edgeType": "call",
-        "line": 248,
+        "line": 245,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
         "line": 249,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "getValues",
-        "targetName": "getValues",
-        "edgeType": "call",
-        "line": 252,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "find",
-        "targetName": "find",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
-        "line": 254,
-        "conditional": true,
+        "line": 250,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 256,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "useCallback",
-        "targetName": "useCallback",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "useEntitySelection",
+        "targetName": "useEntitySelection",
         "edgeType": "hook",
-        "line": 264,
+        "line": 257,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "getValues",
-        "targetName": "getValues",
-        "edgeType": "call",
-        "line": 265,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "getValues",
-        "targetName": "getValues",
-        "edgeType": "call",
-        "line": 266,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 268,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 270,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 290,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "submitActivity",
         "targetName": "submitActivity",
         "edgeType": "call",
-        "line": 290,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "cn",
-        "targetName": "cn",
-        "edgeType": "call",
-        "line": 308,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 314,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 344,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 349,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 377,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 402,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 406,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "handleSubmit",
         "targetName": "handleSubmit",
         "edgeType": "call",
-        "line": 473,
+        "line": 309,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "submitActivity",
         "targetName": "submitActivity",
         "edgeType": "call",
-        "line": 474,
+        "line": 309,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 288,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormItem",
-        "targetName": "FormItem",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "Loader2",
+        "targetName": "Loader2",
         "edgeType": "render",
-        "line": 301,
-        "conditional": false,
+        "line": 273,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormLabel",
-        "targetName": "FormLabel",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "ActivityTypeSection",
+        "targetName": "ActivityTypeSection",
         "edgeType": "render",
-        "line": 302,
+        "line": 287,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Popover",
-        "targetName": "Popover",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "ActivityDateSection",
+        "targetName": "ActivityDateSection",
+        "edgeType": "render",
+        "line": 290,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "EntitySelectionSection",
+        "targetName": "EntitySelectionSection",
+        "edgeType": "render",
+        "line": 293,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "NotesSection",
+        "targetName": "NotesSection",
+        "edgeType": "render",
+        "line": 300,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "FollowUpSection",
+        "targetName": "FollowUpSection",
         "edgeType": "render",
         "line": 303,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "PopoverTrigger",
-        "targetName": "PopoverTrigger",
-        "edgeType": "render",
-        "line": 304,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormControl",
-        "targetName": "FormControl",
-        "edgeType": "render",
-        "line": 305,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Button",
-        "targetName": "Button",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
+        "target": "ActionButtons",
+        "targetName": "ActionButtons",
         "edgeType": "render",
         "line": 306,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "PopoverContent",
-        "targetName": "PopoverContent",
-        "edgeType": "render",
-        "line": 318,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormItem",
-        "targetName": "FormItem",
-        "edgeType": "render",
-        "line": 429,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormLabel",
-        "targetName": "FormLabel",
-        "edgeType": "render",
-        "line": 430,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormControl",
-        "targetName": "FormControl",
-        "edgeType": "render",
-        "line": 431,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 448,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
+        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:61:QuickLogForm",
         "target": "onComplete",
         "targetName": "onComplete",
         "edgeType": "callback",
-        "line": 451,
+        "line": 308,
         "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 457,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 467,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Loader2",
-        "targetName": "Loader2",
-        "edgeType": "render",
-        "line": 280,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "ActivityTypeSection",
-        "targetName": "ActivityTypeSection",
-        "edgeType": "render",
-        "line": 294,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormField",
-        "targetName": "FormField",
-        "edgeType": "render",
-        "line": 297,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "CalendarIcon",
-        "targetName": "CalendarIcon",
-        "edgeType": "render",
-        "line": 313,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Calendar",
-        "targetName": "Calendar",
-        "edgeType": "render",
-        "line": 319,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormMessage",
-        "targetName": "FormMessage",
-        "edgeType": "render",
-        "line": 328,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormField",
-        "targetName": "FormField",
-        "edgeType": "render",
-        "line": 337,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "EntityCombobox",
-        "targetName": "EntityCombobox",
-        "edgeType": "render",
-        "line": 341,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "handleContactSelect",
-        "targetName": "handleContactSelect",
-        "edgeType": "callback",
-        "line": 363,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "handleContactClear",
-        "targetName": "handleContactClear",
-        "edgeType": "callback",
-        "line": 364,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormField",
-        "targetName": "FormField",
-        "edgeType": "render",
-        "line": 370,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "EntityCombobox",
-        "targetName": "EntityCombobox",
-        "edgeType": "render",
-        "line": 374,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "handleOrganizationSelect",
-        "targetName": "handleOrganizationSelect",
-        "edgeType": "callback",
-        "line": 388,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "handleOrganizationClear",
-        "targetName": "handleOrganizationClear",
-        "edgeType": "callback",
-        "line": 389,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormField",
-        "targetName": "FormField",
-        "edgeType": "render",
-        "line": 395,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "EntityCombobox",
-        "targetName": "EntityCombobox",
-        "edgeType": "render",
-        "line": 399,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormField",
-        "targetName": "FormField",
-        "edgeType": "render",
-        "line": 425,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Textarea",
-        "targetName": "Textarea",
-        "edgeType": "render",
-        "line": 432,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FormMessage",
-        "targetName": "FormMessage",
-        "edgeType": "render",
-        "line": 438,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "FollowUpSection",
-        "targetName": "FollowUpSection",
-        "edgeType": "render",
-        "line": 444,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Loader2",
-        "targetName": "Loader2",
-        "edgeType": "render",
-        "line": 460,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:70:QuickLogForm",
-        "target": "Loader2",
-        "targetName": "Loader2",
-        "edgeType": "render",
-        "line": 480,
-        "conditional": true,
         "inLoop": false
       },
       {
@@ -8624,6 +8651,168 @@
         "targetName": "notify",
         "edgeType": "call",
         "line": 307,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "getValues",
+        "targetName": "getValues",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "getValues",
+        "targetName": "getValues",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "getValues",
+        "targetName": "getValues",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "getValues",
+        "targetName": "getValues",
+        "edgeType": "call",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts:38:useEntitySelection",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 88,
         "conditional": true,
         "inLoop": false
       },

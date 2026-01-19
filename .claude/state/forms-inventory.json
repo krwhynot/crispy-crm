@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-17T20:21:44.851Z",
+  "generated_at": "2026-01-19T02:38:08.542Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:c6e211d55a31c701",
+  "checksum": "sha256:4f26bb0bfa676bd9",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "776ba2efe7f5",
     "src/atomic-crm/activities/ActivityEdit.tsx": "d6b798bd46c2",
@@ -27,18 +27,18 @@
     "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "81fe1dd6ac4e",
     "src/atomic-crm/contacts/TagsListEdit.tsx": "740faec91d7c",
     "src/atomic-crm/contexts/FormOptionsContext.tsx": "164b5fa6c2d5",
-    "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "1cf2fe6e1b5f",
+    "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "6cdb0711d574",
     "src/atomic-crm/layout/FormToolbar.tsx": "cffd014a8b77",
     "src/atomic-crm/notes/NoteCreate.tsx": "ec8c1a1862dc",
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "b318064ed7bf",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "36e217f92bd9",
-    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "92e2a96d4978",
+    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "c264cab1f827",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "368e3d4d0789",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
-    "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "d8a1fb357879",
-    "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
-    "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "86814cd461b1",
+    "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "623186d207d7",
+    "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "2bd7c8cf8cab",
+    "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "95efc3b8e3fb",
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
     "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "85a959d8c3f9",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "068f9e784aa1",
@@ -340,7 +340,7 @@
     {
       "componentName": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 70,
+      "line": 61,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -662,7 +662,7 @@
     {
       "componentName": "OpportunityCompactForm",
       "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
-      "line": 49,
+      "line": 50,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -675,6 +675,7 @@
         "AutocompleteArrayInput",
         "AutocompleteOrganizationInput",
         "DateInput",
+        "LeadSourceInput",
         "ReferenceArrayInput",
         "ReferenceInput",
         "SelectInput",

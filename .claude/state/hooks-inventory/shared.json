@@ -1,7 +1,7 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2026-01-17T20:21:42.690Z",
-  "item_count": 22,
+  "generated_at": "2026-01-19T02:38:05.434Z",
+  "item_count": 23,
   "items": [
     {
       "name": "useSavedQueries",
@@ -207,6 +207,17 @@
       "dependencies": [
         "useDataProvider",
         "useQuery"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "usePermissions",
+      "file": "src/hooks/usePermissions.ts",
+      "line": 62,
+      "parameters": [],
+      "returnType": "UsePermissionsReturn",
+      "dependencies": [
+        "useGetIdentity"
       ],
       "isReact19Action": false
     },

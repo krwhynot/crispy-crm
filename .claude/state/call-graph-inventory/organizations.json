@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-17T20:21:48.644Z",
+  "generated_at": "2026-01-19T02:38:15.211Z",
   "items": {
     "nodes": [
       {
@@ -2221,17 +2221,8 @@
       },
       {
         "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 40,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
-        "target": "useRelatedRecordCounts",
-        "targetName": "useRelatedRecordCounts",
+        "target": "useMemo",
+        "targetName": "useMemo",
         "edgeType": "hook",
         "line": 41,
         "conditional": false,
@@ -2242,16 +2233,16 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 48,
+        "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 48,
+        "target": "useRelatedRecordCounts",
+        "targetName": "useRelatedRecordCounts",
+        "edgeType": "hook",
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
@@ -2260,7 +2251,25 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 49,
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
@@ -2269,7 +2278,7 @@
         "target": "stopPropagation",
         "targetName": "stopPropagation",
         "edgeType": "call",
-        "line": 53,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
@@ -2278,7 +2287,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 60,
+        "line": 64,
         "conditional": true,
         "inLoop": false
       },
@@ -2287,17 +2296,8 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 62,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
-        "target": "setShowConfirm",
-        "targetName": "setShowConfirm",
-        "edgeType": "call",
         "line": 66,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -2311,10 +2311,19 @@
       },
       {
         "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
+        "target": "setShowConfirm",
+        "targetName": "setShowConfirm",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx:30:OrganizationBulkDeleteButton",
         "target": "deleteMany",
         "targetName": "deleteMany",
         "edgeType": "call",
-        "line": 71,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
@@ -2323,7 +2332,7 @@
         "target": "onUnselectItems",
         "targetName": "onUnselectItems",
         "edgeType": "call",
-        "line": 77,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
@@ -2332,7 +2341,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 78,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
@@ -2341,7 +2350,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 84,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
@@ -2350,7 +2359,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 87,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
@@ -2359,7 +2368,7 @@
         "target": "setShowConfirm",
         "targetName": "setShowConfirm",
         "edgeType": "call",
-        "line": 117,
+        "line": 121,
         "conditional": false,
         "inLoop": false
       },
@@ -2368,7 +2377,7 @@
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 101,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
@@ -2377,7 +2386,7 @@
         "target": "handleClick",
         "targetName": "handleClick",
         "edgeType": "callback",
-        "line": 104,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
@@ -2386,7 +2395,7 @@
         "target": "Translate",
         "targetName": "Translate",
         "edgeType": "render",
-        "line": 110,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
@@ -2395,7 +2404,7 @@
         "target": "Trash",
         "targetName": "Trash",
         "edgeType": "render",
-        "line": 109,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
@@ -2404,7 +2413,7 @@
         "target": "DeleteConfirmDialog",
         "targetName": "DeleteConfirmDialog",
         "edgeType": "render",
-        "line": 112,
+        "line": 116,
         "conditional": false,
         "inLoop": false
       },
@@ -2413,7 +2422,7 @@
         "target": "handleConfirmDelete",
         "targetName": "handleConfirmDelete",
         "edgeType": "callback",
-        "line": 116,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },

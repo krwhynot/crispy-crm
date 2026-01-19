@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-17T20:21:28.507Z",
+  "generated_at": "2026-01-19T02:37:50.981Z",
   "item_count": 81,
   "items": [
     {
@@ -1568,7 +1568,7 @@
     {
       "name": "OpportunityCompactForm",
       "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
-      "line": 49,
+      "line": 50,
       "type": "presentational",
       "hooks": [
         "useAutoGenerateName",
@@ -1588,6 +1588,7 @@
         "../../utils/autocompleteDefaults",
         "../../utils/saleOptionRenderer",
         "../../validation/organizations",
+        "../LeadSourceInput",
         "../components/ContactOrgMismatchWarning",
         "../components/DistributorAuthorizationWarning",
         "../constants/stageConstants",
@@ -1619,7 +1620,8 @@
         "DistributorAuthorizationWarning",
         "NamingConventionHelp",
         "OPPORTUNITY_STAGE_CHOICES",
-        "DEFAULT_SEGMENT_ID"
+        "DEFAULT_SEGMENT_ID",
+        "LeadSourceInput"
       ],
       "contextDependencies": [
         "useFormContext",

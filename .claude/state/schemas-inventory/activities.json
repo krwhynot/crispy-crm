@@ -1,7 +1,7 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-17T20:21:43.545Z",
-  "item_count": 12,
+  "generated_at": "2026-01-19T02:38:06.755Z",
+  "item_count": 13,
   "items": [
     {
       "name": "activityTypeSchema",
@@ -319,7 +319,8 @@
         }
       ],
       "relatedSchemas": [
-        "activitiesSchema"
+        "activitiesSchema",
+        "updateActivitiesSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": true,
@@ -332,7 +333,8 @@
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
-        "baseActivitiesSchema"
+        "baseActivitiesSchema",
+        "updateActivitiesSchema"
       ],
       "validationFunctions": [
         "validateActivitiesForm"
@@ -367,9 +369,23 @@
       "hasSuperRefine": true
     },
     {
+      "name": "updateActivitiesSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 440,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "baseActivitiesSchema",
+        "activitiesSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 517,
+      "line": 535,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -432,7 +448,7 @@
     {
       "name": "activityDisplayTypeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 553,
+      "line": 571,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [],
@@ -443,16 +459,9 @@
     {
       "name": "activityOutcomeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 601,
+      "line": 687,
       "schemaType": "enum",
       "fields": [],
-      "enumValues": [
-        "Connected",
-        "Left Voicemail",
-        "No Answer",
-        "Completed",
-        "Rescheduled"
-      ],
       "relatedSchemas": [],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -461,7 +470,7 @@
     {
       "name": "quickLogFormBaseSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 620,
+      "line": 700,
       "schemaType": "object",
       "fields": [
         {
@@ -583,7 +592,7 @@
     {
       "name": "quickLogFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 643,
+      "line": 723,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [

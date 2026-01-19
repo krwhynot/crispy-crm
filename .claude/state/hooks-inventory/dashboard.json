@@ -1,7 +1,7 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-17T20:21:42.682Z",
-  "item_count": 12,
+  "generated_at": "2026-01-19T02:38:05.393Z",
+  "item_count": 13,
   "items": [
     {
       "name": "useCurrentSale",
@@ -43,6 +43,19 @@
         "useEffect",
         "useMemo",
         "useNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useEntitySelection",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts",
+      "line": 38,
+      "parameters": [
+        "{\n  setValue,\n  getValues,\n  entityStores,\n  notify,\n}"
+      ],
+      "returnType": "UseEntitySelectionReturn",
+      "dependencies": [
+        "useCallback"
       ],
       "isReact19Action": false
     },

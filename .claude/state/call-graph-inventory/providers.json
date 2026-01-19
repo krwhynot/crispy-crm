@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-17T20:21:48.692Z",
+  "generated_at": "2026-01-19T02:38:15.229Z",
   "items": {
     "nodes": [
       {
@@ -13,10 +13,19 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/commons/canAccess.ts:43:canAccess",
+        "id": "src/atomic-crm/providers/commons/canAccess.ts:69:isRecordOwner",
+        "name": "isRecordOwner",
+        "file": "src/atomic-crm/providers/commons/canAccess.ts",
+        "line": 69,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/commons/canAccess.ts:109:canAccess",
         "name": "canAccess",
         "file": "src/atomic-crm/providers/commons/canAccess.ts",
-        "line": 43,
+        "line": 109,
         "nodeType": "arrow",
         "exported": true,
         "async": false
@@ -975,6 +984,15 @@
         "edgeType": "call",
         "line": 15,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/commons/canAccess.ts:109:canAccess",
+        "target": "isRecordOwner",
+        "targetName": "isRecordOwner",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": true,
         "inLoop": false
       },
       {

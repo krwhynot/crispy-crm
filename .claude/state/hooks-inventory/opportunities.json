@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-17T20:21:42.683Z",
+  "generated_at": "2026-01-19T02:38:05.396Z",
   "item_count": 12,
   "items": [
     {
@@ -143,14 +143,15 @@
     {
       "name": "useSimilarOpportunityCheck",
       "file": "src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.ts",
-      "line": 108,
+      "line": 92,
       "parameters": [
         "options"
       ],
       "returnType": "UseSimilarOpportunityCheckResult",
       "dependencies": [
         "useCallback",
-        "useMemo",
+        "useDataProvider",
+        "useMutation",
         "useState"
       ],
       "isReact19Action": false

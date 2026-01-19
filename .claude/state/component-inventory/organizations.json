@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-17T20:21:28.514Z",
+  "generated_at": "2026-01-19T02:37:50.985Z",
   "item_count": 76,
   "items": [
     {
@@ -370,6 +370,7 @@
       "hooks": [
         "useDeleteMany",
         "useListContext",
+        "useMemo",
         "useNotify",
         "useRefresh",
         "useRelatedRecordCounts",
@@ -402,6 +403,7 @@
       "hooks": [
         "useDeleteMany",
         "useListContext",
+        "useMemo",
         "useNotify",
         "useRefresh",
         "useRelatedRecordCounts",

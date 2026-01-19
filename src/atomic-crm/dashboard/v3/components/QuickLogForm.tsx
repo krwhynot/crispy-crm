@@ -143,7 +143,7 @@ export function QuickLogForm({
       // Defensive validation: Verify entity IDs exist in loaded data
       // Prevents FK violations from stale drafts or recently deleted records
       if (data.contactId) {
-        const contactExists = entityData.contacts.some((c) => c.id === data.contactId);
+        const contactExists = entityData.filteredContacts.some((c) => c.id === data.contactId);
         if (!contactExists) {
           notify("Selected contact no longer exists. Please select a different contact.", {
             type: "error",
@@ -154,7 +154,9 @@ export function QuickLogForm({
       }
 
       if (data.organizationId) {
-        const orgExists = entityData.organizations.some((o) => o.id === data.organizationId);
+        const orgExists = entityData.filteredOrganizations.some(
+          (o) => o.id === data.organizationId
+        );
         if (!orgExists) {
           notify(
             "Selected organization no longer exists. Please select a different organization.",
@@ -168,7 +170,7 @@ export function QuickLogForm({
       }
 
       if (data.opportunityId) {
-        const oppExists = entityData.opportunities.some((o) => o.id === data.opportunityId);
+        const oppExists = entityData.filteredOpportunities.some((o) => o.id === data.opportunityId);
         if (!oppExists) {
           notify("Selected opportunity no longer exists. Please select a different opportunity.", {
             type: "error",

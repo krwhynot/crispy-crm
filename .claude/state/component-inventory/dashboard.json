@@ -1,7 +1,7 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-17T20:21:28.501Z",
-  "item_count": 30,
+  "generated_at": "2026-01-19T02:37:50.978Z",
+  "item_count": 34,
   "items": [
     {
       "name": "RecentItemsWidget",
@@ -85,6 +85,43 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "ActionButtons",
+      "file": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/button",
+        "lucide-react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "ActivityDateSection",
+      "file": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/calendar",
+        "@/components/ui/form",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "ActivityFeedPanel",
       "file": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
       "line": 131,
@@ -141,19 +178,26 @@
     {
       "name": "ActivityTypeSection",
       "file": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx",
-      "line": 41,
+      "line": 48,
       "type": "presentational",
-      "hooks": [],
+      "hooks": [
+        "useEffect",
+        "useFormContext"
+      ],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/layouts/sidepane",
         "@/components/ui/form",
         "@/components/ui/input",
         "@/components/ui/select",
+        "react",
         "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useFormContext"
+      ],
       "componentRole": "leaf"
     },
     {
@@ -230,6 +274,28 @@
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
+    },
+    {
+      "name": "EntitySelectionSection",
+      "file": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx",
+      "line": 39,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../hooks/useEntitySelection",
+        "./EntityCombobox",
+        "@/atomic-crm/validation/activities",
+        "@/components/layouts/sidepane",
+        "@/components/ui/form",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "EntityCombobox",
+        "UseEntitySelectionReturn"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "FollowUpSection",
@@ -370,6 +436,23 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "NotesSection",
+      "file": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/form",
+        "@/components/ui/textarea",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "PipelineDrillDownSheet",
       "file": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx",
       "line": 41,
@@ -498,7 +581,7 @@
     {
       "name": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-      "line": 70,
+      "line": 61,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -506,6 +589,7 @@
         "useDataProvider",
         "useEffect",
         "useEntityData",
+        "useEntitySelection",
         "useForm",
         "useMemo",
         "useNotify",
@@ -515,22 +599,20 @@
       "imports": [
         "../hooks/useCurrentSale",
         "../hooks/useEntityData",
+        "../hooks/useEntitySelection",
+        "./ActionButtons",
+        "./ActivityDateSection",
         "./ActivityTypeSection",
-        "./EntityCombobox",
+        "./EntitySelectionSection",
         "./FollowUpSection",
+        "./NotesSection",
         "@/atomic-crm/providers/supabase/extensions/types",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/atomic-crm/validation/rpc",
-        "@/components/ui/button",
-        "@/components/ui/calendar",
         "@/components/ui/form",
-        "@/components/ui/popover",
-        "@/components/ui/textarea",
-        "@/lib/utils",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
-        "date-fns",
         "lucide-react",
         "react",
         "react-admin",
@@ -538,10 +620,12 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "Contact",
-        "EntityCombobox",
         "ActivityTypeSection",
-        "FollowUpSection"
+        "ActivityDateSection",
+        "EntitySelectionSection",
+        "NotesSection",
+        "FollowUpSection",
+        "ActionButtons"
       ],
       "contextDependencies": [
         "useDataProvider",

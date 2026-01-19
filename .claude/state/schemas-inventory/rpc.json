@@ -1,7 +1,7 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-17T20:21:43.567Z",
-  "item_count": 12,
+  "generated_at": "2026-01-19T02:38:06.776Z",
+  "item_count": 16,
   "items": [
     {
       "name": "getOrCreateSegmentParamsSchema",
@@ -529,9 +529,139 @@
       "hasSuperRefine": false
     },
     {
+      "name": "checkSimilarOpportunitiesParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 202,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "p_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1)",
+            "max(500)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "p_threshold",
+          "zodType": "number",
+          "constraints": [
+            "min(0)",
+            "max(1)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "p_exclude_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "p_limit",
+          "zodType": "number",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "checkSimilarOpportunitiesResponseSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 209,
+      "schemaType": "array",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "getCampaignReportStatsParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 230,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "p_campaign",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Campaign name too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "getCampaignReportStatsResponseSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 245,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "campaign_options",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sales_rep_options",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "activity_type_counts",
+          "zodType": "record",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
       "name": "edgeFunctionSchemas",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 218,
+      "line": 273,
       "schemaType": "object",
       "fields": [],
       "relatedSchemas": [],
