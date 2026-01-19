@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-19T15:30:52.056Z",
+  "generated_at": "2026-01-19T23:19:59.122Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:b94c0c3d8ebaf424",
+  "checksum": "sha256:8cbbdcef6e224359",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "776ba2efe7f5",
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
@@ -18,7 +18,7 @@
     "src/atomic-crm/activity-log/ActivityLogOpportunityCreated.tsx": "796619cbf306",
     "src/atomic-crm/activity-log/ActivityLogOpportunityNoteCreated.tsx": "2c5ed84847a9",
     "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx": "776329f3726e",
-    "src/atomic-crm/components/CreateFormFooter.tsx": "284a282bd34b",
+    "src/atomic-crm/components/CreateFormFooter.tsx": "96a7d2c7ed5b",
     "src/atomic-crm/contacts/ContactCompactForm.tsx": "38c757492e26",
     "src/atomic-crm/contacts/ContactCreate.tsx": "c5ffe4a2a440",
     "src/atomic-crm/contacts/ContactEdit.tsx": "fa229a9839ef",
@@ -33,21 +33,20 @@
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "b318064ed7bf",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "36e217f92bd9",
-    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "cfcbf8775a43",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "720972626061",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
-    "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "623186d207d7",
+    "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx": "d6b7ed77e8b0",
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "2bd7c8cf8cab",
-    "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "95efc3b8e3fb",
+    "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "c87850a6f43f",
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
-    "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "85a959d8c3f9",
+    "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "be87847af0b1",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "068f9e784aa1",
-    "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "2876b2b3a554",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "f3a0850c778e",
-    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "b44ca74125b6",
+    "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "3d7155017edf",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "3ed48ba6a439",
+    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "6f5777fb677f",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "c3719606f37e",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "11007c9e30ee",
-    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "baa60823651d",
+    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "dc987e8dc6cb",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "1bf664861df7",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "2845008adb18",
     "src/atomic-crm/products/ProductCreate.tsx": "eb11b8cea84b",
@@ -67,8 +66,8 @@
     "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "aad9f5488661"
   },
   "summary": {
-    "total_items": 45,
-    "react_admin_forms": 31,
+    "total_items": 43,
+    "react_admin_forms": 29,
     "react19_action_forms": 0,
     "react_hook_form_direct": 6,
     "with_zod_resolver": 10,
@@ -151,7 +150,7 @@
     {
       "componentName": "CreateFormFooter",
       "file": "src/atomic-crm/components/CreateFormFooter.tsx",
-      "line": 17,
+      "line": 18,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -506,60 +505,6 @@
       ]
     },
     {
-      "componentName": "OpportunityCreateWizard",
-      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 70,
-      "formType": "react-admin-simple",
-      "formPatterns": {
-        "primary": "Form",
-        "secondary": [
-          "CreateBase"
-        ]
-      },
-      "inputComponents": [],
-      "hasZodResolver": false,
-      "features": {
-        "hasTabs": false,
-        "hasWizard": false,
-        "hasProgress": false
-      },
-      "componentChain": [
-        "OpportunityCreateWizard",
-        "OpportunityCreateFormTutorial"
-      ],
-      "inputComponentsDeep": [],
-      "formContextWrappers": [
-        "OpportunityCreateWizard"
-      ]
-    },
-    {
-      "componentName": "OpportunityCreateWizard",
-      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 70,
-      "formType": "react-admin-simple",
-      "formPatterns": {
-        "primary": "Form",
-        "secondary": [
-          "CreateBase"
-        ]
-      },
-      "inputComponents": [],
-      "hasZodResolver": false,
-      "features": {
-        "hasTabs": false,
-        "hasWizard": false,
-        "hasProgress": false
-      },
-      "componentChain": [
-        "OpportunityCreateWizard",
-        "OpportunityCreateFormTutorial"
-      ],
-      "inputComponentsDeep": [],
-      "formContextWrappers": [
-        "OpportunityCreateWizard"
-      ]
-    },
-    {
       "componentName": "OpportunityEdit",
       "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
       "line": 19,
@@ -608,7 +553,7 @@
     {
       "componentName": "OpportunityCreateFormFooter",
       "file": "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx",
-      "line": 31,
+      "line": 32,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -662,7 +607,7 @@
     {
       "componentName": "OpportunityCompactForm",
       "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
-      "line": 50,
+      "line": 43,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -688,8 +633,7 @@
         "hasProgress": false
       },
       "componentChain": [
-        "OpportunityCompactForm",
-        "OrganizationInputs"
+        "OpportunityCompactForm"
       ],
       "inputComponentsDeep": [
         "AutocompleteArrayInput",
@@ -707,7 +651,7 @@
     {
       "componentName": "QuickAddForm",
       "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
-      "line": 81,
+      "line": 245,
       "formType": "react-hook-form-direct",
       "formPatterns": {
         "primary": "useForm",
@@ -835,7 +779,7 @@
     {
       "componentName": "OrganizationCreateFormFooter",
       "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
-      "line": 29,
+      "line": 30,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -942,7 +886,7 @@
     {
       "componentName": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 270,
+      "line": 271,
       "formType": "react-hook-form-direct",
       "formPatterns": {
         "primary": "useForm",

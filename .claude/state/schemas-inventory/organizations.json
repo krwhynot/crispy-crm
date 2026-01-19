@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-19T15:30:51.589Z",
-  "item_count": 8,
+  "generated_at": "2026-01-19T23:19:57.744Z",
+  "item_count": 9,
   "items": [
     {
       "name": "organizationTypeSchema",
@@ -16,7 +16,8 @@
         "distributor"
       ],
       "relatedSchemas": [
-        "organizationSchema"
+        "organizationSchema",
+        "createOrganizationSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -35,7 +36,8 @@
         "D"
       ],
       "relatedSchemas": [
-        "organizationSchema"
+        "organizationSchema",
+        "createOrganizationSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -722,6 +724,7 @@
         "baseOrganizationDistributorSchema",
         "organizationTypeSchema",
         "organizationPrioritySchema",
+        "createOrganizationSchema",
         "organizationQuickCreateSchema",
         "setPrimaryOrganizationParamsSchema"
       ],
@@ -732,9 +735,31 @@
       "hasSuperRefine": false
     },
     {
+      "name": "createOrganizationSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 262,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "contactOrganizationSchema",
+        "organizationNoteSchema",
+        "baseOrganizationDistributorSchema",
+        "organizationTypeSchema",
+        "organizationPrioritySchema",
+        "organizationSchema",
+        "organizationQuickCreateSchema",
+        "setPrimaryOrganizationParamsSchema"
+      ],
+      "validationFunctions": [
+        "validateCreateOrganization"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
       "name": "organizationQuickCreateSchema",
       "file": "src/atomic-crm/validation/organizations.ts",
-      "line": 327,
+      "line": 336,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -792,7 +817,8 @@
         }
       ],
       "relatedSchemas": [
-        "organizationSchema"
+        "organizationSchema",
+        "createOrganizationSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,

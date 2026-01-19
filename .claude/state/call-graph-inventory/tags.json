@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-19T15:30:54.997Z",
+  "generated_at": "2026-01-19T23:20:06.514Z",
   "items": {
     "nodes": [
       {
@@ -31,10 +31,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "id": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "name": "TagDialog",
         "file": "src/atomic-crm/tags/TagDialog.tsx",
-        "line": 39,
+        "line": 40,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -294,318 +294,381 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 44,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 44,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "useForm",
         "targetName": "useForm",
         "edgeType": "hook",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
-        "edgeType": "call",
         "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "useWatch",
-        "targetName": "useWatch",
-        "edgeType": "hook",
-        "line": 67,
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "zodResolver",
+        "targetName": "zodResolver",
+        "edgeType": "call",
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "useEffect",
-        "targetName": "useEffect",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "useWatch",
+        "targetName": "useWatch",
+        "edgeType": "hook",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
         "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 72,
+        "line": 75,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "call",
-        "line": 80,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 81,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "call",
-        "line": 82,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "confirm",
-        "targetName": "confirm",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "setShowUnsavedDialog",
+        "targetName": "setShowUnsavedDialog",
         "edgeType": "call",
-        "line": 88,
+        "line": 90,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 91,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "call",
-        "line": 92,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "handleSubmit",
-        "targetName": "handleSubmit",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "setShowUnsavedDialog",
+        "targetName": "setShowUnsavedDialog",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "reset",
+        "targetName": "reset",
         "edgeType": "call",
         "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "register",
-        "targetName": "register",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "onClose",
+        "targetName": "onClose",
         "edgeType": "call",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 134,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "setValue",
-        "targetName": "setValue",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "cn",
-        "targetName": "cn",
-        "edgeType": "call",
-        "line": 162,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "buttonVariants",
-        "targetName": "buttonVariants",
-        "edgeType": "call",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "Dialog",
-        "targetName": "Dialog",
-        "edgeType": "render",
-        "line": 96,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "handleClose",
-        "targetName": "handleClose",
-        "edgeType": "callback",
-        "line": 96,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "DialogContent",
-        "targetName": "DialogContent",
-        "edgeType": "render",
-        "line": 97,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "FormProvider",
-        "targetName": "FormProvider",
-        "edgeType": "render",
-        "line": 98,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "DialogHeader",
-        "targetName": "DialogHeader",
-        "edgeType": "render",
         "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "DialogTitle",
-        "targetName": "DialogTitle",
-        "edgeType": "render",
-        "line": 101,
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "handleSubmit",
+        "targetName": "handleSubmit",
+        "edgeType": "call",
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "DialogDescription",
-        "targetName": "DialogDescription",
-        "edgeType": "render",
-        "line": 102,
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 116,
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 132,
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 149,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 158,
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 171,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
-        "target": "FormErrorSummary",
-        "targetName": "FormErrorSummary",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "buttonVariants",
+        "targetName": "buttonVariants",
+        "edgeType": "call",
+        "line": 172,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "setShowUnsavedDialog",
+        "targetName": "setShowUnsavedDialog",
+        "edgeType": "call",
+        "line": 197,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "Dialog",
+        "targetName": "Dialog",
+        "edgeType": "render",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "handleClose",
+        "targetName": "handleClose",
+        "edgeType": "callback",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "DialogContent",
+        "targetName": "DialogContent",
+        "edgeType": "render",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "FormProvider",
+        "targetName": "FormProvider",
         "edgeType": "render",
         "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "DialogHeader",
+        "targetName": "DialogHeader",
+        "edgeType": "render",
+        "line": 109,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "DialogTitle",
+        "targetName": "DialogTitle",
+        "edgeType": "render",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "DialogDescription",
+        "targetName": "DialogDescription",
+        "edgeType": "render",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 141,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "FormErrorSummary",
+        "targetName": "FormErrorSummary",
+        "edgeType": "render",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 117,
+        "line": 126,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "RoundButton",
         "targetName": "RoundButton",
         "edgeType": "render",
-        "line": 136,
+        "line": 145,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "Loader2",
         "targetName": "Loader2",
         "edgeType": "render",
-        "line": 170,
+        "line": 179,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagDialog.tsx:39:TagDialog",
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
         "target": "SaveIcon",
         "targetName": "SaveIcon",
         "edgeType": "render",
-        "line": 175,
+        "line": 184,
         "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "UnsavedChangesDialog",
+        "targetName": "UnsavedChangesDialog",
+        "edgeType": "render",
+        "line": 194,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagDialog.tsx:40:TagDialog",
+        "target": "handleConfirmClose",
+        "targetName": "handleConfirmClose",
+        "edgeType": "callback",
+        "line": 196,
+        "conditional": false,
         "inLoop": false
       },
       {

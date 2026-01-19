@@ -1,33 +1,20 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-19T15:30:40.861Z",
+  "generated_at": "2026-01-19T23:19:27.593Z",
   "item_count": 76,
   "items": [
     {
       "name": "ActivitiesTab",
       "file": "src/atomic-crm/organizations/ActivitiesTab.tsx",
-      "line": 14,
+      "line": 7,
       "type": "presentational",
-      "hooks": [
-        "useGetList",
-        "useState"
-      ],
+      "hooks": [],
       "imports": [
-        "../activities",
-        "../activities/constants",
-        "../types",
-        "@/components/ui/button",
-        "@/components/ui/skeleton",
-        "lucide-react",
-        "ra-core",
-        "react"
+        "../timeline"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "QuickLogActivityDialog",
-        "ActivityTimelineEntry",
-        "ActivityRecord",
-        "ACTIVITY_PAGE_SIZE"
+        "UnifiedTimeline"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -35,28 +22,15 @@
     {
       "name": "ActivitiesTab",
       "file": "src/atomic-crm/organizations/ActivitiesTab.tsx",
-      "line": 14,
+      "line": 7,
       "type": "presentational",
-      "hooks": [
-        "useGetList",
-        "useState"
-      ],
+      "hooks": [],
       "imports": [
-        "../activities",
-        "../activities/constants",
-        "../types",
-        "@/components/ui/button",
-        "@/components/ui/skeleton",
-        "lucide-react",
-        "ra-core",
-        "react"
+        "../timeline"
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "QuickLogActivityDialog",
-        "ActivityTimelineEntry",
-        "ActivityRecord",
-        "ACTIVITY_PAGE_SIZE"
+        "UnifiedTimeline"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -561,7 +535,7 @@
     {
       "name": "OrganizationCreateFormFooter",
       "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
-      "line": 29,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -577,6 +551,7 @@
         "./types",
         "@/components/admin/form",
         "@/components/ui/button",
+        "@/components/ui/unsaved-changes-dialog",
         "ra-core",
         "react",
         "react-hook-form"
@@ -1421,7 +1396,7 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 270,
+      "line": 271,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",

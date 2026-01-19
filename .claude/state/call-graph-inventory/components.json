@@ -1,13 +1,13 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-19T15:30:54.939Z",
+  "generated_at": "2026-01-19T23:20:06.302Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "id": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "name": "CreateFormFooter",
         "file": "src/atomic-crm/components/CreateFormFooter.tsx",
-        "line": 17,
+        "line": 18,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -78,124 +78,115 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "useNotify",
         "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 24,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
         "edgeType": "hook",
         "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "useFormContext",
-        "targetName": "useFormContext",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
         "edgeType": "hook",
         "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "useFormState",
-        "targetName": "useFormState",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "useFormContext",
+        "targetName": "useFormContext",
         "edgeType": "hook",
         "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "useCallback",
-        "targetName": "useCallback",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "useFormState",
+        "targetName": "useFormState",
+        "edgeType": "hook",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
         "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "confirm",
-        "targetName": "confirm",
-        "edgeType": "call",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
         "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "setShowDialog",
+        "targetName": "setShowDialog",
+        "edgeType": "call",
+        "line": 33,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 34,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
         "line": 39,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 57,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "ucFirst",
         "targetName": "ucFirst",
         "edgeType": "call",
-        "line": 57,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "redirectFn",
-        "targetName": "redirectFn",
-        "edgeType": "call",
-        "line": 59,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "redirect",
-        "targetName": "redirect",
-        "edgeType": "call",
-        "line": 59,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
@@ -204,52 +195,61 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "redirect",
+        "targetName": "redirect",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "redirectFn",
+        "targetName": "redirectFn",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 73,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "ucFirst",
         "targetName": "ucFirst",
         "edgeType": "call",
-        "line": 73,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "getValues",
         "targetName": "getValues",
         "edgeType": "call",
-        "line": 76,
+        "line": 78,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "reduce",
         "targetName": "reduce",
         "edgeType": "call",
-        "line": 77,
+        "line": 79,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
-        "target": "reset",
-        "targetName": "reset",
-        "edgeType": "call",
-        "line": 86,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
@@ -258,38 +258,83 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "reset",
+        "targetName": "reset",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "setShowDialog",
+        "targetName": "setShowDialog",
+        "edgeType": "call",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "redirectFn",
+        "targetName": "redirectFn",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "setShowDialog",
+        "targetName": "setShowDialog",
+        "edgeType": "call",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 46,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 46,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 50,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/CreateFormFooter.tsx:17:CreateFormFooter",
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 67,
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
+        "target": "UnsavedChangesDialog",
+        "targetName": "UnsavedChangesDialog",
+        "edgeType": "render",
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },

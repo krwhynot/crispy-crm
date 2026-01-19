@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-19T15:30:40.865Z",
+  "generated_at": "2026-01-19T23:19:27.621Z",
   "item_count": 7,
   "items": [
     {
@@ -65,12 +65,13 @@
     {
       "name": "TagDialog",
       "file": "src/atomic-crm/tags/TagDialog.tsx",
-      "line": 39,
+      "line": 40,
       "type": "presentational",
       "hooks": [
         "useEffect",
         "useForm",
         "useMemo",
+        "useState",
         "useWatch"
       ],
       "imports": [
@@ -84,6 +85,7 @@
         "@/components/ui/dialog",
         "@/components/ui/input",
         "@/components/ui/label",
+        "@/components/ui/unsaved-changes-dialog",
         "@/lib/color-types",
         "@/lib/utils",
         "@hookform/resolvers/zod",

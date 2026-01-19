@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-relations",
-  "generated_at": "2026-01-19T15:30:51.586Z",
+  "generated_at": "2026-01-19T23:19:57.741Z",
   "item_count": 1,
   "items": [
     {
@@ -83,7 +83,8 @@
         "contactSchema",
         "createContactSchema",
         "importContactSchema",
-        "organizationSchema"
+        "organizationSchema",
+        "createOrganizationSchema"
       ],
       "validationFunctions": [
         "validateContactOrganization"

@@ -1,13 +1,13 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-19T15:30:54.939Z",
+  "generated_at": "2026-01-19T23:20:06.311Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
+        "id": "src/atomic-crm/contacts/ActivitiesTab.tsx:7:ActivitiesTab",
         "name": "ActivitiesTab",
         "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
-        "line": 15,
+        "line": 7,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -996,137 +996,20 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 16,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "useGetList",
-        "targetName": "useGetList",
-        "edgeType": "hook",
-        "line": 18,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:7:ActivitiesTab",
         "target": "parseInt",
         "targetName": "parseInt",
         "edgeType": "call",
-        "line": 25,
+        "line": 9,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 30,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "setIsDialogOpen",
-        "targetName": "setIsDialogOpen",
-        "edgeType": "call",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 64,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "refetch",
-        "targetName": "refetch",
-        "edgeType": "call",
-        "line": 80,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "Button",
-        "targetName": "Button",
+        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:7:ActivitiesTab",
+        "target": "UnifiedTimeline",
+        "targetName": "UnifiedTimeline",
         "edgeType": "render",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 32,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 34,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "Plus",
-        "targetName": "Plus",
-        "edgeType": "render",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "SidepaneEmptyState",
-        "targetName": "SidepaneEmptyState",
-        "edgeType": "render",
-        "line": 58,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "ActivityTimelineEntry",
-        "targetName": "ActivityTimelineEntry",
-        "edgeType": "render",
-        "line": 65,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ActivitiesTab.tsx:15:ActivitiesTab",
-        "target": "QuickLogActivityDialog",
-        "targetName": "QuickLogActivityDialog",
-        "edgeType": "render",
-        "line": 71,
+        "line": 11,
         "conditional": false,
         "inLoop": false
       },

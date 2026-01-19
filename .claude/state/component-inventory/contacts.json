@@ -1,34 +1,20 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-19T15:30:40.856Z",
+  "generated_at": "2026-01-19T23:19:27.567Z",
   "item_count": 58,
   "items": [
     {
       "name": "ActivitiesTab",
       "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
-      "line": 15,
+      "line": 7,
       "type": "presentational",
-      "hooks": [
-        "useGetList",
-        "useState"
-      ],
+      "hooks": [],
       "imports": [
-        "../activities",
-        "../activities/constants",
-        "../types",
-        "@/components/layouts/sidepane",
-        "@/components/ui/button",
-        "@/components/ui/skeleton",
-        "lucide-react",
-        "ra-core",
-        "react"
+        "../timeline"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "QuickLogActivityDialog",
-        "ActivityTimelineEntry",
-        "ActivityRecord",
-        "ACTIVITY_PAGE_SIZE"
+        "UnifiedTimeline"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -36,29 +22,15 @@
     {
       "name": "ActivitiesTab",
       "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
-      "line": 15,
+      "line": 7,
       "type": "presentational",
-      "hooks": [
-        "useGetList",
-        "useState"
-      ],
+      "hooks": [],
       "imports": [
-        "../activities",
-        "../activities/constants",
-        "../types",
-        "@/components/layouts/sidepane",
-        "@/components/ui/button",
-        "@/components/ui/skeleton",
-        "lucide-react",
-        "ra-core",
-        "react"
+        "../timeline"
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "QuickLogActivityDialog",
-        "ActivityTimelineEntry",
-        "ActivityRecord",
-        "ACTIVITY_PAGE_SIZE"
+        "UnifiedTimeline"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

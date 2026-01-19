@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-19T15:30:51.587Z",
+  "generated_at": "2026-01-19T23:19:57.742Z",
   "item_count": 4,
   "items": [
     {
@@ -133,7 +133,8 @@
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
-        "organizationSchema"
+        "organizationSchema",
+        "createOrganizationSchema"
       ],
       "validationFunctions": [
         "validateOrganizationNoteForSubmission"

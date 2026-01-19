@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-19T15:30:54.958Z",
+  "generated_at": "2026-01-19T23:20:06.376Z",
   "items": {
     "nodes": [
       {
@@ -274,10 +274,10 @@
         "async": false
       },
       {
-        "id": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "id": "src/hooks/useUnsavedChangesWarning.ts:12:useUnsavedChangesWarning",
         "name": "useUnsavedChangesWarning",
         "file": "src/hooks/useUnsavedChangesWarning.ts",
-        "line": 11,
+        "line": 12,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -3489,47 +3489,56 @@
         "inLoop": false
       },
       {
-        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "source": "src/hooks/useUnsavedChangesWarning.ts:12:useUnsavedChangesWarning",
         "target": "useFormState",
         "targetName": "useFormState",
         "edgeType": "hook",
-        "line": 12,
+        "line": 13,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "source": "src/hooks/useUnsavedChangesWarning.ts:12:useUnsavedChangesWarning",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 14,
+        "line": 15,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
-        "target": "preventDefault",
-        "targetName": "preventDefault",
+        "source": "src/hooks/useUnsavedChangesWarning.ts:12:useUnsavedChangesWarning",
+        "target": "shouldDisableBeforeUnload",
+        "targetName": "shouldDisableBeforeUnload",
         "edgeType": "call",
-        "line": 19,
+        "line": 16,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "source": "src/hooks/useUnsavedChangesWarning.ts:12:useUnsavedChangesWarning",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 20,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useUnsavedChangesWarning.ts:12:useUnsavedChangesWarning",
         "target": "addEventListener",
         "targetName": "addEventListener",
         "edgeType": "call",
-        "line": 24,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "source": "src/hooks/useUnsavedChangesWarning.ts:12:useUnsavedChangesWarning",
         "target": "removeEventListener",
         "targetName": "removeEventListener",
         "edgeType": "call",
-        "line": 25,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },

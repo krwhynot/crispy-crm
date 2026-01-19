@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-19T15:30:51.777Z",
+  "generated_at": "2026-01-19T23:19:58.158Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:80ce2b78ba09892a",
+  "checksum": "sha256:d216fd812c3c4518",
   "source_hashes": {
     "src/atomic-crm/dashboard/v3/types.ts": "a7616a1f8934",
     "src/atomic-crm/filters/types.ts": "3879550007ba",
@@ -20,23 +20,24 @@
     "src/atomic-crm/tutorial/types.ts": "b66ec8c41b6f",
     "src/atomic-crm/types.ts": "dc0e9c40acea",
     "src/types/database.types.ts": "4266e0dc2ebe",
-    "src/types/diacritic.d.ts": "a0363d5aebaa"
+    "src/types/diacritic.d.ts": "a0363d5aebaa",
+    "src/types/supabase.ts": "20e0b342ad5f"
   },
   "summary": {
-    "total_items": 101,
-    "total_chunks": 9,
+    "total_items": 110,
+    "total_chunks": 10,
     "interfaces": 68,
-    "type_aliases": 33,
+    "type_aliases": 42,
     "zod_derived": 2,
-    "exported": 98,
-    "complex": 54
+    "exported": 105,
+    "complex": 62
   },
   "chunks": [
     {
       "name": "_root",
       "file": "_root.json",
       "item_count": 30,
-      "checksum": "sha256:f83ab3f497e4ab09",
+      "checksum": "sha256:740a45ae642fe8f0",
       "source_files": [
         "src/atomic-crm/types.ts"
       ],
@@ -48,7 +49,7 @@
       "name": "dashboard",
       "file": "dashboard.json",
       "item_count": 13,
-      "checksum": "sha256:89cb14538ffea060",
+      "checksum": "sha256:c7523dea7d69fab3",
       "source_files": [
         "src/atomic-crm/dashboard/v3/types.ts"
       ],
@@ -60,7 +61,7 @@
       "name": "database",
       "file": "database.json",
       "item_count": 9,
-      "checksum": "sha256:54a7b3a405701735",
+      "checksum": "sha256:b1647a99317491aa",
       "source_files": [
         "src/types/database.types.ts"
       ],
@@ -72,7 +73,7 @@
       "name": "filters",
       "file": "filters.json",
       "item_count": 13,
-      "checksum": "sha256:a4f68080736bb318",
+      "checksum": "sha256:0b0cb6b7da40fd05",
       "source_files": [
         "src/atomic-crm/filters/types.ts"
       ],
@@ -84,7 +85,7 @@
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 17,
-      "checksum": "sha256:0cc1e22cdaf33166",
+      "checksum": "sha256:f36b34ec7a2cac9b",
       "source_files": [
         "src/atomic-crm/organizations/types.ts"
       ],
@@ -96,7 +97,7 @@
       "name": "providers",
       "file": "providers.json",
       "item_count": 7,
-      "checksum": "sha256:3800184f5e382be8",
+      "checksum": "sha256:787b81ff770a90f9",
       "source_files": [
         "src/atomic-crm/providers/supabase/extensions/types.ts",
         "src/atomic-crm/providers/supabase/types.ts",
@@ -112,7 +113,7 @@
       "name": "reports",
       "file": "reports.json",
       "item_count": 3,
-      "checksum": "sha256:de5880dd4f69e11c",
+      "checksum": "sha256:8c9e0426521daa32",
       "source_files": [
         "src/atomic-crm/reports/types.ts"
       ],
@@ -121,10 +122,22 @@
       }
     },
     {
+      "name": "supabase",
+      "file": "supabase.json",
+      "item_count": 9,
+      "checksum": "sha256:5fa627cdc330d09f",
+      "source_files": [
+        "src/types/supabase.ts"
+      ],
+      "source_hashes": {
+        "src/types/supabase.ts": "20e0b342ad5f"
+      }
+    },
+    {
       "name": "tags",
       "file": "tags.json",
       "item_count": 6,
-      "checksum": "sha256:5e703956d3ecfe53",
+      "checksum": "sha256:ac7b719e8b29ae7e",
       "source_files": [
         "src/atomic-crm/tags/types.ts"
       ],
@@ -136,7 +149,7 @@
       "name": "tutorial",
       "file": "tutorial.json",
       "item_count": 3,
-      "checksum": "sha256:281551f75ceb453e",
+      "checksum": "sha256:5bff78276a69ced7",
       "source_files": [
         "src/atomic-crm/tutorial/types.ts"
       ],
@@ -181,6 +194,9 @@
     ],
     "src/types/diacritic.d.ts": [
       "diacritic"
+    ],
+    "src/types/supabase.ts": [
+      "supabase"
     ]
   }
 }

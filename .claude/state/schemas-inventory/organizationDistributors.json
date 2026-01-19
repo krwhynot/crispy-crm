@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizationDistributors",
-  "generated_at": "2026-01-19T15:30:51.589Z",
+  "generated_at": "2026-01-19T23:19:57.744Z",
   "item_count": 1,
   "items": [
     {
@@ -100,7 +100,8 @@
         }
       ],
       "relatedSchemas": [
-        "organizationSchema"
+        "organizationSchema",
+        "createOrganizationSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,

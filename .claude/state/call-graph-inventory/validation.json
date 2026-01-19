@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-19T15:30:55.004Z",
+  "generated_at": "2026-01-19T23:20:06.523Z",
   "items": {
     "nodes": [
       {
@@ -490,19 +490,19 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:282:validateCreateOrganization",
+        "id": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
         "name": "validateCreateOrganization",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 282,
+        "line": 291,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:301:validateUpdateOrganization",
+        "id": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
         "name": "validateUpdateOrganization",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 301,
+        "line": 310,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -796,10 +796,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/utils.ts:169:formatZodErrors",
+        "id": "src/atomic-crm/validation/utils.ts:176:formatZodErrors",
         "name": "formatZodErrors",
         "file": "src/atomic-crm/validation/utils.ts",
-        "line": 169,
+        "line": 176,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -2085,56 +2085,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:282:validateCreateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 284,
+        "line": 293,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:282:validateCreateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 288,
+        "line": 297,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:282:validateCreateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 289,
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:301:validateUpdateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 303,
+        "line": 312,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:301:validateUpdateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 307,
+        "line": 316,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:301:validateUpdateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 308,
+        "line": 317,
         "conditional": false,
         "inLoop": false
       },
@@ -2661,20 +2661,38 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/utils.ts:169:formatZodErrors",
+        "source": "src/atomic-crm/validation/utils.ts:44:getFriendlyErrorMessage",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 173,
+        "line": 143,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/utils.ts:44:getFriendlyErrorMessage",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 143,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/utils.ts:176:formatZodErrors",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 180,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/validation/utils.ts:169:formatZodErrors",
+        "source": "src/atomic-crm/validation/utils.ts:176:formatZodErrors",
         "target": "getFriendlyErrorMessage",
         "targetName": "getFriendlyErrorMessage",
         "edgeType": "call",
-        "line": 174,
+        "line": 181,
         "conditional": false,
         "inLoop": true
       }

@@ -1,0 +1,103 @@
+{
+  "chunk_name": "timeline",
+  "generated_at": "2026-01-19T23:19:27.624Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "TimelineEntry",
+      "file": "src/atomic-crm/timeline/TimelineEntry.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/utils",
+        "@/components/admin/reference-field",
+        "@/components/ui/badge",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "TimelineEntry",
+      "file": "src/atomic-crm/timeline/TimelineEntry.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/utils",
+        "@/components/admin/reference-field",
+        "@/components/ui/badge",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "UnifiedTimeline",
+      "file": "src/atomic-crm/timeline/UnifiedTimeline.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "../activities",
+        "./TimelineEntry",
+        "@/components/layouts/sidepane",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickLogActivityDialog",
+        "TimelineEntry"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "UnifiedTimeline",
+      "file": "src/atomic-crm/timeline/UnifiedTimeline.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "../activities",
+        "./TimelineEntry",
+        "@/components/layouts/sidepane",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "QuickLogActivityDialog",
+        "TimelineEntry"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-19T15:30:40.859Z",
-  "item_count": 81,
+  "generated_at": "2026-01-19T23:19:27.590Z",
+  "item_count": 75,
   "items": [
     {
       "name": "ActivitiesList",
@@ -413,96 +413,6 @@
         "OpportunityCreateFormFooter",
         "SimilarOpportunitiesDialog",
         "OpportunityCreateFormTutorial"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OpportunityCreateWizard",
-      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 70,
-      "type": "presentational",
-      "hooks": [
-        "useCanAccess",
-        "useEffect",
-        "useGetIdentity",
-        "useMemo",
-        "useNotify",
-        "useSearchParams",
-        "useSimilarOpportunityCheck"
-      ],
-      "imports": [
-        "../tutorial/OpportunityCreateFormTutorial",
-        "../validation/opportunities",
-        "./components/SimilarOpportunitiesDialog",
-        "./forms/OpportunityWizardSteps",
-        "./forms/opportunityWizardConfig",
-        "./hooks/useSimilarOpportunityCheck",
-        "@/atomic-crm/utils/getContextAwareRedirect",
-        "@/components/admin/FormErrorSummary",
-        "@/components/admin/form",
-        "@/components/ui/card",
-        "@/components/ui/unsaved-changes-dialog",
-        "@/hooks",
-        "ra-core",
-        "react",
-        "react-hook-form",
-        "react-router-dom"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "SimilarOpportunitiesDialog",
-        "OpportunityCreateFormTutorial",
-        "OPPORTUNITY_WIZARD_STEPS",
-        "OpportunityWizardStep1",
-        "OpportunityWizardStep2",
-        "OpportunityWizardStep3",
-        "OpportunityWizardStep4"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OpportunityCreateWizard",
-      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
-      "line": 70,
-      "type": "presentational",
-      "hooks": [
-        "useCanAccess",
-        "useEffect",
-        "useGetIdentity",
-        "useMemo",
-        "useNotify",
-        "useSearchParams",
-        "useSimilarOpportunityCheck"
-      ],
-      "imports": [
-        "../tutorial/OpportunityCreateFormTutorial",
-        "../validation/opportunities",
-        "./components/SimilarOpportunitiesDialog",
-        "./forms/OpportunityWizardSteps",
-        "./forms/opportunityWizardConfig",
-        "./hooks/useSimilarOpportunityCheck",
-        "@/atomic-crm/utils/getContextAwareRedirect",
-        "@/components/admin/FormErrorSummary",
-        "@/components/admin/form",
-        "@/components/ui/card",
-        "@/components/ui/unsaved-changes-dialog",
-        "@/hooks",
-        "ra-core",
-        "react",
-        "react-hook-form",
-        "react-router-dom"
-      ],
-      "isDefaultExport": true,
-      "childComponents": [
-        "SimilarOpportunitiesDialog",
-        "OpportunityCreateFormTutorial",
-        "OPPORTUNITY_WIZARD_STEPS",
-        "OpportunityWizardStep1",
-        "OpportunityWizardStep2",
-        "OpportunityWizardStep3",
-        "OpportunityWizardStep4"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -986,10 +896,9 @@
     {
       "name": "OpportunitySpeedDial",
       "file": "src/atomic-crm/opportunities/OpportunitySpeedDial.tsx",
-      "line": 48,
+      "line": 38,
       "type": "presentational",
       "hooks": [
-        "useCreatePath",
         "useState"
       ],
       "imports": [
@@ -998,9 +907,7 @@
         "@/components/ui/tooltip",
         "@/lib/utils",
         "lucide-react",
-        "ra-core",
-        "react",
-        "react-router-dom"
+        "react"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -1462,7 +1369,7 @@
     {
       "name": "OpportunityCreateFormFooter",
       "file": "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx",
-      "line": 31,
+      "line": 32,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1473,12 +1380,14 @@
         "useRedirect",
         "useRef",
         "useSaveContext",
+        "useState",
         "useTranslate",
         "useWatch"
       ],
       "imports": [
         "../../utils/levenshtein",
         "@/components/ui/button",
+        "@/components/ui/unsaved-changes-dialog",
         "@/lib/utils",
         "lucide-react",
         "ra-core",
@@ -1574,7 +1483,7 @@
     {
       "name": "OpportunityCompactForm",
       "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
-      "line": 50,
+      "line": 43,
       "type": "presentational",
       "hooks": [
         "useAutoGenerateName",
@@ -1586,14 +1495,11 @@
         "useWatch"
       ],
       "imports": [
-        "../../constants",
         "../../contacts/ContactOption",
         "../../contacts/QuickCreateContactPopover",
         "../../organizations/AutocompleteOrganizationInput",
-        "../../organizations/OrganizationInputs",
         "../../utils/autocompleteDefaults",
         "../../utils/saleOptionRenderer",
-        "../../validation/organizations",
         "../LeadSourceInput",
         "../components/ContactOrgMismatchWarning",
         "../components/DistributorAuthorizationWarning",
@@ -1602,7 +1508,6 @@
         "./NamingConventionHelp",
         "@/components/admin/array-input",
         "@/components/admin/autocomplete-array-input",
-        "@/components/admin/create-in-dialog-button",
         "@/components/admin/date-input",
         "@/components/admin/form",
         "@/components/admin/reference-array-input",
@@ -1620,13 +1525,11 @@
       "isDefaultExport": false,
       "childComponents": [
         "AutocompleteOrganizationInput",
-        "OrganizationInputs",
         "QuickCreateContactPopover",
         "ContactOrgMismatchWarning",
         "DistributorAuthorizationWarning",
         "NamingConventionHelp",
         "OPPORTUNITY_STAGE_CHOICES",
-        "DEFAULT_SEGMENT_ID",
         "LeadSourceInput"
       ],
       "contextDependencies": [
@@ -1655,248 +1558,6 @@
       "contextDependencies": [
         "useFormState"
       ],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OpportunityWizardStep1",
-      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 56,
-      "type": "presentational",
-      "hooks": [
-        "useAutoGenerateName",
-        "useFormContext",
-        "useGetIdentity"
-      ],
-      "imports": [
-        "../../constants",
-        "../../contacts/ContactOption",
-        "../../contacts/QuickCreateContactPopover",
-        "../../organizations/AutocompleteOrganizationInput",
-        "../../organizations/OrganizationInputs",
-        "../../utils/saleOptionRenderer",
-        "../../validation/organizations",
-        "../components/ContactOrgMismatchWarning",
-        "../components/CustomerDistributorIndicator",
-        "../components/DistributorAuthorizationWarning",
-        "../constants/stageConstants",
-        "../hooks",
-        "./NamingConventionHelp",
-        "@/components/admin/array-input",
-        "@/components/admin/autocomplete-array-input",
-        "@/components/admin/create-in-dialog-button",
-        "@/components/admin/date-input",
-        "@/components/admin/form",
-        "@/components/admin/reference-array-input",
-        "@/components/admin/reference-input",
-        "@/components/admin/select-input",
-        "@/components/admin/simple-form-iterator",
-        "@/components/admin/text-input",
-        "@/components/admin/text-input/",
-        "@/components/ui/button",
-        "@/components/ui/tooltip",
-        "@/lib/utils",
-        "lucide-react",
-        "ra-core",
-        "react",
-        "react-hook-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AutocompleteOrganizationInput",
-        "OrganizationInputs",
-        "QuickCreateContactPopover",
-        "ContactOrgMismatchWarning",
-        "DistributorAuthorizationWarning",
-        "CustomerDistributorIndicator",
-        "NamingConventionHelp",
-        "OPPORTUNITY_STAGE_CHOICES",
-        "DEFAULT_SEGMENT_ID"
-      ],
-      "contextDependencies": [
-        "useFormContext"
-      ],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OpportunityWizardStep2",
-      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 199,
-      "type": "presentational",
-      "hooks": [
-        "useCustomerDistributors",
-        "useEffect",
-        "useFormContext",
-        "useGetIdentity",
-        "useRef",
-        "useWatch"
-      ],
-      "imports": [
-        "../../constants",
-        "../../contacts/ContactOption",
-        "../../contacts/QuickCreateContactPopover",
-        "../../organizations/AutocompleteOrganizationInput",
-        "../../organizations/OrganizationInputs",
-        "../../utils/saleOptionRenderer",
-        "../../validation/organizations",
-        "../components/ContactOrgMismatchWarning",
-        "../components/CustomerDistributorIndicator",
-        "../components/DistributorAuthorizationWarning",
-        "../constants/stageConstants",
-        "../hooks",
-        "./NamingConventionHelp",
-        "@/components/admin/array-input",
-        "@/components/admin/autocomplete-array-input",
-        "@/components/admin/create-in-dialog-button",
-        "@/components/admin/date-input",
-        "@/components/admin/form",
-        "@/components/admin/reference-array-input",
-        "@/components/admin/reference-input",
-        "@/components/admin/select-input",
-        "@/components/admin/simple-form-iterator",
-        "@/components/admin/text-input",
-        "@/components/admin/text-input/",
-        "@/components/ui/button",
-        "@/components/ui/tooltip",
-        "@/lib/utils",
-        "lucide-react",
-        "ra-core",
-        "react",
-        "react-hook-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AutocompleteOrganizationInput",
-        "OrganizationInputs",
-        "QuickCreateContactPopover",
-        "ContactOrgMismatchWarning",
-        "DistributorAuthorizationWarning",
-        "CustomerDistributorIndicator",
-        "NamingConventionHelp",
-        "OPPORTUNITY_STAGE_CHOICES",
-        "DEFAULT_SEGMENT_ID"
-      ],
-      "contextDependencies": [
-        "useFormContext",
-        "useWatch"
-      ],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OpportunityWizardStep3",
-      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 348,
-      "type": "presentational",
-      "hooks": [
-        "useFormContext",
-        "useGetIdentity",
-        "useMemo",
-        "useRefresh",
-        "useState",
-        "useWatch"
-      ],
-      "imports": [
-        "../../constants",
-        "../../contacts/ContactOption",
-        "../../contacts/QuickCreateContactPopover",
-        "../../organizations/AutocompleteOrganizationInput",
-        "../../organizations/OrganizationInputs",
-        "../../utils/saleOptionRenderer",
-        "../../validation/organizations",
-        "../components/ContactOrgMismatchWarning",
-        "../components/CustomerDistributorIndicator",
-        "../components/DistributorAuthorizationWarning",
-        "../constants/stageConstants",
-        "../hooks",
-        "./NamingConventionHelp",
-        "@/components/admin/array-input",
-        "@/components/admin/autocomplete-array-input",
-        "@/components/admin/create-in-dialog-button",
-        "@/components/admin/date-input",
-        "@/components/admin/form",
-        "@/components/admin/reference-array-input",
-        "@/components/admin/reference-input",
-        "@/components/admin/select-input",
-        "@/components/admin/simple-form-iterator",
-        "@/components/admin/text-input",
-        "@/components/admin/text-input/",
-        "@/components/ui/button",
-        "@/components/ui/tooltip",
-        "@/lib/utils",
-        "lucide-react",
-        "ra-core",
-        "react",
-        "react-hook-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AutocompleteOrganizationInput",
-        "OrganizationInputs",
-        "QuickCreateContactPopover",
-        "ContactOrgMismatchWarning",
-        "DistributorAuthorizationWarning",
-        "CustomerDistributorIndicator",
-        "NamingConventionHelp",
-        "OPPORTUNITY_STAGE_CHOICES",
-        "DEFAULT_SEGMENT_ID"
-      ],
-      "contextDependencies": [
-        "useFormContext",
-        "useWatch"
-      ],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "OpportunityWizardStep4",
-      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
-      "line": 493,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "../../constants",
-        "../../contacts/ContactOption",
-        "../../contacts/QuickCreateContactPopover",
-        "../../organizations/AutocompleteOrganizationInput",
-        "../../organizations/OrganizationInputs",
-        "../../utils/saleOptionRenderer",
-        "../../validation/organizations",
-        "../components/ContactOrgMismatchWarning",
-        "../components/CustomerDistributorIndicator",
-        "../components/DistributorAuthorizationWarning",
-        "../constants/stageConstants",
-        "../hooks",
-        "./NamingConventionHelp",
-        "@/components/admin/array-input",
-        "@/components/admin/autocomplete-array-input",
-        "@/components/admin/create-in-dialog-button",
-        "@/components/admin/date-input",
-        "@/components/admin/form",
-        "@/components/admin/reference-array-input",
-        "@/components/admin/reference-input",
-        "@/components/admin/select-input",
-        "@/components/admin/simple-form-iterator",
-        "@/components/admin/text-input",
-        "@/components/admin/text-input/",
-        "@/components/ui/button",
-        "@/components/ui/tooltip",
-        "@/lib/utils",
-        "lucide-react",
-        "ra-core",
-        "react",
-        "react-hook-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AutocompleteOrganizationInput",
-        "OrganizationInputs",
-        "QuickCreateContactPopover",
-        "ContactOrgMismatchWarning",
-        "DistributorAuthorizationWarning",
-        "CustomerDistributorIndicator",
-        "NamingConventionHelp",
-        "OPPORTUNITY_STAGE_CHOICES",
-        "DEFAULT_SEGMENT_ID"
-      ],
-      "contextDependencies": [],
       "componentRole": "wrapper"
     },
     {
@@ -1929,7 +1590,7 @@
     {
       "name": "OpportunityListView",
       "file": "src/atomic-crm/opportunities/index.tsx",
-      "line": 11,
+      "line": 18,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1941,7 +1602,7 @@
     {
       "name": "OpportunityCreateView",
       "file": "src/atomic-crm/opportunities/index.tsx",
-      "line": 17,
+      "line": 24,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1953,7 +1614,7 @@
     {
       "name": "OpportunityEditView",
       "file": "src/atomic-crm/opportunities/index.tsx",
-      "line": 23,
+      "line": 26,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -2022,7 +1683,7 @@
     {
       "name": "OpportunityCardActions",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
-      "line": 28,
+      "line": 29,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2039,6 +1700,7 @@
         "../../types",
         "../components/CloseOpportunityModal",
         "@/atomic-crm/validation/opportunities",
+        "@/components/admin/delete-confirm-dialog",
         "@/components/ui/dropdown-menu",
         "lucide-react",
         "react",
@@ -2229,30 +1891,34 @@
     {
       "name": "QuickAddForm",
       "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
-      "line": 81,
+      "line": 245,
       "type": "presentational",
       "hooks": [
         "useEffect",
         "useFilteredProducts",
         "useForm",
+        "useGetIdentity",
         "useGetList",
         "useQuickAdd",
-        "useRef",
         "useWatch"
       ],
       "imports": [
         "../data/us-cities",
         "../hooks/useFilteredProducts",
         "../hooks/useQuickAdd",
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/utils/secureStorage",
         "@/atomic-crm/validation/quickAdd",
+        "@/atomic-crm/validation/segments",
         "@/components/ui/button",
         "@/components/ui/combobox",
         "@/components/ui/input",
         "@/components/ui/label",
+        "@/components/ui/popover",
         "@/components/ui/select",
         "@/lib/utils",
         "@hookform/resolvers/zod",
+        "@tanstack/react-query",
         "ra-core",
         "react",
         "react-hook-form"
@@ -2269,12 +1935,13 @@
     {
       "name": "OpportunityListView",
       "file": "src/atomic-crm/opportunities/resource.tsx",
-      "line": 11,
+      "line": 18,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "ra-core",
         "react"
       ],
       "isDefaultExport": false,
@@ -2287,12 +1954,13 @@
     {
       "name": "OpportunityCreateView",
       "file": "src/atomic-crm/opportunities/resource.tsx",
-      "line": 17,
+      "line": 24,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "ra-core",
         "react"
       ],
       "isDefaultExport": false,
@@ -2305,12 +1973,13 @@
     {
       "name": "OpportunityEditView",
       "file": "src/atomic-crm/opportunities/resource.tsx",
-      "line": 23,
+      "line": 26,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "ra-core",
         "react"
       ],
       "isDefaultExport": false,

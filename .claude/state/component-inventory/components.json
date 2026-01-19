@@ -1,24 +1,26 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-19T15:30:40.855Z",
+  "generated_at": "2026-01-19T23:19:27.566Z",
   "item_count": 25,
   "items": [
     {
       "name": "CreateFormFooter",
       "file": "src/atomic-crm/components/CreateFormFooter.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useFormContext",
         "useFormState",
         "useNotify",
-        "useRedirect"
+        "useRedirect",
+        "useState"
       ],
       "imports": [
         "@/atomic-crm/utils",
         "@/components/admin/form",
         "@/components/ui/button",
+        "@/components/ui/unsaved-changes-dialog",
         "ra-core",
         "react",
         "react-hook-form"
