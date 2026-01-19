@@ -4092,3 +4092,108 @@ tool_response: {"stdout": "worked", "stderr": "", "interrupted": false, "isImage
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "# Remove set -e and test\ncat > /tmp/no-exit-hook.sh << 'SCRIPT'\n#!/bin/bash\n# Removed set -e\n\nSCRIPT_DIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nPROJECT_DIR=\"${CLAUDE_PROJECT_DIR:-$
 tool_response: {"stdout": "DEBUG START: SCRIPT_DIR=/tmp PROJECT_DIR=/home/krwhynot/projects/crispy-crm\nDEBUG: Got payload: {\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}\nDEBUG: Extracted path: /tmp
+
+--- 2026-01-18T22:27:18.391752 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Test the fixed hook\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | CLAUDE_PROJECT_DIR=/home/krwhynot/projects/crispy-crm .claude/hooks/todo-debt-tracker.sh", "
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:27:35.710770 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Full debug by running inline\nexport CLAUDE_PROJECT_DIR=/home/krwhynot/projects/crispy-crm\nfile_path=\"/tmp/test-todo-hook.tsx\"\n\n# detect_markers function\nMARKERS=\"\"\nwhile IFS= 
+tool_response: {"stdout": "MARKERS: 3:  // TODO: Implement this feature later\n4:  // FIXME: This is broken and needs fixing\n5:  // HACK: Workaround for API limitation\n6:  // BUG: Critical issue here\n\n---\nBUG_C
+
+--- 2026-01-18T22:27:52.727482 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Check if there's something wrong with stdin handling in the script\n# Try running with explicit bash invocation\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | 
+tool_response: {"stdout": "\ud83d\udcdd Found 4 code marker(s) in /tmp/test-todo-hook.tsx:\n   \ud83d\udd34 BUG: 1 (suggests P0)\n   \ud83d\udfe0 HACK: 1 (suggests P1)\n   \ud83d\udfe1 FIXME: 1 (suggests P2)\n   \u2
+
+--- 2026-01-18T22:28:09.986294 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Test as executable\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | CLAUDE_PROJECT_DIR=/home/krwhynot/projects/crispy-crm /home/krwhynot/projects/crispy-crm/.cla
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:28:23.786242 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Check shebang and run\nhead -1 .claude/hooks/todo-debt-tracker.sh\nfile .claude/hooks/todo-debt-tracker.sh", "description": "Check shebang"}
+tool_response: {"stdout": "#!/bin/bash\n.claude/hooks/todo-debt-tracker.sh: Bourne-Again shell script, Unicode text, UTF-8 text executable", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:28:31.305076 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Ensure executable and try again\nchmod +x .claude/hooks/todo-debt-tracker.sh\nls -la .claude/hooks/todo-debt-tracker.sh", "description": "Verify executable status"}
+tool_response: {"stdout": "-rwxr-xr-x 1 krwhynot krwhynot 4219 Jan 18 22:26 .claude/hooks/todo-debt-tracker.sh", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:28:46.908368 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Try with cat piping through explicitly\ncat << 'JSON' | CLAUDE_PROJECT_DIR=/home/krwhynot/projects/crispy-crm .claude/hooks/todo-debt-tracker.sh\n{\"tool_input\": {\"file_path\": \"/tmp
+tool_response: {"stdout": "\ud83d\udcdd Found 4 code marker(s) in /tmp/test-todo-hook.tsx:\n   \ud83d\udd34 BUG: 1 (suggests P0)\n   \ud83d\udfe0 HACK: 1 (suggests P1)\n   \ud83d\udfe1 FIXME: 1 (suggests P2)\n   \u2
+
+--- 2026-01-18T22:29:03.006685 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Check queue file\ncat .claude/hooks/state/todo-queue.jsonl 2>/dev/null | head -5", "description": "Check queue file contents"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:29:10.545747 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Clean up test files\nrm -f /tmp/test-todo-hook.tsx /tmp/test-payload.json /tmp/test-hook.sh /tmp/test-hook2.sh /tmp/no-exit-hook.sh /tmp/debug-hook.sh\n# Clear test entries from queue\n
+tool_response: {"stdout": "Test files cleaned up", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:47:36.496129 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/hooks/ | head -30", "description": "List hook directory structure"}
+tool_response: {"stdout": "total 292\ndrwxr-xr-x  4 krwhynot krwhynot   4096 Jan 18 22:26 .\ndrwxr-xr-x 15 krwhynot krwhynot   4096 Jan 18 22:30 ..\n-rw-r--r--  1 krwhynot krwhynot   2546 Dec 27 00:18 README.md\ndrw
+
+--- 2026-01-18T22:47:39.984732 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "head -100 /home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log", "description": "Read first 100 lines of kaizen debug log"}
+tool_response: {"stdout": "--- 2026-01-16T22:37:10.084757 ---\nTOOL_INPUT: NOT SET\nTOOL_OUTPUT: NOT SET\n\n--- 2026-01-16T22:39:01.220097 ---\nTOOL_INPUT: NOT SET\nTOOL_OUTPUT: NOT SET\n\n--- 2026-01-16T22:41:01.12
+
+--- 2026-01-18T22:47:50.181024 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/.claude/ 2>/dev/null | head -30", "description": "Check home .claude directory for checkpoint-manager"}
+tool_response: {"stdout": "total 11772\ndrwxr-xr-x  22 krwhynot krwhynot    4096 Jan 18 22:47 .\ndrwxr-x---  27 krwhynot krwhynot  102400 Jan 18 22:47 ..\n-rw-------   1 krwhynot krwhynot    2486 Jan 18 22:11 .crede
+
+--- 2026-01-18T22:47:50.866336 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat /home/krwhynot/projects/crispy-crm/.claude/kaizen_metrics.json 2>/dev/null || echo \"File not found\"", "description": "Show current Kaizen metrics"}
+tool_response: {"stdout": "{\n  \"score\": 1,\n  \"streak\": 1,\n  \"last_commit_date\": \"2026-01-16\",\n  \"checkpoint_count\": 1,\n  \"checkpoint_streak\": 1,\n  \"last_checkpoint_date\": \"2026-01-16\",\n  \"int
+
+--- 2026-01-18T22:47:58.631317 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "tail -200 /home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log | head -100", "description": "Read last 200 lines of debug log (middle section)"}
+tool_response: {"stdout": "--- 2026-01-18T22:16:01.802581 ---\nhook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id'
+
+--- 2026-01-18T22:48:06.066199 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline --all | grep -i checkpoint | head -20", "description": "Show git commits related to checkpoints"}
+tool_response: {"stdout": "d6449df68 chore(checkpoint): 3 file(s) - checkpoint-state,kaizen_debug.log settings.json\n0ab9f4390 chore(checkpoint): 4 file(s) - checkpoint-state,td-add.md kaizen_debug.log\nc6c1f77c7 ch
+
+--- 2026-01-18T22:48:20.107010 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status", "description": "Check git status for changes to commit"}
+tool_response: {"stdout": "On branch main\nYour branch is ahead of 'origin/main' by 2 commits.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to u
+
+--- 2026-01-18T22:48:20.350197 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -5", "description": "View recent commit messages for style reference"}
+tool_response: {"stdout": "d6449df68 chore(checkpoint): 3 file(s) - checkpoint-state,kaizen_debug.log settings.json\n0ab9f4390 chore(checkpoint): 4 file(s) - checkpoint-state,td-add.md kaizen_debug.log\nc6c1f77c7 ch
+
+--- 2026-01-18T22:48:20.366295 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git diff", "description": "View staged and unstaged changes"}
+tool_response: {"stdout": "diff --git a/.claude/checkpoint-state b/.claude/checkpoint-state\nindex 3e037459c..d728be8a5 100644\n--- a/.claude/checkpoint-state\n+++ b/.claude/checkpoint-state\n@@ -1,3 +1,3 @@\n-last_
+
+--- 2026-01-18T22:49:02.569299 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | tail -30", "timeout": 120000, "description": "Run TypeScript type check"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:50:11.718845 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just build 2>&1 | tail -30", "timeout": 180000, "description": "Run build with just"}
+tool_response: {"stdout": "dist/js/CampaignActivityReport-C-G2x5MM.js           22.89 kB \u2502 gzip:   6.80 kB \u2502 map:    75.70 kB\ndist/js/ProductDistributorEdit-DY7XpI2N.js           22.98 kB \u2502 gzip:   6
+
+--- 2026-01-18T22:50:22.421953 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git push origin main", "description": "Push commits to origin/main"}
+tool_response: {"stdout": "To github.com:krwhynot/crispy-crm.git\n   c6c1f77c7..d6449df68  main -> main", "stderr": "", "interrupted": false, "isImage": false}
