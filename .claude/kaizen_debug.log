@@ -3572,3 +3572,43 @@ tool_response: {"stdout": "# Technical Debt Tracker\n\n**Generated:** 2025-12-26
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "wc -l src/atomic-crm/dashboard/v3/components/{QuickLogForm,ActivityTypeSection,ActivityDateSection,EntitySelectionSection,NotesSection,FollowUpSection,ActionButtons}.tsx 2>/dev/null", "de
 tool_response: {"stdout": "  314 src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx\n  205 src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx\n   68 src/atomic-crm/dashboard/v3/components/ActivityDa
+
+--- 2026-01-18T21:11:38.657384 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd . /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations --type f 2>/dev/null || echo \"Directory not found\"", "description": "List all files in organizations module"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/ActivitiesTab.tsx\n/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/AuthorizationsTab.tsx\n/home/krwhynot/pro
+
+--- 2026-01-18T21:11:44.701093 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/supabase/migrations 2>/dev/null | tail -10", "description": "List recent migration files"}
+tool_response: {"stdout": "-rw-r--r--  1 krwhynot krwhynot    903 Jan 17 21:58 20260118000002_fix_opp_products_constraint.sql\n-rw-r--r--  1 krwhynot krwhynot    582 Jan 17 21:58 20260118000003_fix_org_distributors.
+
+--- 2026-01-18T21:12:20.209105 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "fd . /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts --type f --max-depth 1 2>/dev/null | head -20", "description": "List top-level files in contacts module for comparison"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ActivitiesTab.tsx\n/home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/AutocompleteContactInput.tsx\n/home/krwhynot/projec
+
+--- 2026-01-18T21:14:55.606936 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/development/ 2>/dev/null || echo \"Directory does not exist\"", "description": "Check if docs/development directory exists"}
+tool_response: {"stdout": "Directory does not exist", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T21:14:56.214002 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/development/ 2>/dev/null || echo \"Directory does not exist\"", "description": "Check if docs/development directory exists"}
+tool_response: {"stdout": "Directory does not exist", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T21:15:02.668775 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/hooks/", "description": "List existing hooks directory"}
+tool_response: {"stdout": "total 276\ndrwxr-xr-x  4 krwhynot krwhynot   4096 Jan 16 22:57 .\ndrwxr-xr-x 15 krwhynot krwhynot   4096 Jan 18 21:14 ..\n-rw-r--r--  1 krwhynot krwhynot   2546 Dec 27 00:18 README.md\ndrw
+
+--- 2026-01-18T21:15:09.934614 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "mkdir -p /home/krwhynot/projects/crispy-crm/docs/development", "description": "Create docs/development directory"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T21:15:26.949976 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "mkdir -p /home/krwhynot/projects/crispy-crm/docs/development", "description": "Create docs/development directory"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}

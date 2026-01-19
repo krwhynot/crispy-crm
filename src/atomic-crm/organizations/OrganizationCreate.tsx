@@ -203,9 +203,9 @@ const OrganizationCreate = () => {
     mode: "onBlur",
   });
 
-  // Show loading skeleton while identity loads
+  // Show loading skeleton while identity loads or checking permissions
   // NOTE: This early return is now AFTER all hooks have been called
-  if (isLoadingDefaults) {
+  if (isLoadingDefaults || isCheckingAccess) {
     return (
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
@@ -213,6 +213,11 @@ const OrganizationCreate = () => {
         </div>
       </div>
     );
+  }
+
+  // Don't render form for unauthorized users
+  if (!canAccess) {
+    return null;
   }
 
   return (
@@ -233,6 +238,7 @@ const OrganizationCreate = () => {
                       isChecking={isChecking}
                       transformValues={transformValues}
                       bypassDuplicate={bypassDuplicate}
+                      isRep={isRep}
                     />
                   </CardContent>
                 </Card>
@@ -262,6 +268,7 @@ interface OrganizationFormContentProps {
   isChecking: boolean;
   transformValues: (values: OrganizationFormValues) => OrganizationFormValues;
   bypassDuplicate: () => void;
+  isRep?: boolean;
 }
 
 const OrganizationFormContent = ({
@@ -270,12 +277,13 @@ const OrganizationFormContent = ({
   isChecking,
   transformValues,
   bypassDuplicate,
+  isRep,
 }: OrganizationFormContentProps) => {
   useUnsavedChangesWarning();
 
   return (
     <>
-      <OrganizationInputs />
+      <OrganizationInputs isRep={isRep} />
       <OrganizationCreateFormFooter
         onDuplicateFound={onDuplicateFound}
         checkForDuplicate={checkForDuplicate}

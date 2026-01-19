@@ -125,23 +125,28 @@ const OpportunityCreateWizard = () => {
     [identity?.id, urlSourceParam] // Recompute when identity or URL param changes
   );
 
-  // Wait for identity to load before rendering form
-  // This prevents the form from resetting when identity becomes available
-  if (identityLoading) {
+  // Redirect unauthorized users after permission check completes
+  useEffect(() => {
+    if (!isCheckingAccess && !canAccess) {
+      notify("You don't have permission to create opportunities.", { type: "warning" });
+      redirect("/opportunities");
+    }
+  }, [isCheckingAccess, canAccess, notify, redirect]);
+
+  // Show loading skeleton while checking permissions or identity
+  if (identityLoading || isCheckingAccess) {
     return (
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto">
-          <Card>
-            <CardContent className="py-12">
-              <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-                <span className="ml-3 text-muted-foreground">Loading...</span>
-              </div>
-            </CardContent>
-          </Card>
+          <FormLoadingSkeleton rows={6} />
         </div>
       </div>
     );
+  }
+
+  // Don't render form for unauthorized users
+  if (!canAccess) {
+    return null;
   }
 
   return (

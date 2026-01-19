@@ -26,6 +26,9 @@
 
 **Recommended Fix:** Refactor ColumnsSelector to be a direct child of PopoverContent instead of using portal pattern. Use React context or composition to pass data rather than DOM insertion.
 
+### P0 Dependencies
+- **UI-04**: Blocks nothing | Blocked by: None | Related: Focus management patterns
+
 ---
 
 ## P1 - High Priority (Fix This Sprint)
