@@ -1,3 +1,4 @@
+import { required } from "react-admin";
 import { TextInput } from "@/components/admin/text-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { SelectInput } from "@/components/admin/select-input";

@@ -4,6 +4,27 @@ import type { FieldErrors } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
 
+/**
+ * Sanitize validation error messages from React Admin
+ * Strips internal markers like @@react-admin@@ prefix
+ */
+function sanitizeErrorMessage(message: string): string {
+  if (!message) return message;
+
+  let cleaned = message;
+
+  // Pattern: "Value: @@react-admin@@\"actual message\""
+  cleaned = cleaned.replace(/^Value:\s*@@react-admin@@/i, "");
+
+  // Pattern: "@@react-admin@@\"actual message\""
+  cleaned = cleaned.replace(/^@@react-admin@@/i, "");
+
+  // Remove escaped quotes that may remain
+  cleaned = cleaned.replace(/^["']|["']$/g, "");
+
+  return cleaned.trim();
+}
+
 interface FormErrorSummaryProps {
   /**
    * Errors object from react-hook-form's formState.errors

@@ -4307,3 +4307,123 @@ tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/fil
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "ls -R /home/krwhynot/projects/crispy-crm/src/atomic-crm/reports/ 2>/dev/null | head -120", "description": "Show reports directory structure"}
 tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/atomic-crm/reports/:\nCampaignActivity\nOpportunitiesByPrincipalReport.test.tsx\nOpportunitiesByPrincipalReport.tsx\nREADME.md\nReportLayout.tsx\nRep
+
+--- 2026-01-18T23:43:24.234137 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"7 days ago\" --oneline | head -50", "description": "Get recent commits for type distribution"}
+tool_response: {"stdout": "2a48b8daf chore(checkpoint): 2 file(s) - checkpoint-state,FormSection.tsx\na2fe3225b chore(checkpoint): 1 file(s) - checkpoint-state\n45f4b2d81 chore(checkpoint): 2 file(s) - checkpoint-st
+
+--- 2026-01-18T23:43:24.884004 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: | sort | uniq -c | sort -rn | head -15", "description": "Get top churned files from last 14 days"}
+tool_response: {"stdout": "    513 \n    492 .claude/checkpoint-state\n     75 .claude/kaizen_debug.log\n     27 .claude/state/schemas-inventory/manifest.json\n     26 .claude/state/forms-inventory.json\n     26 .cl
+
+--- 2026-01-18T23:43:41.709793 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: -- '*.tsx' '*.ts' | grep -v '^$' | grep -v '.test.' | grep -v '__tests__' | sort | uniq -c | sort -rn | head -20", "descriptio
+tool_response: {"stdout": "     19 src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx\n     13 src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts\n     12 src/atomic-crm/validation/products.ts\n
+
+--- 2026-01-18T23:43:47.811454 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --oneline --grep=\"^feat\" --grep=\"^fix\" --grep=\"^refactor\" --grep=\"^docs\" --grep=\"^test\" --grep=\"^perf\" --all-match=false | head -100", "descrip
+tool_response: {"stdout": "fatal: unrecognized argument: --all-match=false", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:43:54.722789 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --format=\"%s\" | grep -E \"^(feat|fix|refactor|docs|test|perf|chore)\" | cut -d':' -f1 | cut -d'(' -f1 | sort | uniq -c | sort -rn", "description": "Count
+tool_response: {"stdout": "    488 chore\n     13 fix\n      4 feat\n      1 test", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:44:08.377420 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --format=\"%H %s\" | grep -E \"^[a-f0-9]+ (feat|fix|refactor|perf|test|docs)\" | head -30", "description": "Get meaningful commits (non-checkpoint)"}
+tool_response: {"stdout": "1801314f47412b4483bdabe3e92328fc653a9203 fix(quick-log): validate against filtered entity arrays\n573d7a0d510a4bf99bea331e26ad42e345490cff test(kaizen): verify hook tracking works with std
+
+--- 2026-01-18T23:44:09.197613 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: -- 'src/**/*.test.ts' 'src/**/*.test.tsx' | grep -v '^$' | sort | uniq -c | sort -rn | head -10", "description": "Check test f
+tool_response: {"stdout": "     16 src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts\n      6 src/components/admin/__tests__/date-input.test.tsx\n      6 src/atomic-crm/providers/supa
+
+--- 2026-01-18T23:44:21.359524 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l src/atomic-crm/providers/supabase/unifiedDataProvider.ts 2>/dev/null || echo \"File not found\"", "description": "Check unified data provider size"}
+tool_response: {"stdout": "File not found", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:44:22.048735 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --format=\"%ad\" --date=short | sort | uniq -c", "description": "Get daily commit distribution"}
+tool_response: {"stdout": "      1 2026-01-04\n     37 2026-01-05\n     33 2026-01-06\n     25 2026-01-07\n     38 2026-01-08\n     28 2026-01-10\n     70 2026-01-11\n     47 2026-01-12\n      6 2026-01-13\n     31 
+
+--- 2026-01-18T23:44:41.388226 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l src/atomic-crm/providers/supabase/index.ts src/atomic-crm/providers/supabase/composedDataProvider.ts 2>/dev/null", "description": "Check data provider main file sizes"}
+tool_response: {"stdout": "   80 src/atomic-crm/providers/supabase/index.ts\n  255 src/atomic-crm/providers/supabase/composedDataProvider.ts\n  335 total", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:44:43.608088 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: | grep -E '\\.(test|spec)\\.(ts|tsx)$' | sort | uniq | wc -l", "description": "Count unique test files touched"}
+tool_response: {"stdout": "118", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:44:49.587943 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --since=\"14 days ago\" --name-only --pretty=format: | grep -E 'src/.*\\.(ts|tsx)$' | grep -v -E '\\.(test|spec)\\.' | sort | uniq | wc -l", "description": "Count unique source fi
+tool_response: {"stdout": "401", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:48:08.836965 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/", "description": "List files in supabase providers directory"}
+tool_response: {"stdout": "total 228\ndrwxr-xr-x 9 krwhynot krwhynot  4096 Jan 14 18:09 .\ndrwxr-xr-x 4 krwhynot krwhynot  4096 Oct 11 16:24 ..\n-rw-r--r-- 1 krwhynot krwhynot 25744 Jan 11 03:40 PATTERNS.md\n-rw----
+
+--- 2026-01-18T23:48:24.406490 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/wrappers/", "description": "List wrapper files"}
+tool_response: {"stdout": "total 60\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 18 23:37 .\ndrwxr-xr-x 9 krwhynot krwhynot  4096 Jan 14 18:09 ..\n-rw------- 1 krwhynot krwhynot   816 Nov 23 19:36 index.ts\n-rw------- 
+
+--- 2026-01-18T23:48:43.448086 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/*.ts | tail -1", "description": "Count total lines in provider TS files"}
+tool_response: {"stdout": "  3776 total", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:49:19.420658 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/services/", "description": "List service files"}
+tool_response: {"stdout": "total 60\ndrwxr-xr-x 3 krwhynot krwhynot  4096 Jan 11 11:31 .\ndrwxr-xr-x 9 krwhynot krwhynot  4096 Jan 14 18:09 ..\n-rw-r--r-- 1 krwhynot krwhynot  4722 Dec  3 17:38 StorageService.ts\n-r
+
+--- 2026-01-18T23:49:19.590355 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/callbacks/", "description": "List callback files"}
+tool_response: {"stdout": "total 188\ndrwxr-xr-x 2 krwhynot krwhynot  4096 Jan 15 13:51 .\ndrwxr-xr-x 9 krwhynot krwhynot  4096 Jan 14 18:09 ..\n-rw------- 1 krwhynot krwhynot  8796 Jan 14 18:07 activitiesCallbacks.
+
+--- 2026-01-18T23:49:29.728320 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/*.ts | grep -E \"index|composed|resources|cache|utils|auth|types\"", "description": "Count main provider files"}
+tool_response: {"stdout": "   524 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/authProvider.test.ts\n   191 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/authProvider.t
+
+--- 2026-01-18T23:49:38.695670 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/*.ts | grep -v test", "description": "Count handler files (excluding tests)"}
+tool_response: {"stdout": "    37 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/activitiesHandler.ts\n    33 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handl
+
+--- 2026-01-18T23:49:47.972362 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/services/*.ts", "description": "Count service files"}
+tool_response: {"stdout": "  155 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/services/StorageService.ts\n  354 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/services/T
+
+--- 2026-01-18T23:49:56.294354 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "wc -l /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/extensions/*.ts", "description": "Count extension files"}
+tool_response: {"stdout": "   46 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/extensions/activitiesExtension.ts\n  178 /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/ext
+
+--- 2026-01-18T23:50:32.209411 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -n \"website\\|linkedin\\|phone\" /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationCompactForm.tsx | head -20", "description": "Find URL and phone field pa
+tool_response: {"stdout": "123:          <div data-tutorial=\"org-website\">\n124:            <FormFieldWrapper name=\"website\">\n126:                source=\"website\"\n132:          <FormFieldWrapper name=\"phone
+
+--- 2026-01-18T23:50:35.425522 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"phone\\|Phone\\|URL\\|url\" src/components/admin/text-input* 2>/dev/null | head -20"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T23:50:51.931490 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "grep -r \"aria-invalid\\|aria-required\\|aria-describedby\" src/components/admin --include=\"*.tsx\" | head -15"}
+tool_response: {"stdout": "src/components/admin/autocomplete-array-input.tsx:            <div className=\"group rounded-md bg-transparent dark:bg-input/30 border border-input px-3 py-1.75 text-sm transition-all ring
