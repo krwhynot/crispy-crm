@@ -57,20 +57,29 @@ resource.tsx (Entry point)
 
 ---
 
-## Pattern A: Lazy Loading + Error Boundaries
+## Pattern A: Lazy Loading + Create Redirect
 
-Route-level code splitting with `React.lazy()` wrapped in `ResourceErrorBoundary` for graceful error handling.
+Route-level code splitting with `React.lazy()` wrapped in `ResourceErrorBoundary`. The `/opportunities/create` route redirects to the list view where Quick Add is the primary creation entry point.
 
 **When to use:** Resource entry points where bundle splitting improves initial load time.
 
 ```tsx
 // src/atomic-crm/opportunities/resource.tsx
 import * as React from "react";
+import { useRedirect } from "ra-core";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 
 const OpportunityListLazy = React.lazy(() => import("./OpportunityList"));
-const OpportunityCreateLazy = React.lazy(() => import("./OpportunityCreateWizard"));
 const OpportunityEditLazy = React.lazy(() => import("./OpportunityEdit"));
+
+// Quick Add is now the entry point - redirect /opportunities/create to list
+const OpportunityCreateRedirect = () => {
+  const redirect = useRedirect();
+  React.useEffect(() => {
+    redirect("list", "opportunities");
+  }, [redirect]);
+  return null;
+};
 
 export const OpportunityListView = () => (
   <ResourceErrorBoundary resource="opportunities" page="list">
@@ -78,11 +87,7 @@ export const OpportunityListView = () => (
   </ResourceErrorBoundary>
 );
 
-export const OpportunityCreateView = () => (
-  <ResourceErrorBoundary resource="opportunities" page="create">
-    <OpportunityCreateLazy />
-  </ResourceErrorBoundary>
-);
+export const OpportunityCreateView = () => <OpportunityCreateRedirect />;
 
 export const OpportunityEditView = () => (
   <ResourceErrorBoundary resource="opportunities" page="edit">
@@ -101,8 +106,9 @@ export default {
 
 **Key points:**
 - `React.lazy()` enables route-level code splitting
-- `ResourceErrorBoundary` wraps each lazy component for graceful error handling
-- Default export provides React Admin resource configuration
+- `ResourceErrorBoundary` wraps lazy components for graceful error handling
+- **Create redirects to list** - Quick Add (FAB) is the primary creation UX
+- Full create form accessible via "Create Full Opportunity" link in Quick Add
 - Each view is independently loadable (reduces initial bundle size)
 
 ---
@@ -298,82 +304,163 @@ const contactFilter = useMemo(
 
 ---
 
-## Pattern C: Multi-Step Wizard (Miller's Law)
+## Pattern C: Collapsible Single-Page Form
 
-4-step form wizard adhering to Miller's Law (7 plus or minus 2 items per cognitive chunk). Uses `useMemo` on form defaults to prevent reset on re-render.
+Single-page form with collapsible sections, progress tracking, and similar opportunity detection. Replaces the previous multi-step wizard with a more efficient UX that shows all context at once.
 
-**When to use:** Complex forms with many fields that benefit from chunked cognitive load.
+**When to use:** Complex forms where users benefit from seeing all sections at once while still having organized groupings.
 
 ```tsx
-// src/atomic-crm/opportunities/OpportunityCreateWizard.tsx
+// src/atomic-crm/opportunities/OpportunityCreate.tsx
 import { useMemo } from "react";
-import { CreateBase, Form } from "ra-core";
-import {
-  FormProgressProvider,
-  FormProgressBar,
-  FormWizard,
-  WizardStep,
-  WizardNavigation,
-  StepIndicator,
-} from "@/components/admin/form";
+import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
+import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
+import { OpportunityInputs } from "./OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
+import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
 
-const OpportunityCreateWizard = () => {
-  const { data: identity, isPending: identityLoading } = useGetIdentity();
+const OpportunityCreate = () => {
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
+  const [searchParams] = useSearchParams();
+  const urlCustomerOrgId = searchParams.get("customer_organization_id");
+
+  // Fuzzy match warning system (Levenshtein threshold: 3)
+  const {
+    checkForSimilar, showDialog, closeDialog, confirmCreate,
+    proposedName, similarOpportunities, hasConfirmed, resetConfirmation,
+  } = useSimilarOpportunityCheck();
 
   // CRITICAL: Memoize formDefaults to prevent React Admin's Form from resetting
-  // on every re-render. React Admin's useAugmentedForm calls reset() whenever
-  // defaultValues object reference changes.
+  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   const formDefaults = useMemo(
     () => ({
       ...opportunitySchema.partial().parse({}),
       opportunity_owner_id: identity?.id,
       account_manager_id: identity?.id,
-      contact_ids: [],
-      products_to_sync: [],
+      contact_ids: [], // Explicitly initialize for ReferenceArrayInput
+      products_to_sync: [], // Explicitly initialize for ArrayInput
+      // URL param pre-fill: customer org from Organization slideover context
+      ...(urlCustomerOrgId && { customer_organization_id: Number(urlCustomerOrgId) }),
     }),
-    [identity?.id] // Only recompute when identity.id changes
+    [identity?.id, urlCustomerOrgId]
   );
 
-  if (identityLoading) return <LoadingState />;
+  // Guard: Wait for identity to prevent RLS policy failures
+  if (identityLoading || !identity?.id) return <Loading />;
 
   return (
-    <CreateBase redirect="show">
-      <Form defaultValues={formDefaults} mode="onBlur">
-        <FormProgressProvider initialProgress={10}>
-          <FormProgressBar className="mb-6" />
-          <FormWizard steps={OPPORTUNITY_WIZARD_STEPS} onSubmit={handleSubmit}>
-            <StepIndicator className="mb-4" />
-            <WizardStep step={1}><OpportunityWizardStep1 /></WizardStep>
-            <WizardStep step={2}><OpportunityWizardStep2 /></WizardStep>
-            <WizardStep step={3}><OpportunityWizardStep3 /></WizardStep>
-            <WizardStep step={4}><OpportunityWizardStep4 /></WizardStep>
-            <WizardNavigation submitLabel="Create Opportunity" showCancel />
-          </FormWizard>
-        </FormProgressProvider>
-      </Form>
+    <CreateBase redirect={redirect}>
+      <FormProgressProvider initialProgress={10}>
+        <FormProgressBar className="mb-6" />
+        <Form defaultValues={formDefaults}>
+          <OpportunityFormContent
+            checkForSimilar={checkForSimilar}
+            hasConfirmed={hasConfirmed}
+            resetConfirmation={resetConfirmation}
+          />
+        </Form>
+      </FormProgressProvider>
+      <SimilarOpportunitiesDialog {...dialogProps} />
     </CreateBase>
   );
 };
 ```
 
+### Collapsible Form Structure
+
 ```tsx
-// src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx
-export const OPPORTUNITY_WIZARD_STEPS: WizardStepConfig[] = [
-  { id: "basic", title: "Basic Information", fields: ["name", "customer_organization_id"] },
-  { id: "pipeline", title: "Pipeline & Team", fields: ["stage", "priority", "estimated_close_date"] },
-  { id: "relationships", title: "Contacts & Products", fields: [] }, // Optional step
-  { id: "details", title: "Additional Details", fields: [] }, // Optional step
-];
+// src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx
+import {
+  CompactFormRow,
+  CollapsibleSection,
+  FormSectionWithProgress,
+} from "@/components/admin/form";
+
+export const OpportunityCompactForm = ({ mode = "create" }) => {
+  // useWatch for isolated re-renders (Constitution #5)
+  const customerOrganizationId = useWatch({ name: "customer_organization_id" });
+  const principalOrganizationId = useWatch({ name: "principal_organization_id" });
+
+  // Memoized filters prevent infinite refetch loops
+  const contactFilter = useMemo(
+    () => (customerOrganizationId ? { organization_id: customerOrganizationId } : {}),
+    [customerOrganizationId]
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Required sections - always visible with progress tracking */}
+      <FormSectionWithProgress
+        id="opportunity-details"
+        title="Opportunity Details"
+        requiredFields={["name", "customer_organization_id", "principal_organization_id"]}
+      >
+        <TextInput source="name" label="Opportunity Name *" />
+        <CompactFormRow>
+          <ReferenceInput source="customer_organization_id" reference="organizations" />
+          <ReferenceInput source="principal_organization_id" reference="organizations" />
+        </CompactFormRow>
+      </FormSectionWithProgress>
+
+      <FormSectionWithProgress
+        id="pipeline-section"
+        title="Pipeline"
+        requiredFields={["stage", "priority", "estimated_close_date"]}
+      >
+        {/* Stage, Priority, Close Date, Account Manager, Distributor */}
+      </FormSectionWithProgress>
+
+      {/* Collapsible optional sections */}
+      <CollapsibleSection title="Contacts & Products" defaultOpen>
+        {/* Dependent inputs that filter based on customer/principal */}
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Classification">
+        {/* Lead Source, Campaign, Tags */}
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Additional Details">
+        {/* Description, Next Action, Decision Criteria, Notes */}
+      </CollapsibleSection>
+    </div>
+  );
+};
+```
+
+### Similar Opportunity Detection
+
+```tsx
+// src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.ts
+// Prevents duplicate opportunities via Levenshtein fuzzy matching
+
+export const useSimilarOpportunityCheck = () => {
+  const [showDialog, setShowDialog] = useState(false);
+  const [hasConfirmed, setHasConfirmed] = useState(false);
+
+  const checkForSimilar = async (proposedName: string) => {
+    // Query existing opportunities with similar names (Levenshtein threshold: 3)
+    const similar = await findSimilarOpportunities(proposedName);
+    if (similar.length > 0 && !hasConfirmed) {
+      setShowDialog(true);
+      return false; // Block save until confirmed
+    }
+    return true; // Allow save
+  };
+
+  return { checkForSimilar, showDialog, closeDialog, confirmCreate, hasConfirmed };
+};
 ```
 
 **Key points:**
-- `useMemo` on `formDefaults` prevents form reset on parent re-renders
-- Dependency array `[identity?.id]` ensures defaults update when user identity loads
-- Wait for identity to load before rendering form to prevent reset
-- Form mode `onBlur` for validation (not `onChange` to avoid re-render storms)
-- 4 steps with 7 plus or minus 2 items per step follows Miller's Law
-- Empty `fields` array marks optional steps (no required validation)
+- **Single-page layout** shows all context at once (vs multi-step wizard)
+- `FormSectionWithProgress` tracks required field completion visually
+- `CollapsibleSection` organizes optional fields into expandable groups
+- `CompactFormRow` enables 2-3 column layouts within sections
+- `useWatch()` for isolated re-renders (not `watch()` - Constitution #5)
+- **Similar opportunity detection** prevents duplicates via fuzzy matching
+- **URL param pre-fill** enables context-aware creation from other views
+- Form mode `onSubmit` for validation (not `onChange` to avoid re-render storms)
+- Wait for identity to load to prevent RLS policy failures
 
 ---
 
