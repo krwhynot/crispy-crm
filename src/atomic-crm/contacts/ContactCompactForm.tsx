@@ -102,7 +102,10 @@ export const ContactCompactForm = () => {
               isRequired
               enableGetChoices={enableGetChoices}
             >
-              <AutocompleteOrganizationInput label="Organization *" helperText="Organization is required" />
+              <AutocompleteOrganizationInput
+                label="Organization *"
+                helperText="Organization is required"
+              />
             </ReferenceInput>
           </FormFieldWrapper>
         </div>
