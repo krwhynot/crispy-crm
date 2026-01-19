@@ -64,7 +64,7 @@ export function OpportunityWizardStep1() {
       <FormFieldWrapper name="name" isRequired>
         <div className="flex gap-2 items-start">
           <div className="flex-1" data-tutorial="opp-name">
-            <TextInput source="name" label="Opportunity Name" helperText={false} />
+            <TextInput source="name" label="Opportunity Name *" helperText={false} />
           </div>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -129,7 +129,7 @@ export function OpportunityWizardStep1() {
                 filter={{ "organization_type@in": "(prospect,customer)" }}
               >
                 <AutocompleteOrganizationInput
-                  label="Customer Organization"
+                  label="Customer Organization *"
                   organizationType="customer"
                 />
               </ReferenceInput>
@@ -241,7 +241,7 @@ export function OpportunityWizardStep2() {
           <div data-tutorial="opp-stage">
             <SelectInput
               source="stage"
-              label="Stage"
+              label="Stage *"
               choices={OPPORTUNITY_STAGE_CHOICES}
               helperText={false}
             />
@@ -251,7 +251,7 @@ export function OpportunityWizardStep2() {
           <div data-tutorial="opp-priority">
             <SelectInput
               source="priority"
-              label="Priority"
+              label="Priority *"
               choices={priorityChoices}
               helperText={false}
             />
@@ -261,7 +261,7 @@ export function OpportunityWizardStep2() {
           <div data-tutorial="opp-close-date">
             <DateInput
               source="estimated_close_date"
-              label="Est. Close Date"
+              label="Est. Close Date *"
               helperText="Defaults to 30 days from today"
             />
           </div>

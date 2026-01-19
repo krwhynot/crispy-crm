@@ -35,6 +35,7 @@ import {
   WizardNavigation,
   StepIndicator,
   FormLoadingSkeleton,
+  useFormProgress,
 } from "@/components/admin/form";
 import { opportunitySchema } from "../validation/opportunities";
 import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
@@ -47,6 +48,28 @@ import {
   OpportunityWizardStep3,
   OpportunityWizardStep4,
 } from "./forms/OpportunityWizardSteps";
+
+// TEMPORARY: Diagnostic logging for bug investigation - remove after fix
+// Issue: Progress shows 77.5% instead of expected 82% when 4 of 5 required fields are valid
+// Hypothesis: Only 4 fields are registered instead of 5, or only 3 are completed instead of 4
+const ProgressDiagnostic = () => {
+  const { fields, totalRequired, completedRequired, percentage } = useFormProgress();
+
+  useEffect(() => {
+    console.log("🔍 Progress Debug:", {
+      totalRequired,
+      completedRequired,
+      percentage,
+      expectedPercentage: totalRequired > 0 ? 10 + (completedRequired / totalRequired) * 90 : 10,
+      registeredFields: Object.keys(fields),
+      requiredFields: Object.entries(fields)
+        .filter(([_, f]) => f.isRequired)
+        .map(([name, f]) => ({ name, isValid: f.isValid })),
+    });
+  }, [fields, totalRequired, completedRequired, percentage]);
+
+  return null; // Diagnostic component renders nothing
+};
 
 const OPPORTUNITY_FIELD_LABELS: Record<string, string> = {
   name: "Opportunity Name",
@@ -263,6 +286,9 @@ const OpportunityWizardContent = ({
 
   return (
     <FormProgressProvider initialProgress={10}>
+      {/* TEMPORARY: Diagnostic logging - remove after fix */}
+      <ProgressDiagnostic />
+
       {/* Error Summary */}
       {Object.keys(errors || {}).length > 0 && (
         <FormErrorSummary
