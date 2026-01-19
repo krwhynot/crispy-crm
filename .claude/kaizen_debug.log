@@ -5252,3 +5252,33 @@ tool_response: {"stdout": "> atomic-crm@0.1.0 test\n> vitest --run src/atomic-cr
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | head -50", "timeout": 120000, "description": "Check for TypeScript errors in the project"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T13:30:51.436893 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "pnpm exec tsc --noEmit 2>&1 | head -50", "description": "Check TypeScript errors in the project"}
+tool_response: {"stdout": "/bin/bash: line 2: pnpm: command not found", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T13:31:01.861318 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm exec tsc -- --noEmit 2>&1 | head -50", "description": "Check TypeScript errors in the project"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T13:31:12.980093 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | grep -E \"error TS|\\.tsx?:\" | head -40", "description": "Check TypeScript errors with detailed output"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T13:31:32.758628 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run src/atomic-crm/validation/__tests__/quickAdd.test.ts src/atomic-crm/opportunities/hooks/__tests__/useQuickAdd.test.tsx 2>&1", "timeout": 120000, "description": "Run the 
+tool_response: {"stdout": "> atomic-crm@0.1.0 test\n> vitest --run src/atomic-crm/validation/__tests__/quickAdd.test.ts src/atomic-crm/opportunities/hooks/__tests__/useQuickAdd.test.tsx\n\n\n RUN  v3.2.4 /home/krwhy
+
+--- 2026-01-19T13:32:35.504768 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run src/atomic-crm/opportunities 2>&1 | tail -30", "timeout": 120000, "description": "Run all opportunities tests to verify nothing broke"}
+tool_response: {"stdout": "    \u001b[36m</button>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n  \u001b[36m<span\u001b[39m\n    \u001b[33maria-hidden\u001b[39m=\u001b[32m\"true\"\u001b[39m\n    \u001b[33mdata-aria-hidd
+
+--- 2026-01-19T13:32:50.119731 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx 2>&1 | tail -80", "timeout": 60000, "description": "Check QuickAddDialog test failures"}
+tool_response: {"stdout": "        \u001b[33mclass\u001b[39m=\u001b[32m\"text-lg leading-none font-semibold\"\u001b[39m\n        \u001b[33mdata-slot\u001b[39m=\u001b[32m\"dialog-title\"\u001b[39m\n        \u001b[33m

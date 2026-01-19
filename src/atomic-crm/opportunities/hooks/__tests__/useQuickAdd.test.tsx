@@ -42,6 +42,7 @@ describe("useQuickAdd", () => {
     last_name: "Smith",
     principal_id: 2,
     account_manager_id: 6,
+    product_ids: [],
   };
 
   const successResult = {
@@ -128,6 +129,7 @@ describe("useQuickAdd", () => {
       org_name: "Tech Corp",
       principal_id: 1,
       account_manager_id: 5,
+      product_ids: [],
     };
 
     const { result } = renderHook(() => useQuickAdd(), { wrapper });
@@ -244,6 +246,7 @@ describe("useQuickAdd", () => {
       org_name: "Tech Inc",
       principal_id: 2,
       account_manager_id: 7,
+      product_ids: [],
     };
 
     mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
@@ -274,6 +277,7 @@ describe("useQuickAdd", () => {
       org_name: "Tech Inc",
       principal_id: 2,
       account_manager_id: 7,
+      product_ids: [],
     };
 
     mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
@@ -297,6 +301,7 @@ describe("useQuickAdd", () => {
       org_name: "Tech Inc",
       principal_id: 2,
       account_manager_id: 7,
+      product_ids: [],
     };
 
     mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
@@ -355,6 +360,7 @@ describe("useQuickAdd", () => {
       org_name: "No Campaign Corp",
       principal_id: 3,
       account_manager_id: 8,
+      product_ids: [],
     };
 
     const { result } = renderHook(() => useQuickAdd(), { wrapper });

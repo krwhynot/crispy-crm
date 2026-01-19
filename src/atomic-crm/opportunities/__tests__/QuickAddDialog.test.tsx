@@ -32,10 +32,10 @@ describe("QuickAddDialog", () => {
     const onOpenChange = vi.fn();
     render(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
-    // Check title and description
-    expect(screen.getByText("Quick Add Booth Visitor")).toBeInTheDocument();
+    // Check title and description (updated for opportunity-focused flow)
+    expect(screen.getByText("Quick Add Opportunity")).toBeInTheDocument();
     expect(
-      screen.getByText("Quickly capture lead information from trade show booth conversations")
+      screen.getByText("Create a new opportunity with optional contact details")
     ).toBeInTheDocument();
   });
 
