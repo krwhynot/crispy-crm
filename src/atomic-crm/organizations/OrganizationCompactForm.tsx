@@ -25,7 +25,11 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
 
   return (
     <div className="space-y-6">
-      <FormSectionWithProgress id="basic-info" title="Basic Information" requiredFields={["name"]}>
+      <FormSectionWithProgress
+        id="basic-info"
+        title="Basic Information"
+        requiredFields={["name", "organization_type"]}
+      >
         <CompactFormRow>
           <div data-tutorial="org-name">
             <FormFieldWrapper name="name" isRequired>
@@ -38,7 +42,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             </FormFieldWrapper>
           </div>
           <div data-tutorial="org-type">
-            <FormFieldWrapper name="organization_type">
+            <FormFieldWrapper name="organization_type" isRequired>
               <PrincipalAwareTypeInput />
             </FormFieldWrapper>
           </div>
@@ -60,9 +64,13 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
         </CompactFormRow>
       </FormSectionWithProgress>
 
-      <FormSectionWithProgress id="account-segment" title="Account & Segment" requiredFields={[]}>
+      <FormSectionWithProgress
+        id="account-segment"
+        title="Account & Segment"
+        requiredFields={["sales_id", "segment_id"]}
+      >
         <CompactFormRow>
-          <FormFieldWrapper name="sales_id">
+          <FormFieldWrapper name="sales_id" isRequired countDefaultAsFilled>
             <ReferenceInput
               reference="sales"
               source="sales_id"
@@ -71,14 +79,14 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             >
               <SelectInput
                 helperText={isRep ? "Assigned to you" : false}
-                label="Account Manager"
+                label="Account Manager *"
                 optionText={saleOptionRenderer}
                 disabled={isRep}
               />
             </ReferenceInput>
           </FormFieldWrapper>
-          <FormFieldWrapper name="segment_id">
-            <SegmentComboboxInput source="segment_id" label="Segment" helperText={false} />
+          <FormFieldWrapper name="segment_id" isRequired countDefaultAsFilled>
+            <SegmentComboboxInput source="segment_id" label="Segment *" helperText={false} />
           </FormFieldWrapper>
         </CompactFormRow>
       </FormSectionWithProgress>

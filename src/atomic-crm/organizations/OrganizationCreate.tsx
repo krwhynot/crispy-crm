@@ -207,6 +207,44 @@ const OrganizationCreate = () => {
     return null;
   }
 
+  // Guard: Ensure required defaults are available before rendering form
+  // Per plan: Organization Form requires sales_id (Account Manager) and segment_id (Segment)
+  // These are auto-filled from identity and "Unknown" segment respectively
+  if (!smartDefaults?.sales_id) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto">
+          <Card>
+            <CardContent className="py-8 text-center">
+              <p className="text-destructive">
+                Unable to load user account. Please refresh the page.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  if (!unknownSegmentId) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto">
+          <Card>
+            <CardContent className="py-8 text-center">
+              <p className="text-destructive">
+                Database configuration error: Unknown segment missing.
+              </p>
+              <p className="text-muted-foreground text-sm mt-2">
+                Please contact your administrator.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <CreateBase redirect="show" transform={transformValues}>
