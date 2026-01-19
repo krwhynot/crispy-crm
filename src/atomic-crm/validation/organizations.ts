@@ -68,10 +68,29 @@ const urlAutoPrefix = (val: string | null | undefined): string => {
 };
 
 // Custom validators with auto-prefix transform
+// Note: Zod's .url() validates RFC 3986 syntax only - "https://invalid" is valid per spec.
+// We add TLD check (hostname must contain ".") for real-world URL validation.
 const isValidUrl = z
   .string()
   .transform(urlAutoPrefix)
-  .pipe(z.string().url({ message: "Must be a valid URL" }).max(2048).or(z.literal("")));
+  .pipe(
+    z
+      .string()
+      .refine(
+        (url) => {
+          if (!url) return true;
+          try {
+            const hostname = new URL(url).hostname;
+            return hostname.includes("."); // TLD requires at least one dot
+          } catch {
+            return false;
+          }
+        },
+        { message: "Must be a valid URL (e.g., example.com)" }
+      )
+      .max(2048)
+      .or(z.literal(""))
+  );
 
 const isLinkedinUrl = z
   .string()
@@ -108,9 +127,23 @@ export const organizationSchema = z.strictObject({
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.nullish(),
   website: isValidUrl.nullish(),
-  phone: z.string().trim().max(30, "Phone number too long").nullish(), // was: phone_number
+  phone: z
+    .string()
+    .trim()
+    .max(30, "Phone number too long")
+    .refine((val) => !val || val.replace(/\D/g, "").length >= 10, {
+      message: "Phone must have at least 10 digits",
+    })
+    .nullish(), // was: phone_number
   address: z.string().trim().max(500, "Address too long").nullish(),
-  postal_code: z.string().trim().max(20, "Postal code too long").nullish(), // was: zipcode
+  postal_code: z
+    .string()
+    .trim()
+    .max(20, "Postal code too long")
+    .refine((val) => !val || /^\d{5}(-\d{4})?$/.test(val), {
+      message: "Invalid ZIP code (use 12345 or 12345-6789)",
+    })
+    .nullish(), // was: zipcode
   city: z.string().trim().max(100, "City name too long").nullish(),
   state: z.string().trim().max(100, "State name too long").nullish(), // was: stateAbbr
   sales_id: z.coerce.number().nullish(),

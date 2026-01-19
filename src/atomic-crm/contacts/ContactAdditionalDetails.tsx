@@ -45,6 +45,7 @@ export const ContactAdditionalDetails = () => {
               source="linkedin_url"
               label="LinkedIn URL"
               helperText="Format: https://linkedin.com/in/username"
+              validate={validateLinkedInUrl}
             />
           </FormFieldWrapper>
           <FormFieldWrapper name="notes">

@@ -67,6 +67,7 @@ export const ContactCompactForm = () => {
                 label="First Name *"
                 helperText="Required field"
                 autoComplete="given-name"
+                validate={required("First name is required")}
               />
             </FormFieldWrapper>
           </div>
@@ -77,6 +78,7 @@ export const ContactCompactForm = () => {
                 label="Last Name *"
                 helperText="Required field"
                 autoComplete="family-name"
+                validate={required("Last name is required")}
               />
             </FormFieldWrapper>
           </div>

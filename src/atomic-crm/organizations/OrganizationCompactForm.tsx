@@ -111,7 +111,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             <TextInput
               source="postal_code"
               label="Zip Code"
-              helperText={false}
+              helperText="US ZIP: 12345 or 12345-6789"
               autoComplete="postal-code"
             />
           </FormFieldWrapper>
@@ -133,7 +133,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             <TextInput
               source="phone"
               label="Phone"
-              helperText="Format: (555) 123-4567"
+              helperText="At least 10 digits"
               autoComplete="tel"
               maxLength={30}
             />

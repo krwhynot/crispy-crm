@@ -137,22 +137,29 @@ function logError(
  */
 function transformSupabaseError(error: SupabaseError): ValidationError {
   const fieldErrors: Record<string, string> = {};
+  const errorMessage = error.details || error.message || "Operation failed";
 
-  // Try to parse field from error details
-  if (typeof error.details === "string") {
-    // Simple heuristic to extract field name from error
+  // Try to sanitize using our pattern matchers
+  const sanitized = sanitizeDatabaseError(errorMessage);
+
+  if (sanitized) {
+    fieldErrors[sanitized.field] = sanitized.message;
+  } else if (typeof error.details === "string") {
+    // Fallback: extract field but use generic message
     const match = error.details.match(/column "(\w+)"/i);
-    if (match) {
-      fieldErrors[match[1]] = error.details;
+    if (match && match[1]) {
+      const columnName = match[1];
+      const label = FIELD_LABELS[columnName] || columnName.replace(/_/g, " ");
+      fieldErrors[columnName] = `Invalid value for ${label}`;
     } else {
-      fieldErrors._error = error.details;
+      fieldErrors._error = "Operation failed. Please check your input.";
     }
   } else {
-    fieldErrors._error = error.message || "Operation failed";
+    fieldErrors._error = "Operation failed";
   }
 
   return {
-    message: error.message || "Operation failed",
+    message: sanitized?.message || "Validation failed",
     errors: fieldErrors,
   };
 }
