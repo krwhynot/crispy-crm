@@ -132,23 +132,39 @@ describe("QuickAddForm", () => {
       </TestWrapper>
     );
 
-    // Pre-filled section
-    expect(screen.getByLabelText(/campaign/i)).toBeInTheDocument();
+    // Opportunity Details section (required fields)
+    expect(screen.getByText("Organization")).toBeInTheDocument();
     expect(screen.getByText("Principal")).toBeInTheDocument();
+    expect(screen.getByText("Account Manager")).toBeInTheDocument();
+    expect(screen.getByLabelText(/campaign/i)).toBeInTheDocument();
 
-    // Contact section
+    // Organization autocomplete (combobox)
+    expect(screen.getByText("Select or create organization...")).toBeInTheDocument();
+
+    // Principal dropdown
+    expect(screen.getByText("Select principal")).toBeInTheDocument();
+
+    // Account Manager dropdown (should default to current user)
+    // Note: It pre-selects John Sales based on useGetIdentity mock
+
+    // Products multi-select
+    expect(screen.getByText("Products")).toBeInTheDocument();
+
+    // Opportunity Name Preview
+    expect(screen.getByText("Opportunity Name Preview")).toBeInTheDocument();
+    expect(screen.getByText("Select organization and principal")).toBeInTheDocument();
+
+    // Contact section (optional)
+    expect(screen.getByText("Contact Information (Optional)")).toBeInTheDocument();
     expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^phone$/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^email$/i)).toBeInTheDocument();
 
-    // Organization section
-    expect(screen.getByLabelText(/organization name \*/i)).toBeInTheDocument();
+    // Location & Notes section (optional)
+    expect(screen.getByText("Location & Notes (Optional)")).toBeInTheDocument();
     expect(screen.getByText("City")).toBeInTheDocument();
     expect(screen.getByLabelText(/state/i)).toBeInTheDocument();
-
-    // Optional details
-    expect(screen.getAllByText(/products/i)).toHaveLength(2); // Label and placeholder
     expect(screen.getByLabelText(/quick note/i)).toBeInTheDocument();
 
     // Footer buttons
@@ -168,36 +184,7 @@ describe("QuickAddForm", () => {
     expect(campaignInput.value).toBe("Test Campaign");
   });
 
-  it("validates phone OR email requirement", async () => {
-    const user = userEvent.setup({ delay: null }); // Speed up typing
-
-    render(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
-
-    // Clear pre-filled fields
-    const campaignInput = screen.getByLabelText(/campaign/i);
-    await user.clear(campaignInput);
-
-    // Fill required fields except phone/email
-    await user.type(campaignInput, "Test Campaign");
-    await user.type(screen.getByLabelText(/first name/i), "John");
-    await user.type(screen.getByLabelText(/last name/i), "Doe");
-    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
-
-    // City uses Combobox - use helper to select city and verify state auto-fill
-    await selectCityAndVerifyState("New York", "NY", { user, timeout: 5000 });
-
-    // Try to submit without phone or email
-    await user.click(screen.getByRole("button", { name: /save & close/i }));
-
-    // Should show validation error
-    await waitFor(() => {
-      expect(screen.getByText(/phone or email required/i)).toBeInTheDocument();
-    });
-  }, 15000);
+  // NOTE: Phone/email validation test removed - phone and email are now fully optional
 
   it("handles Save & Add Another correctly", async () => {
     const user = userEvent.setup({ delay: null }); // Speed up typing
@@ -212,14 +199,28 @@ describe("QuickAddForm", () => {
       </TestWrapper>
     );
 
-    // Fill form
-    await user.type(screen.getByLabelText(/first name/i), "John");
-    await user.type(screen.getByLabelText(/last name/i), "Doe");
-    await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
-    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
+    // Select organization from combobox
+    const orgTrigger = screen.getByText("Select or create organization...");
+    await user.click(orgTrigger);
+    const searchInput = await screen.findByPlaceholderText("Search organizations...");
+    await user.type(searchInput, "Acme");
+    await waitFor(() => {
+      const item = document.querySelector('[data-slot="command-item"]');
+      expect(item).toBeInTheDocument();
+    });
+    const acmeItem = document.querySelector('[data-slot="command-item"]');
+    if (acmeItem) await user.click(acmeItem);
 
-    // City uses Combobox - use helper to select city and verify state auto-fill
-    await selectCityAndVerifyState("Los Angeles", "CA", { user, timeout: 5000 });
+    // Select principal - first open the dropdown
+    const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
+    fireEvent.pointerDown(principalTrigger, { button: 0, pointerType: "mouse", pointerId: 1 });
+    await waitFor(() => {
+      expect(screen.getByRole("option", { name: "Principal A" })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("option", { name: "Principal A" }));
+
+    // Fill optional contact info
+    await user.type(screen.getByLabelText(/first name/i), "John");
 
     // Click Save & Add Another
     await user.click(screen.getByRole("button", { name: /save & add another/i }));
@@ -227,15 +228,17 @@ describe("QuickAddForm", () => {
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalled();
       expect(mockOnSuccess).not.toHaveBeenCalled(); // Should not close dialog
+    });
 
-      // Form should be reset except campaign and principal
+    // Form should be reset except campaign, principal, and account_manager
+    await waitFor(() => {
       const firstNameInput = screen.getByLabelText(/first name/i) as HTMLInputElement;
       expect(firstNameInput.value).toBe("");
 
       const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
       expect(campaignInput.value).toBe("Test Campaign"); // Should persist
     });
-  }, 15000);
+  }, 20000);
 
   it("handles Save & Close correctly", async () => {
     const user = userEvent.setup({ delay: null }); // Speed up typing
@@ -250,14 +253,27 @@ describe("QuickAddForm", () => {
       </TestWrapper>
     );
 
-    // Fill form
-    await user.type(screen.getByLabelText(/first name/i), "John");
-    await user.type(screen.getByLabelText(/last name/i), "Doe");
-    await user.type(screen.getByLabelText(/^phone$/i), "555-1234");
-    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
+    // Select organization from combobox
+    const orgTrigger = screen.getByText("Select or create organization...");
+    await user.click(orgTrigger);
+    const searchInput = await screen.findByPlaceholderText("Search organizations...");
+    await user.type(searchInput, "Acme");
+    await waitFor(() => {
+      const item = document.querySelector('[data-slot="command-item"]');
+      expect(item).toBeInTheDocument();
+    });
+    const acmeItem = document.querySelector('[data-slot="command-item"]');
+    if (acmeItem) await user.click(acmeItem);
 
-    // City uses Combobox - use helper to select city and verify state auto-fill
-    await selectCityAndVerifyState("Chicago", "IL", { user, timeout: 5000 });
+    // Select principal
+    const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
+    fireEvent.pointerDown(principalTrigger, { button: 0, pointerType: "mouse", pointerId: 1 });
+    await waitFor(() => {
+      expect(screen.getByRole("option", { name: "Principal A" })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("option", { name: "Principal A" }));
+
+    // Account manager is pre-filled by useGetIdentity
 
     // Click Save & Close
     await user.click(screen.getByRole("button", { name: /save & close/i }));
@@ -266,7 +282,7 @@ describe("QuickAddForm", () => {
       expect(mockMutate).toHaveBeenCalled();
       expect(mockOnSuccess).toHaveBeenCalled(); // Should close dialog
     });
-  }, 15000);
+  }, 20000);
 
   it("shows 'Select a Principal first' when no principal is selected", async () => {
     // Mock no principal selected initially
@@ -293,6 +309,12 @@ describe("QuickAddForm", () => {
     // Set localStorage to have no pre-filled values
     mockLocalStorage.getItem.mockImplementation(() => null);
 
+    // Mock useGetIdentity to not return a default user
+    (useGetIdentity as Mock).mockReturnValue({
+      data: null,
+      isLoading: false,
+    });
+
     render(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
@@ -303,44 +325,13 @@ describe("QuickAddForm", () => {
     await user.click(screen.getByRole("button", { name: /save & close/i }));
 
     await waitFor(() => {
-      // Check for required validation messages (first_name, last_name, city, state are now optional)
-      expect(screen.getByText(/organization name required/i)).toBeInTheDocument();
+      // Check for required validation messages
+      // Organization is required (either organization_id or org_name)
+      expect(screen.getByText(/organization is required/i)).toBeInTheDocument();
     });
   });
 
-  it("clears phone/email validation when either field is filled", async () => {
-    const user = userEvent.setup({ delay: null });
-
-    render(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
-
-    // Fill required fields except phone/email
-    await user.type(screen.getByLabelText(/first name/i), "John");
-    await user.type(screen.getByLabelText(/last name/i), "Doe");
-    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
-
-    // City uses Combobox - use helper to select city and verify state auto-fill
-    await selectCityAndVerifyState("Los Angeles", "CA", { user, timeout: 5000 });
-
-    // Try to submit without phone or email
-    await user.click(screen.getByRole("button", { name: /save & close/i }));
-
-    // Should show validation error
-    await waitFor(() => {
-      expect(screen.getByText(/phone or email required/i)).toBeInTheDocument();
-    });
-
-    // Now fill email
-    await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
-
-    // Error should be cleared
-    await waitFor(() => {
-      expect(screen.queryByText(/phone or email required/i)).not.toBeInTheDocument();
-    });
-  }, 15000);
+  // NOTE: Phone/email clearing validation test removed - phone and email are now fully optional
 
   it("handles Cancel button correctly", async () => {
     const user = userEvent.setup();
@@ -394,12 +385,25 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
 
   const mockOnSuccess = vi.fn();
   const mockMutate = vi.fn();
+  const mockNotify = vi.fn();
+  const mockDataProvider = {
+    create: vi.fn().mockResolvedValue({ data: { id: 100, name: "New Org" } }),
+  };
 
   // Test data: Each principal has different products
   const principals = [
-    { id: 1, name: "Acme Corp" },
-    { id: 2, name: "Beta Industries" },
-    { id: 3, name: "Empty Principal" }, // Has no products - edge case
+    { id: 1, name: "Acme Corp", organization_type: "principal" },
+    { id: 2, name: "Beta Industries", organization_type: "principal" },
+    { id: 3, name: "Empty Principal", organization_type: "principal" }, // Has no products - edge case
+  ];
+
+  const customerOrgs = [
+    { id: 10, name: "Test Customer", organization_type: "customer" },
+    { id: 11, name: "Test Org", organization_type: "prospect" },
+  ];
+
+  const salesList = [
+    { id: 100, name: "John Sales", email: "john@sales.com" },
   ];
 
   const productsForPrincipal1 = [
@@ -420,10 +424,17 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   const setupFilterAwareMock = () => {
     (useGetList as Mock).mockImplementation((resource, params) => {
       if (resource === "organizations") {
-        return {
-          data: principals,
-          isLoading: false,
-        };
+        // Check filter to determine if this is principals or customers/prospects
+        if (params?.filter?.organization_type === "principal") {
+          return { data: principals, isLoading: false };
+        }
+        if (params?.filter?.["organization_type@in"]) {
+          return { data: customerOrgs, isLoading: false };
+        }
+        return { data: [...principals, ...customerOrgs], isLoading: false };
+      }
+      if (resource === "sales") {
+        return { data: salesList, isLoading: false };
       }
       if (resource === "products") {
         const principalId = params?.filter?.principal_id;
@@ -444,12 +455,24 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     (useQuickAdd as Mock).mockReturnValue({
       mutate: mockMutate,
       isPending: false,
     });
+
+    // Mock useGetIdentity - returns current user
+    (useGetIdentity as Mock).mockReturnValue({
+      data: { id: 100, fullName: "John Sales" },
+      isLoading: false,
+    });
+
+    // Mock useDataProvider for inline organization creation
+    (useDataProvider as Mock).mockReturnValue(mockDataProvider);
+
+    // Mock useNotify for toast notifications
+    (useNotify as Mock).mockReturnValue(mockNotify);
 
     setupFilterAwareMock();
 
