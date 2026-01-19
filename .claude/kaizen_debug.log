@@ -5547,3 +5547,18 @@ tool_response: {"stdout": "\u2705 No city/state validation found - function is c
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -c \"\\d opportunity_products\" 2>&1", "description": "Check opportunity_products table schema"}
 tool_response: {"stdout": "                                            Table \"public.opportunity_products\"\n        Column        |           Type           | Collation | Nullable |                     Default    
+
+--- 2026-01-19T15:10:16.221859 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -f /home/krwhynot/projects/crispy-crm/supabase/migrations/20260119000000_update_quick_add_opportunity.sql 2>&1", "de
+tool_response: {"stdout": "CREATE FUNCTION\nGRANT", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:10:27.760780 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -c \"SELECT prosrc FROM pg_proc WHERE proname = 'create_booth_visitor_opportunity';\" 2>&1 | grep -E \"product_id|op
+tool_response: {"stdout": "   IF _data->'product_ids' IS NOT NULL THEN                                                                                                       +\n     INSERT INTO opportunity_products (
+
+--- 2026-01-19T15:13:58.423209 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | head -30", "timeout": 60000, "description": "Check for TypeScript errors"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
