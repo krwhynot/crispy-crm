@@ -614,15 +614,77 @@ export const ACTIVITY_TYPE_FROM_API: Record<string, string> = {
 export const ACTIVITY_TYPE_MAP = ACTIVITY_TYPE_TO_API;
 
 /**
- * Activity outcome options for forms
+ * Context-specific outcome options by activity type
+ * Provides relevant outcomes for each activity type category
+ *
+ * Design rationale:
+ * - "Left Voicemail" only makes sense for Call
+ * - "Bounced" only makes sense for Email
+ * - Meeting-type activities use scheduling-related outcomes
  */
-export const activityOutcomeSchema = z.enum([
+export const OUTCOME_OPTIONS_BY_TYPE: Record<string, readonly string[]> = {
+  // Communication outcomes
+  Call: ["Connected", "Left Voicemail", "No Answer", "Wrong Number"],
+  Email: ["Sent", "Replied", "No Reply", "Bounced"],
+  "Check-in": ["Connected", "Left Voicemail", "No Answer"],
+  Social: ["Engaged", "No Response"],
+
+  // Meeting outcomes
+  Meeting: ["Held", "Rescheduled", "Cancelled", "No Show"],
+  Demo: ["Held", "Rescheduled", "Cancelled", "No Show"],
+  "Site Visit": ["Completed", "Rescheduled", "Cancelled"],
+  "Trade Show": ["Attended", "Engaged", "Collected Leads"],
+
+  // Documentation outcomes
+  Proposal: ["Sent", "Accepted", "Rejected", "Revised"],
+  "Contract Review": ["Completed", "Pending Changes", "Approved"],
+  "Follow-up": ["Completed", "Rescheduled"],
+  Note: ["Completed"],
+  Sample: ["Sent", "Received", "Feedback Pending", "Feedback Received"],
+} as const;
+
+// All possible outcomes for schema validation (union of all type-specific options)
+const ALL_OUTCOMES = [
+  // Communication
   "Connected",
   "Left Voicemail",
   "No Answer",
-  "Completed",
+  "Wrong Number",
+  // Email
+  "Sent",
+  "Replied",
+  "No Reply",
+  "Bounced",
+  // Social
+  "Engaged",
+  "No Response",
+  // Meetings
+  "Held",
   "Rescheduled",
-]);
+  "Cancelled",
+  "No Show",
+  // Documentation
+  "Completed",
+  "Pending Changes",
+  "Approved",
+  // Trade Show
+  "Attended",
+  "Collected Leads",
+  // Proposal
+  "Accepted",
+  "Rejected",
+  "Revised",
+  // Sample
+  "Received",
+  "Feedback Pending",
+  "Feedback Received",
+] as const;
+
+/**
+ * Activity outcome schema - validates all possible outcomes across activity types
+ * UI components should filter to context-specific options using OUTCOME_OPTIONS_BY_TYPE
+ */
+export const activityOutcomeSchema = z.enum(ALL_OUTCOMES);
 
 /**
  * QuickLogForm BASE schema - UI-friendly version with Title Case activity types

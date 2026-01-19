@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import type { Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -19,7 +21,11 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
-import { ACTIVITY_TYPE_GROUPS, SAMPLE_STATUS_OPTIONS } from "@/atomic-crm/validation/activities";
+import {
+  ACTIVITY_TYPE_GROUPS,
+  SAMPLE_STATUS_OPTIONS,
+  OUTCOME_OPTIONS_BY_TYPE,
+} from "@/atomic-crm/validation/activities";
 import { SidepaneSection } from "@/components/layouts/sidepane";
 
 // Activity types that should show duration field
@@ -35,13 +41,27 @@ interface ActivityTypeSectionProps {
  *
  * Includes:
  * - Activity type dropdown (grouped by Communication/Meetings/Documentation)
- * - Outcome dropdown
+ * - Outcome dropdown (context-specific options based on activity type)
  * - Duration input (shown for time-based activities)
  * - Sample status dropdown (shown for Sample activity type)
  */
 export function ActivityTypeSection({ control, activityType }: ActivityTypeSectionProps) {
+  const { setValue, getValues } = useFormContext<ActivityLogInput>();
   const showDuration = DURATION_ACTIVITY_TYPES.includes(activityType);
   const showSampleStatus = activityType === "Sample";
+
+  // Get context-specific outcomes for the selected activity type
+  // Falls back to ["Completed"] if activity type is unknown (defensive)
+  const outcomeOptions = OUTCOME_OPTIONS_BY_TYPE[activityType] ?? ["Completed"];
+
+  // Clear outcome when activity type changes and current outcome is invalid
+  // This provides fail-fast UX - user sees immediately that they need to reselect
+  useEffect(() => {
+    const currentOutcome = getValues("outcome");
+    if (currentOutcome && !outcomeOptions.includes(currentOutcome)) {
+      setValue("outcome", undefined as unknown as typeof currentOutcome);
+    }
+  }, [activityType, outcomeOptions, setValue, getValues]);
 
   return (
     <SidepaneSection label="What Happened">
@@ -105,18 +125,18 @@ export function ActivityTypeSection({ control, activityType }: ActivityTypeSecti
           render={({ field }) => (
             <FormItem>
               <FormLabel>Outcome</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value ?? undefined}>
                 <FormControl>
                   <SelectTrigger className="h-11">
                     <SelectValue placeholder="Select outcome" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Connected">Connected</SelectItem>
-                  <SelectItem value="Left Voicemail">Left Voicemail</SelectItem>
-                  <SelectItem value="No Answer">No Answer</SelectItem>
-                  <SelectItem value="Completed">Completed</SelectItem>
-                  <SelectItem value="Rescheduled">Rescheduled</SelectItem>
+                  {outcomeOptions.map((outcome) => (
+                    <SelectItem key={outcome} value={outcome}>
+                      {outcome}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
