@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -229,9 +229,25 @@ function OrganizationCombobox({
   );
 }
 
+// Form values type - explicitly define to avoid type inference issues with Zod defaults
+type QuickAddFormValues = {
+  organization_id?: number;
+  org_name?: string;
+  principal_id: number;
+  account_manager_id: number;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  email?: string;
+  city?: string;
+  state?: string;
+  campaign?: string;
+  product_ids: number[];
+  quick_note?: string;
+};
+
 export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const { mutate, isPending } = useQuickAdd();
-  const firstNameRef = useRef<HTMLInputElement>(null);
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
 
@@ -271,9 +287,12 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     setValue,
     control,
     reset,
-  } = useForm<QuickAddInput>({
-    resolver: zodResolver(quickAddSchema),
-    defaultValues,
+  } = useForm<QuickAddFormValues>({
+    resolver: zodResolver(quickAddSchema) as never,
+    defaultValues: {
+      ...defaultValues,
+      product_ids: defaultValues.product_ids ?? [],
+    },
   });
 
   useEffect(() => {
@@ -304,7 +323,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     }
   };
 
-  const onSubmit = (data: QuickAddInput, closeAfter: boolean) => {
+  const onSubmit = (data: QuickAddFormValues, closeAfter: boolean) => {
     mutate(data, {
       onSuccess: () => {
         if (closeAfter) {
@@ -325,14 +344,14 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             state: "",
             quick_note: "",
           });
-          setTimeout(() => firstNameRef.current?.focus(), 100);
+          setTimeout(() => setFocus("first_name"), 100);
         }
       },
     });
   };
 
-  const onValidationError = (errors: FieldErrors<QuickAddInput>) => {
-    const firstErrorField = Object.keys(errors)[0] as keyof QuickAddInput;
+  const onValidationError = (errors: FieldErrors<QuickAddFormValues>) => {
+    const firstErrorField = Object.keys(errors)[0] as keyof QuickAddFormValues;
     if (firstErrorField) {
       setFocus(firstErrorField);
     }
