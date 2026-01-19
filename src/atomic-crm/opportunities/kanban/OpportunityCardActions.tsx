@@ -42,6 +42,9 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   );
   const [isClosing, setIsClosing] = useState(false);
 
+  // State for DeleteConfirmDialog
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
   const handleViewDetails = useCallback(() => {
     navigate(`/opportunities/${opportunityId}/show`);
   }, [navigate, opportunityId]);
@@ -116,31 +119,26 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
     setShowCloseModal(open);
   }, []);
 
-  const handleDelete = useCallback(
-    async (e: React.MouseEvent) => {
-      // Prevent click from bubbling to card after dropdown portal closes
-      // Without this, the card's handleCardClick fires and opens the slide-over
-      e.stopPropagation();
-      e.preventDefault();
+  const handleDelete = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setShowDeleteDialog(true);
+  }, []);
 
-      if (window.confirm("Are you sure you want to delete this opportunity?")) {
-        try {
-          await deleteOne("opportunities", { id: opportunityId, previousData: {} });
-          notify("Opportunity deleted", { type: "success" });
-          // Optimistically remove from local state if callback provided (Kanban)
-          // Otherwise fall back to refresh (other contexts like List view)
-          if (onDelete) {
-            onDelete(opportunityId);
-          } else {
-            refresh();
-          }
-        } catch {
-          notify("Error deleting opportunity", { type: "error" });
-        }
+  const handleConfirmDelete = useCallback(async () => {
+    setShowDeleteDialog(false);
+    try {
+      await deleteOne("opportunities", { id: opportunityId, previousData: {} });
+      notify("Opportunity deleted", { type: "success" });
+      if (onDelete) {
+        onDelete(opportunityId);
+      } else {
+        refresh();
       }
-    },
-    [deleteOne, opportunityId, notify, onDelete, refresh]
-  );
+    } catch {
+      notify("Error deleting opportunity", { type: "error" });
+    }
+  }, [deleteOne, opportunityId, notify, onDelete, refresh]);
 
   return (
     <div data-action-button>
@@ -197,6 +195,15 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         targetStage={closeTargetStage}
         onConfirm={handleCloseConfirm}
         isSubmitting={isClosing}
+      />
+
+      {/* DeleteConfirmDialog - shown when clicking Delete */}
+      <DeleteConfirmDialog
+        open={showDeleteDialog}
+        count={1}
+        resourceName="opportunity"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowDeleteDialog(false)}
       />
     </div>
   );

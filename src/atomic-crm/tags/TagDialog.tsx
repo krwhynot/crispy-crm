@@ -20,6 +20,7 @@ import { RoundButton } from "./RoundButton";
 import type { TagColorName } from "@/lib/color-types";
 import { createTagSchema, type CreateTagInput } from "../validation/tags";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 
 interface TagDialogProps {
   open: boolean;
@@ -66,6 +67,8 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
   // P5: useWatch for isolated re-renders (only re-renders when color changes, not on every keystroke)
   const selectedColor = useWatch({ name: "color", control }) as TagColorName;
 
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+
   // Reset form when dialog opens/closes or tag changes
   useEffect(() => {
     if (open) {
@@ -83,104 +86,116 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
   };
 
   const handleClose = () => {
-    // Check for unsaved changes before closing
     if (isDirty) {
-      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to close?");
-      if (!confirmed) return;
+      setShowUnsavedDialog(true);
+      return;
     }
     reset(defaultValues);
     onClose();
   };
 
+  const handleConfirmClose = () => {
+    setShowUnsavedDialog(false);
+    reset(defaultValues);
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg">
-        <FormProvider {...form}>
-          <form onSubmit={handleSubmit(handleFormSubmit)}>
-            <DialogHeader>
-              <DialogTitle>{title}</DialogTitle>
-              <DialogDescription>Enter a name and choose a color for your tag.</DialogDescription>
-            </DialogHeader>
+    <>
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent className="sm:max-w-lg">
+          <FormProvider {...form}>
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <DialogHeader>
+                <DialogTitle>{title}</DialogTitle>
+                <DialogDescription>Enter a name and choose a color for your tag.</DialogDescription>
+              </DialogHeader>
 
-            <div className="space-y-4 py-4">
-              {/* P3: FormErrorSummary for accessible error aggregation */}
-              <FormErrorSummary
-                errors={errors}
-                fieldLabels={{
-                  name: "Tag Name",
-                  color: "Color",
-                }}
-              />
-
-              <div className="space-y-2">
-                <Label htmlFor="tag-name">Tag name</Label>
-                <Input
-                  id="tag-name"
-                  {...register("name")}
-                  placeholder="Enter tag name"
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
+              <div className="space-y-4 py-4">
+                {/* P3: FormErrorSummary for accessible error aggregation */}
+                <FormErrorSummary
+                  errors={errors}
+                  fieldLabels={{
+                    name: "Tag Name",
+                    color: "Color",
+                  }}
                 />
-                {errors.name && (
-                  <p id="name-error" className="text-sm text-destructive" role="alert">
-                    {errors.name.message}
-                  </p>
-                )}
-              </div>
 
-              <div className="space-y-2">
-                <Label>Color</Label>
-                <div className="flex flex-wrap gap-1">
-                  {colors.map((color) => (
-                    <div key={color} className="relative group">
-                      <RoundButton
-                        color={color}
-                        selected={color === selectedColor}
-                        handleClick={() => {
-                          setValue("color", color, { shouldValidate: true });
-                        }}
-                      />
-                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        {color}
-                      </span>
-                    </div>
-                  ))}
+                <div className="space-y-2">
+                  <Label htmlFor="tag-name">Tag name</Label>
+                  <Input
+                    id="tag-name"
+                    {...register("name")}
+                    placeholder="Enter tag name"
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "name-error" : undefined}
+                  />
+                  {errors.name && (
+                    <p id="name-error" className="text-sm text-destructive" role="alert">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
-                {errors.color && (
-                  <p id="color-error" className="text-sm text-destructive mt-1" role="alert">
-                    {errors.color.message}
-                  </p>
-                )}
-              </div>
-            </div>
 
-            <div className="flex justify-end pt-4">
-              <Button
-                type="submit"
-                variant="outline"
-                disabled={isSubmitting}
-                className={cn(
-                  buttonVariants({ variant: "outline" }),
-                  "text-primary",
-                  isSubmitting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                )}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <SaveIcon />
-                    Save
-                  </>
-                )}
-              </Button>
-            </div>
-          </form>
-        </FormProvider>
-      </DialogContent>
-    </Dialog>
+                <div className="space-y-2">
+                  <Label>Color</Label>
+                  <div className="flex flex-wrap gap-1">
+                    {colors.map((color) => (
+                      <div key={color} className="relative group">
+                        <RoundButton
+                          color={color}
+                          selected={color === selectedColor}
+                          handleClick={() => {
+                            setValue("color", color, { shouldValidate: true });
+                          }}
+                        />
+                        <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          {color}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {errors.color && (
+                    <p id="color-error" className="text-sm text-destructive mt-1" role="alert">
+                      {errors.color.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-4">
+                <Button
+                  type="submit"
+                  variant="outline"
+                  disabled={isSubmitting}
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "text-primary",
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                  )}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <SaveIcon />
+                      Save
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </FormProvider>
+        </DialogContent>
+      </Dialog>
+      <UnsavedChangesDialog
+        open={showUnsavedDialog}
+        onConfirm={handleConfirmClose}
+        onCancel={() => setShowUnsavedDialog(false)}
+      />
+    </>
   );
 }

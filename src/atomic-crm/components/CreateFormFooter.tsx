@@ -26,11 +26,12 @@ export const CreateFormFooter = ({
   const redirectFn = useRedirect();
   const { reset, getValues } = useFormContext();
   const { isDirty } = useFormState();
+  const [showDialog, setShowDialog] = useState(false);
 
   const handleCancel = useCallback(() => {
     if (isDirty) {
-      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
-      if (!confirmed) return;
+      setShowDialog(true);
+      return;
     }
     redirectFn(redirectPath);
   }, [isDirty, redirectFn, redirectPath]);
@@ -44,7 +45,7 @@ export const CreateFormFooter = ({
 
   return (
     <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-      <Button variant="outline" onClick={handleCancel}>
+      <Button variant="outline" onClick={handleCancel} className="h-11">
         Cancel
       </Button>
       <div className="flex gap-2">
@@ -93,6 +94,14 @@ export const CreateFormFooter = ({
           }}
         />
       </div>
+      <UnsavedChangesDialog
+        open={showDialog}
+        onConfirm={() => {
+          setShowDialog(false);
+          redirectFn(redirectPath);
+        }}
+        onCancel={() => setShowDialog(false)}
+      />
     </div>
   );
 };

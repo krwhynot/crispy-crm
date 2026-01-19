@@ -5572,3 +5572,48 @@ tool_response: {"stdout": "scripts/generate-seed.ts-149-const segmentsForSQL: Ar
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "rg \"onCreate=\" -A 1 --max-count=20"}
 tool_response: {"stdout": "src/atomic-crm/products/ProductDetailsInputTab.tsx:            onCreate={handleCreateCategory}\nsrc/atomic-crm/products/ProductDetailsInputTab.tsx-            createItemLabel=\"Add custom 
+
+--- 2026-01-19T15:49:50.820784 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit src/hooks/useUnsavedChangesWarning.ts 2>&1 || true", "description": "Type-check the modified hook file"}
+tool_response: {"stdout": "node_modules/@types/mdx/types.d.ts(23,38): error TS2503: Cannot find namespace 'JSX'.\nnode_modules/@types/mdx/types.d.ts(28,23): error TS2503: Cannot find namespace 'JSX'.\nnode_modules/@
+
+--- 2026-01-19T15:50:00.665585 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit src/components/admin/cancel-button.tsx 2>&1 | head -50", "description": "Check TypeScript errors in cancel-button.tsx"}
+tool_response: {"stdout": "node_modules/@tanstack/query-core/build/legacy/focusManager.d.ts(6,5): error TS18028: Private identifiers are only available when targeting ECMAScript 2015 and higher.\nnode_modules/@tanst
+
+--- 2026-01-19T15:50:06.774727 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | head -50 || true", "description": "Run full TypeScript check to see if the project compiles"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:50:17.702949 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | grep -i \"cancel-button\" || echo \"No errors in cancel-button.tsx\"", "description": "Check for TypeScript errors specifically in cancel-button.tsx"}
+tool_response: {"stdout": "No errors in cancel-button.tsx", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:50:22.182999 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | head -50", "description": "Run full TypeScript check from project root"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:50:34.600162 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/utils/device.ts", "description": "Verify device utility file exists"}
+tool_response: {"stdout": "-rw-r--r-- 1 krwhynot krwhynot 1708 Jan 19 15:43 /home/krwhynot/projects/crispy-crm/src/utils/device.ts", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:52:45.258531 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | grep -E \"(OrganizationCreateFormFooter|error TS)\" | head -20", "description": "Run TypeScript diagnostics on modified file"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:52:46.770033 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | grep -E \"(OpportunityCardActions|error)\" | head -20", "description": "Type check the modified file for errors"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T15:52:47.388353 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --pretty 2>&1 | grep -A 5 \"CreateFormFooter\" || echo \"No errors in CreateFormFooter.tsx\"", "description": "Check TypeScript errors for CreateFormFooter.tsx"}
+tool_response: {"stdout": "No errors in CreateFormFooter.tsx", "stderr": "", "interrupted": false, "isImage": false}

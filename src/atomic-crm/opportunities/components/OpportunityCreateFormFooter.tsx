@@ -44,6 +44,7 @@ export function OpportunityCreateFormFooter({
   const saveContext = useSaveContext();
   const { isDirty, isSubmitting, isValidating, dirtyFields } = useFormState();
   const { reset, getValues } = useFormContext();
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   // Track previous name value to reset confirmation when name changes
   const previousNameRef = useRef<string | null>(null);
@@ -65,8 +66,8 @@ export function OpportunityCreateFormFooter({
 
   const handleCancel = useCallback(() => {
     if (isDirty) {
-      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
-      if (!confirmed) return;
+      setShowCancelDialog(true);
+      return;
     }
     redirectFn(redirectPath);
   }, [isDirty, redirectFn, redirectPath]);
@@ -198,47 +199,57 @@ export function OpportunityCreateFormFooter({
   );
 
   return (
-    <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-      <Button variant="outline" onClick={handleCancel} className="h-11">
-        {translate("ra.action.cancel", { _: "Cancel" })}
-      </Button>
-      <div className="flex gap-2">
-        <Button
-          type="button"
-          variant="default"
-          disabled={disabled}
-          onClick={handleSaveAndClose}
-          data-tutorial={tutorialAttribute}
-          className={cn(
-            "h-11 min-w-[140px]",
-            disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          )}
-        >
-          {isSubmitting ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Save className="mr-2 h-4 w-4" />
-          )}
-          {translate("ra.action.save", { _: "Save & Close" })}
+    <>
+      <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
+        <Button variant="outline" onClick={handleCancel} className="h-11">
+          {translate("ra.action.cancel", { _: "Cancel" })}
         </Button>
-        <Button
-          type="button"
-          variant="default"
-          disabled={disabled}
-          onClick={handleSaveAndAddAnother}
-          className={cn(
-            "h-11 min-w-[160px]",
-            disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          )}
-        >
-          {isSubmitting ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Save className="mr-2 h-4 w-4" />
-          )}
-          Save & Add Another
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="default"
+            disabled={disabled}
+            onClick={handleSaveAndClose}
+            data-tutorial={tutorialAttribute}
+            className={cn(
+              "h-11 min-w-[140px]",
+              disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            )}
+          >
+            {isSubmitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="mr-2 h-4 w-4" />
+            )}
+            {translate("ra.action.save", { _: "Save & Close" })}
+          </Button>
+          <Button
+            type="button"
+            variant="default"
+            disabled={disabled}
+            onClick={handleSaveAndAddAnother}
+            className={cn(
+              "h-11 min-w-[160px]",
+              disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            )}
+          >
+            {isSubmitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="mr-2 h-4 w-4" />
+            )}
+            Save & Add Another
+          </Button>
+        </div>
       </div>
-    </div>
+      <UnsavedChangesDialog
+        open={showCancelDialog}
+        onConfirm={() => {
+          setShowCancelDialog(false);
+          redirectFn(redirectPath);
+        }}
+        onCancel={() => setShowCancelDialog(false)}
+      />
+    </>
   );
 }

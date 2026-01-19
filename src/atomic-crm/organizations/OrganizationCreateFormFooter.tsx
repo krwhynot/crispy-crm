@@ -42,6 +42,7 @@ export const OrganizationCreateFormFooter = ({
   const { isDirty } = useFormState();
   const [create] = useCreate();
   const [isCreating, setIsCreating] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   // Track which save action was clicked
   const pendingActionRef = useRef<SaveAction | null>(null);
@@ -50,8 +51,8 @@ export const OrganizationCreateFormFooter = ({
 
   const handleCancel = useCallback(() => {
     if (isDirty) {
-      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
-      if (!confirmed) return;
+      setShowCancelDialog(true);
+      return;
     }
     redirectFn(redirectPath);
   }, [isDirty, redirectFn, redirectPath]);
@@ -155,37 +156,47 @@ export const OrganizationCreateFormFooter = ({
   };
 
   return (
-    <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-      {/* Hidden native submit button for React Admin form integration */}
-      <button
-        ref={hiddenSubmitRef}
-        type="submit"
-        style={{ display: "none" }}
-        aria-hidden="true"
-        tabIndex={-1}
-      />
-
-      <Button variant="outline" onClick={handleCancel} disabled={isCreating}>
-        Cancel
-      </Button>
-
-      <div className="flex gap-2">
-        <SaveButton
-          type="button"
-          label={buttonLabel("Save & Close")}
-          alwaysEnable={!isButtonDisabled}
-          disabled={isButtonDisabled}
-          data-tutorial="org-save-btn"
-          onClick={(e) => handleSaveClick("close", e as React.MouseEvent<HTMLButtonElement>)}
+    <>
+      <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
+        {/* Hidden native submit button for React Admin form integration */}
+        <button
+          ref={hiddenSubmitRef}
+          type="submit"
+          style={{ display: "none" }}
+          aria-hidden="true"
+          tabIndex={-1}
         />
-        <SaveButton
-          type="button"
-          label={buttonLabel("Save & Add Another")}
-          alwaysEnable={!isButtonDisabled}
-          disabled={isButtonDisabled}
-          onClick={(e) => handleSaveClick("addAnother", e as React.MouseEvent<HTMLButtonElement>)}
-        />
+
+        <Button variant="outline" onClick={handleCancel} disabled={isCreating}>
+          Cancel
+        </Button>
+
+        <div className="flex gap-2">
+          <SaveButton
+            type="button"
+            label={buttonLabel("Save & Close")}
+            alwaysEnable={!isButtonDisabled}
+            disabled={isButtonDisabled}
+            data-tutorial="org-save-btn"
+            onClick={(e) => handleSaveClick("close", e as React.MouseEvent<HTMLButtonElement>)}
+          />
+          <SaveButton
+            type="button"
+            label={buttonLabel("Save & Add Another")}
+            alwaysEnable={!isButtonDisabled}
+            disabled={isButtonDisabled}
+            onClick={(e) => handleSaveClick("addAnother", e as React.MouseEvent<HTMLButtonElement>)}
+          />
+        </div>
       </div>
-    </div>
+      <UnsavedChangesDialog
+        open={showCancelDialog}
+        onConfirm={() => {
+          setShowCancelDialog(false);
+          redirectFn(redirectPath);
+        }}
+        onCancel={() => setShowCancelDialog(false)}
+      />
+    </>
   );
 };

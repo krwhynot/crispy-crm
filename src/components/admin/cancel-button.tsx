@@ -28,6 +28,7 @@ interface CancelButtonProps extends React.ComponentProps<"button"> {
  */
 export function CancelButton({ skipDirtyCheck = false, ...props }: CancelButtonProps) {
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
 
   // Get form state for dirty check
   // Note: Must be inside FormProvider context. Use skipDirtyCheck=true if not.
@@ -35,22 +36,32 @@ export function CancelButton({ skipDirtyCheck = false, ...props }: CancelButtonP
 
   const handleCancel = useCallback(() => {
     if (!skipDirtyCheck && isDirty) {
-      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
-      if (!confirmed) return;
+      setShowDialog(true);
+      return;
     }
     navigate(-1);
   }, [skipDirtyCheck, isDirty, navigate]);
 
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      onClick={handleCancel}
-      className="cursor-pointer"
-      {...props}
-    >
-      <CircleX />
-      <Translate i18nKey="ra.action.cancel">Cancel</Translate>
-    </Button>
+    <>
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={handleCancel}
+        className="cursor-pointer h-11"
+        {...props}
+      >
+        <CircleX />
+        <Translate i18nKey="ra.action.cancel">Cancel</Translate>
+      </Button>
+      <UnsavedChangesDialog
+        open={showDialog}
+        onConfirm={() => {
+          setShowDialog(false);
+          navigate(-1);
+        }}
+        onCancel={() => setShowDialog(false)}
+      />
+    </>
   );
 }
