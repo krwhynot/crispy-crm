@@ -257,7 +257,7 @@ export function OpportunityWizardStep2() {
             />
           </div>
         </FormFieldWrapper>
-        <FormFieldWrapper name="estimated_close_date" isRequired>
+        <FormFieldWrapper name="estimated_close_date" isRequired countDefaultAsFilled>
           <div data-tutorial="opp-close-date">
             <DateInput
               source="estimated_close_date"
@@ -422,7 +422,7 @@ export function OpportunityWizardStep3() {
                   <QuickCreateContactPopover
                     name={pendingContactName}
                     organizationId={customerOrganizationId}
-                    salesId={identity?.id}
+                    salesId={identity?.id ? Number(identity.id) : undefined}
                     onCreated={handleContactCreated}
                     onCancel={handleCancelContactCreate}
                   >

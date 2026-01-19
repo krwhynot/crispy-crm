@@ -21,7 +21,6 @@ import {
   useNotify,
   useCanAccess,
 } from "ra-core";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -193,16 +192,6 @@ const OrganizationCreate = () => {
   };
   const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
 
-  // Connect Zod schema as form resolver for client-side validation
-  // This enables form.trigger() to work in DuplicateCheckSaveButton
-  // Schema remains single source of truth (Constitution-compliant)
-  // CRITICAL: useForm MUST be called before any early returns (React hooks rules)
-  const form = useForm<OrganizationFormValues>({
-    resolver: zodResolver(organizationSchema),
-    defaultValues: formDefaults,
-    mode: "onBlur",
-  });
-
   // Show loading skeleton while identity loads or checking permissions
   // NOTE: This early return is now AFTER all hooks have been called
   if (isLoadingDefaults || isCheckingAccess) {
@@ -228,7 +217,12 @@ const OrganizationCreate = () => {
         <div className="bg-muted px-6 py-6" onKeyDown={handleFormKeyDown}>
           <div className="max-w-4xl mx-auto create-form-card">
             <FormProgressProvider initialProgress={10}>
-              <Form key={formKey} {...form}>
+              <Form
+                key={formKey}
+                defaultValues={formDefaults}
+                mode="onBlur"
+                resolver={zodResolver(organizationSchema)}
+              >
                 <FormProgressBar className="mb-6" />
                 <Card>
                   <CardContent>
