@@ -65,7 +65,7 @@ export const ContactCompactForm = () => {
               <TextInput
                 source="first_name"
                 label="First Name *"
-                helperText="Required field"
+                helperText="First name is required"
                 autoComplete="given-name"
                 validate={required("First name is required")}
               />
@@ -76,7 +76,7 @@ export const ContactCompactForm = () => {
               <TextInput
                 source="last_name"
                 label="Last Name *"
-                helperText="Required field"
+                helperText="Last name is required"
                 autoComplete="family-name"
                 validate={required("Last name is required")}
               />
@@ -99,11 +99,10 @@ export const ContactCompactForm = () => {
             <ReferenceInput
               source="organization_id"
               reference="organizations"
-              label="Organization *"
               isRequired
               enableGetChoices={enableGetChoices}
             >
-              <AutocompleteOrganizationInput helperText="Required field" />
+              <AutocompleteOrganizationInput label="Organization *" helperText="Organization is required" />
             </ReferenceInput>
           </FormFieldWrapper>
         </div>
@@ -121,7 +120,7 @@ export const ContactCompactForm = () => {
               }}
             >
               <SelectInput
-                helperText="Required field"
+                helperText="Account manager is required"
                 label="Account manager *"
                 optionText={saleOptionRenderer}
               />

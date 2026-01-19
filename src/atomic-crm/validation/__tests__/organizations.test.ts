@@ -140,4 +140,87 @@ describe("Organization Validation Schemas (organizations.ts)", () => {
       expect(result.website).toBe("https://example.com");
     });
   });
+
+  describe("URL TLD validation", () => {
+    it("rejects URLs without TLD (e.g., https://invalid-website)", () => {
+      const result = organizationSchema.partial().safeParse({
+        website: "invalid-website", // Will be prefixed to https://invalid-website
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("accepts URLs with valid TLD (e.g., example.com)", () => {
+      const result = organizationSchema.partial().safeParse({
+        website: "example.com",
+      });
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.website).toBe("https://example.com");
+      }
+    });
+
+    it("accepts empty website", () => {
+      const result = organizationSchema.partial().safeParse({
+        website: "",
+      });
+      expect(result.success).toBe(true);
+    });
+  });
+
+  describe("Phone number validation", () => {
+    it("rejects phone with less than 10 digits", () => {
+      const result = organizationSchema.partial().safeParse({
+        phone: "abc123", // Only 3 digits
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("accepts phone with 10+ digits in various formats", () => {
+      const validPhones = ["5551234567", "(555) 123-4567", "555.123.4567", "+1 555-123-4567"];
+
+      validPhones.forEach((phone) => {
+        const result = organizationSchema.partial().safeParse({ phone });
+        expect(result.success).toBe(true);
+      });
+    });
+
+    it("accepts empty phone", () => {
+      const result = organizationSchema.partial().safeParse({
+        phone: "",
+      });
+      expect(result.success).toBe(true);
+    });
+  });
+
+  describe("Postal code validation", () => {
+    it("rejects invalid ZIP codes", () => {
+      const invalidZips = ["1234", "123456", "ABCDE", "12345-678"];
+
+      invalidZips.forEach((postal_code) => {
+        const result = organizationSchema.partial().safeParse({ postal_code });
+        expect(result.success).toBe(false);
+      });
+    });
+
+    it("accepts valid 5-digit ZIP codes", () => {
+      const result = organizationSchema.partial().safeParse({
+        postal_code: "12345",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts valid ZIP+4 codes", () => {
+      const result = organizationSchema.partial().safeParse({
+        postal_code: "12345-6789",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts empty postal code", () => {
+      const result = organizationSchema.partial().safeParse({
+        postal_code: "",
+      });
+      expect(result.success).toBe(true);
+    });
+  });
 });

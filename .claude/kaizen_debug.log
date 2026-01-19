@@ -4432,3 +4432,28 @@ tool_response: {"stdout": "src/components/admin/autocomplete-array-input.tsx:   
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "grep -r \"Form.*ra-core\\|from.*ra-core.*Form\" --include=\"*.tsx\" -l | head -5", "description": "Find files importing Form from ra-core"}
 tool_response: {"stdout": "node_modules/react-admin/node_modules/ra-ui-materialui/src/auth/LoginForm.tsx\nnode_modules/react-admin/node_modules/ra-ui-materialui/src/auth/AuthLayout.stories.tsx\nnode_modules/react-ad
+
+--- 2026-01-19T00:10:49.889702 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/validation/__tests__/organizations.test.ts --reporter=verbose 2>&1", "timeout": 60000, "description": "Run organization validation tests to verify new test c
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/validation/__tests__/organizations.test.ts > Organization Validation Schemas (organizations.ts) > organizationType
+
+--- 2026-01-19T00:11:18.851805 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --pretty --project tsconfig.json 2>&1 | head -50", "description": "Check for TypeScript errors in the project"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T00:11:53.390312 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npm test -- --run src/atomic-crm/validation/__tests__/organizations.test.ts 2>&1", "timeout": 60000, "description": "Run organization validation tests"}
+tool_response: {"stdout": "> atomic-crm@0.1.0 test\n> vitest --run src/atomic-crm/validation/__tests__/organizations.test.ts\n\n\n RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/validation/
+
+--- 2026-01-19T00:12:20.546070 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | rg -E \"(organizations\\.ts|OrganizationCompactForm\\.tsx)\" | head -20 || echo \"No errors in target files\"", "timeout": 60000, "description": "Ch
+tool_response: {"stdout": "rg: error parsing flag -E: grep config error: unknown encoding: (organizations\\.ts|OrganizationCompactForm\\.tsx)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T00:12:35.133740 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | rg \"organizations\\.ts|OrganizationCompactForm\\.tsx\" | head -20 || echo \"No errors in target files\"", "timeout": 60000, "description": "Check T
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
