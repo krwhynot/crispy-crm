@@ -30,7 +30,7 @@ export const useQuickAdd = () => {
     mutationFn: async (formData: QuickAddInput) => {
       return await dataProvider.createBoothVisitor(formData);
     },
-    onSuccess: (result, formData) => {
+    onSuccess: (_result, formData) => {
       // Invalidate all affected resource caches
       queryClient.invalidateQueries({ queryKey: organizationKeys.all });
       queryClient.invalidateQueries({ queryKey: contactKeys.all });

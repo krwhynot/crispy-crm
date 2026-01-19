@@ -70,7 +70,7 @@ function AccessibleField({
         "aria-invalid": error ? "true" : undefined,
         "aria-describedby": error ? errorId : undefined,
         "aria-required": required ? "true" : undefined,
-      })}
+      } as React.HTMLAttributes<HTMLElement>)}
 
       {error && (
         <p id={errorId} role="alert" className="text-sm text-destructive">
