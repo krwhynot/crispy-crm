@@ -19,6 +19,14 @@ vi.mock("ra-core", () => ({
     ],
     isLoading: false,
   })),
+  useGetIdentity: vi.fn(() => ({
+    data: { id: 100, fullName: "John Sales" },
+    isLoading: false,
+  })),
+  useDataProvider: vi.fn(() => ({
+    create: vi.fn().mockResolvedValue({ data: { id: 1, name: "Test" } }),
+  })),
+  useNotify: vi.fn(() => vi.fn()),
 }));
 
 // Test wrapper
