@@ -317,89 +317,150 @@ async addOpportunityParticipant(
 
 ---
 
-## Pattern E: Service Registry
+## Pattern E: 4-Stage Service Initialization
 
-How services are initialized and exposed through the data provider.
+How services are initialized through the ServiceContainer pattern to break circular dependencies.
+
+```
+Provider Initialization Flow:
+┌─────────────────────────────────────────────────────────────┐
+│ Stage 1: Base Provider (CRUD only)                          │
+│     supabaseDataProvider({ instanceUrl, apiKey, client })   │
+│                            │                                │
+│                            ▼                                │
+│ Stage 2: ServiceContainer                                   │
+│     createServiceContainer(baseProvider)                    │
+│     → SalesService, OpportunitiesService, ActivitiesService │
+│     → JunctionsService, SegmentsService                     │
+│                            │                                │
+│                            ▼                                │
+│ Stage 3: Composed Provider (Handler routing)                │
+│     createComposedDataProvider(baseProvider)                │
+│     → Resource-specific handlers with lifecycle callbacks   │
+│                            │                                │
+│                            ▼                                │
+│ Stage 4: Extended Provider (Custom methods)                 │
+│     extendWithCustomMethods({ composedProvider, services }) │
+│     → rpc(), invoke(), storage(), service delegations       │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ```typescript
-// src/atomic-crm/providers/supabase/composedDataProvider.ts
+// src/atomic-crm/providers/supabase/index.ts
 
-// 1. Import service classes
-import {
-  SalesService,
-  OpportunitiesService,
-  ActivitiesService,
-  JunctionsService,
-  SegmentsService,
-} from "../../services";
+function createExtendedDataProvider(): DataProvider {
+  // Stage 1: Create base provider (CRUD only)
+  const baseProvider = supabaseDataProvider({
+    instanceUrl: import.meta.env.VITE_SUPABASE_URL,
+    apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+    supabaseClient: supabase,
+  });
 
-// 2. Initialize with base data provider (CRUD-only, breaks circular deps)
-const salesService = new SalesService(baseDataProvider);
-const opportunitiesService = new OpportunitiesService(baseDataProvider);
-const activitiesService = new ActivitiesService(baseDataProvider);
-const junctionsService = new JunctionsService(baseDataProvider);
-const segmentsService = new SegmentsService(baseDataProvider);
+  // Stage 2: Initialize services (breaks circular dependency)
+  const services = createServiceContainer(baseProvider);
 
-// 3. Expose through extended data provider methods
-export const composedDataProvider: ExtendedDataProvider = {
-  ...baseDataProvider,
+  // Stage 3: Create composed provider with handler routing
+  const composedProvider = createComposedDataProvider(baseProvider);
 
-  // Service delegation for opportunities
-  async create<RecordType extends RaRecord = RaRecord>(
-    resource: string,
-    params: CreateParams<RecordType>
-  ): Promise<CreateResult<RecordType>> {
-    // ... validation and transform ...
+  // Stage 4: Extend with custom methods
+  return extendWithCustomMethods({
+    composedProvider,
+    services,
+    supabaseClient: supabase,
+  });
+}
+```
 
-    if (resource === "opportunities") {
-      const result = await opportunitiesService.createWithProducts(
-        processedData as Partial<OpportunityCreateInput>
-      );
-      return { data: result as unknown as RecordType };
-    }
+### ServiceContainer Factory
 
-    // Default CRUD
-    return baseDataProvider.create(resource, { data: processedData });
-  },
+```typescript
+// src/atomic-crm/providers/supabase/services/index.ts
 
-  // Direct service method exposure
-  async salesCreate(body: SalesFormData): Promise<Sale> {
-    return salesService.salesCreate(body);
-  },
+export interface ServiceContainer {
+  sales: SalesService;
+  opportunities: OpportunitiesService;
+  activities: ActivitiesService;
+  junctions: JunctionsService;
+  segments: SegmentsService;
+}
 
-  async getActivityLog(
-    organizationId?: Identifier,
-    salesId?: Identifier
-  ): Promise<Record<string, unknown>[]> {
-    return activitiesService.getActivityLog(organizationId, salesId);
-  },
+export function createServiceContainer(baseProvider: DataProvider): ServiceContainer {
+  return {
+    // Sales service - Account manager CRUD via Edge Functions
+    sales: new SalesService(baseProvider),
 
-  // Junction service methods
-  async getContactOrganizations(contactId: Identifier) {
-    return junctionsService.getContactOrganizations(contactId);
-  },
+    // Opportunities service - Product sync, archive/unarchive workflows
+    opportunities: new OpportunitiesService(baseProvider),
 
-  async addContactToOrganization(
-    contactId: Identifier,
-    organizationId: Identifier,
-    params: JunctionParams = {}
-  ) {
-    return junctionsService.addContactToOrganization(contactId, organizationId, params);
-  },
-};
+    // Activities service - Activity log aggregation via RPC
+    activities: new ActivitiesService(baseProvider),
+
+    // Junctions service - Many-to-many relationship management
+    junctions: new JunctionsService(baseProvider),
+
+    // Segments service - Get-or-create pattern for segment tagging
+    segments: new SegmentsService(baseProvider),
+  };
+}
+```
+
+### Extension Layer (Custom Methods)
+
+```typescript
+// src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts
+
+export function extendWithCustomMethods({
+  composedProvider,
+  services,
+  supabaseClient,
+}: ExtensionConfig): ExtendedDataProvider {
+  return {
+    ...composedProvider,
+
+    // RPC calls (Postgres functions)
+    async rpc<T>(functionName: string, params?: object): Promise<T> {
+      const { data, error } = await supabaseClient.rpc(functionName, params);
+      if (error) throw new Error(`RPC ${functionName} failed: ${error.message}`);
+      return data;
+    },
+
+    // Service delegations
+    async salesCreate(body: SalesFormData): Promise<Sale> {
+      return services.sales.salesCreate(body);
+    },
+
+    async getActivityLog(organizationId?: Identifier, salesId?: Identifier) {
+      return services.activities.getActivityLog(organizationId, salesId);
+    },
+
+    async getContactOrganizations(contactId: Identifier) {
+      return services.junctions.getContactOrganizations(contactId);
+    },
+
+    // ... 13+ junction methods delegated to services.junctions
+  };
+}
 ```
 
 **When to use:**
 - Adding a new domain service to the application
-- Exposing service methods to React Admin components
+- Understanding the provider initialization flow
+- Debugging circular dependency issues
 
 **Key points:**
-- Services receive `baseDataProvider` (not the extended one) to avoid circular deps
-- Override CRUD methods when business logic is needed (e.g., opportunities)
-- Add custom methods for operations outside standard CRUD
-- Keep the registry in one place for discoverability
+- **Stage ordering is critical** - services need base provider, extensions need services
+- **ServiceContainer interface** provides type-safe access to all services
+- **Services receive baseProvider** (CRUD only) - no custom methods, no circular deps
+- **Extension layer** adds custom methods AFTER services exist
+- **Singleton pattern** - `dataProvider` export is created once at import time
 
-**Example:** `src/atomic-crm/providers/supabase/composedDataProvider.ts`
+**Why 4 stages?**
+- Breaks circular dependency: Services ← Base → Handlers → Extension → Services
+- Services can use CRUD operations without needing custom methods
+- Extensions can delegate to services without services needing extensions
+- Clear separation: Provider = Translation, Services = Logic, Extensions = Glue
+
+**Example:** `src/atomic-crm/providers/supabase/index.ts`, `services/index.ts`
 
 ---
 

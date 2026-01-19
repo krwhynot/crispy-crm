@@ -363,6 +363,77 @@ fi
 
 ---
 
+## Pattern G: Migration Drift Detection
+
+Detects divergence between local and cloud migration histories before commit. This prevents the scenario where local migrations and cloud schema diverge, catching sync issues early.
+
+**When to use**: Detecting local vs cloud schema divergence when migration files are staged
+
+### Drift Detection Gate
+
+```bash
+# .husky/pre-commit
+# Only run when migration files are staged
+if [ -n "$migration_files" ]; then
+  echo "🔄 Checking migration drift (local vs cloud)..."
+
+  # Check if supabase is linked (has .supabase directory or config)
+  if [ -f "supabase/.temp/project-ref" ] || npx supabase projects list &>/dev/null; then
+
+    # Run dry-run to detect drift - this is the authoritative check
+    drift_output=$(npx supabase db push --dry-run 2>&1 || true)
+
+    # Check for history mismatch (critical - cloud has migrations not in local)
+    if echo "$drift_output" | grep -q "migration history does not match"; then
+      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+      echo -e "${RED}❌ MIGRATION DRIFT DETECTED${NC}"
+      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+      echo
+      echo -e "${YELLOW}Local and cloud migration histories have diverged.${NC}"
+      echo -e "${YELLOW}This typically happens when migrations are applied directly to cloud.${NC}"
+      echo
+      echo "To investigate:"
+      echo "  npx supabase db pull    # See what cloud has"
+      echo "  npx supabase db push --dry-run  # See full diff"
+      echo
+      echo "To fix (after investigation):"
+      echo "  npx supabase migration repair --status reverted <version>  # For cloud-only"
+      echo "  npx supabase migration repair --status applied <version>   # For local-only"
+      echo
+      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+      exit 1
+    fi
+
+    # Check for pending migrations (warning only - local migrations not yet in cloud)
+    if echo "$drift_output" | grep -qE "Would apply|migrations? to apply"; then
+      echo -e "${YELLOW}⚠ Pending migrations will be applied on next deploy${NC}"
+    fi
+
+    echo -e "${GREEN}✓ Migration sync OK${NC}"
+  else
+    echo -e "${YELLOW}⚠ Supabase not linked, skipping drift check${NC}"
+  fi
+fi
+```
+
+**Key points:**
+- Only runs when migration files are staged (piggybacks on Pattern F filtering)
+- Uses `npx supabase db push --dry-run` as authoritative check
+- Detects "migration history does not match" - cloud has migrations not in local
+- Provides detailed remediation instructions with specific commands
+- Warning-only for pending migrations (local not yet in cloud)
+- Graceful degradation: skips if Supabase not linked (fresh clone, CI)
+- BLOCKING: `exit 1` on drift detection - prevents commit
+
+**When drift occurs:**
+- **History mismatch**: Cloud has migrations applied that don't exist locally
+- **Typical cause**: Direct migration application to cloud (bypassing local)
+- **Resolution**: Use `supabase migration repair` to reconcile histories
+
+**Example:** `.husky/pre-commit` (lines 102-146)
+
+---
+
 ## File Reference
 
 | Pattern | Primary Files |
@@ -373,4 +444,5 @@ fi
 | **D: Post-Merge Notify** | `.husky/post-merge` |
 | **E: Semantic Colors** | `.husky/pre-commit` (lines 66-79) |
 | **F: Migration Validation** | `.husky/pre-commit` (lines 81-99) |
+| **G: Migration Drift** | `.husky/pre-commit` (lines 102-146) |
 | **Hook Dispatcher** | `.husky/_/h` |

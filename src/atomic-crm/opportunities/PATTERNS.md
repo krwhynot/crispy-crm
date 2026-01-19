@@ -6,41 +6,53 @@ Comprehensive patterns for the Opportunities module in Crispy CRM. This document
 
 ```
 resource.tsx (Entry point)
-    ├── React.lazy() → OpportunityList
-    │       ├── List (React Admin)
-    │       │   ├── OpportunityListLayout
-    │       │   │   ├── ListSearchBar + OpportunityViewSwitcher
-    │       │   │   ├── [VIEW SWITCHER ROUTES]
-    │       │   │   │   ├── "kanban" → OpportunityListContent (DnD Context)
-    │       │   │   │   │               ├── OpportunityColumn[]
-    │       │   │   │   │               │   └── OpportunityCard[] (useSortable)
-    │       │   │   │   │               └── DragOverlay
-    │       │   │   │   ├── "list" → OpportunityRowListView
-    │       │   │   │   ├── "campaign" → CampaignGroupedList
-    │       │   │   │   └── "principal" → PrincipalGroupedList
-    │       │   │   │                       └── PrincipalColumn[]
-    │       │   │   │                           └── PrincipalOpportunityCard[]
-    │       │   │   └── OpportunityArchivedList
-    │       │   └── OpportunitySpeedDial (FAB)
-    │       │       └── QuickAddDialog
-    │       │           └── QuickAddForm
-    │       └── OpportunitySlideOver (40vw panel)
-    │               ├── ResourceSlideOver (generic wrapper)
-    │               └── [TABS]
-    │                   ├── OpportunitySlideOverDetailsTab
-    │                   ├── OpportunityContactsTab
-    │                   ├── OpportunityProductsTab
-    │                   └── OpportunityNotesTab
-    ├── React.lazy() → OpportunityCreateWizard
-    │       └── FormProgressProvider + FormWizard
-    │               ├── StepIndicator
-    │               ├── WizardStep[1-4]
-    │               │   ├── OpportunityWizardStep1 (Basic Info)
-    │               │   ├── OpportunityWizardStep2 (Pipeline & Team)
-    │               │   ├── OpportunityWizardStep3 (Contacts & Products)
-    │               │   └── OpportunityWizardStep4 (Additional Details)
-    │               └── WizardNavigation
-    └── React.lazy() → OpportunityEdit
+    ├── OpportunityListView (React.lazy)
+    │       └── OpportunityList
+    │           ├── List (React Admin)
+    │           │   ├── OpportunityListLayout
+    │           │   │   ├── ListSearchBar + OpportunityViewSwitcher
+    │           │   │   ├── [VIEW SWITCHER ROUTES]
+    │           │   │   │   ├── "kanban" → OpportunityListContent (DnD Context)
+    │           │   │   │   │               ├── OpportunityColumn[]
+    │           │   │   │   │               │   └── OpportunityCard[] (useSortable)
+    │           │   │   │   │               └── DragOverlay
+    │           │   │   │   ├── "list" → OpportunityRowListView
+    │           │   │   │   ├── "campaign" → CampaignGroupedList
+    │           │   │   │   └── "principal" → PrincipalGroupedList
+    │           │   │   │                       └── PrincipalColumn[]
+    │           │   │   │                           └── PrincipalOpportunityCard[]
+    │           │   │   └── OpportunityArchivedList
+    │           │   └── OpportunitySpeedDial (FAB)
+    │           │       └── QuickAddDialog
+    │           │           └── QuickAddForm
+    │           └── OpportunitySlideOver (40vw panel)
+    │                   ├── ResourceSlideOver (generic wrapper)
+    │                   └── [TABS]
+    │                       ├── OpportunitySlideOverDetailsTab
+    │                       ├── OpportunityContactsTab
+    │                       ├── OpportunityProductsTab
+    │                       └── OpportunityNotesTab
+    ├── OpportunityCreateView (Redirect)
+    │       └── OpportunityCreateRedirect → redirects to /opportunities list
+    │           (Quick Add is now the primary creation entry point)
+    ├── OpportunityCreate (Standalone form - linked from SlideOver)
+    │       └── CreateBase + FormProgressProvider
+    │               ├── FormProgressBar
+    │               ├── Form (React Admin)
+    │               │   └── OpportunityFormContent
+    │               │       ├── FormErrorSummary
+    │               │       ├── OpportunityInputs (mode="create")
+    │               │       │   └── OpportunityCompactForm
+    │               │       │       ├── FormSectionWithProgress (Opportunity Details)
+    │               │       │       ├── FormSectionWithProgress (Pipeline)
+    │               │       │       ├── CollapsibleSection (Contacts & Products)
+    │               │       │       ├── CollapsibleSection (Classification)
+    │               │       │       └── CollapsibleSection (Additional Details)
+    │               │       └── OpportunityCreateFormFooter
+    │               ├── SimilarOpportunitiesDialog
+    │               └── OpportunityCreateFormTutorial
+    └── OpportunityEditView (React.lazy)
+            └── OpportunityEdit
 ```
 
 ---
