@@ -51,12 +51,7 @@ const ContactEditContent = () => {
   return (
     <ResponsiveGrid variant="dashboard" className="mt-2">
       <main role="main" aria-label="Edit contact">
-        <Form
-          className="flex flex-col gap-4"
-          defaultValues={defaultValues}
-          key={record.id}
-          mode="onBlur"
-        >
+        <Form className="flex flex-col gap-4" defaultValues={defaultValues} mode="onBlur">
           <Card>
             <CardContent>
               <ContactInputs />

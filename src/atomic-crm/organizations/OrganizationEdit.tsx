@@ -49,7 +49,7 @@ const OrganizationEditContent = () => {
   return (
     <ResponsiveGrid variant="dashboard" className="mt-2">
       <main role="main" aria-label="Edit organization">
-        <Form defaultValues={defaultValues} key={record.id} className="flex flex-col gap-4">
+        <Form defaultValues={defaultValues} className="flex flex-col gap-4">
           <Card>
             <CardContent>
               <OrganizationInputs />

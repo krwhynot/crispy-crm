@@ -44,7 +44,7 @@ const TaskEditForm = () => {
 
   return (
     <div className="mt-2">
-      <Form className="flex flex-col gap-4" defaultValues={defaultValues} key={record.id}>
+      <Form className="flex flex-col gap-4" defaultValues={defaultValues}>
         <Card>
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-4">Edit Task</h2>

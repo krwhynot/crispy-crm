@@ -49,10 +49,7 @@ const ProductEditForm = () => {
   if (!record) return null;
 
   return (
-    <Form
-      defaultValues={defaultValues}
-      key={record.id} // Force remount when record changes
-    >
+    <Form defaultValues={defaultValues}>
       <Card>
         <CardContent>
           <div className="mb-6">

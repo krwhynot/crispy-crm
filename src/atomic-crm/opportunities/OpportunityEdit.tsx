@@ -65,11 +65,7 @@ const OpportunityEditForm = () => {
 
   return (
     <FormProgressProvider>
-      <Form
-        className="flex flex-1 flex-col gap-4 pb-2"
-        defaultValues={defaultValues}
-        key={record.id} // Force remount when record changes
-      >
+      <Form className="flex flex-1 flex-col gap-4 pb-2" defaultValues={defaultValues}>
         <Card>
           <CardContent className="pt-6">
             <EditHeader />
