@@ -48,6 +48,13 @@
 | ERR-02 | Silent Catch | Filter storage errors silently ignored | `src/atomic-crm/filters/filterPrecedence.ts:70-72,191-193` | Open |
 | ERR-03 | Error Propagation | QuickCreatePopover catches but doesn't log for debugging | `src/atomic-crm/organizations/QuickCreatePopover.tsx:72,101` | Open |
 
+### P1 Dependencies
+- **ASYNC-01**: Blocks nothing | Blocked by: None | Related: useEffect cleanup patterns
+- **ASYNC-02**: Blocks nothing | Blocked by: None | Related: Save indicator UX
+- **ERR-01**: Blocks ERR-02, ERR-03 (establish logging pattern first) | Blocked by: None | Related: Silent catch pattern
+- **ERR-02**: Blocks nothing | Blocked by: ERR-01 (fix together) | Related: Silent catch pattern
+- **ERR-03**: Blocks nothing | Blocked by: ERR-01 (fix together) | Related: Silent catch pattern
+
 ---
 
 ## P2 - Medium Priority (Tech Debt)
@@ -89,6 +96,20 @@
 | FORM-03 | Touch Target | FormErrorSummary error item button < 44px | `src/components/admin/FormErrorSummary.tsx:168` | Open |
 | FORM-04 | Mobile-First | SimpleFormIterator uses sm: instead of md: breakpoint | `src/components/admin/simple-form-iterator.tsx:324` | Open |
 
+### P2 Dependencies
+- **IMP-01**: Blocks nothing | Blocked by: None | Related: IMP-02 (deep import audit)
+- **IMP-02**: Blocks nothing | Blocked by: None | Related: IMP-01 (fix together as import cleanup batch)
+- **IMP-03**: Blocks nothing | Blocked by: None | Related: Import cleanup (independent)
+- **DEAD-02**: Blocks nothing | Blocked by: None | Related: Dead code cleanup (independent)
+- **DEAD-05**: Blocks nothing | Blocked by: None | Related: Dead code cleanup (independent)
+- **DEAD-06**: Blocks nothing | Blocked by: None | Related: Dead code cleanup (independent)
+- **DEAD-07**: Blocks nothing | Blocked by: None | Related: Dead code cleanup (verify route first)
+- **DB-02**: Blocks nothing | Blocked by: None | Related: Schema hardening (independent migration)
+- **UI-20**: Blocks nothing | Blocked by: None | Related: Z-index audit (independent)
+- **FORM-02**: Blocks nothing | Blocked by: None | Related: FORM-03 (fix together - same file)
+- **FORM-03**: Blocks nothing | Blocked by: None | Related: FORM-02 (fix together - same file)
+- **FORM-04**: Blocks nothing | Blocked by: None | Related: Mobile-first breakpoints (independent)
+
 ---
 
 ## P3 - Low Priority (Improvements)
@@ -102,6 +123,15 @@
 | ASYNC-06 | Optimistic Lock | Implement updated_at version check for opportunities | Data provider, opportunity forms | Open |
 | ASYNC-07 | AbortController | Add to EntityCombobox search | `src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx` | Open |
 | EC-01 | i18n | RTL text support missing (dir="auto") - only textarea.tsx | `src/components/ui/textarea.tsx` (input.tsx already fixed) | Open |
+
+### P3 Dependencies
+- **UI-24**: Blocks nothing | Blocked by: None | Related: A11y improvements (independent)
+- **UI-25**: Blocks nothing | Blocked by: None | Related: Spacing audit (bulk fix, verify intentional gaps first)
+- **ASYNC-04**: Blocks nothing | Blocked by: None | Related: Unsaved changes UX (extension task)
+- **ASYNC-05**: Blocks nothing | Blocked by: None | Related: Error recovery UX (independent)
+- **ASYNC-06**: Blocks nothing | Blocked by: None | Related: Optimistic locking (requires DB + provider changes)
+- **ASYNC-07**: Blocks nothing | Blocked by: None | Related: ASYNC-01 (AbortController pattern)
+- **EC-01**: Blocks nothing | Blocked by: None | Related: i18n improvements (quick win)
 
 ---
 
