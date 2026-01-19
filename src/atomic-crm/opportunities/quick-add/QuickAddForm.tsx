@@ -3,11 +3,7 @@ import { useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  quickAddBaseSchema,
-  quickAddSchema,
-  type QuickAddInput,
-} from "@/atomic-crm/validation/quickAdd";
+import { quickAddBaseSchema, quickAddSchema } from "@/atomic-crm/validation/quickAdd";
 import { useQuickAdd } from "../hooks/useQuickAdd";
 import { useFilteredProducts } from "../hooks/useFilteredProducts";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";

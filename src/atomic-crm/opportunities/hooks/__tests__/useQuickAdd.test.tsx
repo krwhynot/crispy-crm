@@ -1,7 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
 import type { ReactNode } from "react";
 import { useQuickAdd } from "../useQuickAdd";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
@@ -20,7 +19,7 @@ describe("useQuickAdd", () => {
   let mockNotify: ReturnType<typeof vi.fn>;
   let queryClient: QueryClient;
 
-  // Test data
+  // Test data with new required account_manager_id field
   const testFormData: QuickAddInput = {
     first_name: "John",
     last_name: "Doe",
@@ -31,8 +30,18 @@ describe("useQuickAdd", () => {
     state: "NY",
     campaign: "Trade Show 2025",
     principal_id: 1,
+    account_manager_id: 5,
     product_ids: [101, 102],
     quick_note: "Interested in enterprise plan",
+  };
+
+  // Test data with organization_id instead of org_name
+  const testFormDataWithOrgId: QuickAddInput = {
+    organization_id: 10,
+    first_name: "Jane",
+    last_name: "Smith",
+    principal_id: 2,
+    account_manager_id: 6,
   };
 
   const successResult = {
@@ -74,7 +83,7 @@ describe("useQuickAdd", () => {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
-  test("successful creation updates localStorage", async () => {
+  test("successful creation updates localStorage including account_manager", async () => {
     // Setup successful response
     mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
 
@@ -89,9 +98,10 @@ describe("useQuickAdd", () => {
     // Verify localStorage was updated (secureStorage JSON-stringifies values)
     expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Trade Show 2025");
     expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("1");
+    expect(JSON.parse(localStorage.getItem("last_account_manager") ?? "null")).toBe("5");
   });
 
-  test("successful creation shows success toast", async () => {
+  test("successful creation shows success toast with new format", async () => {
     // Setup successful response
     mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
 
@@ -103,14 +113,58 @@ describe("useQuickAdd", () => {
     // Wait for mutation to complete
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    // Verify success toast was shown with correct message and duration
-    expect(mockNotify).toHaveBeenCalledWith("✅ Created: John Doe - Acme Corp", {
+    // Verify success toast was shown with new message format: "Created opportunity for {contact} at {org}"
+    expect(mockNotify).toHaveBeenCalledWith("Created opportunity for John Doe at Acme Corp", {
       type: "success",
       autoHideDuration: 2000,
     });
   });
 
-  test("error shows error toast", async () => {
+  test("successful creation without contact name shows org-only message", async () => {
+    // Setup successful response
+    mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
+
+    const dataWithoutContactName: QuickAddInput = {
+      org_name: "Tech Corp",
+      principal_id: 1,
+      account_manager_id: 5,
+    };
+
+    const { result } = renderHook(() => useQuickAdd(), { wrapper });
+
+    // Execute mutation
+    result.current.mutate(dataWithoutContactName);
+
+    // Wait for mutation to complete
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Verify success toast shows org-only message when no contact name
+    expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Tech Corp", {
+      type: "success",
+      autoHideDuration: 2000,
+    });
+  });
+
+  test("successful creation with organization_id uses fallback org name", async () => {
+    // Setup successful response
+    mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
+
+    const { result } = renderHook(() => useQuickAdd(), { wrapper });
+
+    // Execute mutation with organization_id (no org_name)
+    result.current.mutate(testFormDataWithOrgId);
+
+    // Wait for mutation to complete
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Verify success toast uses "Organization" as fallback when no org_name
+    expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Jane Smith at Organization", {
+      type: "success",
+      autoHideDuration: 2000,
+    });
+  });
+
+  test("error shows error toast with new message format", async () => {
     // Setup error response
     const errorMessage = "Database connection failed";
     mockDataProvider.createBoothVisitor.mockRejectedValue(new Error(errorMessage));
@@ -123,14 +177,15 @@ describe("useQuickAdd", () => {
     // Wait for mutation to fail
     await waitFor(() => expect(result.current.isError).toBe(true));
 
-    // Verify error toast was shown
-    expect(mockNotify).toHaveBeenCalledWith(`Failed to create booth visitor: ${errorMessage}`, {
+    // Verify error toast uses "opportunity" instead of "booth visitor"
+    expect(mockNotify).toHaveBeenCalledWith(`Failed to create opportunity: ${errorMessage}`, {
       type: "error",
     });
 
     // Verify localStorage was NOT updated on error
     expect(localStorage.getItem("last_campaign")).toBeNull();
     expect(localStorage.getItem("last_principal")).toBeNull();
+    expect(localStorage.getItem("last_account_manager")).toBeNull();
   });
 
   test("error preserves form data (no automatic retry)", async () => {
@@ -165,7 +220,7 @@ describe("useQuickAdd", () => {
     // Wait for mutation to complete
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    // Verify dataProvider was called with correct data
+    // Verify dataProvider was called with correct data including account_manager_id
     expect(mockDataProvider.createBoothVisitor).toHaveBeenCalledWith(testFormData);
   });
 
@@ -183,18 +238,12 @@ describe("useQuickAdd", () => {
     expect(result.current).toHaveProperty("reset");
   });
 
-  test("handles partial form data correctly", async () => {
-    // Test with minimal required data (no optional fields)
+  test("handles minimal form data correctly (no optional fields)", async () => {
+    // Test with minimal required data - campaign is now optional
     const minimalData: QuickAddInput = {
-      first_name: "Jane",
-      last_name: "Smith",
-      phone: "555-5678", // Only phone, no email
       org_name: "Tech Inc",
-      city: "San Francisco",
-      state: "CA",
-      campaign: "Q1 Campaign",
       principal_id: 2,
-      // No product_ids or quick_note
+      account_manager_id: 7,
     };
 
     mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
@@ -207,12 +256,59 @@ describe("useQuickAdd", () => {
     // Wait for mutation to complete
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    // Verify localStorage was updated with minimal data (secureStorage JSON-stringifies values)
-    expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Q1 Campaign");
+    // Verify localStorage was updated - campaign should NOT be set since it's undefined
+    expect(localStorage.getItem("last_campaign")).toBeNull();
     expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("2");
+    expect(JSON.parse(localStorage.getItem("last_account_manager") ?? "null")).toBe("7");
 
-    // Verify success toast with minimal data
-    expect(mockNotify).toHaveBeenCalledWith("✅ Created: Jane Smith - Tech Inc", {
+    // Verify success toast with minimal data (no contact name)
+    expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Tech Inc", {
+      type: "success",
+      autoHideDuration: 2000,
+    });
+  });
+
+  test("handles partial contact name (first_name only)", async () => {
+    const dataWithFirstNameOnly: QuickAddInput = {
+      first_name: "Jane",
+      org_name: "Tech Inc",
+      principal_id: 2,
+      account_manager_id: 7,
+    };
+
+    mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
+
+    const { result } = renderHook(() => useQuickAdd(), { wrapper });
+
+    result.current.mutate(dataWithFirstNameOnly);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Should show just first name
+    expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Jane at Tech Inc", {
+      type: "success",
+      autoHideDuration: 2000,
+    });
+  });
+
+  test("handles partial contact name (last_name only)", async () => {
+    const dataWithLastNameOnly: QuickAddInput = {
+      last_name: "Smith",
+      org_name: "Tech Inc",
+      principal_id: 2,
+      account_manager_id: 7,
+    };
+
+    mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
+
+    const { result } = renderHook(() => useQuickAdd(), { wrapper });
+
+    result.current.mutate(dataWithLastNameOnly);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Should show just last name
+    expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Smith at Tech Inc", {
       type: "success",
       autoHideDuration: 2000,
     });
@@ -233,6 +329,7 @@ describe("useQuickAdd", () => {
     // Verify localStorage was still updated (secureStorage JSON-stringifies values)
     expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Trade Show 2025");
     expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("1");
+    expect(JSON.parse(localStorage.getItem("last_account_manager") ?? "null")).toBe("5");
   });
 
   test("mutateAsync throws on error", async () => {
@@ -245,9 +342,31 @@ describe("useQuickAdd", () => {
     // Execute mutation with async and expect rejection
     await expect(result.current.mutateAsync(testFormData)).rejects.toThrow("Validation failed");
 
-    // Verify error toast was still shown
-    expect(mockNotify).toHaveBeenCalledWith("Failed to create booth visitor: Validation failed", {
+    // Verify error toast uses new "opportunity" wording
+    expect(mockNotify).toHaveBeenCalledWith("Failed to create opportunity: Validation failed", {
       type: "error",
     });
+  });
+
+  test("does not persist campaign to localStorage when campaign is undefined", async () => {
+    mockDataProvider.createBoothVisitor.mockResolvedValue(successResult);
+
+    const dataWithoutCampaign: QuickAddInput = {
+      org_name: "No Campaign Corp",
+      principal_id: 3,
+      account_manager_id: 8,
+    };
+
+    const { result } = renderHook(() => useQuickAdd(), { wrapper });
+
+    result.current.mutate(dataWithoutCampaign);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Campaign should not be set since it wasn't provided
+    expect(localStorage.getItem("last_campaign")).toBeNull();
+    // But principal and account_manager should still be set
+    expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("3");
+    expect(JSON.parse(localStorage.getItem("last_account_manager") ?? "null")).toBe("8");
   });
 });
