@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,8 @@ import {
 } from "@/atomic-crm/validation/quickAdd";
 import { useQuickAdd } from "../hooks/useQuickAdd";
 import { useFilteredProducts } from "../hooks/useFilteredProducts";
-import { useGetList } from "ra-core";
+import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,15 +23,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
+import { Popover, PopoverContent, PopoverAnchor } from "@/components/ui/popover";
 import { US_CITIES } from "../data/us-cities";
 import { cn } from "@/lib/utils";
 import { getStorageItem } from "@/atomic-crm/utils/secureStorage";
+import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
+import { organizationKeys } from "@/atomic-crm/queryKeys";
 
 interface QuickAddFormProps {
   onSuccess: () => void;
 }
 
-// Local accessible field wrapper for WCAG 4.1.2/4.1.3 compliance
 interface AccessibleFieldProps {
   name: string;
   label: string;
@@ -78,32 +81,188 @@ function AccessibleField({
   );
 }
 
+interface InlineCreateOrganizationProps {
+  name: string;
+  onCreated: (record: { id: number; name: string }) => void;
+  onCancel: () => void;
+}
+
+function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrganizationProps) {
+  const [isPending, setIsPending] = useState(false);
+  const [inputName, setInputName] = useState(name);
+  const dataProvider = useDataProvider();
+  const notify = useNotify();
+  const queryClient = useQueryClient();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputName.trim()) {
+      notify("Organization name is required", { type: "error" });
+      return;
+    }
+    setIsPending(true);
+    try {
+      const result = await dataProvider.create("organizations", {
+        data: {
+          name: inputName.trim(),
+          organization_type: "customer",
+          priority: "C",
+          segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
+        },
+      });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+      notify("Organization created", { type: "success" });
+      onCreated(result.data as { id: number; name: string });
+    } catch {
+      notify("Failed to create organization", { type: "error" });
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  return (
+    <Popover open={true} onOpenChange={(isOpen) => !isOpen && onCancel()}>
+      <PopoverAnchor />
+      <PopoverContent className="w-72 p-3" align="start">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <p className="font-medium text-sm">Create Organization</p>
+          <div className="space-y-1">
+            <Label htmlFor="inline-org-name">Name</Label>
+            <Input
+              id="inline-org-name"
+              value={inputName}
+              onChange={(e) => setInputName(e.target.value)}
+              className="h-9"
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- Popover context, autoFocus is appropriate
+              autoFocus
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" size="sm" onClick={onCancel} className="h-9">
+              Cancel
+            </Button>
+            <Button type="submit" size="sm" disabled={isPending} className="h-9">
+              Create
+            </Button>
+          </div>
+        </form>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+interface OrganizationComboboxProps {
+  value?: number;
+  onChange: (value: number | undefined, name?: string) => void;
+  options: Array<{ value: string; label: string }>;
+  isLoading: boolean;
+  error?: string;
+}
+
+function OrganizationCombobox({
+  value,
+  onChange,
+  options,
+  isLoading,
+  error,
+}: OrganizationComboboxProps) {
+  const [searchValue, setSearchValue] = useState("");
+  const [showCreatePopover, setShowCreatePopover] = useState(false);
+
+  const handleValueChange = (selectedValue: string) => {
+    if (selectedValue.startsWith("__create__")) {
+      const newName = selectedValue.replace("__create__", "");
+      setSearchValue(newName);
+      setShowCreatePopover(true);
+    } else {
+      const selectedOption = options.find((opt) => opt.value === selectedValue);
+      onChange(selectedValue ? Number(selectedValue) : undefined, selectedOption?.label);
+    }
+  };
+
+  const handleOrganizationCreated = (record: { id: number; name: string }) => {
+    setShowCreatePopover(false);
+    setSearchValue("");
+    onChange(record.id, record.name);
+  };
+
+  const handleCreateCancel = () => {
+    setShowCreatePopover(false);
+    setSearchValue("");
+  };
+
+  return (
+    <div className="space-y-2">
+      <Label htmlFor="organization_id">
+        Organization
+        <span className="text-destructive" aria-hidden="true">
+          {" "}
+          *
+        </span>
+      </Label>
+      <Combobox
+        id="organization_id"
+        options={options}
+        value={value?.toString()}
+        onValueChange={handleValueChange}
+        placeholder={isLoading ? "Loading..." : "Select or create organization..."}
+        searchPlaceholder="Search organizations..."
+        emptyText="No organizations found"
+        className="w-full bg-background"
+        disabled={isLoading}
+        creatable
+      />
+      {error && (
+        <p id="organization_id-error" role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
+
+      {showCreatePopover && (
+        <InlineCreateOrganization
+          name={searchValue}
+          onCreated={handleOrganizationCreated}
+          onCancel={handleCreateCancel}
+        />
+      )}
+    </div>
+  );
+}
+
 export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const { mutate, isPending } = useQuickAdd();
   const firstNameRef = useRef<HTMLInputElement>(null);
 
-  // Fetch principals for dropdown
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
+
   const { data: principalsList, isLoading: principalsLoading } = useGetList("organizations", {
     filter: { organization_type: "principal" },
     pagination: { page: 1, perPage: 100 },
     sort: { field: "name", order: "ASC" },
   });
 
-  // Derive defaults from base schema first (single source of truth)
-  // Use base schema for defaults (Zod v4 - refined schemas don't support .partial())
+  const { data: organizationsList, isLoading: organizationsLoading } = useGetList("organizations", {
+    filter: { "organization_type@in": "(customer,prospect)" },
+    pagination: { page: 1, perPage: 200 },
+    sort: { field: "name", order: "ASC" },
+  });
+
+  const { data: salesList, isLoading: salesLoading } = useGetList("sales", {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+  });
+
   const schemaDefaults = quickAddBaseSchema.partial().parse({});
 
-  // Then merge with validated localStorage for persistence
-  // Use getStorageItem (which JSON-parses) since setStorageItem JSON-stringifies
   const defaultValues = {
     ...schemaDefaults,
     campaign:
       getStorageItem<string>("last_campaign", { type: "local" }) ?? schemaDefaults.campaign ?? "",
     principal_id:
       Number(getStorageItem<string>("last_principal", { type: "local" }) ?? "") || undefined,
+    account_manager_id: identity?.id ? Number(identity.id) : undefined,
   };
 
-  // Initialize form with defaults from schema and localStorage
   const {
     register,
     handleSubmit,
@@ -112,77 +271,66 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     setValue,
     control,
     reset,
-    clearErrors,
   } = useForm<QuickAddInput>({
     resolver: zodResolver(quickAddSchema),
     defaultValues,
   });
 
-  // Watch values for dependent fields using useWatch
-  const [principalId, cityValue, phoneValue, emailValue, productIds] = useWatch({
+  useEffect(() => {
+    if (identity?.id && !identityLoading) {
+      setValue("account_manager_id", Number(identity.id));
+    }
+  }, [identity, identityLoading, setValue]);
+
+  const [organizationId, principalId, cityValue, productIds, accountManagerId] = useWatch({
     control,
-    name: ["principal_id", "city", "phone", "email", "product_ids"],
+    name: ["organization_id", "principal_id", "city", "product_ids", "account_manager_id"],
   });
 
-  // Fetch products filtered by selected principal
   const {
     products: productsList,
     isLoading: productsLoading,
     isReady: productsReady,
   } = useFilteredProducts(principalId);
 
-  // Clear phone/email validation error when either field has content
-  useEffect(() => {
-    if (
-      (phoneValue || emailValue) &&
-      errors.phone?.message === "Phone or Email required (at least one)"
-    ) {
-      clearErrors("phone");
-    }
-  }, [phoneValue, emailValue, errors.phone, clearErrors]);
-
-  // Handle city selection
   const handleCitySelect = (cityName: string) => {
     const selectedCity = US_CITIES.find((c) => c.city === cityName);
     if (selectedCity) {
       setValue("city", selectedCity.city);
       setValue("state", selectedCity.state);
     } else {
-      // Allow freeform entry for international cities
       setValue("city", cityName);
       setValue("state", "");
     }
   };
 
-  // Handle form submission
   const onSubmit = (data: QuickAddInput, closeAfter: boolean) => {
     mutate(data, {
       onSuccess: () => {
         if (closeAfter) {
-          onSuccess(); // Close dialog
+          onSuccess();
         } else {
-          // Reset form but keep campaign and principal
           reset({
-            campaign: data.campaign,
             principal_id: data.principal_id,
+            account_manager_id: data.account_manager_id,
+            campaign: data.campaign || "",
             product_ids: [],
+            organization_id: undefined,
+            org_name: "",
             first_name: "",
             last_name: "",
             phone: "",
             email: "",
-            org_name: "",
             city: "",
             state: "",
             quick_note: "",
           });
-          // Focus first name field for next entry
           setTimeout(() => firstNameRef.current?.focus(), 100);
         }
       },
     });
   };
 
-  // Focus first error field on validation failure (WCAG 3.3.1)
   const onValidationError = (errors: FieldErrors<QuickAddInput>) => {
     const firstErrorField = Object.keys(errors)[0] as keyof QuickAddInput;
     if (firstErrorField) {
@@ -190,11 +338,22 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     }
   };
 
-  // Convert products and principals to combobox options
   const principalOptions =
     principalsList?.map((org) => ({
       value: org.id.toString(),
       label: org.name,
+    })) || [];
+
+  const organizationOptions =
+    organizationsList?.map((org) => ({
+      value: org.id.toString(),
+      label: org.name,
+    })) || [];
+
+  const salesOptions =
+    salesList?.map((sale) => ({
+      value: sale.id.toString(),
+      label: sale.name || sale.email || `Sales #${sale.id}`,
     })) || [];
 
   const productOptions =
@@ -203,25 +362,37 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       label: product.name,
     })) || [];
 
-  // Map all US cities for Combobox (Command component handles filtering)
   const cityOptions = US_CITIES.map(({ city }) => ({
     value: city,
     label: city,
   }));
 
+  const selectedOrg = organizationsList?.find((o) => o.id === organizationId);
+  const selectedPrincipal = principalsList?.find((p) => p.id === principalId);
+  const opportunityNamePreview =
+    selectedOrg && selectedPrincipal
+      ? `${selectedOrg.name} - ${selectedPrincipal.name}`
+      : "Select organization and principal";
+
+  const handleOrganizationChange = (value: number | undefined, name?: string) => {
+    setValue("organization_id", value);
+    if (name) {
+      setValue("org_name", name);
+    }
+  };
+
   return (
     <form className="flex flex-col gap-6">
-      {/* Pre-filled Section - Light success background */}
       <div className="rounded-lg bg-success/10 p-4 space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Pre-filled Information</h3>
+        <h3 className="text-sm font-medium text-foreground">Opportunity Details</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <AccessibleField name="campaign" label="Campaign" error={errors.campaign?.message}>
-            <Input
-              {...register("campaign")}
-              placeholder="e.g., Q4 2025 Trade Show"
-              className="bg-background"
-            />
-          </AccessibleField>
+          <OrganizationCombobox
+            value={organizationId}
+            onChange={handleOrganizationChange}
+            options={organizationOptions}
+            isLoading={organizationsLoading}
+            error={errors.organization_id?.message}
+          />
 
           <div className="space-y-2">
             <Label htmlFor="principal_id">
@@ -259,6 +430,53 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
               </p>
             )}
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="account_manager_id">
+              Account Manager
+              <span className="text-destructive" aria-hidden="true">
+                {" "}
+                *
+              </span>
+            </Label>
+            <Select
+              value={accountManagerId?.toString()}
+              onValueChange={(value) => setValue("account_manager_id", Number(value))}
+              disabled={salesLoading}
+            >
+              <SelectTrigger
+                id="account_manager_id"
+                className="bg-background"
+                aria-invalid={errors.account_manager_id ? "true" : undefined}
+                aria-describedby={
+                  errors.account_manager_id ? "account_manager_id-error" : undefined
+                }
+                aria-required="true"
+              >
+                <SelectValue placeholder={salesLoading ? "Loading..." : "Select account manager"} />
+              </SelectTrigger>
+              <SelectContent>
+                {salesOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.account_manager_id && (
+              <p id="account_manager_id-error" role="alert" className="text-sm text-destructive">
+                {errors.account_manager_id.message}
+              </p>
+            )}
+          </div>
+
+          <AccessibleField name="campaign" label="Campaign" error={errors.campaign?.message}>
+            <Input
+              {...register("campaign")}
+              placeholder="e.g., Q4 2025 Trade Show"
+              className="bg-background"
+            />
+          </AccessibleField>
         </div>
 
         <div className="space-y-2">
@@ -285,11 +503,17 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             </div>
           )}
         </div>
+
+        <div className="space-y-2">
+          <Label>Opportunity Name Preview</Label>
+          <div className="text-sm text-muted-foreground p-2 border rounded-md bg-muted">
+            {opportunityNamePreview}
+          </div>
+        </div>
       </div>
 
-      {/* Contact Information Section */}
       <div className="space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Contact Information</h3>
+        <h3 className="text-sm font-medium text-foreground">Contact Information (Optional)</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <AccessibleField name="first_name" label="First Name" error={errors.first_name?.message}>
             <Input ref={firstNameRef} {...register("first_name")} placeholder="John" />
@@ -307,62 +531,41 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             <Input type="email" {...register("email")} placeholder="john@example.com" />
           </AccessibleField>
         </div>
-        {!phoneValue && !emailValue && (
-          <p className="text-sm text-muted-foreground" aria-live="polite">
-            At least one of Phone or Email is required
-          </p>
-        )}
       </div>
 
-      {/* Organization Information Section */}
       <div className="space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Organization Information</h3>
-        <div className="grid gap-4 grid-cols-1">
-          <AccessibleField
-            name="org_name"
-            label="Organization Name"
-            error={errors.org_name?.message}
-            required
-          >
-            <Input {...register("org_name")} placeholder="Acme Corporation" />
-          </AccessibleField>
-
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="city">City</Label>
-              <Combobox
-                id="city"
-                options={cityOptions}
-                value={cityValue}
-                onValueChange={(value) => handleCitySelect(value)}
-                placeholder="Select or type city..."
-                searchPlaceholder="Search cities..."
-                emptyText="Type to search cities"
-                className="w-full"
-                creatable
-              />
-              {errors.city && (
-                <p id="city-error" role="alert" className="text-sm text-destructive">
-                  {errors.city.message}
-                </p>
-              )}
-            </div>
-
-            <AccessibleField name="state" label="State" error={errors.state?.message}>
-              <Input
-                {...register("state")}
-                placeholder="CA"
-                readOnly={!!US_CITIES.find((c) => c.city === cityValue)}
-                className={cn(US_CITIES.find((c) => c.city === cityValue) && "bg-muted")}
-              />
-            </AccessibleField>
+        <h3 className="text-sm font-medium text-foreground">Location & Notes (Optional)</h3>
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="city">City</Label>
+            <Combobox
+              id="city"
+              options={cityOptions}
+              value={cityValue}
+              onValueChange={(value) => handleCitySelect(value)}
+              placeholder="Select or type city..."
+              searchPlaceholder="Search cities..."
+              emptyText="Type to search cities"
+              className="w-full"
+              creatable
+            />
+            {errors.city && (
+              <p id="city-error" role="alert" className="text-sm text-destructive">
+                {errors.city.message}
+              </p>
+            )}
           </div>
-        </div>
-      </div>
 
-      {/* Optional Details Section */}
-      <div className="space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Optional Details</h3>
+          <AccessibleField name="state" label="State" error={errors.state?.message}>
+            <Input
+              {...register("state")}
+              placeholder="CA"
+              readOnly={!!US_CITIES.find((c) => c.city === cityValue)}
+              className={cn(US_CITIES.find((c) => c.city === cityValue) && "bg-muted")}
+            />
+          </AccessibleField>
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="quick_note">Quick Note</Label>
           <Input
@@ -373,7 +576,6 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
         </div>
       </div>
 
-      {/* Footer Actions */}
       <div className="flex items-center justify-between pt-4 border-t">
         <Button type="button" variant="outline" onClick={onSuccess} disabled={isPending}>
           Cancel

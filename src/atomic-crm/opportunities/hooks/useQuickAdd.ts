@@ -36,12 +36,26 @@ export const useQuickAdd = () => {
       queryClient.invalidateQueries({ queryKey: contactKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
 
-      // Update localStorage with last used campaign and principal
-      setStorageItem("last_campaign", formData.campaign, { type: "local" });
+      // Update localStorage with last used campaign, principal, and account manager
+      if (formData.campaign) {
+        setStorageItem("last_campaign", formData.campaign, { type: "local" });
+      }
       setStorageItem("last_principal", formData.principal_id.toString(), { type: "local" });
+      setStorageItem("last_account_manager", formData.account_manager_id.toString(), {
+        type: "local",
+      });
 
-      // Show success toast with 2-second auto-hide
-      const message = `✅ Created: ${formData.first_name} ${formData.last_name} - ${formData.org_name}`;
+      // Build success message with org name and optional contact name
+      const orgName = formData.org_name || "Organization";
+      const contactName =
+        formData.first_name || formData.last_name
+          ? `${formData.first_name || ""} ${formData.last_name || ""}`.trim()
+          : "";
+
+      const message = contactName
+        ? `Created opportunity for ${contactName} at ${orgName}`
+        : `Created opportunity for ${orgName}`;
+
       notify(message, {
         type: "success",
         autoHideDuration: 2000,
@@ -49,7 +63,7 @@ export const useQuickAdd = () => {
     },
     onError: (error: Error) => {
       // Show error toast - form data is preserved automatically by React Hook Form
-      notify(`Failed to create booth visitor: ${error.message}`, {
+      notify(`Failed to create opportunity: ${error.message}`, {
         type: "error",
       });
     },
