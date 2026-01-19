@@ -270,6 +270,7 @@ interface QuickCreateOrganizationRAProps {
 
 export function QuickCreateOrganizationRA({
   organizationType = "customer",
+  minimalMode = false,
 }: QuickCreateOrganizationRAProps) {
   const { filter, onCreate, onCancel } = useCreateSuggestionContext();
   const [isPending, setIsPending] = useState(false);
@@ -335,11 +336,16 @@ export function QuickCreateOrganizationRA({
     }
   };
 
+  const handleMinimalSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleQuickCreate();
+  };
+
   return (
     <Popover open={true} onOpenChange={(isOpen) => !isOpen && onCancel()}>
       <PopoverAnchor />
       <PopoverContent className="w-80 p-4" align="start">
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={minimalMode ? handleMinimalSubmit : handleSubmit} className="space-y-3">
           <p className="font-medium text-sm">Quick Create: {name}</p>
 
           <div className="space-y-1">
@@ -357,63 +363,57 @@ export function QuickCreateOrganizationRA({
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <OrganizationTypeSelect
-              control={methods.control}
-              setValue={methods.setValue}
-              id="ra-org-type"
-            />
-            <PrioritySelect
-              control={methods.control}
-              setValue={methods.setValue}
-              id="ra-org-priority"
-            />
-          </div>
+          {!minimalMode && (
+            <>
+              <div className="grid grid-cols-2 gap-2">
+                <OrganizationTypeSelect
+                  control={methods.control}
+                  setValue={methods.setValue}
+                  id="ra-org-type"
+                />
+                <PrioritySelect
+                  control={methods.control}
+                  setValue={methods.setValue}
+                  id="ra-org-priority"
+                />
+              </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1">
-              <Label htmlFor="ra-org-city">City</Label>
-              <Input
-                id="ra-org-city"
-                {...methods.register("city")}
-                aria-invalid={!!methods.formState.errors.city}
-                aria-describedby={methods.formState.errors.city ? "ra-city-error" : undefined}
-              />
-              {methods.formState.errors.city && (
-                <p id="ra-city-error" className="text-xs text-destructive" role="alert">
-                  {methods.formState.errors.city.message}
-                </p>
-              )}
-            </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label htmlFor="ra-org-city">City</Label>
+                  <Input
+                    id="ra-org-city"
+                    {...methods.register("city")}
+                    aria-invalid={!!methods.formState.errors.city}
+                    aria-describedby={methods.formState.errors.city ? "ra-city-error" : undefined}
+                  />
+                  {methods.formState.errors.city && (
+                    <p id="ra-city-error" className="text-xs text-destructive" role="alert">
+                      {methods.formState.errors.city.message}
+                    </p>
+                  )}
+                </div>
 
-            <div className="space-y-1">
-              <Label htmlFor="ra-org-state">State</Label>
-              <Input
-                id="ra-org-state"
-                {...methods.register("state")}
-                aria-invalid={!!methods.formState.errors.state}
-                aria-describedby={methods.formState.errors.state ? "ra-state-error" : undefined}
-              />
-              {methods.formState.errors.state && (
-                <p id="ra-state-error" className="text-xs text-destructive" role="alert">
-                  {methods.formState.errors.state.message}
-                </p>
-              )}
-            </div>
-          </div>
+                <div className="space-y-1">
+                  <Label htmlFor="ra-org-state">State</Label>
+                  <Input
+                    id="ra-org-state"
+                    {...methods.register("state")}
+                    aria-invalid={!!methods.formState.errors.state}
+                    aria-describedby={methods.formState.errors.state ? "ra-state-error" : undefined}
+                  />
+                  {methods.formState.errors.state && (
+                    <p id="ra-state-error" className="text-xs text-destructive" role="alert">
+                      {methods.formState.errors.state.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
 
-          <div className="flex justify-between pt-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={handleQuickCreate}
-              disabled={isPending}
-              className="text-xs h-9"
-            >
-              Just use name
-            </Button>
-            <div className="flex gap-2">
+          {minimalMode ? (
+            <div className="flex justify-end gap-2 pt-2">
               <Button
                 type="button"
                 variant="outline"
@@ -427,7 +427,34 @@ export function QuickCreateOrganizationRA({
                 Create
               </Button>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-between pt-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleQuickCreate}
+                disabled={isPending}
+                className="text-xs h-9"
+              >
+                Just use name
+              </Button>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onCancel()}
+                  className="h-9"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" size="sm" disabled={isPending} className="h-9">
+                  Create
+                </Button>
+              </div>
+            </div>
+          )}
         </form>
       </PopoverContent>
     </Popover>

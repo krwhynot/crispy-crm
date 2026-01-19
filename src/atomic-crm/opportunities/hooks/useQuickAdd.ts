@@ -5,15 +5,16 @@ import { setStorageItem } from "@/atomic-crm/utils/secureStorage";
 import { organizationKeys, contactKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 
 /**
- * Quick Add Hook for Booth Visitor Creation
+ * Quick Add Hook for Opportunity Creation
  *
- * Provides a mutation for creating booth visitors (organization + contact + opportunity)
- * with localStorage persistence for campaign and principal selections.
+ * Provides a mutation for creating opportunities (organization + contact + opportunity)
+ * with localStorage persistence for campaign, principal, and account manager selections.
  *
  * Features:
- * - Creates booth visitor via data provider RPC call
+ * - Creates opportunity via data provider RPC call
+ * - Supports existing organization (organization_id) or new organization creation (org_name)
  * - Invalidates cache for organizations, contacts, and opportunities
- * - Persists last campaign and principal to localStorage for next use
+ * - Persists last campaign, principal, and account manager to localStorage for next use
  * - Shows success toast with created contact/org details
  * - Shows error toast on failure, preserves form data
  * - No retry logic per Engineering Constitution (fail fast)

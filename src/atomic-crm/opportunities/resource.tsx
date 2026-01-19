@@ -1,12 +1,19 @@
 import * as React from "react";
+import { useRedirect } from "ra-core";
 import type { Opportunity } from "../types";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 
 const OpportunityListLazy = React.lazy(() => import("./OpportunityList"));
-// Wizard is now the default create experience (19 tests pass)
-// Old tabbed form preserved in OpportunityCreate.tsx for reference
-const OpportunityCreateLazy = React.lazy(() => import("./OpportunityCreateWizard"));
 const OpportunityEditLazy = React.lazy(() => import("./OpportunityEdit"));
+
+// Quick Add is now the entry point - redirect /opportunities/create to list
+const OpportunityCreateRedirect = () => {
+  const redirect = useRedirect();
+  React.useEffect(() => {
+    redirect("list", "opportunities");
+  }, [redirect]);
+  return null;
+};
 
 export const OpportunityListView = () => (
   <ResourceErrorBoundary resource="opportunities" page="list">
@@ -14,11 +21,7 @@ export const OpportunityListView = () => (
   </ResourceErrorBoundary>
 );
 
-export const OpportunityCreateView = () => (
-  <ResourceErrorBoundary resource="opportunities" page="create">
-    <OpportunityCreateLazy />
-  </ResourceErrorBoundary>
-);
+export const OpportunityCreateView = () => <OpportunityCreateRedirect />;
 
 export const OpportunityEditView = () => (
   <ResourceErrorBoundary resource="opportunities" page="edit">
