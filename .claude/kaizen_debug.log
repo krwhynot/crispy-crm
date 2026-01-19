@@ -3972,3 +3972,123 @@ tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "rg -l \"obsidian-mcp-server\" ~/.claude/ 2>/dev/null", "description": "Find file containing obsidian config"}
 tool_response: {"stdout": "/home/krwhynot/.claude/plans/cozy-crafting-tower.md\n/home/krwhynot/.claude/paste-cache/8a88f0225bf70fce.txt\n/home/krwhynot/.claude/paste-cache/7a343bcdb5a2913e.txt\n/home/krwhynot/.claud
+
+--- 2026-01-18T22:18:56.025781 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat ~/.claude/settings.json | rg -A20 \"mcpServers\" 2>/dev/null || echo \"Not in settings.json\"", "description": "Check settings.json for MCP config"}
+tool_response: {"stdout": "Not in settings.json", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:20:33.157287 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": ".claude/hooks/td-generator.sh \"ERR\" \"P1\" \"Test error handling issue\" \"src/test.ts\" \"manual\"", "description": "Test td-generator.sh table output"}
+tool_response: {"stdout": "| ERR-04 | ERR | Test error handling issue | `src/test.ts` | Open |", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:20:37.842762 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": ".claude/hooks/td-generator.sh \"ERR\" \"P1\" \"Test error handling issue\" \"src/test.ts\" \"manual\" \"id\"", "description": "Test td-generator.sh ID-only output"}
+tool_response: {"stdout": "ERR-04", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:20:45.512773 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": ".claude/hooks/td-generator.sh \"ERR\" \"P1\" \"Test error handling issue\" \"src/test.ts\" \"manual\" \"json\" | jq .", "description": "Test td-generator.sh JSON output"}
+tool_response: {"stdout": "{\n  \"id\": \"ERR-04\",\n  \"category\": \"ERR\",\n  \"priority\": \"P1\",\n  \"issue\": \"Test error handling issue\",\n  \"file\": \"src/test.ts\",\n  \"source\": \"manual\",\n  \"statu
+
+--- 2026-01-18T22:21:01.845011 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Test validation errors\n.claude/hooks/td-generator.sh \"INVALID\" \"P1\" \"Test\" \"test.ts\" 2>&1 || true", "description": "Test td-generator.sh validation (invalid category)"}
+tool_response: {"stdout": "Invalid category: INVALID\nValid categories: UI ASYNC ERR IMP DEAD DB FORM EC", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:21:09.557735 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Test hook with simulated payload (file with TODO)\necho '{\"tool_input\": {\"file_path\": \"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx\"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:21:16.184920 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Validate skill-rules.json is valid JSON\njq empty .claude/skills/skill-rules.json && echo \"skill-rules.json: Valid JSON\"", "description": "Validate skill-rules.json syntax"}
+tool_response: {"stdout": "skill-rules.json: Valid JSON", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:21:22.057207 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Validate settings.json is valid JSON\njq empty .claude/settings.json && echo \"settings.json: Valid JSON\"", "description": "Validate settings.json syntax"}
+tool_response: {"stdout": "settings.json: Valid JSON", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:21:37.235789 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Create a test file with markers to test the hook\ncat > /tmp/test-todo-hook.tsx << 'EOF'\n// Test file for todo-debt-tracker hook\nfunction TestComponent() {\n  // TODO: Implement this 
+tool_response: {"stdout": ".claude/hooks/todo-debt-tracker.sh: line 65: 0\n0: syntax error in expression (error token is \"0\")", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:23:00.885757 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Test the fixed hook with test file\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | CLAUDE_PROJECT_DIR=/home/krwhynot/projects/crispy-crm .claude/hooks/todo-debt
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:23:11.960326 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Debug: Check test file exists and has content\ncat /tmp/test-todo-hook.tsx", "description": "Check test file content"}
+tool_response: {"stdout": "// Test file for todo-debt-tracker hook\nfunction TestComponent() {\n  // TODO: Implement this feature later\n  // FIXME: This is broken and needs fixing\n  // HACK: Workaround for API lim
+
+--- 2026-01-18T22:23:18.151531 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Debug: Run grep manually on test file\ngrep -n -E '(TODO|FIXME|XXX|HACK|BUG):' /tmp/test-todo-hook.tsx", "description": "Test grep pattern on test file"}
+tool_response: {"stdout": "3:  // TODO: Implement this feature later\n4:  // FIXME: This is broken and needs fixing\n5:  // HACK: Workaround for API limitation\n6:  // BUG: Critical issue here", "stderr": "", "inter
+
+--- 2026-01-18T22:23:32.946234 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Debug: Test jq extraction\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | jq -r '.tool_input.file_path // empty'", "description": "Test jq extraction"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:23:41.806173 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Debug: Run hook with bash -x for tracing\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | bash -x .claude/hooks/todo-debt-tracker.sh 2>&1 | head -40", "descripti
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:23:59.144093 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Test jq extraction step by step\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' > /tmp/test-payload.json\ncat /tmp/test-payload.json | jq -r '.tool_input.file_pat
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:24:08.471689 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Run hook without set -e to see what happens\ncat > /tmp/test-hook.sh << 'SCRIPT'\n#!/bin/bash\nSCRIPT_DIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nPROJECT_DIR=\"${CLAUDE_PROJECT_DIR:-$(p
+tool_response: {"stdout": "DEBUG: payload={\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}\nDEBUG: file_path=/tmp/test-todo-hook.tsx\nDEBUG: file passed all checks", "stderr": "", "interrupted": false,
+
+--- 2026-01-18T22:24:29.462259 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Extended debug\ncat > /tmp/test-hook2.sh << 'SCRIPT'\n#!/bin/bash\nSCRIPT_DIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nPROJECT_DIR=\"${CLAUDE_PROJECT_DIR:-$(pwd)}\"\nQUEUE_FILE=\"${SCRIP
+tool_response: {"stdout": "DEBUG: MARKERS=3:  // TODO: Implement this feature later\n4:  // FIXME: This is broken and needs fixing\n5:  // HACK: Workaround for API limitation\n6:  // BUG: Critical issue here\nDEBUG:
+
+--- 2026-01-18T22:24:44.217515 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Run the actual hook with proper PROJECT_DIR\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | CLAUDE_PROJECT_DIR=/home/krwhynot/projects/crispy-crm bash -x .claud
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:24:58.256930 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Check if jq works \nwhich jq && jq --version", "description": "Check jq availability"}
+tool_response: {"stdout": "/usr/bin/jq\njq-1.7", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:25:06.903513 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Run with explicit stdin handling\necho '{\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}' | CLAUDE_PROJECT_DIR=/home/krwhynot/projects/crispy-crm bash .claude/hooks/todo-d
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:25:20.319658 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Add temporary debug to actual script and run\ncp .claude/hooks/todo-debt-tracker.sh /tmp/debug-hook.sh\nsed -i '2a set -x' /tmp/debug-hook.sh\necho '{\"tool_input\": {\"file_path\": \"/
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:25:34.526622 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Check if script has syntax errors\nbash -n .claude/hooks/todo-debt-tracker.sh && echo \"Syntax OK\"", "description": "Check script syntax"}
+tool_response: {"stdout": "Syntax OK", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:25:42.555559 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Try running a simple command\necho \"test\" | bash -c 'cat; echo \"worked\"'", "description": "Test basic pipe and bash"}
+tool_response: {"stdout": "worked", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-18T22:25:59.617528 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "# Remove set -e and test\ncat > /tmp/no-exit-hook.sh << 'SCRIPT'\n#!/bin/bash\n# Removed set -e\n\nSCRIPT_DIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nPROJECT_DIR=\"${CLAUDE_PROJECT_DIR:-$
+tool_response: {"stdout": "DEBUG START: SCRIPT_DIR=/tmp PROJECT_DIR=/home/krwhynot/projects/crispy-crm\nDEBUG: Got payload: {\"tool_input\": {\"file_path\": \"/tmp/test-todo-hook.tsx\"}}\nDEBUG: Extracted path: /tmp
