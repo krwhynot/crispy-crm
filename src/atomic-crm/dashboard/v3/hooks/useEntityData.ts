@@ -262,7 +262,7 @@ export function useEntityData({
   const filteredOrganizations = useMemo(() => {
     let result = organizations;
 
-    if (anchorOrganizationId) {
+    if (anchorOrganizationId && orgSearch.debouncedTerm.length === 0) {
       const filtered = organizations.filter((o) => o.id === anchorOrganizationId);
       result = filtered.length === 0 && fetchedAnchorOrg ? [fetchedAnchorOrg] : filtered;
     }
