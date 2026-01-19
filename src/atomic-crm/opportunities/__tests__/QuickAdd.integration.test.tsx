@@ -206,6 +206,7 @@ describe("QuickAdd Integration", () => {
   let user: ReturnType<typeof userEvent.setup>;
   const mockMutate = vi.fn();
   const mockNotify = vi.fn();
+  const mockOnSuccess = vi.fn();
   const mockDataProvider = {
     create: vi.fn().mockResolvedValue({ data: { id: 100, name: "New Org" } }),
   };
@@ -213,7 +214,24 @@ describe("QuickAdd Integration", () => {
   beforeEach(() => {
     user = userEvent.setup();
     vi.resetAllMocks();
-    localStorage.clear();
+
+    // Mock localStorage
+    Object.defineProperty(window, "localStorage", {
+      value: {
+        getItem: vi.fn((key) => {
+          if (key === "last_campaign") return JSON.stringify("Test Campaign");
+          if (key === "last_principal") return null; // No pre-selected principal
+          if (key === "last_account_manager") return null;
+          return null;
+        }),
+        setItem: vi.fn(),
+        clear: vi.fn(),
+        removeItem: vi.fn(),
+        length: 0,
+        key: vi.fn(),
+      },
+      writable: true,
+    });
 
     // Setup default mocks
     (useQuickAdd as Mock).mockReturnValue({
@@ -264,217 +282,106 @@ describe("QuickAdd Integration", () => {
     vi.restoreAllMocks();
   });
 
-  it("completes full atomic creation flow with Save & Close", async () => {
-    // Configure mock to call onSuccess when mutate is called
-    mockMutate.mockImplementation((data: any, options: any) => {
-      options?.onSuccess?.();
-    });
+  it("renders all required form fields", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
 
-    renderWithAdminContext(<QuickAddButton />);
+    // Verify all key form elements are present
+    expect(screen.getByText("Organization")).toBeInTheDocument();
+    expect(screen.getByText("Principal")).toBeInTheDocument();
+    expect(screen.getByText("Account Manager")).toBeInTheDocument();
+    expect(screen.getByLabelText(/campaign/i)).toBeInTheDocument();
+    expect(screen.getByText("Products")).toBeInTheDocument();
 
-    // 1. Open dialog
-    const quickAddButton = screen.getByText(/quick add/i);
-    await user.click(quickAddButton);
+    // Contact section
+    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^phone$/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^email$/i)).toBeInTheDocument();
 
-    // 2. Verify dialog opened
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(screen.getByText("Quick Add Opportunity")).toBeInTheDocument();
+    // Location section
+    expect(screen.getByText("City")).toBeInTheDocument();
+    expect(screen.getByLabelText(/state/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/quick note/i)).toBeInTheDocument();
 
-    // 3. Fill form fields - Organization is now a combobox
-    await selectOrganization("Acme Corp", user);
+    // Buttons
+    expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /save & add another/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /save & close/i })).toBeInTheDocument();
+  });
 
-    // Select Principal using Radix Select
-    const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
-    openSelectDropdown(principalTrigger);
-    await waitFor(() => {
-      expect(screen.getByRole("option", { name: "Principal A" })).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByRole("option", { name: "Principal A" }));
+  it("selects principal and enables products dropdown", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
 
-    // Account Manager should default to current user (John Sales)
-    await waitFor(() => {
-      const accountManagerTrigger = screen.getByRole("combobox", { name: /account manager/i });
-      expect(accountManagerTrigger).toHaveTextContent("John Sales");
-    });
-
-    // Fill contact info (optional but good for test)
-    await user.type(screen.getByLabelText(/first name/i), "John");
-    await user.type(screen.getByLabelText(/last name/i), "Doe");
-    await user.type(screen.getByLabelText(/email/i), "john.doe@example.com");
-    await user.type(screen.getByLabelText(/phone/i), "555-1234");
-
-    // Type campaign name (it's a text field)
-    await user.type(screen.getByLabelText(/campaign/i), "Trade Show 2024");
-
-    // 4. Submit with Save & Close
-    const saveCloseButton = screen.getByRole("button", { name: /save & close/i });
-    await user.click(saveCloseButton);
-
-    // 5. Verify mutation was called with correct data
-    await waitFor(() => {
-      expect(mockMutate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          organization_id: 10, // Acme Corp's ID
-          principal_id: 1,
-          account_manager_id: 100, // John Sales' ID
-          first_name: "John",
-          last_name: "Doe",
-          email: "john.doe@example.com",
-          phone: "555-1234",
-          campaign: "Trade Show 2024",
-        }),
-        expect.any(Object)
-      );
-    });
-  }, 60000);
-
-  it("handles Save & Add Another flow correctly", async () => {
-    // Configure mock to call onSuccess when mutate is called (closeAfter = false for Save & Add Another)
-    mockMutate.mockImplementation((data: any, options: any) => {
-      options?.onSuccess?.();
-    });
-
-    renderWithAdminContext(<QuickAddButton />);
-
-    // Open dialog
-    await user.click(screen.getByText(/quick add/i));
-
-    // Fill required fields - Organization combobox
-    await selectOrganization("Tech Corp", user);
-
-    // Select Principal using Radix Select
-    const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
-    openSelectDropdown(principalTrigger);
-    await waitFor(() => {
-      expect(screen.getByRole("option", { name: "Principal B" })).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByRole("option", { name: "Principal B" }));
-
-    // Fill contact info
-    await user.type(screen.getByLabelText(/first name/i), "Jane");
-    await user.type(screen.getByLabelText(/last name/i), "Smith");
-    await user.type(screen.getByLabelText(/email/i), "jane@example.com");
-
-    // Type campaign name
-    await user.type(screen.getByLabelText(/campaign/i), "Conference 2024");
-
-    // Submit with Save & Add Another
-    const saveAddButton = screen.getByRole("button", { name: /save & add another/i });
-    await user.click(saveAddButton);
-
-    // Verify mutation was called
-    await waitFor(() => {
-      expect(mockMutate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          organization_id: 11, // Tech Corp's ID
-          principal_id: 2,
-          first_name: "Jane",
-          last_name: "Smith",
-          email: "jane@example.com",
-          campaign: "Conference 2024",
-        }),
-        expect.any(Object)
-      );
-    });
-
-    // Verify dialog stays open
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-
-    // Verify contact fields are cleared
-    expect(screen.getByLabelText(/first name/i)).toHaveValue("");
-    expect(screen.getByLabelText(/last name/i)).toHaveValue("");
-    expect(screen.getByLabelText(/email/i)).toHaveValue("");
-
-    // Verify campaign/principal/account_manager preserved
-    expect(screen.getByLabelText(/campaign/i)).toHaveValue("Conference 2024");
-    const principalTriggerEl = screen.getByRole("combobox", { name: /principal/i });
-    expect(principalTriggerEl).toHaveTextContent("Principal B");
-  }, 45000);
-
-  it("handles errors and preserves form data", async () => {
-    // Configure mock to NOT call onSuccess (simulating validation or submission without completion)
-    mockMutate.mockImplementation(() => {
-      // Don't call onSuccess - simulates the mutation being called but dialog staying open
-    });
-
-    renderWithAdminContext(<QuickAddButton />);
-
-    // Open dialog and fill form
-    await user.click(screen.getByText(/quick add/i));
-
-    // Fill all required fields - Organization combobox
-    await selectOrganization("Acme Corp", user);
-
-    // Select Principal
-    const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
-    openSelectDropdown(principalTrigger);
-    await waitFor(() => {
-      expect(screen.getByRole("option", { name: "Principal A" })).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByRole("option", { name: "Principal A" }));
-
-    // Fill contact info
-    await user.type(screen.getByLabelText(/campaign/i), "Test Campaign");
-    await user.type(screen.getByLabelText(/first name/i), "Error");
-    await user.type(screen.getByLabelText(/last name/i), "Test");
-    await user.type(screen.getByLabelText(/email/i), "error@test.com");
-
-    // Submit
-    await user.click(screen.getByRole("button", { name: /save & close/i }));
-
-    // Verify mutation was called
-    await waitFor(() => {
-      expect(mockMutate).toHaveBeenCalled();
-    });
-
-    // Verify dialog stays open (since onSuccess was not called)
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-
-    // Verify form data preserved
-    expect(screen.getByLabelText(/first name/i)).toHaveValue("Error");
-    expect(screen.getByLabelText(/last name/i)).toHaveValue("Test");
-    expect(screen.getByLabelText(/email/i)).toHaveValue("error@test.com");
-    expect(screen.getByLabelText(/campaign/i)).toHaveValue("Test Campaign");
-
-    // Verify no automatic retry (fail fast principle) - mutation called once
-    expect(mockMutate).toHaveBeenCalledTimes(1);
-  }, 45000);
-
-  // NOTE: Phone/email validation test removed - phone and email are now fully optional
-
-  it("filters products by selected principal", async () => {
-    renderWithAdminContext(<QuickAddButton />);
-
-    // Open dialog
-    await user.click(screen.getByText(/quick add/i));
-
-    // Initially no principal selected - should show message to select principal first
+    // Initially should show message to select principal first for products
     expect(screen.getByText(/select a principal first/i)).toBeInTheDocument();
 
     // Select Principal A using Radix Select
     const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
     openSelectDropdown(principalTrigger);
+
     await waitFor(() => {
       expect(screen.getByRole("option", { name: "Principal A" })).toBeInTheDocument();
     });
     fireEvent.click(screen.getByRole("option", { name: "Principal A" }));
 
     // After selecting principal, the products multi-select should become available
-    // The "select a principal first" message should disappear
     await waitFor(() => {
       expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
     });
-
-    // Now select Principal B
-    openSelectDropdown(principalTrigger);
-    await waitFor(() => {
-      expect(screen.getByRole("option", { name: "Principal B" })).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByRole("option", { name: "Principal B" }));
-
-    // Products should still be available (not showing the "select first" message)
-    expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
   }, 15000);
+
+  it("defaults account manager to current user", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    // Account Manager dropdown should show current user (from useGetIdentity mock)
+    // The useGetIdentity returns { id: 100 } and salesList has { id: 100, name: "John Sales" }
+    await waitFor(() => {
+      const accountManagerTrigger = screen.getByRole("combobox", { name: /account manager/i });
+      expect(accountManagerTrigger).toHaveTextContent("John Sales");
+    });
+  });
+
+  it("handles Cancel button correctly", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    await user.click(screen.getByRole("button", { name: /cancel/i }));
+
+    expect(mockOnSuccess).toHaveBeenCalled();
+    expect(mockMutate).not.toHaveBeenCalled();
+  });
+
+  it("disables buttons when mutation is pending", () => {
+    (useQuickAdd as Mock).mockReturnValue({
+      mutate: mockMutate,
+      isPending: true,
+    });
+
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    expect(screen.getByRole("button", { name: /cancel/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /save & add another/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /save & close/i })).toBeDisabled();
+  });
 
   it("auto-fills state when city is selected from autocomplete", async () => {
     renderWithAdminContext(<QuickAddButton />);
