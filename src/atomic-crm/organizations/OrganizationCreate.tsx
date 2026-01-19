@@ -12,7 +12,15 @@
  * DuplicateOrgWarningDialog appears to let the user confirm or change the name.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
+import {
+  CreateBase,
+  Form,
+  useGetList,
+  useCreate,
+  useRedirect,
+  useNotify,
+  useCanAccess,
+} from "ra-core";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,6 +40,7 @@ import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Database } from "@/types/database.generated";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
+import { usePermissions } from "@/hooks/usePermissions";
 
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
@@ -59,6 +68,15 @@ const OrganizationCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
   const notify = useNotify();
+
+  // RBAC Guard: Only authorized users can access the create form
+  const { canAccess, isPending: isCheckingAccess } = useCanAccess({
+    resource: "organizations",
+    action: "create",
+  });
+
+  // Get user role for field-level permissions
+  const { isRep } = usePermissions();
 
   // Smart defaults hook for async identity handling
   const { defaults: smartDefaults, isLoading: isLoadingDefaults } = useSmartDefaults();
@@ -149,6 +167,14 @@ const OrganizationCreate = () => {
       redirect("show", "organizations", duplicateOrg.id);
     }
   }, [duplicateOrg?.id, clearDuplicate, redirect]);
+
+  // Redirect unauthorized users after permission check completes
+  useEffect(() => {
+    if (!isCheckingAccess && !canAccess) {
+      notify("You don't have permission to create organizations.", { type: "warning" });
+      redirect("/organizations");
+    }
+  }, [isCheckingAccess, canAccess, notify, redirect]);
 
   // Generate defaults from schema, then merge with runtime values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH

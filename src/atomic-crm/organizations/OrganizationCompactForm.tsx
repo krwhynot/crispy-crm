@@ -16,7 +16,11 @@ import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
-export const OrganizationCompactForm = () => {
+interface OrganizationCompactFormProps {
+  isRep?: boolean;
+}
+
+export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps) => {
   useCityStateMapping();
 
   return (
@@ -66,9 +70,10 @@ export const OrganizationCompactForm = () => {
               filter={{ "disabled@neq": true, "user_id@not.is": null }}
             >
               <SelectInput
-                helperText={false}
+                helperText={isRep ? "Assigned to you" : false}
                 label="Account Manager"
                 optionText={saleOptionRenderer}
+                disabled={isRep}
               />
             </ReferenceInput>
           </FormFieldWrapper>

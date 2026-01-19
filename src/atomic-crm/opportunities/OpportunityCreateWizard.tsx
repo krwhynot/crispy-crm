@@ -12,7 +12,15 @@
  */
 import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
+import {
+  CreateBase,
+  Form,
+  useGetIdentity,
+  useNotify,
+  useRedirect,
+  useCreate,
+  useCanAccess,
+} from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { useFormState, useFormContext } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +34,7 @@ import {
   WizardStep,
   WizardNavigation,
   StepIndicator,
+  FormLoadingSkeleton,
 } from "@/components/admin/form";
 import { opportunitySchema } from "../validation/opportunities";
 import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
@@ -61,9 +70,16 @@ const OPPORTUNITY_FIELD_LABELS: Record<string, string> = {
 const OpportunityCreateWizard = () => {
   const { data: identity, isPending: identityLoading } = useGetIdentity();
   const [searchParams] = useSearchParams();
+  const notify = useNotify();
 
   // Context-aware redirect: returns to parent context if navigated from org/opp
   const redirect = getContextAwareRedirect(searchParams);
+
+  // RBAC Guard: Only authorized users can access the create form
+  const { canAccess, isPending: isCheckingAccess } = useCanAccess({
+    resource: "opportunities",
+    action: "create",
+  });
 
   // Parse ?source=JSON URL parameter (React Admin pattern for pre-filling forms)
   // Example: ?source={"customer_organization_id":123}
