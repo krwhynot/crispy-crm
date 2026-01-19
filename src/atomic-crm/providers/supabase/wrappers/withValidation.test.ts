@@ -289,6 +289,110 @@ describe("withValidation", () => {
         "Database connection failed"
       );
     });
+
+    it("should transform single unrecognized_keys error to field-specific error", async () => {
+      const zodError = {
+        name: "ZodError",
+        issues: [
+          { path: [], code: "unrecognized_keys", keys: ["unknownField"], message: "Unrecognized keys" },
+        ],
+      };
+      mockValidationService.validate.mockRejectedValue(zodError);
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await expect(wrappedProvider.create("contacts", { data: { unknownField: "value" } })).rejects.toMatchObject({
+        body: {
+          errors: expect.objectContaining({
+            unknownField: "Unknown field 'unknownField' is not allowed",
+          }),
+        },
+      });
+    });
+
+    it("should transform multiple unrecognized_keys to separate field errors", async () => {
+      const zodError = {
+        name: "ZodError",
+        issues: [
+          { path: [], code: "unrecognized_keys", keys: ["foo", "bar", "baz"], message: "Unrecognized keys" },
+        ],
+      };
+      mockValidationService.validate.mockRejectedValue(zodError);
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toMatchObject({
+        body: {
+          errors: expect.objectContaining({
+            foo: "Unknown field 'foo' is not allowed",
+            bar: "Unknown field 'bar' is not allowed",
+            baz: "Unknown field 'baz' is not allowed",
+          }),
+        },
+      });
+    });
+
+    it("should handle mixed errors (unrecognized_keys + standard field errors)", async () => {
+      const zodError = {
+        name: "ZodError",
+        issues: [
+          { path: [], code: "unrecognized_keys", keys: ["unknownField"], message: "Unrecognized keys" },
+          { path: ["email"], message: "Invalid email format" },
+        ],
+      };
+      mockValidationService.validate.mockRejectedValue(zodError);
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toMatchObject({
+        body: {
+          errors: expect.objectContaining({
+            unknownField: "Unknown field 'unknownField' is not allowed",
+            email: "Invalid email format",
+          }),
+        },
+      });
+    });
+
+    it("should handle unrecognized_keys without keys array (fallback to _error)", async () => {
+      const zodError = {
+        name: "ZodError",
+        issues: [
+          { path: [], code: "unrecognized_keys", message: "Unrecognized keys" },
+        ],
+      };
+      mockValidationService.validate.mockRejectedValue(zodError);
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toMatchObject({
+        body: {
+          errors: expect.objectContaining({
+            _error: "Unrecognized keys",
+          }),
+        },
+      });
+    });
+
+    it("should handle unrecognized_keys with empty keys array (fallback to _error)", async () => {
+      const zodError = {
+        name: "ZodError",
+        issues: [
+          { path: [], code: "unrecognized_keys", keys: [], message: "Unrecognized keys" },
+        ],
+      };
+      mockValidationService.validate.mockRejectedValue(zodError);
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toMatchObject({
+        body: {
+          errors: expect.objectContaining({
+            _error: "Unrecognized keys",
+          }),
+        },
+      });
+    });
   });
 
   describe("custom methods passthrough", () => {

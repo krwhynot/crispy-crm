@@ -138,6 +138,13 @@ export function getFriendlyErrorMessage(issue: ZodIssueBase): string {
 
   // Handle unrecognized_keys (for strictObject)
   if (code === "unrecognized_keys") {
+    const issueData = issue as ZodIssueBase & { keys?: string[] };
+    if (issueData.keys && issueData.keys.length > 0) {
+      const keyList = issueData.keys.map((k) => `'${k}'`).join(", ");
+      return issueData.keys.length === 1
+        ? `Unknown field ${keyList} is not allowed`
+        : `Unknown fields ${keyList} are not allowed`;
+    }
     return "Unexpected fields provided.";
   }
 

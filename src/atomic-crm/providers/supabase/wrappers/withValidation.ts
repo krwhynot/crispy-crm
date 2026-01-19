@@ -24,6 +24,8 @@ import { ValidationService } from "../services";
 interface ZodIssue {
   path: (string | number)[];
   message: string;
+  code?: string; // Error type (e.g., "unrecognized_keys")
+  keys?: string[]; // Unknown field names for strictObject errors
 }
 
 interface ZodError {
@@ -71,7 +73,15 @@ function transformZodToReactAdmin(zodError: ZodError): ReactAdminValidationError
   const errors: Record<string, string> = {};
 
   for (const issue of zodError.issues) {
-    // Join nested paths with dots (e.g., ["address", "city"] -> "address.city")
+    // Handle strictObject unknown key errors - extract field names from keys array
+    if (issue.code === "unrecognized_keys" && issue.keys && issue.keys.length > 0) {
+      for (const unknownKey of issue.keys) {
+        errors[unknownKey] = `Unknown field '${unknownKey}' is not allowed`;
+      }
+      continue;
+    }
+
+    // Standard path-based error handling (existing logic)
     const fieldPath = issue.path.join(".");
     // Use the field path as key, or "_error" for root-level errors
     const key = fieldPath || "_error";
