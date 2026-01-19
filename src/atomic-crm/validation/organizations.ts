@@ -257,6 +257,8 @@ export async function validateOrganizationForSubmission(data: unknown): Promise<
 
 // Create-specific schema (stricter requirements)
 // Omits system-managed fields that are auto-populated by DB triggers
+// Uses .extend() to override nullish/default fields as truly required
+// per plan: Organization Form requires 4 fields: name, organization_type, sales_id, segment_id
 export const createOrganizationSchema = organizationSchema
   .omit({
     id: true,
@@ -268,6 +270,13 @@ export const createOrganizationSchema = organizationSchema
     nb_contacts: true, // Computed field
     nb_opportunities: true, // Computed field
     nb_notes: true, // Computed field
+  })
+  .extend({
+    // Override with non-nullable, no-default versions
+    // .required() doesn't remove .nullable() from .nullish() fields, so we redefine them
+    organization_type: organizationTypeSchema, // Remove .default("prospect") - must be explicitly selected
+    sales_id: z.coerce.number(), // Remove .nullish() - Account Manager required
+    segment_id: z.string().uuid(), // Remove .optional().nullable() - Segment required
   })
   .required({
     name: true,

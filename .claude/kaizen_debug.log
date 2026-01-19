@@ -5007,3 +5007,18 @@ tool_response: {"stdout": "No errors in validation/utils.ts", "stderr": "", "int
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx tsc --noEmit --skipLibCheck 2>&1 | rg \"withValidation\\.ts\" || echo \"No errors found in withValidation.ts\"", "description": "Check for TypeScript errors specifically in withValida
 tool_response: {"stdout": "No errors found in withValidation.ts", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T12:11:39.335249 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts", "timeout": 120000, "description": "Run withValidation tests to verify new unrecognized_keys tests pass"}
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts (19 tests) 32ms\n\n Test Files  1 passed (1)\n      Tests  19 p
+
+--- 2026-01-19T12:13:12.651443 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts 2>&1", "timeout": 120000, "description": "Run withValidation tests"}
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\n \u2713 src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts (19 tests) 28ms\n\n Test Files  1 passed (1)\n      Tests  19 p
+
+--- 2026-01-19T12:13:17.423336 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | head -50", "timeout": 120000, "description": "TypeScript type check"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}

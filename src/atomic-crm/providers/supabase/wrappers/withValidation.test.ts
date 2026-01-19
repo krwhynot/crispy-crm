@@ -21,7 +21,7 @@ vi.mock("../services", () => ({
   ValidationService: vi.fn().mockImplementation(() => ({
     validate: vi.fn(),
     hasValidation: vi.fn(),
-    validateFilters: vi.fn((resource, filters) => filters),
+    validateFilters: vi.fn((_resource, filters) => filters),
   })),
 }));
 
@@ -51,7 +51,7 @@ describe("withValidation", () => {
     mockValidationService = {
       validate: vi.fn(),
       hasValidation: vi.fn().mockReturnValue(true),
-      validateFilters: vi.fn((resource, filters) => filters),
+      validateFilters: vi.fn((_resource, filters) => filters),
     };
 
     // Override the mock implementation for this test
@@ -294,14 +294,21 @@ describe("withValidation", () => {
       const zodError = {
         name: "ZodError",
         issues: [
-          { path: [], code: "unrecognized_keys", keys: ["unknownField"], message: "Unrecognized keys" },
+          {
+            path: [],
+            code: "unrecognized_keys",
+            keys: ["unknownField"],
+            message: "Unrecognized keys",
+          },
         ],
       };
       mockValidationService.validate.mockRejectedValue(zodError);
 
       const wrappedProvider = withValidation(mockProvider);
 
-      await expect(wrappedProvider.create("contacts", { data: { unknownField: "value" } })).rejects.toMatchObject({
+      await expect(
+        wrappedProvider.create("contacts", { data: { unknownField: "value" } })
+      ).rejects.toMatchObject({
         body: {
           errors: expect.objectContaining({
             unknownField: "Unknown field 'unknownField' is not allowed",
@@ -314,7 +321,12 @@ describe("withValidation", () => {
       const zodError = {
         name: "ZodError",
         issues: [
-          { path: [], code: "unrecognized_keys", keys: ["foo", "bar", "baz"], message: "Unrecognized keys" },
+          {
+            path: [],
+            code: "unrecognized_keys",
+            keys: ["foo", "bar", "baz"],
+            message: "Unrecognized keys",
+          },
         ],
       };
       mockValidationService.validate.mockRejectedValue(zodError);
@@ -336,7 +348,12 @@ describe("withValidation", () => {
       const zodError = {
         name: "ZodError",
         issues: [
-          { path: [], code: "unrecognized_keys", keys: ["unknownField"], message: "Unrecognized keys" },
+          {
+            path: [],
+            code: "unrecognized_keys",
+            keys: ["unknownField"],
+            message: "Unrecognized keys",
+          },
           { path: ["email"], message: "Invalid email format" },
         ],
       };
@@ -357,9 +374,7 @@ describe("withValidation", () => {
     it("should handle unrecognized_keys without keys array (fallback to _error)", async () => {
       const zodError = {
         name: "ZodError",
-        issues: [
-          { path: [], code: "unrecognized_keys", message: "Unrecognized keys" },
-        ],
+        issues: [{ path: [], code: "unrecognized_keys", message: "Unrecognized keys" }],
       };
       mockValidationService.validate.mockRejectedValue(zodError);
 
@@ -377,9 +392,7 @@ describe("withValidation", () => {
     it("should handle unrecognized_keys with empty keys array (fallback to _error)", async () => {
       const zodError = {
         name: "ZodError",
-        issues: [
-          { path: [], code: "unrecognized_keys", keys: [], message: "Unrecognized keys" },
-        ],
+        issues: [{ path: [], code: "unrecognized_keys", keys: [], message: "Unrecognized keys" }],
       };
       mockValidationService.validate.mockRejectedValue(zodError);
 
