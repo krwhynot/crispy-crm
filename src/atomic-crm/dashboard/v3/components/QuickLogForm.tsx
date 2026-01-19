@@ -156,9 +156,12 @@ export function QuickLogForm({
       if (data.organizationId) {
         const orgExists = entityData.organizations.some((o) => o.id === data.organizationId);
         if (!orgExists) {
-          notify("Selected organization no longer exists. Please select a different organization.", {
-            type: "error",
-          });
+          notify(
+            "Selected organization no longer exists. Please select a different organization.",
+            {
+              type: "error",
+            }
+          );
           form.setValue("organizationId", undefined);
           return;
         }
@@ -245,7 +248,7 @@ export function QuickLogForm({
         console.error("Activity log error:", error);
       }
     },
-    [salesId, notify, queryClient, dataProvider, form, onComplete, onRefresh]
+    [salesId, notify, queryClient, dataProvider, form, onComplete, onRefresh, entityData]
   );
 
   // Cascading entity selection handlers

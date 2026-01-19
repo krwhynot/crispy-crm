@@ -13,7 +13,7 @@ interface UseEntitySelectionOptions {
   setValue: UseFormSetValue<ActivityLogInput>;
   getValues: UseFormGetValues<ActivityLogInput>;
   entityStores: EntityStores;
-  notify?: (message: string, options: { type: string }) => void;
+  notify?: (message: string, options: { type: "success" | "info" | "warning" | "error" }) => void;
 }
 
 interface UseEntitySelectionReturn {
