@@ -516,7 +516,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
         <h3 className="text-sm font-medium text-foreground">Contact Information (Optional)</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <AccessibleField name="first_name" label="First Name" error={errors.first_name?.message}>
-            <Input ref={firstNameRef} {...register("first_name")} placeholder="John" />
+            <Input {...register("first_name")} placeholder="John" />
           </AccessibleField>
 
           <AccessibleField name="last_name" label="Last Name" error={errors.last_name?.message}>
