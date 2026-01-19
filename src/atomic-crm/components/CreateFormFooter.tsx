@@ -1,9 +1,10 @@
 import { useNotify, useRedirect } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { SaveButton } from "@/components/admin/form";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { ucFirst } from "@/atomic-crm/utils";
 
 interface CreateFormFooterProps {

@@ -12,6 +12,7 @@ import { useCallback, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { SaveButton } from "@/components/admin/form";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 
 interface OrganizationCreateFormFooterProps {

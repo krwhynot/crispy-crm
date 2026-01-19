@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useFormState } from "react-hook-form";
+import { shouldDisableBeforeUnload } from "@/utils/device";
 
 /**
  * Hook to warn users before leaving a page with unsaved form changes.
@@ -12,7 +13,7 @@ export function useUnsavedChangesWarning(enabled = true) {
   const { isDirty } = useFormState();
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || shouldDisableBeforeUnload()) return;
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isDirty) {

@@ -1,10 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { CircleX } from "lucide-react";
 import { Translate } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { useFormState } from "react-hook-form";
 
 import { Button } from "../ui/button";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 
 interface CancelButtonProps extends React.ComponentProps<"button"> {
   /**

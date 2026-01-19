@@ -9,13 +9,14 @@
  * to check for similar opportunities before proceeding.
  */
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNotify, useRedirect } from "ra-core";
 import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate } from "ra-core";
 import { Loader2, Save } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { cn } from "@/lib/utils";
 import type { SimilarityCheckResult } from "../../utils/levenshtein";
 
