@@ -140,6 +140,41 @@ export function QuickLogForm({
         return;
       }
 
+      // Defensive validation: Verify entity IDs exist in loaded data
+      // Prevents FK violations from stale drafts or recently deleted records
+      if (data.contactId) {
+        const contactExists = entityData.contacts.some((c) => c.id === data.contactId);
+        if (!contactExists) {
+          notify("Selected contact no longer exists. Please select a different contact.", {
+            type: "error",
+          });
+          form.setValue("contactId", undefined);
+          return;
+        }
+      }
+
+      if (data.organizationId) {
+        const orgExists = entityData.organizations.some((o) => o.id === data.organizationId);
+        if (!orgExists) {
+          notify("Selected organization no longer exists. Please select a different organization.", {
+            type: "error",
+          });
+          form.setValue("organizationId", undefined);
+          return;
+        }
+      }
+
+      if (data.opportunityId) {
+        const oppExists = entityData.opportunities.some((o) => o.id === data.opportunityId);
+        if (!oppExists) {
+          notify("Selected opportunity no longer exists. Please select a different opportunity.", {
+            type: "error",
+          });
+          form.setValue("opportunityId", undefined);
+          return;
+        }
+      }
+
       try {
         // Extract values with defaults (schema provides defaults during parsing)
         const activityType = data.activityType ?? "Call";
