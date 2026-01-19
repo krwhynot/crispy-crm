@@ -39,3 +39,6 @@ export type { FormWizardProps } from "./FormWizard";
 export type { WizardStepProps } from "./WizardStep";
 export type { WizardNavigationProps } from "./WizardNavigation";
 export type { StepIndicatorProps } from "./StepIndicator";
+
+// Secure wrappers
+export { SecureCreate, type SecureCreateProps } from "../SecureCreate";

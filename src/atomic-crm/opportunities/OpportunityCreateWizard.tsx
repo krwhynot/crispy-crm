@@ -10,7 +10,7 @@
  * 3. Contacts & Products - relationships
  * 4. Additional Details - classification, notes
  */
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";

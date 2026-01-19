@@ -18,7 +18,11 @@ const ORGANIZATION_FIELD_LABELS: Record<string, string> = {
   phone: "Phone",
 };
 
-export const OrganizationInputs = () => {
+interface OrganizationInputsProps {
+  isRep?: boolean;
+}
+
+export const OrganizationInputs = ({ isRep }: OrganizationInputsProps) => {
   const { errors } = useFormState();
   const hasErrors = Object.keys(errors || {}).length > 0;
 
@@ -31,7 +35,7 @@ export const OrganizationInputs = () => {
           defaultExpanded={Object.keys(errors).length <= 3}
         />
       )}
-      <OrganizationCompactForm />
+      <OrganizationCompactForm isRep={isRep} />
     </div>
   );
 };
