@@ -104,15 +104,10 @@ export interface DataCellProps extends React.TdHTMLAttributes<HTMLTableCellEleme
 
 const DataCell = React.forwardRef<HTMLTableCellElement, DataCellProps>(
   ({ className, type = "text", truncate = false, maxWidth = 200, children, ...props }, ref) => {
-    // Currency formatting via Intl API
+    // Currency formatting via centralized formatCurrency utility
     const formattedChildren = React.useMemo(() => {
       if (type === "currency" && typeof children === "number") {
-        return new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        }).format(children)
+        return formatCurrency(children)
       }
       return children
     }, [type, children])

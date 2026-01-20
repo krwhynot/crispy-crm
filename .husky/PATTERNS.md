@@ -6,8 +6,8 @@ Git hooks enforcing code quality gates at commit time. Implements fail-fast phil
 
 ```
 .husky/
-├── _/
-│   ├── h              # Hook dispatcher (Husky v9 internal)
+├── _/                 # INTERNAL: Managed by Husky - do not modify or replicate
+│   ├── h              # Hook dispatcher (Husky v9 internal, auto-generated)
 │   └── husky.sh       # DEPRECATED - v10 migration warning
 ├── pre-commit         # Security + Types + Discovery (BLOCKING)
 └── post-merge         # Migration notifications (ADVISORY)

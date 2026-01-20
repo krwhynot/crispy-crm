@@ -244,6 +244,8 @@ CREATE POLICY "Users can view opportunity_contacts through opportunities"
 | **Personal** | Each user has their own private data | tasks, user_preferences |
 | **Complex** | Access derived from parent relationship | opportunity_contacts, opportunity_products |
 
+> **Note:** The `opportunity_participants` junction table shown in the Complex pattern example above is a legacy approach. For most use cases, the **Shared Team** pattern (where all authenticated users in the organization can access records) is simpler and preferred. Use `opportunity_participants` only when you need fine-grained per-opportunity access control beyond ownership.
+
 ### Key Points
 
 - **Always document `USING (true)`**: Never leave open policies undocumented
