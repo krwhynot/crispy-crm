@@ -38,11 +38,11 @@ export type ClosedStage = (typeof CLOSED_STAGES)[number];
  * Closed stages are excluded from staleness calculations.
  */
 export const STAGE_STALE_THRESHOLDS: Record<ActivePipelineStage, number> = {
-  new_lead: 7,
-  initial_outreach: 14,
-  sample_visit_offered: 14,
-  feedback_logged: 21,
-  demo_scheduled: 14,
+  [STAGE.NEW_LEAD]: 7,
+  [STAGE.INITIAL_OUTREACH]: 14,
+  [STAGE.SAMPLE_VISIT_OFFERED]: 14,
+  [STAGE.FEEDBACK_LOGGED]: 21,
+  [STAGE.DEMO_SCHEDULED]: 14,
 };
 
 /**
@@ -50,11 +50,11 @@ export const STAGE_STALE_THRESHOLDS: Record<ActivePipelineStage, number> = {
  * Useful for runtime validation or API boundary checks.
  */
 export const StageStaleThresholdsSchema = z.strictObject({
-  new_lead: z.number().int().positive().default(7),
-  initial_outreach: z.number().int().positive().default(14),
-  sample_visit_offered: z.number().int().positive().default(14),
-  feedback_logged: z.number().int().positive().default(21),
-  demo_scheduled: z.number().int().positive().default(14),
+  [STAGE.NEW_LEAD]: z.number().int().positive().default(7),
+  [STAGE.INITIAL_OUTREACH]: z.number().int().positive().default(14),
+  [STAGE.SAMPLE_VISIT_OFFERED]: z.number().int().positive().default(14),
+  [STAGE.FEEDBACK_LOGGED]: z.number().int().positive().default(21),
+  [STAGE.DEMO_SCHEDULED]: z.number().int().positive().default(14),
 });
 
 export type StageStaleThresholds = z.infer<typeof StageStaleThresholdsSchema>;
@@ -70,7 +70,7 @@ export function isClosedStage(stage: string): stage is ClosedStage {
  * Check if a stage is an active pipeline stage (not closed).
  */
 export function isActivePipelineStage(stage: string): stage is ActivePipelineStage {
-  return ACTIVE_PIPELINE_STAGES.includes(stage as ActivePipelineStage);
+  return ACTIVE_STAGES.includes(stage as ActivePipelineStage);
 }
 
 /**
