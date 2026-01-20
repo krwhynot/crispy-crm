@@ -1,0 +1,75 @@
+{
+  "lastAuditDate": "2026-01-20",
+  "mode": "full",
+  "scope": "src/",
+  "findings": {
+    "critical": 0,
+    "high": 1,
+    "medium": 6
+  },
+  "issues": [
+    {
+      "id": "H4-001",
+      "severity": "high",
+      "check": "Generic Error Messages",
+      "location": "src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx:95",
+      "description": "throw new Error(\"Failed to postpone task\") - missing context",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-001",
+      "severity": "medium",
+      "check": "Untyped Catch Parameters",
+      "location": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts:182",
+      "description": "catch (e) - should use catch (error: unknown)",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-002",
+      "severity": "medium",
+      "check": "Untyped Catch Parameters",
+      "location": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts:451",
+      "description": "catch (e) - should use catch (error: unknown)",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-003",
+      "severity": "medium",
+      "check": "Untyped Catch Parameters",
+      "location": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts:539",
+      "description": "catch (e) - should use catch (error: unknown)",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-004",
+      "severity": "medium",
+      "check": "Untyped Catch Parameters",
+      "location": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts:610",
+      "description": "catch (e) - should use catch (error: unknown)",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-005",
+      "severity": "medium",
+      "check": "Untyped Catch Parameters",
+      "location": "src/atomic-crm/dashboard/v3/hooks/__tests__/usePrincipalPipeline.test.ts:65",
+      "description": "catch (e) - should use catch (error: unknown)",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-006",
+      "severity": "medium",
+      "check": "Untyped Catch Parameters",
+      "location": "src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts:54",
+      "description": "catch (e) - should use catch (error: unknown)",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    }
+  ]
+}
