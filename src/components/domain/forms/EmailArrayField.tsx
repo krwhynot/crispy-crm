@@ -3,7 +3,16 @@ import { ArrayInput } from "@/components/ra-wrappers/array-input";
 import { SimpleFormIterator } from "@/components/ra-wrappers/simple-form-iterator";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
-import { CONTACT_TYPE_OPTIONS } from "./constants";
+
+/**
+ * Email type choices - defined at module level for stable reference.
+ * Prevents SelectInput re-render loops that cause "Loading..." state.
+ */
+const EMAIL_TYPE_CHOICES = [
+  { id: "work", name: "Work" },
+  { id: "personal", name: "Personal" },
+  { id: "other", name: "Other" },
+];
 
 export interface EmailArrayFieldProps {
   source?: string;
@@ -51,10 +60,10 @@ export const EmailArrayField = ({
           source="type"
           helperText={false}
           label={false}
-          optionText="id"
-          choices={CONTACT_TYPE_OPTIONS}
+          choices={EMAIL_TYPE_CHOICES}
           className="w-24 min-w-24"
           defaultValue="work"
+          translateChoice={false}
         />
       </SimpleFormIterator>
     </ArrayInput>

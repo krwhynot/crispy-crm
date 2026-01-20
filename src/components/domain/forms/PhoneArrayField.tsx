@@ -12,7 +12,7 @@ const PHONE_TYPE_CHOICES = [
   { id: "mobile", name: "Mobile" },
   { id: "home", name: "Home" },
   { id: "other", name: "Other" },
-] as const;
+];
 
 interface PhoneArrayFieldProps {
   source?: string;
@@ -54,10 +54,10 @@ export const PhoneArrayField = ({
         source="type"
         helperText={false}
         label={false}
-        optionText="id"
-        choices={CONTACT_TYPE_OPTIONS}
+        choices={PHONE_TYPE_CHOICES}
         className="w-24 min-w-24"
         defaultValue="work"
+        translateChoice={false}
       />
     </SimpleFormIterator>
   </ArrayInput>

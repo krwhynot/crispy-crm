@@ -513,6 +513,254 @@ export const MyField = genericMemo(MyFieldImpl);
 
 ---
 
+## Pattern G: Date Formatting
+
+Centralized date formatting utilities replacing duplicate implementations across the codebase.
+
+```tsx
+// src/lib/formatDate.ts
+import { format, isValid, parseISO } from "date-fns";
+
+export type DateInput = Date | string | null | undefined;
+
+/**
+ * Format date for display (e.g., "Jan 15, 2026")
+ */
+export function formatDateDisplay(date: DateInput): string {
+  if (!date) return "";
+
+  const parsed = typeof date === "string" ? parseISO(date) : date;
+  if (!isValid(parsed)) return String(date);
+
+  return format(parsed, "MMM d, yyyy");
+}
+
+/**
+ * Format date for HTML date input (YYYY-MM-DD)
+ */
+export function formatDateForInput(date: DateInput): string {
+  if (!date) return "";
+
+  const parsed = typeof date === "string" ? parseISO(date) : date;
+  if (!isValid(parsed)) return "";
+
+  return format(parsed, "yyyy-MM-dd");
+}
+
+/**
+ * Format date with locale (for metadata displays)
+ */
+export function formatDateLocale(
+  date: DateInput,
+  options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric" },
+  locale: string = "en-US"
+): string {
+  if (!date) return "";
+
+  const parsed = typeof date === "string" ? new Date(date) : date;
+  if (!isValid(parsed)) return String(date);
+
+  return parsed.toLocaleDateString(locale, options);
+}
+
+// Usage:
+const displayDate = formatDateDisplay("2026-01-15T10:00:00Z"); // "Jan 15, 2026"
+const inputValue = formatDateForInput(new Date());             // "2026-01-15"
+const localeDate = formatDateLocale(date, { weekday: 'long' }); // "Wednesday"
+```
+
+**Key functions:**
+- `formatDateDisplay(date)`: Human-readable format (e.g., "Jan 15, 2026")
+- `formatDateForInput(date)`: HTML input format (YYYY-MM-DD)
+- `formatDateLocale(date, options, locale)`: Locale-aware formatting
+
+**When to use**: Formatting dates for display or form inputs. Replaces 5 duplicate implementations across the codebase. Use `formatDateDisplay` for UI text, `formatDateForInput` for date input values.
+
+---
+
+## Pattern H: Type Guards
+
+TypeScript type guards for safe error handling in catch blocks.
+
+```tsx
+// src/lib/type-guards.ts
+import { HttpError } from "react-admin";
+
+/**
+ * Type guard for React Admin HttpError
+ */
+export function isHttpError(error: unknown): error is HttpError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "status" in error &&
+    typeof (error as HttpError).status === "number"
+  );
+}
+
+/**
+ * Type guard for standard JavaScript Error
+ */
+export function isError(error: unknown): error is Error {
+  return error instanceof Error;
+}
+
+/**
+ * Type guard for error objects with a message property
+ */
+export function hasMessage(error: unknown): error is { message: string } {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as { message: unknown }).message === "string"
+  );
+}
+
+/**
+ * Extract error message from any error type
+ */
+export function getErrorMessage(error: unknown): string {
+  if (isHttpError(error)) {
+    return error.message;
+  }
+  if (isError(error)) {
+    return error.message;
+  }
+  if (hasMessage(error)) {
+    return error.message;
+  }
+  if (typeof error === "string") {
+    return error;
+  }
+  return "An unknown error occurred";
+}
+
+// Usage:
+try {
+  await dataProvider.create('contacts', { data });
+} catch (error: unknown) {
+  if (isHttpError(error)) {
+    console.error(`HTTP ${error.status}: ${error.message}`);
+  } else {
+    console.error(getErrorMessage(error));
+  }
+}
+```
+
+**Key functions:**
+- `isHttpError(error)`: Narrows to React Admin HttpError
+- `isError(error)`: Narrows to standard Error
+- `hasMessage(error)`: Checks for message property
+- `getErrorMessage(error)`: Safely extracts message from any error type
+
+**When to use**: Always use `catch (error: unknown)` with these guards instead of `catch (error: any)`. Provides type-safe error handling without sacrificing strictness.
+
+---
+
+## Pattern I: Zod Error Formatting
+
+Transform Zod validation errors into formats suitable for form display and React Admin integration.
+
+```tsx
+// src/lib/zodErrorFormatting.ts
+import type { ZodError, ZodIssue } from "zod";
+
+/**
+ * Transform a Zod error into a flat record of field paths to error messages.
+ * Handles nested paths by joining with dots (e.g., "phone.0.value").
+ */
+export function zodErrorToFormErrors(error: ZodError): Record<string, string> {
+  const errors: Record<string, string> = {};
+
+  error.issues.forEach((issue: ZodIssue) => {
+    const path = issue.path.join(".");
+    if (!errors[path]) {
+      errors[path] = issue.message;
+    }
+  });
+
+  return errors;
+}
+
+/**
+ * Transform a Zod error into React Admin validation error format.
+ */
+export function zodErrorToReactAdminErrors(
+  error: ZodError
+): Record<string, string> {
+  return zodErrorToFormErrors(error);
+}
+
+/**
+ * Extract the first error message from a Zod error for a specific field.
+ */
+export function getFieldError(
+  error: ZodError,
+  fieldPath: string
+): string | undefined {
+  const issue = error.issues.find(
+    (issue) => issue.path.join(".") === fieldPath
+  );
+  return issue?.message;
+}
+
+/**
+ * Check if a Zod error contains an error for a specific field.
+ */
+export function hasFieldError(error: ZodError, fieldPath: string): boolean {
+  return error.issues.some((issue) => issue.path.join(".") === fieldPath);
+}
+
+/**
+ * Get all error messages as a flat array of strings.
+ */
+export function getAllErrorMessages(error: ZodError): string[] {
+  return error.issues.map((issue) => {
+    const path = issue.path.join(".");
+    return path ? `${path}: ${issue.message}` : issue.message;
+  });
+}
+
+/**
+ * Create a React Admin compatible validation error
+ */
+export function createValidationError(
+  error: ZodError,
+  message = "Validation failed"
+): { message: string; body: { errors: Record<string, string> } } {
+  return {
+    message,
+    body: { errors: zodErrorToFormErrors(error) },
+  };
+}
+
+// Usage:
+try {
+  schema.parse(data);
+} catch (error) {
+  if (error instanceof ZodError) {
+    const formErrors = zodErrorToFormErrors(error);
+    // { "email": "Invalid email", "phone.0.value": "Required" }
+
+    // Or for React Admin handlers:
+    throw createValidationError(error);
+  }
+}
+```
+
+**Key functions:**
+- `zodErrorToFormErrors(error)`: Flat record of field paths to messages
+- `zodErrorToReactAdminErrors(error)`: React Admin validation format
+- `getFieldError(error, path)`: Get error for specific field
+- `hasFieldError(error, path)`: Check if field has error
+- `getAllErrorMessages(error)`: Array of all error messages
+- `createValidationError(error, message)`: React Admin compatible error object
+
+**When to use**: Transforming Zod validation errors for form display. Use in data provider handlers to return proper React Admin validation errors (see PROVIDER_RULES.md Pattern 3: Zod at the Boundary).
+
+---
+
 ## Pattern Comparison
 
 | Pattern | File | Primary Use Case |
