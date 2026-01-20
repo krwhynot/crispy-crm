@@ -217,51 +217,86 @@ formatTagsForExport(contact.tag_ids, tagsMap)
 
 ---
 
-## Pattern D: Fuzzy Matching (Duplicate Detection)
+## Pattern D: Fuzzy Matching (Duplicate Detection) - Types Only
 
-For detecting similar records and preventing duplicates during data entry.
+> **⚠️ MIGRATION NOTE**: Levenshtein distance functions (`levenshteinDistance`, `findSimilarOpportunities`) were **moved to PostgreSQL** using the `pg_trgm` extension for better performance on large datasets. Only **type definitions** are now exported from the client-side module.
 
-### Levenshtein Distance
+### Client-Side Types (For PostgreSQL Integration)
 
 ```tsx
-import { levenshteinDistance, findSimilarOpportunities } from "@/atomic-crm/utils";
+import type {
+  SimilarOpportunity,
+  FindSimilarParams,
+  SimilarityCheckResult,
+} from "@/atomic-crm/utils";
 
-// Basic distance check
-levenshteinDistance("ABC Corp", "ABC Crop") // Returns: 1
+// Types for handling PostgreSQL similarity search results
+interface SimilarOpportunity {
+  id: string | number;
+  name: string;
+  stage: string;
+  similarity: number;
+}
 
-// Find similar opportunities during create
-const { hasSimilar, matches } = findSimilarOpportunities(existingOpps, {
-  name: "ABC Corp - Widget Deal",
-  threshold: 3,  // Max edit distance
-  excludeId: currentId, // Exclude self when editing
-});
+interface FindSimilarParams {
+  name: string;
+  threshold?: number;
+  excludeId?: string | number;
+}
 
-if (hasSimilar) {
-  // Show warning dialog with matches
+interface SimilarityCheckResult {
+  hasSimilar: boolean;
+  matches: SimilarOpportunity[];
 }
 ```
 
-From `levenshtein.ts:134-181`:
-```typescript
-export function findSimilarOpportunities(
-  opportunities: Array<{ id: string | number; name: string; stage: string; ... }>,
-  params: FindSimilarParams
-): SimilarityCheckResult {
-  const { name, threshold = 3, excludeId } = params;
-  // ... Wagner-Fischer algorithm with space optimization
-}
+### PostgreSQL Implementation
+
+Similarity matching now uses `pg_trgm` in Supabase:
+
+```sql
+-- Enable extension (one-time)
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+-- Create index for fast similarity search
+CREATE INDEX idx_opportunities_name_trgm
+  ON opportunities USING gin (name gin_trgm_ops);
+
+-- RPC function for similarity search
+CREATE OR REPLACE FUNCTION find_similar_opportunities(
+  search_name TEXT,
+  threshold FLOAT DEFAULT 0.3,
+  exclude_id UUID DEFAULT NULL
+) RETURNS TABLE (
+  id UUID,
+  name TEXT,
+  stage TEXT,
+  similarity FLOAT
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT o.id, o.name, o.stage,
+         similarity(o.name, search_name) AS similarity
+  FROM opportunities o
+  WHERE o.deleted_at IS NULL
+    AND (exclude_id IS NULL OR o.id != exclude_id)
+    AND similarity(o.name, search_name) > threshold
+  ORDER BY similarity DESC
+  LIMIT 10;
+END;
+$$ LANGUAGE plpgsql;
 ```
 
-### Distance Threshold Guidelines
+### Why PostgreSQL?
 
-| Distance | Catches | Example |
-|----------|---------|---------|
-| 1 | Typos | "Corp" vs "Crop" |
-| 2 | Minor variations | "Inc" vs "Inc." |
-| 3 (default) | Small additions | "ABC" vs "ABC Co" |
-| 4+ | Significant differences | Different entities |
+| Aspect | Client-Side (Old) | PostgreSQL (New) |
+|--------|-------------------|------------------|
+| **Performance** | O(n*m) per comparison, all records fetched | Index-based, server-side filtering |
+| **Scale** | Slow at 1000+ records | Fast at 100k+ records |
+| **Network** | Transfers all records | Returns only matches |
+| **Accuracy** | Levenshtein edit distance | Trigram similarity (better for typos) |
 
-**When to use**: Opportunity create/edit forms, import duplicate detection, contact deduplication.
+**When to use**: Call `supabase.rpc('find_similar_opportunities', ...)` during opportunity create/edit forms.
 
 ---
 
@@ -808,7 +843,7 @@ When adding a new CRM utility:
 | Format relative time | A | `formatRelativeTime` |
 | Activity type icon | B | `getActivityIcon` |
 | CSV export flattening | C | `flattenEmailsForExport` |
-| Duplicate detection | D | `findSimilarOpportunities` |
+| Duplicate detection types | D | `type SimilarOpportunity` (functions in PostgreSQL) |
 | Import rate limiting | E | `contactImportLimiter` |
 | Browser storage | F | `getStorageItem`, `setStorageItem` |
 | Staleness check | G | `isOpportunityStale` |

@@ -31,7 +31,6 @@ import {
   createMockOpportunityWithComputedFields,
   createMockOpportunityWithViewOnlyFields,
   createMockEditableOpportunity,
-  type ProductToSync,
 } from "./fixtures/opportunities";
 
 // Mock service methods using vi.hoisted to ensure they're available when vi.mock runs
@@ -295,7 +294,9 @@ describe("createOpportunitiesHandler", () => {
         { invalid_field: "not a valid product" }, // Missing valid product fields
       ];
       const opportunityData = createMockOpportunityData({
-        products_to_sync: invalidProducts as unknown as ProductToSync[],
+        products_to_sync: invalidProducts as unknown as Array<{
+          product_id_reference: string | number;
+        }>,
       });
 
       // Zod validation should fail before reaching the service

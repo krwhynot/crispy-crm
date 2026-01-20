@@ -1,11 +1,9 @@
 # Task Management Workflow
 
-**Purpose:** This guide explains how to track, prioritize, and complete technical debt and audit findings in Crispy CRM.
+**Purpose:** This guide explains how to track, prioritize, and complete technical debt in Crispy CRM.
 
 **Key Files:**
-- `docs/technical-debt.md` - Categorical tracker (UI, ASYNC, ERR, etc.)
-- `docs/TODOs.md` - Execution plan with Security/Workflow findings
-- `docs/PROVIDER_AUDIT_REPORT.md` - Source audit findings
+- `docs/technical-debt.md` - Master tracker for all technical debt (UI, ASYNC, ERR, security, workflow)
 
 ---
 

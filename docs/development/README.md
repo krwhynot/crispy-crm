@@ -26,9 +26,7 @@ These guides explain how to track and complete work in Crispy CRM:
 
 | File | Purpose |
 |------|---------|
-| `docs/technical-debt.md` | Categorical tracker (UI, ASYNC, ERR, etc.) with 25 open items |
-| `docs/TODOs.md` | Active execution plan for provider audit findings |
-| `docs/PROVIDER_AUDIT_REPORT.md` | Source audit findings (reference) |
+| `docs/technical-debt.md` | Master tracker for all technical debt (UI, ASYNC, ERR, etc.) |
 
 ---
 
@@ -43,11 +41,11 @@ These guides explain how to track and complete work in Crispy CRM:
 
 | Category | Location |
 |----------|----------|
-| E2E Testing | `docs/tests/e2e/` |
+| E2E Testing | `docs/testing/` |
 | Feature Specs | `docs/features/` |
-| Audit Archives | `docs/archive/audits/` |
-| State Verification | `docs/_state/` |
+| Architecture | `docs/architecture/` |
+| Design System | `docs/design-system/` |
 
 ---
 
-*Last Updated: 2026-01-18*
+*Last Updated: 2026-01-19*
