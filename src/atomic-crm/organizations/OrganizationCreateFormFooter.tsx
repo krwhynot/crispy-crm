@@ -11,7 +11,7 @@ import { useFormContext, useFormState } from "react-hook-form";
 import { useCallback, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { SaveButton } from "@/components/admin/form";
+import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 

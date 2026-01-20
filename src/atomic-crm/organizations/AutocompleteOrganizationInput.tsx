@@ -1,4 +1,4 @@
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 import { QuickCreateOrganizationRA } from "./QuickCreatePopover";
 

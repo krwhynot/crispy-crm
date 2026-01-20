@@ -1,7 +1,7 @@
 import { Building2 } from "lucide-react";
 import { useGetList } from "ra-core";
 
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import type { Organization } from "../types";
 

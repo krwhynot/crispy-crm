@@ -1,4 +1,4 @@
-import { CreateButton } from "@/components/admin/create-button";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { Progress } from "@/components/ui/progress";
 import { useGetList } from "ra-core";
 import { Link } from "react-router-dom";

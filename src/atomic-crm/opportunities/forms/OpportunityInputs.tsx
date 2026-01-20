@@ -1,5 +1,5 @@
 import { useFormState } from "react-hook-form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { OpportunityCompactForm } from "./OpportunityCompactForm";
 
 const OPPORTUNITY_FIELD_LABELS: Record<string, string> = {

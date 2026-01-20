@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRecordContext, useGetList } from "ra-core";
 import { useFormContext, useWatch } from "react-hook-form";
-import { SelectInput } from "@/components/admin/select-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { PrincipalChangeWarning } from "./PrincipalChangeWarning";
 import {
   ORGANIZATION_TYPE_CHOICES,

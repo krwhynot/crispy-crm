@@ -1,5 +1,5 @@
 import { useWatch } from "react-hook-form";
-import { SelectInput } from "@/components/admin/select-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
 

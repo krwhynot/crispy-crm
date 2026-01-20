@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ReferenceInput, useCreate, useNotify, useRefresh } from "react-admin";
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 
 interface TagQuickInputProps {
   source: string;

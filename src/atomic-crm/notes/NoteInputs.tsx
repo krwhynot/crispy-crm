@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils.ts";
-import { TextInput } from "@/components/admin/text-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 import { Button } from "@/components/ui/button";
 import { getCurrentDate } from "../validation/notes";
 

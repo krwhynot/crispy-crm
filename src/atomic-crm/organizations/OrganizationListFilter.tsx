@@ -3,12 +3,12 @@ import { Truck, Store, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useListContext } from "ra-core";
 
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { StarredFilterToggle } from "../filters/StarredFilterToggle";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_PARENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
+import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
 /**
  * OrganizationListFilter - Sidebar filter UI for Organizations list

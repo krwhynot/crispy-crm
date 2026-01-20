@@ -1,6 +1,6 @@
 import { useCreate, useNotify, useDataProvider, Form, ReferenceInput } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { getAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 import { activityKeys, opportunityKeys, contactKeys } from "@/atomic-crm/queryKeys";
 import {

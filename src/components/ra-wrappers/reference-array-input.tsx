@@ -6,7 +6,7 @@ import {
   ResourceContextProvider,
   ChoicesContextProvider,
 } from "ra-core";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 
 /**
  * An Input component for fields containing a list of references to another resource.

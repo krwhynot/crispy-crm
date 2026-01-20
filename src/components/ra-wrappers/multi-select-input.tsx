@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FormField, FormLabel, FormError } from "@/components/admin/form";
-import { InputHelperText } from "@/components/admin/input-helper-text";
+import { FormField, FormLabel, FormError } from "@/components/ra-wrappers/form";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 import { cn } from "@/lib/utils";
 
 export const MultiSelectInput = (props: MultiSelectInputProps) => {

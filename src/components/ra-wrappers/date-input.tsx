@@ -1,7 +1,7 @@
 import * as React from "react";
 import { type InputProps, useInput, useResourceContext, FieldTitle } from "ra-core";
-import { FormError, FormField, FormLabel, useFormField } from "@/components/admin/form";
-import { InputHelperText } from "@/components/admin/input-helper-text";
+import { FormError, FormField, FormLabel, useFormField } from "@/components/ra-wrappers/form";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";

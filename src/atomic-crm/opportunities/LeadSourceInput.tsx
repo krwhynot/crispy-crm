@@ -1,4 +1,4 @@
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 import { LEAD_SOURCE_CHOICES } from "@/constants/choices";
 
 export function LeadSourceInput() {

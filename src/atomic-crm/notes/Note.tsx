@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
-import { ReferenceField } from "@/components/admin/reference-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { Avatar } from "../contacts/Avatar";
 import { RelativeDate } from "@/components/ui";

@@ -131,7 +131,7 @@ vi.mock("../ContactSlideOver", () => ({
 }));
 
 // Mock PremiumDatagrid to expose row click handler
-vi.mock("@/components/admin/PremiumDatagrid", () => ({
+vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
   PremiumDatagrid: ({ children, onRowClick }: any) => (
     <div data-testid="premium-datagrid" className="table-row-premium">
       {children}
@@ -154,7 +154,7 @@ vi.mock("@/components/admin/PremiumDatagrid", () => ({
 }));
 
 // Mock ToggleFilterButton to avoid form context issues
-vi.mock("@/components/admin/toggle-filter-button", () => ({
+vi.mock("@/components/ra-wrappers/toggle-filter-button", () => ({
   ToggleFilterButton: ({ label, ...props }: any) => (
     <button data-testid={`toggle-filter-${label}`} {...props}>
       {label}
@@ -163,7 +163,7 @@ vi.mock("@/components/admin/toggle-filter-button", () => ({
 }));
 
 // Mock SearchInput to avoid form context issues
-vi.mock("@/components/admin/search-input", () => ({
+vi.mock("@/components/ra-wrappers/search-input", () => ({
   SearchInput: ({ source, placeholder }: any) => (
     <input type="text" placeholder={placeholder || "Search..."} data-testid={`search-${source}`} />
   ),
@@ -211,7 +211,7 @@ vi.mock("@/components/layouts/StandardListLayout", () => ({
 }));
 
 // Mock List component
-vi.mock("@/components/admin/list", () => ({
+vi.mock("@/components/ra-wrappers/list", () => ({
   List: ({ children }: any) => <div data-testid="list-wrapper">{children}</div>,
 }));
 
@@ -221,12 +221,12 @@ vi.mock("../ContactEmpty", () => ({
 }));
 
 // Mock ListNoResults to avoid useResourceContext null error
-vi.mock("@/components/admin/ListNoResults", () => ({
+vi.mock("@/components/ra-wrappers/ListNoResults", () => ({
   ListNoResults: () => <div data-testid="list-no-results">No results</div>,
 }));
 
 // Mock FloatingCreateButton
-vi.mock("@/components/admin/FloatingCreateButton", () => ({
+vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
   FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
@@ -235,30 +235,30 @@ vi.mock("../layout/TopToolbar", () => ({
   TopToolbar: ({ children }: any) => <div data-testid="top-toolbar">{children}</div>,
 }));
 
-vi.mock("@/components/admin/export-button", () => ({
+vi.mock("@/components/ra-wrappers/export-button", () => ({
   ExportButton: () => <button data-testid="export-button">Export</button>,
 }));
 
-vi.mock("@/components/admin/bulk-actions-toolbar", () => ({
+vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));
 
 // Mock all field components
-vi.mock("@/components/admin/text-field", () => ({
+vi.mock("@/components/ra-wrappers/text-field", () => ({
   TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
 }));
 
-vi.mock("@/components/admin/reference-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-field", () => ({
   ReferenceField: ({ source, children }: any) => (
     <span data-testid={`ref-field-${source}`}>{children}</span>
   ),
 }));
 
-vi.mock("@/components/admin/date-field", () => ({
+vi.mock("@/components/ra-wrappers/date-field", () => ({
   DateField: ({ source }: any) => <span data-testid={`date-field-${source}`}>{source}</span>,
 }));
 
-vi.mock("@/components/admin/edit-button", () => ({
+vi.mock("@/components/ra-wrappers/edit-button", () => ({
   EditButton: () => <button data-testid="edit-button">Edit</button>,
 }));
 

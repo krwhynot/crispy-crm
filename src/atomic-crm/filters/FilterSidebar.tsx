@@ -8,7 +8,7 @@
  */
 
 import { FilterLiveForm } from "react-admin";
-import { SearchInput } from "@/components/admin/search-input";
+import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { cn } from "@/lib/utils";
 
 interface FilterSidebarProps {

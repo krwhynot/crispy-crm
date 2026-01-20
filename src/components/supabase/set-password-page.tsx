@@ -3,7 +3,7 @@ import { Form, useNotify, useTranslate } from "ra-core";
 import { useSetPassword, useSupabaseAccessToken } from "ra-supabase-core";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { TextInput } from "@/components/admin/text-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 import { Layout } from "@/components/supabase/layout";
 
 interface FormData {

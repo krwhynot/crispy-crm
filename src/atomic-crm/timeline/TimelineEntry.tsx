@@ -15,7 +15,7 @@ import { RecordContextProvider } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { ReferenceField } from "@/components/admin/reference-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { parseDateSafely } from "@/lib/date-utils";
 import { ucFirst } from "@/atomic-crm/utils";
 

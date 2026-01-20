@@ -7,9 +7,9 @@ import { parseDateSafely } from "@/lib/date-utils";
 import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 import { ArchivedBanner, ArchiveButton, UnarchiveButton } from "./components";
 
-import { ReferenceArrayField } from "@/components/admin/reference-array-field";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { ReferenceArrayField } from "@/components/ra-wrappers/reference-array-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";

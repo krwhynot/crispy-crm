@@ -10,7 +10,7 @@ import { screen } from "@testing-library/react";
 import { useForm, FormProvider } from "react-hook-form";
 import { AdminContext } from "react-admin";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { FormProgressProvider } from "@/components/admin/form";
+import { FormProgressProvider } from "@/components/ra-wrappers/form";
 import ActivitySinglePage from "../ActivitySinglePage";
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {

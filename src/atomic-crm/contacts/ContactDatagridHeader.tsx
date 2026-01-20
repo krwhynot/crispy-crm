@@ -20,7 +20,7 @@
  * ```
  */
 
-import { FilterableColumnHeader } from "@/components/admin/column-filters";
+import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 import { CONTACT_STATUS_CHOICES } from "./constants";
 
 /**

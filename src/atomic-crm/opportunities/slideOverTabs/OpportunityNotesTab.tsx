@@ -1,5 +1,5 @@
 import { RecordContextProvider } from "ra-core";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneSection } from "@/components/layouts/sidepane";
 import { NotesIterator } from "../../notes";

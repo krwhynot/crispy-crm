@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import { Children } from "react";
 import { Form, type FormProps } from "ra-core";
 import { cn } from "@/lib/utils";
-import { CancelButton } from "@/components/admin/cancel-button";
-import { SaveButton } from "@/components/admin/form";
+import { CancelButton } from "@/components/ra-wrappers/cancel-button";
+import { SaveButton } from "@/components/ra-wrappers/form";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 /**

@@ -1,10 +1,10 @@
 import { format, formatDistanceToNow, isPast } from "date-fns";
 import { useRecordContext } from "react-admin";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
-import { DateField } from "@/components/admin/date-field";
-import { EditButton } from "@/components/admin/edit-button";
-import { ShowButton } from "@/components/admin/show-button";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
+import { DateField } from "@/components/ra-wrappers/date-field";
+import { EditButton } from "@/components/ra-wrappers/edit-button";
+import { ShowButton } from "@/components/ra-wrappers/show-button";
 import { Badge } from "@/components/ui/badge";
 import { getPriorityVariant } from "@/components/ui/priority-badge";
 import { AsideSection } from "@/components/ui";

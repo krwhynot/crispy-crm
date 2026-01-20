@@ -3,11 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useFormState } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { baseActivitiesSchema, activitiesSchema } from "../validation/activities";
 import ActivitySinglePage from "./ActivitySinglePage";
-import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 export default function ActivityCreate() {

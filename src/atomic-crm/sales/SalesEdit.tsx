@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { SimpleForm } from "@/components/admin/simple-form";
-import { CancelButton } from "@/components/admin/cancel-button";
-import { SaveButton } from "@/components/admin/form";
+import { SimpleForm } from "@/components/ra-wrappers/simple-form";
+import { CancelButton } from "@/components/ra-wrappers/cancel-button";
+import { SaveButton } from "@/components/ra-wrappers/form";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saleKeys } from "@/atomic-crm/queryKeys";

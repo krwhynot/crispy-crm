@@ -1,9 +1,9 @@
 import { startOfToday, addDays, format } from "date-fns";
 import { Calendar, CheckSquare, User } from "lucide-react";
 
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
+import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
 /**
  * TaskListFilter Component

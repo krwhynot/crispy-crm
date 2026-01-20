@@ -30,7 +30,7 @@
         "./defaultConfiguration",
         "./i18nProvider",
         "@/atomic-crm/login/StartPage.tsx",
-        "@/components/admin/admin",
+        "@/components/ra-wrappers/admin",
         "@/components/supabase/forgot-password-page",
         "@/components/supabase/set-password-page",
         "@tanstack/react-query",

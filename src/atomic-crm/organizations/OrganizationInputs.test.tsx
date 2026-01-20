@@ -21,7 +21,7 @@ vi.mock("ra-core", async () => {
 
 // Import ra-core components after mock definition
 import { CoreAdminContext as AdminContext, SaveContextProvider, Form as RaForm } from "ra-core";
-import { Form, FormProgressProvider } from "@/components/admin/form";
+import { Form, FormProgressProvider } from "@/components/ra-wrappers/form";
 import { OrganizationInputs } from "./OrganizationInputs";
 
 const mockDataProvider = {

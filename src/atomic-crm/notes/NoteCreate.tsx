@@ -11,8 +11,8 @@ import {
 } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
 
-import { SaveButton } from "@/components/admin/form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { SaveButton } from "@/components/ra-wrappers/form";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { NoteInputs } from "./NoteInputs";
 import { baseNoteSchema, getCurrentDate } from "../validation/notes";
 

@@ -1,8 +1,8 @@
 import { List, Datagrid, TextField, ReferenceField, DateField, SelectField } from "react-admin";
-import { TextInput } from "@/components/admin/text-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
 import { AUTOCOMPLETE_DEBOUNCE_MS, shouldRenderSuggestions } from "../utils/autocompleteDefaults";
 

@@ -19,7 +19,7 @@ import { colors } from "./colors";
 import { RoundButton } from "./RoundButton";
 import type { TagColorName } from "@/lib/color-types";
 import { createTagSchema, type CreateTagInput } from "../validation/tags";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 
 interface TagDialogProps {

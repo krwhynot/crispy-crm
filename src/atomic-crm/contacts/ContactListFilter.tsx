@@ -4,12 +4,12 @@ import { Clock, Tag, User } from "lucide-react";
 import { useGetList, useListContext } from "ra-core";
 import { cn } from "@/lib/utils";
 
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { StarredFilterToggle } from "../filters/StarredFilterToggle";
 import { DateRangeFilterButton } from "../filters/DateRangeFilterButton";
 import { getTagColorClass } from "../tags/tag-colors";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
+import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
 /**
  * ContactListFilter - Sidebar filter UI for Contacts list

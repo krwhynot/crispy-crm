@@ -1,6 +1,6 @@
-import { ReferenceInput } from "@/components/admin/reference-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { useRecordContext } from "ra-core";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { AUTOCOMPLETE_DEBOUNCE_MS } from "@/atomic-crm/utils/autocompleteDefaults";
 import { useOrganizationDescendants } from "@/hooks";
 

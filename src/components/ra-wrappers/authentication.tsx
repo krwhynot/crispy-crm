@@ -3,7 +3,7 @@ import { Translate, useHandleAuthCallback, useTranslate } from "ra-core";
 import { CircleAlert, LockIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Loading } from "@/components/admin/loading";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 /**
  * A standalone page to be used in a route called by external authentication services (e.g. OAuth)

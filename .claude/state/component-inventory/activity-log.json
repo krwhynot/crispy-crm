@@ -47,7 +47,7 @@
         "../types",
         "../utils/formatName",
         "./ActivityLogContext",
-        "@/components/admin/reference-field",
+        "@/components/ra-wrappers/reference-field",
         "@/components/ui",
         "react-router-dom"
       ],
@@ -74,8 +74,8 @@
         "../types",
         "./ActivityLogContext",
         "./ActivityLogNote",
-        "@/components/admin/reference-field",
-        "@/components/admin/text-field",
+        "@/components/ra-wrappers/reference-field",
+        "@/components/ra-wrappers/text-field",
         "@/components/ui",
         "ra-core"
       ],
@@ -206,7 +206,7 @@
         "../types",
         "./ActivityLogContext",
         "./ActivityLogNote",
-        "@/components/admin/reference-field",
+        "@/components/ra-wrappers/reference-field",
         "@/components/ui",
         "ra-core"
       ],
@@ -233,7 +233,7 @@
         "../sales/SaleName",
         "../types",
         "./ActivityLogContext",
-        "@/components/admin/reference-field",
+        "@/components/ra-wrappers/reference-field",
         "@/components/ui",
         "react-router-dom"
       ],

@@ -1,6 +1,6 @@
-import { ReferenceField } from "@/components/admin/reference-field";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
-import { TextField } from "@/components/admin/text-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ResponsiveGrid } from "@/components/design-system";

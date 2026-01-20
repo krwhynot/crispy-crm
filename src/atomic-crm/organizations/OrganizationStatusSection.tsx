@@ -1,7 +1,7 @@
-import { SelectInput } from "@/components/admin/select-input";
-import { TextInput } from "@/components/admin/text-input";
-import { NumberInput } from "@/components/admin/number-input";
-import { FormSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { NumberInput } from "@/components/ra-wrappers/number-input";
+import { FormSection, CompactFormRow, FormFieldWrapper } from "@/components/ra-wrappers/form";
 import { STATUS_CHOICES, STATUS_REASON_CHOICES, PAYMENT_TERMS_CHOICES } from "./constants";
 
 export const OrganizationStatusSection = () => {

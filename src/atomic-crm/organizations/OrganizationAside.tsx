@@ -1,12 +1,12 @@
 import { Globe, Linkedin, Phone } from "lucide-react";
 import { useRecordContext } from "ra-core";
-import { EditButton } from "@/components/admin/edit-button";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { ShowButton } from "@/components/admin/show-button";
-import { TextField } from "@/components/admin/text-field";
-import { DateField } from "@/components/admin/date-field";
-import { UrlField } from "@/components/admin/url-field";
-import { SelectField } from "@/components/admin/select-field";
+import { EditButton } from "@/components/ra-wrappers/edit-button";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { ShowButton } from "@/components/ra-wrappers/show-button";
+import { TextField } from "@/components/ra-wrappers/text-field";
+import { DateField } from "@/components/ra-wrappers/date-field";
+import { UrlField } from "@/components/ra-wrappers/url-field";
+import { SelectField } from "@/components/ra-wrappers/select-field";
 
 import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";

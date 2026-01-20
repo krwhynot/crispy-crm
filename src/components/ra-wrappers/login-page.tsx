@@ -3,8 +3,8 @@ import { Form, useLogin, useNotify } from "ra-core";
 import type { SubmitHandler, FieldValues } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { TextInput } from "@/components/admin/text-input";
-import { Notification } from "@/components/admin/notification";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { Notification } from "@/components/ra-wrappers/notification";
 import { useAppBranding } from "@/atomic-crm/root/ConfigurationContext";
 
 export const LoginPage = (props: { redirectTo?: string }) => {

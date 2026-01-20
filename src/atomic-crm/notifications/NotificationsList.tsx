@@ -2,13 +2,13 @@ import { formatDistanceToNow } from "date-fns";
 import { Bell, Check, Eye, ExternalLink } from "lucide-react";
 import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
 
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
-import { List } from "@/components/admin/list";
+import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
+import { List } from "@/components/ra-wrappers/list";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Card } from "@/components/ui/card";
 import { FilterLiveForm } from "ra-core";
-import { SearchInput } from "@/components/admin/search-input";
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { SearchInput } from "@/components/ra-wrappers/search-input";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

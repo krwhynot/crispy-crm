@@ -22,8 +22,8 @@ import { Link as RouterLink, useLocation, useMatch, useNavigate } from "react-ro
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
-import { SortButton } from "@/components/admin/sort-button";
+import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
+import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ResponsiveGrid } from "@/components/design-system";
 
 import { ActivityLog } from "../activity-log/ActivityLog";

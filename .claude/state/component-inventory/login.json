@@ -24,7 +24,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/admin/login-page"
+        "@/components/ra-wrappers/login-page"
       ],
       "isDefaultExport": false,
       "childComponents": [],

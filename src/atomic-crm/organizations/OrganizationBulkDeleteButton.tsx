@@ -9,7 +9,7 @@ import {
 } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
-import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
+import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dialog";
 import { useRelatedRecordCounts } from "../hooks/useRelatedRecordCounts";
 import type { OrganizationWithHierarchy } from "../types";
 

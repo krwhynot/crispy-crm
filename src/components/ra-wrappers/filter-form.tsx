@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { Bookmark, BookmarkMinus, BookmarkPlus, Check, Filter, MinusCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useFilterContext } from "ra-core";
-import type { FilterElementProps } from "@/components/admin/filter-types";
+import type { FilterElementProps } from "@/components/ra-wrappers/filter-types";
 import type { SavedQuery } from "@/hooks/saved-queries";
 import { extractValidSavedQueries, useSavedQueries } from "@/hooks/saved-queries";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AddSavedQueryDialog, RemoveSavedQueryDialog } from "@/components/admin/saved-queries";
+import {
+  AddSavedQueryDialog,
+  RemoveSavedQueryDialog,
+} from "@/components/ra-wrappers/saved-queries";
 
 export const FilterForm = (inProps: FilterFormProps) => {
   const { filters: filtersProps, ...rest } = inProps;

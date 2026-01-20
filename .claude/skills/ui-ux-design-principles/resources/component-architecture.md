@@ -15,7 +15,7 @@ Three reusable components establish the standardized layout pattern across all r
 **Usage:** Wraps all resource list pages
 
 ```tsx
-import { StandardListLayout } from '@/components/admin/StandardListLayout';
+import { StandardListLayout } from '@/components/ra-wrappers/StandardListLayout';
 
 <StandardListLayout filterComponent={<ContactFilters />}>
   <PremiumDatagrid>

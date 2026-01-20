@@ -1,4 +1,4 @@
-import { TextInput } from "@/components/admin/text-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 
 /**
  * SalesGeneralTab - Basic info fields for Create form

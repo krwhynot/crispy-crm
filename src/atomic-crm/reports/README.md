@@ -178,12 +178,12 @@ const { data: opportunities, isPending } = useGetList<Opportunity>(
 - **Status**: ✅ **Actively used**
 
 #### Custom React Admin Components
-- **MultiSelectInput** (`@/components/admin/multi-select-input`)
+- **MultiSelectInput** (`@/components/ra-wrappers/multi-select-input`)
   - **File**: `OpportunitiesByPrincipalReport.tsx`
   - **Purpose**: Multi-select stage filter
   - **Status**: ✅ **Actively used**
 
-- **ReferenceInput** + **AutocompleteArrayInput** (`@/components/admin/*`)
+- **ReferenceInput** + **AutocompleteArrayInput** (`@/components/ra-wrappers/*`)
   - **Files**: `OpportunitiesByPrincipalReport.tsx`
   - **Purpose**: Principal/Sales rep filtering with autocomplete
   - **Status**: ✅ **Actively used**
@@ -608,9 +608,9 @@ All shadcn/ui components are source-code installed in `src/components/ui/`:
 
 | Import Path | Component | Purpose |
 |------------|-----------|---------|
-| `@/components/admin/multi-select-input` | MultiSelectInput | Stage multi-select filter |
-| `@/components/admin/reference-input` | ReferenceInput | Principal/sales rep autocomplete |
-| `@/components/admin/autocomplete-array-input` | AutocompleteArrayInput | Autocomplete UI |
+| `@/components/ra-wrappers/multi-select-input` | MultiSelectInput | Stage multi-select filter |
+| `@/components/ra-wrappers/reference-input` | ReferenceInput | Principal/sales rep autocomplete |
+| `@/components/ra-wrappers/autocomplete-array-input` | AutocompleteArrayInput | Autocomplete UI |
 | `@/atomic-crm/utils/csvUploadValidator` | sanitizeCsvValue, getSecurePapaParseConfig | CSV security |
 | `@/atomic-crm/opportunities/stageConstants` | OPPORTUNITY_STAGE_CHOICES | Stage definitions |
 | `@/atomic-crm/validation/activities` | INTERACTION_TYPE_OPTIONS | Activity type enums |

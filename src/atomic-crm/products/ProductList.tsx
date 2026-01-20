@@ -1,18 +1,18 @@
 import { useGetIdentity, useListContext } from "ra-core";
 import { FunctionField } from "react-admin";
-import { List } from "@/components/admin/list";
-import { TextField } from "@/components/admin/text-field";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
+import { List } from "@/components/ra-wrappers/list";
+import { TextField } from "@/components/ra-wrappers/text-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
+import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { ProductListSkeleton } from "@/components/ui/list-skeleton";
 import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/admin/ListSearchBar";
+import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { Badge } from "@/components/ui/badge";
 import { ucFirst } from "@/atomic-crm/utils";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
@@ -21,14 +21,14 @@ import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";
 import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
-import { FilterableBadge } from "@/components/admin/FilterableBadge";
+import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import {
   ProductNameHeader,
   ProductCategoryHeader,
   ProductStatusHeader,
 } from "./ProductsDatagridHeader";
-import { SortButton } from "@/components/admin/sort-button";
-import { ExportButton } from "@/components/admin/export-button";
+import { SortButton } from "@/components/ra-wrappers/sort-button";
+import { ExportButton } from "@/components/ra-wrappers/export-button";
 import type { Product } from "../types";
 
 /**

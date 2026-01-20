@@ -23,8 +23,8 @@ import { useContactImportParser } from "./useContactImportParser";
 import { useContactImportPreview } from "./useContactImportPreview";
 import { useContactImportProcessor } from "./useContactImportProcessor";
 
-import { FileInput } from "@/components/admin/file-input";
-import { FileField } from "@/components/admin/file-field";
+import { FileInput } from "@/components/ra-wrappers/file-input";
+import { FileField } from "@/components/ra-wrappers/file-field";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
 import * as sampleCsv from "./contacts_export.csv?raw";

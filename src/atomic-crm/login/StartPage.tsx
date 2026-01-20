@@ -1,4 +1,4 @@
-import { LoginPage } from "@/components/admin/login-page";
+import { LoginPage } from "@/components/ra-wrappers/login-page";
 
 export const StartPage = () => {
   // Always show the login page

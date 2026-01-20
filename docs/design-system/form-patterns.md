@@ -79,7 +79,7 @@ FormProgressProvider
 ### Example: ContactCreate Pattern
 
 ```typescript
-import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { ContactInputs } from "./ContactInputs";
 import { contactBaseSchema } from "../validation/contacts";
@@ -116,8 +116,8 @@ const ContactCreate = () => {
 ### Example: Section Definition
 
 ```typescript
-import { FormSectionWithProgress, FormFieldWrapper, CompactFormRow } from "@/components/admin/form";
-import { TextInput } from "@/components/admin/text-input";
+import { FormSectionWithProgress, FormFieldWrapper, CompactFormRow } from "@/components/ra-wrappers/form";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 
 export const ContactCompactForm = () => {
   return (
@@ -237,7 +237,7 @@ FormProgressProvider
 
 ```typescript
 import { Card, CardContent } from "@/components/ui/card";
-import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { OrganizationInputs } from "./OrganizationInputs";
 import { OrganizationCreateFormFooter } from "./OrganizationCreateFormFooter";
@@ -347,9 +347,9 @@ FormProgressProvider
 
 ```typescript
 import { Card, CardContent } from "@/components/ui/card";
-import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { ActivitySinglePage } from "./ActivitySinglePage";
 
 export default function ActivityCreate() {

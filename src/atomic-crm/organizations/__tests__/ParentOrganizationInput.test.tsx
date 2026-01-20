@@ -29,7 +29,7 @@ vi.mock("@/hooks", () => ({
 
 // Mock ReferenceInput - capture props to verify filter configuration
 const mockReferenceInputProps = vi.fn();
-vi.mock("@/components/admin/reference-input", () => ({
+vi.mock("@/components/ra-wrappers/reference-input", () => ({
   ReferenceInput: (props: { children?: React.ReactNode; filter?: Record<string, string> }) => {
     mockReferenceInputProps(props);
     return (
@@ -42,7 +42,7 @@ vi.mock("@/components/admin/reference-input", () => ({
 
 // Mock AutocompleteInput - capture props to verify filterToQuery behavior
 const mockAutocompleteInputProps = vi.fn();
-vi.mock("@/components/admin/autocomplete-input", () => ({
+vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
   AutocompleteInput: (props: Record<string, unknown>) => {
     mockAutocompleteInputProps(props);
     return <div data-testid="autocomplete-input" />;

@@ -8,11 +8,11 @@ import {
   useInput,
 } from "ra-core";
 import { cn } from "@/lib/utils";
-import { FormField, FormControl, FormLabel, FormError } from "@/components/admin/form";
+import { FormField, FormControl, FormLabel, FormError } from "@/components/ra-wrappers/form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Skeleton } from "@/components/ui/skeleton";
-import { InputHelperText } from "@/components/admin/input-helper-text";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 
 export const RadioButtonGroupInput = (inProps: RadioButtonGroupInputProps) => {
   const {

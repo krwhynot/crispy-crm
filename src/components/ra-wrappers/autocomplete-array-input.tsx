@@ -2,7 +2,7 @@ import * as React from "react";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
+import { FormControl, FormError, FormField, FormLabel } from "@/components/ra-wrappers/form";
 import { Command as CommandPrimitive } from "cmdk";
 import type { ChoicesProps, InputProps, FilterPayload, RaRecord } from "ra-core";
 import {

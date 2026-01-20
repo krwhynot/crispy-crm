@@ -11,7 +11,7 @@ import userEvent from "@testing-library/user-event";
 import { SelectInput } from "../select-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { SaveContextProvider } from "ra-core";
-import { ReferenceInput } from "@/components/admin/reference-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { useForm } from "react-hook-form";
 import { Form } from "../form";
 import React from "react";

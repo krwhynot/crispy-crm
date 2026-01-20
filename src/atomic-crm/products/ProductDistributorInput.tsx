@@ -1,8 +1,8 @@
 import { useWatch } from "react-hook-form";
 import { useGetList } from "react-admin";
-import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { TextInput } from "@/components/admin/text-input";
+import { ReferenceArrayInput } from "@/components/ra-wrappers/reference-array-input";
+import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 
 /**
  * Multi-distributor selection with per-distributor DOT# inputs.

@@ -10,7 +10,7 @@
  */
 
 import { useListContext } from "ra-core";
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { Users, Eye } from "lucide-react";
 

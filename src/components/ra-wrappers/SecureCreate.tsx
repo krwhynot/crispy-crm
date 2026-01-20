@@ -16,7 +16,7 @@
 import { type ReactNode, useEffect } from "react";
 import { CreateBase, useCanAccess, useNotify, useRedirect, useResourceContext } from "ra-core";
 import type { CreateBaseProps } from "ra-core";
-import { FormLoadingSkeleton } from "@/components/admin/form";
+import { FormLoadingSkeleton } from "@/components/ra-wrappers/form";
 
 export interface SecureCreateProps extends Omit<CreateBaseProps, "children"> {
   /** Form content to render when access is granted */

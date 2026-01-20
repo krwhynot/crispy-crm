@@ -453,11 +453,11 @@ reports/
 
 ```typescript
 import { useGetIdentity, useListContext } from "ra-core";
-import { List } from "@/components/admin/list";
+import { List } from "@/components/ra-wrappers/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
-import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
-import { ListSearchBar } from "@/components/admin/ListSearchBar";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
+import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
@@ -578,9 +578,9 @@ import { useMemo } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { [Feature]Inputs } from "./[Feature]Inputs";
 import { [feature]Schema } from "../validation/[feature]";
@@ -871,7 +871,7 @@ import { Card } from '@/components/ui/Card'
 ```typescript
 // All features can import from:
 import { ... } from '@/components/ui'
-import { ... } from '@/components/admin'
+import { ... } from '@/components/ra-wrappers'
 import { ... } from '@/atomic-crm/hooks'
 import { ... } from '@/atomic-crm/contexts'
 import { ... } from '@/lib'

@@ -1,6 +1,6 @@
-import { TextInput } from "@/components/admin/text-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { FormSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { FormSection, CompactFormRow, FormFieldWrapper } from "@/components/ra-wrappers/form";
 import { ContactManagerInput } from "./ContactManagerInput";
 import { DEPARTMENT_CHOICES } from "./constants";
 

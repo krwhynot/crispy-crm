@@ -1,4 +1,4 @@
-import { Admin } from "@/components/admin/admin";
+import { Admin } from "@/components/ra-wrappers/admin";
 import { ForgotPasswordPage } from "@/components/supabase/forgot-password-page";
 import { SetPasswordPage } from "@/components/supabase/set-password-page";
 import { QueryClient } from "@tanstack/react-query";

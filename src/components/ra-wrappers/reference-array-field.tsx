@@ -9,7 +9,7 @@ import {
   type SortPayload,
 } from "ra-core";
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { SingleFieldList } from "@/components/admin/single-field-list";
+import { SingleFieldList } from "@/components/ra-wrappers/single-field-list";
 
 /**
  * A container component that fetches records from another resource specified

@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/ra-wrappers/breadcrumb";
 import {
   ShowBase,
   Translate,
@@ -14,7 +14,7 @@ import {
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { EditButton } from "@/components/admin/edit-button";
+import { EditButton } from "@/components/ra-wrappers/edit-button";
 
 export interface ShowProps extends ShowViewProps, Omit<ShowBaseProps, "children"> {}
 

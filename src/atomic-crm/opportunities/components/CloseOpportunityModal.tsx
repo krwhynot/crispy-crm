@@ -12,8 +12,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { SelectInput } from "@/components/admin/select-input";
-import { TextInput } from "@/components/admin/text-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 import { cn } from "@/lib/utils";
 
 import {

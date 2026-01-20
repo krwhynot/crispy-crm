@@ -1,12 +1,12 @@
 import { useListContext, RecordContextProvider, useGetIdentity } from "ra-core";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { TextField } from "@/components/admin/text-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EditButton } from "@/components/admin/edit-button";
+import { EditButton } from "@/components/ra-wrappers/edit-button";
 import { formatDistance, format } from "date-fns";
 import { Building2, X } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";

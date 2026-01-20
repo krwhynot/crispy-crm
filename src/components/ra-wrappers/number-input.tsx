@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { FieldTitle, type InputProps, useInput, useResourceContext } from "ra-core";
-import { FormControl, FormField, FormLabel } from "@/components/admin/form";
+import { FormControl, FormField, FormLabel } from "@/components/ra-wrappers/form";
 import { Input } from "@/components/ui/input";
-import { FormError } from "@/components/admin/form";
-import { InputHelperText } from "@/components/admin/input-helper-text";
+import { FormError } from "@/components/ra-wrappers/form";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 
 export const NumberInput = (props: NumberInputProps) => {
   const {

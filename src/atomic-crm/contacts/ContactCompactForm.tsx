@@ -1,10 +1,14 @@
 import { required } from "react-admin";
-import { TextInput } from "@/components/admin/text-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { ArrayInput } from "@/components/admin/array-input";
-import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import { CompactFormRow, FormFieldWrapper, FormSectionWithProgress } from "@/components/admin/form";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { ArrayInput } from "@/components/ra-wrappers/array-input";
+import { SimpleFormIterator } from "@/components/ra-wrappers/simple-form-iterator";
+import {
+  CompactFormRow,
+  FormFieldWrapper,
+  FormSectionWithProgress,
+} from "@/components/ra-wrappers/form";
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";

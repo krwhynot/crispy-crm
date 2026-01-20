@@ -1,6 +1,6 @@
-import { RefreshButton } from "@/components/admin/refresh-button";
-import { ThemeModeToggle } from "@/components/admin/theme-mode-toggle";
-import { UserMenu } from "@/components/admin/user-menu";
+import { RefreshButton } from "@/components/ra-wrappers/refresh-button";
+import { ThemeModeToggle } from "@/components/ra-wrappers/theme-mode-toggle";
+import { UserMenu } from "@/components/ra-wrappers/user-menu";
 import { useUserMenu } from "ra-core";
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Settings, Users } from "lucide-react";

@@ -43,12 +43,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ColumnsSelector, ColumnsSelectorItem } from "@/components/admin/columns-button";
-import { NumberField } from "@/components/admin/number-field";
+import { ColumnsSelector, ColumnsSelectorItem } from "@/components/ra-wrappers/columns-button";
+import { NumberField } from "@/components/ra-wrappers/number-field";
 import {
   BulkActionsToolbar,
   BulkActionsToolbarChildren,
-} from "@/components/admin/bulk-actions-toolbar";
+} from "@/components/ra-wrappers/bulk-actions-toolbar";
 
 const defaultBulkActionButtons = <BulkActionsToolbarChildren />;
 

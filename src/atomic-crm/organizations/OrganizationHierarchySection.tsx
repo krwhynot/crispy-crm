@@ -1,6 +1,10 @@
-import { SelectInput } from "@/components/admin/select-input";
-import { BooleanInput } from "@/components/admin/boolean-input";
-import { CollapsibleSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { BooleanInput } from "@/components/ra-wrappers/boolean-input";
+import {
+  CollapsibleSection,
+  CompactFormRow,
+  FormFieldWrapper,
+} from "@/components/ra-wrappers/form";
 import { ORG_SCOPE_CHOICES } from "./constants";
 
 export const OrganizationHierarchySection = (): JSX.Element => {

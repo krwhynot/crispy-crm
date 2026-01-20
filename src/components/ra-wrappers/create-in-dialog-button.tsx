@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { FormToolbar } from "@/components/admin/simple-form";
-import { SaveButton } from "@/components/admin/form";
+import { FormToolbar } from "@/components/ra-wrappers/simple-form";
+import { SaveButton } from "@/components/ra-wrappers/form";
 
 /**
  * Parse database/API errors into user-friendly messages.

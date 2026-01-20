@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useListPaginationContext, Translate, useTranslate, useListContext } from "ra-core";
-import { ExportButton } from "@/components/admin/export-button";
+import { ExportButton } from "@/components/ra-wrappers/export-button";
 
 export const ListPagination = ({
   rowsPerPageOptions = [5, 10, 25, 50],

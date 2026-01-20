@@ -1,8 +1,8 @@
-import { TextInput } from "@/components/admin/text-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { FormFieldWrapper } from "@/components/admin/form";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { FormFieldWrapper } from "@/components/ra-wrappers/form";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
 import { enableGetChoices } from "../utils/autocompleteDefaults";
 import { formatFieldLabel } from "@/atomic-crm/utils";

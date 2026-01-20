@@ -1,9 +1,9 @@
 import { useRecordContext } from "ra-core";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { EditButton } from "@/components/admin/edit-button";
-import { DeleteButton } from "@/components/admin/delete-button";
-import { SaveButton } from "@/components/admin/form";
-import { CancelButton } from "@/components/admin/cancel-button";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { EditButton } from "@/components/ra-wrappers/edit-button";
+import { DeleteButton } from "@/components/ra-wrappers/delete-button";
+import { SaveButton } from "@/components/ra-wrappers/form";
+import { CancelButton } from "@/components/ra-wrappers/cancel-button";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 

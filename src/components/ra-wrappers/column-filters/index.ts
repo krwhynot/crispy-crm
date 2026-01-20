@@ -7,7 +7,7 @@
  *
  * @example
  * // In a custom datagrid header
- * import { FilterableColumnHeader, ORGANIZATION_TYPE_CHOICES } from "@/components/admin/column-filters";
+ * import { FilterableColumnHeader, ORGANIZATION_TYPE_CHOICES } from "@/components/ra-wrappers/column-filters";
  *
  * <FilterableColumnHeader
  *   source="name"

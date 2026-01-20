@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useGetIdentity } from "ra-core";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { QuickCreateContactPopover } from "./QuickCreateContactPopover";
 import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 

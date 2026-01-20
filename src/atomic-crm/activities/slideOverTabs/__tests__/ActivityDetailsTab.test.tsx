@@ -63,7 +63,7 @@ vi.mock("@/components/layouts/sidepane", async () => {
 });
 
 // Mock form input components
-vi.mock("@/components/admin/text-input", () => ({
+vi.mock("@/components/ra-wrappers/text-input", () => ({
   TextInput: ({ source, label, type }: any) => (
     <div data-testid={`text-input-${source}`}>
       <label>{label}</label>
@@ -72,7 +72,7 @@ vi.mock("@/components/admin/text-input", () => ({
   ),
 }));
 
-vi.mock("@/components/admin/select-input", () => ({
+vi.mock("@/components/ra-wrappers/select-input", () => ({
   SelectInput: ({ source, label, choices }: any) => (
     <div data-testid={`select-input-${source}`}>
       <label>{label}</label>
@@ -87,7 +87,7 @@ vi.mock("@/components/admin/select-input", () => ({
   ),
 }));
 
-vi.mock("@/components/admin/boolean-input", () => ({
+vi.mock("@/components/ra-wrappers/boolean-input", () => ({
   BooleanInput: ({ source, label }: any) => (
     <div data-testid={`boolean-input-${source}`}>
       <label>{label}</label>
@@ -96,13 +96,13 @@ vi.mock("@/components/admin/boolean-input", () => ({
   ),
 }));
 
-vi.mock("@/components/admin/reference-input", () => ({
+vi.mock("@/components/ra-wrappers/reference-input", () => ({
   ReferenceInput: ({ source, children }: any) => (
     <div data-testid={`reference-input-${source}`}>{children}</div>
   ),
 }));
 
-vi.mock("@/components/admin/autocomplete-input", () => ({
+vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
   AutocompleteInput: ({ label }: any) => (
     <div data-testid="autocomplete-input">
       <label>{label}</label>
@@ -111,12 +111,12 @@ vi.mock("@/components/admin/autocomplete-input", () => ({
   ),
 }));
 
-vi.mock("@/components/admin/date-field", () => ({
+vi.mock("@/components/ra-wrappers/date-field", () => ({
   DateField: ({ source }: any) => <span data-testid={`date-field-${source}`}>Date Value</span>,
 }));
 
 // Mock DateInput to avoid FormProvider requirement in edit mode
-vi.mock("@/components/admin/date-input", () => ({
+vi.mock("@/components/ra-wrappers/date-input", () => ({
   DateInput: ({ source, label }: { source: string; label?: string }) => (
     <div data-testid={`date-input-${source}`}>
       <label>{label}</label>

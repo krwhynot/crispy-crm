@@ -11,7 +11,7 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/utils",
-        "@/components/admin/reference-field",
+        "@/components/ra-wrappers/reference-field",
         "@/components/ui/badge",
         "@/lib/date-utils",
         "date-fns",
@@ -32,7 +32,7 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/utils",
-        "@/components/admin/reference-field",
+        "@/components/ra-wrappers/reference-field",
         "@/components/ui/badge",
         "@/lib/date-utils",
         "date-fns",

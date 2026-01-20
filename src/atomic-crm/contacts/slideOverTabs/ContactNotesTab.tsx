@@ -1,5 +1,5 @@
 import { RecordContextProvider } from "ra-core";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { NotesIterator } from "../../notes";
 import type { Contact } from "@/atomic-crm/validation/contacts/contacts-core";
 

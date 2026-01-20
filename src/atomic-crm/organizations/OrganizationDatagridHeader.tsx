@@ -21,7 +21,7 @@
  * ```
  */
 
-import { FilterableColumnHeader } from "@/components/admin/column-filters";
+import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, US_STATES } from "./constants";
 
 /**

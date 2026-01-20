@@ -4,10 +4,10 @@ import { useMemo } from "react";
 
 import { productKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
-import { DeleteButton } from "@/components/admin/delete-button";
-import { SaveButton } from "@/components/admin/form";
-import { CancelButton } from "@/components/admin/cancel-button";
-import { FormToolbar } from "@/components/admin/simple-form";
+import { DeleteButton } from "@/components/ra-wrappers/delete-button";
+import { SaveButton } from "@/components/ra-wrappers/form";
+import { CancelButton } from "@/components/ra-wrappers/cancel-button";
+import { FormToolbar } from "@/components/ra-wrappers/simple-form";
 import { ProductInputs } from "./ProductInputs";
 import { productUpdateSchema } from "@/atomic-crm/validation/products";
 import type { Product } from "../types";

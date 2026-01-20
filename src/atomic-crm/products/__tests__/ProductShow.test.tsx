@@ -24,13 +24,13 @@ vi.mock("ra-core", async () => {
   };
 });
 
-vi.mock("@/components/admin/reference-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-field", () => ({
   ReferenceField: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="reference-field">{children}</div>
   ),
 }));
 
-vi.mock("@/components/admin/date-field", () => ({
+vi.mock("@/components/ra-wrappers/date-field", () => ({
   DateField: ({ source }: { source: string }) => (
     <span data-testid={`date-field-${source}`}>2024-01-15</span>
   ),

@@ -1,5 +1,5 @@
 import { Package } from "lucide-react";
-import { CreateButton } from "@/components/admin/create-button";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { EmptyState } from "@/components/ui/empty-state";
 
 export const ProductEmpty = () => {

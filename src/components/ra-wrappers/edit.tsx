@@ -12,9 +12,9 @@ import {
 } from "ra-core";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/ra-wrappers/breadcrumb";
 import { cn } from "@/lib/utils";
-import { ShowButton } from "@/components/admin/show-button";
+import { ShowButton } from "@/components/ra-wrappers/show-button";
 import { DeleteButton } from "./delete-button";
 
 export interface EditProps extends EditViewProps, EditBaseProps {}

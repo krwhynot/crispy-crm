@@ -17,7 +17,7 @@
 
 import { useEffect, useState } from "react";
 import { useDataProvider, type Identifier } from "react-admin";
-import type { RelatedRecordCount } from "@/components/admin/delete-confirm-dialog";
+import type { RelatedRecordCount } from "@/components/ra-wrappers/delete-confirm-dialog";
 
 /**
  * Per-query timeout in milliseconds

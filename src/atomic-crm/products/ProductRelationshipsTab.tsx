@@ -1,8 +1,8 @@
 import { Building2 } from "lucide-react";
 import { RecordContextProvider, useGetList } from "ra-core";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { TextField } from "@/components/admin/text-field";
-import { DateField } from "@/components/admin/date-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
+import { DateField } from "@/components/ra-wrappers/date-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { AsideSection } from "@/components/ui";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";

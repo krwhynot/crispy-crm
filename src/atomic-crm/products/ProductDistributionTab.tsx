@@ -1,4 +1,4 @@
-import { CollapsibleSection } from "@/components/admin/form/CollapsibleSection";
+import { CollapsibleSection } from "@/components/ra-wrappers/form/CollapsibleSection";
 import { ProductDistributorInput } from "./ProductDistributorInput";
 
 /**

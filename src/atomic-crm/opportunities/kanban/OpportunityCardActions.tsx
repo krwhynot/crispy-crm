@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
-import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
+import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dialog";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
 

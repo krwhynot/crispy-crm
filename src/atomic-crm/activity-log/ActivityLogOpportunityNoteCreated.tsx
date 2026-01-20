@@ -1,4 +1,4 @@
-import { ReferenceField } from "@/components/admin/reference-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 
 import type { RaRecord } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";

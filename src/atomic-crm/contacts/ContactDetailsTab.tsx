@@ -3,12 +3,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { contactKeys } from "@/atomic-crm/queryKeys";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { TextField } from "@/components/admin/text-field";
-import { ArrayField } from "@/components/admin/array-field";
-import { EmailField } from "@/components/admin/email-field";
-import { SingleFieldList } from "@/components/admin/single-field-list";
-import { FormProgressProvider } from "@/components/admin/form/FormProgressProvider";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
+import { ArrayField } from "@/components/ra-wrappers/array-field";
+import { EmailField } from "@/components/ra-wrappers/email-field";
+import { SingleFieldList } from "@/components/ra-wrappers/single-field-list";
+import { FormProgressProvider } from "@/components/ra-wrappers/form/FormProgressProvider";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {

@@ -11,7 +11,7 @@ import { useBulkExport } from "@/hooks/useBulkExport";
  * To be used inside the <DataTable bulkActionsButtons> prop.
  *
  * @example // basic usage
- * import { BulkDeleteButton, BulkExportButton, DataTable, List } from '@/components/admin';
+ * import { BulkDeleteButton, BulkExportButton, DataTable, List } from '@/components/ra-wrappers';
  *
  * export const PostList = () => (
  *   <List>

@@ -1,4 +1,4 @@
-import { CreateButton } from "@/components/admin/create-button";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { Building2, Users, TrendingUp } from "lucide-react";
 import useAppBarHeight from "../hooks/useAppBarHeight";
 

@@ -1,7 +1,7 @@
 import { Edit, SimpleForm, ReferenceField, TextField } from "react-admin";
-import { TextInput } from "@/components/admin/text-input";
-import { DateInput } from "@/components/admin/date-input";
-import { SelectInput } from "@/components/admin/select-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { DateInput } from "@/components/ra-wrappers/date-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
 
 export const ProductDistributorEdit = () => (

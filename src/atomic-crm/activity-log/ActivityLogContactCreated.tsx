@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { ReferenceField } from "@/components/admin/reference-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { Avatar } from "../contacts/Avatar";
 import { RelativeDate } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";

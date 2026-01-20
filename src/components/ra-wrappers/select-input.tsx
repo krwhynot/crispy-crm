@@ -24,8 +24,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { SupportCreateSuggestionOptions } from "@/hooks/useSupportCreateSuggestion";
 import { useSupportCreateSuggestion } from "@/hooks/useSupportCreateSuggestion";
-import { FormField, FormLabel, FormError, FormControl } from "@/components/admin/form";
-import { InputHelperText } from "@/components/admin/input-helper-text";
+import { FormField, FormLabel, FormError, FormControl } from "@/components/ra-wrappers/form";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 
 export const SelectInput = (props: SelectInputProps) => {
   const {

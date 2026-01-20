@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import { FilterLiveForm, useListContext } from "ra-core";
 import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
-import { SearchInput } from "@/components/admin/search-input";
+import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterChipBar } from "@/atomic-crm/filters/FilterChipBar";
-import { RecentSearchesContent } from "@/components/admin/RecentSearchesDropdown";
+import { RecentSearchesContent } from "@/components/ra-wrappers/RecentSearchesDropdown";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import type { FilterConfig } from "@/atomic-crm/filters/types";
 

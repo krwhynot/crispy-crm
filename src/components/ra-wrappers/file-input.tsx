@@ -15,8 +15,8 @@ import { useDropzone, type DropzoneOptions } from "react-dropzone";
 import { XCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { FormError, FormField, FormLabel } from "@/components/admin/form";
-import { InputHelperText } from "@/components/admin/input-helper-text";
+import { FormError, FormField, FormLabel } from "@/components/ra-wrappers/form";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 import { Button } from "@/components/ui/button";
 import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 

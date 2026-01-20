@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { ReferenceInput, SelectInput, TextInput } from "react-admin";
-import { DateInput } from "@/components/admin/date-input";
+import { DateInput } from "@/components/ra-wrappers/date-input";
 import { useFormContext, useFormState } from "react-hook-form";
-import { ArrayInput } from "@/components/admin/array-input";
-import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
+import { ArrayInput } from "@/components/ra-wrappers/array-input";
+import { SimpleFormIterator } from "@/components/ra-wrappers/simple-form-iterator";
 import { saleOptionRenderer } from "@/atomic-crm/utils/saleOptionRenderer";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { SidepaneSection } from "@/components/layouts/sidepane";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";

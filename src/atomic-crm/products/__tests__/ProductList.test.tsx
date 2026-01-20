@@ -136,8 +136,8 @@ vi.mock("jsonexport/dist", () => ({
   }),
 }));
 
-// Mock @/components/admin/text-field (used by ProductList)
-vi.mock("@/components/admin/text-field", () => ({
+// Mock @/components/ra-wrappers/text-field (used by ProductList)
+vi.mock("@/components/ra-wrappers/text-field", () => ({
   TextField: ({ source, sortable, label }: any) => (
     <span
       data-testid={`text-field-${source}`}
@@ -149,8 +149,8 @@ vi.mock("@/components/admin/text-field", () => ({
   ),
 }));
 
-// Mock @/components/admin/reference-field (used by ProductList)
-vi.mock("@/components/admin/reference-field", () => ({
+// Mock @/components/ra-wrappers/reference-field (used by ProductList)
+vi.mock("@/components/ra-wrappers/reference-field", () => ({
   ReferenceField: ({ source, sortable, children, label }: any) => (
     <span
       data-testid={`ref-field-${source}`}
@@ -196,7 +196,7 @@ vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
 const sortableColumns: { label: string; sortBy: string; sortable: boolean }[] = [];
 
 // Mock PremiumDatagrid to expose row click handler and track column config
-vi.mock("@/components/admin/PremiumDatagrid", () => ({
+vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
   PremiumDatagrid: ({ children, onRowClick }: any) => {
     // Clear previous column tracking
     sortableColumns.length = 0;
@@ -266,7 +266,7 @@ vi.mock("@/components/layouts/StandardListLayout", () => ({
 }));
 
 // Mock List component
-vi.mock("@/components/admin/list", () => ({
+vi.mock("@/components/ra-wrappers/list", () => ({
   List: ({ children }: any) => <div data-testid="list-wrapper">{children}</div>,
 }));
 
@@ -276,7 +276,7 @@ vi.mock("../ProductEmpty", () => ({
 }));
 
 // Mock FloatingCreateButton
-vi.mock("@/components/admin/FloatingCreateButton", () => ({
+vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
   FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
@@ -285,7 +285,7 @@ vi.mock("../layout/TopToolbar", () => ({
   TopToolbar: ({ children }: any) => <div data-testid="top-toolbar">{children}</div>,
 }));
 
-vi.mock("@/components/admin/bulk-actions-toolbar", () => ({
+vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));
 
@@ -295,7 +295,7 @@ vi.mock("../ProductListFilter", () => ({
 }));
 
 // Mock ListSearchBar to avoid FilterLiveForm/SearchInput context issues
-vi.mock("@/components/admin/ListSearchBar", () => ({
+vi.mock("@/components/ra-wrappers/ListSearchBar", () => ({
   ListSearchBar: ({ placeholder }: any) => (
     <div data-testid="list-search-bar">
       <input type="text" placeholder={placeholder || "Search..."} data-testid="search-input" />
@@ -334,7 +334,7 @@ vi.mock("@/components/ui/badge", () => ({
 }));
 
 // Mock FilterableBadge component
-vi.mock("@/components/admin/FilterableBadge", () => ({
+vi.mock("@/components/ra-wrappers/FilterableBadge", () => ({
   FilterableBadge: ({ children, source, value }: any) => (
     <div data-testid={`filterable-badge-${source}`} data-value={value}>
       {children}

@@ -9,7 +9,7 @@ Document tabbed forms, submission with transformation, and error display pattern
 **From `src/atomic-crm/contacts/ContactInputs.tsx:7`:**
 
 ```typescript
-import { TabbedFormInputs } from "@/components/admin/tabbed-form";
+import { TabbedFormInputs } from "@/components/ra-wrappers/tabbed-form";
 
 export const ContactInputs = () => {
   const tabs = [

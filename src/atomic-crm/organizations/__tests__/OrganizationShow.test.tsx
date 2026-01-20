@@ -34,14 +34,14 @@ vi.mock("ra-core", async () => {
 });
 
 // Mock ReferenceManyField
-vi.mock("@/components/admin/reference-many-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-many-field", () => ({
   ReferenceManyField: ({ children }: any) => (
     <div data-testid="reference-many-field">{children}</div>
   ),
 }));
 
 // Mock SortButton
-vi.mock("@/components/admin/sort-button", () => ({
+vi.mock("@/components/ra-wrappers/sort-button", () => ({
   SortButton: () => <button data-testid="sort-button">Sort</button>,
 }));
 

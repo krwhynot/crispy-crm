@@ -1,5 +1,5 @@
-import { SimpleForm } from "@/components/admin/simple-form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { SimpleForm } from "@/components/ra-wrappers/simple-form";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import { useCanAccess, useDataProvider, useNotify, useRedirect } from "ra-core";

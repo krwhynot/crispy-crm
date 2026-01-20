@@ -22,7 +22,7 @@
         "../sales/SaleName",
         "../types",
         "./NoteInputs",
-        "@/components/admin/reference-field",
+        "@/components/ra-wrappers/reference-field",
         "@/components/ui",
         "@/components/ui/button",
         "@/components/ui/tooltip",
@@ -58,8 +58,8 @@
       "imports": [
         "../validation/notes",
         "./NoteInputs",
-        "@/components/admin/FormErrorSummary",
-        "@/components/admin/form",
+        "@/components/ra-wrappers/FormErrorSummary",
+        "@/components/ra-wrappers/form",
         "ra-core",
         "react-hook-form"
       ],
@@ -83,7 +83,7 @@
       ],
       "imports": [
         "../validation/notes",
-        "@/components/admin/text-input",
+        "@/components/ra-wrappers/text-input",
         "@/components/ui/button",
         "@/lib/utils.ts",
         "react",

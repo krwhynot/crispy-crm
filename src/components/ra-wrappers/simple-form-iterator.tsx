@@ -28,8 +28,8 @@ import {
   SimpleFormIteratorItemContext,
   useSimpleFormIteratorItem,
 } from "@/hooks/simple-form-iterator-context";
-import { Confirm } from "@/components/admin/confirm";
-import { IconButtonWithTooltip } from "@/components/admin/icon-button-with-tooltip";
+import { Confirm } from "@/components/ra-wrappers/confirm";
+import { IconButtonWithTooltip } from "@/components/ra-wrappers/icon-button-with-tooltip";
 
 type GetItemLabelFunc = (index: number) => string | ReactElement;
 

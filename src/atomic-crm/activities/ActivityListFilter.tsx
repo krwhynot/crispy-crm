@@ -3,11 +3,11 @@ import { endOfToday, startOfToday, startOfWeek, subDays } from "date-fns";
 import { Calendar, Clock, Filter, Package, Tag, User } from "lucide-react";
 import { FilterLiveForm, useGetIdentity } from "ra-core";
 
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
-import { SearchInput } from "@/components/admin/search-input";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
+import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
+import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
 /**
  * ActivityListFilter Component

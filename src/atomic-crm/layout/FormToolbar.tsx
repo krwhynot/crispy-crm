@@ -1,7 +1,7 @@
-import { CancelButton } from "@/components/admin/cancel-button";
-import { DeleteButton } from "@/components/admin/delete-button";
-import { SaveButton } from "@/components/admin/form";
-import { FormToolbar as KitFormToolbar } from "@/components/admin/simple-form";
+import { CancelButton } from "@/components/ra-wrappers/cancel-button";
+import { DeleteButton } from "@/components/ra-wrappers/delete-button";
+import { SaveButton } from "@/components/ra-wrappers/form";
+import { FormToolbar as KitFormToolbar } from "@/components/ra-wrappers/simple-form";
 
 interface FormToolbarProps {
   dataTutorial?: string;

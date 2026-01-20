@@ -118,7 +118,7 @@
       "imports": [
         "./QuickCreatePopover",
         "@/atomic-crm/utils/autocompleteDefaults",
-        "@/components/admin/autocomplete-input"
+        "@/components/ra-wrappers/autocomplete-input"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -178,9 +178,9 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/admin/form",
-        "@/components/admin/state-combobox-input",
-        "@/components/admin/text-input"
+        "@/components/ra-wrappers/form",
+        "@/components/ra-wrappers/state-combobox-input",
+        "@/components/ra-wrappers/text-input"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -200,13 +200,13 @@
         "../types",
         "./ParentOrganizationSection",
         "./constants",
-        "@/components/admin/date-field",
-        "@/components/admin/edit-button",
-        "@/components/admin/reference-field",
-        "@/components/admin/select-field",
-        "@/components/admin/show-button",
-        "@/components/admin/text-field",
-        "@/components/admin/url-field",
+        "@/components/ra-wrappers/date-field",
+        "@/components/ra-wrappers/edit-button",
+        "@/components/ra-wrappers/reference-field",
+        "@/components/ra-wrappers/select-field",
+        "@/components/ra-wrappers/show-button",
+        "@/components/ra-wrappers/text-field",
+        "@/components/ra-wrappers/url-field",
         "@/components/ui",
         "lucide-react",
         "ra-core"
@@ -302,9 +302,9 @@
         "../queryKeys",
         "../types",
         "./OrganizationBulkDeleteButton",
-        "@/components/admin/bulk-actions-toolbar",
-        "@/components/admin/bulk-export-button",
-        "@/components/admin/bulk-reassign-button"
+        "@/components/ra-wrappers/bulk-actions-toolbar",
+        "@/components/ra-wrappers/bulk-export-button",
+        "@/components/ra-wrappers/bulk-reassign-button"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -324,9 +324,9 @@
         "../queryKeys",
         "../types",
         "./OrganizationBulkDeleteButton",
-        "@/components/admin/bulk-actions-toolbar",
-        "@/components/admin/bulk-export-button",
-        "@/components/admin/bulk-reassign-button"
+        "@/components/ra-wrappers/bulk-actions-toolbar",
+        "@/components/ra-wrappers/bulk-export-button",
+        "@/components/ra-wrappers/bulk-reassign-button"
       ],
       "isDefaultExport": true,
       "childComponents": [
@@ -354,7 +354,7 @@
       "imports": [
         "../hooks/useRelatedRecordCounts",
         "../types",
-        "@/components/admin/delete-confirm-dialog",
+        "@/components/ra-wrappers/delete-confirm-dialog",
         "@/components/ui/button",
         "lucide-react",
         "ra-core",
@@ -387,7 +387,7 @@
       "imports": [
         "../hooks/useRelatedRecordCounts",
         "../types",
-        "@/components/admin/delete-confirm-dialog",
+        "@/components/ra-wrappers/delete-confirm-dialog",
         "@/components/ui/button",
         "lucide-react",
         "ra-core",
@@ -416,12 +416,12 @@
         "./ParentOrganizationInput",
         "./PrincipalAwareTypeInput",
         "./constants",
-        "@/components/admin/SegmentComboboxInput",
-        "@/components/admin/form",
-        "@/components/admin/reference-input",
-        "@/components/admin/select-input",
-        "@/components/admin/state-combobox-input",
-        "@/components/admin/text-input",
+        "@/components/ra-wrappers/SegmentComboboxInput",
+        "@/components/ra-wrappers/form",
+        "@/components/ra-wrappers/reference-input",
+        "@/components/ra-wrappers/select-input",
+        "@/components/ra-wrappers/state-combobox-input",
+        "@/components/ra-wrappers/text-input",
         "@/hooks"
       ],
       "isDefaultExport": false,
@@ -462,7 +462,7 @@
         "./types",
         "./useDuplicateOrgCheck",
         "@/atomic-crm/hooks/useSmartDefaults",
-        "@/components/admin/form",
+        "@/components/ra-wrappers/form",
         "@/components/ui/card",
         "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
@@ -511,7 +511,7 @@
         "./types",
         "./useDuplicateOrgCheck",
         "@/atomic-crm/hooks/useSmartDefaults",
-        "@/components/admin/form",
+        "@/components/ra-wrappers/form",
         "@/components/ui/card",
         "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
@@ -549,7 +549,7 @@
       ],
       "imports": [
         "./types",
-        "@/components/admin/form",
+        "@/components/ra-wrappers/form",
         "@/components/ui/button",
         "@/components/ui/unsaved-changes-dialog",
         "ra-core",
@@ -575,7 +575,7 @@
       "hooks": [],
       "imports": [
         "./constants",
-        "@/components/admin/column-filters"
+        "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -594,7 +594,7 @@
       "hooks": [],
       "imports": [
         "./constants",
-        "@/components/admin/column-filters"
+        "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -613,7 +613,7 @@
       "hooks": [],
       "imports": [
         "./constants",
-        "@/components/admin/column-filters"
+        "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -632,7 +632,7 @@
       "hooks": [],
       "imports": [
         "./constants",
-        "@/components/admin/column-filters"
+        "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -711,7 +711,7 @@
       ],
       "imports": [
         "../hooks/useAppBarHeight",
-        "@/components/admin/create-button",
+        "@/components/ra-wrappers/create-button",
         "lucide-react"
       ],
       "isDefaultExport": false,
@@ -745,9 +745,9 @@
       "hooks": [],
       "imports": [
         "./constants",
-        "@/components/admin/boolean-input",
-        "@/components/admin/form",
-        "@/components/admin/select-input"
+        "@/components/ra-wrappers/boolean-input",
+        "@/components/ra-wrappers/form",
+        "@/components/ra-wrappers/select-input"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -911,7 +911,7 @@
       ],
       "imports": [
         "./OrganizationCompactForm",
-        "@/components/admin/FormErrorSummary",
+        "@/components/ra-wrappers/FormErrorSummary",
         "react-hook-form"
       ],
       "isDefaultExport": false,
@@ -947,14 +947,14 @@
         "./constants",
         "./organizationFilterConfig",
         "./types",
-        "@/components/admin/FilterableBadge",
-        "@/components/admin/FloatingCreateButton",
-        "@/components/admin/ListNoResults",
-        "@/components/admin/ListSearchBar",
-        "@/components/admin/PremiumDatagrid",
-        "@/components/admin/export-button",
-        "@/components/admin/list",
-        "@/components/admin/sort-button",
+        "@/components/ra-wrappers/FilterableBadge",
+        "@/components/ra-wrappers/FloatingCreateButton",
+        "@/components/ra-wrappers/ListNoResults",
+        "@/components/ra-wrappers/ListSearchBar",
+        "@/components/ra-wrappers/PremiumDatagrid",
+        "@/components/ra-wrappers/export-button",
+        "@/components/ra-wrappers/list",
+        "@/components/ra-wrappers/sort-button",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
@@ -1012,14 +1012,14 @@
         "./constants",
         "./organizationFilterConfig",
         "./types",
-        "@/components/admin/FilterableBadge",
-        "@/components/admin/FloatingCreateButton",
-        "@/components/admin/ListNoResults",
-        "@/components/admin/ListSearchBar",
-        "@/components/admin/PremiumDatagrid",
-        "@/components/admin/export-button",
-        "@/components/admin/list",
-        "@/components/admin/sort-button",
+        "@/components/ra-wrappers/FilterableBadge",
+        "@/components/ra-wrappers/FloatingCreateButton",
+        "@/components/ra-wrappers/ListNoResults",
+        "@/components/ra-wrappers/ListSearchBar",
+        "@/components/ra-wrappers/PremiumDatagrid",
+        "@/components/ra-wrappers/export-button",
+        "@/components/ra-wrappers/list",
+        "@/components/ra-wrappers/sort-button",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
@@ -1066,8 +1066,8 @@
         "../filters/StarredFilterToggle",
         "@/atomic-crm/validation/operatorSegments",
         "@/atomic-crm/validation/segments",
-        "@/components/admin/OwnerFilterDropdown",
-        "@/components/admin/toggle-filter-button",
+        "@/components/ra-wrappers/OwnerFilterDropdown",
+        "@/components/ra-wrappers/toggle-filter-button",
         "@/components/ui/badge",
         "lucide-react",
         "ra-core"
@@ -1102,8 +1102,8 @@
         "./AuthorizationsTab",
         "./OrganizationAside",
         "./OrganizationAvatar",
-        "@/components/admin/reference-many-field",
-        "@/components/admin/sort-button",
+        "@/components/ra-wrappers/reference-many-field",
+        "@/components/ra-wrappers/sort-button",
         "@/components/design-system",
         "@/components/ui/button",
         "@/components/ui/card",
@@ -1151,8 +1151,8 @@
         "./AuthorizationsTab",
         "./OrganizationAside",
         "./OrganizationAvatar",
-        "@/components/admin/reference-many-field",
-        "@/components/admin/sort-button",
+        "@/components/ra-wrappers/reference-many-field",
+        "@/components/ra-wrappers/sort-button",
         "@/components/design-system",
         "@/components/ui/button",
         "@/components/ui/card",
@@ -1227,10 +1227,10 @@
       "hooks": [],
       "imports": [
         "./constants",
-        "@/components/admin/form",
-        "@/components/admin/number-input",
-        "@/components/admin/select-input",
-        "@/components/admin/text-input"
+        "@/components/ra-wrappers/form",
+        "@/components/ra-wrappers/number-input",
+        "@/components/ra-wrappers/select-input",
+        "@/components/ra-wrappers/text-input"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -1252,8 +1252,8 @@
       ],
       "imports": [
         "@/atomic-crm/utils/autocompleteDefaults",
-        "@/components/admin/autocomplete-input",
-        "@/components/admin/reference-input",
+        "@/components/ra-wrappers/autocomplete-input",
+        "@/components/ra-wrappers/reference-input",
         "@/hooks",
         "ra-core"
       ],
@@ -1312,7 +1312,7 @@
         "../types",
         "./PrincipalChangeWarning",
         "./constants",
-        "@/components/admin/select-input",
+        "@/components/ra-wrappers/select-input",
         "ra-core",
         "react",
         "react-hook-form"
@@ -1900,13 +1900,13 @@
         "../ParentOrganizationInput",
         "../constants",
         "../types",
-        "@/components/admin/SegmentComboboxInput",
-        "@/components/admin/autocomplete-array-input",
-        "@/components/admin/boolean-input",
-        "@/components/admin/reference-array-input",
-        "@/components/admin/reference-input",
-        "@/components/admin/select-input",
-        "@/components/admin/text-input",
+        "@/components/ra-wrappers/SegmentComboboxInput",
+        "@/components/ra-wrappers/autocomplete-array-input",
+        "@/components/ra-wrappers/boolean-input",
+        "@/components/ra-wrappers/reference-array-input",
+        "@/components/ra-wrappers/reference-input",
+        "@/components/ra-wrappers/select-input",
+        "@/components/ra-wrappers/text-input",
         "@/components/layouts/sidepane",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
@@ -1940,7 +1940,7 @@
       "imports": [
         "../../notes",
         "../../types",
-        "@/components/admin/reference-many-field",
+        "@/components/ra-wrappers/reference-many-field",
         "@/components/ui/scroll-area",
         "ra-core"
       ],

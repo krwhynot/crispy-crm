@@ -1,6 +1,6 @@
 import { RecordContextProvider } from "ra-core";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { TextField } from "@/components/admin/text-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { SidepaneSection, SidepaneEmptyState } from "@/components/layouts/sidepane";
 import { SaleName } from "../sales/SaleName";

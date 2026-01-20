@@ -11,7 +11,7 @@ import type { Identifier } from "ra-core";
 import { OpportunitiesService } from "@/atomic-crm/services/opportunities.service";
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { Link } from "react-router-dom";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";

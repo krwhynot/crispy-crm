@@ -1,15 +1,15 @@
 import { useGetIdentity, useListContext } from "ra-core";
 
 import { ContactBulkActionsToolbar } from "./ContactBulkActionsToolbar";
-import { List } from "@/components/admin/list";
-import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+import { List } from "@/components/ra-wrappers/list";
+import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { SortButton } from "@/components/admin/sort-button";
-import { ExportButton } from "@/components/admin/export-button";
-import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
-import { TextField } from "@/components/admin/text-field";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { DateField } from "@/components/admin/date-field";
+import { SortButton } from "@/components/ra-wrappers/sort-button";
+import { ExportButton } from "@/components/ra-wrappers/export-button";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { TextField } from "@/components/ra-wrappers/text-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { DateField } from "@/components/ra-wrappers/date-field";
 import { FunctionField } from "react-admin";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
@@ -17,10 +17,10 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Contact } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/admin/ListSearchBar";
+import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactListFilter } from "./ContactListFilter";
-import { ListNoResults } from "@/components/admin/ListNoResults";
+import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
@@ -30,7 +30,7 @@ import { formatFullName, formatRoleAndDept } from "./formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
-import { FilterableBadge } from "@/components/admin/FilterableBadge";
+import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();

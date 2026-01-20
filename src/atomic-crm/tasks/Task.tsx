@@ -1,5 +1,5 @@
-import { ReferenceField } from "@/components/admin/reference-field";
-import { DateField } from "@/components/admin/date-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { DateField } from "@/components/ra-wrappers/date-field";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

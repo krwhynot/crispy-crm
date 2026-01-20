@@ -1,6 +1,6 @@
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
-import { BulkExportButton } from "@/components/admin/bulk-export-button";
-import { BulkReassignButton } from "@/components/admin/bulk-reassign-button";
+import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
+import { BulkExportButton } from "@/components/ra-wrappers/bulk-export-button";
+import { BulkReassignButton } from "@/components/ra-wrappers/bulk-reassign-button";
 import { OrganizationBulkDeleteButton } from "./OrganizationBulkDeleteButton";
 import { organizationKeys } from "../queryKeys";
 import type { Organization } from "../types";

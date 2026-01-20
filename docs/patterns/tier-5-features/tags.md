@@ -48,7 +48,7 @@ For fast tag creation when no existing tag matches the search term.
 // src/atomic-crm/tags/TagQuickInput.tsx
 import { useState } from 'react';
 import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
-import { GenericSelectInput } from '@/components/admin/generic-select-input';
+import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
 
 interface TagQuickInputProps {
   source: string;
@@ -120,7 +120,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { createTagSchema, type CreateTagInput } from "../validation/tags";
 import { colors } from "./colors";
 import { RoundButton } from "./RoundButton";
@@ -231,7 +231,7 @@ For tag selection with the option to create new tags with full control.
 // src/atomic-crm/tags/TagSelectWithCreate.tsx
 import { useState } from 'react';
 import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
-import { GenericSelectInput } from '@/components/admin/generic-select-input';
+import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { TagDialog } from './TagDialog';

@@ -11,7 +11,7 @@ import type { Identifier } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { activityKeys } from "@/atomic-crm/queryKeys";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";

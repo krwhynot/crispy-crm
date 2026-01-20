@@ -38,19 +38,19 @@ vi.mock("ra-core", async () => {
 });
 
 // Mock ReferenceField to simplify testing
-vi.mock("@/components/admin/reference-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-field", () => ({
   ReferenceField: ({ children }: any) => <div data-testid="reference-field">{children}</div>,
 }));
 
 // Mock ReferenceManyField (for notes)
-vi.mock("@/components/admin/reference-many-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-many-field", () => ({
   ReferenceManyField: ({ children }: any) => (
     <div data-testid="reference-many-field">{children}</div>
   ),
 }));
 
 // Mock TextField
-vi.mock("@/components/admin/text-field", () => ({
+vi.mock("@/components/ra-wrappers/text-field", () => ({
   TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
 }));
 

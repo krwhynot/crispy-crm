@@ -21,12 +21,12 @@ import {
 import { FilterLiveForm, useGetIdentity, useGetList, useListContext } from "ra-core";
 import { addDays } from "date-fns";
 
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
-import { SearchInput } from "@/components/admin/search-input";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
+import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { OPPORTUNITY_STAGES } from "./constants/stageConstants";
 import { priorityChoices } from "./constants/priorityChoices";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
+import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
 export const OpportunityListFilter = () => {
   const { data: identity } = useGetIdentity();

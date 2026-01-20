@@ -1,7 +1,7 @@
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
-import { BulkExportButton } from "@/components/admin/bulk-export-button";
-import { BulkDeleteButton } from "@/components/admin/bulk-delete-button";
-import { BulkReassignButton } from "@/components/admin/bulk-reassign-button";
+import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
+import { BulkExportButton } from "@/components/ra-wrappers/bulk-export-button";
+import { BulkDeleteButton } from "@/components/ra-wrappers/bulk-delete-button";
+import { BulkReassignButton } from "@/components/ra-wrappers/bulk-reassign-button";
 import { contactKeys } from "../queryKeys";
 import { formatName } from "@/atomic-crm/utils/formatName";
 import type { Contact } from "../types";

@@ -1,5 +1,5 @@
 import { useRecordContext } from "react-admin";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { Separator } from "@/components/ui/separator";
 import { ActivityNoteForm } from "../ActivityNoteForm";
 import { NotesIterator } from "../../notes";

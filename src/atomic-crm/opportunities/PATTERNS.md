@@ -314,7 +314,7 @@ Single-page form with collapsible sections, progress tracking, and similar oppor
 // src/atomic-crm/opportunities/OpportunityCreate.tsx
 import { useMemo } from "react";
 import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
-import { FormProgressProvider, FormProgressBar } from "@/components/admin/form";
+import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
 import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
@@ -374,7 +374,7 @@ import {
   CompactFormRow,
   CollapsibleSection,
   FormSectionWithProgress,
-} from "@/components/admin/form";
+} from "@/components/ra-wrappers/form";
 
 export const OpportunityCompactForm = ({ mode = "create" }) => {
   // useWatch for isolated re-renders (Constitution #5)

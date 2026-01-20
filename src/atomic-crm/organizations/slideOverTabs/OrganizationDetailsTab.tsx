@@ -2,12 +2,12 @@ import { useRef } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { useFormContext } from "react-hook-form";
-import { TextInput } from "@/components/admin/text-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { BooleanInput } from "@/components/admin/boolean-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { BooleanInput } from "@/components/ra-wrappers/boolean-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { ReferenceArrayInput } from "@/components/ra-wrappers/reference-array-input";
+import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
@@ -16,7 +16,7 @@ import {
   SidepaneMetadata,
   DirtyStateTracker,
 } from "@/components/layouts/sidepane";
-import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
+import { SegmentComboboxInput } from "@/components/ra-wrappers/SegmentComboboxInput";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { ContextLink } from "../types";
 import {

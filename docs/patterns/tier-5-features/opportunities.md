@@ -188,7 +188,7 @@ import {
   WizardStep,
   WizardNavigation,
   StepIndicator,
-} from "@/components/admin/form";
+} from "@/components/ra-wrappers/form";
 import { opportunitySchema } from "../validation/opportunities";
 
 const OpportunityCreateWizard = () => {

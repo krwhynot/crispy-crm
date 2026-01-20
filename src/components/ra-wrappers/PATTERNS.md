@@ -21,7 +21,7 @@ GenericSelectInput (React Admin connector, polymorphic)
 For fixed option lists inside React Admin forms.
 
 ```tsx
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 import { LEAD_SOURCE_CHOICES } from "@/constants/choices";
 
 // Inside a React Admin form (<SimpleForm>, <TabbedForm>, etc.)
@@ -41,7 +41,7 @@ import { LEAD_SOURCE_CHOICES } from "@/constants/choices";
 For fixed options outside React Admin forms (settings pages, standalone components).
 
 ```tsx
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 import { US_TIMEZONES } from "@/constants/choices";
 
 const [timezone, setTimezone] = useState("America/Chicago");
@@ -64,7 +64,7 @@ For API-fetched options (organizations, contacts, principals).
 
 ```tsx
 import { ReferenceInput } from "react-admin";
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 
 <ReferenceInput reference="organizations" source="org_id">
   <GenericSelectInput optionLabel="name" />
@@ -81,7 +81,7 @@ For dependent dropdowns (contacts filtered by organization).
 
 ```tsx
 import { ReferenceInput, useWatch } from "react-admin";
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 
 function ContactPicker() {
   const orgId = useWatch({ name: "org_id" });
@@ -130,7 +130,7 @@ For creating simple records inline when no match is found.
 ```tsx
 import { useState } from 'react';
 import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
-import { GenericSelectInput } from '@/components/admin/generic-select-input';
+import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
 
 export function TagQuickInput({ source, label }: { source: string; label?: string }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -194,7 +194,7 @@ For creating records that require multiple fields or complex forms.
 ```tsx
 import { useState } from 'react';
 import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
-import { GenericSelectInput } from '@/components/admin/generic-select-input';
+import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { TagDialog } from './TagDialog';

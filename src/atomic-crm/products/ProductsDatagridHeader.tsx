@@ -22,7 +22,7 @@
  */
 
 import { useGetList } from "ra-core";
-import { FilterableColumnHeader, type FilterChoice } from "@/components/admin/column-filters";
+import { FilterableColumnHeader, type FilterChoice } from "@/components/ra-wrappers/column-filters";
 
 /**
  * Product status choices - matches ProductListFilter.tsx

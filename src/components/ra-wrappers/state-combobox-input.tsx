@@ -1,4 +1,4 @@
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 import { US_STATES } from "@/constants/choices";
 
 interface StateComboboxInputProps {

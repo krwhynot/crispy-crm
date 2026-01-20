@@ -129,7 +129,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/admin/search-input",
+        "@/components/ra-wrappers/search-input",
         "@/lib/utils",
         "react-admin"
       ],

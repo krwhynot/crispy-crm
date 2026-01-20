@@ -1,9 +1,9 @@
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { TextInput } from "@/components/admin/text-input";
-import { DateInput } from "@/components/admin/date-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { SaveButton } from "@/components/admin/form";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { DateInput } from "@/components/ra-wrappers/date-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { SaveButton } from "@/components/ra-wrappers/form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

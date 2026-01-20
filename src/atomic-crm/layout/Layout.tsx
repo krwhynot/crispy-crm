@@ -1,5 +1,5 @@
-import { Notification } from "@/components/admin/notification";
-import { Error } from "@/components/admin/error";
+import { Notification } from "@/components/ra-wrappers/notification";
+import { Error } from "@/components/ra-wrappers/error";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { ReactNode } from "react";
 import { Suspense } from "react";

@@ -79,7 +79,7 @@
         "../validation/tags",
         "./RoundButton",
         "./colors",
-        "@/components/admin/FormErrorSummary",
+        "@/components/ra-wrappers/FormErrorSummary",
         "@/components/ui/button",
         "@/components/ui/button.constants",
         "@/components/ui/dialog",
@@ -137,7 +137,7 @@
         "useState"
       ],
       "imports": [
-        "@/components/admin/generic-select-input",
+        "@/components/ra-wrappers/generic-select-input",
         "react",
         "react-admin"
       ],
@@ -160,7 +160,7 @@
       "imports": [
         "../types",
         "./TagDialog",
-        "@/components/admin/generic-select-input",
+        "@/components/ra-wrappers/generic-select-input",
         "@/components/ui/button",
         "lucide-react",
         "react",

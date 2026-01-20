@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/ra-wrappers/breadcrumb";
 import type { ListBaseProps, RaRecord } from "ra-core";
 import {
   ListBase,
@@ -13,11 +13,11 @@ import type { ReactElement, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { FilterContext } from "ra-core";
-import type { FilterElementProps } from "@/components/admin/filter-types";
-import { CreateButton } from "@/components/admin/create-button";
-import { ExportButton } from "@/components/admin/export-button";
-import { ListPagination } from "@/components/admin/list-pagination";
-import { FilterForm } from "@/components/admin/filter-form";
+import type { FilterElementProps } from "@/components/ra-wrappers/filter-types";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { ExportButton } from "@/components/ra-wrappers/export-button";
+import { ListPagination } from "@/components/ra-wrappers/list-pagination";
+import { FilterForm } from "@/components/ra-wrappers/filter-form";
 
 export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<RecordType>) => {
   const {

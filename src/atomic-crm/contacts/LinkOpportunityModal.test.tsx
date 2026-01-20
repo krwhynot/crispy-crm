@@ -50,7 +50,7 @@ vi.mock("react-admin", async (importOriginal) => {
 });
 
 // Mock AutocompleteInput component
-vi.mock("@/components/admin/autocomplete-input", () => ({
+vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
   AutocompleteInput: ({ label }: any) => <div data-testid="autocomplete">{label}</div>,
 }));
 

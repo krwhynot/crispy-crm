@@ -10,10 +10,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/admin/cancel-button",
-        "@/components/admin/delete-button",
-        "@/components/admin/form",
-        "@/components/admin/simple-form"
+        "@/components/ra-wrappers/cancel-button",
+        "@/components/ra-wrappers/delete-button",
+        "@/components/ra-wrappers/form",
+        "@/components/ra-wrappers/simple-form"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -33,9 +33,9 @@
         "../root/ConfigurationContext",
         "../tutorial/TutorialLauncher",
         "@/components/NotificationBell",
-        "@/components/admin/refresh-button",
-        "@/components/admin/theme-mode-toggle",
-        "@/components/admin/user-menu",
+        "@/components/ra-wrappers/refresh-button",
+        "@/components/ra-wrappers/theme-mode-toggle",
+        "@/components/ra-wrappers/user-menu",
         "@/components/ui/dropdown-menu",
         "lucide-react",
         "ra-core",
@@ -57,8 +57,8 @@
       "imports": [
         "../tutorial/TutorialProvider",
         "./Header",
-        "@/components/admin/error",
-        "@/components/admin/notification",
+        "@/components/ra-wrappers/error",
+        "@/components/ra-wrappers/notification",
         "@/components/ui/skeleton",
         "react",
         "react-error-boundary"

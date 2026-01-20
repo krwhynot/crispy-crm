@@ -1,5 +1,5 @@
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { useRecordContext } from "ra-core";
 import {
   AUTOCOMPLETE_DEBOUNCE_MS,

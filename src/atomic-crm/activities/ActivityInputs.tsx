@@ -5,7 +5,7 @@
  * ActivitySinglePage contains the actual form fields for activities.
  */
 import { useFormState } from "react-hook-form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import ActivitySinglePage from "./ActivitySinglePage";
 
 const ACTIVITY_FIELD_LABELS: Record<string, string> = {

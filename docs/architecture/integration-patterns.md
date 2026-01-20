@@ -235,7 +235,7 @@ Lists combine `List` context with filter components and view layouts.
 ```typescript
 // From: src/atomic-crm/opportunities/OpportunityList.tsx
 
-import { List } from "@/components/admin/list";
+import { List } from "@/components/ra-wrappers/list";
 import { useListContext, useGetIdentity } from "ra-core";
 
 const OpportunityList = () => {
@@ -573,7 +573,7 @@ Display related record data within lists and forms.
 
 ### Standard Usage
 ```typescript
-import { ReferenceField } from "@/components/admin/reference-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 
 // In a list/table
 <ReferenceField source="customer_organization_id" reference="organizations">

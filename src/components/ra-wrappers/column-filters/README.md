@@ -16,7 +16,7 @@ Users expect Excel-like filtering where clicking a column header reveals filter 
 The main wrapper component that combines a label with an appropriate filter control.
 
 ```tsx
-import { FilterableColumnHeader } from "@/components/admin/column-filters";
+import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 
 // Text filter for free-text search
 <FilterableColumnHeader
@@ -54,7 +54,7 @@ Debounced text input for free-text search. Features:
 - Auto-focus when popover opens
 
 ```tsx
-import { TextColumnFilter } from "@/components/admin/column-filters";
+import { TextColumnFilter } from "@/components/ra-wrappers/column-filters";
 
 <TextColumnFilter
   source="name"
@@ -72,7 +72,7 @@ Popover with multi-select checkboxes. Features:
 - Touch targets meet 44px minimum
 
 ```tsx
-import { CheckboxColumnFilter, type FilterChoice } from "@/components/admin/column-filters";
+import { CheckboxColumnFilter, type FilterChoice } from "@/components/ra-wrappers/column-filters";
 
 const STATUS_CHOICES: FilterChoice[] = [
   { id: "active", name: "Active" },
@@ -116,7 +116,7 @@ Use the FilterableColumnHeader as the `label` prop on React Admin field componen
 
 ```tsx
 import { TextField, FunctionField } from "react-admin";
-import { FilterableColumnHeader } from "@/components/admin/column-filters";
+import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 import { STATUS_CHOICES, TYPE_CHOICES } from "./constants";
 
 // In your List component's Datagrid:
@@ -154,7 +154,7 @@ Create a `[Feature]DatagridHeader.tsx` file:
 
 ```tsx
 // src/atomic-crm/contacts/ContactDatagridHeader.tsx
-import { FilterableColumnHeader } from "@/components/admin/column-filters";
+import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 import { CONTACT_TYPE_CHOICES } from "./constants";
 
 export function ContactNameHeader() {

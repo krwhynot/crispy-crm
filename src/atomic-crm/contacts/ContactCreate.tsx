@@ -8,7 +8,7 @@ import {
   FormLoadingSkeleton,
   FormProgressProvider,
   FormProgressBar,
-} from "@/components/admin/form";
+} from "@/components/ra-wrappers/form";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import type { Contact } from "../types";

@@ -21,8 +21,8 @@ Tables are optimized for **desktop displays first** (1440px+), then adapted for 
 
 ```tsx
 // src/atomic-crm/contacts/List.tsx
-import { StandardListLayout } from '@/components/admin/StandardListLayout';
-import { PremiumDatagrid } from '@/components/admin/PremiumDatagrid';
+import { StandardListLayout } from '@/components/ra-wrappers/StandardListLayout';
+import { PremiumDatagrid } from '@/components/ra-wrappers/PremiumDatagrid';
 import { Datagrid, TextField, EmailField, DeleteButton, EditButton } from 'react-admin';
 
 export const ContactList = () => {

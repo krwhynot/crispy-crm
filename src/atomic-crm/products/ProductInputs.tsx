@@ -1,4 +1,4 @@
-import { TabbedFormInputs } from "@/components/admin/tabbed-form";
+import { TabbedFormInputs } from "@/components/ra-wrappers/tabbed-form";
 import { ProductDetailsInputTab } from "./ProductDetailsInputTab";
 import { ProductDistributionTab } from "./ProductDistributionTab";
 

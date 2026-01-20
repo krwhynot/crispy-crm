@@ -18,7 +18,7 @@
       ],
       "imports": [
         "@/atomic-crm/utils",
-        "@/components/admin/form",
+        "@/components/ra-wrappers/form",
         "@/components/ui/button",
         "@/components/ui/unsaved-changes-dialog",
         "ra-core",

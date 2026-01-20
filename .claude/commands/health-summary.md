@@ -1,63 +1,79 @@
 ---
-description: "Weekly code health summary - churn analysis, Kaizen score trends, and architectural hotspots"
+description: "Weekly code health summary - churn analysis, coupling detection, and data-driven recommendations"
 ---
 
 # Code Health Summary
 
-Generate a comprehensive weekly code health report for the Crispy CRM codebase.
+Generate a comprehensive code health report for the Crispy CRM codebase.
 
-## Reports to Generate
+## Data Collection
 
-### 1. Top Churned Files (Kintsugi Candidates)
+### 1. Commit Activity (14 days)
+Run: `git log --since="14 days ago" --oneline | head -100`
+
+Categorize by conventional commit type:
+- Features (feat)
+- Fixes (fix)
+- Refactors (refactor)
+- Other (docs, test, chore, etc.)
+
+Calculate Fix Ratio: `fixes / (fixes + features)` - above 50% suggests reactive work.
+
+### 2. High Churn Files
 Run: `git log --since="14 days ago" --name-only --pretty=format: | sort | uniq -c | sort -rn | head -10`
 
-For each file with >= 6 commits:
-- Analyze WHY it's changing frequently
-- Recommend: refactor, split, or accept (with justification)
+For each file with >= 6 edits:
+- Note 7-day vs 14-day trend (accelerating or stable)
+- Identify if it's test file, config, or production code
 
-### 2. Kaizen Score Trend
-Read `.claude/kaizen_metrics.json` and report:
-- Current score and streak
-- Commit type distribution (feat/fix/refactor ratio)
-- Trend assessment: Are we improving or firefighting?
+### 3. Coupling Detection
+Run: `git log --since="14 days ago" --name-only --pretty=format:%H`
 
-### 3. Commit Type Distribution
-Run: `git log --since="7 days ago" --oneline | head -50`
-Categorize commits and calculate:
-- Feature velocity (feat commits)
-- Bug fix rate (fix commits)
-- Improvement ratio (refactor commits)
+Parse to find files that frequently change together (3+ co-changes).
+High coupling may indicate:
+- Shared responsibility that could be extracted
+- Missing abstraction layer
+- Tightly bound features
 
-### 4. Architectural Hotspots
-Identify files that are:
-- Frequently modified together (coupling)
-- Growing in size without refactoring
-- Missing test coverage (compare src/ changes vs test/ changes)
+### 4. Recommendations
+Based on data, generate actionable recommendations:
+- HIGH_CHURN: Files with 10+ edits need attention
+- COUPLING: Files with 50%+ co-change rate may need refactoring
+- FIREFIGHTING: Fix ratio > 60% suggests reactive mode
 
 ## Output Format
 
 ```
-🎌 Ronin Health Summary - Week of [DATE]
+📊 Code Health Summary - [DATE]
 ═══════════════════════════════════════════════════
 
-📊 KAIZEN METRICS
-   Score: [X] | Streak: [Y] days
-   Commits: [feat: N] [fix: N] [refactor: N] [other: N]
-   Health: [🟢 Improving | 🟡 Stable | 🔴 Firefighting]
+COMMIT ACTIVITY (14 days)
+   Features: [N] | Fixes: [N] | Refactors: [N] | Other: [N]
+   Fix Ratio: [X]% [assessment if > 50%]
 
-🔥 KINTSUGI CANDIDATES (High Churn)
-   1. [file] - [N] commits - [recommendation]
+HIGH CHURN FILES
+   1. [file] - [N] edits ([7d count] in last 7 days [⚡ if accelerating])
    2. ...
 
-🏛️ ARCHITECTURAL INSIGHTS
-   [Observations about coupling, test coverage, growth patterns]
+COUPLING DETECTED
+   • [file_a] ↔ [file_b] ([N] co-changes)
+   • ...
 
-💭 RECOMMENDATION
-   [One actionable suggestion for the week]
+RECOMMENDATIONS
+   #1 [[TYPE]] [target]
+      [reason]
+      → [suggested action]
+
+   #2 ...
+
+PROGRESS
+   Pending: [N] | Resolved this week: [N]
+═══════════════════════════════════════════════════
 ```
 
-## Philosophy
-This report embodies:
-- **Kaizen**: Continuous small improvements compound
-- **Kintsugi**: High-churn files need golden repair (refactoring)
-- **Omoiyari**: Code with empathy for future maintainers
+## Analysis Guidelines
+
+- Focus on **data**, not philosophy
+- Provide **specific** file paths and numbers
+- Give **actionable** recommendations with concrete next steps
+- Track **progress** on previous recommendations when possible

@@ -1,9 +1,9 @@
 import { type InputProps, useInput, useResourceContext, FieldTitle } from "ra-core";
-import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
+import { FormControl, FormError, FormField, FormLabel } from "@/components/ra-wrappers/form";
 import { cn } from "@/lib/utils.ts";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { InputHelperText } from "@/components/admin/input-helper-text";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 
 export type TextInputProps = InputProps & {

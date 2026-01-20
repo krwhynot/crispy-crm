@@ -281,7 +281,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 // They bridge UI primitives with React Admin:
-import { FormControl, FormError } from "@/components/admin/form"
+import { FormControl, FormError } from "@/components/ra-wrappers/form"
 import { Input } from "@/components/ui/input"
 ```
 
@@ -341,9 +341,9 @@ import { useGetOne } from "react-admin"
 **Import Pattern**:
 ```typescript
 // App shell imports from admin components:
-import { RefreshButton } from "@/components/admin/refresh-button"
-import { ThemeModeToggle } from "@/components/admin/theme-mode-toggle"
-import { UserMenu } from "@/components/admin/user-menu"
+import { RefreshButton } from "@/components/ra-wrappers/refresh-button"
+import { ThemeModeToggle } from "@/components/ra-wrappers/theme-mode-toggle"
+import { UserMenu } from "@/components/ra-wrappers/user-menu"
 
 // And UI primitives:
 import { Skeleton } from "@/components/ui/skeleton"
@@ -680,7 +680,7 @@ import { type VariantProps } from "class-variance-authority"
 // 3. Internal absolute imports (UI first, then admin)
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { SimpleForm } from "@/components/admin/simple-form"
+import { SimpleForm } from "@/components/ra-wrappers/simple-form"
 
 // 4. Relative imports
 import { buttonVariants } from "./button.constants"

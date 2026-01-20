@@ -21,8 +21,8 @@ import { cn } from "@/lib/utils";
 import { Skeleton } from "../ui/skeleton";
 import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 import { ArrayInputContext } from "ra-core";
-import { InputHelperText } from "@/components/admin/input-helper-text";
-import { FormError, FormField } from "@/components/admin/form";
+import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
+import { FormError, FormField } from "@/components/ra-wrappers/form";
 
 export const ArrayInput = (props: ArrayInputProps) => {
   const {

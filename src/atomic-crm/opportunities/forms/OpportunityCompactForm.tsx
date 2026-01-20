@@ -1,17 +1,17 @@
 import { useMemo, useState } from "react";
-import { TextInput } from "@/components/admin/text-input";
-import { DateInput } from "@/components/admin/date-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { ArrayInput } from "@/components/admin/array-input";
-import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { DateInput } from "@/components/ra-wrappers/date-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { ReferenceArrayInput } from "@/components/ra-wrappers/reference-array-input";
+import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { ArrayInput } from "@/components/ra-wrappers/array-input";
+import { SimpleFormIterator } from "@/components/ra-wrappers/simple-form-iterator";
 import {
   CompactFormRow,
   CollapsibleSection,
   FormSectionWithProgress,
-} from "@/components/admin/form";
+} from "@/components/ra-wrappers/form";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw } from "lucide-react";

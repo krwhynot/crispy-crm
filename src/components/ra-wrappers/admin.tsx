@@ -8,11 +8,11 @@ import {
 } from "ra-core";
 import { ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material/styles";
 import { i18nProvider as defaultI18nProvider } from "@/lib/i18nProvider";
-import { Layout } from "@/components/admin/layout";
-import { LoginPage } from "@/components/admin/login-page";
-import { Ready } from "@/components/admin/ready";
-import { ThemeProvider } from "@/components/admin/theme-provider";
-import { AuthCallback } from "@/components/admin/authentication";
+import { Layout } from "@/components/ra-wrappers/layout";
+import { LoginPage } from "@/components/ra-wrappers/login-page";
+import { Ready } from "@/components/ra-wrappers/ready";
+import { ThemeProvider } from "@/components/ra-wrappers/theme-provider";
+import { AuthCallback } from "@/components/ra-wrappers/authentication";
 
 // Create default MUI theme for React Admin components that use useMediaQuery
 const defaultMuiTheme = createTheme();

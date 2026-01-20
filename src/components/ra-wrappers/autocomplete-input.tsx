@@ -14,7 +14,7 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
+import { FormControl, FormError, FormField, FormLabel } from "@/components/ra-wrappers/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { ChoicesProps, InputProps, RaRecord, FilterPayload } from "ra-core";
 import {

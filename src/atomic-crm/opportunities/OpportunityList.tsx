@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { opportunityExporter } from "./opportunityExporter";
-import { List } from "@/components/admin/list";
-import { ListPagination } from "@/components/admin/list-pagination";
+import { List } from "@/components/ra-wrappers/list";
+import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { OpportunitySpeedDial } from "./OpportunitySpeedDial";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { ListSkeleton } from "@/components/ui/list-skeleton";
@@ -20,14 +20,14 @@ import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/admin/ListSearchBar";
+import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
 import { OpportunityListTutorial } from "./OpportunityListTutorial";
-import { ListNoResults } from "@/components/admin/ListNoResults";
+import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { TopToolbar } from "../layout/TopToolbar";
-import { SortButton } from "@/components/admin/sort-button";
-import { ExportButton } from "@/components/admin/export-button";
+import { SortButton } from "@/components/ra-wrappers/sort-button";
+import { ExportButton } from "@/components/ra-wrappers/export-button";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";

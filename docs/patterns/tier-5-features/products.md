@@ -42,10 +42,10 @@ List view using `PremiumDatagrid` with click-to-filter badges and responsive col
 
 ```tsx
 import { FunctionField } from "react-admin";
-import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
-import { TextField } from "@/components/admin/text-field";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { FilterableBadge } from "@/components/admin/FilterableBadge";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { TextField } from "@/components/ra-wrappers/text-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { ProductNameHeader, ProductCategoryHeader, ProductStatusHeader } from "./ProductsDatagridHeader";
 
@@ -117,8 +117,8 @@ Display related records from junction tables with proper context providers.
 
 ```tsx
 import { RecordContextProvider, useGetList } from "ra-core";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { TextField } from "@/components/admin/text-field";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
 import { AsideSection } from "@/components/ui";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -204,9 +204,9 @@ Generate form inputs based on selected values (e.g., distributor-specific DOT nu
 ```tsx
 import { useWatch } from "react-hook-form";
 import { useGetList } from "react-admin";
-import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { TextInput } from "@/components/admin/text-input";
+import { ReferenceArrayInput } from "@/components/ra-wrappers/reference-array-input";
+import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 
 export function ProductDistributorInput() {
   // Watch selected distributor IDs for changes (isolated re-renders)
@@ -471,10 +471,10 @@ export const ProductCard = (props: { record?: Product }) => {
 Integration of `BulkActionsToolbar` with list selection state.
 
 ```tsx
-import { List } from "@/components/admin/list";
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
+import { List } from "@/components/ra-wrappers/list";
+import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 
 export const ProductList = () => {
   return (
@@ -548,7 +548,7 @@ export const PRODUCT_FILTER_CONFIG = validateFilterConfig([
 ```tsx
 import { Building2 } from "lucide-react";
 import { useGetList } from "ra-core";
-import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 
 export const ProductListFilter = () => {

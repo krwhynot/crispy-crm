@@ -1,4 +1,4 @@
-import { SelectInput } from "@/components/admin/select-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { ROLE_CHOICES } from "../validation/sales";
 
 /**

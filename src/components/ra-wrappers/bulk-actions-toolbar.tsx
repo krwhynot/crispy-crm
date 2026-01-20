@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useListContext, Translate } from "ra-core";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BulkDeleteButton } from "@/components/admin/bulk-delete-button";
+import { BulkDeleteButton } from "@/components/ra-wrappers/bulk-delete-button";
 import { X } from "lucide-react";
 import { BulkExportButton } from "./bulk-export-button";
 

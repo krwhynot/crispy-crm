@@ -9,7 +9,7 @@ import type { FieldProps } from "@/lib/field.type";
  * Render a link to a file based on a path contained in a record field
  *
  * @example
- * import { FileField } from '@/components/admin/file-field';
+ * import { FileField } from '@/components/ra-wrappers/file-field';
  *
  * <FileField source="url" title="title" />
  *

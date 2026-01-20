@@ -10,7 +10,7 @@ import {
 } from "ra-core";
 import { cn } from "@/lib/utils";
 
-import { TextField } from "@/components/admin/text-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
 
 export const RecordField = <RecordType extends Record<string, any> = Record<string, any>>(
   props: RecordFieldProps<RecordType>

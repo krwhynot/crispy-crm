@@ -9,10 +9,10 @@ Document patterns for JSONB array inputs using ArrayInput and SimpleFormIterator
 **From `src/atomic-crm/contacts/ContactInfoTab.tsx:35`:**
 
 ```typescript
-import { ArrayInput } from "@/components/admin/array-input";
-import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import { TextInput } from "@/components/admin/text-input";
-import { SelectInput } from "@/components/admin/select-input";
+import { ArrayInput } from "@/components/ra-wrappers/array-input";
+import { SimpleFormIterator } from "@/components/ra-wrappers/simple-form-iterator";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
 
 const personalInfoTypes = [{ id: "work" }, { id: "home" }, { id: "other" }];
 

@@ -52,19 +52,19 @@ vi.mock("@tanstack/react-query", async () => {
 });
 
 // Mock ReferenceField
-vi.mock("@/components/admin/reference-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-field", () => ({
   ReferenceField: ({ children }: any) => <div data-testid="reference-field">{children}</div>,
 }));
 
 // Mock ReferenceArrayField
-vi.mock("@/components/admin/reference-array-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-array-field", () => ({
   ReferenceArrayField: ({ children }: any) => (
     <div data-testid="reference-array-field">{children}</div>
   ),
 }));
 
 // Mock ReferenceManyField
-vi.mock("@/components/admin/reference-many-field", () => ({
+vi.mock("@/components/ra-wrappers/reference-many-field", () => ({
   ReferenceManyField: ({ children }: any) => (
     <div data-testid="reference-many-field">{children}</div>
   ),

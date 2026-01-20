@@ -121,7 +121,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/admin/generic-select-input",
+        "@/components/ra-wrappers/generic-select-input",
         "@/constants/choices"
       ],
       "isDefaultExport": false,
@@ -247,8 +247,8 @@
         "../../types",
         "../TimeZoneSelect",
         "../hooks",
-        "@/components/admin/record-field",
-        "@/components/admin/text-input",
+        "@/components/ra-wrappers/record-field",
+        "@/components/ra-wrappers/text-input",
         "@/components/ui",
         "@/components/ui/button",
         "@/components/ui/card",

@@ -27,7 +27,7 @@ import {
   FormLoadingSkeleton,
   FormProgressProvider,
   FormProgressBar,
-} from "@/components/admin/form";
+} from "@/components/ra-wrappers/form";
 import { useLocation } from "react-router-dom";
 
 import { OrganizationInputs } from "./OrganizationInputs";

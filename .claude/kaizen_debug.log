@@ -7155,7 +7155,7 @@ tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/src/components/Not
 
 --- 2026-01-19T19:32:29.043460 ---
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
-tool_input: {"command": "node -e \"\nconst fs = require('fs');\nconst { execSync } = require('child_process');\nconst files = execSync('rg -l \\\"@/components/admin\\\" 2>/dev/null || true')\n  .toString().trim()
+tool_input: {"command": "node -e \"\nconst fs = require('fs');\nconst { execSync } = require('child_process');\nconst files = execSync('rg -l \\\"@/components/ra-wrappers\\\" 2>/dev/null || true')\n  .toString().trim()
 tool_response: {"stdout": "Found 0 files to update\nDone updating 0 files", "stderr": "", "interrupted": false, "isImage": false}
 
 --- 2026-01-19T19:32:30.905253 ---
@@ -7187,3 +7187,93 @@ tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "mkdir -p /home/krwhynot/projects/crispy-crm/.claude/cache && echo \"Created cache directory\"", "description": "Create cache directory for analytics"}
 tool_response: {"stdout": "Created cache directory", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:34:36.347476 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status --short /home/krwhynot/projects/crispy-crm/src", "description": "Show git status for moved/modified files"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:34:44.651889 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg -l \"@/components/ra-wrappers\" > /tmp/files_to_update.txt && wc -l /tmp/files_to_update.txt", "description": "Write list of files to update to temp file"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false, "backgroundTaskId": "b923525"}
+
+--- 2026-01-19T19:34:44.773305 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status --short", "description": "Show git status for all changes"}
+tool_response: {"stdout": " M .claude/checkpoint-state\n M .claude/kaizen_debug.log", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:34:55.231639 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git status", "description": "Show full git status including staged changes"}
+tool_response: {"stdout": "On branch refactor/atomic-molecules\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in 
+
+--- 2026-01-19T19:34:55.597725 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "cat /tmp/claude/-home-krwhynot-projects-crispy-crm/tasks/b923525.output", "description": "Check output of background command"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:35:03.880576 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git log --oneline -10", "description": "Check recent git commits"}
+tool_response: {"stdout": "5abea1680 chore(checkpoint): 170 file(s) - checkpoint-state,kaizen_debug.log kaizen_metric...\n7a5d185fc chore(checkpoint): 1 file(s) - checkpoint-state\nbb52ae260 chore(checkpoint): 1 fil
+
+--- 2026-01-19T19:35:04.594194 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg -l \"@/components/ra-wrappers\" /home/krwhynot/projects/crispy-crm 2>/dev/null | wc -l", "description": "Count files with old import path"}
+tool_response: {"stdout": "197", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:35:12.380590 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "git diff HEAD~1 --name-status 2>/dev/null | head -20", "description": "Check what changed in the last commit"}
+tool_response: {"stdout": "M\t.claude/checkpoint-state\nM\t.claude/kaizen_debug.log\nD\t.claude/kaizen_metrics.json\nR100\tsrc/components/NotificationBell.tsx\tsrc/atomic-crm/dashboard/components/NotificationBell.ts
+
+--- 2026-01-19T19:35:27.156737 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/components/NotificationBell.tsx 2>&1 || echo \"File no longer exists at old location (correct)\"", "description": "Confirm old file location 
+tool_response: {"stdout": "ls: cannot access '/home/krwhynot/projects/crispy-crm/src/components/NotificationBell.tsx': No such file or directory\nFile no longer exists at old location (correct)", "stderr": "", "inte
+
+--- 2026-01-19T19:35:27.345054 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/components/", "description": "Verify files are in the new location"}
+tool_response: {"stdout": "total 24\ndrwxr-xr-x 3 krwhynot krwhynot 4096 Jan 19 19:33 .\ndrwxr-xr-x 4 krwhynot krwhynot 4096 Jan 19 19:32 ..\n-rw-r--r-- 1 krwhynot krwhynot 1485 Dec  8 17:23 NotificationBell.tsx\n-r
+
+--- 2026-01-19T19:36:39.131690 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "mv /home/krwhynot/projects/crispy-crm/update-imports.js /home/krwhynot/projects/crispy-crm/update-imports.cjs && node /home/krwhynot/projects/crispy-crm/update-imports.cjs", "timeout": 18
+tool_response: {"stdout": "Found 198 files to update\nUpdated: /home/krwhynot/projects/crispy-crm/update-imports.cjs\nUpdated: /home/krwhynot/projects/crispy-crm/docs/blog/01-seven-select-components-became-one.md\nU
+
+--- 2026-01-19T19:36:51.391522 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm /home/krwhynot/projects/crispy-crm/update-imports.cjs", "description": "Remove temporary script file"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:37:09.883757 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "node -e \"\nconst fs = require('fs');\nconst files = [\n  '/home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log',\n  '/home/krwhynot/projects/crispy-crm/.claude/state/component-inv
+tool_response: {"stdout": "Updated: /home/krwhynot/projects/crispy-crm/.claude/kaizen_debug.log\nUpdated: /home/krwhynot/projects/crispy-crm/.claude/state/component-inventory/tasks.json\nUpdated: /home/krwhynot/proj
+
+--- 2026-01-19T19:37:21.663864 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit 2>&1 | head -100", "timeout": 300000, "description": "Run TypeScript compilation to verify no errors"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:37:33.832753 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/src/components/ | grep -E \"admin|ra-wrappers\"", "description": "Verify directory rename"}
+tool_response: {"stdout": "drwxr-xr-x  7 krwhynot krwhynot 4096 Jan 19 15:47 ra-wrappers", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:37:58.688774 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la src/components/ra-wrappers/ | head -20", "description": "Verify ra-wrappers directory contents"}
+tool_response: {"stdout": "total 556\ndrwxr-xr-x 7 krwhynot krwhynot  4096 Jan 19 15:47 .\ndrwxr-xr-x 9 krwhynot krwhynot  4096 Jan 19 19:33 ..\n-rw------- 1 krwhynot krwhynot  2949 Jan  2 14:27 FavoritesSidebarSect
+
+--- 2026-01-19T19:38:05.829396 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm -f update-imports.js 2>/dev/null; npx tsc --noEmit 2>&1 | head -30", "description": "Clean up temp file and verify TypeScript compilation"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T19:38:33.682326 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/.claude/", "description": "Check existing .claude directory structure"}
+tool_response: {"stdout": "total 892\ndrwxr-xr-x  16 krwhynot krwhynot   4096 Jan 19 19:36 .\ndrwxr-xr-x  21 krwhynot krwhynot   4096 Jan 19 19:36 ..\n-rw-------   1 krwhynot krwhynot   6316 Dec 17 18:45 NOTES.md\n-

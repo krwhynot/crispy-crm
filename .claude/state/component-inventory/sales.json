@@ -68,8 +68,8 @@
         "../types",
         "../validation/sales",
         "./SalesInputs",
-        "@/components/admin/FormErrorSummary",
-        "@/components/admin/simple-form",
+        "@/components/ra-wrappers/FormErrorSummary",
+        "@/components/ra-wrappers/simple-form",
         "@/components/ui/card",
         "@/components/ui/list-skeleton",
         "@/hooks/useUnsavedChangesWarning",
@@ -111,9 +111,9 @@
         "./SalesInputs",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/sales",
-        "@/components/admin/cancel-button",
-        "@/components/admin/form",
-        "@/components/admin/simple-form",
+        "@/components/ra-wrappers/cancel-button",
+        "@/components/ra-wrappers/form",
+        "@/components/ra-wrappers/simple-form",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
         "@tanstack/react-query",
@@ -140,7 +140,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/admin/text-input"
+        "@/components/ra-wrappers/text-input"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -156,7 +156,7 @@
       "imports": [
         "./SalesGeneralTab",
         "./SalesPermissionsInputs",
-        "@/components/admin/tabbed-form"
+        "@/components/ra-wrappers/tabbed-form"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -182,10 +182,10 @@
         "../utils/listPatterns",
         "./SalesSlideOver",
         "./salesFilterConfig",
-        "@/components/admin/FloatingCreateButton",
-        "@/components/admin/ListSearchBar",
-        "@/components/admin/PremiumDatagrid",
-        "@/components/admin/list",
+        "@/components/ra-wrappers/FloatingCreateButton",
+        "@/components/ra-wrappers/ListSearchBar",
+        "@/components/ra-wrappers/PremiumDatagrid",
+        "@/components/ra-wrappers/list",
         "@/components/ui/badge",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
@@ -213,7 +213,7 @@
       ],
       "imports": [
         "../filters/FilterCategory",
-        "@/components/admin/toggle-filter-button",
+        "@/components/ra-wrappers/toggle-filter-button",
         "lucide-react",
         "ra-core"
       ],
@@ -234,7 +234,7 @@
       "hooks": [],
       "imports": [
         "../validation/sales",
-        "@/components/admin/select-input"
+        "@/components/ra-wrappers/select-input"
       ],
       "isDefaultExport": false,
       "childComponents": [

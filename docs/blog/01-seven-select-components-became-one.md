@@ -108,7 +108,7 @@ To this:
 
 ```tsx
 // AFTER: 15 lines
-import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 import { US_TIMEZONES } from "@/constants/choices";
 
 export function TimeZoneSelect({ value, onChange, disabled }) {

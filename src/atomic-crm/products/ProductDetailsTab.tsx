@@ -3,12 +3,12 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFormContext } from "react-hook-form";
 import { Form } from "react-admin";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { TextField } from "@/components/admin/text-field";
-import { TextInput } from "@/components/admin/text-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { ReferenceField } from "@/components/ra-wrappers/reference-field";
+import { TextField } from "@/components/ra-wrappers/text-field";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {

@@ -1,6 +1,6 @@
 import { useTranslate } from "ra-core";
 import { Search } from "lucide-react";
-import { TextInput, type TextInputProps } from "@/components/admin/text-input";
+import { TextInput, type TextInputProps } from "@/components/ra-wrappers/text-input";
 
 export const SearchInput = (
   inProps: SearchInputProps & {

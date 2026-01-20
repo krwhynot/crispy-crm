@@ -1,5 +1,5 @@
-import { ReferenceArrayField } from "@/components/admin/reference-array-field";
-import { SingleFieldList } from "@/components/admin/single-field-list";
+import { ReferenceArrayField } from "@/components/ra-wrappers/reference-array-field";
+import { SingleFieldList } from "@/components/ra-wrappers/single-field-list";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useRecordContext } from "ra-core";

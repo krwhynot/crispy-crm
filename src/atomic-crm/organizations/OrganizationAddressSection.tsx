@@ -1,6 +1,10 @@
-import { TextInput } from "@/components/admin/text-input";
-import { CollapsibleSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
-import { StateComboboxInput } from "@/components/admin/state-combobox-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import {
+  CollapsibleSection,
+  CompactFormRow,
+  FormFieldWrapper,
+} from "@/components/ra-wrappers/form";
+import { StateComboboxInput } from "@/components/ra-wrappers/state-combobox-input";
 
 export const OrganizationAddressSection = () => {
   return (

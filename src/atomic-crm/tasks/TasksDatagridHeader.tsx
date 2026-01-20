@@ -21,7 +21,7 @@
  * ```
  */
 
-import { FilterableColumnHeader } from "@/components/admin/column-filters";
+import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 import { useFormOptions } from "../root/ConfigurationContext";
 
 /**

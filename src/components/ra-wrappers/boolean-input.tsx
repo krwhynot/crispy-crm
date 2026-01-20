@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Switch } from "@/components/ui/switch";
-import { FormError, FormField, FormLabel, FormControl } from "@/components/admin/form";
+import { FormError, FormField, FormLabel, FormControl } from "@/components/ra-wrappers/form";
 import { useInput, FieldTitle, type InputProps } from "ra-core";
 import { InputHelperText } from "./input-helper-text";
 

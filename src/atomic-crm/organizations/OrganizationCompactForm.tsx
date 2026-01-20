@@ -1,14 +1,14 @@
-import { TextInput } from "@/components/admin/text-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { SelectInput } from "@/components/admin/select-input";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
 import {
   CompactFormRow,
   CollapsibleSection,
   FormFieldWrapper,
   FormSectionWithProgress,
-} from "@/components/admin/form";
-import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
-import { StateComboboxInput } from "@/components/admin/state-combobox-input";
+} from "@/components/ra-wrappers/form";
+import { SegmentComboboxInput } from "@/components/ra-wrappers/SegmentComboboxInput";
+import { StateComboboxInput } from "@/components/ra-wrappers/state-combobox-input";
 import { PRIORITY_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";

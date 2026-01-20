@@ -1,9 +1,13 @@
-import { TextInput } from "@/components/admin/text-input";
-import { DateInput } from "@/components/admin/date-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { FormFieldWrapper, FormSectionWithProgress, CompactFormRow } from "@/components/admin/form";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { DateInput } from "@/components/ra-wrappers/date-input";
+import { SelectInput } from "@/components/ra-wrappers/select-input";
+import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
+import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
+import {
+  FormFieldWrapper,
+  FormSectionWithProgress,
+  CompactFormRow,
+} from "@/components/ra-wrappers/form";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
 import {
