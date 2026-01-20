@@ -191,13 +191,16 @@ describe("authProvider", () => {
         error: null,
       });
 
-      // Mock from().select().match().maybeSingle() chain
+      // Mock from().select().match().is().maybeSingle() chain
       const mockMaybeSingle = vi.fn().mockResolvedValue({
         data: null,
         error: null,
       });
-      const mockMatch = vi.fn().mockReturnValue({
+      const mockIs = vi.fn().mockReturnValue({
         maybeSingle: mockMaybeSingle,
+      });
+      const mockMatch = vi.fn().mockReturnValue({
+        is: mockIs,
       });
       const mockSelect = vi.fn().mockReturnValue({
         match: mockMatch,
@@ -234,8 +237,11 @@ describe("authProvider", () => {
         data: mockSale,
         error: null,
       });
-      const mockMatch = vi.fn().mockReturnValue({
+      const mockIs = vi.fn().mockReturnValue({
         maybeSingle: mockMaybeSingle,
+      });
+      const mockMatch = vi.fn().mockReturnValue({
+        is: mockIs,
       });
       const mockSelect = vi.fn().mockReturnValue({
         match: mockMatch,

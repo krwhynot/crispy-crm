@@ -1,12 +1,40 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { OrganizationCreate } from "../OrganizationCreate";
 
+/**
+ * Mock data provider with segments data required by OrganizationCreate.
+ * The component uses useGetList("segments") to fetch the "Unknown" segment
+ * and guards against rendering if it's not found.
+ */
+const createOrgTestDataProvider = () => ({
+  getList: vi.fn(async (resource: string, params?: { filter?: { name?: string } }) => {
+    if (resource === "segments") {
+      // Return "Unknown" segment - required for form to render
+      return {
+        data: [{ id: "uuid-unknown-segment", name: "Unknown" }],
+        total: 1,
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+      };
+    }
+    if (resource === "sales") {
+      // Return sales user for ReferenceInput
+      return {
+        data: [{ id: 1, first_name: "Test", last_name: "User" }],
+        total: 1,
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+      };
+    }
+    return { data: [], total: 0, pageInfo: { hasNextPage: false, hasPreviousPage: false } };
+  }),
+});
+
 const renderOrganizationCreate = () => {
   return renderWithAdminContext(<OrganizationCreate />, {
     resource: "organizations",
+    dataProvider: createOrgTestDataProvider(),
   });
 };
 

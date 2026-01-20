@@ -15,6 +15,39 @@ import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import ContactCreate from "../ContactCreate";
 
+/**
+ * Mock data provider for ContactCreate tests.
+ * Provides sales data for the Account Manager ReferenceInput.
+ */
+const createContactTestDataProvider = () => ({
+  getList: vi.fn(async (resource: string) => {
+    if (resource === "sales") {
+      // Return sales user for ReferenceInput
+      return {
+        data: [{ id: 1, first_name: "Test", last_name: "User" }],
+        total: 1,
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+      };
+    }
+    if (resource === "organizations") {
+      // Return organization for OrganizationPicker
+      return {
+        data: [{ id: 1, name: "Test Organization" }],
+        total: 1,
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+      };
+    }
+    return { data: [], total: 0, pageInfo: { hasNextPage: false, hasPreviousPage: false } };
+  }),
+});
+
+const renderContactCreate = () => {
+  return renderWithAdminContext(<ContactCreate />, {
+    resource: "contacts",
+    dataProvider: createContactTestDataProvider(),
+  });
+};
+
 describe("ContactCreate with Progress Tracking", () => {
   beforeAll(() => {
     vi.setConfig({ testTimeout: 30000 });

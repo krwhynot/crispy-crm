@@ -39,20 +39,56 @@ interface SkillRules {
 // Test prompts covering all skills
 const TEST_PROMPTS: Array<{ prompt: string; expectedSkills: string[]; description: string }> = [
   // Critical skills
-  { prompt: "I'm done with this task", expectedSkills: ["verification-before-completion"], description: "Completion claim" },
-  { prompt: "the tests pass now", expectedSkills: ["verification-before-completion"], description: "Test pass claim" },
-  { prompt: "fix the bug", expectedSkills: ["fail-fast-debugging"], description: "Bug fix request" },
-  { prompt: "debug this error", expectedSkills: ["fail-fast-debugging", "root-cause-tracing"], description: "Debug request" },
+  {
+    prompt: "I'm done with this task",
+    expectedSkills: ["verification-before-completion"],
+    description: "Completion claim",
+  },
+  {
+    prompt: "the tests pass now",
+    expectedSkills: ["verification-before-completion"],
+    description: "Test pass claim",
+  },
+  {
+    prompt: "fix the bug",
+    expectedSkills: ["fail-fast-debugging"],
+    description: "Bug fix request",
+  },
+  {
+    prompt: "debug this error",
+    expectedSkills: ["fail-fast-debugging", "root-cause-tracing"],
+    description: "Debug request",
+  },
 
   // High priority
-  { prompt: "create a migration", expectedSkills: ["supabase-crm", "supabase-cli"], description: "Migration creation" },
-  { prompt: "write tests for this", expectedSkills: ["testing-patterns"], description: "Test writing" },
-  { prompt: "trace the root cause", expectedSkills: ["root-cause-tracing"], description: "Root cause investigation" },
+  {
+    prompt: "create a migration",
+    expectedSkills: ["supabase-crm", "supabase-cli"],
+    description: "Migration creation",
+  },
+  {
+    prompt: "write tests for this",
+    expectedSkills: ["testing-patterns"],
+    description: "Test writing",
+  },
+  {
+    prompt: "trace the root cause",
+    expectedSkills: ["root-cause-tracing"],
+    description: "Root cause investigation",
+  },
 
   // Medium priority
   { prompt: "audit the codebase", expectedSkills: ["deep-audit"], description: "Audit request" },
-  { prompt: "write a plan for this feature", expectedSkills: ["writing-plans"], description: "Planning request" },
-  { prompt: "execute the plan", expectedSkills: ["executing-plans"], description: "Plan execution" },
+  {
+    prompt: "write a plan for this feature",
+    expectedSkills: ["writing-plans"],
+    description: "Planning request",
+  },
+  {
+    prompt: "execute the plan",
+    expectedSkills: ["executing-plans"],
+    description: "Plan execution",
+  },
 
   // Edge cases - should NOT match
   { prompt: "hello world", expectedSkills: [], description: "Generic greeting (no match)" },
@@ -133,7 +169,7 @@ async function runTests() {
   }
 
   // Verify all skills from rules exist in index
-  const missingSkills = Object.keys(rules.skills).filter(s => !index.skills[s]);
+  const missingSkills = Object.keys(rules.skills).filter((s) => !index.skills[s]);
   if (missingSkills.length === 0) {
     console.log(`  ✅ All skills from rules.json exist in index`);
     passed++;
@@ -155,8 +191,8 @@ async function runTests() {
     const oldResult = matchSkillsOld(prompt, rules);
 
     const oldSet = new Set(oldResult);
-    const isEquivalent = newResult.length === oldResult.length &&
-                         newResult.every(s => oldSet.has(s));
+    const isEquivalent =
+      newResult.length === oldResult.length && newResult.every((s) => oldSet.has(s));
 
     if (isEquivalent) {
       console.log(`  ✅ "${description}": ${newResult.length} matches`);
@@ -197,7 +233,7 @@ async function runTests() {
     }
   }
 
-  const untriggered = Object.keys(index.skills).filter(s => !triggeredSkills.has(s));
+  const untriggered = Object.keys(index.skills).filter((s) => !triggeredSkills.has(s));
   console.log(`  Triggerable via keywords: ${triggeredSkills.size}/${indexSkillCount}`);
 
   if (untriggered.length > 0) {
@@ -249,7 +285,7 @@ async function runTests() {
   }
   const oldTime = performance.now() - startOld;
 
-  const speedup = ((oldTime - newTime) / oldTime * 100).toFixed(1);
+  const speedup = (((oldTime - newTime) / oldTime) * 100).toFixed(1);
   console.log(`  Index matching: ${newTime.toFixed(2)}ms for ${iterations} iterations`);
   console.log(`  Rules matching: ${oldTime.toFixed(2)}ms for ${iterations} iterations`);
   console.log(`  ✅ Performance: ${speedup}% faster (or equivalent)`);
@@ -264,11 +300,13 @@ async function runTests() {
 
   const indexSize = readFileSync(indexPath).length;
   const rulesSize = readFileSync(rulesPath).length;
-  const reduction = ((rulesSize - indexSize) / rulesSize * 100).toFixed(1);
+  const reduction = (((rulesSize - indexSize) / rulesSize) * 100).toFixed(1);
 
   console.log(`  skill-index.json: ${(indexSize / 1024).toFixed(1)} KB`);
   console.log(`  skill-rules.json: ${(rulesSize / 1024).toFixed(1)} KB`);
-  console.log(`  ✅ Size reduction: ${reduction}% (${((rulesSize - indexSize) / 1024).toFixed(1)} KB saved)`);
+  console.log(
+    `  ✅ Size reduction: ${reduction}% (${((rulesSize - indexSize) / 1024).toFixed(1)} KB saved)`
+  );
   passed++;
   console.log();
 

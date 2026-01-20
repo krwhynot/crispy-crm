@@ -15,6 +15,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
         product_ids: [1, 2, 3],
         quick_note: "Interested in product demo",
       };
@@ -25,6 +26,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(result.org_name).toBe("Acme Corp");
       expect(result.campaign).toBe("NRA Show 2025");
       expect(result.principal_id).toBe(123);
+      expect(result.account_manager_id).toBe(999);
     });
 
     it("should accept missing first_name (optional)", () => {
@@ -36,6 +38,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(data)).not.toThrow();
@@ -53,6 +56,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(data)).not.toThrow();
@@ -67,6 +71,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(data)).not.toThrow();
@@ -74,7 +79,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(result.last_name).toBeUndefined();
     });
 
-    it("should reject missing org_name", () => {
+    it("should reject missing organization (neither org_name nor organization_id)", () => {
       const invalidData = {
         first_name: "John",
         last_name: "Doe",
@@ -83,6 +88,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
@@ -90,11 +96,29 @@ describe("Quick Add Booth Visitor Validation", () => {
         quickAddSchema.parse(invalidData);
       } catch (error: unknown) {
         if (error instanceof z.ZodError) {
-          const orgNameError = error.issues.find((issue) => issue.path[0] === "org_name");
-          expect(orgNameError).toBeDefined();
-          expect(orgNameError?.code).toBe("invalid_type");
+          const orgError = error.issues.find((issue) => issue.path[0] === "organization_id");
+          expect(orgError).toBeDefined();
+          expect(orgError?.message).toContain("Organization is required");
         }
       }
+    });
+
+    it("should accept organization_id instead of org_name", () => {
+      const data = {
+        first_name: "John",
+        last_name: "Doe",
+        phone: "555-1234",
+        organization_id: 456,
+        city: "Chicago",
+        state: "IL",
+        campaign: "NRA Show 2025",
+        principal_id: 123,
+        account_manager_id: 999,
+      };
+
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
+      const result = quickAddSchema.parse(data);
+      expect(result.organization_id).toBe(456);
     });
 
     it("should accept missing city (optional)", () => {
@@ -106,6 +130,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(data)).not.toThrow();
@@ -122,6 +147,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         city: "Chicago",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(data)).not.toThrow();
@@ -129,8 +155,8 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(result.state).toBeUndefined();
     });
 
-    it("should reject missing campaign", () => {
-      const invalidData = {
+    it("should accept missing campaign (optional)", () => {
+      const data = {
         first_name: "John",
         last_name: "Doe",
         phone: "555-1234",
@@ -138,18 +164,12 @@ describe("Quick Add Booth Visitor Validation", () => {
         city: "Chicago",
         state: "IL",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
-      try {
-        quickAddSchema.parse(invalidData);
-      } catch (error: unknown) {
-        if (error instanceof z.ZodError) {
-          const campaignError = error.issues.find((issue) => issue.path[0] === "campaign");
-          expect(campaignError).toBeDefined();
-          expect(campaignError?.code).toBe("invalid_type");
-        }
-      }
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
+      const result = quickAddSchema.parse(data);
+      expect(result.campaign).toBeUndefined();
     });
 
     it("should reject missing principal_id", () => {
@@ -161,6 +181,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         city: "Chicago",
         state: "IL",
         campaign: "NRA Show 2025",
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
@@ -170,13 +191,37 @@ describe("Quick Add Booth Visitor Validation", () => {
         if (error instanceof z.ZodError) {
           const principalError = error.issues.find((issue) => issue.path[0] === "principal_id");
           expect(principalError).toBeDefined();
-          expect(principalError?.code).toBe("invalid_type");
+        }
+      }
+    });
+
+    it("should reject missing account_manager_id", () => {
+      const invalidData = {
+        first_name: "John",
+        last_name: "Doe",
+        phone: "555-1234",
+        org_name: "Acme Corp",
+        city: "Chicago",
+        state: "IL",
+        campaign: "NRA Show 2025",
+        principal_id: 123,
+      };
+
+      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
+      try {
+        quickAddSchema.parse(invalidData);
+      } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+          const accountManagerError = error.issues.find(
+            (issue) => issue.path[0] === "account_manager_id"
+          );
+          expect(accountManagerError).toBeDefined();
         }
       }
     });
   });
 
-  describe("Phone or Email Required (Custom Validator)", () => {
+  describe("Optional Contact Fields", () => {
     it("should accept data with only phone", () => {
       const validData = {
         first_name: "John",
@@ -187,6 +232,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(validData)).not.toThrow();
@@ -202,6 +248,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(validData)).not.toThrow();
@@ -218,13 +265,14 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(validData)).not.toThrow();
     });
 
-    it("should reject data with neither phone nor email", () => {
-      const invalidData = {
+    it("should accept data with neither phone nor email (both optional)", () => {
+      const validData = {
         first_name: "John",
         last_name: "Doe",
         org_name: "Acme Corp",
@@ -232,22 +280,14 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
-      try {
-        quickAddSchema.parse(invalidData);
-      } catch (error: unknown) {
-        if (error instanceof z.ZodError) {
-          const phoneError = error.issues.find((issue) => issue.path[0] === "phone");
-          expect(phoneError).toBeDefined();
-          expect(phoneError?.message).toContain("Phone or Email required (at least one)");
-        }
-      }
+      expect(() => quickAddSchema.parse(validData)).not.toThrow();
     });
 
-    it("should reject data with empty string phone and no email", () => {
-      const invalidData = {
+    it("should accept data with empty string phone", () => {
+      const validData = {
         first_name: "John",
         last_name: "Doe",
         phone: "",
@@ -256,13 +296,14 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
+      expect(() => quickAddSchema.parse(validData)).not.toThrow();
     });
 
-    it("should reject data with empty string email and no phone", () => {
-      const invalidData = {
+    it("should accept data with empty string email", () => {
+      const validData = {
         first_name: "John",
         last_name: "Doe",
         email: "",
@@ -271,9 +312,10 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
-      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
+      expect(() => quickAddSchema.parse(validData)).not.toThrow();
     });
   });
 
@@ -291,6 +333,7 @@ describe("Quick Add Booth Visitor Validation", () => {
           state: "IL",
           campaign: "NRA Show 2025",
           principal_id: 123,
+          account_manager_id: 999,
         };
 
         expect(() => quickAddSchema.parse(data)).not.toThrow();
@@ -307,6 +350,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
@@ -331,6 +375,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
@@ -340,19 +385,21 @@ describe("Quick Add Booth Visitor Validation", () => {
   describe("Optional Fields", () => {
     it("should allow missing optional fields", () => {
       const minimalData = {
-        first_name: "John",
-        last_name: "Doe",
-        phone: "555-1234",
         org_name: "Acme Corp",
-        city: "Chicago",
-        state: "IL",
-        campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       const result = quickAddSchema.parse(minimalData);
       expect(result.product_ids).toEqual([]);
       expect(result.quick_note).toBeUndefined();
+      expect(result.first_name).toBeUndefined();
+      expect(result.last_name).toBeUndefined();
+      expect(result.phone).toBeUndefined();
+      expect(result.email).toBeUndefined();
+      expect(result.city).toBeUndefined();
+      expect(result.state).toBeUndefined();
+      expect(result.campaign).toBeUndefined();
     });
 
     it("should accept empty product_ids array", () => {
@@ -365,6 +412,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
         product_ids: [],
       };
 
@@ -381,6 +429,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
         product_ids: [1, 2, 3, 4, 5],
       };
 
@@ -398,6 +447,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
         quick_note: "Met at booth, very interested in pricing",
       };
 
@@ -415,6 +465,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
         quick_note: "",
       };
 
@@ -434,6 +485,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
         product_ids: [1, 2],
         quick_note: "Test note",
       };
@@ -449,6 +501,7 @@ describe("Quick Add Booth Visitor Validation", () => {
       expect(result).toHaveProperty("state");
       expect(result).toHaveProperty("campaign");
       expect(result).toHaveProperty("principal_id");
+      expect(result).toHaveProperty("account_manager_id");
       expect(result).toHaveProperty("product_ids");
       expect(result).toHaveProperty("quick_note");
     });
@@ -465,6 +518,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: 123,
+        account_manager_id: 999,
       };
 
       expect(() => quickAddSchema.parse(data)).not.toThrow();
@@ -480,6 +534,29 @@ describe("Quick Add Booth Visitor Validation", () => {
         state: "IL",
         campaign: "NRA Show 2025",
         principal_id: "123",
+        account_manager_id: 999,
+      };
+
+      expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);
+    });
+  });
+
+  describe("Account Manager ID Type Validation", () => {
+    it("should accept number for account_manager_id", () => {
+      const data = {
+        org_name: "Acme Corp",
+        principal_id: 123,
+        account_manager_id: 999,
+      };
+
+      expect(() => quickAddSchema.parse(data)).not.toThrow();
+    });
+
+    it("should reject string for account_manager_id", () => {
+      const invalidData = {
+        org_name: "Acme Corp",
+        principal_id: 123,
+        account_manager_id: "999",
       };
 
       expect(() => quickAddSchema.parse(invalidData)).toThrow(z.ZodError);

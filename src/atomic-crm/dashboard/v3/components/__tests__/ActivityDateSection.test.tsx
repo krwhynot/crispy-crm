@@ -259,7 +259,8 @@ describe("ActivityDateSection", () => {
     it("button has proper width class for touch targets", () => {
       render(<TestWrapperWithControl />);
 
-      const button = screen.getByRole("button");
+      const triggerContainer = screen.getByTestId("popover-trigger");
+      const button = triggerContainer.querySelector("button");
       expect(button).toHaveClass("w-full");
     });
   });

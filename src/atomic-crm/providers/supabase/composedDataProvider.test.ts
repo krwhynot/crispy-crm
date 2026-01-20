@@ -277,14 +277,15 @@ describe("composedDataProvider", () => {
       expect(HANDLED_RESOURCES).toContain("sales");
     });
 
-    it("should have exactly 20 handled resources", () => {
+    it("should have exactly 21 handled resources", () => {
       // Core: contacts, organizations, opportunities, activities, products
       // Tasks: tasks
       // Notes: contact_notes, opportunity_notes, organization_notes
       // Supporting: tags, sales, segments, product_distributors
       // Junction tables: opportunity_participants, opportunity_contacts, interaction_participants, distributor_principal_authorizations, organization_distributors
       // Notifications: user_favorites, notifications
-      expect(HANDLED_RESOURCES).toHaveLength(20);
+      // Timeline: entity_timeline
+      expect(HANDLED_RESOURCES).toHaveLength(21);
     });
   });
 

@@ -223,8 +223,12 @@ describe("Organization Validation Schemas", () => {
 
   describe("createOrganizationSchema", () => {
     it("should require essential fields for creation", () => {
+      // createOrganizationSchema requires: name, organization_type, sales_id, segment_id
       const validCreate = {
         name: "New Organization",
+        organization_type: "prospect",
+        sales_id: 1,
+        segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
       };
 
       expect(() => createOrganizationSchema.parse(validCreate)).not.toThrow();
