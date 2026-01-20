@@ -108,7 +108,7 @@ export function OpportunitySlideOverDetailsTab({
   const handleSave = useCallback(
     async (data: Partial<Opportunity>) => {
       const isClosingOpportunity =
-        (data.stage === "closed_won" || data.stage === "closed_lost") &&
+        (data.stage === STAGE.CLOSED_WON || data.stage === STAGE.CLOSED_LOST) &&
         record.stage !== data.stage;
 
       if (isClosingOpportunity) {

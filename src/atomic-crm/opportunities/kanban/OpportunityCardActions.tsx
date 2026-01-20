@@ -84,14 +84,14 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
           data: {
             activity_type: "interaction",
             type: "note",
-            subject: `Opportunity ${closeTargetStage === "closed_won" ? "won" : "lost"}`,
+            subject: `Opportunity ${closeTargetStage === STAGE.CLOSED_WON ? "won" : "lost"}`,
             opportunity_id: opportunityId,
             organization_id: record?.customer_organization_id,
           },
         });
 
         notify(
-          closeTargetStage === "closed_won"
+          closeTargetStage === STAGE.CLOSED_WON
             ? "Opportunity marked as won"
             : "Opportunity marked as lost",
           { type: "success" }
@@ -166,14 +166,14 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => handleOpenCloseModal("closed_won")}
+            onClick={() => handleOpenCloseModal(STAGE.CLOSED_WON)}
             className="text-success-strong focus:text-success-strong"
           >
             <Trophy className="mr-2 h-4 w-4" />
             Mark as Won
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => handleOpenCloseModal("closed_lost")}
+            onClick={() => handleOpenCloseModal(STAGE.CLOSED_LOST)}
             variant="destructive"
           >
             <XCircle className="mr-2 h-4 w-4" />

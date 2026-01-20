@@ -106,7 +106,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
 interface PendingCloseData {
   opportunityId: string;
   opportunityName: string;
-  targetStage: "closed_won" | "closed_lost";
+  targetStage: typeof STAGE.CLOSED_WON | typeof STAGE.CLOSED_LOST;
   sourceStage: string;
   previousState: OpportunitiesByStage;
   draggedItem: Opportunity;
@@ -198,7 +198,7 @@ export const OpportunityListContent = ({
 
       // WG-002: Validate close opportunity data before update
       // This enforces win/loss reason requirements and prevents bypass
-      if (newStage === "closed_won" || newStage === "closed_lost") {
+      if (newStage === STAGE.CLOSED_WON || newStage === STAGE.CLOSED_LOST) {
         try {
           await validateCloseOpportunity({
             id: opportunityId,
@@ -471,7 +471,7 @@ export const OpportunityListContent = ({
       // --- End Optimistic UI Update ---
 
       // Check if dropping into a closed stage - show modal to collect reason
-      if (destColId === "closed_won" || destColId === "closed_lost") {
+      if (destColId === STAGE.CLOSED_WON || destColId === STAGE.CLOSED_LOST) {
         setPendingCloseData({
           opportunityId: draggableId,
           opportunityName: draggedItem.name,

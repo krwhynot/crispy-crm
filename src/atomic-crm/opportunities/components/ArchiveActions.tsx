@@ -33,7 +33,7 @@ export const ArchiveButton = ({ record }: ArchiveActionsProps) => {
         onSuccess: () => {
           redirect("list", "opportunities");
           notify("Opportunity archived", { type: "info", undoable: false });
-          refresh();
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         },
         onError: () => {
           notify("Error: opportunity not archived", { type: "error" });
@@ -59,7 +59,7 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
   const dataProvider = useDataProvider();
   const redirect = useRedirect();
   const notify = useNotify();
-  const refresh = useRefresh();
+  const queryClient = useQueryClient();
 
   // Create service instance for mutation (React Hooks must be called unconditionally)
   const opportunitiesService = new OpportunitiesService(dataProvider);
@@ -75,7 +75,7 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
         type: "info",
         undoable: false,
       });
-      refresh();
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
     },
     onError: () => {
       notify("Error: opportunity not unarchived", { type: "error" });
