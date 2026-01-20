@@ -222,6 +222,88 @@ describe("createOpportunitiesHandler", () => {
         undefined
       );
     });
+
+    it("should pass previousVersion for optimistic locking", async () => {
+      // FIX [SF-C12]: Verify previousVersion is extracted and passed to service
+      const products = [createMockProduct()];
+      const updateData = createMockUpdateData({ products_to_sync: products });
+      const updatedOpportunity = createMockOpportunity();
+      const previousVersion = 5;
+
+      mockUpdateWithProducts.mockResolvedValue(updatedOpportunity);
+
+      await handler.update("opportunities", {
+        id: 123,
+        data: updateData,
+        previousData: { id: 123, version: previousVersion, products: [] } as RaRecord,
+      });
+
+      // Verify previousVersion (4th argument) is passed for optimistic locking
+      expect(mockUpdateWithProducts).toHaveBeenCalledWith(
+        123,
+        expect.objectContaining({ products_to_sync: products }),
+        [],
+        previousVersion
+      );
+    });
+  });
+
+  describe("error handling - fail-fast behavior", () => {
+    it("should propagate service errors through withErrorLogging wrapper", async () => {
+      // Mock OpportunitiesService.createWithProducts to throw an error
+      const serviceError = new Error("Service creation failed");
+      mockCreateWithProducts.mockRejectedValue(serviceError);
+
+      const products = [createMockProduct()];
+      const opportunityData = createMockOpportunityData({ products_to_sync: products });
+
+      // Verify the error bubbles up (handler doesn't catch/swallow it)
+      await expect(handler.create("opportunities", { data: opportunityData })).rejects.toThrow(
+        "Service creation failed"
+      );
+
+      expect(mockCreateWithProducts).toHaveBeenCalled();
+    });
+
+    it("should propagate update service errors", async () => {
+      // Mock OpportunitiesService.updateWithProducts to throw an error
+      const serviceError = new Error("Service update failed");
+      mockUpdateWithProducts.mockRejectedValue(serviceError);
+
+      const products = [createMockProduct()];
+      const updateData = createMockUpdateData({ products_to_sync: products });
+
+      // Verify the error bubbles up (handler doesn't catch/swallow it)
+      await expect(
+        handler.update("opportunities", {
+          id: 123,
+          data: updateData,
+          previousData: { id: 123 } as RaRecord,
+        })
+      ).rejects.toThrow("Service update failed");
+
+      expect(mockUpdateWithProducts).toHaveBeenCalled();
+    });
+  });
+
+  describe("schema validation - handler-level", () => {
+    it("should validate products_to_sync schema (handler-level validation)", async () => {
+      // Test that invalid products_to_sync data fails validation at the handler level
+      // The handlerInputSchema uses opportunityProductSyncHandlerSchema which requires valid product shape
+      const invalidProducts = [
+        { invalid_field: "not a valid product" }, // Missing valid product fields
+      ];
+      const opportunityData = createMockOpportunityData({
+        products_to_sync: invalidProducts as unknown as ProductToSync[],
+      });
+
+      // Zod validation should fail before reaching the service
+      // Note: The schema is permissive (.passthrough()), but inner array schema validates items
+      await expect(handler.create("opportunities", { data: opportunityData })).rejects.toThrow();
+
+      // Service should NOT be called due to validation failure
+      expect(mockCreateWithProducts).not.toHaveBeenCalled();
+    });
   });
 });
 

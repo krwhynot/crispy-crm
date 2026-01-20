@@ -276,7 +276,176 @@ export const FilterCategory = ({
 
 ---
 
-## Pattern E: Filter Precedence
+## Pattern E: Filter Chips Panel (Accordion)
+
+Accordion-based panel for displaying active filters in a collapsible area. Alternative to FilterChipBar for space-constrained layouts.
+
+```tsx
+// src/atomic-crm/filters/FilterChipsPanel.tsx
+export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
+  const { filterValues, removeFilterValue } = useFilterManagement();
+
+  // Extract IDs for name resolution hooks
+  const customerOrgIds = extractFilterIds(filterValues, "customer_organization_id");
+  const principalOrgIds = extractFilterIds(filterValues, "principal_organization_id");
+  const salesIds = extractFilterIds(filterValues, "opportunity_owner_id");
+  const tagIds = extractFilterIds(filterValues, "tags");
+
+  // Fetch names for reference filters
+  const { getOrganizationName } = useOrganizationNames([...customerOrgIds, ...principalOrgIds]);
+  const { getSalesName } = useSalesNames(salesIds);
+  const { getTagName } = useTagNames(tagIds);
+
+  const filterChips = flattenFilterValues(filterValues || {});
+  if (filterChips.length === 0) return null;
+
+  return (
+    <Accordion type="single" collapsible defaultValue="filters">
+      <AccordionItem value="filters">
+        <AccordionTrigger>
+          Active Filters ({filterChips.length})
+        </AccordionTrigger>
+        <AccordionContent>
+          {filterChips.map((chip, index) => (
+            <FilterChip
+              key={`${chip.key}-${chip.value}-${index}`}
+              label={formatFilterLabel(chip.key, chip.value, getOrganizationName, getSalesName, getTagName)}
+              onRemove={() => removeFilterValue(chip.key, chip.value)}
+            />
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+};
+```
+
+**Key differences from FilterChipBar:**
+- Collapsible via shadcn/ui Accordion (saves vertical space)
+- Always includes filter count in header
+- No "Clear all" button (chips are individually removable)
+
+**When to use**: Space-constrained sidebars where filters should be collapsible.
+
+---
+
+## Pattern F: Date Range Filter Button
+
+Popover-based date range picker that integrates with React Admin's filter system.
+
+```tsx
+// src/atomic-crm/filters/DateRangeFilterButton.tsx
+interface DateRangeFilterButtonProps {
+  /** Filter key prefix - e.g., "last_seen" sets "last_seen@gte" and "last_seen@lte" */
+  filterKeyPrefix: string;
+  className?: string;
+}
+
+export function DateRangeFilterButton({ filterKeyPrefix, className }: DateRangeFilterButtonProps) {
+  const { filterValues, setFilters, displayedFilters } = useListContext();
+  const [open, setOpen] = useState(false);
+
+  const gteKey = `${filterKeyPrefix}@gte`;
+  const lteKey = `${filterKeyPrefix}@lte`;
+
+  const handleApply = () => {
+    const newFilters = { ...filterValues };
+    if (fromParsed) newFilters[gteKey] = startOfDay(fromParsed).toISOString();
+    if (toParsed) newFilters[lteKey] = endOfDay(toParsed).toISOString();
+    setFilters(newFilters, displayedFilters);
+    setOpen(false);
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" className="h-11">
+          <CalendarIcon className="h-4 w-4" />
+          {getButtonLabel()} {/* "Select dates", "From Jan 1", "Jan 1 – Jan 15" */}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <Input type="date" id="from-date" />
+        <Input type="date" id="to-date" />
+        <Button onClick={handleClear}>Clear</Button>
+        <Button onClick={handleApply}>Apply</Button>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+**Key behaviors:**
+- Uses native `input[type="date"]` (compact, no full calendar)
+- Sets `@gte` and `@lte` filter keys for standard React Admin operator format
+- Shows "Select dates", "From {date}", "Until {date}", or "{from} – {to}" based on state
+- 44px touch targets (h-11) for iPad compliance
+
+**When to use**: Custom date range filters in sidebar FilterCategory components.
+
+---
+
+## Pattern G: Starred Filter Toggle
+
+Quick filter toggle to show only user-favorited items using client-side ID filtering.
+
+```tsx
+// src/atomic-crm/filters/StarredFilterToggle.tsx
+interface StarredFilterToggleProps {
+  entityType: FavoriteEntityType;  // "contact", "opportunity", "organization"
+  className?: string;
+}
+
+export function StarredFilterToggle({ entityType, className }: StarredFilterToggleProps) {
+  const { filterValues, setFilters } = useListContext();
+  const { favorites, isLoading } = useFavorites();
+
+  // Get IDs of starred items for this entity type
+  const favoriteIds = favorites
+    .filter(fav => fav.entity_type === entityType)
+    .map(fav => fav.entity_id);
+
+  const isActive = filterValues?.id?.length > 0 &&
+    filterValues.id.every((id: number) => favoriteIds.includes(id));
+
+  const handleClick = () => {
+    if (isActive) {
+      // Deactivate: remove id filter
+      const { id: _, ...restFilters } = filterValues || {};
+      setFilters(restFilters);
+    } else {
+      // Activate: set id filter to favorite IDs
+      setFilters({ ...filterValues, id: favoriteIds });
+    }
+  };
+
+  return (
+    <Button
+      variant={isActive ? "secondary" : "ghost"}
+      onClick={handleClick}
+      disabled={favoriteIds.length === 0}
+      aria-pressed={isActive}
+      className="h-11"
+    >
+      <Star className={isActive ? "fill-primary" : ""} />
+      Starred ({favoriteIds.length})
+    </Button>
+  );
+}
+```
+
+**Key behaviors:**
+- Uses `id` filter to show only favorited entity IDs
+- Auto-clears when all favorites removed while active
+- Auto-updates filter if favorites change while active
+- Shows count badge with number of starred items
+- Tooltip when disabled: "Star items to use this filter"
+
+**When to use**: List views where users can star/favorite items (contacts, opportunities, organizations).
+
+---
+
+## Pattern H: Filter Precedence
 
 URL parameters override sessionStorage, which overrides code defaults.
 
