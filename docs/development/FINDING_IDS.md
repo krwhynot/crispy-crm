@@ -193,9 +193,9 @@ git log --all --oneline --grep="WF-C"
 | Situation | Use This System |
 |-----------|-----------------|
 | Found during code audit | Technical Debt Tracker |
-| Security/data integrity issue | Audit/TODOs Tracker |
+| Security/data integrity issue | Technical Debt Tracker |
 | UI/UX polish item | Technical Debt Tracker |
-| Active sprint remediation | Audit/TODOs Tracker |
+| Active sprint work | Technical Debt Tracker |
 | Long-term backlog | Technical Debt Tracker |
 
 ### ID Lookup
@@ -203,7 +203,7 @@ git log --all --oneline --grep="WF-C"
 | Prefix | File |
 |--------|------|
 | `UI-`, `ASYNC-`, `ERR-`, `IMP-`, `DEAD-`, `DB-`, `FORM-`, `EC-` | `docs/technical-debt.md` |
-| `CRITICAL-`, `SF-C`, `WF-C`, `C-` | `docs/TODOs.md` + `docs/PROVIDER_AUDIT_REPORT.md` |
+| `SF-C`, `WF-C` (historical) | Git history (all resolved Jan 2026) |
 
 ---
 
