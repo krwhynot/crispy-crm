@@ -197,7 +197,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Update an existing task
      */
-    update: async (resource, params) => {
+    update: async (_resource, params) => {
       const result = await activitiesHandler.update("activities", {
         ...params,
         data: taskToActivity(params.data),
@@ -213,7 +213,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Update multiple tasks
      */
-    updateMany: async (resource, params) => {
+    updateMany: async (_resource, params) => {
       return activitiesHandler.updateMany("activities", {
         ...params,
         data: taskToActivity(params.data),
