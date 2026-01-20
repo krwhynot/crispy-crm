@@ -1,5 +1,5 @@
 {
-  "lastAudit": "2026-01-12",
+  "lastAudit": "2026-01-20",
   "lastMode": "full",
   "scope": "src/",
   "findings": {
@@ -23,13 +23,28 @@
       {
         "id": "WF-C2-003",
         "check": "WF-C2",
-        "type": "required-field-implicit-default",
+        "type": "required-field-fallback",
         "location": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:96-98",
         "description": "Campaign field chains three fallbacks",
         "firstSeen": "2026-01-11"
       }
     ],
     "high": [
+      {
+        "id": "WF-H1-001",
+        "check": "WF-H1",
+        "type": "hardcoded-stage-values",
+        "location": "Multiple files (50+ instances)",
+        "description": "Hardcoded pipeline stage literals throughout codebase",
+        "firstSeen": "2026-01-20",
+        "verified": true,
+        "confidence": "95%",
+        "examples": [
+          "src/atomic-crm/reports/tabs/OverviewTab.tsx:255",
+          "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx:66-68",
+          "src/atomic-crm/validation/opportunities/opportunities-operations.ts:387-461"
+        ]
+      },
       {
         "id": "WF-H2-001",
         "check": "WF-H2",
@@ -51,7 +66,33 @@
         "confidence": "92%"
       }
     ],
-    "medium": [],
+    "medium": [
+      {
+        "id": "WF-M1-001",
+        "check": "WF-M1",
+        "type": "inconsistent-date-handling",
+        "location": "Multiple files (30+ instances)",
+        "description": "Inconsistent use of new Date() and Date.now() across codebase",
+        "firstSeen": "2026-01-20",
+        "examples": [
+          "src/hooks/useFavorites.ts:101",
+          "src/lib/logger.ts:63,71,141,302",
+          "src/atomic-crm/services/junctions.service.ts:163,299,439"
+        ]
+      },
+      {
+        "id": "WF-M2-001",
+        "check": "WF-M2",
+        "type": "direct-stage-assignments",
+        "location": "Multiple files (20+ instances)",
+        "description": "Direct stage comparisons instead of using helper functions",
+        "firstSeen": "2026-01-20",
+        "examples": [
+          "src/atomic-crm/validation/opportunities/opportunities-operations.ts:387-461",
+          "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx:66-126"
+        ]
+      }
+    ],
     "resolved": [
       {
         "id": "WF-C1-001",
@@ -92,7 +133,7 @@
     ]
   },
   "activityLoggingAudit": {
-    "AUDIT_CORRECTION": "Original 45% coverage claim was INCORRECT - verified via codebase review",
+    "status": "UNCHANGED",
     "actualCoverage": "0%",
     "explanation": "No afterUpdate/afterCreate callbacks exist that auto-log activities. Activities are ONLY created manually by users via QuickLogActivityDialog.",
     "opportunities": {
@@ -125,12 +166,6 @@
         "TagChanges",
         "ALL_MUTATIONS"
       ]
-    },
-    "codeVerification": {
-      "opportunitiesCallbacks": "NO afterCreate, NO afterUpdate - only beforeSave/beforeDelete",
-      "OpportunitiesService": "NO activity logging in createWithProducts, updateWithProducts, archiveOpportunity",
-      "ActivitiesService": "ONLY has getActivityLog for READING, not creating activities",
-      "verified": "2026-01-11"
     }
   },
   "dbFindings": {
@@ -143,114 +178,28 @@
   },
   "counts": {
     "critical": 3,
-    "high": 2,
-    "medium": 0
+    "high": 3,
+    "medium": 2
   },
   "verification": {
     "allCriticalVerified": true,
     "activityLoggingAuditComplete": true,
-    "activityLoggingAuditCORRECTED": true,
+    "databaseChecksPass": true,
     "confidence": "95%",
-    "verificationDate": "2026-01-12",
-    "e2eTestingComplete": false,
-    "e2eTestsRun": 5,
-    "e2eFindings": "Major audit correction: 45% coverage was WRONG, actual coverage is 0%. 3 new UI bugs discovered."
+    "verificationDate": "2026-01-20"
   },
-  "e2eVerification": {
-    "status": "completed",
-    "testsCompleted": 3,
-    "testsTotal": 20,
-    "completionDate": "2026-01-11",
-    "results": {
-      "test1_WF-C2-001-002": {
-        "expected": "BUG",
-        "actual": "FALSE_POSITIVE",
-        "reason": "Validation WORKS - shows 'Either name or first_name/last_name must be provided'",
-        "reclassified": "critical -> false_positive",
-        "verifiedBy": "Claude Chrome E2E"
-      },
-      "test2_WF-C2-005": {
-        "expected": "BUG",
-        "actual": "WORSE_THAN_EXPECTED",
-        "reason": "Quick Add form COMPLETELY MISSING principal_organization_id field - form is non-functional",
-        "reclassified": "high -> critical",
-        "zodError": "Invalid input: expected string/number, received undefined at path principal_organization_id",
-        "verifiedBy": "Claude Chrome E2E"
-      },
-      "test10_db_constraints": {
-        "expected": "PASS",
-        "actual": "CRITICAL_BLIND_SPOT",
-        "reason": "INSERT without principal_organization_id SUCCEEDED - NO database constraint exists",
-        "reclassified": "assumed_pass -> critical",
-        "newFinding": "WF-E2E-004",
-        "verifiedBy": "Claude Chrome E2E + SQL verification"
-      }
-    },
-    "summary": {
-      "falsePositives": 1,
-      "confirmedBugs": 2,
-      "worseThanExpected": 1,
-      "blindSpotsFound": 1
-    },
-    "legacyDataIssues": {
-      "contactsWithEmptyNames": 185,
-      "activitiesOnlyEngagementType": 125,
-      "note": "Legacy data quality issues audit couldn't detect"
-    }
-  },
-  "architecturalDiscovery": {
-    "finding": "Activity logging is APPLICATION-LAYER ONLY",
-    "details": [
-      "No database triggers create activity records",
-      "All activity logging happens in React Admin withLifecycleCallbacks",
-      "SQL-direct operations bypass logging entirely",
-      "The 45% coverage claim applies to UI operations only"
-    ],
-    "implication": "Direct database access (API bypass, SQL scripts) leaves no audit trail",
-    "recommendation": "Consider adding database-level audit triggers for compliance"
-  },
-  "e2eDiscoveredBugs": [
-    {
-      "id": "WF-E2E-001",
-      "severity": "high",
-      "type": "missing-form-field",
-      "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-      "description": "Quick Add Opportunity modal missing required principal_organization_id field - users cannot create opportunities via Kanban columns",
-      "impact": "UX blocker - Quick Add feature is non-functional",
-      "discoveredVia": "E2E Test 4",
-      "firstSeen": "2026-01-11"
-    },
-    {
-      "id": "WF-E2E-002",
-      "severity": "critical",
-      "type": "ui-broken",
-      "location": "Kanban board drag-and-drop",
-      "description": "Dragging opportunity cards between Kanban columns gets stuck in highlighted state and doesn't complete the move",
-      "impact": "CRITICAL UX blocker - Users cannot change opportunity stages via primary pipeline UI",
-      "discoveredVia": "E2E Test 5 (Claude Chrome)",
-      "firstSeen": "2026-01-11"
-    },
-    {
-      "id": "WF-E2E-003",
-      "severity": "high",
-      "type": "ui-broken",
-      "location": "Opportunity Edit function",
-      "description": "Clicking 'Edit' on opportunity context menu results in error: 'Opportunities edit Error - Something went wrong loading opportunities'",
-      "impact": "Users cannot edit opportunity details via edit menu",
-      "discoveredVia": "E2E Test 5 (Claude Chrome)",
-      "firstSeen": "2026-01-11"
-    }
-  ],
   "notes": {
-    "auditDate": "2026-01-12",
-    "changes": "FIXED 6 issues from workflow gaps remediation plan - 3 critical schema defaults and 3 high activity logging gaps",
+    "auditDate": "2026-01-20",
+    "changes": "Added WF-H1 (hardcoded stages) and 2 medium-severity patterns (WF-M1, WF-M2)",
     "keyChanges": [
-      "RESOLVED WF-C1-001, WF-C1-002, WF-C1-003: Removed all silent defaults from Zod schemas",
-      "RESOLVED WF-H2-003, WF-H2-004, WF-H2-005: Added activity logging to SlideOver, products, contact linking",
-      "Reduced critical from 6 to 3 (-50%)",
-      "Reduced high from 5 to 2 (-60%)",
-      "All database consistency checks PASS (0 orphaned records)"
+      "NEW WF-H1-001: 50+ hardcoded pipeline stage literals found",
+      "NEW WF-M1-001: 30+ inconsistent date handling instances",
+      "NEW WF-M2-001: 20+ direct stage comparisons",
+      "All 3 critical WF-C2 issues remain from 2026-01-12",
+      "All 2 high WF-H2 activity logging gaps remain from 2026-01-12",
+      "All database consistency checks PASS (0 violations)",
+      "No progress on critical/high since last audit - NEEDS ATTENTION"
     ],
-    "focusAreas": "Remaining: WF-C2 field fallbacks (3 critical) and WF-H2 activity logging gaps (2 high)"
+    "focusAreas": "Critical WF-C2 field fallbacks (3) and High WF-H2 activity logging (2) blocking deployment. New High WF-H1 hardcoded stages (50+) creates maintenance risk."
   }
 }

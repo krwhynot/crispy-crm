@@ -1,0 +1,191 @@
+{
+  "lastAuditDate": "2026-01-20",
+  "mode": "full",
+  "scope": "src/atomic-crm/, src/components/",
+  "metrics": {
+    "totalLOC": 189719,
+    "fileCount": 1146,
+    "avgFileSize": 166,
+    "filesOver500Lines": 53,
+    "filesOver300Lines": 202,
+    "todoCount": 21,
+    "magicNumberCount": 1918,
+    "emptyCatchCount": 0
+  },
+  "findings": {
+    "high": 29,
+    "medium": 47,
+    "low": 58
+  },
+  "issues": [
+    {
+      "id": "H1-001",
+      "severity": "high",
+      "check": "Large files",
+      "location": "src/atomic-crm/validation/activities.ts",
+      "value": 759,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H1-002",
+      "severity": "high",
+      "check": "Large files",
+      "location": "src/components/ui/sidebar.tsx",
+      "value": 673,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H1-003",
+      "severity": "high",
+      "check": "Large files",
+      "location": "src/atomic-crm/providers/supabase/filterRegistry.ts",
+      "value": 658,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H1-004",
+      "severity": "high",
+      "check": "Large files",
+      "location": "src/atomic-crm/contacts/useImportWizard.ts",
+      "value": 627,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H1-005",
+      "severity": "high",
+      "check": "Large files",
+      "location": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
+      "value": 620,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H2-001",
+      "severity": "high",
+      "check": "Deep nesting",
+      "location": "src/atomic-crm/contacts/ContactImportValidationPanel.tsx",
+      "value": 283,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H2-002",
+      "severity": "high",
+      "check": "Extreme deep nesting",
+      "location": "src/atomic-crm/opportunities/CampaignGroupedList.tsx",
+      "value": 27,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H4-001",
+      "severity": "high",
+      "check": "Duplicated code blocks",
+      "location": "src/atomic-crm/providers/supabase/handlers/*.ts",
+      "value": 12,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "H5-001",
+      "severity": "high",
+      "check": "God objects",
+      "location": "src/atomic-crm/validation/activities.ts",
+      "value": 47,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-001",
+      "severity": "medium",
+      "check": "Magic numbers",
+      "location": "src/atomic-crm/admin/HealthDashboard.tsx:139",
+      "value": "30000",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M1-002",
+      "severity": "medium",
+      "check": "Magic numbers",
+      "location": "src/atomic-crm/reports/CampaignActivity/StaleLeadsView.tsx:143",
+      "value": "999999",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M2-001",
+      "severity": "medium",
+      "check": "TODO/FIXME comments",
+      "location": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:148",
+      "value": "Missing RPC",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "id": "M4-001",
+      "severity": "medium",
+      "check": "Empty catch blocks",
+      "location": "N/A",
+      "value": 0,
+      "firstSeen": "2026-01-20",
+      "status": "resolved"
+    },
+    {
+      "id": "L3-001",
+      "severity": "low",
+      "check": "Console statements",
+      "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
+      "value": 8,
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    }
+  ],
+  "complexityHotspots": [
+    {
+      "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "score": 107.18,
+      "lines": 518,
+      "functions": 39,
+      "imports": 6,
+      "maxNesting": 7
+    },
+    {
+      "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
+      "score": 104.04,
+      "lines": 604,
+      "functions": 23,
+      "imports": 20,
+      "maxNesting": 14
+    },
+    {
+      "file": "src/atomic-crm/opportunities/CampaignGroupedList.tsx",
+      "score": 99.37,
+      "lines": 287,
+      "functions": 6,
+      "imports": 7,
+      "maxNesting": 27
+    },
+    {
+      "file": "src/components/ui/sidebar.tsx",
+      "score": 97.24,
+      "lines": 674,
+      "functions": 31,
+      "imports": 15,
+      "maxNesting": 7
+    },
+    {
+      "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
+      "score": 89.36,
+      "lines": 586,
+      "functions": 24,
+      "imports": 17,
+      "maxNesting": 9
+    }
+  ],
+  "healthScore": 0
+}

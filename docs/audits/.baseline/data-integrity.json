@@ -1,5 +1,5 @@
 {
-  "lastAudit": "2026-01-19T17:48:00Z",
+  "lastAudit": "2026-01-20T14:09:09Z",
   "composedDataProviderLines": 260,
   "unifiedProviderLines": 0,
   "findings": {
@@ -19,7 +19,7 @@
     {
       "id": "H001-2",
       "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-      "line": 143,
+      "line": 147,
       "check": "H001",
       "description": "Activities query missing deleted_at filter (may be intentional for GDPR)",
       "status": "needs_verification"
@@ -27,7 +27,7 @@
     {
       "id": "H001-3",
       "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-      "line": 156,
+      "line": 160,
       "check": "H001",
       "description": "Contact notes query missing deleted_at filter",
       "status": "needs_verification"
@@ -35,7 +35,7 @@
     {
       "id": "H001-4",
       "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-      "line": 191,
+      "line": 195,
       "check": "H001",
       "description": "Organizations query missing deleted_at filter",
       "status": "needs_verification"
@@ -43,7 +43,7 @@
     {
       "id": "H001-5",
       "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-      "line": 203,
+      "line": 207,
       "check": "H001",
       "description": "Organization notes query missing deleted_at filter",
       "status": "needs_verification"
@@ -51,7 +51,7 @@
     {
       "id": "H001-6",
       "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-      "line": 230,
+      "line": 234,
       "check": "H001",
       "description": "Opportunities query missing deleted_at filter",
       "status": "needs_verification"
@@ -59,10 +59,18 @@
     {
       "id": "H001-7",
       "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-      "line": 240,
+      "line": 244,
       "check": "H001",
       "description": "Opportunity notes query missing deleted_at filter",
       "status": "needs_verification"
+    },
+    {
+      "id": "H004",
+      "file": "src/atomic-crm/providers/supabase/extensions/*",
+      "line": 0,
+      "check": "H004",
+      "description": "Type-only Supabase imports (safe, acknowledged)",
+      "status": "acknowledged"
     },
     {
       "id": "M001",
@@ -78,7 +86,7 @@
       "totalTables": 27,
       "tablesWithViews": 4,
       "missingViewsCount": 23,
-      "tablesWithViews": [
+      "coreViewsPresent": [
         "contacts -> contacts_summary",
         "opportunities -> opportunities_summary",
         "organizations -> organizations_summary",
@@ -95,8 +103,15 @@
         "migration_history",
         "test_user_metadata",
         "tutorial_progress"
-      ]
+      ],
+      "complianceRate": "81.5%"
     },
-    "orphanedRecords": 0
+    "orphanedRecords": 0,
+    "deprecatedPatternsFound": 0
+  },
+  "stranglerFigStatus": {
+    "migrationComplete": true,
+    "composedHandlers": 39,
+    "legacyProviderLines": 0
   }
 }
