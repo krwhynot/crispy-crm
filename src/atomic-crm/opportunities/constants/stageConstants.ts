@@ -14,6 +14,50 @@ import type { OpportunityStageValue } from "@/atomic-crm/validation/opportunitie
 export type { OpportunityStageValue } from "@/atomic-crm/validation/opportunities";
 
 /**
+ * Type-safe stage constants object for use in code
+ * Use STAGE.CLOSED_WON instead of "closed_won" literals
+ */
+export const STAGE = {
+  NEW_LEAD: "new_lead",
+  INITIAL_OUTREACH: "initial_outreach",
+  SAMPLE_VISIT_OFFERED: "sample_visit_offered",
+  FEEDBACK_LOGGED: "feedback_logged",
+  DEMO_SCHEDULED: "demo_scheduled",
+  CLOSED_WON: "closed_won",
+  CLOSED_LOST: "closed_lost",
+} as const satisfies Record<string, OpportunityStageValue>;
+
+/**
+ * Closed stages array - for filtering and validation
+ */
+export const CLOSED_STAGES = [STAGE.CLOSED_WON, STAGE.CLOSED_LOST] as const;
+
+/**
+ * Active (non-closed) pipeline stages
+ */
+export const ACTIVE_STAGES = [
+  STAGE.NEW_LEAD,
+  STAGE.INITIAL_OUTREACH,
+  STAGE.SAMPLE_VISIT_OFFERED,
+  STAGE.FEEDBACK_LOGGED,
+  STAGE.DEMO_SCHEDULED,
+] as const;
+
+/**
+ * Stage ordering for sorting opportunities in pipeline view
+ * Lower numbers appear earlier in the pipeline
+ */
+export const STAGE_ORDER: Record<OpportunityStageValue, number> = {
+  [STAGE.NEW_LEAD]: 0,
+  [STAGE.INITIAL_OUTREACH]: 1,
+  [STAGE.SAMPLE_VISIT_OFFERED]: 2,
+  [STAGE.FEEDBACK_LOGGED]: 3,
+  [STAGE.DEMO_SCHEDULED]: 4,
+  [STAGE.CLOSED_WON]: 5,
+  [STAGE.CLOSED_LOST]: 6,
+};
+
+/**
  * MFB Sales Process Phase information
  * Maps pipeline stages to the broader 7-phase methodology
  */
@@ -164,11 +208,27 @@ export function getOpportunityMfbPhase(stageValue: string): MfbPhaseInfo | null 
 }
 
 export function isActiveStage(stageValue: string): boolean {
-  return !["closed_won", "closed_lost"].includes(stageValue);
+  return !(CLOSED_STAGES as readonly string[]).includes(stageValue);
 }
 
 export function isClosedStage(stageValue: string): boolean {
-  return ["closed_won", "closed_lost"].includes(stageValue);
+  return (CLOSED_STAGES as readonly string[]).includes(stageValue);
+}
+
+/**
+ * Get badge variant for a pipeline stage
+ * Used for consistent stage badge styling across the application
+ *
+ * @param stage - The pipeline stage value
+ * @returns Badge variant: 'success' for won, 'destructive' for lost, 'default' for new leads, 'secondary' for others
+ */
+export function getStageBadgeVariant(
+  stage: OpportunityStageValue
+): "default" | "success" | "destructive" | "secondary" {
+  if (stage === STAGE.CLOSED_WON) return "success";
+  if (stage === STAGE.CLOSED_LOST) return "destructive";
+  if (stage === STAGE.NEW_LEAD) return "default";
+  return "secondary";
 }
 
 // Legacy compatibility function for existing components

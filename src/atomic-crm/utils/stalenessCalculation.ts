@@ -16,26 +16,18 @@
 
 import { z } from "zod";
 import { parseDateSafely } from "@/lib/date-utils";
+import {
+  STAGE,
+  ACTIVE_STAGES,
+  CLOSED_STAGES,
+  isClosedStage as isClosedStageBase,
+} from "@/atomic-crm/opportunities/constants/stageConstants";
 
-/**
- * Valid pipeline stages that can have stale thresholds.
- * Closed stages are excluded as they cannot become stale.
- */
-export const ACTIVE_PIPELINE_STAGES = [
-  "new_lead",
-  "initial_outreach",
-  "sample_visit_offered",
-  "feedback_logged",
-  "demo_scheduled",
-] as const;
+// Re-export for backward compatibility with existing imports
+export { ACTIVE_STAGES as ACTIVE_PIPELINE_STAGES, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
 
-export type ActivePipelineStage = (typeof ACTIVE_PIPELINE_STAGES)[number];
-
-/**
- * Closed stages - excluded from staleness calculations.
- */
-export const CLOSED_STAGES = ["closed_won", "closed_lost"] as const;
-
+// Derive types from the canonical source
+export type ActivePipelineStage = (typeof ACTIVE_STAGES)[number];
 export type ClosedStage = (typeof CLOSED_STAGES)[number];
 
 /**
