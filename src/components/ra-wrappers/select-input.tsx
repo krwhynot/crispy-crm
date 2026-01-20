@@ -245,7 +245,9 @@ export const SelectInput = (props: SelectInputProps) => {
                 <SelectValue placeholder={renderEmptyItemOption()}>
                   {selectedChoice ? (
                     renderMenuItemOption(selectedChoice)
-                  ) : field.value && field.value !== emptyValue ? (
+                  ) : isFromReference && field.value && field.value !== emptyValue ? (
+                    // Only show "Loading..." for ReferenceInput (async) scenarios,
+                    // not when choices are provided directly (sync)
                     <span className="text-muted-foreground animate-pulse">Loading...</span>
                   ) : null}
                 </SelectValue>

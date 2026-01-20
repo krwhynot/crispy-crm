@@ -10,7 +10,7 @@ import { SelectInput } from "@/components/ra-wrappers/select-input";
  */
 const EMAIL_TYPE_CHOICES = [
   { id: "work", name: "Work" },
-  { id: "personal", name: "Personal" },
+  { id: "home", name: "Home" },
   { id: "other", name: "Other" },
 ];
 
