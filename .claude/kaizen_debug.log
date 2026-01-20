@@ -6862,3 +6862,8 @@ tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\nst
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "npx tsc --noEmit -p tsconfig.json 2>&1 | head -50", "timeout": 60000, "description": "Run TypeScript diagnostics on project"}
 tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:25:10.892533 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run --reporter=verbose src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts 2>&1 | tail -50", "timeout": 120000, "description": "Run opportunitiesH
+tool_response: {"stdout": "    \u001b[32m'products_to_sync.0.product_id_reference'\u001b[39m: \u001b[32m'Invalid input'\u001b[39m,\n    \u001b[32m'products_to_sync.0'\u001b[39m: \u001b[32m'Unrecognized key: \"invali

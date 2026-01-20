@@ -59,12 +59,13 @@ Crispy CRM uses **two distinct tracking systems** for technical issues:
 
 ---
 
-## System 2: Audit/TODOs Tracker
+## System 2: Security/Workflow Findings (Historical)
 
-**Source File:** `docs/TODOs.md`
-**Supporting File:** `docs/PROVIDER_AUDIT_REPORT.md`
-**ID Format:** `PREFIX-XXX` (three-digit) or `PREFIX-CXX` (category + two-digit)
+**Status:** Consolidated into `docs/technical-debt.md` (January 2026)
+**ID Format:** `PREFIX-CXX` (category + two-digit)
 **Origin:** Provider System Deep Audit (January 2026)
+
+**Note:** These findings have been resolved and integrated into the main technical debt tracker.
 
 ### Finding ID Prefixes
 

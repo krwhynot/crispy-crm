@@ -32,19 +32,16 @@ Found in `docs/technical-debt.md`. These use **category prefixes** to identify t
 - `P2` - Medium (tech debt)
 - `P3` - Low (improvements)
 
-### 2. Audit/Execution Plan IDs (Functional)
+### 2. Security/Workflow IDs
 
-Found in `docs/TODOs.md`. These use **domain prefixes** for security and workflow issues:
+Historical findings from provider audits (now consolidated into `technical-debt.md`):
 
 | Prefix | Category | Example |
 |--------|----------|---------|
-| `CRITICAL-XXX` | Critical Bugs | `CRITICAL-001` Validation bypass |
 | `SF-CXX` | Security Findings | `SF-C09` IDOR vulnerability |
 | `WF-CXX` | Workflow Findings | `WF-C06` Missing delete warning |
 
-**Numbering Convention:**
-- `C` indicates "Critical" severity within the category
-- Numbers are sequential within each prefix
+**Note:** These have been merged into the main technical debt tracker.
 
 ---
 
@@ -165,11 +162,12 @@ Update the status and move to Resolved section if applicable:
 | `FORM-` | Forms | Touch targets, validation, breakpoints |
 | `EC-` | Edge Cases | i18n, RTL, decimal handling, Unicode |
 
-### Audit/Security Prefixes (TODOs.md)
+### Security/Workflow Prefixes (Historical)
+
+These findings have been consolidated into technical-debt.md:
 
 | Prefix | Full Name | Description |
 |--------|-----------|-------------|
-| `CRITICAL-` | Critical Bug | Validation bypasses, data corruption |
 | `SF-C` | Security Finding (Critical) | IDOR, RLS bypass, storage leaks |
 | `WF-C` | Workflow Finding (Critical) | Cascade deletes, user disable, orphans |
 
@@ -187,46 +185,36 @@ Update the status and move to Resolved section if applicable:
 
 ---
 
-## Cross-Reference Map
+## Tracking Flow
 
 ```
 +---------------------------+
-|   PROVIDER_AUDIT_REPORT   |  <-- Source findings (SF-C01, WF-C01, etc.)
+|      Audit Report         |  <-- Deep audits generate findings
 +------------+--------------+
              |
-             | Generates execution plan
              v
 +---------------------------+
-|       TODOs.md            |  <-- Phase-ordered tasks with dependencies
-|  - Phase 1: Security      |      (Items 1-11 with Finding IDs)
-|  - Phase 2: Integrity     |
-|  - Phase 3: Structural    |
-+------------+--------------+
-             |
-             | Parallel tracking for categorical issues
-             v
-+---------------------------+
-|   technical-debt.md       |  <-- UI-XX, ASYNC-XX, ERR-XX categories
-|  - P0: Critical           |      (Status: Open/In Progress/Resolved)
-|  - P1: High               |
+|   technical-debt.md       |  <-- All findings consolidated here
+|  - P0: Critical           |      (UI-XX, ASYNC-XX, ERR-XX, etc.)
+|  - P1: High               |      (Status: Open/In Progress/Resolved)
 |  - P2/P3: Lower           |
 +------------+--------------+
              |
              | Commits reference Finding IDs
              v
 +---------------------------+
-|      Git History          |  <-- fix(security): resolve SF-C09 IDOR
-|                           |      fix(a11y): resolve UI-04 focus
+|      Git History          |  <-- fix(ui): resolve UI-04 focus
+|                           |      fix(security): resolve SF-C09
 +---------------------------+
 ```
 
-### Linkage Examples
+### Tracking Examples
 
-| Audit Finding | TODOs.md Item | Related Tech Debt | Commit |
-|---------------|---------------|-------------------|--------|
-| SF-C01 | Item 3 | (security views) | `fix(security): resolve SF-C01` |
-| WF-C06 | Item 8 | UI-related | `fix(workflow): resolve WF-C06` |
-| -- | -- | UI-04 | `fix(a11y): resolve UI-04` |
+| Finding ID | Category | File | Commit |
+|------------|----------|------|--------|
+| UI-04 | Focus Management | columns-button.tsx | `fix(a11y): resolve UI-04` |
+| ASYNC-01 | Race Condition | useEffect hook | `fix(async): resolve ASYNC-01` |
+| ERR-01 | Silent Catch | avatar utils | `fix(errors): resolve ERR-01` |
 
 ---
 
@@ -271,19 +259,13 @@ grep "columns-button" docs/technical-debt.md
 grep "opportunitiesHandler" docs/TODOs.md
 ```
 
-### TODOs.md Queries
+### Git History Queries
 
 ```bash
-# Find incomplete items
-grep "\[ \]" docs/TODOs.md
-
-# Find completed items
-grep "\[x\]" docs/TODOs.md
-
-# Find items by Finding ID
-grep "SF-C" docs/TODOs.md
-grep "WF-C" docs/TODOs.md
-grep "CRITICAL-" docs/TODOs.md
+# Find commits that resolved specific findings
+git log --all --oneline --grep="UI-04"
+git log --all --oneline --grep="SF-C09"
+git log --all --oneline --grep="WF-C"
 ```
 
 ### Quick Win Candidates
@@ -344,8 +326,7 @@ grep -A20 "Quick Wins" docs/technical-debt.md
 
 ## Related Documentation
 
-- `docs/technical-debt.md` - The categorical issue tracker
-- `docs/TODOs.md` - The execution plan with phases
-- `docs/PROVIDER_AUDIT_REPORT.md` - Source audit findings
+- `docs/technical-debt.md` - Master issue tracker for all findings
 - `.claude/hooks/kaizen_gate.py` - Commit message enforcement
 - `.claude/hooks/daily_briefing.py` - Session startup display
+- `docs/development/FINDING_IDS.md` - Complete Finding ID reference
