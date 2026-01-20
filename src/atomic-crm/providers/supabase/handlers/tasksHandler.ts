@@ -124,7 +124,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Get list of tasks (filters to activity_type = 'task')
      */
-    getList: async (resource, params: GetListParams) => {
+    getList: async (_resource, params: GetListParams) => {
       const result = await activitiesHandler.getList("activities", {
         ...params,
         filter: {
@@ -142,7 +142,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Get single task by ID
      */
-    getOne: async (resource, params: GetOneParams) => {
+    getOne: async (_resource, params: GetOneParams) => {
       const result = await activitiesHandler.getOne("activities", params);
       return {
         ...result,
@@ -153,7 +153,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Get multiple tasks by IDs
      */
-    getMany: async (resource, params: GetManyParams) => {
+    getMany: async (_resource, params: GetManyParams) => {
       const result = await activitiesHandler.getMany("activities", params);
       return {
         ...result,
@@ -164,7 +164,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Get tasks referenced by another resource
      */
-    getManyReference: async (resource, params) => {
+    getManyReference: async (_resource, params) => {
       const result = await activitiesHandler.getManyReference("activities", {
         ...params,
         filter: {
@@ -182,7 +182,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Create a new task (sets activity_type = 'task')
      */
-    create: async (resource, params) => {
+    create: async (_resource, params) => {
       const result = await activitiesHandler.create("activities", {
         ...params,
         data: taskToActivity(params.data),
