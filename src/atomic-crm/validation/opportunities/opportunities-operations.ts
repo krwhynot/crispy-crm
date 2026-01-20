@@ -385,7 +385,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
   .refine(
     (data) => {
       // If stage is closed_won, win_reason is required
-      if (data.stage === "closed_won") {
+      if (data.stage === STAGE.CLOSED_WON) {
         return !!data.win_reason;
       }
       return true;
@@ -398,7 +398,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
   .refine(
     (data) => {
       // If stage is closed_lost, loss_reason is required
-      if (data.stage === "closed_lost") {
+      if (data.stage === STAGE.CLOSED_LOST) {
         return !!data.loss_reason;
       }
       return true;
@@ -429,7 +429,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
  */
 export const closeOpportunityBaseSchema = z.strictObject({
   id: z.union([z.string(), z.number()]),
-  stage: z.enum(["closed_won", "closed_lost"]),
+  stage: z.enum([STAGE.CLOSED_WON, STAGE.CLOSED_LOST]),
   win_reason: winReasonSchema.optional().nullable(),
   loss_reason: lossReasonSchema.optional().nullable(),
   close_reason_notes: z
@@ -447,7 +447,7 @@ export const closeOpportunityBaseSchema = z.strictObject({
 export const closeOpportunitySchema = closeOpportunityBaseSchema
   .refine(
     (data) => {
-      if (data.stage === "closed_won") {
+      if (data.stage === STAGE.CLOSED_WON) {
         return !!data.win_reason;
       }
       return true;
@@ -459,7 +459,7 @@ export const closeOpportunitySchema = closeOpportunityBaseSchema
   )
   .refine(
     (data) => {
-      if (data.stage === "closed_lost") {
+      if (data.stage === STAGE.CLOSED_LOST) {
         return !!data.loss_reason;
       }
       return true;

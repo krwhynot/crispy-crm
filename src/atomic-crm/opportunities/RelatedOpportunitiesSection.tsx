@@ -3,6 +3,7 @@ import { useGetList, useGetOne } from "ra-core";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import type { Opportunity } from "../types";
+import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 interface RelatedOpportunitiesSectionProps {
   opportunity: Opportunity;
