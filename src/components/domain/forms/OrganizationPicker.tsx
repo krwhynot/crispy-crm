@@ -3,7 +3,11 @@ import type { ReferenceInputProps } from "@/components/ra-wrappers/reference-inp
 import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/AutocompleteOrganizationInput";
 import { enableGetChoices } from "@/atomic-crm/utils/autocompleteDefaults";
 
-interface OrganizationPickerProps extends Omit<ReferenceInputProps, "children" | "reference"> {
+interface OrganizationPickerProps extends Omit<
+  ReferenceInputProps,
+  "children" | "reference" | "source"
+> {
+  source?: string; // Default: "organization_id"
   organizationType?: "customer" | "prospect" | "principal" | "distributor";
   label?: string;
   helperText?: string;

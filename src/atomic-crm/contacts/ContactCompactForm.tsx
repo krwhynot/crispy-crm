@@ -24,9 +24,6 @@ const validateEmailOnBlur = (value: string) => {
   return result.success ? undefined : result.error.issues[0]?.message;
 };
 
-// Lowercase type values to match Zod schema (personalInfoTypeSchema)
-const personalInfoTypes = [{ id: "work" }, { id: "home" }, { id: "other" }];
-
 export const ContactCompactForm = () => {
   const { setValue, getValues } = useFormContext();
 
@@ -97,17 +94,7 @@ export const ContactCompactForm = () => {
         {/* Organization - full width row */}
         <div data-tutorial="contact-organization">
           <FormFieldWrapper name="organization_id" isRequired countDefaultAsFilled>
-            <ReferenceInput
-              source="organization_id"
-              reference="organizations"
-              isRequired
-              enableGetChoices={enableGetChoices}
-            >
-              <AutocompleteOrganizationInput
-                label="Organization *"
-                helperText="Organization is required"
-              />
-            </ReferenceInput>
+            <OrganizationPicker label="Organization *" helperText="Organization is required" />
           </FormFieldWrapper>
         </div>
 
@@ -141,71 +128,19 @@ export const ContactCompactForm = () => {
         {/* Email - full width row */}
         <div data-tutorial="contact-email">
           <FormFieldWrapper name="email" isRequired>
-            <ArrayInput
-              source="email"
-              label="Email addresses *"
-              helperText="At least one email required"
-            >
-              <SimpleFormIterator
-                inline
-                disableReordering
-                disableClear
-                className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
-              >
-                <TextInput
-                  source="value"
-                  className="w-full"
-                  helperText={false}
-                  label={false}
-                  placeholder="Email (valid email required)"
-                  onPaste={handleEmailPaste}
-                  onBlur={handleEmailBlur}
-                  autoComplete="email"
-                  validate={validateEmailOnBlur}
-                />
-                <SelectInput
-                  source="type"
-                  helperText={false}
-                  label={false}
-                  optionText="id"
-                  choices={personalInfoTypes}
-                  className="w-24 min-w-24"
-                  defaultValue="work"
-                />
-              </SimpleFormIterator>
-            </ArrayInput>
+            <EmailArrayField
+              isRequired
+              onEmailPaste={handleEmailPaste}
+              onEmailBlur={handleEmailBlur}
+              validate={validateEmailOnBlur}
+            />
           </FormFieldWrapper>
         </div>
 
         {/* Phone - full width row */}
         <div data-tutorial="contact-phone">
           <FormFieldWrapper name="phone">
-            <ArrayInput source="phone" label="Phone numbers" helperText={false}>
-              <SimpleFormIterator
-                inline
-                disableReordering
-                disableClear
-                className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
-              >
-                <TextInput
-                  source="value"
-                  className="w-full"
-                  helperText={false}
-                  label={false}
-                  placeholder="Phone number"
-                  autoComplete="tel"
-                />
-                <SelectInput
-                  source="type"
-                  helperText={false}
-                  label={false}
-                  optionText="id"
-                  choices={personalInfoTypes}
-                  className="w-24 min-w-24"
-                  defaultValue="work"
-                />
-              </SimpleFormIterator>
-            </ArrayInput>
+            <PhoneArrayField />
           </FormFieldWrapper>
         </div>
       </FormSectionWithProgress>
