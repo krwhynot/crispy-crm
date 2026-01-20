@@ -124,13 +124,12 @@ export const ContactCompactForm = () => {
       <FormSectionWithProgress
         id="contact-info-section"
         title="Contact Info"
-        requiredFields={["email"]}
+        requiredFields={[]}
       >
-        {/* Email - full width row */}
+        {/* Email - full width row (optional) */}
         <div data-tutorial="contact-email">
-          <FormFieldWrapper name="email" isRequired>
+          <FormFieldWrapper name="email">
             <EmailArrayField
-              isRequired
               onEmailPaste={handleEmailPaste}
               onEmailBlur={handleEmailBlur}
               validate={validateEmailOnBlur}
