@@ -345,7 +345,7 @@ describe("authProvider", () => {
         select: mockSelect,
       });
 
-      const result = await authProvider.canAccess({
+      const result = await authProvider.canAccess!({
         resource: "opportunities",
         action: "create",
       });
@@ -394,10 +394,10 @@ describe("authProvider", () => {
       });
 
       // First call - should fetch from database
-      await authProvider.canAccess({ resource: "contacts", action: "read" });
+      await authProvider.canAccess!({ resource: "contacts", action: "read" });
 
       // Second call - should use cache
-      await authProvider.canAccess({
+      await authProvider.canAccess!({
         resource: "opportunities",
         action: "read",
       });
@@ -446,7 +446,7 @@ describe("authProvider", () => {
       });
 
       // First call - populates cache
-      await authProvider.canAccess({ resource: "contacts", action: "read" });
+      await authProvider.canAccess!({ resource: "contacts", action: "read" });
 
       // Login - clears cache
       mockLogin.mockResolvedValue(undefined);
@@ -456,7 +456,7 @@ describe("authProvider", () => {
       });
 
       // Second call - should fetch from database again (cache was cleared)
-      await authProvider.canAccess({ resource: "contacts", action: "read" });
+      await authProvider.canAccess!({ resource: "contacts", action: "read" });
 
       // Should query database twice (once before login, once after)
       expect(mockFrom).toHaveBeenCalledTimes(2);
@@ -489,7 +489,7 @@ describe("authProvider", () => {
         select: mockSelect,
       });
 
-      const result = await authProvider.canAccess({
+      const result = await authProvider.canAccess!({
         resource: "opportunities",
         action: "read",
       });
@@ -503,13 +503,13 @@ describe("authProvider", () => {
       // Mock window.location.pathname
       const originalLocation = window.location;
       delete (window as any).location;
-      window.location = { ...originalLocation, pathname: "/dashboard" };
+      (window as any).location = { ...originalLocation, pathname: "/dashboard" };
 
       // Should propagate the network error (fail fast principle)
       await expect(authProvider.checkAuth({})).rejects.toThrow("Network timeout");
 
       // Restore window.location
-      window.location = originalLocation;
+      (window as any).location = originalLocation;
     });
 
     it("should handle database error when fetching sale", async () => {
@@ -537,7 +537,7 @@ describe("authProvider", () => {
         select: mockSelect,
       });
 
-      const result = await authProvider.canAccess({
+      const result = await authProvider.canAccess!({
         resource: "contacts",
         action: "read",
       });
