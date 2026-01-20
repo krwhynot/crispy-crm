@@ -235,9 +235,9 @@ export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps)
                                           <div className="flex items-center gap-2">
                                             <Badge
                                               variant={
-                                                opp.stage === "closed_won"
+                                                opp.stage === STAGE.CLOSED_WON
                                                   ? "default"
-                                                  : opp.stage === "closed_lost"
+                                                  : opp.stage === STAGE.CLOSED_LOST
                                                     ? "destructive"
                                                     : "secondary"
                                               }

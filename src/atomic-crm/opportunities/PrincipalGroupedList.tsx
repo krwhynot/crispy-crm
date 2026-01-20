@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { Opportunity } from "../types";
 import { getStageStatus, type StageStatus } from "./constants/stageThresholds";
-import { getOpportunityStageLabel } from "./constants/stageConstants";
+import { getOpportunityStageLabel, STAGE } from "./constants/stageConstants";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**
@@ -47,11 +47,11 @@ interface PrincipalMetrics {
  * Calculate win rate and counts for a principal
  */
 function calculateMetrics(opportunities: Opportunity[]): PrincipalMetrics {
-  const closedWon = opportunities.filter((o) => o.stage === "closed_won").length;
-  const closedLost = opportunities.filter((o) => o.stage === "closed_lost").length;
+  const closedWon = opportunities.filter((o) => o.stage === STAGE.CLOSED_WON).length;
+  const closedLost = opportunities.filter((o) => o.stage === STAGE.CLOSED_LOST).length;
   const totalClosed = closedWon + closedLost;
   const activeCount = opportunities.filter(
-    (o) => o.stage !== "closed_won" && o.stage !== "closed_lost"
+    (o) => o.stage !== STAGE.CLOSED_WON && o.stage !== STAGE.CLOSED_LOST
   ).length;
 
   return {
@@ -184,7 +184,7 @@ export const PrincipalGroupedList = ({ openSlideOver }: PrincipalGroupedListProp
           const metrics = calculateMetrics(principalOpps);
           // Only show active (non-closed) opportunities in the column
           const activeOpps = principalOpps.filter(
-            (o) => o.stage !== "closed_won" && o.stage !== "closed_lost"
+            (o) => o.stage !== STAGE.CLOSED_WON && o.stage !== STAGE.CLOSED_LOST
           );
 
           return (

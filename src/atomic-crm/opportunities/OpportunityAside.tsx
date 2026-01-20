@@ -13,19 +13,13 @@ import { TasksIterator } from "../tasks/TasksIterator";
 import { SaleName } from "../sales/SaleName";
 import { SaleAvatar } from "../sales/SaleAvatar";
 import type { Opportunity } from "../types";
-import { getOpportunityStageLabel } from "./constants/stageConstants";
+import { getOpportunityStageLabel, getStageBadgeVariant, STAGE } from "./constants/stageConstants";
 import { parseDateSafely } from "@/lib/date-utils";
 
 export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
   const record = useRecordContext<Opportunity>();
 
   if (!record) return null;
-
-  const getStageBadgeVariant = (stage: string) => {
-    if (stage === "closed_won") return "default";
-    if (stage === "closed_lost") return "destructive";
-    return "secondary";
-  };
 
   return (
     <div className="hidden sm:block w-64 min-w-64 text-sm">

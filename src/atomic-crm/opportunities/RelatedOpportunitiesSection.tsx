@@ -64,9 +64,9 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
               )}
               <Badge
                 variant={
-                  parentOpportunity.stage === "closed_won"
+                  parentOpportunity.stage === STAGE.CLOSED_WON
                     ? "default"
-                    : parentOpportunity.stage === "closed_lost"
+                    : parentOpportunity.stage === STAGE.CLOSED_LOST
                       ? "destructive"
                       : "secondary"
                 }
@@ -122,9 +122,9 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
                   )}
                   <Badge
                     variant={
-                      childOpp.stage === "closed_won"
+                      childOpp.stage === STAGE.CLOSED_WON
                         ? "default"
-                        : childOpp.stage === "closed_lost"
+                        : childOpp.stage === STAGE.CLOSED_LOST
                           ? "destructive"
                           : "secondary"
                     }

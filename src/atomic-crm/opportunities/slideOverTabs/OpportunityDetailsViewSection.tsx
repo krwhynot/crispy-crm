@@ -89,8 +89,8 @@ export function OpportunityDetailsViewSection({
   };
 
   const getStageBadgeVariant = (stage: string) => {
-    if (stage === "closed_won") return "default";
-    if (stage === "closed_lost") return "destructive";
+    if (stage === STAGE.CLOSED_WON) return "default";
+    if (stage === STAGE.CLOSED_LOST) return "destructive";
     return "secondary";
   };
 
@@ -106,11 +106,11 @@ export function OpportunityDetailsViewSection({
     return reasons.find((r) => r.id === reason)?.name || reason;
   };
 
-  const isClosedOpportunity = record.stage === "closed_won" || record.stage === "closed_lost";
+  const isClosedOpportunity = record.stage === STAGE.CLOSED_WON || record.stage === STAGE.CLOSED_LOST;
   const closedReason =
-    record.stage === "closed_won"
+    record.stage === STAGE.CLOSED_WON
       ? getReasonDisplayName(record.win_reason, true)
-      : record.stage === "closed_lost"
+      : record.stage === STAGE.CLOSED_LOST
         ? getReasonDisplayName(record.loss_reason, false)
         : null;
 

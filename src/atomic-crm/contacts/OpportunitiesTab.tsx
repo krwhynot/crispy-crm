@@ -26,6 +26,7 @@ import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 import { LinkOpportunityModal } from "./LinkOpportunityModal";
 import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { SuggestedOpportunityCard } from "./SuggestedOpportunityCard";
+import { isClosedStage } from "@/atomic-crm/opportunities/constants/stageConstants";
 import type { Contact, Opportunity, OpportunityContact } from "../types";
 
 // Extended type for opportunities with junction table metadata
@@ -81,9 +82,7 @@ export function OpportunitiesTab() {
 
   const suggestedOpps = useMemo(() => {
     if (!orgOpportunities) return [];
-    return orgOpportunities
-      .filter((opp: Opportunity) => !["closed_won", "closed_lost"].includes(opp.stage))
-      .slice(0, 5);
+    return orgOpportunities.filter((opp: Opportunity) => !isClosedStage(opp.stage)).slice(0, 5);
   }, [orgOpportunities]);
 
   const isLoading = isPending || junctionLoading || oppsLoading;
