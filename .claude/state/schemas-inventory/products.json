@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-19T23:19:57.747Z",
+  "generated_at": "2026-01-20T03:14:27.629Z",
   "item_count": 5,
   "items": [
     {
@@ -161,6 +161,8 @@
       "relatedSchemas": [
         "productDistributorAuthorizationSchema",
         "opportunityProductSchema",
+        "opportunityProductSyncInputSchema",
+        "opportunityProductSyncHandlerSchema",
         "productDistributorStatusSchema",
         "productDistributorSchema",
         "productWithDistributorsSchema",
@@ -585,6 +587,8 @@
         }
       ],
       "relatedSchemas": [
+        "opportunityProductSyncInputSchema",
+        "opportunityProductSyncHandlerSchema",
         "createOpportunitySchema",
         "updateOpportunitySchema",
         "productSchema"

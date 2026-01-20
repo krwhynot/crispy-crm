@@ -294,14 +294,14 @@ For filtering React Admin lists (NOT forms). Uses `useListContext()` instead of 
 
 **TextColumnFilter** — Debounced text input for free-text search:
 ```tsx
-// src/components/admin/column-filters/TextColumnFilter.tsx
+// src/components/ra-wrappers/column-filters/TextColumnFilter.tsx
 // Uses useListContext() for filterValues, setFilters
 // Features: 300ms debounce, clear button, escape key support
 ```
 
 **CheckboxColumnFilter** — Multi-select checkbox popover:
 ```tsx
-// src/components/admin/column-filters/CheckboxColumnFilter.tsx
+// src/components/ra-wrappers/column-filters/CheckboxColumnFilter.tsx
 // Uses useListContext() for filterValues, setFilters
 // Features: Select All, Clear, count badge, touch targets
 ```
@@ -350,7 +350,7 @@ export function StageFilter() {
 
 **OwnerFilterDropdown** — Role-based owner filter:
 ```tsx
-// src/components/admin/OwnerFilterDropdown.tsx
+// src/components/ra-wrappers/OwnerFilterDropdown.tsx
 // KEPT SEPARATE by design - role-based UI logic should NOT be abstracted
 // - Rep: Sees Switch toggle ("My Items" on/off)
 // - Manager/Admin: Sees Select dropdown with team members

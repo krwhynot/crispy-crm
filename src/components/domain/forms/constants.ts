@@ -1,6 +1,6 @@
 /**
  * Contact type options for email and phone fields.
- * Aligned with personalInfoTypeSchema in src/atomic-crm/validation/contacts-communication.ts
+ * Aligned with personalInfoTypeSchema in the validation layer (contacts-communication.ts)
  */
 export type ContactType = "work" | "home" | "other";
 

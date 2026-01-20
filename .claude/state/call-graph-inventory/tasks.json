@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-19T23:20:06.515Z",
+  "generated_at": "2026-01-20T03:14:30.522Z",
   "items": {
     "nodes": [
       {
@@ -22,10 +22,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "id": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "name": "TaskCompactForm",
         "file": "src/atomic-crm/tasks/TaskCompactForm.tsx",
-        "line": 26,
+        "line": 30,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1194,79 +1194,70 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "useFormOptions",
         "targetName": "useFormOptions",
         "edgeType": "hook",
-        "line": 27,
+        "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 91,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "getQSearchAutocompleteProps",
         "targetName": "getQSearchAutocompleteProps",
         "edgeType": "call",
-        "line": 98,
+        "line": 102,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "getAutocompleteProps",
         "targetName": "getAutocompleteProps",
         "edgeType": "call",
-        "line": 114,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "getAutocompleteProps",
         "targetName": "getAutocompleteProps",
         "edgeType": "call",
-        "line": 128,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "getQSearchAutocompleteProps",
         "targetName": "getQSearchAutocompleteProps",
         "edgeType": "call",
-        "line": 144,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormSectionWithProgress",
         "targetName": "FormSectionWithProgress",
         "edgeType": "render",
-        "line": 32,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 38,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
@@ -1275,25 +1266,25 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
-        "target": "CompactFormRow",
-        "targetName": "CompactFormRow",
-        "edgeType": "render",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 53,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
+        "target": "CompactFormRow",
+        "targetName": "CompactFormRow",
+        "edgeType": "render",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
@@ -1302,133 +1293,133 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormSectionWithProgress",
         "targetName": "FormSectionWithProgress",
         "edgeType": "render",
-        "line": 68,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 73,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 74,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 87,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 95,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 96,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 106,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 107,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 108,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 121,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 122,
+        "line": 126,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 137,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 138,
+        "line": 142,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
@@ -1437,16 +1428,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
-        "target": "DateInput",
-        "targetName": "DateInput",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
         "edgeType": "render",
-        "line": 54,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "DateInput",
         "targetName": "DateInput",
         "edgeType": "render",
@@ -1455,56 +1446,65 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
+        "target": "DateInput",
+        "targetName": "DateInput",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 75,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 88,
+        "line": 92,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 97,
+        "line": 101,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 113,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 127,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:26:TaskCompactForm",
+        "source": "src/atomic-crm/tasks/TaskCompactForm.tsx:30:TaskCompactForm",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 143,
+        "line": 147,
         "conditional": false,
         "inLoop": false
       },

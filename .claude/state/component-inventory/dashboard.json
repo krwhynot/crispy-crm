@@ -1,7 +1,7 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-19T23:19:27.575Z",
-  "item_count": 34,
+  "generated_at": "2026-01-20T03:14:20.682Z",
+  "item_count": 36,
   "items": [
     {
       "name": "RecentItemsWidget",
@@ -24,6 +24,55 @@
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "NotificationBell",
+      "file": "src/atomic-crm/dashboard/components/NotificationBell.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useGetList"
+      ],
+      "imports": [
+        "./NotificationDropdown",
+        "@/components/ui/button",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "NotificationDropdown"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "NotificationDropdown",
+      "file": "src/atomic-crm/dashboard/components/NotificationDropdown.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useGetList",
+        "useNotify",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/dropdown-menu",
+        "@/components/ui/scroll-area",
+        "@/lib/date-utils",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "DashboardTutorial",

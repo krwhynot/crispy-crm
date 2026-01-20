@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-19T23:20:06.435Z",
+  "generated_at": "2026-01-20T03:14:30.498Z",
   "items": {
     "nodes": [
       {
@@ -49,10 +49,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
+        "id": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
         "name": "OrganizationAddressSection",
         "file": "src/atomic-crm/organizations/OrganizationAddressSection.tsx",
-        "line": 5,
+        "line": 9,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -247,10 +247,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:6:OrganizationHierarchySection",
+        "id": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:10:OrganizationHierarchySection",
         "name": "OrganizationHierarchySection",
         "file": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx",
-        "line": 6,
+        "line": 10,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1572,34 +1572,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
         "target": "CollapsibleSection",
         "targetName": "CollapsibleSection",
         "edgeType": "render",
-        "line": 7,
+        "line": 11,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 9,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
-        "target": "CompactFormRow",
-        "targetName": "CompactFormRow",
-        "edgeType": "render",
-        "line": 12,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
@@ -1608,16 +1590,25 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
+        "target": "CompactFormRow",
+        "targetName": "CompactFormRow",
         "edgeType": "render",
         "line": 16,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 17,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
@@ -1626,16 +1617,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
-        "target": "TextInput",
-        "targetName": "TextInput",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 10,
+        "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
@@ -1644,20 +1635,29 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
-        "target": "StateComboboxInput",
-        "targetName": "StateComboboxInput",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
+        "target": "TextInput",
+        "targetName": "TextInput",
         "edgeType": "render",
-        "line": 17,
+        "line": 18,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:5:OrganizationAddressSection",
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
+        "target": "StateComboboxInput",
+        "targetName": "StateComboboxInput",
+        "edgeType": "render",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationAddressSection.tsx:9:OrganizationAddressSection",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 21,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
@@ -3876,56 +3876,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:6:OrganizationHierarchySection",
+        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:10:OrganizationHierarchySection",
         "target": "CollapsibleSection",
         "targetName": "CollapsibleSection",
         "edgeType": "render",
-        "line": 8,
+        "line": 12,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:6:OrganizationHierarchySection",
+        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:10:OrganizationHierarchySection",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 9,
+        "line": 13,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:6:OrganizationHierarchySection",
+        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:10:OrganizationHierarchySection",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 10,
+        "line": 14,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:6:OrganizationHierarchySection",
+        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:10:OrganizationHierarchySection",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 21,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:6:OrganizationHierarchySection",
+        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:10:OrganizationHierarchySection",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 11,
+        "line": 15,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:6:OrganizationHierarchySection",
+        "source": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx:10:OrganizationHierarchySection",
         "target": "BooleanInput",
         "targetName": "BooleanInput",
         "edgeType": "render",
-        "line": 22,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },

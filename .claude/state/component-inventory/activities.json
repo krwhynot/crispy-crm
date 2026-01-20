@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-19T23:19:27.555Z",
+  "generated_at": "2026-01-20T03:14:20.677Z",
   "item_count": 29,
   "items": [
     {
@@ -152,6 +152,7 @@
         "./ActivitySlideOver",
         "./activityFilterConfig",
         "@/atomic-crm/utils",
+        "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FloatingCreateButton",
         "@/components/ra-wrappers/ListSearchBar",
         "@/components/ra-wrappers/PremiumDatagrid",
@@ -162,7 +163,6 @@
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/sort-button",
         "@/components/ra-wrappers/text-field",
-        "@/components/layouts/StandardListLayout",
         "@/components/ui/badge",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
@@ -616,6 +616,7 @@
         "../../types",
         "../../validation/activities",
         "@/atomic-crm/utils",
+        "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/boolean-input",
         "@/components/ra-wrappers/date-field",
@@ -623,7 +624,6 @@
         "@/components/ra-wrappers/reference-input",
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
-        "@/components/layouts/sidepane",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
         "@tanstack/react-query",

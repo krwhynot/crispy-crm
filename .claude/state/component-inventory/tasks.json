@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-19T23:19:27.623Z",
+  "generated_at": "2026-01-20T03:14:20.695Z",
   "item_count": 27,
   "items": [
     {
@@ -87,7 +87,7 @@
     {
       "name": "TaskCompactForm",
       "file": "src/atomic-crm/tasks/TaskCompactForm.tsx",
-      "line": 26,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useFormOptions"
@@ -249,6 +249,7 @@
         "./components/TaskActionMenu",
         "./components/TaskCompletionDialog",
         "./taskFilterConfig",
+        "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",
         "@/components/ra-wrappers/ListSearchBar",
@@ -261,7 +262,6 @@
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/sort-button",
         "@/components/ra-wrappers/text-field",
-        "@/components/layouts/StandardListLayout",
         "@/components/ui/badge",
         "@/components/ui/list-skeleton",
         "@/components/ui/priority-badge",
@@ -327,9 +327,9 @@
         "../contacts/ContactOption",
         "../sales/SaleName",
         "../types",
+        "@/components/layouts/sidepane",
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/text-field",
-        "@/components/layouts/sidepane",
         "@/components/ui/card",
         "lucide-react",
         "ra-core"
@@ -408,6 +408,7 @@
         "../sales/SaleName",
         "../types",
         "./components/TaskCompletionDialog",
+        "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/boolean-input",
         "@/components/ra-wrappers/date-field",
@@ -416,7 +417,6 @@
         "@/components/ra-wrappers/reference-input",
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
-        "@/components/layouts/sidepane",
         "@/components/ui/badge",
         "@/components/ui/priority-badge",
         "@/components/ui/scroll-area",

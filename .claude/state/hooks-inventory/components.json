@@ -1,11 +1,11 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-19T23:19:56.848Z",
+  "generated_at": "2026-01-20T03:14:27.301Z",
   "item_count": 4,
   "items": [
     {
       "name": "useFormProgress",
-      "file": "src/components/admin/form/formProgressUtils.ts",
+      "file": "src/components/ra-wrappers/form/formProgressUtils.ts",
       "line": 17,
       "parameters": [],
       "returnType": "FormProgressContextValue",
@@ -16,7 +16,7 @@
     },
     {
       "name": "useFormShortcuts",
-      "file": "src/components/admin/form/useFormShortcuts.ts",
+      "file": "src/components/ra-wrappers/form/useFormShortcuts.ts",
       "line": 13,
       "parameters": [
         "{\n  onSave,\n  onSaveAndNew,\n  onCancel,\n}"
@@ -29,7 +29,7 @@
     },
     {
       "name": "useWizard",
-      "file": "src/components/admin/form/wizardUtils.ts",
+      "file": "src/components/ra-wrappers/form/wizardUtils.ts",
       "line": 17,
       "parameters": [],
       "returnType": "WizardContextValue",

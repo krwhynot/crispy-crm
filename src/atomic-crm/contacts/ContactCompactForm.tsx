@@ -9,7 +9,8 @@ import {
 } from "@/components/ra-wrappers/form";
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
-import { EmailArrayField, PhoneArrayField, OrganizationPicker } from "@/components/domain/forms";
+import { EmailArrayField, PhoneArrayField } from "@/components/domain/forms";
+import { OrganizationPicker } from "@/atomic-crm/contacts/components/OrganizationPicker";
 import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";

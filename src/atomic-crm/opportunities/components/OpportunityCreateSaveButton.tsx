@@ -5,7 +5,7 @@
  * Levenshtein fuzzy match warning system. Intercepts form submission
  * to check for similar opportunities before saving.
  *
- * Follows the existing SaveButton pattern from src/components/admin/form.tsx
+ * Follows the existing SaveButton pattern from src/components/ra-wrappers/form.tsx
  * but adds pre-submission validation for duplicate detection.
  */
 

@@ -1,7 +1,7 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-19T23:19:27.567Z",
-  "item_count": 58,
+  "generated_at": "2026-01-20T03:14:20.680Z",
+  "item_count": 59,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -253,23 +253,21 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 29,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useFormContext"
       ],
       "imports": [
-        "../organizations/AutocompleteOrganizationInput",
-        "../utils/autocompleteDefaults",
         "../utils/saleOptionRenderer",
         "./Avatar",
         "./ContactAdditionalDetails",
+        "@/atomic-crm/contacts/components/OrganizationPicker",
         "@/atomic-crm/utils",
-        "@/components/ra-wrappers/array-input",
+        "@/components/domain/forms",
         "@/components/ra-wrappers/form",
         "@/components/ra-wrappers/reference-input",
         "@/components/ra-wrappers/select-input",
-        "@/components/ra-wrappers/simple-form-iterator",
         "@/components/ra-wrappers/text-input",
         "react",
         "react-admin",
@@ -279,8 +277,7 @@
       "isDefaultExport": false,
       "childComponents": [
         "Avatar",
-        "ContactAdditionalDetails",
-        "AutocompleteOrganizationInput"
+        "ContactAdditionalDetails"
       ],
       "contextDependencies": [
         "useFormContext"
@@ -371,13 +368,13 @@
         "./Avatar",
         "./ContactInputs",
         "@/atomic-crm/queryKeys",
+        "@/components/layouts/sidepane",
         "@/components/ra-wrappers/array-field",
         "@/components/ra-wrappers/email-field",
         "@/components/ra-wrappers/form/FormProgressProvider",
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/single-field-list",
         "@/components/ra-wrappers/text-field",
-        "@/components/layouts/sidepane",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
         "@tanstack/react-query",
@@ -800,6 +797,7 @@
         "./contactExporter",
         "./contactFilterConfig",
         "./formatters",
+        "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",
         "@/components/ra-wrappers/ListNoResults",
@@ -811,7 +809,6 @@
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/sort-button",
         "@/components/ra-wrappers/text-field",
-        "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/components/ui/truncated-text",
         "@/hooks/useListKeyboardNavigation",
@@ -862,6 +859,7 @@
         "./contactExporter",
         "./contactFilterConfig",
         "./formatters",
+        "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",
         "@/components/ra-wrappers/ListNoResults",
@@ -873,7 +871,6 @@
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/sort-button",
         "@/components/ra-wrappers/text-field",
-        "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/components/ui/truncated-text",
         "@/hooks/useListKeyboardNavigation",
@@ -988,10 +985,10 @@
         "./Avatar",
         "./ContactAside",
         "./OpportunitiesTab",
+        "@/components/design-system",
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/reference-many-field",
         "@/components/ra-wrappers/text-field",
-        "@/components/design-system",
         "@/components/ui/card",
         "@/components/ui/tabs",
         "ra-core"
@@ -1026,10 +1023,10 @@
         "./Avatar",
         "./ContactAside",
         "./OpportunitiesTab",
+        "@/components/design-system",
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/reference-many-field",
         "@/components/ra-wrappers/text-field",
-        "@/components/design-system",
         "@/components/ui/card",
         "@/components/ui/tabs",
         "ra-core"
@@ -1328,6 +1325,22 @@
       "imports": [
         "@/components/ui/alert-dialog",
         "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "OrganizationPicker",
+      "file": "src/atomic-crm/contacts/components/OrganizationPicker.tsx",
+      "line": 30,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/organizations/AutocompleteOrganizationInput",
+        "@/atomic-crm/utils/autocompleteDefaults",
+        "@/components/ra-wrappers/reference-input"
       ],
       "isDefaultExport": false,
       "childComponents": [],

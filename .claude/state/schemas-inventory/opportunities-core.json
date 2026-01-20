@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-core",
-  "generated_at": "2026-01-19T23:19:57.743Z",
+  "generated_at": "2026-01-20T03:14:27.625Z",
   "item_count": 6,
   "items": [
     {
@@ -113,6 +113,8 @@
       "schemaType": "array",
       "fields": [],
       "relatedSchemas": [
+        "opportunityProductSyncInputSchema",
+        "opportunityProductSyncHandlerSchema",
         "createOpportunitySchema",
         "updateOpportunitySchema",
         "productSchema"

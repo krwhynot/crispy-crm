@@ -1,17 +1,17 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-19T23:19:57.744Z",
-  "item_count": 4,
+  "generated_at": "2026-01-20T03:14:27.626Z",
+  "item_count": 6,
   "items": [
     {
-      "name": "createOpportunitySchema",
+      "name": "opportunityProductSyncInputSchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 160,
+      "line": 36,
       "schemaType": "strictObject",
       "fields": [
         {
-          "name": "id",
-          "zodType": "unknown",
+          "name": "product_id_reference",
+          "zodType": "union",
           "constraints": [],
           "optional": false,
           "nullable": false,
@@ -19,47 +19,104 @@
           "hasDefault": false
         },
         {
-          "name": "created_at",
-          "zodType": "unknown",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "updated_at",
-          "zodType": "unknown",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "version",
-          "zodType": "unknown",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "deleted_at",
-          "zodType": "unknown",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
+          "name": "notes",
+          "zodType": "string",
+          "constraints": [
+            "max(2000)"
+          ],
+          "optional": true,
+          "nullable": true,
           "hasTransform": false,
           "hasDefault": false
         }
       ],
       "relatedSchemas": [
+        "opportunityProductSchema",
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "productSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "opportunityProductSyncHandlerSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "line": 48,
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_id_reference",
+          "zodType": "union",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_name",
+          "zodType": "string",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_category",
+          "zodType": "string",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "string",
+          "constraints": [
+            "max(2000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "opportunityProductSchema",
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "productSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "createOpportunitySchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "line": 202,
+      "schemaType": "array",
+      "fields": [],
+      "relatedSchemas": [
         "opportunityNoteSchema",
         "opportunityStageSchema",
         "opportunityPrioritySchema",
         "opportunityProductSchema",
+        "opportunityProductSyncInputSchema",
+        "opportunityProductSyncHandlerSchema",
         "quickCreateOpportunitySchema",
         "updateOpportunitySchema",
         "closeOpportunityBaseSchema",
@@ -76,7 +133,7 @@
     {
       "name": "quickCreateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 242,
+      "line": 278,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -176,35 +233,16 @@
     {
       "name": "updateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 280,
-      "schemaType": "strictObject",
-      "fields": [
-        {
-          "name": "contact_ids",
-          "zodType": "coerce.number",
-          "constraints": [],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "products_to_sync",
-          "zodType": "strictObject",
-          "constraints": [
-            "max(2000)"
-          ],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        }
-      ],
+      "line": 316,
+      "schemaType": "array",
+      "fields": [],
       "relatedSchemas": [
         "opportunityNoteSchema",
         "opportunityStageSchema",
         "opportunityPrioritySchema",
         "opportunityProductSchema",
+        "opportunityProductSyncInputSchema",
+        "opportunityProductSyncHandlerSchema",
         "createOpportunitySchema",
         "quickCreateOpportunitySchema",
         "closeOpportunityBaseSchema",
@@ -221,7 +259,7 @@
     {
       "name": "closeOpportunityBaseSchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 399,
+      "line": 429,
       "schemaType": "strictObject",
       "fields": [
         {
