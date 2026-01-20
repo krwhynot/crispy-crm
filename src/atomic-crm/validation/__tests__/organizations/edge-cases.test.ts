@@ -106,7 +106,7 @@ describe("Organization Business Rules and Edge Cases", () => {
         city: "Cityville",
         state: "CA",
         postal_code: "12345",
-        phone: "555-1234",
+        phone: "555-123-4567", // Must have at least 10 digits
         priority: "A",
       };
 

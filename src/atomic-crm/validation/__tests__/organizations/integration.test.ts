@@ -35,7 +35,7 @@ describe("Organization Validation Functions", () => {
         expect(err.body.errors).toBeDefined();
         expect(err.body.errors.name).toBe("Organization name is required");
         expect(err.body.errors.organization_type).toBeDefined();
-        expect(err.body.errors.website).toBe("Must be a valid URL");
+        expect(err.body.errors.website).toBe("Must be a valid URL (e.g., example.com)");
       }
     });
 

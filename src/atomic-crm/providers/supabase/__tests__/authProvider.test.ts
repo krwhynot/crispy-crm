@@ -163,19 +163,21 @@ describe("authProvider", () => {
         error: null,
       } as any);
 
-      // Mock sales record lookup
+      // Mock sales record lookup with .is() for soft-delete filter
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           match: vi.fn().mockReturnValue({
-            maybeSingle: vi.fn().mockResolvedValue({
-              data: {
-                id: 2,
-                first_name: "Jane",
-                last_name: "Smith",
-                avatar_url: "https://example.com/avatar.jpg",
-                is_admin: true,
-              },
-              error: null,
+            is: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({
+                data: {
+                  id: 2,
+                  first_name: "Jane",
+                  last_name: "Smith",
+                  avatar_url: "https://example.com/avatar.jpg",
+                  is_admin: true,
+                },
+                error: null,
+              }),
             }),
           }),
         }),
@@ -204,13 +206,15 @@ describe("authProvider", () => {
         error: null,
       } as any);
 
-      // Mock no sales record found
+      // Mock no sales record found with .is() for soft-delete filter
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           match: vi.fn().mockReturnValue({
-            maybeSingle: vi.fn().mockResolvedValue({
-              data: null,
-              error: null,
+            is: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({
+                data: null,
+                error: null,
+              }),
             }),
           }),
         }),

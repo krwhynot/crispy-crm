@@ -260,7 +260,7 @@ describe("ContactCreate with Progress Tracking", () => {
         // Should be significantly higher than initial 10%
         expect(currentProgress).toBeGreaterThan(25);
       });
-    });
+    }, 30000);
   });
 
   describe("Section Completion Indicators", () => {

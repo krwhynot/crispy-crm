@@ -524,8 +524,11 @@ describe("authProvider", () => {
         data: null,
         error: { code: "PGRST301", message: "Database connection failed" },
       });
-      const mockMatch = vi.fn().mockReturnValue({
+      const mockIs = vi.fn().mockReturnValue({
         maybeSingle: mockMaybeSingle,
+      });
+      const mockMatch = vi.fn().mockReturnValue({
+        is: mockIs,
       });
       const mockSelect = vi.fn().mockReturnValue({
         match: mockMatch,
