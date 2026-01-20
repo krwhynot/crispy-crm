@@ -12,7 +12,7 @@ import { PipelineChart } from "../charts/PipelineChart";
 import { ActivityTrendChart } from "../charts/ActivityTrendChart";
 import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
 import { RepPerformanceChart } from "../charts/RepPerformanceChart";
-import { OPPORTUNITY_STAGE_CHOICES } from "../../opportunities/constants/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES, STAGE } from "../../opportunities/constants/stageConstants";
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
 import "../charts/chartSetup";
 import type { Sale } from "../types";
@@ -120,7 +120,7 @@ export default function OverviewTab() {
     params.set(
       "filter",
       JSON.stringify({
-        stage: "new_lead",
+        stage: STAGE.NEW_LEAD,
         "deleted_at@is": null,
       })
     );

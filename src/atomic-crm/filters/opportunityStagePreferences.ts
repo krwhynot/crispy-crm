@@ -1,4 +1,7 @@
-import { OPPORTUNITY_STAGE_CHOICES, CLOSED_STAGES } from "../opportunities/constants/stageConstants";
+import {
+  OPPORTUNITY_STAGE_CHOICES,
+  CLOSED_STAGES,
+} from "../opportunities/constants/stageConstants";
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { urlFilterSchema } from "../validation/filters";
@@ -14,8 +17,9 @@ const STORAGE_KEY = "filter.opportunity_stages";
  * Default visible stages - excludes closed stages by default
  * Users typically want to focus on active opportunities
  */
+const closedStagesArray = [...CLOSED_STAGES] as string[];
 const DEFAULT_VISIBLE_STAGES = OPPORTUNITY_STAGE_CHOICES.filter(
-  (c) => !["closed_won", "closed_lost"].includes(c.id)
+  (c) => !closedStagesArray.includes(c.id)
 ).map((c) => c.id);
 
 /**

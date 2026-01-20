@@ -6,6 +6,7 @@
  */
 
 import { addDays } from "date-fns";
+import { STAGE } from "./stageConstants";
 
 export interface FilterPreset {
   id: string;
@@ -67,7 +68,7 @@ export const getFilterPresets = (userId?: string): FilterPreset[] => {
       description: "Opportunities closed won in the last 30 days",
       icon: "Trophy",
       filters: {
-        stage: "closed_won",
+        stage: STAGE.CLOSED_WON,
         updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
       },
     },

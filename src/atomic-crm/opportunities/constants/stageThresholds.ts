@@ -9,6 +9,7 @@
  */
 
 import type { OpportunityStageValue } from "@/atomic-crm/validation/opportunities";
+import { STAGE } from "./stageConstants";
 
 /**
  * Days before an opportunity is considered "rotting" in each stage.
@@ -61,7 +62,7 @@ export function getStageStatus(
   daysInStage: number,
   expectedCloseDate?: Date | null
 ): StageStatus {
-  if (stage === "closed_won" || stage === "closed_lost") {
+  if (stage === STAGE.CLOSED_WON || stage === STAGE.CLOSED_LOST) {
     return "closed";
   }
 

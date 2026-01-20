@@ -3,7 +3,7 @@
  * Single source of truth for all filter options
  */
 
-import { OPPORTUNITY_STAGE_CHOICES } from "./stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES, CLOSED_STAGES } from "./stageConstants";
 import { priorityChoices } from "./priorityChoices";
 
 // Re-export for convenience
@@ -62,9 +62,10 @@ export const opportunityFilters: Record<string, FilterConfig> = {
  * Get default visible stages (excludes closed stages)
  */
 export const getDefaultVisibleStages = (): string[] => {
-  return OPPORTUNITY_STAGE_CHOICES.filter(
-    (stage) => !["closed_won", "closed_lost"].includes(stage.id)
-  ).map((stage) => stage.id);
+  const closedStagesArray = [...CLOSED_STAGES] as string[];
+  return OPPORTUNITY_STAGE_CHOICES.filter((stage) => !closedStagesArray.includes(stage.id)).map(
+    (stage) => stage.id
+  );
 };
 
 /**
