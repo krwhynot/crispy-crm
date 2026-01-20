@@ -7,7 +7,7 @@ import { Settings, Users } from "lucide-react";
 import { CanAccess } from "ra-core";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { useAppBranding } from "../root/ConfigurationContext";
-import { NotificationBell } from "@/components/NotificationBell";
+import { NotificationBell } from "@/atomic-crm/dashboard/components/NotificationBell";
 import { TutorialLauncher } from "../tutorial/TutorialLauncher";
 
 const Header = () => {
