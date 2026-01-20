@@ -786,13 +786,16 @@ try {
 
 | Anti-Pattern | Correct Approach |
 |--------------|------------------|
-| `new Date(isoString)` | Use `parseDateSafely(isoString)` |
+| `new Date(isoString)` | Use `parseDateSafely(isoString)` or `formatDateDisplay(isoString)` |
 | Hardcoded hex colors (`#ef4444`) | Use `SEMANTIC_COLORS[colorName]` |
 | Manual className strings | Use `cn()` for conflict resolution |
 | `console.log` in production code | Use `devLog()` with DEV guard |
 | `dangerouslySetInnerHTML` without sanitization | Always use `sanitizeHtml()` first |
 | Direct file processing without size limits | Use `validateCsvFile()` with limits |
 | Passing RA input props to DOM elements | Use `sanitizeInputRestProps()` to filter |
+| `catch (error: any)` | Use `catch (error: unknown)` with type guards |
+| Manual Zod error message extraction | Use `zodErrorToFormErrors()` or `getErrorMessage()` |
+| Duplicate date format strings across files | Use centralized `formatDateDisplay()` or `formatDateForInput()` |
 
 ---
 

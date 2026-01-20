@@ -150,34 +150,82 @@ const handleSuccess = () => {
 
 ---
 
-## Pattern B: Note Iterator
+## Pattern B: Note Iterator and NotesList
 
-List rendering pattern that consumes `useListContext()` from a parent `ReferenceManyField`.
+Composition pattern separating note creation from list rendering. `NotesIterator` combines both; `NotesList` handles list display only.
+
+### NotesIterator (Composition Wrapper)
 
 ```tsx
 // src/atomic-crm/notes/NotesIterator.tsx
 
-export const NotesIterator = ({
-  reference,
-}: {
+interface NotesIteratorProps {
   reference: "contacts" | "opportunities" | "organizations";
-}) => {
-  const { data, error, isPending } = useListContext();
-  if (isPending || error) return null;
+  showEmptyState?: boolean;
+}
 
+/**
+ * Combines NoteCreate form with NotesList.
+ *
+ * The showEmptyState prop controls whether to display an empty state message
+ * when there are no notes. This should be true when using ReferenceManyField
+ * without the `empty` prop (to avoid hiding the create form).
+ */
+export const NotesIterator = ({ reference, showEmptyState = false }: NotesIteratorProps) => {
   return (
     <div className="mt-4">
-      <NoteCreate reference={reference} />  {/* Create form at top */}
-      {data && (
-        <div className="mt-4 space-y-4">
-          {data.map((note, index) => (
-            <React.Fragment key={index}>
-              <Note note={note} isLast={index === data.length - 1} />
-              {index < data.length - 1 && <Separator />}
-            </React.Fragment>
-          ))}
-        </div>
-      )}
+      <NoteCreate reference={reference} />
+      <NotesList showEmptyState={showEmptyState} />
+    </div>
+  );
+};
+```
+
+### NotesList (List Renderer)
+
+Extracted component that handles list rendering only. Consumes `useListContext()` from parent `ReferenceManyField`.
+
+```tsx
+// src/atomic-crm/notes/NotesList.tsx
+
+interface NotesListProps {
+  showEmptyState?: boolean;
+}
+
+/**
+ * Displays a list of notes from the current ListContext.
+ *
+ * Extracted from NotesIterator to allow the NoteCreate form to always be visible
+ * even when there are no notes (solving the ReferenceManyField empty prop issue).
+ */
+export const NotesList = ({ showEmptyState = false }: NotesListProps) => {
+  const { data, error, isPending } = useListContext();
+
+  if (isPending || error) return null;
+
+  // Show empty state when no notes and showEmptyState is enabled
+  if (showEmptyState && (!data || data.length === 0)) {
+    return (
+      <div className="mt-4">
+        <SidepaneEmptyState
+          title={EMPTY_STATE_CONTENT.notes.title}
+          description={EMPTY_STATE_CONTENT.notes.description}
+        />
+      </div>
+    );
+  }
+
+  // No notes and empty state disabled - render nothing
+  if (!data || data.length === 0) return null;
+
+  return (
+    <div className="mt-4 space-y-4">
+      {data.map((note, index) => (
+        <React.Fragment key={note.id}>
+          <Note note={note} isLast={index === data.length - 1} />
+          {index < data.length - 1 && <Separator />}
+        </React.Fragment>
+      ))}
     </div>
   );
 };
@@ -195,9 +243,9 @@ NotesIterator requires `ReferenceManyField` wrapper to provide list context:
     target="contact_id"
     reference="contact_notes"
     sort={{ field: "created_at", order: "DESC" }}
-    empty={<NoteCreate reference="contacts" />}
+    empty={false}  // Prevent hiding content when no notes
   >
-    <NotesIterator reference="contacts" />
+    <NotesIterator reference="contacts" showEmptyState />
   </ReferenceManyField>
 </TabsContent>
 ```
@@ -207,20 +255,22 @@ NotesIterator requires `ReferenceManyField` wrapper to provide list context:
 ```tsx
 // src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx
 
-export const ContactNotesTab = ({ record }: { record: Contact }) => (
-  <RecordContextProvider value={record}>
-    <ReferenceManyField
-      target="contact_id"
-      reference="contact_notes"
-      sort={{ field: "created_at", order: "DESC" }}
-    >
-      <NotesIterator reference="contacts" />
-    </ReferenceManyField>
-    <p className="text-sm text-muted-foreground text-center py-4">
-      Notes are visible to all team members
-    </p>
-  </RecordContextProvider>
-);
+export function ContactNotesTab({ record, mode: _mode }: ContactNotesTabProps) {
+  return (
+    <RecordContextProvider value={record}>
+      <div className="space-y-4" data-tutorial="contact-notes-section">
+        <ReferenceManyField
+          target="contact_id"
+          reference="contact_notes"
+          sort={{ field: "created_at", order: "DESC" }}
+          empty={false}  // Prevent hiding content when no notes
+        >
+          <NotesIterator reference="contacts" showEmptyState />
+        </ReferenceManyField>
+      </div>
+    </RecordContextProvider>
+  );
+}
 ```
 
 **When to use**: Displaying notes lists in entity detail views or slide-over panels.
@@ -429,20 +479,20 @@ export const Note = ({
   const resource = useResourceContext();  // Polymorphic key
   const notify = useNotify();
 
-  // Avatar rendering based on resource type
+  // Avatar rendering based on resource type (camelCase from useResourceContext)
   return (
     <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div className="flex items-center space-x-4 w-full">
-        {/* Polymorphic avatar selection */}
-        {resource === "contact_notes" ? (
+        {/* Polymorphic avatar selection - uses camelCase resource names */}
+        {resource === "contactNotes" ? (
           <Avatar width={20} height={20} />
-        ) : resource === "opportunity_notes" ? (
+        ) : resource === "opportunityNotes" ? (
           <ReferenceField source="opportunity_id" reference="opportunities">
             <ReferenceField source="customer_organization_id" reference="organizations">
               <OrganizationAvatar width={20} height={20} />
             </ReferenceField>
           </ReferenceField>
-        ) : resource === "organization_notes" ? (
+        ) : resource === "organizationNotes" ? (
           <ReferenceField source="organization_id" reference="organizations">
             <OrganizationAvatar width={20} height={20} />
           </ReferenceField>
@@ -610,7 +660,7 @@ When extending notes to a new entity type (e.g., `principals`):
 
 ### 3. Avatar Rendering (`Note.tsx`)
 
-- [ ] Add case for `resource === "principalNotes"`
+- [ ] Add case for `resource === "principalNotes"` (camelCase for useResourceContext)
 - [ ] Create or import appropriate avatar component
 
 ### 4. Type Definitions (`validation/notes.ts`)
@@ -625,7 +675,9 @@ When extending notes to a new entity type (e.g., `principals`):
 
 ### 6. Entity Detail View
 
-- [ ] Add `ReferenceManyField` with `target="principal_id"` and `reference="principal_notes"`
+- [ ] Add `ReferenceManyField` with `target="principal_id"` and `reference="principal_notes"` (snake_case)
+- [ ] Use `empty={false}` to prevent hiding when no notes
+- [ ] Use `<NotesIterator reference="principals" showEmptyState />` for the children
 - [ ] Add tab trigger and content in Tabs component
 
 ### 7. Activity Log (Optional)
@@ -636,7 +688,8 @@ When extending notes to a new entity type (e.g., `principals`):
 
 ### 8. Data Provider
 
-- [ ] Ensure `principalNotes` resource is configured in `unifiedDataProvider.ts`
+- [ ] Ensure `principal_notes` resource is configured in `composedDataProvider.ts` (snake_case for database)
+- [ ] Add handler mapping in `resourceHandlers` for `principal_notes`
 - [ ] Verify RLS policies in Supabase for `principal_notes` table
 
 ### 9. Testing

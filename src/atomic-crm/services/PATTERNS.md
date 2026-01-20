@@ -705,6 +705,53 @@ async getOpportunityParticipants(opportunityId: Identifier) {
 
 ---
 
+## Service Reference
+
+Quick reference for all registered services and their key methods.
+
+| Service | Purpose | Key Methods |
+|---------|---------|-------------|
+| **SalesService** | Account manager CRUD via Edge Functions | `salesCreate()`, `salesUpdate()`, `salesDelete()` |
+| **OpportunitiesService** | Product sync, archive/unarchive workflows | `archiveOpportunity()`, `syncOpportunityWithProducts()` |
+| **ActivitiesService** | Activity log aggregation via RPC | `getActivityLog()` |
+| **JunctionsService** | Many-to-many relationship management | `getContactOrganizations()`, `addOpportunityParticipant()`, `setPrimaryOrganization()` |
+| **SegmentsService** | Get-or-create pattern for segment tagging | `getOrCreateSegment()` |
+| **DigestService** | Overdue tasks and digest notifications | `getOverdueTasksForUser()` |
+| **ProductsService** | Product CRUD with distributor relationships, soft delete via RPC | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |
+| **ProductDistributorsService** | Composite key junction table operations | `getOne()`, `create()`, `update()`, `delete()`, `getDistributorsForProduct()` |
+
+### ProductsService
+
+**File:** `src/atomic-crm/services/products.service.ts`
+
+Handles product management with distributor relationships. Uses RPC for soft deletes to bypass RLS SELECT policy conflicts.
+
+**Key methods:**
+- `getOneWithDistributors(id)` - Get product with distributor_ids array and product_distributors map
+- `createWithDistributors(productData, distributors)` - Atomic product + distributor junction creation
+- `updateWithDistributors(id, productData, distributors)` - Update product and sync distributor relationships
+- `softDelete(id)` - Soft delete via `soft_delete_product` RPC
+- `softDeleteMany(ids)` - Bulk soft delete via `soft_delete_products` RPC
+
+### ProductDistributorsService
+
+**File:** `src/atomic-crm/services/productDistributors.service.ts`
+
+Manages the `product_distributors` junction table which uses a composite primary key (`product_id`, `distributor_id`).
+
+**Key methods:**
+- `getOne(productId, distributorId)` - Get by composite key
+- `create(productId, distributorId, data)` - Create junction record
+- `update(productId, distributorId, data)` - Update by composite key
+- `delete(productId, distributorId)` - Hard delete (not soft delete)
+- `getDistributorsForProduct(productId)` - Get all distributors for a product
+
+**Utility functions:**
+- `parseCompositeId(compositeId)` - Parse `"123-456"` into `{ product_id: 123, distributor_id: 456 }`
+- `createCompositeId(productId, distributorId)` - Create `"123-456"` from IDs
+
+---
+
 ## Migration Checklist: Adding a New Service
 
 1. [ ] Create service file: `src/atomic-crm/services/{domain}.service.ts`

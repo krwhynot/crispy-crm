@@ -9,7 +9,6 @@ import { SelectInput } from "@/components/ra-wrappers/select-input";
  */
 const PHONE_TYPE_CHOICES = [
   { id: "work", name: "Work" },
-  { id: "mobile", name: "Mobile" },
   { id: "home", name: "Home" },
   { id: "other", name: "Other" },
 ];

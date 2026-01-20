@@ -23,6 +23,12 @@ src/tests/
 │   ├── combobox.ts            ─── shadcn/ui combobox helpers
 │   │   └── selectComboboxOption(), findCommandItem()
 │   │
+│   ├── typed-mocks.ts         ─── Typed mock factories for RA hooks
+│   │   └── mockUseGetListReturn(), mockUseCreateReturn(), etc.
+│   │
+│   ├── typed-test-helpers.ts  ─── Type-safe test pattern helpers
+│   │   └── mapExportRows(), getFilterValue(), createMockSetState()
+│   │
 │   └── index.ts               ─── Public API barrel export
 │
 └── fixtures/
@@ -1037,4 +1043,6 @@ When adding new tests:
 | **D: Test Data Factories** | `utils/mock-providers.ts` |
 | **E: Error Simulation** | `utils/mock-providers.ts` |
 | **F: Combobox Testing** | `utils/combobox.ts` |
+| **G: Typed Mock Utilities** | `utils/typed-mocks.ts` |
+| **H: Typed Test Helpers** | `utils/typed-test-helpers.ts` |
 | **Static Fixtures** | `fixtures/auth-users.json` |
