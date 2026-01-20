@@ -223,7 +223,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Delete a task (soft delete via activities handler)
      */
-    delete: async (resource, params) => {
+    delete: async (_resource, params) => {
       const result = await activitiesHandler.delete("activities", params);
       return {
         ...result,
@@ -234,7 +234,7 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
     /**
      * Delete multiple tasks
      */
-    deleteMany: async (resource, params) => {
+    deleteMany: async (_resource, params) => {
       return activitiesHandler.deleteMany("activities", params);
     },
   };

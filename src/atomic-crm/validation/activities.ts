@@ -6,13 +6,15 @@ import { sanitizeHtml } from "@/lib/sanitization";
  * Implements validation rules for customer interactions and engagements
  */
 
-// Activity type enum - determines whether it's a standalone engagement or opportunity interaction
+// Activity type enum - determines the activity category
+// After STI migration, 'task' distinguishes planned items from logged interactions
 export const activityTypeSchema = z.enum([
   "engagement", // Standalone activity not linked to opportunity
   "interaction", // Activity linked to an opportunity
+  "task", // Planned task (STI pattern - stored in same table)
 ]);
 
-// Interaction type enum - the specific type of activity (13 types per PRD v1.18)
+// Interaction type enum - the specific type of activity (15 types after STI migration)
 export const interactionTypeSchema = z
   .enum([
     "call",
@@ -28,6 +30,9 @@ export const interactionTypeSchema = z
     "social",
     "note",
     "sample", // Added for sample tracking workflow (PRD §4.4)
+    // STI task type mappings
+    "administrative", // Maps from task type 'None'
+    "other", // Maps from task type 'Other'
   ])
   .default("call");
 
