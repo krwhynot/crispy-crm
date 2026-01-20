@@ -6,13 +6,13 @@
  * Compares: product_id_reference, notes
  */
 
-export interface Product {
-  id?: string | number;
-  product_id_reference: string | number;
-  product_name?: string;
-  product_category?: string;
-  notes?: string;
-}
+import { type OpportunityProductSyncHandler } from "../../validation/opportunities";
+
+/**
+ * Product type alias - uses canonical schema type for consistency
+ * Exported for backwards compatibility with existing code
+ */
+export type Product = OpportunityProductSyncHandler;
 
 export interface ProductDiff {
   creates: Product[];

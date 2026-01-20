@@ -1,5 +1,14 @@
 /**
  * Opportunities Handler - Composed DataProvider
+ * @status Feature Complete
+ * @since 2025-01
+ * @migration Strangler Fig Pattern (95% compliant)
+ *
+ * @dependencies
+ * - RPC: sync_opportunity_with_products
+ * - RPC: archive_opportunity_with_relations
+ * - Service: OpportunitiesService
+ * - Schema: opportunityProductSyncHandlerSchema (canonical)
  *
  * Composes all infrastructure pieces for the opportunities resource:
  * 1. customOpportunitiesHandler → Opportunities-specific logic (create/update with products)

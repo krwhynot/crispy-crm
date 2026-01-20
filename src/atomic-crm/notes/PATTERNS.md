@@ -201,7 +201,7 @@ export const ContactNotesTab = ({ record }: { record: Contact }) => (
   <RecordContextProvider value={record}>
     <ReferenceManyField
       target="contact_id"
-      reference="contactNotes"
+      reference="contact_notes"
       sort={{ field: "created_at", order: "DESC" }}
     >
       <NotesIterator reference="contacts" />
@@ -293,7 +293,7 @@ Notes create activity log entries but remain separate from the immutable audit t
 User Action               Notes System              Activity Log
     │                          │                         │
     ▼                          ▼                         ▼
-Create Note ───────────► contactNotes ───────────► CONTACT_NOTE_CREATED
+Create Note ───────────► contact_notes ──────────► CONTACT_NOTE_CREATED
                          (editable)                (immutable event)
                               │                          │
                               ▼                          ▼
@@ -424,15 +424,15 @@ export const Note = ({
     <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div className="flex items-center space-x-4 w-full">
         {/* Polymorphic avatar selection */}
-        {resource === "contactNotes" ? (
+        {resource === "contact_notes" ? (
           <Avatar width={20} height={20} />
-        ) : resource === "opportunityNotes" ? (
+        ) : resource === "opportunity_notes" ? (
           <ReferenceField source="opportunity_id" reference="opportunities">
             <ReferenceField source="customer_organization_id" reference="organizations">
               <OrganizationAvatar width={20} height={20} />
             </ReferenceField>
           </ReferenceField>
-        ) : resource === "organizationNotes" ? (
+        ) : resource === "organization_notes" ? (
           <ReferenceField source="organization_id" reference="organizations">
             <OrganizationAvatar width={20} height={20} />
           </ReferenceField>
@@ -615,7 +615,7 @@ When extending notes to a new entity type (e.g., `principals`):
 
 ### 6. Entity Detail View
 
-- [ ] Add `ReferenceManyField` with `target="principal_id"` and `reference="principalNotes"`
+- [ ] Add `ReferenceManyField` with `target="principal_id"` and `reference="principal_notes"`
 - [ ] Add tab trigger and content in Tabs component
 
 ### 7. Activity Log (Optional)

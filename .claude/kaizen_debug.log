@@ -6757,3 +6757,8 @@ tool_response: {"stdout": "5", "stderr": "", "interrupted": false, "isImage": fa
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "cat /home/krwhynot/projects/crispy-crm/.claude/commands/crispy-note.md", "description": "Read crispy-note command"}
 tool_response: {"stdout": "---\ndescription: Capture session knowledge to Crispy CRM Obsidian notes (merge or create)\n---\n\nCapture knowledge from this session to the Crispy CRM Obsidian vault. Use Obsidian MCP to
+
+--- 2026-01-19T18:03:16.386509 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just typecheck 2>&1 | head -100", "timeout": 120000, "description": "Run TypeScript type checking"}
+tool_response: {"stdout": "npm run typecheck\n\n> atomic-crm@0.1.0 typecheck\n> ./node_modules/.bin/tsc --noEmit", "stderr": "", "interrupted": false, "isImage": false}
