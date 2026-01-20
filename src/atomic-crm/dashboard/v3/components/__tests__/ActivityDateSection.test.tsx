@@ -207,7 +207,9 @@ describe("ActivityDateSection", () => {
 
   describe("Date Formatting", () => {
     it("displays formatted date with date-fns PPP format", () => {
-      render(<TestWrapperWithControl defaultValues={{ date: new Date("2025-01-15") }} />);
+      // Use explicit date components to avoid timezone issues
+      const testDate = new Date(2025, 0, 15); // January 15, 2025 in local timezone
+      render(<TestWrapperWithControl defaultValues={{ date: testDate }} />);
 
       // PPP format is like "January 15th, 2025"
       expect(screen.getByText(/January 15/)).toBeInTheDocument();
