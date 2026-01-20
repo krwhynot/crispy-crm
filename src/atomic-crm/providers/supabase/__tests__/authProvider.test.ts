@@ -235,13 +235,15 @@ describe("authProvider", () => {
         error: null,
       } as any);
 
-      // Mock database error
+      // Mock database error with .is() for soft-delete filter
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           match: vi.fn().mockReturnValue({
-            maybeSingle: vi.fn().mockResolvedValue({
-              data: null,
-              error: { message: "Database connection failed" },
+            is: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({
+                data: null,
+                error: { message: "Database connection failed" },
+              }),
             }),
           }),
         }),
@@ -267,14 +269,16 @@ describe("authProvider", () => {
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           match: vi.fn().mockReturnValue({
-            maybeSingle: vi.fn().mockResolvedValue({
-              data: {
-                id: 3,
-                first_name: "Admin",
-                last_name: "User",
-                is_admin: true,
-              },
-              error: null,
+            is: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({
+                data: {
+                  id: 3,
+                  first_name: "Admin",
+                  last_name: "User",
+                  is_admin: true,
+                },
+                error: null,
+              }),
             }),
           }),
         }),
@@ -303,14 +307,16 @@ describe("authProvider", () => {
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           match: vi.fn().mockReturnValue({
-            maybeSingle: vi.fn().mockResolvedValue({
-              data: {
-                id: 4,
-                first_name: "Regular",
-                last_name: "User",
-                is_admin: false,
-              },
-              error: null,
+            is: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({
+                data: {
+                  id: 4,
+                  first_name: "Regular",
+                  last_name: "User",
+                  is_admin: false,
+                },
+                error: null,
+              }),
             }),
           }),
         }),
@@ -341,9 +347,11 @@ describe("authProvider", () => {
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           match: vi.fn().mockReturnValue({
-            maybeSingle: vi.fn().mockResolvedValue({
-              data: null,
-              error: null,
+            is: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({
+                data: null,
+                error: null,
+              }),
             }),
           }),
         }),
@@ -399,16 +407,18 @@ describe("authProvider", () => {
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           match: vi.fn().mockReturnValue({
-            maybeSingle: vi.fn().mockResolvedValue({
-              data: {
-                id: 99,
-                first_name: "Cached",
-                last_name: "User",
-                avatar_url: "https://example.com/cached.jpg",
-                is_admin: false,
-                role: "rep",
-              },
-              error: null,
+            is: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({
+                data: {
+                  id: 99,
+                  first_name: "Cached",
+                  last_name: "User",
+                  avatar_url: "https://example.com/cached.jpg",
+                  is_admin: false,
+                  role: "rep",
+                },
+                error: null,
+              }),
             }),
           }),
         }),

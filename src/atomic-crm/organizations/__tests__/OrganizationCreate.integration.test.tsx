@@ -10,7 +10,7 @@ import { OrganizationCreate } from "../OrganizationCreate";
  * and guards against rendering if it's not found.
  */
 const createOrgTestDataProvider = () => ({
-  getList: vi.fn(async (resource: string, params?: { filter?: { name?: string } }) => {
+  getList: vi.fn(async (resource: string) => {
     if (resource === "segments") {
       // Return "Unknown" segment - required for form to render
       return {
@@ -29,7 +29,7 @@ const createOrgTestDataProvider = () => ({
     }
     return { data: [], total: 0, pageInfo: { hasNextPage: false, hasPreviousPage: false } };
   }),
-});
+} as const);
 
 const renderOrganizationCreate = () => {
   return renderWithAdminContext(<OrganizationCreate />, {
