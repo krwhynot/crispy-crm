@@ -67,14 +67,12 @@ Crispy CRM uses **two distinct tracking systems** for technical issues:
 
 **Note:** These findings have been resolved and integrated into the main technical debt tracker.
 
-### Finding ID Prefixes
+### Historical Finding ID Prefixes (Resolved)
 
-| Prefix | Category | Description | Source | Example |
+| Prefix | Category | Description | Status | Example |
 |--------|----------|-------------|--------|---------|
-| `CRITICAL-XXX` | Highest Urgency | Active bugs causing data loss or security bypass | Full audit | `CRITICAL-001` |
-| `SF-CXX` | Security/Forms | Security issues, IDOR, RLS bypass, data leaks | Provider audit | `SF-C09` |
-| `WF-CXX` | Workflow Gaps | Business logic holes, cascade deletes, orphaned records | Workflow audit | `WF-C04` |
-| `C-XXX` | Consistency | DRY violations, naming inconsistencies, code duplication | Provider audit | `C-001` |
+| `SF-CXX` | Security/Forms | Security issues, IDOR, RLS bypass, data leaks | All resolved Jan 2026 | `SF-C09` |
+| `WF-CXX` | Workflow Gaps | Business logic holes, cascade deletes, orphaned records | All resolved Jan 2026 | `WF-C04` |
 
 ### SF (Security/Forms) Sub-Categories
 
@@ -92,18 +90,12 @@ Crispy CRM uses **two distinct tracking systems** for technical issues:
 | `WF-C04` - `WF-C06` | User Lifecycle (disable, reassign) |
 | `WF-C07` - `WF-C10` | Data Relationships (cross-tenant, mismatched) |
 
-### Example Finding Entry
+### Example (Historical - Resolved)
 
 ```markdown
-### Item 2: Fix IDOR in `getMany` [SF-C09]
-
-- [x] **Complete** (Fixed in composedDataProvider.ts:179-211 - 2026-01-08)
-
-#### The Context
-The `getMany` method accepts an array of IDs and fetches them directly from Supabase.
-
-#### The Silent Failure
-It does **not** apply the Tenancy/Ownership filter. A user can fetch a competitor's Contact.
+SF-C09: IDOR in getMany - Fixed 2026-01-08
+Applied tenancy filter to getMany and getManyReference handlers.
+Commit: fix(security): resolve SF-C09 IDOR in data provider
 ```
 
 ---
@@ -127,9 +119,9 @@ It does **not** apply the Tenancy/Ownership filter. A user can fetch a competito
 - Status column: `Open` or `Resolved`
 - Moved to "Resolved Items Summary" section when fixed
 
-**Audit/TODOs Tracker:**
-- Checkbox: `[ ]` (pending) or `[x]` (complete)
-- Session log with date and implementation notes
+**Security/Workflow Findings:**
+- All findings resolved and documented in git history
+- Reference commits for implementation details
 
 ### Resolution
 
@@ -139,12 +131,10 @@ It does **not** apply the Tenancy/Ownership filter. A user can fetch a competito
 3. Add entry to "Resolved Items Summary" with date
 4. Update summary counts table
 
-**Audit/TODOs:**
-1. Fix the issue
-2. Mark checkbox as `[x]`
-3. Add verification notes under the item
-4. Update Progress Tracking table
-5. Add entry to Session Log
+**Security/Workflow (Historical):**
+1. Fixed during January 2026 remediation
+2. Documented in git history with Finding ID
+3. See commit messages for implementation details
 
 ---
 
@@ -156,18 +146,17 @@ It does **not** apply the Tenancy/Ownership filter. A user can fetch a competito
 UI-04 → docs/technical-debt.md → File: src/components/admin/columns-button.tsx:85-87
 ```
 
-### From TODOs to Audit Report
+### From Finding to Resolution
 
 ```
-SF-C09 → docs/TODOs.md (Item 2) → docs/PROVIDER_AUDIT_REPORT.md [SF-C09]
+SF-C09 → Git History → Commit: fix(security): resolve SF-C09
 ```
 
-### Related Files Map
+### Files Map
 
-| Tracker | Detailed Report | Archive Location |
-|---------|-----------------|------------------|
-| `docs/technical-debt.md` | N/A (self-contained) | `docs/archive/audits/` |
-| `docs/TODOs.md` | `docs/PROVIDER_AUDIT_REPORT.md` | N/A (active document) |
+| Tracker | Archive Location | Status |
+|---------|------------------|--------|
+| `docs/technical-debt.md` | Recent audits in `docs/audits/` | Active |
 
 ---
 
@@ -186,22 +175,14 @@ SF-C09 → docs/TODOs.md (Item 2) → docs/PROVIDER_AUDIT_REPORT.md [SF-C09]
    | P0 - Critical | 0 | 13 |  <!-- Was 1, now 0 open -->
    ```
 
-### Audit/TODOs Tracker
+### Security/Workflow (Historical)
 
-1. **Mark checkbox complete:**
-   ```markdown
-   - [x] **Complete** (Fixed in file.ts:XX-XX - YYYY-MM-DD)
-   ```
-2. **Add implementation notes** under the item
-3. **Update Progress Tracking table:**
-   ```markdown
-   | Phase 1 | 4 | 4/4 | Complete |
-   ```
-4. **Add to Session Log:**
-   ```markdown
-   #### Session Log (YYYY-MM-DD)
-   - Item 2 [SF-C09]: Fixed getMany IDOR - now applies view mapping
-   ```
+All security and workflow findings from the January 2026 audit have been resolved. See git history for implementation details:
+
+```bash
+git log --all --oneline --grep="SF-C"
+git log --all --oneline --grep="WF-C"
+```
 
 ---
 
