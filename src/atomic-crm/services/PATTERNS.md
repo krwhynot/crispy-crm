@@ -21,6 +21,9 @@ Standard patterns for business logic services in Crispy CRM.
 │     │  ├──────────────┼──────────────┼──────────────────────┤ │     │
 │     │  │ Junctions    │ Segments     │ DigestService        │ │     │
 │     │  │ Service      │ Service      │                      │ │     │
+│     │  ├──────────────┼──────────────┼──────────────────────┤ │     │
+│     │  │ Products     │ ProductDist- │                      │ │     │
+│     │  │ Service      │ ributors Svc │                      │ │     │
 │     │  └──────────────┴──────────────┴──────────────────────┘ │     │
 │     └─────────────────────────────────────────────────────────┘     │
 │                                                                      │
@@ -382,6 +385,8 @@ export interface ServiceContainer {
   activities: ActivitiesService;
   junctions: JunctionsService;
   segments: SegmentsService;
+  products: ProductsService;
+  productDistributors: ProductDistributorsService;
 }
 
 export function createServiceContainer(baseProvider: DataProvider): ServiceContainer {
@@ -400,6 +405,12 @@ export function createServiceContainer(baseProvider: DataProvider): ServiceConta
 
     // Segments service - Get-or-create pattern for segment tagging
     segments: new SegmentsService(baseProvider),
+
+    // Products service - Product CRUD with distributor relationships, soft delete via RPC
+    products: new ProductsService(baseProvider),
+
+    // ProductDistributors service - Composite key junction table operations
+    productDistributors: new ProductDistributorsService(baseProvider),
   };
 }
 ```

@@ -42,6 +42,8 @@ Canonical patterns for PostgreSQL migrations in Crispy CRM. All examples are fro
 | H: Foreign Keys | Referential integrity |
 | I: Indexes | Query optimization |
 | J: Multi-Tenant | Team isolation patterns |
+| K: JSONB RPC Functions | Complex RPC with flexible inputs |
+| L: Unified Timeline Views | Aggregating multiple entities into sortable stream |
 
 ---
 
@@ -931,6 +933,362 @@ CREATE POLICY company_isolation_contacts ON contacts
 - **Placeholder functions**: Enable future expansion without breaking changes
 - **RLS policies ready**: Current policies can be extended with company checks
 - **Helper functions**: Centralize tenant logic for consistent enforcement
+
+---
+
+## Pattern K: JSONB RPC Functions
+
+Server-side functions accepting JSONB parameters for complex operations.
+
+**When to use**: Multi-field inputs, optional parameters, atomic multi-table operations.
+
+### Basic JSONB RPC Pattern
+
+**Example:** `20260111130300_create_log_activity_with_task.sql`
+
+```sql
+-- RPC function with JSONB input for flexible parameter handling
+CREATE OR REPLACE FUNCTION log_activity_with_task(
+  p_activity JSONB,
+  p_task JSONB DEFAULT NULL  -- Optional second JSONB object
+)
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY INVOKER               -- Respects RLS (user context)
+SET search_path TO 'public'    -- Security: prevent search_path injection
+AS $$
+DECLARE
+  v_activity_id BIGINT;
+  v_task_id BIGINT;
+  v_current_sales_id BIGINT;
+BEGIN
+  -- Get current user for audit attribution
+  v_current_sales_id := get_current_sales_id();
+
+  IF v_current_sales_id IS NULL THEN
+    RAISE EXCEPTION 'User not authenticated or sales record not found';
+  END IF;
+
+  -- ============================================
+  -- INPUT VALIDATION (Fail Fast)
+  -- ============================================
+  IF p_activity IS NULL THEN
+    RAISE EXCEPTION 'Activity data is required';
+  END IF;
+
+  -- Validate required fields exist
+  IF p_activity->>'activity_type' IS NULL THEN
+    RAISE EXCEPTION 'Activity type is required';
+  END IF;
+
+  IF p_activity->>'subject' IS NULL OR trim(p_activity->>'subject') = '' THEN
+    RAISE EXCEPTION 'Activity subject is required';
+  END IF;
+
+  -- Business rule: must have contact OR organization
+  IF (p_activity->>'contact_id') IS NULL AND (p_activity->>'organization_id') IS NULL THEN
+    RAISE EXCEPTION 'Activity must have either contact_id or organization_id';
+  END IF;
+
+  -- ============================================
+  -- INSERT WITH TYPE CASTING
+  -- ============================================
+  INSERT INTO activities (
+    activity_type,
+    type,
+    subject,
+    description,
+    activity_date,
+    contact_id,
+    organization_id,
+    created_by
+  ) VALUES (
+    (p_activity->>'activity_type')::activity_type,    -- Cast to enum
+    (p_activity->>'type')::interaction_type,          -- Cast to enum
+    p_activity->>'subject',                           -- Text: no cast needed
+    p_activity->>'description',
+    COALESCE((p_activity->>'activity_date')::timestamptz, NOW()),  -- Default
+    (p_activity->>'contact_id')::bigint,              -- Cast to BIGINT
+    (p_activity->>'organization_id')::bigint,
+    v_current_sales_id
+  )
+  RETURNING id INTO v_activity_id;
+
+  -- Optional second insert (conditional)
+  IF p_task IS NOT NULL THEN
+    IF p_task->>'title' IS NULL OR trim(p_task->>'title') = '' THEN
+      RAISE EXCEPTION 'Task title is required when creating follow-up task';
+    END IF;
+
+    INSERT INTO tasks (title, contact_id, sales_id, type)
+    VALUES (
+      p_task->>'title',
+      (p_task->>'contact_id')::bigint,
+      v_current_sales_id,
+      COALESCE((p_task->>'type')::task_type, 'Follow-up'::task_type)
+    )
+    RETURNING id INTO v_task_id;
+  END IF;
+
+  -- ============================================
+  -- RETURN STRUCTURED RESULT
+  -- ============================================
+  RETURN jsonb_build_object(
+    'success', true,
+    'activity_id', v_activity_id,
+    'task_id', v_task_id
+  );
+
+EXCEPTION
+  WHEN OTHERS THEN
+    -- Transaction rolled back automatically
+    RAISE EXCEPTION 'log_activity_with_task failed: % (SQLSTATE: %)', SQLERRM, SQLSTATE;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION log_activity_with_task(JSONB, JSONB) TO authenticated;
+
+COMMENT ON FUNCTION log_activity_with_task IS
+'Atomically creates an activity and optionally a follow-up task.
+Parameters: p_activity (JSONB, required), p_task (JSONB, optional).
+Returns: { success: true, activity_id: bigint, task_id: bigint|null }';
+```
+
+### JSONB Array Handling Pattern
+
+**Example:** `20251030132011_add_rpc_backend_validation.sql`
+
+```sql
+-- Converting JSONB arrays to PostgreSQL arrays
+DECLARE
+  contact_ids_array BIGINT[];
+BEGIN
+  -- Check if JSONB key exists and is not null
+  IF opportunity_data ? 'contact_ids' AND opportunity_data->'contact_ids' IS NOT NULL THEN
+    -- Convert JSONB array to PostgreSQL BIGINT array
+    SELECT ARRAY_AGG((value#>>'{}')::BIGINT)
+    INTO contact_ids_array
+    FROM jsonb_array_elements(opportunity_data->'contact_ids');
+  ELSE
+    contact_ids_array := '{}'::BIGINT[];  -- Default empty array
+  END IF;
+
+  -- Validate array length for business rules
+  IF jsonb_array_length(opportunity_data->'contact_ids') = 0 THEN
+    RAISE EXCEPTION 'At least one contact is required';
+  END IF;
+END;
+```
+
+### JSONB Input Validation Checklist
+
+| Validation Type | Pattern | Example |
+|-----------------|---------|---------|
+| **Required Object** | `IF p_data IS NULL THEN RAISE` | `IF p_activity IS NULL THEN RAISE EXCEPTION 'Activity data is required'` |
+| **Required Field** | `IF p_data->>'field' IS NULL` | `IF p_activity->>'subject' IS NULL THEN RAISE EXCEPTION 'Subject required'` |
+| **Empty String** | `trim(p_data->>'field') = ''` | `IF trim(p_activity->>'subject') = '' THEN RAISE EXCEPTION 'Subject empty'` |
+| **Key Exists** | `p_data ? 'key'` | `IF opportunity_data ? 'contact_ids' THEN ...` |
+| **Array Length** | `jsonb_array_length(p_data->'arr')` | `IF jsonb_array_length(products) = 0 THEN RAISE EXCEPTION 'Products required'` |
+| **OR Condition** | Multiple field checks | `IF field1 IS NULL AND field2 IS NULL THEN RAISE EXCEPTION 'Need at least one'` |
+
+### Key Points
+
+- **SECURITY INVOKER for user operations**: Respects RLS policies
+- **Always set `search_path`**: Prevents injection attacks
+- **Validate before insert**: Fail fast with clear error messages
+- **Type casting**: Use `::type` for enums, bigint, timestamptz
+- **COALESCE for defaults**: `COALESCE((p_data->>'field')::type, default_value)`
+- **Return JSONB**: Use `jsonb_build_object()` for structured responses
+- **Document parameters**: Use COMMENT ON FUNCTION for API documentation
+
+---
+
+## Pattern L: Unified Timeline Views
+
+UNION ALL views that aggregate multiple entity types into a single sortable stream.
+
+**When to use**: Combining activities, tasks, notes, or other records for timeline displays.
+
+### Basic Timeline View Pattern
+
+**Example:** `20260119000001_create_entity_timeline_view.sql`
+
+```sql
+-- ============================================================================
+-- STEP 1: Ensure indexes exist on source tables for view performance
+-- ============================================================================
+
+-- Indexes on filter columns are CRITICAL for timeline performance
+CREATE INDEX IF NOT EXISTS idx_activities_contact_id
+  ON activities(contact_id) WHERE deleted_at IS NULL;
+
+CREATE INDEX IF NOT EXISTS idx_activities_organization_id
+  ON activities(organization_id) WHERE deleted_at IS NULL;
+
+CREATE INDEX IF NOT EXISTS idx_activities_entry_date
+  ON activities(activity_date DESC) WHERE deleted_at IS NULL;
+
+CREATE INDEX IF NOT EXISTS idx_tasks_entry_date
+  ON tasks(due_date DESC) WHERE deleted_at IS NULL;
+
+-- ============================================================================
+-- STEP 2: Create unified timeline view with UNION ALL
+-- ============================================================================
+
+CREATE OR REPLACE VIEW entity_timeline AS
+-- First source: Activities
+SELECT
+  id,
+  'activity'::text AS entry_type,    -- Discriminator column
+  type::text AS subtype,             -- Specific type (call, email, etc.)
+  subject AS title,                  -- Normalize column names
+  description,
+  activity_date AS entry_date,       -- Unified date column for sorting
+  contact_id,
+  organization_id,
+  opportunity_id,
+  created_by,
+  NULL::bigint AS sales_id,          -- Column not in activities
+  created_at
+FROM activities
+WHERE deleted_at IS NULL             -- Always filter soft deletes
+
+UNION ALL
+
+-- Second source: Tasks
+SELECT
+  id,
+  'task'::text AS entry_type,
+  type::text AS subtype,
+  title,
+  description,
+  due_date AS entry_date,
+  contact_id,
+  organization_id,
+  opportunity_id,
+  created_by,
+  sales_id,                          -- Task-specific column
+  created_at
+FROM tasks
+WHERE deleted_at IS NULL
+  AND (snooze_until IS NULL OR snooze_until <= CURRENT_DATE);  -- Business rule
+
+-- ============================================================================
+-- STEP 3: Grant and document
+-- ============================================================================
+
+GRANT SELECT ON entity_timeline TO authenticated;
+
+COMMENT ON VIEW entity_timeline IS
+  'Unified timeline of activities and tasks for contacts/organizations.
+   Filter by contact_id or organization_id. Sort by entry_date DESC.
+   entry_type: activity | task. subtype: specific type (call, email, etc.).';
+```
+
+### Timeline View Design Requirements
+
+| Requirement | Implementation |
+|-------------|----------------|
+| **Discriminator** | Add `entry_type` column to identify source table |
+| **Subtype** | Add `subtype` column for specific classification |
+| **Unified Date** | Alias different date columns to single `entry_date` |
+| **NULL Placeholders** | Use `NULL::type AS column_name` for missing columns |
+| **Soft Delete Filter** | Every branch needs `WHERE deleted_at IS NULL` |
+| **Business Rules** | Apply per-branch filters (e.g., snooze logic) |
+
+### Performance Optimization
+
+```sql
+-- 1. UNION ALL (not UNION) - No deduplication overhead
+-- UNION removes duplicates (slow), UNION ALL keeps all rows (fast)
+SELECT ... FROM activities WHERE ...
+UNION ALL  -- Use UNION ALL, not UNION
+SELECT ... FROM tasks WHERE ...
+
+-- 2. Partial indexes on filter columns
+CREATE INDEX idx_activities_contact_id
+  ON activities(contact_id)
+  WHERE deleted_at IS NULL;  -- Only index non-deleted rows
+
+-- 3. Descending indexes for timeline sorting
+CREATE INDEX idx_activities_entry_date
+  ON activities(activity_date DESC)  -- DESC matches ORDER BY entry_date DESC
+  WHERE deleted_at IS NULL;
+
+-- 4. Covering indexes for common queries
+CREATE INDEX idx_activities_timeline_covering
+  ON activities(contact_id, activity_date DESC)
+  INCLUDE (id, type, subject)  -- Avoid table lookup
+  WHERE deleted_at IS NULL;
+```
+
+### Adding Sources to Existing Timeline
+
+```sql
+-- Extend existing timeline with new source (e.g., notes)
+CREATE OR REPLACE VIEW entity_timeline AS
+-- ... existing activities SELECT ...
+UNION ALL
+-- ... existing tasks SELECT ...
+UNION ALL
+-- New source: Notes
+SELECT
+  id,
+  'note'::text AS entry_type,
+  NULL::text AS subtype,           -- Notes don't have subtypes
+  title,
+  content AS description,
+  created_at AS entry_date,        -- Notes use created_at for timeline
+  contact_id,
+  organization_id,
+  opportunity_id,
+  created_by,
+  NULL::bigint AS sales_id,
+  created_at
+FROM notes
+WHERE deleted_at IS NULL;
+
+-- Remember to add indexes for new source
+CREATE INDEX IF NOT EXISTS idx_notes_contact_id
+  ON notes(contact_id) WHERE deleted_at IS NULL;
+```
+
+### Query Patterns for Timeline Views
+
+```sql
+-- Basic timeline query for a contact
+SELECT entry_type, subtype, title, entry_date
+FROM entity_timeline
+WHERE contact_id = 123
+ORDER BY entry_date DESC
+LIMIT 20;
+
+-- Timeline with pagination
+SELECT entry_type, subtype, title, entry_date
+FROM entity_timeline
+WHERE organization_id = 456
+  AND entry_date < '2026-01-15'  -- Cursor-based pagination
+ORDER BY entry_date DESC
+LIMIT 20;
+
+-- Filtered timeline (only activities)
+SELECT entry_type, subtype, title, entry_date
+FROM entity_timeline
+WHERE contact_id = 123
+  AND entry_type = 'activity'
+ORDER BY entry_date DESC;
+```
+
+### Key Points
+
+- **UNION ALL not UNION**: Avoid deduplication overhead
+- **Consistent column structure**: All branches must have identical columns
+- **Discriminator column**: `entry_type` identifies source table
+- **Index ALL filter columns**: contact_id, organization_id, entry_date
+- **DESC indexes for timeline**: Match sort order for optimal performance
+- **Soft delete in every branch**: `WHERE deleted_at IS NULL`
+- **Business rules per branch**: Apply source-specific filters (snooze, etc.)
+- **CREATE OR REPLACE VIEW**: Views can be replaced without DROP
 
 ---
 

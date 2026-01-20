@@ -823,4 +823,95 @@ if (config.reference === 'resources') {
 - [ ] Sidebar categories auto-expand when filters active
 - [ ] Touch targets are 44px minimum (iPad)
 - [ ] ARIA labels on all interactive elements
+- [ ] Keyboard navigation works (Arrow keys, Home, End)
 - [ ] TypeScript compiles: `npx tsc --noEmit`
+
+---
+
+## Pattern K: Keyboard Navigation (FilterChipBar)
+
+The FilterChipBar implements toolbar-style keyboard navigation for accessibility, allowing users to navigate between filter chips using standard keyboard controls.
+
+### Supported Keys
+
+| Key | Action | Behavior |
+|-----|--------|----------|
+| `ArrowRight` | Move to next chip | Wraps to first chip when at end |
+| `ArrowLeft` | Move to previous chip | Wraps to last chip when at start |
+| `Home` | Jump to first chip | Focus moves to first remove button |
+| `End` | Jump to last chip | Focus moves to last remove button |
+| `Enter` / `Space` | Activate button | Removes the focused filter (native button behavior) |
+
+### Implementation
+
+```tsx
+// src/atomic-crm/filters/FilterChipBar.tsx
+
+const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+  const buttons = chipBarRef.current?.querySelectorAll('button[aria-label^="Remove"]');
+  if (!buttons?.length) return;
+
+  const currentIndex = Array.from(buttons).findIndex((btn) => btn === document.activeElement);
+
+  switch (e.key) {
+    case "ArrowRight":
+      e.preventDefault();
+      (buttons[(currentIndex + 1) % buttons.length] as HTMLElement).focus();
+      break;
+    case "ArrowLeft":
+      e.preventDefault();
+      (buttons[currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1] as HTMLElement).focus();
+      break;
+    case "Home":
+      e.preventDefault();
+      (buttons[0] as HTMLElement).focus();
+      break;
+    case "End":
+      e.preventDefault();
+      (buttons[buttons.length - 1] as HTMLElement).focus();
+      break;
+  }
+}, []);
+```
+
+### ARIA Attributes
+
+The FilterChipBar uses the following accessibility attributes:
+
+| Attribute | Value | Purpose |
+|-----------|-------|---------|
+| `role="toolbar"` | Container | Identifies the chip bar as a toolbar widget |
+| `aria-label="Active filters"` | Container | Describes the toolbar purpose |
+| `aria-orientation="horizontal"` | Container | Indicates horizontal navigation direction |
+| `role="list"` | Chip container | Groups chips as a list |
+| `role="listitem"` | Each chip wrapper | Identifies each chip as a list item |
+| `aria-label="Remove {label} filter"` | Remove button | Screen reader description for removal action |
+| `aria-labelledby` | Chip container | Links to "Active filters:" label text |
+
+### Focus Management
+
+1. **Ref-based DOM query**: Uses `chipBarRef` to find all remove buttons
+2. **Selector pattern**: `'button[aria-label^="Remove"]'` ensures only chip buttons are targeted
+3. **Circular navigation**: Arrow keys wrap around at boundaries (last -> first, first -> last)
+4. **Native button focus**: Standard `HTMLElement.focus()` for browser consistency
+
+### Design Decisions
+
+- **Toolbar pattern**: Follows WAI-ARIA toolbar widget pattern for horizontal button groups
+- **Roving tabindex alternative**: Uses direct focus management instead of roving tabindex for simplicity
+- **Event prevention**: `preventDefault()` stops arrow keys from scrolling the overflow container
+- **Touch targets**: 44px minimum on remove buttons (h-11 w-11) ensures iPad compliance alongside keyboard access
+
+### Usage
+
+Keyboard navigation is automatically enabled when using FilterChipBar:
+
+```tsx
+<FilterChipBar filterConfig={FEATURE_FILTER_CONFIG} />
+```
+
+No additional props or configuration required. Users can Tab into the chip bar, then use arrow keys to navigate between chips.
+
+### FilterChipsPanel Note
+
+The FilterChipsPanel (accordion variant) does **not** implement custom keyboard navigation. It relies on the native Accordion component's keyboard behavior (Space/Enter to expand/collapse) and standard Tab navigation between individual FilterChip remove buttons.

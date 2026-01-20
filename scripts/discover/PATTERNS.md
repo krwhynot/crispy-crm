@@ -22,7 +22,9 @@ scripts/discover/
 │   ├── ollama.ts             Embedding generation (768-dim vectors)
 │   ├── lancedb.ts            Vector storage and similarity search
 │   ├── indexer.ts            Full re-index pipeline
-│   └── chunk.ts              Code chunking strategy
+│   ├── chunk.ts              Code chunking strategy
+│   ├── health-check.ts       Service health verification CLI
+│   └── search-cli.ts         Semantic code search CLI
 │
 ├── scip/ ─────────────────── Symbol intelligence (go-to-def, find-refs)
 │   ├── generate.ts           Run scip-typescript indexer
@@ -693,3 +695,133 @@ When adding a new extractor to the discovery system:
 | **D: AST Extraction** | `utils/project.ts:9-34`, `extractors/*.ts` |
 | **E: Embedding Pipeline** | `embeddings/ollama.ts:15-129`, `embeddings/lancedb.ts:29-339` |
 | **F: SCIP Integration** | `scip/query.ts:48-51`, `scip/parser.ts:26-123` |
+
+---
+
+## CLI Utilities
+
+### health-check.ts - Discovery Services Health Check
+
+Verifies that all required services (LanceDB, Ollama) are running and properly configured for semantic search.
+
+**Location:** `scripts/discover/embeddings/health-check.ts`
+
+**Usage:**
+```bash
+npx tsx scripts/discover/embeddings/health-check.ts
+# Or via justfile:
+just discover-health
+```
+
+**What it checks:**
+1. **Ollama (Embedding Service)**
+   - Server reachable at `http://localhost:11434`
+   - Required model `nomic-embed-text` is pulled
+   - Lists all available models
+
+2. **LanceDB (Vector Database)**
+   - Database accessible at `.claude/state/vectors.lance`
+   - Table `code_chunks` exists
+   - Reports number of indexed points
+
+**Key Functions:**
+- `checkAllServices()` - Orchestrates all health checks and outputs results
+- Uses `checkOllamaHealth()` and `getHealthDetails()` from `ollama.ts`
+- Uses `checkLanceDBHealth()` and `getHealthDetails()` from `lancedb.ts`
+
+**Exit Codes:**
+- `0` - All services healthy
+- `1` - One or more services unhealthy
+
+**Example Output:**
+```
+🔍 Discovery Services Health Check
+
+──────────────────────────────────────────────────
+
+📦 Ollama (Embedding Service)
+   ✅ Server reachable
+   ✅ Model available: nomic-embed-text
+   📋 All models: nomic-embed-text, llama2
+
+📦 LanceDB (Vector Database)
+   ✅ Database accessible at .claude/state/vectors.lance
+   ✅ Table 'code_chunks' exists
+   📊 Points indexed: 1234
+
+──────────────────────────────────────────────────
+✅ All services healthy - ready for semantic search
+```
+
+---
+
+### search-cli.ts - Semantic Code Search CLI
+
+Search for code by meaning rather than exact keywords. Uses Ollama to generate embeddings and LanceDB for similarity search.
+
+**Location:** `scripts/discover/embeddings/search-cli.ts`
+
+**Usage:**
+```bash
+npx tsx scripts/discover/embeddings/search-cli.ts <query> [options]
+
+# Or via justfile:
+just discover-search "form validation"
+```
+
+**Options:**
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--limit <n>` | Maximum results to return | 10 |
+| `--type <type>` | Filter by code element type (component, hook, function, etc.) | none |
+| `--no-preview` | Hide code previews in output | show previews |
+| `--help` | Show help message | - |
+
+**Examples:**
+```bash
+# Basic semantic search
+npx tsx scripts/discover/embeddings/search-cli.ts "form validation"
+
+# Limit results
+npx tsx scripts/discover/embeddings/search-cli.ts "hooks for authentication" --limit 5
+
+# Filter by type
+npx tsx scripts/discover/embeddings/search-cli.ts "data fetching" --type hook
+
+# Hide code previews
+npx tsx scripts/discover/embeddings/search-cli.ts "Zod schema" --no-preview
+```
+
+**Key Functions:**
+- `parseArgs()` - Parses CLI arguments into `SearchOptions`
+- `runSearch(options)` - Executes the search pipeline:
+  1. Verifies Ollama and LanceDB health
+  2. Checks if index has data
+  3. Generates query embedding via `generateEmbedding()`
+  4. Searches via `search()` or `searchByType()`
+  5. Formats and displays results
+
+**Output Format:**
+```
+🔎 Searching for: "form validation"
+
+Found 5 results:
+
+────────────────────────────────────────────────────────────
+
+1. [92.3%] component: ContactForm
+   📁 src/atomic-crm/contacts/ContactForm.tsx:15-89
+   📄 export function ContactForm({ contact, onSave }) { const { handleSubmit...
+
+2. [87.1%] hook: useFormValidation
+   📁 src/hooks/useFormValidation.ts:8-45
+   📄 export function useFormValidation<T extends ZodSchema>(schema: T) {...
+
+────────────────────────────────────────────────────────────
+
+💡 Tip: Use --limit <n> to show more results
+```
+
+**Exit Codes:**
+- `0` - Search completed successfully
+- `1` - Error (services unavailable, no index, or search failure)

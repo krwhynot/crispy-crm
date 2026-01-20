@@ -110,6 +110,78 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
 
 **When to use**: List views, table columns, activity feeds, anywhere compact timestamps are needed.
 
+### ucFirst (Capitalize First Letter)
+
+Use when you need to capitalize the first character of a string:
+
+```tsx
+import { ucFirst } from "@/atomic-crm/utils";
+
+// Capitalize first letter
+ucFirst("hello")       // "Hello"
+ucFirst("HELLO")       // "HELLO"  (only first char affected)
+ucFirst("")            // ""
+```
+
+From `formatters.ts:51-53`:
+```typescript
+export function ucFirst(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+```
+
+**When to use**: Formatting relative time strings, display labels, any case normalization where only the first character needs capitalization.
+
+### formatFieldLabel (Snake Case to Title Case)
+
+Use for converting database field names to human-readable labels:
+
+```tsx
+import { formatFieldLabel } from "@/atomic-crm/utils";
+
+// Convert snake_case field names to Title Case
+formatFieldLabel("first_name")      // "First Name"
+formatFieldLabel("last_activity_at") // "Last Activity At"
+formatFieldLabel("email")           // "Email"
+formatFieldLabel("")                // ""
+```
+
+From `formatters.ts:59-62`:
+```typescript
+export function formatFieldLabel(fieldName: string): string {
+  if (!fieldName) return "";
+  return fieldName.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+```
+
+**When to use**: Dynamic form labels, error message formatting, auto-generated column headers, any UI that displays database field names.
+
+### getInitials (Extract Name Initials)
+
+Use for avatar placeholders when no image is available:
+
+```tsx
+import { getInitials } from "@/atomic-crm/utils";
+
+// Extract initials from first and last name
+getInitials("John", "Doe")     // "JD"
+getInitials("John", null)      // "J"
+getInitials(null, "Doe")       // "D"
+getInitials(null, null)        // "?"
+getInitials("  John  ", "Doe") // "JD" (handles whitespace)
+```
+
+From `formatters.ts:69-73`:
+```typescript
+export function getInitials(firstName?: string | null, lastName?: string | null): string {
+  const first = firstName?.trim().charAt(0)?.toUpperCase() || "";
+  const last = lastName?.trim().charAt(0)?.toUpperCase() || "";
+  return first + last || "?";
+}
+```
+
+**When to use**: Avatar fallbacks, contact list thumbnails, user initials display, anywhere you need compact name representation.
+
 ---
 
 ## Pattern B: Activity Visualization
@@ -841,6 +913,9 @@ When adding a new CRM utility:
 |------|---------|--------|
 | Format contact name | A | `formatFullName` from `formatters` |
 | Format relative time | A | `formatRelativeTime` |
+| Capitalize first letter | A | `ucFirst` |
+| Snake_case to Title Case | A | `formatFieldLabel` |
+| Extract name initials | A | `getInitials` |
 | Activity type icon | B | `getActivityIcon` |
 | CSV export flattening | C | `flattenEmailsForExport` |
 | Duplicate detection types | D | `type SimilarOpportunity` (functions in PostgreSQL) |

@@ -774,6 +774,9 @@ try {
 | **F: Color Types** | color-types.ts | Design system tokens |
 | **F: FieldProps** | field.type.ts | React Admin field types |
 | **F: genericMemo** | genericMemo.ts | Generic component memoization |
+| **G: Date Formatting** | formatDate.ts | Centralized date formatting |
+| **H: Type Guards** | type-guards.ts | Type-safe error handling |
+| **I: Zod Errors** | zodErrorFormatting.ts | Zod validation error formatting |
 | **—** | i18nProvider.ts | React Admin i18n setup |
 | **—** | sanitizeInputRestProps.ts | Filter RA input props for DOM |
 

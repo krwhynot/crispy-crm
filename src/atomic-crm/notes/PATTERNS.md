@@ -18,16 +18,20 @@ ReferenceManyField    ReferenceManyField   ReferenceManyField
         └────────────────────┼────────────────────┘
                              ▼
                       NotesIterator
-                      (list container)
+                      (composition wrapper)
                              │
               ┌──────────────┴──────────────┐
               ▼                             ▼
-         NoteCreate                       Note[]
-         (form at top)               (rendered items)
+         NoteCreate                     NotesList
+         (form at top)              (list renderer)
               │                             │
               ▼                             ▼
-         NoteInputs                    Note (edit mode)
-         (shared inputs)                    │
+         NoteInputs                       Note[]
+         (shared inputs)            (rendered items)
+                                           │
+                                           ▼
+                                    Note (edit mode)
+                                           │
                                            ▼
                                       NoteInputs
 ```
@@ -41,7 +45,7 @@ ReferenceManyField    ReferenceManyField   ReferenceManyField
 └────────┬────────┘   └────────┬────────┘   └────────┬────────┘
          │                     │                     │
          ▼                     ▼                     ▼
-   contact_notes         opportunity_notes     organization_notes
+   contactNotes          opportunityNotes      organizationNotes
    (resource)              (resource)            (resource)
          │                     │                     │
          └─────────────────────┼─────────────────────┘
@@ -51,6 +55,12 @@ ReferenceManyField    ReferenceManyField   ReferenceManyField
                      opportunities: "opportunity_id",
                      organizations: "organization_id" }
 ```
+
+**Resource Naming Convention:**
+- React Admin resources use **camelCase**: `contactNotes`, `opportunityNotes`, `organizationNotes`
+- Database tables use **snake_case**: `contact_notes`, `opportunity_notes`, `organization_notes`
+- `ReferenceManyField reference` prop uses snake_case (maps to database table)
+- `useResourceContext()` returns camelCase (React Admin resource name)
 
 ---
 

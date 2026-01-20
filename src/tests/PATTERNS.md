@@ -738,14 +738,212 @@ function findCommandItem(text: string): HTMLElement | null {
 
 ---
 
+## Pattern G: Typed Mock Utilities
+
+Provides strongly-typed mock factories for React Admin hooks to eliminate `as any` casts in test files.
+
+**When to use**: Mocking React Admin hooks (`useGetList`, `useGetOne`, `useCreate`, `useDelete`, `useGetIdentity`) with proper TypeScript inference.
+
+### Hook Return Value Factories
+
+```typescript
+import {
+  mockUseGetListReturn,
+  mockUseGetOneReturn,
+  mockUseCreateReturn,
+  mockUseDeleteReturn,
+  mockUseGetIdentityReturn
+} from '@/tests/utils';
+
+// Create typed return values for useGetList
+vi.mocked(useGetList).mockReturnValue(
+  mockUseGetListReturn({
+    data: [createMockContact()],
+    total: 1,
+    isPending: false
+  })
+);
+
+// Create typed return values for useGetOne
+vi.mocked(useGetOne).mockReturnValue(
+  mockUseGetOneReturn({
+    data: createMockOpportunity({ stage: 'closed_won' }),
+    isPending: false
+  })
+);
+
+// Create typed return values for mutation hooks (useCreate, useDelete)
+vi.mocked(useCreate).mockReturnValue(
+  mockUseCreateReturn({
+    mutate: vi.fn(),
+    isPending: false,
+    isSuccess: true
+  })
+);
+```
+
+### Mock Implementation Factories
+
+```typescript
+import { mockUseGetList, mockUseCreate } from '@/tests/utils';
+
+// Create a full mock implementation
+vi.mocked(useGetList).mockImplementation(
+  mockUseGetList({ data: contacts, total: contacts.length })
+);
+
+// Mock useCreate with custom mutate function
+const mutateFn = vi.fn();
+vi.mocked(useCreate).mockImplementation(
+  mockUseCreate({ mutate: mutateFn, isPending: false })
+);
+```
+
+### Identity Mock
+
+```typescript
+import { mockUseGetIdentityReturn, type MockIdentity } from '@/tests/utils';
+
+const adminUser: MockIdentity = {
+  id: 1,
+  fullName: 'Admin User',
+  avatar: 'https://example.com/avatar.jpg',
+  administrator: true
+};
+
+vi.mocked(useGetIdentity).mockReturnValue(
+  mockUseGetIdentityReturn({ data: adminUser })
+);
+```
+
+### Key Exports
+
+| Export | Purpose |
+|--------|---------|
+| `mockUseGetListReturn<T>()` | Create typed return value for `useGetList` |
+| `mockUseGetList<T>()` | Create mock implementation for `useGetList` |
+| `mockUseGetOneReturn<T>()` | Create typed return value for `useGetOne` |
+| `mockUseGetOne<T>()` | Create mock implementation for `useGetOne` |
+| `mockUseCreateReturn<T>()` | Create typed return value for `useCreate` |
+| `mockUseCreate<T>()` | Create mock implementation for `useCreate` |
+| `mockUseDeleteReturn<T>()` | Create typed return value for `useDelete` |
+| `mockUseDelete<T>()` | Create mock implementation for `useDelete` |
+| `mockUseGetIdentityReturn()` | Create typed return value for `useGetIdentity` |
+| `mockUseGetIdentity()` | Create mock implementation for `useGetIdentity` |
+| `MockIdentity` | Interface for identity data |
+| `GetListParams` | Re-exported type for parameter typing |
+
+**Key points:**
+- Generic type parameter `<RecordType>` provides proper inference for `data` field
+- All return values include sensible defaults (empty arrays, `isPending: false`, etc.)
+- Mutation hooks return tuple format `[mutateFn, state]` matching React Admin API
+- Use `vi.mocked()` to access mock functions with proper typing
+
+---
+
+## Pattern H: Typed Test Helpers
+
+Provides type-safe alternatives to common test patterns that would otherwise require `: any` casts.
+
+**When to use**: Eliminating `any` types in test files for better type safety and IDE support.
+
+### Export Row Mapping
+
+```typescript
+import { mapExportRows } from '@/tests/utils';
+
+// Type-safe row mapping for CSV/Excel export tests
+const contacts = [createMockContact(), createMockContact()];
+
+const exportData = mapExportRows(contacts, (contact) => [
+  contact.first_name,
+  contact.last_name,
+  contact.email[0]?.value ?? null
+]);
+
+expect(exportData).toHaveLength(2);
+expect(exportData[0][0]).toBe(contacts[0].first_name);
+```
+
+### Filter Value Extraction
+
+```typescript
+import { getFilterValue } from '@/tests/utils';
+import type { GetListParams } from 'ra-core';
+
+// Extract filter values with type safety
+const mockGetList = vi.fn().mockImplementation((resource: string, params: GetListParams) => {
+  const searchTerm = getFilterValue<string>(params, 'q');
+  const status = getFilterValue<'active' | 'inactive'>(params, 'status');
+
+  // Filter logic here...
+});
+```
+
+### Mock setState for Hook Testing
+
+```typescript
+import { createMockSetState, type MockSetState } from '@/tests/utils';
+
+// Create a tracked setState mock
+const [initialState, setState, getState] = createMockSetState<string[]>();
+
+// Use in hook tests
+setState((prev) => [...(prev ?? []), 'new item']);
+
+expect(getState()).toEqual(['new item']);
+```
+
+### Type Definitions for DataProvider Mocks
+
+```typescript
+import type { MockGetListImpl, MockDataProviderMethod, HookState } from '@/tests/utils';
+import type { Contact } from '@/types';
+
+// Type a mock implementation properly
+const mockImpl: MockGetListImpl<Contact> = (resource, params, options) => ({
+  data: [createMockContact()],
+  total: 1,
+  isPending: false,
+  error: null
+});
+
+// Type hook state in tests
+const hookState: HookState<Contact> = {
+  data: contacts,
+  isPending: false,
+  error: null
+};
+```
+
+### Key Exports
+
+| Export | Purpose |
+|--------|---------|
+| `mapExportRows<T>()` | Type-safe row mapping for export tests |
+| `getFilterValue<T>()` | Extract filter values from `GetListParams` safely |
+| `createMockSetState<T>()` | Create tracked setState mock for hook testing |
+| `MockSetState<T>` | Type for mock setState callback |
+| `MockGetListImpl<T>` | Type for `useGetList` mock implementation |
+| `MockDataProviderMethod<T>` | Type for dataProvider method mocks |
+| `HookState<T>` | Generic interface for hook state testing |
+
+**Key points:**
+- All helpers use generics for proper type inference
+- `createMockSetState` returns `[initialState, setState, getState]` for state tracking
+- Use these types instead of inline `: any` annotations
+- Improves IDE autocomplete and catches type errors at compile time
+
+---
+
 ## Pattern Comparison Table
 
-| Aspect | A: Global Mocks | B: Admin Context | C: Provider Config | D: Data Factories | E: Error Sim |
-|--------|-----------------|------------------|-------------------|-------------------|--------------|
-| **Purpose** | Prevent real calls | Render RA components | Custom behavior | Generate records | Test failures |
-| **Scope** | All tests | Per-component | Per-test | Per-record | Per-scenario |
-| **Key export** | `createTestQueryClient` | `renderWithAdminContext` | `createMockDataProvider` | `createMockOpportunity` | `createServerError` |
-| **Automatic?** | Yes (Vitest) | No (explicit) | No (explicit) | No (explicit) | No (explicit) |
+| Aspect | A: Global Mocks | B: Admin Context | C: Provider Config | D: Data Factories | E: Error Sim | F: Combobox | G: Typed Mocks | H: Typed Helpers |
+|--------|-----------------|------------------|-------------------|-------------------|--------------|-------------|----------------|------------------|
+| **Purpose** | Prevent real calls | Render RA components | Custom behavior | Generate records | Test failures | Test shadcn/ui | Mock RA hooks | Eliminate `any` |
+| **Scope** | All tests | Per-component | Per-test | Per-record | Per-scenario | Per-combobox | Per-hook mock | Per-test file |
+| **Key export** | `createTestQueryClient` | `renderWithAdminContext` | `createMockDataProvider` | `createMockOpportunity` | `createServerError` | `selectComboboxOption` | `mockUseGetListReturn` | `mapExportRows` |
+| **Automatic?** | Yes (Vitest) | No (explicit) | No (explicit) | No (explicit) | No (explicit) | No (explicit) | No (explicit) | No (explicit) |
 
 ---
 
