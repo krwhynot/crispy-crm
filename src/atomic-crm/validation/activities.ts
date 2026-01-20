@@ -136,6 +136,22 @@ export const baseActivitiesSchema = z.strictObject({
   created_at: z.string().max(50).optional(),
   updated_at: z.string().max(50).optional(),
   deleted_at: z.string().max(50).optional().nullable(),
+
+  // ============================================================================
+  // STI Task Fields (added for Tasks → Activities migration)
+  // These fields are only used when activity_type = 'task'
+  // ============================================================================
+  due_date: z.coerce.date().optional().nullable(),
+  reminder_date: z.coerce.date().optional().nullable(),
+  completed: z.coerce.boolean().optional().nullable(),
+  completed_at: z.coerce.date().optional().nullable(),
+  priority: z.enum(["low", "medium", "high", "critical"]).optional().nullable(),
+  sales_id: z.union([z.string(), z.number()]).optional().nullable(), // Task owner (maps to activities.created_by for non-tasks)
+  snooze_until: z.coerce.date().optional().nullable(),
+  overdue_notified_at: z.coerce.date().optional().nullable(), // System field for notification tracking
+
+  // Related task reference (for activities that complete a task)
+  related_task_id: z.union([z.string(), z.number()]).optional().nullable(),
 });
 
 // Main activities schema with comprehensive validation
