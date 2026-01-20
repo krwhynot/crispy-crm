@@ -205,16 +205,11 @@
 
 ---
 
-## Archive Location
+## Audit History
 
-Original audit files are archived at: `docs/archive/audits/`
+Historical audit files (pre-January 2026) have been consolidated into this tracker.
 
-- `code-quality/tier-1/` - Core audits (01-15)
-- `code-quality/tier-2/` - Pattern audits (16-19)
-- `code-quality/tier-3/` - Edge case audits (20-24)
-- `ui-ux/` - UI/UX audits (13 specialist reports)
-- `organizations-architecture-audit.md`
-- `import-health-audit-report.md`
+**Recent Audits:** Current audit reports are available in `docs/audits/` (retained for ~7 days)
 
 ---
 
