@@ -106,7 +106,8 @@ export function OpportunityDetailsViewSection({
     return reasons.find((r) => r.id === reason)?.name || reason;
   };
 
-  const isClosedOpportunity = record.stage === STAGE.CLOSED_WON || record.stage === STAGE.CLOSED_LOST;
+  const isClosedOpportunity =
+    record.stage === STAGE.CLOSED_WON || record.stage === STAGE.CLOSED_LOST;
   const closedReason =
     record.stage === STAGE.CLOSED_WON
       ? getReasonDisplayName(record.win_reason, true)
@@ -163,23 +164,23 @@ export function OpportunityDetailsViewSection({
         {isClosedOpportunity && closedReason && (
           <div
             className={`rounded-lg p-3 mt-4 ${
-              record.stage === "closed_won"
+              record.stage === STAGE.CLOSED_WON
                 ? "bg-success/10 border border-success/20"
                 : "bg-destructive/10 border border-destructive/20"
             }`}
           >
             <div className="flex items-center gap-2 mb-1">
-              {record.stage === "closed_won" ? (
+              {record.stage === STAGE.CLOSED_WON ? (
                 <Trophy className="h-4 w-4 text-success" />
               ) : (
                 <XCircle className="h-4 w-4 text-destructive" />
               )}
               <span
                 className={`text-xs font-medium uppercase tracking-wide ${
-                  record.stage === "closed_won" ? "text-success" : "text-destructive"
+                  record.stage === STAGE.CLOSED_WON ? "text-success" : "text-destructive"
                 }`}
               >
-                {record.stage === "closed_won" ? "Won Reason" : "Lost Reason"}
+                {record.stage === STAGE.CLOSED_WON ? "Won Reason" : "Lost Reason"}
               </span>
             </div>
             <p className="text-sm font-medium">{closedReason}</p>

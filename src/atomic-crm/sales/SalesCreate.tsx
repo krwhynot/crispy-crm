@@ -1,7 +1,8 @@
 import { SimpleForm } from "@/components/ra-wrappers/simple-form";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { saleKeys } from "@/atomic-crm/queryKeys";
 import { useCanAccess, useDataProvider, useNotify, useRedirect } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
