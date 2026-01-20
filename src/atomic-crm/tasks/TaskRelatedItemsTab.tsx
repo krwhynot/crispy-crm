@@ -75,7 +75,7 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
                 <div className="flex items-center gap-2">
                   <Target className="size-5 text-muted-foreground" />
                   <ReferenceField source="opportunity_id" reference="opportunities" link="show">
-                    <TextField source="title" className="font-medium" />
+                    <TextField source="name" className="font-medium" />
                   </ReferenceField>
                 </div>
               </CardContent>

@@ -286,11 +286,13 @@ const TaskListLayout = ({
             source="contact_id"
             reference="contacts_summary"
             label="Contact"
-            link={false}
+            link="show"
             sortable={false}
             {...COLUMN_VISIBILITY.largeDesktopOnly}
           >
-            <TextField source={contactOptionText} />
+            <FunctionField render={(record: { first_name?: string; last_name?: string }) =>
+              [record?.first_name, record?.last_name].filter(Boolean).join(' ') || '—'
+            } />
           </ReferenceField>
 
           {/* Column 8: Opportunity - Opportunity reference (non-sortable) - hidden until large desktop */}
@@ -298,11 +300,11 @@ const TaskListLayout = ({
             source="opportunity_id"
             reference="opportunities"
             label="Opportunity"
-            link={false}
+            link="show"
             sortable={false}
             {...COLUMN_VISIBILITY.largeDesktopOnly}
           >
-            <TextField source="title" />
+            <TextField source="name" />
           </ReferenceField>
 
           {/* Column 9: Actions - Row action menu (non-sortable) - always visible */}

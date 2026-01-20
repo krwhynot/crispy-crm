@@ -94,7 +94,7 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
                             reference="opportunities"
                             link="show"
                           >
-                            <TextField source="title" className="text-sm font-medium" />
+                            <TextField source="name" className="text-sm font-medium" />
                           </ReferenceField>
                           {oppProduct.notes && (
                             <p className="text-xs text-muted-foreground mt-1">{oppProduct.notes}</p>

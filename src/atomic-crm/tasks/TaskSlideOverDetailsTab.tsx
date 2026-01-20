@@ -152,7 +152,7 @@ export function TaskSlideOverDetailsTab({
               </ReferenceInput>
 
               <ReferenceInput source="opportunity_id" reference="opportunities">
-                <AutocompleteInput label="Opportunity" optionText="title" />
+                <AutocompleteInput label="Opportunity" optionText="name" />
               </ReferenceInput>
             </div>
           </div>
