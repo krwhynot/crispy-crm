@@ -48,7 +48,7 @@ export const sampleStatusSchema = z.enum([
 // Sentiment enum
 export const sentimentSchema = z.enum(["positive", "neutral", "negative"]);
 
-// Interaction type options for UI components (13 types per PRD v1.18)
+// Interaction type options for UI components (15 types after STI migration)
 export const INTERACTION_TYPE_OPTIONS = [
   { value: "call", label: "Call" },
   { value: "email", label: "Email" },
@@ -63,6 +63,9 @@ export const INTERACTION_TYPE_OPTIONS = [
   { value: "social", label: "Social" },
   { value: "note", label: "Note" },
   { value: "sample", label: "Sample" },
+  // STI task type mappings
+  { value: "administrative", label: "Administrative" },
+  { value: "other", label: "Other" },
 ] as const;
 
 // Sample status options for UI components
