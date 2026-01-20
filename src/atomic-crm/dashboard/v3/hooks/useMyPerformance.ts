@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { startOfWeek, endOfWeek, subWeeks, startOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
+import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 /**
  * My Performance Metrics for Dashboard Widget (PRD v1.18)

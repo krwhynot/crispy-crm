@@ -1,5 +1,6 @@
 import { differenceInDays, isPast, isToday } from "date-fns";
 import { cn } from "@/lib/utils";
+import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 /**
  * Row styling utilities for Opportunity list
@@ -36,14 +37,14 @@ export const getCloseDateStatus = (closeDate: string | null | undefined): CloseD
  * Check if opportunity is in a closed stage
  */
 export const isClosedStage = (stage: string | null | undefined): boolean => {
-  return stage === "closed_won" || stage === "closed_lost";
+  return stage === STAGE.CLOSED_WON || stage === STAGE.CLOSED_LOST;
 };
 
 /**
  * Check if opportunity is a hot lead (new_lead stage)
  */
 export const isHotLead = (stage: string | null | undefined): boolean => {
-  return stage === "new_lead";
+  return stage === STAGE.NEW_LEAD;
 };
 
 /**
@@ -77,8 +78,8 @@ export const getOpportunityRowClassName = (record: OpportunityRowData): string =
 
   return cn(
     // Closed stages get muted styling (takes precedence)
-    stage === "closed_won" && ROW_STYLE_CLASSES.closedWon,
-    stage === "closed_lost" && ROW_STYLE_CLASSES.closedLost,
+    stage === STAGE.CLOSED_WON && ROW_STYLE_CLASSES.closedWon,
+    stage === STAGE.CLOSED_LOST && ROW_STYLE_CLASSES.closedLost,
 
     // Overdue styling - only for non-closed opportunities
     !isClosed && closeDateStatus === "overdue" && ROW_STYLE_CLASSES.overdue,

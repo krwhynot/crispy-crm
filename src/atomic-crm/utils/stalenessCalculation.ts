@@ -20,7 +20,6 @@ import {
   STAGE,
   ACTIVE_STAGES,
   CLOSED_STAGES,
-  isClosedStage as isClosedStageBase,
 } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 // Re-export for backward compatibility with existing imports
