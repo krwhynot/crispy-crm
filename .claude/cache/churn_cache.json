@@ -1,0 +1,6839 @@
+{
+  "version": "1.0",
+  "head_sha": "6754c883b92f2f8a3f584667f566c36330e2dd0b",
+  "generated_at": "2026-01-19T19:41:40.120956",
+  "window_days": 14,
+  "data": {
+    "file_churn": [
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts",
+        "edit_count": 19,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+        "edit_count": 19,
+        "recent_7d": 14,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts",
+        "edit_count": 16,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/.baseline/full-audit.json",
+        "edit_count": 14,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/.baseline/workflow-gaps.json",
+        "edit_count": 13,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/TODOs/TODO_PROVIDER.md",
+        "edit_count": 13,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactCompactForm.tsx",
+        "edit_count": 11,
+        "recent_7d": 11,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
+        "edit_count": 11,
+        "recent_7d": 10,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
+        "edit_count": 11,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+        "edit_count": 11,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/products.ts",
+        "edit_count": 11,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
+        "edit_count": 10,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskList.tsx",
+        "edit_count": 10,
+        "recent_7d": 6,
+        "authors": []
+      },
+      {
+        "path": "docs/PROVIDER_AUDIT_REPORT.md",
+        "edit_count": 10,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+        "edit_count": 10,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
+        "edit_count": 10,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/productDistributorsHandler.ts",
+        "edit_count": 10,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/ActivityList.tsx",
+        "edit_count": 9,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx",
+        "edit_count": 9,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx",
+        "edit_count": 9,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationCreate.tsx",
+        "edit_count": 9,
+        "recent_7d": 8,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
+        "edit_count": 9,
+        "recent_7d": 6,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
+        "edit_count": 8,
+        "recent_7d": 6,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/ActivityEdit.tsx",
+        "edit_count": 8,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "package-lock.json",
+        "edit_count": 8,
+        "recent_7d": 7,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/hooks/useFilterCleanup.ts",
+        "edit_count": 8,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts",
+        "edit_count": 8,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/ActivitySinglePage.tsx",
+        "edit_count": 7,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
+        "edit_count": 7,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/OpportunityNotesTab.tsx",
+        "edit_count": 7,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
+        "edit_count": 7,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/slideOverTabs/OrganizationNotesTab.tsx",
+        "edit_count": 7,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductDetailsTab.tsx",
+        "edit_count": 7,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-11-full-audit.md",
+        "edit_count": 7,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx",
+        "edit_count": 7,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
+        "edit_count": 7,
+        "recent_7d": 6,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/organizations.ts",
+        "edit_count": 7,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/FormErrorSummary.tsx",
+        "edit_count": 7,
+        "recent_7d": 7,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/activities.ts",
+        "edit_count": 7,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/index.ts",
+        "edit_count": 7,
+        "recent_7d": 6,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/products.service.ts",
+        "edit_count": 7,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationImportDialog.tsx",
+        "edit_count": 7,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/components/CreateFormFooter.tsx",
+        "edit_count": 6,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
+        "edit_count": 6,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/__tests__/OrganizationList.test.tsx",
+        "edit_count": 6,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductEdit.tsx",
+        "edit_count": 6,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/Task.tsx",
+        "edit_count": 6,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskCompactForm.tsx",
+        "edit_count": 6,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/components/OpportunityCreateFormFooter.tsx",
+        "edit_count": 6,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+        "edit_count": 6,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/QuickAddForm.test.tsx",
+        "edit_count": 6,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
+        "edit_count": 6,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.provider.test.tsx",
+        "edit_count": 6,
+        "recent_7d": 6,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/hooks/__tests__/useFilterCleanup.test.ts",
+        "edit_count": 6,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/__tests__/date-input.test.tsx",
+        "edit_count": 6,
+        "recent_7d": 6,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.test.ts",
+        "edit_count": 6,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "CLAUDE.md",
+        "edit_count": 6,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/secureStorage.ts",
+        "edit_count": 6,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts",
+        "edit_count": 6,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/ActivityCreate.tsx",
+        "edit_count": 5,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/ActivityListFilter.tsx",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactShow.tsx",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityAside.tsx",
+        "edit_count": 5,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityShow.tsx",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/__tests__/ParentOrganizationInput.test.tsx",
+        "edit_count": 5,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/root/CRM.tsx",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/development/FINDING_IDS.md",
+        "edit_count": 5,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-11-workflow-gaps.md",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
+        "edit_count": 5,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactEdit.tsx",
+        "edit_count": 5,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskEdit.tsx",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "package.json",
+        "edit_count": 5,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-18-role-based-access-control.md",
+        "edit_count": 5,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/rpc.test.ts",
+        "edit_count": 5,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts",
+        "edit_count": 5,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/2026-01-18-remediation-verification-e2e.md",
+        "edit_count": 5,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "scripts/analyze_disk.sh",
+        "edit_count": 5,
+        "recent_7d": 5,
+        "authors": []
+      },
+      {
+        "path": "src/tests/utils/mock-providers.ts",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "eslint.config.js",
+        "edit_count": 5,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
+        "edit_count": 5,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/PATTERNS.md",
+        "edit_count": 5,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-11-audit-remediation-critical-fixes.md",
+        "edit_count": 5,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/todo/ui-ux-consistency-remediation.md",
+        "edit_count": 5,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/types/database.generated.ts",
+        "edit_count": 5,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/__tests__/ActivitySinglePage.test.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/slideOverTabs/__tests__/ActivityDetailsTab.test.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactDetailsTab.tsx",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactList.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/LinkOpportunityModal.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/PATTERNS.md",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/components/OpportunityActivitySection.tsx",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/forms/tabs/OpportunityActivityTab.tsx",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
+        "edit_count": 4,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
+        "edit_count": 4,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tags/TagDialog.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/AddTask.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "docs/technical-debt.md",
+        "edit_count": 4,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "docs/development/TASK_MANAGEMENT.md",
+        "edit_count": 4,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/PATTERNS.md",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/ActivitiesTab.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/index.ts",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/hooks/useQuickAdd.ts",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationEdit.tsx",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.cascading.test.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/index.ts",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/060-null-safety-rls.test.sql",
+        "edit_count": 4,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/070-role-based-rls.test.sql",
+        "edit_count": 4,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/rpc.ts",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/__tests__/EntitySelectionSection.test.tsx",
+        "edit_count": 4,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111130000_fix_segments_created_by.sql",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
+        "edit_count": 4,
+        "recent_7d": 4,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/dateFilterLabels.ts",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsViewSection.tsx",
+        "edit_count": 4,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/components/TaskActionMenu.tsx",
+        "edit_count": 4,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
+        "edit_count": 4,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/__tests__/AuthorizationsTab.test.tsx",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/__tests__/autocomplete-input.test.tsx",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/products-base.test.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/hooks/__tests__/useBulkActionsState.test.tsx",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/PATTERNS.md",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/composedDataProvider.test.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/useOrganizationDescendants.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/index.css",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationSlideOver.tsx",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/productsHandler.test.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/salesHandler.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/lib/PATTERNS.md",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "edit_count": 4,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactCreate.tsx",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notes/Note.tsx",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductDetailsInputTab.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductList.tsx",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesEdit.tsx",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/TODOs.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-12-workflow-gaps.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notes/PATTERNS.md",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/README.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-1-foundations/ADR-001-unified-data-provider.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-1-foundations/ADR-002-zod-api-boundary.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-1-foundations/ADR-003-react-admin-framework.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-1-foundations/ADR-004-supabase-backend.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-1-foundations/ADR-008-rls-security.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-1-foundations/ADR-014-fail-fast-philosophy.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-007-soft-delete-pattern.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-009-composed-data-provider.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-015-edge-functions.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-016-rpc-functions.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-017-dashboard-views.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-019-provider-migration-feature-flag.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-025-error-logging-wrapper.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-026-validation-wrapper.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-027-query-key-factory.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-2-data-layer/ADR-031-lru-cache-postgrest.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-005-dnd-kit-library.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-006-tailwind-semantic-colors.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-010-slide-over-panels.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-011-feature-directory-structure.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-012-form-validation-mode.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-013-wcag-accessibility.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-033-generic-memo-utility.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-3-frontend/ADR-034-sonner-notifications.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-4-infrastructure/ADR-018-test-render-utility.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-4-infrastructure/ADR-020-sentry-error-monitoring.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-4-infrastructure/ADR-021-multi-environment-config.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-4-infrastructure/ADR-022-csp-security-headers.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-4-infrastructure/ADR-023-build-code-splitting.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-4-infrastructure/ADR-024-structured-logging.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-4-infrastructure/ADR-030-vitest-esm-workaround.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-5-features/ADR-028-csv-upload-validation.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-5-features/ADR-029-storage-service.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/adr/tier-5-features/ADR-032-csv-import-architecture.md",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "vercel.json",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/index.ts",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118000001_fix_segments_indexes.sql",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "supabase/seed-complete-flow.sql",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/__tests__/ActivityCreate.integration.test.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/__tests__/fixtures/opportunities.ts",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/__tests__/dateUtils.test.ts",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/filterPrecedence.ts",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/ChangeLogTab.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactBadges.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/delete-confirm-dialog.tsx",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/QuickLogActivity.tsx",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/layouts/sidepane/SidepaneMetadata.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/autocompleteDefaults.ts",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/date-input.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/filterRegistry.ts",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/form-primitives.tsx",
+        "edit_count": 3,
+        "recent_7d": 3,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/README.md",
+        "edit_count": 3,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/productsCallbacks.ts",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/select.tsx",
+        "edit_count": 3,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-12-critical-audit-remediation.md",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/known-issues.md",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/__tests__/select-input.test.tsx",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/useKPIMetrics.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/services/ValidationService.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-11-products-distributors-validation-fix.md",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/__tests__/ProductsService.test.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/PATTERNS.md",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/__tests__/schemaDrift.test.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/slideOverTabs/ActivityRelatedTab.tsx",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactSlideOver.tsx",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskSlideOver.tsx",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskDetailsTab.tsx",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/discover/extractors/schemas.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/__tests__/deleteOpportunityCascade.test.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/junctionHandlers.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/resources.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/typeGuards.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/types/database.types.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/PATTERNS.md",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/settings/DigestPreferences.tsx",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/lib/queryKeys.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/lib/storage-utils.ts",
+        "edit_count": 3,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/01-presentation-layer.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/04-feature-slices.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/integration-patterns.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/design-system/form-patterns.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/ActivityInputs.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactBulkActionsToolbar.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactEmpty.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactImportDialog.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactInputs.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactListFilter.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/LinkOpportunityModal.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/ContactList.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/layout/Header.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notes/NoteCreate.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityList.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityListFilter.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/WorkflowManagementSection.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationAside.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationInputs.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationListFilter.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationShow.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/PrincipalAwareTypeInput.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/PATTERNS.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductCreate.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductEmpty.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductRelationshipsTab.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/README.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesCreate.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesList.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tags/PATTERNS.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskCreate.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskEmpty.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/timeline/TimelineEntry.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/ListSearchBar.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/PATTERNS.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/SecureCreate.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/SegmentComboboxInput.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/autocomplete-input.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/select-input.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/admin.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/array-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/authentication.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/autocomplete-array-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/autocomplete-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/boolean-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/bulk-actions-toolbar.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/bulk-export-button.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/column-filters/README.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/column-filters/index.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/columns-button.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/create-in-dialog-button.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/create.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/data-table.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/date-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/edit.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/file-field.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/file-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/filter-form.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/input-helper-text.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/layout.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/list-pagination.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/list.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/login-page.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/multi-select-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/number-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/radio-button-group-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/record-field.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/reference-array-field.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/reference-array-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/search-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/select-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/show.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/simple-form-iterator.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/simple-form.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/state-combobox-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/text-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/audit-manual-verification.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/development/README.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/PATTERNS.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/TODOs/audit-critical-expanded.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/TODOs/audit-critical-with-testing.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/TODOs/audit1-9-26-TODOs.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-10-full-audit.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-10-skill-rules-audit.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-10-workflow-gaps.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-11-post-fix-audit.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-11-workflow-gaps-baseline.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-12-full-audit.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/patterns-drift-report-2026-01-09.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/workflow-gaps-database-audit-2026-01-10.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/workflow-gaps-phase3-database-checks.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/PATTERNS.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "health-audit-report.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": ".husky/PATTERNS.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/cancel-button.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260119000000_update_quick_add_opportunity.sql",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "docs/MCP-DOCKER-GATEWAY-SETUP.md",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/hooks/__tests__/useQuickAdd.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/quickAdd.test.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/quickAdd.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/utils.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/types/supabase.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/select-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/hooks/useAutoGenerateName.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/organizations.test.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "justfile",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": ".husky/pre-commit",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/CanAccess.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/usePermissions.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/commons/canAccess.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/040-ownership-rls.test.sql",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118193604_update_rls_for_role_based_access.sql",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118120000_add_check_similar_opportunities_rpc.sql",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/index.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/__tests__/ActivityDateSection.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/__tests__/ActionButtons.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notes/NotesIterator.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "supabase/seed.sql",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/MANUAL-TEST-complete-data-flow.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/organizationDistributors.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/__tests__/form.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/empty-state.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/components/index.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/opportunityStagePreferences.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts/contacts-quick-create.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/seed-parts/15-e2e-flows.sql",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/date-field.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/file-field.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/reference-many-field.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/docker-compose.override.yml",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SaleAvatar.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesShow.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/layouts/sidepane/SidepaneContactRow.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/formatters.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/ActivityTypeCard.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/StaleLeadsView.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/bulk-reassign-button.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/priority-badge.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-15-full-audit.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/lib/__tests__/formatDate.test.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/lib/genericMemo.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/lib/__tests__/genericMemo.test.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/rpcExtension.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-15-critical-audit-fixes.md",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/autocomplete-input.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/controlled-date-picker.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/activitiesCallbacks.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/types.ts",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/products-update.test.ts",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/__tests__/FormFieldWrapper.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 2,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/simple-form-iterator.tsx",
+        "edit_count": 2,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/formatName.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/OpportunitiesTab.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunityProductsTab.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/slideOverTabs/__tests__/OpportunitySlideOverDetailsTab.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/e2e-tests/2026-01-11-workflow-gaps-e2e.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/__tests__/PremiumDatagrid.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/products-edge-cases.test.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/tests/utils/index.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/lib/zodErrorFormatting.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/tagsHandler.test.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/layouts/sidepane/empty-state-content.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/organizations/integration.test.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/authProvider.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/opportunities/validation.test.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts/contacts-core.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111000001_convert_merge_to_soft_delete.sql",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/hooks/useBulkActionsState.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/opportunities.ts.bak",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-11-critical-audit-remediation.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/hooks/useRecentSearches.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/PATTERNS.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/getContextAwareRedirect.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/TODOs/ui-ux-consistency-audit.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/slideOverTabs/__tests__/ActivityRelatedTab.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/input.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/__tests__/ActivitySlideOver.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/layouts/ResourceSlideOver.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/design-system/priority-badges.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/__tests__/useFilterChipBar.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/__tests__/authProvider.test.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/ContactCreate.integration.test.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/components/TrackRecordView.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/ListSearchBar.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationHierarchyBreadcrumb.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskGeneralTab.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/favorites.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/RecentItemsWidget.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/__tests__/userManagement.test.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/commonTransforms.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/index.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/queryKeys.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/productDistributors.service.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts.ts",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/priority-tabs.tsx",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": ".github/workflows/ci.yml",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/old/data-model.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/old/data-provider.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/old/integration-patterns.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/old/resource-matrix.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/old/rls-policies.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/old/validation-layer.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/README.md",
+        "edit_count": 2,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/blog/01-seven-select-components-became-one.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/patterns/tier-3-frontend/admin-components.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/patterns/tier-5-features/opportunities.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/patterns/tier-5-features/products.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/patterns/tier-5-features/tags.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activity-log/ActivityLogContactCreated.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activity-log/ActivityLogContactNoteCreated.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activity-log/ActivityLogOpportunityNoteCreated.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/AutocompleteContactInput.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactAside.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactManagerInput.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/TagsList.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/ContactShow.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/FilterSidebar.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/layout/FormToolbar.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/layout/Layout.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/login/StartPage.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notes/NoteInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/LeadSourceInput.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityEmpty.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityHeader.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunityRowListView.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OrganizationInfoCard.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/OpportunityShow.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/AutocompleteOrganizationInput.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationAddressSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationEmpty.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationInputs.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationList.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationStatusSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/__tests__/OrganizationShow.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductDistributionTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductDistributorInput.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductListFilter.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductShow.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/__tests__/ProductList.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/__tests__/ProductShow.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesGeneralTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesListFilter.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesPermissionsInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/settings/TimeZoneSelect.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/settings/sections/PersonalSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tags/TagQuickInput.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tags/TagSelectWithCreate.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskListFilter.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskShow.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/domain/forms/OrganizationPicker.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/domain/forms/constants.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/supabase/forgot-password-page.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/supabase/layout.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/supabase/set-password-page.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/components/NotificationBell.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/components/NotificationDropdown.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/components/__tests__/NotificationDropdown.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/FavoritesSidebarSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/FilterableBadge.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/FloatingCreateButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/FormErrorSummary.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/ListNoResults.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/OwnerFilterDropdown.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/PremiumDatagrid.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/Readme.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/RecentSearchesDropdown.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/FloatingCreateButton.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/PremiumDatagrid.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/bulk-reassign-button.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/date-input.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/form.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/refresh-button.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/test-form-context.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/test-ra-form.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/__tests__/text-input.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/app-sidebar.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/array-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/badge-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/breadcrumb.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/bulk-delete-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/bulk-reassign-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/cancel-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/column-filters/CheckboxColumnFilter.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/column-filters/FilterableColumnHeader.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/column-filters/TextColumnFilter.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/confirm.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/controlled-date-picker.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/count.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/create-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/date-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/delete-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/delete-confirm-dialog.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/edit-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/email-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/error.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/export-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/field-toggle.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/filter-types.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/ButtonPlaceholder.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/CollapsibleSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/CompactFormFieldWithButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/CompactFormRow.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormActions.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormFieldWrapper.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormGrid.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormLoadingSkeleton.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormProgressBar.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormProgressContext.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormProgressProvider.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormSectionWithProgress.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/FormWizard.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/SaveButtonGroup.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/StepIndicator.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/WizardContext.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/WizardNavigation.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/WizardStep.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/ButtonPlaceholder.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/CollapsibleSection.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/CompactFormFieldWithButton.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/CompactFormRow.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormActions.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormFieldWrapper.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormGrid.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormLoadingSkeleton.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormProgressBar.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormProgressProvider.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormSection.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormSectionWithProgress.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/FormWizard.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/SaveButtonGroup.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/StepIndicator.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/WizardNavigation.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/WizardStep.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/form-primitives-accessibility.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/test-utils.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/__tests__/useFormShortcuts.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/form-primitives.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/formProgressTypes.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/formProgressUtils.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/useFormShortcuts.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/wizard-types.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/form/wizardUtils.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/generic-select-input.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/icon-button-with-tooltip.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/loading.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/locales-menu-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/notification.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/number-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/ready.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/reference-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/reference-input.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/reference-many-count.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/reference-many-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/refresh-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/saved-queries.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/select-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/show-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/single-field-list.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/sort-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/spinner.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/tabbed-form/TabPanel.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/tabbed-form/TabTriggerWithErrors.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/tabbed-form/TabbedFormInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/tabbed-form/__tests__/TabPanel.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/tabbed-form/__tests__/TabTriggerWithErrors.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/tabbed-form/__tests__/TabbedFormInputs.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/tabbed-form/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/text-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/text-input/TextInputWithCounter.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/text-input/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/theme-mode-toggle.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/theme-provider.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/toggle-filter-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/url-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ra-wrappers/user-menu.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/decisions.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/_state/decisions-verification.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/_state/features-verification.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/_state/p0-verification.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/_state/p1-verification.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/_state/p2p3-verification.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/_state/verification-summary.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/FINAL-DELIVERABLES/01-PRIORITIZED-FIX-LIST.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/FINAL-DELIVERABLES/02-PATTERN-DOCUMENTATION.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/FINAL-DELIVERABLES/03-RISK-ASSESSMENT.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/FINAL-DELIVERABLES/04-COMPLIANCE-SCORECARD.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/FINAL-DELIVERABLES/05-DEAD-CODE-REPORT.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/01-data-provider-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/02-zod-schemas-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/03-resource-patterns-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/04-supabase-integration-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/05-boundary-types-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/06-react-rendering-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/07-query-efficiency-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/08-bundle-analysis-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/09-state-context-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/10-module-structure-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/11-constitution-core-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/12-constitution-conventions-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/13-error-handling-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/14-import-graph-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-1/15-composition-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-2/16-typescript-strictness-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-2/17-pattern-drift-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-2/18-dead-exports-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-2/19-dead-dependencies-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/20-false-negatives-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/20a-1-agents-1-7.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/20a-2-agents-8-15.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/20b-1-tier2-verification.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/20b-2-synthesis.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/21-edge-cases-forms-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/22-edge-cases-data-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/23-edge-cases-async-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/24-devils-advocate-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/code-quality/tier-3/25a-master-findings.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/color-contrast-report.json",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/import-health-audit-report.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/org-forms-investigation.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/organizations-architecture-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/orgs-database-layer.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/orgs-relationships.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/orgs-ui-consistency.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/FINAL-AUDIT-REPORT.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/base-ui-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/composition-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/conditional-rendering-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/dashboard-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/dynamic-styles-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/edge-cases-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/false-negatives-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/forms-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/interactive-elements-adversarial-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/lists-tables-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/modals-slideovers-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/navigation-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/third-party-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/audits/ui-ux/ui-ux-audit-executive-summary.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2025-12-20-kanban-density-principal-view.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/utils/diffProducts.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-19-data-integrity.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/.serena/memories/gotrue-null-token-columns-fix.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/MANIFEST.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/audit-05-dashboard-filtering.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/admin-edit-diagnostic-report.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/admin-edit-interface-analysis.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/audit/temp/audit-consistency.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/audit/temp/audit-constitution.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/audit/temp/audit-health.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/audit/temp/audit-performance.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/audits/VAL-04-awaiting-response-cleanup-summary.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/audits/create-forms/TEMPLATE.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/issues/2025-12-12_sales-slideover-edit-400-error.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/rbac-gap-analysis.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/rbac-implementation-plan.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/rbac-inventory-part1-ui-api.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/rbac-inventory-part2a-database.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/rbac-inventory-part2b-migrations.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/rbac-recommendations.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/rbac-research-findings.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/docs/ui-ux/audits/deep-dive/internationalization-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.archive/2025-12-17-md-audit/validation-audit-report.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.storybook/main.js",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.storybook/manager.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/_pending-delete/.storybook/preview.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/legacy-docs/CREDENTIAL-ROTATION-GUIDE.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/legacy-docs/DATA-DEDUPLICATION-ANALYSIS.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/legacy-docs/GIT-HISTORY-SCRUB.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/legacy-docs/SEMANTIC_COLOR_MIGRATION_SUMMARY.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/legacy-docs/SENTRY_TEST.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/legacy-docs/agents.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "archive/styles/desktop.css",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/.baseline/data-integrity.json",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "logs/load-tests/load-test-1764447369655.json",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "logs/load-tests/load-test-1764447576536.json",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "logs/load-tests/load-test-1764447707992.json",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "logs/load-tests/load-test-1764447808223.json",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/utils/__tests__/device.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/useUnsavedChangesWarning.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/utils/device.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/OpportunitySpeedDial.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ActivitiesTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/timelineHandler.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/timeline/UnifiedTimeline.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/timeline/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260119000002_update_tasks_visibility_rls.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260119000001_create_entity_timeline_view.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/resource.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/functions/health-check/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/OpportunityCreateWizard.integration.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/forms/opportunityWizardConfig.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/quick-add/QuickAddDialog.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/testing/12-opportunity-create-wizard-bugs.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/FormSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/SecureCreate.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/useEntityData.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "scripts/check-migration-drift.sh",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/settings/RolePermissionsMatrix.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/testing/11-team-management-crud.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/testing/e2e-rbac-checklist.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/commons/__tests__/canAccess.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/__tests__/usePermissions.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118140000_add_role_based_access_helpers.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118000010_fix_helper_function_null_safety.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118130000_add_campaign_report_stats_rpc.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/__tests__/levenshtein.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/levenshtein.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118000005_fix_rls_write_policies.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/__tests__/NotesSection.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useEntitySelection.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-18-full-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contexts/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118000004_fix_sales_unique_index.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118000002_fix_opp_products_constraint.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260118000003_fix_org_distributors.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-17-full-audit.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notes/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/notes/NotesList.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/__tests__/avatar.utils.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/avatar.utils.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/dateUtils.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/components/EmptyState.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/components/EmptyState.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/empty-state.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/KPICard.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/index.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/components/KPICard.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/components/KPICard.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/KPISummaryRow.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/tabs/OverviewTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/kpi-card.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/filters.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/badge-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/data-table.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/email-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/error.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/generic-select-input.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/list.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/number-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/number-input.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/radio-button-group-input.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/record-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/select-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/simple-form.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/spinner.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/text-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/url-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/spinner.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesProfileTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/data-cell.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/usePrincipalOpportunities.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/snooze-badge.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/useTeamActivities.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/activityFilterConfig.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ResourceErrorBoundary.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260115120607_db_hardening.sql",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/utils/opportunityUtils.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationBadges.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/lib/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/.baseline/architecture.json",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-15-architecture.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/types.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/lib/formatDate.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/providers/supabase/handlers/index.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/activitiesCallbacks.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/cross-entity-workflow.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/types.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/bulk-actions-toolbar.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/__tests__/sales.service.test.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/sales.service.ts",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/activities.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/cross-entity-workflows.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/tasks.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/FormFieldWrapper.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/form.tsx",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/contacts.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/opportunities.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/organizations.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/products.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-chrome-prompts/team.md",
+        "edit_count": 1,
+        "recent_7d": 1,
+        "authors": []
+      },
+      {
+        "path": "scripts/discover/index.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/__tests__/segmentsHandler.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/__tests__/formatName.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/useNotifyWithRetry.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/opportunities/__tests__/products-schema.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/OpportunitiesTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/OpportunitiesTab.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/opportunities/__tests__/opportunities-operations.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-12-workflow-gaps-remediation.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/__tests__/FormActions.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/__tests__/text-input.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-11-fix-4-critical-typescript-issues.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/__tests__/usePrincipalOpportunities.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/OrganizationList.exporter.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/tests/utils/typed-test-helpers.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-11-15-critical-issues-remediation.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/tags.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/useOrganizationImport.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tests/dataProviderErrors.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tests/httpErrorPatterns.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111130200_add_missing_audit_triggers.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111130300_create_log_activity_with_task.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/lib/type-guards.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/tests/utils/typed-mocks.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20251123215857_fix_merge_function_table_names.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20251202062000_add_sample_activities_cloud.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111130100_add_user_favorites_audit.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/tagsCallbacks.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111120000_add_audit_columns_product_distributors.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/shared/ra-file.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/useImportWizard-errors.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/useImportWizard-parsing.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/useImportWizard-preview.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/useImportWizard-processing.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/useImportWizard.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/products-create.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/tests/utils/render-admin.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/productsCallbacks.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/services/__tests__/ValidationService.products.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111000005_drop_old_bigint_merge_function.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/security/KEY_ROTATION_CHECKLIST.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111000002_soft_delete_orphaned_opportunities.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111000003_soft_delete_orphaned_activities.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260111000004_consolidate_merge_functions.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": ".gitignore",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/guides/testing-docker-mcp-tools.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/guides/skill-index-lazy-loading-pattern.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": ".prettierrc.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": ".serena/project.yml",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docker-compose.yml",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-10-audit-critical-remediation.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/archive/plans/2026-01-10-workflow-gaps-critical-remediation.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-08-full-audit.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-09-full-audit.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/2026-01-09-recurring-issues-analysis.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/storage-hygiene.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/workflow-gaps-20260110-102107.json",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/mcp-servers.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/2026-01-10-audit-remediation-e2e.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/claude-code-e2e-prompt.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "eslint-local-rules/README.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "eslint-local-rules/no-legacy-tailwind-colors.cjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/apply-migration.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/check-tasks-sales-id.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/create-test-users-http.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/create-test-users.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/debug-task-rls.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/postgrest-correct-escaping.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/temp-functions.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/archive/validate-postgrest-queries.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/dev/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/dev/generate-jwt.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/discover/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/docker/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/ghpages-deploy.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/mcp-generate-types.cjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/mcp/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/run-import.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/seed-cloud.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/storage-hygiene.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/supabase-remote-init.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/test-csv-import.mjs",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/validate-migrations.sh",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "scripts/validation/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/__tests__/css-variables.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/__tests__/QuickLogActivity.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactImportFieldMapper.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactImportPreview.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactImportPreviewTable.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactImportValidationPanel.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/__tests__/ContactCreate.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/useContactImport.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/useContactImportParser.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/useContactImportPreview.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/useContactImportProcessor.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/useContactImportUpload.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/usePapaParse.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/context/CurrentSaleContext.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/types/__tests__/resourceTypes.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/types/resourceTypes.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/hooks/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/hooks/index.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/OpportunityCardActions.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/__tests__/OpportunityEdit.unit.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/components/CustomerDistributorIndicator.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/constants/stages.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/opportunities/hooks/useExportOpportunities.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/BulkReassignButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/organizationImport.logic.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/useDuplicateOrgCheck.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/useOrganizationImportExecution.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/useOrganizationImportMapper.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/useOrganizationImportParser.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/useOrganizationImportPreview.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/useOrganizationImportUpload.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/productDistributors/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/products/__tests__/ProductCreate.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/activitiesExtension.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/edgeFunctionsExtension.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/junctionsExtension.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/opportunitiesExtension.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/salesExtension.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/specializedExtension.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/extensions/storageExtension.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/services/TransformService.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/CampaignActivitySummaryCards.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/__tests__/CampaignActivityReport.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/__tests__/useCampaignActivityMetrics.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/hooks/useReportData.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/hooks/useReportData.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/reports/utils/cleanupMigration.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/sales/SalesPermissionsTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/digest.service.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/opportunities.service.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tutorial/TutorialProvider.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/csvUploadValidator.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/rateLimiter.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/utils/safeJsonParse.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/activities-sample-followup.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/notes/edge-cases.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/opportunities-stage-close.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/opportunities/duplicateCheck.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/opportunities/integration.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/products.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/quickAdd/validation.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/__tests__/tags/edge-cases.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts/contacts-communication.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts/contacts-department.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts/contacts-import.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts/contacts-relations.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/contacts/index.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/opportunities/index.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/sales.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/validation/ui-props.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/__tests__/bulk-reassign-button.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/columns-button.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/WizardStep.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/reference-array-field.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/filter-select-ui.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/useKeyboardShortcuts.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/useListKeyboardNavigation.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/stories/Configure.mdx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/tests/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/types/diacritic.d.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/utils/keyboard.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/docker/docker-compose.override.yml",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/functions/_shared/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260109000001_fix_function_search_paths.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260109000002_move_pg_trgm_to_extensions.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260109000003_require_principal_organization_id.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260109000004_harden_rls_ownership_policies.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260110000001_add_opportunity_stage_changes_view.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/000-setup-test-hooks.test.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/001-rls-schema-check.test.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/010-function-security.test.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/020-shared-access-rls.test.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/030-owner-based-rls.test.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/tests/database/050-performance-indexes.test.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "tests/PATTERNS.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "vitest.config.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/audits/.baseline/.gitkeep",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/ActivitySlideOver.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/index.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/slideOverTabs/index.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/design-system/touch-targets.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/activities/__tests__/QuickLogActivityDialog.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/__tests__/filterRegistry.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/filterRegistry.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/form/__tests__/FormProgressBar.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/types.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/design-system/filter-patterns.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/design-system/typography.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/design/badge-semantic-system.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskHierarchyBreadcrumb.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/tasks/TaskInputs.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/tests/e2e/ui-ux-consistency-manual-test.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/components/QuickAddTaskButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/useFilterChipBar.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/components/FavoriteToggleButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/contacts/ContactBulkReassignButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/DateRangeFilterButton.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/filters/StarredFilterToggle.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/hooks/useRecentItems.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/constants.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/RecentSearchesDropdown.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/admin/search-input.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/__tests__/combobox.test.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/components/ui/combobox.tsx",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/hooks/useFavorites.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/data-model.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/data-provider.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/resource-matrix.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/rls-policies.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/validation-layer.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/02-domain-layer.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/03-infrastructure-layer.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "docs/architecture/00-architecture-overview.md",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/constants/resources.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/index.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/callbacks/notificationsCallbacks.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/notificationsHandler.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/__tests__/services.integration.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/unifiedDataProvider.arrayFilter.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/unifiedDataProvider.errors.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/unifiedDataProvider.test.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/services/index.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/activitiesHandler.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/tagsHandler.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "src/atomic-crm/providers/supabase/handlers/tasksHandler.ts",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      },
+      {
+        "path": "supabase/migrations/20260105203724_add_soft_delete_product_rpc.sql",
+        "edit_count": 1,
+        "recent_7d": 0,
+        "authors": []
+      }
+    ],
+    "coupling_pairs": [
+      {
+        "file_a": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts",
+        "file_b": "src/atomic-crm/providers/supabase/handlers/productDistributorsHandler.ts",
+        "co_change_count": 6,
+        "confidence": 0.009983361064891847
+      },
+      {
+        "file_a": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
+        "file_b": "src/atomic-crm/organizations/OrganizationCreate.tsx",
+        "co_change_count": 5,
+        "confidence": 0.008319467554076539
+      },
+      {
+        "file_a": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+        "file_b": "src/atomic-crm/providers/supabase/handlers/index.ts",
+        "co_change_count": 4,
+        "confidence": 0.0066555740432612314
+      },
+      {
+        "file_a": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+        "file_b": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.provider.test.tsx",
+        "co_change_count": 4,
+        "confidence": 0.0066555740432612314
+      },
+      {
+        "file_a": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts",
+        "file_b": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts",
+        "co_change_count": 4,
+        "confidence": 0.0066555740432612314
+      },
+      {
+        "file_a": "src/atomic-crm/providers/supabase/handlers/productDistributorsHandler.ts",
+        "file_b": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts",
+        "co_change_count": 4,
+        "confidence": 0.0066555740432612314
+      },
+      {
+        "file_a": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
+        "file_b": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
+        "co_change_count": 3,
+        "confidence": 0.004991680532445923
+      },
+      {
+        "file_a": "package-lock.json",
+        "file_b": "package.json",
+        "co_change_count": 3,
+        "confidence": 0.004991680532445923
+      },
+      {
+        "file_a": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts",
+        "file_b": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
+        "co_change_count": 3,
+        "confidence": 0.004991680532445923
+      },
+      {
+        "file_a": "src/atomic-crm/providers/supabase/handlers/productDistributorsHandler.ts",
+        "file_b": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
+        "co_change_count": 3,
+        "confidence": 0.004991680532445923
+      }
+    ],
+    "commit_breakdown": {
+      "feat": 4,
+      "fix": 14,
+      "refactor": 1,
+      "docs": 0,
+      "test": 1,
+      "chore": 540,
+      "other": 4
+    },
+    "fix_ratio": 0.7777777777777778,
+    "recommendations": [
+      {
+        "type": "high_churn",
+        "target": "src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts",
+        "reason": "19 edits with 26% in last week - stable churn",
+        "suggested_action": "Consider: Extract into smaller modules or address root cause",
+        "data": {
+          "edit_count": 19,
+          "recent_7d": 5
+        }
+      },
+      {
+        "type": "high_churn",
+        "target": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+        "reason": "19 edits with 73% in last week - accelerating churn",
+        "suggested_action": "Consider: Extract into smaller modules or address root cause",
+        "data": {
+          "edit_count": 19,
+          "recent_7d": 14
+        }
+      },
+      {
+        "type": "high_churn",
+        "target": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts",
+        "reason": "16 edits with 18% in last week - stable churn",
+        "suggested_action": "Consider: Extract into smaller modules or address root cause",
+        "data": {
+          "edit_count": 16,
+          "recent_7d": 3
+        }
+      },
+      {
+        "type": "coupling",
+        "target": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts \u2194 src/atomic-crm/providers/supabase/handlers/productDistributorsHandler.ts",
+        "reason": "6 co-changes (0% coupling rate)",
+        "suggested_action": "Consider: Review if shared logic should be extracted",
+        "data": {
+          "co_changes": 6,
+          "confidence": 0.009983361064891847
+        }
+      },
+      {
+        "type": "coupling",
+        "target": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx \u2194 src/atomic-crm/organizations/OrganizationCreate.tsx",
+        "reason": "5 co-changes (0% coupling rate)",
+        "suggested_action": "Consider: Review if shared logic should be extracted",
+        "data": {
+          "co_changes": 5,
+          "confidence": 0.008319467554076539
+        }
+      },
+      {
+        "type": "firefighting",
+        "target": "codebase",
+        "reason": "77% fix ratio suggests reactive work",
+        "suggested_action": "Consider: Allocate time for proactive refactoring",
+        "data": {
+          "fix_ratio": 0.7777777777777778
+        }
+      }
+    ]
+  }
+}

@@ -2,8 +2,6 @@ import { required } from "react-admin";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
-import { ArrayInput } from "@/components/ra-wrappers/array-input";
-import { SimpleFormIterator } from "@/components/ra-wrappers/simple-form-iterator";
 import {
   CompactFormRow,
   FormFieldWrapper,
@@ -11,8 +9,7 @@ import {
 } from "@/components/ra-wrappers/form";
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
-import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
-import { enableGetChoices } from "../utils/autocompleteDefaults";
+import { EmailArrayField, PhoneArrayField, OrganizationPicker } from "@/components/domain/forms";
 import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
