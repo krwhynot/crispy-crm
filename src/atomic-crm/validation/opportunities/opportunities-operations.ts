@@ -8,6 +8,7 @@ import {
   lossReasonSchema,
   opportunityProductSchema,
 } from "./opportunities-core";
+import { STAGE, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 /**
  * Operation-specific schemas for opportunities
@@ -339,7 +340,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
       // WG-002 FIX: Detect stage-only updates but ENFORCE close requirements
       // Stage-only updates to non-closed stages are allowed (normal Kanban drag)
       // Stage-only updates to closed_won/closed_lost MUST have reason (no bypass)
-      const CLOSED_STAGES = ["closed_won", "closed_lost"];
+      const closedStagesArray = [...CLOSED_STAGES] as string[];
       const stageOnlyFields = new Set([
         "id",
         "stage",
@@ -355,7 +356,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
 
       // For stage-only updates to NON-closed stages, skip contact validation
       // For stage-only updates to CLOSED stages, fall through to normal validation
-      if (isStageOnlyUpdate && data.stage && !CLOSED_STAGES.includes(data.stage)) {
+      if (isStageOnlyUpdate && data.stage && !closedStagesArray.includes(data.stage)) {
         return true; // Allow non-closed stage drag-drop
       }
 

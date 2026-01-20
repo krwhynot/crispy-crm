@@ -172,7 +172,7 @@ export function useMyPerformance(): UseMyPerformanceReturn {
               opportunity_owner_id: salesId,
               "updated_at@gte": thisWeekStart.toISOString(),
               "updated_at@lte": thisWeekEnd.toISOString(),
-              "stage@not_in": ["closed_won", "closed_lost"],
+              "stage@not_in": [...CLOSED_STAGES],
             },
             sort: { field: "id", order: "ASC" },
             pagination: { page: 1, perPage: 1 }, // Only need count
@@ -183,7 +183,7 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           dataProvider.getList("opportunities", {
             filter: {
               opportunity_owner_id: salesId,
-              "stage@not_in": ["closed_won", "closed_lost"],
+              "stage@not_in": [...CLOSED_STAGES],
             },
             sort: { field: "id", order: "ASC" },
             pagination: { page: 1, perPage: 1 }, // Only need count
@@ -221,7 +221,7 @@ export function useMyPerformance(): UseMyPerformanceReturn {
               opportunity_owner_id: salesId,
               "updated_at@gte": lastWeekStart.toISOString(),
               "updated_at@lte": lastWeekEnd.toISOString(),
-              "stage@not_in": ["closed_won", "closed_lost"],
+              "stage@not_in": [...CLOSED_STAGES],
             },
             sort: { field: "id", order: "ASC" },
             pagination: { page: 1, perPage: 1 },

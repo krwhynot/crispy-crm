@@ -6,6 +6,7 @@ import {
   STAGE_STALE_THRESHOLDS,
   isOpportunityStale,
 } from "@/atomic-crm/utils/stalenessCalculation";
+import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 // Re-export for backward compatibility
 export { STAGE_STALE_THRESHOLDS };
@@ -127,7 +128,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
             // OPTIMIZATION: perPage: 1 uses server-side count, avoiding full data transfer
             dataProvider.getList("opportunities", {
               filter: {
-                "stage@not_in": ["closed_won", "closed_lost"],
+                "stage@not_in": [...CLOSED_STAGES],
               },
               sort: { field: "id", order: "ASC" },
               pagination: { page: 1, perPage: 1 }, // Server-side count only
@@ -138,7 +139,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
             // This reduces data transfer from ~1000 rows to ~50-100 rows typically
             dataProvider.getList("opportunities", {
               filter: {
-                "stage@not_in": ["closed_won", "closed_lost"],
+                "stage@not_in": [...CLOSED_STAGES],
                 "last_activity_date@lt": staleThresholdDate.toISOString(),
               },
               sort: { field: "id", order: "ASC" },
