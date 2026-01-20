@@ -262,14 +262,21 @@ describe("Organization Validation Schemas", () => {
       expect(() => createOrganizationSchema.parse(dataWithSystemFields)).toThrow(z.ZodError);
     });
 
-    it("should apply defaults on creation", () => {
+    it("should apply defaults on creation for optional fields", () => {
+      // createOrganizationSchema now requires: name, organization_type, sales_id, segment_id
+      // Defaults still apply to other optional fields like priority, status, billing_country
       const minimalCreate = {
         name: "New Org",
+        organization_type: "prospect",
+        sales_id: 1,
+        segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
       };
 
       const result = createOrganizationSchema.parse(minimalCreate);
-      expect(result.organization_type).toBe("prospect"); // Default for new organizations
+      expect(result.organization_type).toBe("prospect"); // Explicitly provided
       expect(result.priority).toBe("C"); // Database default
+      expect(result.billing_country).toBe("US"); // Default from schema
+      expect(result.status).toBe("active"); // Default from schema
     });
   });
 

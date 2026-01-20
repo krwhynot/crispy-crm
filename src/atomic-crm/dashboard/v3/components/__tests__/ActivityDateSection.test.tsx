@@ -130,29 +130,7 @@ describe("ActivityDateSection", () => {
 
   describe("Rendering", () => {
     it("renders FormLabel 'Activity Date'", () => {
-      render(
-        <TestWrapper>
-          <ActivityDateSection
-            control={
-              {
-                register: vi.fn(),
-                unregister: vi.fn(),
-                getFieldState: vi.fn(),
-                _names: {
-                  mount: new Set(),
-                  unMount: new Set(),
-                  array: new Set(),
-                  watch: new Set(),
-                },
-                _subjects: {},
-                _getWatch: vi.fn(),
-                _formValues: {},
-                _defaultValues: {},
-              } as unknown as ReturnType<typeof useForm<ActivityLogInput>>["control"]
-            }
-          />
-        </TestWrapper>
-      );
+      render(<TestWrapperWithControl />);
 
       expect(screen.getByText("Activity Date")).toBeInTheDocument();
     });
@@ -280,7 +258,8 @@ describe("ActivityDateSection", () => {
     it("button has justify-start and text-left classes", () => {
       render(<TestWrapperWithControl />);
 
-      const button = screen.getByRole("button");
+      const triggerContainer = screen.getByTestId("popover-trigger");
+      const button = triggerContainer.querySelector("button");
       expect(button).toHaveClass("justify-start");
       expect(button).toHaveClass("text-left");
     });
@@ -288,7 +267,8 @@ describe("ActivityDateSection", () => {
     it("button has font-normal class", () => {
       render(<TestWrapperWithControl />);
 
-      const button = screen.getByRole("button");
+      const triggerContainer = screen.getByTestId("popover-trigger");
+      const button = triggerContainer.querySelector("button");
       expect(button).toHaveClass("font-normal");
     });
   });

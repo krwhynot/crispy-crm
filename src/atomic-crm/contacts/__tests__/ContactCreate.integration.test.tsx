@@ -60,7 +60,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
   describe("Progress Bar Initialization", () => {
     test("renders progress bar at ~10% initially", async () => {
-      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
+      renderContactCreate();
 
       const progressBar = await screen.findByRole("progressbar");
       expect(progressBar).toBeInTheDocument();
@@ -72,7 +72,7 @@ describe("ContactCreate with Progress Tracking", () => {
     }, 30000);
 
     test("progress bar has correct accessibility attributes", async () => {
-      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
+      renderContactCreate();
 
       const progressBar = await screen.findByRole("progressbar");
       expect(progressBar).toHaveAttribute("aria-valuemin", "0");
@@ -81,7 +81,7 @@ describe("ContactCreate with Progress Tracking", () => {
     }, 30000);
 
     test("progress bar is visible before form content", async () => {
-      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
+      renderContactCreate();
 
       const progressBar = await screen.findByRole("progressbar");
       const firstNameInput = await screen.findByLabelText(/First Name/i);
@@ -93,7 +93,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
   describe("Form Section Rendering", () => {
     test("renders all three form sections", async () => {
-      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
+      renderContactCreate();
 
       await waitFor(() => {
         const nameHeadings = screen.getAllByText("Name");
@@ -107,7 +107,7 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("Name section shows incomplete indicator initially", async () => {
-      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
+      renderContactCreate();
 
       await screen.findByText("Name");
       const incompleteIcons = screen.getAllByTestId("section-incomplete-icon");
@@ -115,7 +115,7 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("Organization section shows incomplete indicator initially", async () => {
-      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
+      renderContactCreate();
 
       await waitFor(() => {
         const orgHeadings = screen.getAllByText("Organization");
@@ -126,16 +126,16 @@ describe("ContactCreate with Progress Tracking", () => {
       });
     });
 
-    test("Contact Info section shows indicator (email is required)", async () => {
-      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
+    test("Contact Info section has no indicator (no required fields)", async () => {
+      renderContactCreate();
 
       await screen.findByText("Contact Info");
       const completeIcons = screen.queryAllByTestId("section-complete-icon");
       const incompleteIcons = screen.queryAllByTestId("section-incomplete-icon");
 
-      // All three sections (Name, Organization, Contact Info) have required fields
-      // and should show indicators
-      expect(completeIcons.length + incompleteIcons.length).toBe(3);
+      // Only Name and Organization sections have required fields and show indicators
+      // Contact Info has requiredFields={[]} so it shows no indicator
+      expect(completeIcons.length + incompleteIcons.length).toBe(2);
     });
   });
 

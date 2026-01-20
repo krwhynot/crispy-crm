@@ -284,8 +284,11 @@ describe("authProvider", () => {
         data: mockSale,
         error: null,
       });
-      const mockMatch = vi.fn().mockReturnValue({
+      const mockIs = vi.fn().mockReturnValue({
         maybeSingle: mockMaybeSingle,
+      });
+      const mockMatch = vi.fn().mockReturnValue({
+        is: mockIs,
       });
       const mockSelect = vi.fn().mockReturnValue({
         match: mockMatch,
@@ -329,8 +332,11 @@ describe("authProvider", () => {
         data: null,
         error: new Error("Database error"),
       });
-      const mockMatch = vi.fn().mockReturnValue({
+      const mockIs = vi.fn().mockReturnValue({
         maybeSingle: mockMaybeSingle,
+      });
+      const mockMatch = vi.fn().mockReturnValue({
+        is: mockIs,
       });
       const mockSelect = vi.fn().mockReturnValue({
         match: mockMatch,
@@ -374,8 +380,11 @@ describe("authProvider", () => {
         data: mockSale,
         error: null,
       });
-      const mockMatch = vi.fn().mockReturnValue({
+      const mockIs = vi.fn().mockReturnValue({
         maybeSingle: mockMaybeSingle,
+      });
+      const mockMatch = vi.fn().mockReturnValue({
+        is: mockIs,
       });
       const mockSelect = vi.fn().mockReturnValue({
         match: mockMatch,
