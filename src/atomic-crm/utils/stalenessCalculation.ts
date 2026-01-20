@@ -24,7 +24,10 @@ import {
 } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 // Re-export for backward compatibility with existing imports
-export { ACTIVE_STAGES as ACTIVE_PIPELINE_STAGES, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
+export {
+  ACTIVE_STAGES as ACTIVE_PIPELINE_STAGES,
+  CLOSED_STAGES,
+} from "@/atomic-crm/opportunities/constants/stageConstants";
 
 // Derive types from the canonical source
 export type ActivePipelineStage = (typeof ACTIVE_STAGES)[number];
