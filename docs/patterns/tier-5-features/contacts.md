@@ -243,7 +243,7 @@ const handleEmailBlur = (e: React.FocusEvent<...>) => {
   <SimpleFormIterator inline disableReordering disableClear>
     <TextInput
       source="value"
-      placeholder="Email (valid email required)"
+      placeholder="name@company.com"
       onPaste={handleEmailPaste}
       onBlur={handleEmailBlur}
     />

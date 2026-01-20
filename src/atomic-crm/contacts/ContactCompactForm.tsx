@@ -121,11 +121,7 @@ export const ContactCompactForm = () => {
         </div>
       </FormSectionWithProgress>
 
-      <FormSectionWithProgress
-        id="contact-info-section"
-        title="Contact Info"
-        requiredFields={[]}
-      >
+      <FormSectionWithProgress id="contact-info-section" title="Contact Info" requiredFields={[]}>
         {/* Email - full width row (optional) */}
         <div data-tutorial="contact-email">
           <FormFieldWrapper name="email">
