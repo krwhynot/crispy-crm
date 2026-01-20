@@ -25,6 +25,7 @@ import {
   type WinReason,
   type LossReason,
 } from "@/atomic-crm/validation/opportunities";
+import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 /**
  * Props for CloseOpportunityModal
@@ -80,7 +81,7 @@ export const CloseOpportunityModal = ({
   onConfirm,
   isSubmitting = false,
 }: CloseOpportunityModalProps) => {
-  const isWin = targetStage === "closed_won";
+  const isWin = targetStage === STAGE.CLOSED_WON;
 
   // P5: Form defaults from closeOpportunityBaseSchema.partial().parse({})
   // Use base schema for defaults (Zod v4 - refined schemas don't support .partial())

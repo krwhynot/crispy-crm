@@ -22,7 +22,11 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 import type { Opportunity } from "../../types";
 import { OpportunityColumn } from "./OpportunityColumn";
-import { OPPORTUNITY_STAGES_LEGACY, getOpportunityStageLabel } from "../constants/stageConstants";
+import {
+  STAGE,
+  OPPORTUNITY_STAGES_LEGACY,
+  getOpportunityStageLabel,
+} from "../constants/stageConstants";
 import type { OpportunitiesByStage } from "../constants/stages";
 import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 import { getOpportunitiesByStage } from "../constants/stages";
@@ -59,13 +63,13 @@ interface OpportunityListContentProps {
  * 3. Fall back to card collisions if no column collision found
  */
 const STAGE_IDS = new Set([
-  "new_lead",
-  "initial_outreach",
-  "sample_visit_offered",
-  "feedback_logged",
-  "demo_scheduled",
-  "closed_won",
-  "closed_lost",
+  STAGE.NEW_LEAD,
+  STAGE.INITIAL_OUTREACH,
+  STAGE.SAMPLE_VISIT_OFFERED,
+  STAGE.FEEDBACK_LOGGED,
+  STAGE.DEMO_SCHEDULED,
+  STAGE.CLOSED_WON,
+  STAGE.CLOSED_LOST,
 ]);
 
 const customCollisionDetection: CollisionDetection = (args) => {

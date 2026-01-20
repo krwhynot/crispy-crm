@@ -24,7 +24,7 @@ import { addDays } from "date-fns";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { OPPORTUNITY_STAGES } from "./constants/stageConstants";
+import { OPPORTUNITY_STAGES, STAGE } from "./constants/stageConstants";
 import { priorityChoices } from "./constants/priorityChoices";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
@@ -219,7 +219,7 @@ export const OpportunityListFilter = () => {
             type="button"
             variant={
               isPresetActive({
-                stage: "closed_won",
+                stage: STAGE.CLOSED_WON,
                 updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
               })
                 ? "default"
@@ -228,7 +228,7 @@ export const OpportunityListFilter = () => {
             size="sm"
             onClick={() =>
               handlePresetClick({
-                stage: "closed_won",
+                stage: STAGE.CLOSED_WON,
                 updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
               })
             }

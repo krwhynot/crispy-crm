@@ -30,6 +30,7 @@ export default function SalesCreate() {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const redirect = useRedirect();
+  const queryClient = useQueryClient();
 
   // Server error state for form field error surfacing
   const [serverError, setServerError] = useState<ServerValidationError | null>(null);
@@ -48,13 +49,14 @@ export default function SalesCreate() {
 
   // useMutation MUST be called before any early returns (Rules of Hooks)
   const { mutate, isPending: isCreating } = useMutation({
-    mutationKey: ["signup"],
+    mutationKey: saleKeys.all,
     mutationFn: async (data: SalesFormData) => {
       // Clear previous server errors before submitting
       setServerError(null);
       return salesService.salesCreate(data);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: saleKeys.all });
       notify("User created. They will soon receive an email to set their password.");
       redirect("/sales");
     },

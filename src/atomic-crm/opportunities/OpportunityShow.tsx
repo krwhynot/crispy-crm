@@ -6,6 +6,7 @@ import { parseDateSafely } from "@/lib/date-utils";
 
 import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 import { ArchivedBanner, ArchiveButton, UnarchiveButton } from "./components";
+import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 import { ReferenceArrayField } from "@/components/ra-wrappers/reference-array-field";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -68,8 +69,8 @@ const OpportunityShowContent = () => {
     { value: "needs_analysis", label: "Needs Analysis" },
     { value: "proposal", label: "Proposal" },
     { value: "negotiation", label: "Negotiation" },
-    { value: "closed_won", label: "Closed Won" },
-    { value: "closed_lost", label: "Closed Lost" },
+    { value: STAGE.CLOSED_WON, label: "Closed Won" },
+    { value: STAGE.CLOSED_LOST, label: "Closed Lost" },
     { value: "nurturing", label: "Nurturing" },
   ];
 

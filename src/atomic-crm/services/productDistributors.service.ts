@@ -214,7 +214,7 @@ export class ProductDistributorsService {
             product_id: Number(productId),
             distributor_id: Number(distributorId),
             vendor_item_number: data?.vendor_item_number || null,
-            status: data?.status || "active",
+            status: data?.status,
             valid_from: data?.valid_from || new Date().toISOString(),
             valid_to: data?.valid_to || null,
           },

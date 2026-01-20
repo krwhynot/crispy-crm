@@ -1,6 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Archive, ArchiveRestore } from "lucide-react";
-import { useDataProvider, useNotify, useRedirect, useRefresh, useUpdate } from "react-admin";
+import { useDataProvider, useNotify, useRedirect, useUpdate } from "react-admin";
+
+import { opportunityKeys } from "../../queryKeys";
 
 import { Button } from "@/components/ui/button";
 import { OpportunitiesService } from "../../services";
@@ -15,7 +17,7 @@ export const ArchiveButton = ({ record }: ArchiveActionsProps) => {
   const [update] = useUpdate();
   const redirect = useRedirect();
   const notify = useNotify();
-  const refresh = useRefresh();
+  const queryClient = useQueryClient();
 
   if (!record) return null;
 

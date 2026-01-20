@@ -20,6 +20,7 @@ import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
 import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dialog";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
+import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 interface OpportunityCardActionsProps {
   opportunityId: number;
@@ -38,7 +39,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   // State for CloseOpportunityModal
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">(
-    "closed_won"
+    STAGE.CLOSED_WON
   );
   const [isClosing, setIsClosing] = useState(false);
 

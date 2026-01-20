@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";
 import { activityKeys } from "@/atomic-crm/queryKeys";
+import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
 import { OpportunityDetailsFormSection } from "./OpportunityDetailsFormSection";
 import { OpportunityDetailsViewSection } from "./OpportunityDetailsViewSection";
 
@@ -39,7 +40,7 @@ export function OpportunitySlideOverDetailsTab({
   // State for CloseOpportunityModal
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">(
-    "closed_won"
+    STAGE.CLOSED_WON
   );
   const pendingFormDataRef = useRef<Partial<Opportunity> | null>(null);
 
