@@ -210,8 +210,8 @@ git log --all --oneline --grep="WF-C"
 ## Maintenance
 
 - **Technical Debt Tracker:** Run `/deep-audit` to regenerate full audit reports
-- **Verification Reports:** Stored in `docs/_state/` for audit trail
-- **Archived Audits:** Located in `docs/archive/audits/`
+- **Recent Audits:** Located in `docs/audits/` (kept for last ~7 days)
+- **Git History:** Use `git log --grep="XX-NN"` to find resolved findings
 
 ---
 

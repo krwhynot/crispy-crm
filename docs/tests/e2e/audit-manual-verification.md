@@ -1,8 +1,7 @@
 # Manual Browser Testing: Audit Remediation Verification
 
 **Date:** 2026-01-09
-**Related Audit:** `docs/audits/2026-01-08-full-audit.md`
-**TODO Reference:** `docs/TODOs/audit1-9-26-TODOs.md`
+**Status:** Historical - audit findings now tracked in `docs/technical-debt.md`
 
 ---
 
