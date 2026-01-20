@@ -462,7 +462,9 @@ export async function validateCreateActivities(data: unknown): Promise<void> {
 // Schema for Updates - .partial() makes all fields optional
 // This allows PATCH-style updates where only changed fields are sent
 export const updateActivitiesSchema = baseActivitiesSchema.partial().extend({
-  id: z.string().optional(), // ID might be in URL, not body
+  // ID accepts both string (UUIDs in production) and number (test fixtures)
+  // This matches baseActivitiesSchema.id type
+  id: z.union([z.string(), z.number()]).optional(),
 });
 
 // Update validation function matching expected signature from unifiedDataProvider
