@@ -9,32 +9,34 @@ import { OrganizationCreate } from "../OrganizationCreate";
  * The component uses useGetList("segments") to fetch the "Unknown" segment
  * and guards against rendering if it's not found.
  */
-const createOrgTestDataProvider = () => ({
-  getList: vi.fn(async (resource: string) => {
-    if (resource === "segments") {
-      // Return "Unknown" segment - required for form to render
-      return {
-        data: [{ id: "uuid-unknown-segment", name: "Unknown" }],
-        total: 1,
-        pageInfo: { hasNextPage: false, hasPreviousPage: false },
-      };
-    }
-    if (resource === "sales") {
-      // Return sales user for ReferenceInput
-      return {
-        data: [{ id: 1, first_name: "Test", last_name: "User" }],
-        total: 1,
-        pageInfo: { hasNextPage: false, hasPreviousPage: false },
-      };
-    }
-    return { data: [], total: 0, pageInfo: { hasNextPage: false, hasPreviousPage: false } };
-  }),
-} as const);
+const createOrgTestDataProvider = () =>
+  ({
+    getList: vi.fn(async (resource: string) => {
+      if (resource === "segments") {
+        // Return "Unknown" segment - required for form to render
+        return {
+          data: [{ id: "uuid-unknown-segment", name: "Unknown" }],
+          total: 1,
+          pageInfo: { hasNextPage: false, hasPreviousPage: false },
+        };
+      }
+      if (resource === "sales") {
+        // Return sales user for ReferenceInput
+        return {
+          data: [{ id: 1, first_name: "Test", last_name: "User" }],
+          total: 1,
+          pageInfo: { hasNextPage: false, hasPreviousPage: false },
+        };
+      }
+      return { data: [], total: 0, pageInfo: { hasNextPage: false, hasPreviousPage: false } };
+    }),
+  }) as const;
 
 const renderOrganizationCreate = () => {
   return renderWithAdminContext(<OrganizationCreate />, {
     resource: "organizations",
-    dataProvider: createOrgTestDataProvider(),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dataProvider: createOrgTestDataProvider() as any,
   });
 };
 

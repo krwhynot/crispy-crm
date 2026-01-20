@@ -88,7 +88,7 @@ describe("authProvider", () => {
       // Mock window.location.pathname for public path
       const originalLocation = window.location;
       delete (window as any).location;
-      window.location = { ...originalLocation, pathname: "/login" };
+      (window as any).location = { ...originalLocation, pathname: "/login" };
 
       await expect(authProvider.checkAuth({})).resolves.toBeUndefined();
 
@@ -109,7 +109,7 @@ describe("authProvider", () => {
       // Mock window.location.pathname for protected path
       const originalLocation = window.location;
       delete (window as any).location;
-      window.location = { ...originalLocation, pathname: "/opportunities" };
+      (window as any).location = { ...originalLocation, pathname: "/opportunities" };
 
       await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
 
@@ -253,7 +253,7 @@ describe("authProvider", () => {
       mockCanAccessFn.mockResolvedValue(true);
 
       const params = { resource: "opportunities", action: "delete" };
-      const result = await authProvider.canAccess(params);
+      const result = await authProvider.canAccess!(params);
 
       expect(mockCanAccessFn).toHaveBeenCalledWith("admin", params);
       expect(result).toBe(true);
@@ -300,7 +300,7 @@ describe("authProvider", () => {
       mockCanAccessFn.mockResolvedValue(false);
 
       const params = { resource: "settings", action: "edit" };
-      const result = await authProvider.canAccess(params);
+      const result = await authProvider.canAccess!(params);
 
       expect(mockCanAccessFn).toHaveBeenCalledWith("user", params);
       expect(result).toBe(false);
@@ -312,7 +312,7 @@ describe("authProvider", () => {
         error: new Error("Session error"),
       });
 
-      const result = await authProvider.canAccess({
+      const result = await authProvider.canAccess!({
         resource: "contacts",
         action: "read",
       });
