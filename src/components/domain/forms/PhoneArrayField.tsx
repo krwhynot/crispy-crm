@@ -2,7 +2,17 @@ import { ArrayInput } from "@/components/ra-wrappers/array-input";
 import { SimpleFormIterator } from "@/components/ra-wrappers/simple-form-iterator";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
-import { CONTACT_TYPE_OPTIONS } from "./constants";
+
+/**
+ * Phone type choices - defined at module level for stable reference.
+ * Prevents SelectInput re-render loops that cause "Loading..." state.
+ */
+const PHONE_TYPE_CHOICES = [
+  { id: "work", name: "Work" },
+  { id: "mobile", name: "Mobile" },
+  { id: "home", name: "Home" },
+  { id: "other", name: "Other" },
+] as const;
 
 interface PhoneArrayFieldProps {
   source?: string;

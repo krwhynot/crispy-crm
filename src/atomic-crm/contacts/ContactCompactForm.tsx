@@ -63,7 +63,7 @@ export const ContactCompactForm = () => {
             <FormFieldWrapper name="first_name" isRequired>
               <TextInput
                 source="first_name"
-                label="First Name *"
+                label="First Name"
                 helperText="First name is required"
                 autoComplete="given-name"
                 validate={required("First name is required")}
@@ -74,7 +74,7 @@ export const ContactCompactForm = () => {
             <FormFieldWrapper name="last_name" isRequired>
               <TextInput
                 source="last_name"
-                label="Last Name *"
+                label="Last Name"
                 helperText="Last name is required"
                 autoComplete="family-name"
                 validate={required("Last name is required")}
@@ -95,7 +95,7 @@ export const ContactCompactForm = () => {
         {/* Organization - full width row */}
         <div data-tutorial="contact-organization">
           <FormFieldWrapper name="organization_id" isRequired countDefaultAsFilled>
-            <OrganizationPicker label="Organization *" helperText="Organization is required" />
+            <OrganizationPicker label="Organization" helperText="Organization is required" />
           </FormFieldWrapper>
         </div>
 
@@ -113,7 +113,7 @@ export const ContactCompactForm = () => {
             >
               <SelectInput
                 helperText="Account manager is required"
-                label="Account manager *"
+                label="Account manager"
                 optionText={saleOptionRenderer}
               />
             </ReferenceInput>

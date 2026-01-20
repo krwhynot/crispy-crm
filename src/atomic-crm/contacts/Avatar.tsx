@@ -10,14 +10,19 @@ export const Avatar = (props: {
   title?: string;
 }) => {
   const record = useRecordContext<Contact>(props);
-  // If we come from company page, the record is defined (to pass the company as a prop),
-  // but neither of those fields are and this lead to an error when creating contact.
-  if (!record?.avatar && !record?.first_name && !record?.last_name) {
-    return null;
-  }
-
   const size = props.width || props.height;
   const sizeClass = props.width === 20 ? "w-5 h-5" : props.width === 25 ? "w-8 h-8" : "w-11 h-11";
+
+  // If we come from company page or create form, show a placeholder circle
+  // This provides visual consistency in the form layout
+  if (!record?.avatar && !record?.first_name && !record?.last_name) {
+    return (
+      <div
+        className={`${sizeClass} rounded-full bg-muted flex-shrink-0`}
+        aria-label="Contact avatar placeholder"
+      />
+    );
+  }
 
   const fullName = [record.first_name, record.last_name].filter(Boolean).join(" ");
   const altText = fullName ? `${fullName} avatar` : "Contact avatar";
