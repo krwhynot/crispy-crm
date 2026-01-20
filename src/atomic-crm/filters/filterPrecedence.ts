@@ -3,6 +3,7 @@ import { FILTER_KEYS } from "./types";
 import { getStorageItem, setStorageItem, removeStorageItem } from "../utils/secureStorage";
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { filterValueSchema } from "../validation/filters";
+import { ACTIVE_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
 
 /**
  * Filter precedence utilities
@@ -85,21 +86,9 @@ export function saveFilterPreferences<T = FilterValue>(key: string, value: T): v
  * Get default visible stages (excludes closed stages)
  */
 export const getDefaultVisibleStages = (): string[] => {
-  // These are the stages to EXCLUDE by default
-  const closedStages = ["closed_won", "closed_lost"];
-
-  // Get all stages from the imported choices
-  const allStages = [
-    "new_lead",
-    "initial_outreach",
-    "sample_visit_offered",
-    "feedback_logged",
-    "demo_scheduled",
-    "closed_won",
-    "closed_lost",
-  ];
-
-  return allStages.filter((stage) => !closedStages.includes(stage));
+  // Return only active (non-closed) stages by default
+  // ACTIVE_STAGES is derived from STAGE constants and excludes closed_won/closed_lost
+  return [...ACTIVE_STAGES];
 };
 
 /**
