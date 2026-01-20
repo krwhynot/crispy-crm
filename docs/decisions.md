@@ -496,7 +496,7 @@ OPTIONAL (after user validation):
 | `docs/architecture/data-model.md` | Complete entity reference |
 | `docs/architecture/rls-policies.md` | Security policies |
 | `docs/testing/test-architecture.md` | Testing patterns |
-| `docs/archive/audits/ui-ux/FINAL-AUDIT-REPORT.md` | UI/UX standards |
+| `docs/design-system/` | UI/UX standards and design system |
 | `CLAUDE.md` | Engineering constitution |
 
 ---

@@ -6957,3 +6957,18 @@ tool_response: {"stdout": "9", "stderr": "", "interrupted": false, "isImage": fa
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "fd -e md . /home/krwhynot/projects/crispy-crm/docs | wc -l", "description": "Count remaining markdown files using fd"}
 tool_response: {"stdout": "168", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:44:35.427716 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "just build 2>&1 | tail -20", "description": "Verify build after cleanup"}
+tool_response: {"stdout": "dist/js/chunk-CLG19A86.js                            45.92 kB \u2502 gzip:  13.67 kB \u2502 map:   253.01 kB\ndist/js/chunk-ChHXglaw.js                            47.46 kB \u2502 gzip:  16
+
+--- 2026-01-19T18:45:01.046695 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "echo \"=== Docs Cleanup Summary ===\" && echo \"\" && echo \"Remaining markdown files:\" && fd -e md . /home/krwhynot/projects/crispy-crm/docs | wc -l && echo \"\" && echo \"Remaining aud
+tool_response: {"stdout": "=== Docs Cleanup Summary ===\n\nRemaining markdown files:\n168\n\nRemaining audit files:\n9\n\nRecent audits kept (last 7 days):\n/home/krwhynot/projects/crispy-crm/docs/audits/2026-01-08-
+
+--- 2026-01-19T18:45:17.220705 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rg -l \"docs/_state|docs/TODOs/|PROVIDER_AUDIT_REPORT|docs/archive/audits\" --type md /home/krwhynot/projects/crispy-crm/docs", "description": "Find files with remaining references"}
+tool_response: {"stdout": "/home/krwhynot/projects/crispy-crm/docs/development/TASK_MANAGEMENT.md\n/home/krwhynot/projects/crispy-crm/docs/technical-debt.md", "stderr": "", "interrupted": false, "isImage": false}

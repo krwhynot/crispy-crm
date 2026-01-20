@@ -45,21 +45,20 @@ Historical findings from provider audits (now consolidated into `technical-debt.
 
 ---
 
-## How Findings Link Across Files
+## How Findings Are Tracked (Historical Note)
+
+**Previous System (deprecated January 2026):**
+Findings used to flow through multiple files (audit reports → execution plans → technical debt).
+
+**Current System:**
+All findings are now consolidated in `docs/technical-debt.md`
 
 ```
-PROVIDER_AUDIT_REPORT.md          TODOs.md                    technical-debt.md
-(Source Findings)                 (Execution Plan)            (Tracking)
-        |                               |                          |
-        v                               v                          v
-  SF-C09: IDOR Bug    ─────>    Item 2 [SF-C09]    ─────>    (tracked via
-  detected in audit              Fix IDOR in                 commit history)
-                                 getMany
+Audit → Finding ID → technical-debt.md → Commit → Resolved
 ```
 
 The flow is:
-1. **Audits** generate findings with `SF-`/`WF-` IDs
-2. **TODOs.md** organizes them into an execution plan
+1. **Audits** generate findings with category prefixes (UI-, ASYNC-, ERR-, etc.)
 3. **technical-debt.md** tracks categorical issues (UI, ASYNC, etc.)
 4. **Commits** reference Finding IDs for traceability
 
