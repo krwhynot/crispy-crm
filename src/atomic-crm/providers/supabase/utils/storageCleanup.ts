@@ -131,6 +131,10 @@ export async function deleteStorageFiles(paths: string[]): Promise<void> {
  * - activities (contact_id match)
  * - contact_notes (contact_id match)
  *
+ * INTENTIONAL: Queries include soft-deleted activities/notes because
+ * file cleanup must occur regardless of record state (GDPR compliance).
+ * When archiving an entity, we delete ALL orphaned files, not just active ones.
+ *
  * @param contactId - The contact ID being archived
  * @returns Array of all file paths to delete
  */

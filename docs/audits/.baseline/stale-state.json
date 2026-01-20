@@ -1,0 +1,69 @@
+{
+  "lastAudit": "2026-01-19T17:48:00Z",
+  "findings": {
+    "critical": [],
+    "high": [],
+    "medium": [
+      {
+        "id": "STALE-001",
+        "check": "refresh-instead-of-invalidate",
+        "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
+        "line": 34,
+        "description": "ArchiveButton uses global refresh() instead of targeted query invalidation",
+        "status": "new"
+      },
+      {
+        "id": "STALE-002",
+        "check": "refresh-instead-of-invalidate",
+        "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
+        "line": 76,
+        "description": "UnarchiveButton uses global refresh() instead of targeted query invalidation",
+        "status": "new"
+      },
+      {
+        "id": "STALE-003",
+        "check": "missing-invalidate",
+        "file": "src/atomic-crm/sales/SalesCreate.tsx",
+        "line": 56,
+        "description": "SalesCreate missing cache invalidation after user creation",
+        "status": "new"
+      },
+      {
+        "id": "STALE-004",
+        "check": "missing-invalidate",
+        "file": "src/atomic-crm/settings/hooks/useSalesUpdate.ts",
+        "line": 50,
+        "description": "useSalesUpdate missing centralized cache invalidation",
+        "status": "new"
+      }
+    ],
+    "low": [
+      {
+        "id": "INFO-001",
+        "check": "stale-time",
+        "file": "src/hooks/useOrganizationDescendants.ts",
+        "line": 40,
+        "description": "Conservative staleTime: 30000 (acceptable for hierarchy data)",
+        "status": "acceptable"
+      }
+    ]
+  },
+  "totals": {
+    "critical": 0,
+    "high": 0,
+    "medium": 4,
+    "low": 1
+  },
+  "healthScore": {
+    "cacheInvalidation": 90,
+    "optimisticUpdates": 95,
+    "staleClosurePrevention": 100,
+    "refetchOnWindowFocus": 85,
+    "overall": 92
+  },
+  "filesScanned": {
+    "useMutation": 9,
+    "optimisticUpdates": 14,
+    "useEffect": 0
+  }
+}

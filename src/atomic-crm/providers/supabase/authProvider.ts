@@ -164,6 +164,7 @@ const getSaleFromCache = async () => {
     .from("sales")
     .select("id, first_name, last_name, avatar_url, is_admin, role")
     .match({ user_id: dataSession?.session?.user.id })
+    .is("deleted_at", null) // Exclude soft-deleted sales reps
     .maybeSingle();
 
   // Shouldn't happen either as all users are sales but just in case
