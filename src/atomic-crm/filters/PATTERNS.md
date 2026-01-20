@@ -447,7 +447,7 @@ export function StarredFilterToggle({ entityType, className }: StarredFilterTogg
 
 ## Pattern H: Filter Precedence
 
-URL parameters override sessionStorage, which overrides code defaults.
+URL parameters override sessionStorage, which overrides code defaults. (Previously Pattern E)
 
 ```tsx
 // src/atomic-crm/filters/filterPrecedence.ts
@@ -497,9 +497,9 @@ export const buildInitialFilters = (
 
 ---
 
-## Pattern F: Stage Preferences
+## Pattern I: Stage Preferences
 
-Persistent Kanban stage visibility for opportunities.
+Persistent Kanban stage visibility for opportunities. (Previously Pattern F)
 
 ```tsx
 // src/atomic-crm/filters/opportunityStagePreferences.ts
@@ -548,9 +548,9 @@ export const getInitialStageFilter = (): string[] | undefined => {
 
 ---
 
-## Pattern G: Resource-Specific Filters
+## Pattern J: Resource-Specific Filters
 
-Declarative configuration for each resource's filter needs.
+Declarative configuration for each resource's filter needs. (Previously Pattern G)
 
 ### Filter Config Locations
 

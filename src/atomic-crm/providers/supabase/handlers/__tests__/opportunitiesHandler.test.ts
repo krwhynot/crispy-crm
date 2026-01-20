@@ -31,6 +31,7 @@ import {
   createMockOpportunityWithComputedFields,
   createMockOpportunityWithViewOnlyFields,
   createMockEditableOpportunity,
+  type ProductToSync,
 } from "./fixtures/opportunities";
 
 // Mock service methods using vi.hoisted to ensure they're available when vi.mock runs

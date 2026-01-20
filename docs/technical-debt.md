@@ -221,7 +221,6 @@ Original audit files are archived at: `docs/archive/audits/`
 ## Maintenance Notes
 
 - This file verified against codebase on 2025-12-26
-- Verification reports stored in `docs/_state/` for audit trail
 - Run `/deep-audit` to regenerate full audit reports if needed
 - P0 items should block deployment
 - P1 items should be addressed within current sprint

@@ -6817,3 +6817,48 @@ tool_response: {"stdout": "     19 Kyle Ramsy", "stderr": "", "interrupted": fal
 hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
 tool_input: {"command": "git log --since=\"14 days ago\" --format=\"%an\" -- src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts | sort | uniq -c | sort -rn", "description": "Get author distributio
 tool_response: {"stdout": "     16 Kyle Ramsy", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:12:25.821319 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "ls -la /home/krwhynot/projects/crispy-crm/docs/PROVIDER_AUDIT_REPORT.md 2>/dev/null || echo \"File does not exist\"", "description": "Check if PROVIDER_AUDIT_REPORT.md exists"}
+tool_response: {"stdout": "-rw-r--r-- 1 krwhynot krwhynot 71204 Jan  8 21:04 /home/krwhynot/projects/crispy-crm/docs/PROVIDER_AUDIT_REPORT.md", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:13:20.077229 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm -rf /home/krwhynot/projects/crispy-crm/docs/_state/ && echo \"Deleted docs/_state/ (6 files)\"", "description": "Delete docs/_state/ verification snapshots"}
+tool_response: {"stdout": "Deleted docs/_state/ (6 files)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:13:28.196861 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm -rf /home/krwhynot/projects/crispy-crm/docs/TODOs/ && echo \"Deleted docs/TODOs/ directory (3 files)\"", "description": "Delete docs/TODOs/ superseded files"}
+tool_response: {"stdout": "Deleted docs/TODOs/ directory (3 files)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:13:36.833375 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm -f /home/krwhynot/projects/crispy-crm/docs/audits/2026-01-10-*.md /home/krwhynot/projects/crispy-crm/docs/audits/2026-01-11-*.md /home/krwhynot/projects/crispy-crm/docs/audits/2026-01-
+tool_response: {"stdout": "Deleted pre-Jan 15 audit snapshots", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:13:47.743680 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm -rf /home/krwhynot/projects/crispy-crm/docs/archive/audits/ && echo \"Deleted docs/archive/audits/ (54 files)\"", "description": "Delete historical audits directory"}
+tool_response: {"stdout": "Deleted docs/archive/audits/ (54 files)", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:13:55.010033 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm -f /home/krwhynot/projects/crispy-crm/docs/archive/plans/2025-12-20-kanban-density-principal-view.md && echo \"Deleted Dec 20 Kanban plan\"", "description": "Delete completed Kanban pl
+tool_response: {"stdout": "Deleted Dec 20 Kanban plan", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:14:02.528931 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "rm -f /home/krwhynot/projects/crispy-crm/docs/PROVIDER_AUDIT_REPORT.md /home/krwhynot/projects/crispy-crm/docs/TODOs.md && echo \"Deleted PROVIDER_AUDIT_REPORT.md and TODOs.md\"", "descri
+tool_response: {"stdout": "Deleted PROVIDER_AUDIT_REPORT.md and TODOs.md", "stderr": "", "interrupted": false, "isImage": false}
+
+--- 2026-01-19T18:16:01.855027 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx vitest run src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts --reporter=verbose 2>&1", "timeout": 120000, "description": "Run opportunitiesHandler test
+tool_response: {"stdout": " RUN  v3.2.4 /home/krwhynot/projects/crispy-crm\n\nstdout | src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts\n[SUPABASE] Initializing project: test\n\nstdo
+
+--- 2026-01-19T18:16:22.224690 ---
+hook_data keys: ['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'tool_name', 'tool_input', 'tool_response', 'tool_use_id']
+tool_input: {"command": "npx tsc --noEmit -p tsconfig.json 2>&1 | head -50", "timeout": 60000, "description": "Run TypeScript diagnostics on project"}
+tool_response: {"stdout": "", "stderr": "", "interrupted": false, "isImage": false}
