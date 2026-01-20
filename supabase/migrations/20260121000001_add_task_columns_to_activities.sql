@@ -15,7 +15,8 @@
  * activities code to continue working unchanged.
  */
 
-BEGIN;
+-- NOTE: No BEGIN/COMMIT block - PostgreSQL requires enum additions to be
+-- in separate transactions from statements that use the new values.
 
 -- ============================================================================
 -- STEP 1: Extend activity_type enum to include 'task'
