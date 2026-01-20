@@ -129,9 +129,9 @@ export const TaskCompactForm = () => {
               enableGetChoices={enableGetChoices}
             >
               <AutocompleteInput
-                {...getAutocompleteProps("title")}
+                {...getAutocompleteProps("name")}
                 label="Opportunity"
-                optionText="title"
+                optionText="name"
                 helperText="Link to opportunity"
               />
             </ReferenceInput>
