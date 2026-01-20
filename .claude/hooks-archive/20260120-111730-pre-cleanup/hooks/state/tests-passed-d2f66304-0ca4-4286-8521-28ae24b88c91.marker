@@ -1,0 +1,1 @@
+2026-01-16T21:53:48-06:00 | npm test -- --run src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx 2>&1

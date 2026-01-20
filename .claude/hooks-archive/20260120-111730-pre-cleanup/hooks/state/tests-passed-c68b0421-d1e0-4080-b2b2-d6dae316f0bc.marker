@@ -1,0 +1,1 @@
+2026-01-14T13:29:44-06:00 | npx vitest run src/atomic-crm/services/__tests__/sales.service.test.ts --reporter=verbose 2>&1 | tail -30

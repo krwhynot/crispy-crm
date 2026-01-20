@@ -1,0 +1,1 @@
+2026-01-19T14:41:38-06:00 | npx vitest run src/atomic-crm/validation/__tests__/quickAdd.test.ts src/atomic-crm/opportunities/hooks/__tests__/useQuickAdd.test.tsx --reporter=verbose 2>&1

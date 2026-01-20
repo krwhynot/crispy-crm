@@ -1,0 +1,1 @@
+2026-01-14T16:00:32-06:00 | npx vitest run 2>&1 | tee /tmp/test-output.txt | tail -50

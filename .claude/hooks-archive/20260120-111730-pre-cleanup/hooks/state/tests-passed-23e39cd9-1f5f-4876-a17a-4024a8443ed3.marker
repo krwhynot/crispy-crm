@@ -1,0 +1,1 @@
+2026-01-16T00:36:38-06:00 | npx vitest --run src/atomic-crm/utils/__tests__/dateUtils.test.ts src/atomic-crm/utils/__tests__/avatar.utils.test.ts

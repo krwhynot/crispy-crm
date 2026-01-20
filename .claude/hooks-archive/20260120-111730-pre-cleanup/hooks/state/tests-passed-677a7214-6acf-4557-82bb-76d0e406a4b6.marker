@@ -1,0 +1,1 @@
+2026-01-18T11:21:36-06:00 | npx vitest run src/atomic-crm/validation/__tests__/rpc.test.ts 2>&1 | tail -30

@@ -1,0 +1,1 @@
+2026-01-17T18:21:42-06:00 | npx vitest run --reporter=basic src/atomic-crm/opportunities/ src/atomic-crm/validation/opportunities/ src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.test.ts 2>&1 | tail -20

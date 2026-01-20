@@ -1,0 +1,1 @@
+2026-01-16T07:19:33-06:00 | npx vitest run opportunitiesHandler 2>&1 | head -80
