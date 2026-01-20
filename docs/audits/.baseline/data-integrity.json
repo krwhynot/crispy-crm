@@ -1,11 +1,11 @@
 {
-  "lastAudit": "2026-01-19T00:00:00Z",
+  "lastAudit": "2026-01-19T17:48:00Z",
   "composedDataProviderLines": 260,
   "unifiedProviderLines": 0,
   "findings": {
     "critical": 0,
     "high": 7,
-    "medium": 0
+    "medium": 1
   },
   "knownIssues": [
     {
@@ -14,7 +14,7 @@
       "line": 164,
       "check": "H001",
       "description": "Sales query missing deleted_at filter",
-      "status": "new"
+      "status": "requires_fix"
     },
     {
       "id": "H001-2",
@@ -22,7 +22,7 @@
       "line": 143,
       "check": "H001",
       "description": "Activities query missing deleted_at filter (may be intentional for GDPR)",
-      "status": "new"
+      "status": "needs_verification"
     },
     {
       "id": "H001-3",
@@ -30,7 +30,7 @@
       "line": 156,
       "check": "H001",
       "description": "Contact notes query missing deleted_at filter",
-      "status": "new"
+      "status": "needs_verification"
     },
     {
       "id": "H001-4",
@@ -38,7 +38,7 @@
       "line": 191,
       "check": "H001",
       "description": "Organizations query missing deleted_at filter",
-      "status": "new"
+      "status": "needs_verification"
     },
     {
       "id": "H001-5",
@@ -46,7 +46,7 @@
       "line": 203,
       "check": "H001",
       "description": "Organization notes query missing deleted_at filter",
-      "status": "new"
+      "status": "needs_verification"
     },
     {
       "id": "H001-6",
@@ -54,7 +54,7 @@
       "line": 230,
       "check": "H001",
       "description": "Opportunities query missing deleted_at filter",
-      "status": "new"
+      "status": "needs_verification"
     },
     {
       "id": "H001-7",
@@ -62,19 +62,40 @@
       "line": 240,
       "check": "H001",
       "description": "Opportunity notes query missing deleted_at filter",
-      "status": "new"
+      "status": "needs_verification"
+    },
+    {
+      "id": "M001",
+      "file": "src/atomic-crm/providers/supabase/handlers/*",
+      "line": 0,
+      "check": "M001",
+      "description": "No explicit TransformService imports in handlers - field stripping may rely on callbacks",
+      "status": "needs_verification"
     }
   ],
   "databaseChecks": {
     "viewTableDuality": {
       "totalTables": 27,
       "tablesWithViews": 4,
-      "missingViewsCount": 23
+      "missingViewsCount": 23,
+      "tablesWithViews": [
+        "contacts -> contacts_summary",
+        "opportunities -> opportunities_summary",
+        "organizations -> organizations_summary",
+        "products -> products_summary"
+      ]
     },
     "softDeleteConsistency": {
       "totalTables": 27,
       "tablesWithDeletedAt": 22,
-      "missingDeletedAtCount": 5
+      "missingDeletedAtCount": 5,
+      "tablesMissingDeletedAt": [
+        "audit_trail",
+        "dashboard_snapshots",
+        "migration_history",
+        "test_user_metadata",
+        "tutorial_progress"
+      ]
     },
     "orphanedRecords": 0
   }

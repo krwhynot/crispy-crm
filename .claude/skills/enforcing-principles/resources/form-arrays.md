@@ -25,7 +25,7 @@ export const ContactInfoTab = () => {
           <TextInput
             source="value"
             className="w-full"
-            placeholder="Email (valid email required)"
+            placeholder="name@company.com"
             helperText={false}
             label={false}
           />

@@ -46,7 +46,7 @@ Verify that the extraction of form patterns into molecules (`EmailArrayField`, `
 | Type dropdown shows "work" default | SelectInput with "work" selected | [ ] |
 | Add button visible | "+" or "Add" button to add rows | [ ] |
 | Remove button NOT visible (single row) | No delete button on only row | [ ] |
-| Email placeholder text | "Email (valid email required)" | [ ] |
+| Email placeholder text | "name@company.com" | [ ] |
 
 ### 1.4 Phone Array Field
 | Check | Expected | Pass |
