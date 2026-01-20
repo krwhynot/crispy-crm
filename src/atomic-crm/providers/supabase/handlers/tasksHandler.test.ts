@@ -189,10 +189,10 @@ describe("tasksHandler (STI wrapper)", () => {
       });
 
       const createCall = mockBaseProvider.create as ReturnType<typeof vi.fn>;
-      const passedData = createCall.mock.calls[0][1].data;
-      expect(passedData.subject).toBe("New Follow-up");
-      expect(passedData.title).toBeUndefined();
-      expect(passedData.activity_type).toBe("task");
+      const passedData = createCall.mock.calls[0]?.[1]?.data;
+      expect(passedData?.subject).toBe("New Follow-up");
+      expect(passedData?.title).toBeUndefined();
+      expect(passedData?.activity_type).toBe("task");
     });
 
     it("should map title to subject in update request", async () => {

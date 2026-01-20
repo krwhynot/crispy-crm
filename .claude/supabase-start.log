@@ -1,0 +1,5 @@
+WARN: no SMS provider is enabled. Disabling phone login
+supabase start is already running.
+WARN: no SMS provider is enabled. Disabling phone login
+supabase_db_crispy-crm container is not running: exited
+Try rerunning the command with --debug to troubleshoot the error.
