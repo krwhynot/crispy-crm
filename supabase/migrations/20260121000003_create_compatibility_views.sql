@@ -153,6 +153,9 @@ GRANT SELECT ON entity_timeline TO authenticated;
 -- STEP 4: Create priority_tasks view for dashboard
 -- ============================================================================
 -- Shows urgent incomplete tasks sorted by priority and due date
+-- DROP first because column names changed (task_id → id)
+
+DROP VIEW IF EXISTS priority_tasks CASCADE;
 
 CREATE OR REPLACE VIEW priority_tasks
 WITH (security_invoker = true) AS

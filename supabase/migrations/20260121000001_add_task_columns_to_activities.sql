@@ -15,28 +15,11 @@
  * activities code to continue working unchanged.
  */
 
--- NOTE: No BEGIN/COMMIT block - PostgreSQL requires enum additions to be
--- in separate transactions from statements that use the new values.
+-- NOTE: Enum additions moved to 20260121000000_add_task_enum_values.sql
+-- PostgreSQL requires enum additions in separate transactions from usage.
 
 -- ============================================================================
--- STEP 1: Extend activity_type enum to include 'task'
--- ============================================================================
--- Adding 'task' to distinguish planned items from logged interactions
-
-ALTER TYPE activity_type ADD VALUE IF NOT EXISTS 'task';
-
--- ============================================================================
--- STEP 2: Extend interaction_type enum for task type mapping
--- ============================================================================
--- Add values needed for mapping task types that don't exist in interaction_type:
--- - 'administrative' for general task work (maps from 'Other' task type)
--- - 'other' as fallback (maps from task types without direct equivalent)
-
-ALTER TYPE interaction_type ADD VALUE IF NOT EXISTS 'administrative';
-ALTER TYPE interaction_type ADD VALUE IF NOT EXISTS 'other';
-
--- ============================================================================
--- STEP 3: Add task-specific columns to activities table
+-- STEP 1: Add task-specific columns to activities table
 -- ============================================================================
 -- These columns are nullable and only populated when activity_type = 'task'
 
@@ -168,8 +151,6 @@ ALTER TABLE activities ADD CONSTRAINT check_has_contact_or_org
 
 COMMENT ON CONSTRAINT check_has_contact_or_org ON activities IS
   'Non-task activities require at least one of contact_id or organization_id. Tasks are exempt (may only have opportunity_id).';
-
-COMMIT;
 
 -- ============================================================================
 -- Verification Queries (run after migration)
