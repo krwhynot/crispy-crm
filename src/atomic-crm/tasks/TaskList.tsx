@@ -34,7 +34,6 @@ import { TaskListFilter } from "./TaskListFilter";
 import { TaskSlideOver } from "./TaskSlideOver";
 import { TaskEmpty } from "./TaskEmpty";
 import { SaleName } from "../sales/SaleName";
-import { contactOptionText } from "../contacts/ContactOption";
 import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
@@ -290,9 +289,11 @@ const TaskListLayout = ({
             sortable={false}
             {...COLUMN_VISIBILITY.largeDesktopOnly}
           >
-            <FunctionField render={(record: { first_name?: string; last_name?: string }) =>
-              [record?.first_name, record?.last_name].filter(Boolean).join(' ') || '—'
-            } />
+            <FunctionField
+              render={(record: { first_name?: string; last_name?: string }) =>
+                [record?.first_name, record?.last_name].filter(Boolean).join(" ") || "—"
+              }
+            />
           </ReferenceField>
 
           {/* Column 8: Opportunity - Opportunity reference (non-sortable) - hidden until large desktop */}

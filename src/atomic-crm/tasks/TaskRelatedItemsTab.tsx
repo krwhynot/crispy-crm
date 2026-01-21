@@ -1,4 +1,5 @@
 import { RecordContextProvider } from "ra-core";
+import { FunctionField } from "react-admin";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,7 +7,6 @@ import { SidepaneSection, SidepaneEmptyState } from "@/components/layouts/sidepa
 import { SaleName } from "../sales/SaleName";
 import { Building2, UserCircle, Target } from "lucide-react";
 import type { Task } from "../types";
-import { contactOptionText } from "../contacts/ContactOption";
 
 interface TaskRelatedItemsTabProps {
   record: Task;
@@ -59,7 +59,14 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
                 <div className="flex items-center gap-2">
                   <UserCircle className="size-5 text-muted-foreground" />
                   <ReferenceField source="contact_id" reference="contacts_summary" link="show">
-                    <TextField source={contactOptionText} className="font-medium" />
+                    <FunctionField
+                      render={(contact: { first_name?: string; last_name?: string }) => (
+                        <span className="font-medium">
+                          {[contact?.first_name, contact?.last_name].filter(Boolean).join(" ") ||
+                            "—"}
+                        </span>
+                      )}
+                    />
                   </ReferenceField>
                 </div>
               </CardContent>
