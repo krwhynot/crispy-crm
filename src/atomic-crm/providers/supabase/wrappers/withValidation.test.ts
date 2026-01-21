@@ -77,8 +77,13 @@ describe("withValidation", () => {
       const zodError = {
         name: "ZodError",
         issues: [
-          { path: ["email"], message: "Invalid email format" },
-          { path: ["name"], message: "Required" },
+          {
+            path: ["email"],
+            code: "invalid_string",
+            validation: "email",
+            message: "Invalid email format",
+          },
+          { path: ["name"], code: "invalid_type", input: undefined, message: "Required" },
         ],
       };
       mockValidationService.validate.mockRejectedValue(zodError);
@@ -90,8 +95,8 @@ describe("withValidation", () => {
       ).rejects.toMatchObject({
         body: {
           errors: expect.objectContaining({
-            email: "Invalid email format",
-            name: "Required",
+            email: "Please enter a valid email address.",
+            name: "This field is required.",
           }),
         },
       });
@@ -139,7 +144,7 @@ describe("withValidation", () => {
     it("should throw validation error on invalid update data", async () => {
       const zodError = {
         name: "ZodError",
-        issues: [{ path: ["status"], message: "Invalid enum value" }],
+        issues: [{ path: ["status"], code: "invalid_enum_value", message: "Invalid enum value" }],
       };
       mockValidationService.validate.mockRejectedValue(zodError);
 
@@ -154,7 +159,7 @@ describe("withValidation", () => {
       ).rejects.toMatchObject({
         body: {
           errors: expect.objectContaining({
-            status: "Invalid enum value",
+            status: "Please select a valid option.",
           }),
         },
       });
@@ -261,8 +266,18 @@ describe("withValidation", () => {
       const zodError = {
         name: "ZodError",
         issues: [
-          { path: ["address", "city"], message: "City is required" },
-          { path: ["contacts", 0, "email"], message: "Invalid email" },
+          {
+            path: ["address", "city"],
+            code: "invalid_type",
+            input: undefined,
+            message: "City is required",
+          },
+          {
+            path: ["contacts", 0, "email"],
+            code: "invalid_string",
+            validation: "email",
+            message: "Invalid email",
+          },
         ],
       };
       mockValidationService.validate.mockRejectedValue(zodError);
@@ -272,8 +287,8 @@ describe("withValidation", () => {
       await expect(wrappedProvider.create("organizations", { data: {} })).rejects.toMatchObject({
         body: {
           errors: expect.objectContaining({
-            "address.city": "City is required",
-            "contacts.0.email": "Invalid email",
+            "address.city": "This field is required.",
+            "contacts.0.email": "Please enter a valid email address.",
           }),
         },
       });
@@ -383,7 +398,7 @@ describe("withValidation", () => {
       await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toMatchObject({
         body: {
           errors: expect.objectContaining({
-            _error: "Unrecognized keys",
+            _error: "Unexpected fields provided.",
           }),
         },
       });

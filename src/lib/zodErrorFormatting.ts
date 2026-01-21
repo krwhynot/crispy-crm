@@ -91,7 +91,7 @@ export function hasFieldError(error: ZodError, fieldPath: string): boolean {
 export function getAllErrorMessages(error: ZodError): string[] {
   return error.issues.map((issue) => {
     const path = issue.path.join(".");
-    const message = getFriendlyErrorMessage(issue);
+    const message = getFriendlyErrorMessage(issue as any);
     return path ? `${path}: ${message}` : message;
   });
 }
