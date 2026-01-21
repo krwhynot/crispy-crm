@@ -1,4 +1,4 @@
-import { useState, Children, type ComponentProps, type ReactNode } from "react";
+import { useState, Children, useCallback, useMemo, type ComponentProps, type ReactNode } from "react";
 
 import * as diacritic from "diacritic";
 import {
@@ -17,7 +17,7 @@ import {
   type HintedString,
   type ExtractRecordPaths,
 } from "ra-core";
-import { Columns, Search } from "lucide-react";
+import { Columns, Search, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
