@@ -24,3 +24,5 @@ export type { DataProviderLogParams, ValidationError, ExtendedError } from "./wi
 
 export { withValidation } from "./withValidation";
 export type { ZodError, ReactAdminValidationError } from "./withValidation";
+
+export { withSkipDelete } from "./withSkipDelete";

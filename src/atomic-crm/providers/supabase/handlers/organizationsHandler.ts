@@ -11,7 +11,7 @@
  */
 
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
-import { withErrorLogging, withValidation } from "../wrappers";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { organizationsCallbacks } from "../callbacks";
 
 /**
