@@ -35,8 +35,12 @@ export const parseUrlFilters = (search: string): FilterValues => {
         } else {
           filters[key] = value;
         }
-      } catch {
-        // Not JSON, treat as single value
+      } catch (error) {
+        console.warn(
+          "[filterPrecedence] Failed to parse filter value as JSON, treating as string:",
+          key,
+          error
+        );
         filters[key] = value;
       }
     }
@@ -60,7 +64,8 @@ export function getStoredFilterPreferences<T = FilterValue>(key: string): T | nu
   try {
     // SECURITY: Use sessionStorage instead of localStorage
     return getStorageItem<T>(key, { type: "session" });
-  } catch {
+  } catch (error) {
+    console.warn("[filterPrecedence] Failed to read filter preferences from storage:", key, error);
     return null;
   }
 }

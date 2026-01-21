@@ -118,7 +118,8 @@ export function QuickCreatePopover({
         notify("Organization created", { type: "success" });
         onCreated(result.data as { id: number; name: string });
         setOpen(false);
-      } catch {
+      } catch (error) {
+        console.warn("[QuickCreatePopover] Organization creation failed:", error);
         notify("Failed to create organization", { type: "error" });
       } finally {
         setIsPending(false);
