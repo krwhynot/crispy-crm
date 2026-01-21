@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ReferenceInput, useCreate, useNotify, useRefresh } from "react-admin";
+import { ReferenceInput, useCreate, useRefresh } from "react-admin";
 import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 
 interface TagQuickInputProps {
   source: string;
