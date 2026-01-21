@@ -57,7 +57,7 @@ export function OpportunityProductsTab({
   isActiveTab,
 }: OpportunityProductsTabProps) {
   const [update] = useUpdate();
-  const notify = useNotify();
+  const { success, error: notifyError } = useSafeNotify();
   const dataProvider = useDataProvider();
   const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
@@ -102,7 +102,7 @@ export function OpportunityProductsTab({
         },
         {
           onSuccess: async () => {
-            notify("Products updated successfully", { type: "success" });
+            success("Products updated successfully");
 
             try {
               const productCount = data.product_ids?.length ?? 0;

@@ -37,7 +37,7 @@ export const OrganizationCreateFormFooter = ({
   transformValues,
   bypassDuplicate,
 }: OrganizationCreateFormFooterProps) => {
-  const notify = useNotify();
+  const { success, actionError } = useSafeNotify();
   const redirectFn = useRedirect();
   const { reset, getValues, trigger } = useFormContext();
   const { isDirty } = useFormState();
@@ -75,7 +75,7 @@ export const OrganizationCreateFormFooter = ({
           {
             onSuccess: (data: { id: string | number }) => {
               bypassDuplicate();
-              notify("Organization created successfully", { type: "success" });
+              success("Organization created successfully");
 
               if (action === "close") {
                 redirectFn("show", "organizations", data.id);

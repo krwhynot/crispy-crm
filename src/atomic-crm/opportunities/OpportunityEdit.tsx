@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { EditBase, Form, useRecordContext, useNotify, useRefresh } from "ra-core";
+import { EditBase, Form, useRecordContext, useRefresh } from "ra-core";
+import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { opportunityKeys } from "../queryKeys";

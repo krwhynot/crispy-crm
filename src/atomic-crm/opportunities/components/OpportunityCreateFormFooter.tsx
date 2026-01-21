@@ -10,7 +10,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNotify, useRedirect } from "ra-core";
+import { useRedirect } from "ra-core";
+import { useSafeNotify } from "../../hooks/useSafeNotify";
 import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate } from "ra-core";
 import { Loader2, Save } from "lucide-react";

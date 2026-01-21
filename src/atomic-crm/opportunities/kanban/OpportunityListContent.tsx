@@ -38,7 +38,6 @@ import {
   validateCloseOpportunity,
 } from "@/atomic-crm/validation/opportunities";
 import { OpportunityCard } from "./OpportunityCard";
-import { mapErrorToUserMessage } from "@/atomic-crm/utils/errorMessages";
 
 interface OpportunityListContentProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;

@@ -3,7 +3,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDataProvider, useNotify } from "ra-core";
+import { useDataProvider } from "ra-core";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 
 import { digestKeys } from "../queryKeys";
 import { Mail, Bell, BellOff } from "lucide-react";
@@ -38,7 +39,7 @@ interface UpdatePreferenceResponse {
  * - update_digest_preference(boolean) - Updates preference using auth.uid()
  */
 export function DigestPreferences() {
-  const notify = useNotify();
+  const { success, actionError } = useSafeNotify();
   const queryClient = useQueryClient();
   const dataProvider = useDataProvider() as ExtendedDataProvider;
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDataProvider, useNotify } from "ra-core";
+import { useDataProvider } from "ra-core";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { setStorageItem } from "@/atomic-crm/utils/secureStorage";
 import { organizationKeys, contactKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
@@ -24,7 +24,7 @@ import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
  */
 export const useQuickAdd = () => {
   const dataProvider = useDataProvider();
-  const notify = useNotify();
+  const { success, actionError } = useSafeNotify();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({

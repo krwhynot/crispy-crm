@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { useDataProvider, useNotify, useGetList, useRefresh } from "ra-core";
+import { useDataProvider, useGetList, useRefresh } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 
 import { opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 
@@ -33,7 +34,7 @@ interface ActivityNoteFormProps {
 
 export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormProps) => {
   const dataProvider = useDataProvider();
-  const notify = useNotify();
+  const { success, actionError, warning } = useSafeNotify();
   const refresh = useRefresh();
   const queryClient = useQueryClient();
   const { opportunityStages } = usePipelineConfig();
