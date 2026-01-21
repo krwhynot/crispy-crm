@@ -1,5 +1,5 @@
-import { useState, useEffect, Children, type ComponentProps, type ReactNode } from "react";
-import { createPortal } from "react-dom";
+import { useState, Children, type ComponentProps, type ReactNode } from "react";
+
 import * as diacritic from "diacritic";
 import {
   useDataTableStoreContext,
@@ -50,7 +50,7 @@ import { cn } from "@/lib/utils";
  * );
  */
 export const ColumnsButton = (props: ColumnsButtonProps) => {
-  const { className, storeKey: _, ...rest } = props;
+  const { className, storeKey: _, children, ...rest } = props;
   const resource = useResourceContext(props);
   const storeKey = props.storeKey || `${resource}.datatable`;
 
@@ -81,7 +81,7 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
           )}
         </PopoverTrigger>
         <PopoverContent align="start" className="p-0 min-w-[200px] w-72">
-          <div id={`${storeKey}-columnsSelector`} className="p-2" />
+          <ColumnsSelector storeKey={storeKey}>{children}</ColumnsSelector>
         </PopoverContent>
       </Popover>
     </span>
@@ -91,50 +91,30 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
 export interface ColumnsButtonProps extends ComponentProps<typeof Button> {
   resource?: string;
   storeKey?: string;
+  children?: ReactNode;
 }
 
 /**
- * Render DataTable.Col elements in the ColumnsButton selector using a React Portal.
+ * Render DataTable.Col elements in the ColumnsButton selector.
  *
  * @see ColumnsButton
  */
-export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
+export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSelectorProps) => {
   const translate = useTranslate();
-  const { storeKey, defaultHiddenColumns } = useDataTableStoreContext();
+  const dataTableContext = useDataTableStoreContext();
+  const storeKey = storeKeyProp ?? dataTableContext?.storeKey;
+  const defaultHiddenColumns = dataTableContext?.defaultHiddenColumns ?? [];
   const [columnRanks, setColumnRanks] = useStore<number[] | undefined>(`${storeKey}_columnRanks`);
-  const [_hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey, defaultHiddenColumns);
-  const elementId = `${storeKey}-columnsSelector`;
-
-  const [container, setContainer] = useState<HTMLElement | null>(() =>
-    typeof document !== "undefined" ? document.getElementById(elementId) : null
-  );
-
-  // on first mount, we don't have the container yet, so we wait for it
-  useEffect(() => {
-    if (container && typeof document !== "undefined" && document.body.contains(container)) return;
-    // look for the container in the DOM every 100ms
-    const interval = setInterval(() => {
-      const target = document.getElementById(elementId);
-      if (target) setContainer(target);
-    }, 100);
-    // stop looking after 500ms
-    const timeout = setTimeout(() => clearInterval(interval), 500);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, [elementId, container]);
+  const [_hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey ?? "", defaultHiddenColumns);
 
   const [columnFilter, setColumnFilter] = useState<string>("");
-
-  if (!container) return null;
 
   const childrenArray = Children.toArray(children);
   const paddedColumnRanks = padRanks(columnRanks ?? [], childrenArray.length);
   const shouldDisplaySearchInput = childrenArray.length > 5;
 
-  return createPortal(
-    <ul className="max-h-[50vh] p-1 overflow-auto">
+  return (
+    <ul className="max-h-[50vh] p-2 overflow-auto">
       {shouldDisplaySearchInput ? (
         <li className="pb-2" tabIndex={-1}>
           <div className="relative">
@@ -183,13 +163,13 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
           Reset
         </Button>
       </li>
-    </ul>,
-    container
+    </ul>
   );
 };
 
 interface ColumnsSelectorProps {
   children?: React.ReactNode;
+  storeKey?: string;
 }
 
 export const ColumnsSelectorItem = <
