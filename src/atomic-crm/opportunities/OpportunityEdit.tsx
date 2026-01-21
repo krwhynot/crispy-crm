@@ -31,15 +31,14 @@ const OpportunityEdit = () => {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         },
-        onError: (error: Error) => {
-          if (error.message?.includes("CONFLICT")) {
-            notify(
-              "This opportunity was modified by another user. Refreshing to show latest version.",
-              { type: "warning" }
+        onError: (err: Error) => {
+          if (err.message?.includes("CONFLICT")) {
+            warning(
+              "This opportunity was modified by another user. Refreshing to show latest version."
             );
             refresh();
           } else {
-            notify(error.message || "Failed to save opportunity", { type: "error" });
+            actionError(err, "update", "opportunity");
           }
         },
       }}

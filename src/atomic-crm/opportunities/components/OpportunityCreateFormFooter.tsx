@@ -74,10 +74,10 @@ export function OpportunityCreateFormFooter({
   }, [isDirty, redirectFn, redirectPath]);
 
   const handleError = useCallback(
-    (error: Error) => {
-      notify(error.message || "Failed to create opportunity", { type: "error" });
+    (err: Error) => {
+      actionError(err, "create", "opportunity");
     },
-    [notify]
+    [actionError]
   );
 
   /**
@@ -139,12 +139,12 @@ export function OpportunityCreateFormFooter({
       // Proceed with save
       await form.handleSubmit(async (values) => {
         await handleSubmit(values, () => {
-          notify("Opportunity created successfully", { type: "success" });
+          success("Opportunity created successfully");
           redirectFn(redirectPath);
         });
       })(event);
     },
-    [checkBeforeSubmit, form, handleSubmit, notify, redirectFn, redirectPath]
+    [checkBeforeSubmit, form, handleSubmit, success, redirectFn, redirectPath]
   );
 
   /**
@@ -163,7 +163,7 @@ export function OpportunityCreateFormFooter({
       // Proceed with save
       await form.handleSubmit(async (values) => {
         await handleSubmit(values, () => {
-          notify("Opportunity created successfully", { type: "success" });
+          success("Opportunity created successfully");
 
           // Preserve specified fields for rapid entry
           if (preserveFields.length > 0) {
@@ -191,7 +191,7 @@ export function OpportunityCreateFormFooter({
       checkBeforeSubmit,
       form,
       handleSubmit,
-      notify,
+      success,
       preserveFields,
       getValues,
       reset,

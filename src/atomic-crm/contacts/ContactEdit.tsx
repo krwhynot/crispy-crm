@@ -27,12 +27,12 @@ export const ContactEdit = () => {
           queryClient.invalidateQueries({ queryKey: contactKeys.all });
           queryClient.invalidateQueries({ queryKey: activityKeys.all });
           queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-          notify("Contact updated successfully", { type: "success" });
+          success("Contact updated successfully");
         },
-        onError: (error: Error) => {
+        onError: (err: Error) => {
           // BUG-008 fix: Catch validation errors, RLS failures, network errors
           // Without this callback, errors from dataProvider.update() were silently swallowed
-          notify(error.message || "Failed to update contact", { type: "error" });
+          actionError(err, "update", "contact");
           refresh(); // Reset form to last known good state
         },
       }}

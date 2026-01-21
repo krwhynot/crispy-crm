@@ -26,7 +26,7 @@ export function UnlinkConfirmDialog({
   onSuccess,
 }: UnlinkConfirmDialogProps) {
   const [deleteOne, { isLoading }] = useDelete();
-  const notify = useNotify();
+  const { success, error } = useSafeNotify();
 
   const handleConfirm = async () => {
     if (!opportunity) return;
@@ -37,19 +37,17 @@ export function UnlinkConfirmDialog({
         { id: opportunity.junctionId },
         {
           onSuccess: () => {
-            notify(`Removed ${contactName} from ${opportunity.name}`, {
-              type: "success",
-            });
+            success(`Removed ${contactName} from ${opportunity.name}`);
             onSuccess();
             onClose();
           },
-          onError: (error: Error) => {
-            notify(error.message || "Failed to unlink opportunity", { type: "error" });
+          onError: (err: Error) => {
+            error(err, "Couldn't unlink record. Please try again.");
           },
         }
       );
-    } catch {
-      notify("Failed to unlink opportunity. Please try again.", { type: "error" });
+    } catch (err) {
+      error(err, "Couldn't unlink record. Please try again.");
     }
   };
 
