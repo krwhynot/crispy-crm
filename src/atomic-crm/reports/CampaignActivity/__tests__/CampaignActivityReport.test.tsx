@@ -33,10 +33,7 @@ vi.mock("jsonexport/dist", () => ({
  *
  * This helper creates both getList and rpc mocks for complete test coverage.
  */
-const createMockDataProviderWithActivities = (
-  activities: any[],
-  opportunityCount: number = 1
-) => ({
+const createMockDataProviderWithActivities = (activities: any[], opportunityCount: number = 1) => ({
   getList: vi.fn().mockImplementation((resource: string) => {
     if (resource === "activities") {
       return Promise.resolve({
@@ -64,9 +61,7 @@ const createMockDataProviderWithActivities = (
   rpc: vi.fn().mockImplementation((procedureName: string) => {
     if (procedureName === "get_campaign_report_stats") {
       return Promise.resolve({
-        campaign_options: [
-          { name: "Grand Rapids Trade Show", count: opportunityCount },
-        ],
+        campaign_options: [{ name: "Grand Rapids Trade Show", count: opportunityCount }],
         sales_rep_options: [],
         activity_type_counts: {},
       });
@@ -1316,7 +1311,8 @@ describe("CampaignActivityReport", () => {
       });
 
       renderWithAdminContext(<CampaignActivityReport />, {
-        dataProvider: createMockDataProviderWithActivities(mockActivities),
+        // Pass opportunityCount=3 to match the 3 activities for correct metrics
+        dataProvider: createMockDataProviderWithActivities(mockActivities, 3),
       });
 
       await waitFor(() => {
