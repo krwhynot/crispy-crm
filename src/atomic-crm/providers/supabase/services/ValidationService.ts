@@ -18,8 +18,8 @@ import type { ProductDistributor } from "../../../validation/productDistributors
 // Import all validation schemas
 import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
 import {
-  validateOrganizationForSubmission,
   validateUpdateOrganization,
+  validateCreateOrganization,
 } from "../../../validation/organizations";
 import {
   validateCreateOpportunity,
@@ -144,7 +144,7 @@ export class ValidationService {
         update: async (data: unknown) => validateUpdateContact(data),
       },
       organizations: {
-        create: async (data: unknown) => validateOrganizationForSubmission(data),
+        create: async (data: unknown) => validateCreateOrganization(data),
         update: async (data: unknown) => validateUpdateOrganization(data),
       },
       opportunities: {
