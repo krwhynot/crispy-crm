@@ -18,6 +18,7 @@
  */
 
 import type { ZodError, ZodIssue } from "zod";
+import { getFriendlyErrorMessage } from "@/atomic-crm/validation/utils";
 
 /**
  * Transform a Zod error into a flat record of field paths to error messages.
@@ -32,7 +33,7 @@ export function zodErrorToFormErrors(error: ZodError): Record<string, string> {
   error.issues.forEach((issue: ZodIssue) => {
     const path = issue.path.join(".");
     if (!errors[path]) {
-      errors[path] = issue.message;
+      errors[path] = getFriendlyErrorMessage(issue);
     }
   });
 
@@ -66,7 +67,7 @@ export function getFieldError(
   const issue = error.issues.find(
     (issue) => issue.path.join(".") === fieldPath
   );
-  return issue?.message;
+  return issue ? getFriendlyErrorMessage(issue) : undefined;
 }
 
 /**
@@ -90,7 +91,8 @@ export function hasFieldError(error: ZodError, fieldPath: string): boolean {
 export function getAllErrorMessages(error: ZodError): string[] {
   return error.issues.map((issue) => {
     const path = issue.path.join(".");
-    return path ? `${path}: ${issue.message}` : issue.message;
+    const message = getFriendlyErrorMessage(issue);
+    return path ? `${path}: ${message}` : message;
   });
 }
 

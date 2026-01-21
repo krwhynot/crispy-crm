@@ -38,17 +38,17 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
   });
 
   describe("validateCreateContact", () => {
-    it("should require email for creation", async () => {
-      const invalidData = {
+    it("should accept creation without email (email is optional)", async () => {
+      // Per business rules: email is OPTIONAL for contacts
+      const validData = {
         first_name: "John",
         last_name: "Doe",
         sales_id: "1",
         organization_id: "1", // Required per PRD: contacts cannot exist without organization
       };
 
-      await expect(validateCreateContact(invalidData)).rejects.toMatchObject({
-        message: "Validation failed",
-      });
+      // Should NOT reject - email is optional
+      await expect(validateCreateContact(validData)).resolves.toBeUndefined();
     });
 
     it("should require sales_id for creation", async () => {
