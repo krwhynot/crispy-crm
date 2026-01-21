@@ -18,6 +18,7 @@
 import type { DataProvider, RaRecord, CreateParams, UpdateParams, GetListParams } from "ra-core";
 import { ValidationService } from "../services";
 import { getFriendlyErrorMessage } from "../../../validation/utils";
+import type { ZodIssueBase } from "../../../validation/utils";
 
 /**
  * Interface for Zod validation errors
@@ -86,7 +87,7 @@ function transformZodToReactAdmin(zodError: ZodError): ReactAdminValidationError
     const fieldPath = issue.path.join(".");
     // Use the field path as key, or "_error" for root-level errors
     const key = fieldPath || "_error";
-    errors[key] = getFriendlyErrorMessage(issue);
+    errors[key] = getFriendlyErrorMessage(issue as any);
   }
 
   return {

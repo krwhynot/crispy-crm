@@ -33,7 +33,7 @@ export function zodErrorToFormErrors(error: ZodError): Record<string, string> {
   error.issues.forEach((issue: ZodIssue) => {
     const path = issue.path.join(".");
     if (!errors[path]) {
-      errors[path] = getFriendlyErrorMessage(issue);
+      errors[path] = getFriendlyErrorMessage(issue as any);
     }
   });
 
@@ -67,7 +67,7 @@ export function getFieldError(
   const issue = error.issues.find(
     (issue) => issue.path.join(".") === fieldPath
   );
-  return issue ? getFriendlyErrorMessage(issue) : undefined;
+  return issue ? getFriendlyErrorMessage(issue as any) : undefined;
 }
 
 /**

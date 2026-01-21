@@ -25,7 +25,7 @@
  * Zod issue type for error handling
  * Uses a simplified interface compatible with both Zod v3 and v4
  */
-interface ZodIssueBase {
+export interface ZodIssueBase {
   code: string;
   message: string;
   path: (string | number)[];
