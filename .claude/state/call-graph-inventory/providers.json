@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-21T05:04:17.478Z",
+  "generated_at": "2026-01-21T06:16:32.165Z",
   "items": {
     "nodes": [
       {
@@ -985,28 +985,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:49:isZodError",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:50:isZodError",
         "name": "isZodError",
         "file": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts",
-        "line": 49,
+        "line": 50,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:72:transformZodToReactAdmin",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:73:transformZodToReactAdmin",
         "name": "transformZodToReactAdmin",
         "file": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts",
-        "line": 72,
+        "line": 73,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
         "name": "withValidation",
         "file": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts",
-        "line": 110,
+        "line": 111,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -5991,119 +5991,128 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:49:isZodError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:50:isZodError",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:72:transformZodToReactAdmin",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:73:transformZodToReactAdmin",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 85,
+        "line": 86,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:73:transformZodToReactAdmin",
+        "target": "getFriendlyErrorMessage",
+        "targetName": "getFriendlyErrorMessage",
+        "edgeType": "call",
+        "line": 89,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
         "target": "validate",
         "targetName": "validate",
         "edgeType": "call",
-        "line": 124,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
         "target": "isZodError",
         "targetName": "isZodError",
-        "edgeType": "call",
-        "line": 126,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "transformZodToReactAdmin",
-        "targetName": "transformZodToReactAdmin",
         "edgeType": "call",
         "line": 127,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "create",
-        "targetName": "create",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "transformZodToReactAdmin",
+        "targetName": "transformZodToReactAdmin",
         "edgeType": "call",
-        "line": 132,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "validate",
-        "targetName": "validate",
-        "edgeType": "call",
-        "line": 145,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "isZodError",
-        "targetName": "isZodError",
-        "edgeType": "call",
-        "line": 147,
+        "line": 128,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "transformZodToReactAdmin",
-        "targetName": "transformZodToReactAdmin",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "validate",
+        "targetName": "validate",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "isZodError",
+        "targetName": "isZodError",
         "edgeType": "call",
         "line": 148,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "update",
-        "targetName": "update",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "transformZodToReactAdmin",
+        "targetName": "transformZodToReactAdmin",
         "edgeType": "call",
-        "line": 153,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "keys",
-        "targetName": "keys",
-        "edgeType": "call",
-        "line": 163,
+        "line": 149,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
-        "target": "validateFilters",
-        "targetName": "validateFilters",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 154,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "keys",
+        "targetName": "keys",
         "edgeType": "call",
         "line": 164,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:110:withValidation",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
+        "target": "validateFilters",
+        "targetName": "validateFilters",
+        "edgeType": "call",
+        "line": 165,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:111:withValidation",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 167,
+        "line": 168,
         "conditional": false,
         "inLoop": false
       }

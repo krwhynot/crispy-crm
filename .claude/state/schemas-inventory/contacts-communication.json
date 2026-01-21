@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-communication",
-  "generated_at": "2026-01-21T05:04:14.336Z",
+  "generated_at": "2026-01-21T06:16:28.922Z",
   "item_count": 3,
   "items": [
     {
@@ -22,7 +22,7 @@
     {
       "name": "emailAndTypeSchema",
       "file": "src/atomic-crm/validation/contacts/contacts-communication.ts",
-      "line": 13,
+      "line": 15,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -39,12 +39,12 @@
         },
         {
           "name": "type",
-          "zodType": "ref:personalInfoTypeSchema",
+          "zodType": "unknown",
           "constraints": [],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
-          "hasDefault": true
+          "hasDefault": false
         }
       ],
       "relatedSchemas": [],
@@ -55,7 +55,7 @@
     {
       "name": "phoneNumberAndTypeSchema",
       "file": "src/atomic-crm/validation/contacts/contacts-communication.ts",
-      "line": 19,
+      "line": 25,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -72,12 +72,12 @@
         },
         {
           "name": "type",
-          "zodType": "ref:personalInfoTypeSchema",
+          "zodType": "unknown",
           "constraints": [],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
-          "hasDefault": true
+          "hasDefault": false
         }
       ],
       "relatedSchemas": [],

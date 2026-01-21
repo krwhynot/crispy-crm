@@ -416,7 +416,7 @@ describe("withValidation", () => {
       await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toMatchObject({
         body: {
           errors: expect.objectContaining({
-            _error: "Unrecognized keys",
+            _error: "Unexpected fields provided.",
           }),
         },
       });
