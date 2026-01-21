@@ -15,7 +15,7 @@ interface TagQuickInputProps {
 export function TagQuickInput({ source, label }: TagQuickInputProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [create, { isLoading: isCreating }] = useCreate();
-  const notify = useNotify();
+  const { success, error: notifyError } = useSafeNotify();
   const refresh = useRefresh();
 
   const handleQuickCreate = async (name: string) => {
@@ -26,11 +26,11 @@ export function TagQuickInput({ source, label }: TagQuickInputProps) {
       { data: { name: name.trim(), color: "warm" } },
       {
         onSuccess: () => {
-          notify("Tag created", { type: "success" });
+          success("Tag created");
           refresh();
         },
-        onError: (error) => {
-          notify(`Error: ${error.message}`, { type: "error" });
+        onError: (err: unknown) => {
+          notifyError(err);
         },
       }
     );

@@ -3,6 +3,7 @@ import { useDataProvider, useNotify } from "ra-core";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { setStorageItem } from "@/atomic-crm/utils/secureStorage";
 import { organizationKeys, contactKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 
 /**
  * Quick Add Hook for Opportunity Creation

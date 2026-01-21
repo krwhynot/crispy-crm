@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-  useGetList,
-  Form,
-  useUpdate,
-  useNotify,
-  ReferenceArrayInput,
-  useDataProvider,
-} from "react-admin";
+import { useGetList, Form, useUpdate, ReferenceArrayInput, useDataProvider } from "react-admin";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import type { Identifier } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";

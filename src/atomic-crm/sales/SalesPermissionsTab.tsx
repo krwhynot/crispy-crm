@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useUpdate, useGetIdentity, useRedirect, useRefresh } from "react-admin";
+import { useUpdate, useGetIdentity, useRedirect, useRefresh, useNotify } from "react-admin";
 import { useSafeNotify } from "@/atomic-crm/hooks";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

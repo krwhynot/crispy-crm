@@ -13,6 +13,7 @@ import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 
 interface OrganizationCreateFormFooterProps {
