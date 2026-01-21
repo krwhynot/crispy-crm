@@ -11,7 +11,7 @@
  */
 
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
-import { withErrorLogging, withValidation } from "../wrappers";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { contactsCallbacks } from "../callbacks";
 
 /**
@@ -28,6 +28,6 @@ import { contactsCallbacks } from "../callbacks";
  */
 export function createContactsHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withLifecycleCallbacks(withValidation(baseProvider), [contactsCallbacks])
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [contactsCallbacks])
   );
 }

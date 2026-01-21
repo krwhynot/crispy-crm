@@ -45,7 +45,7 @@ import {
   type UpdateManyParams,
 } from "react-admin";
 import { z } from "zod";
-import { withErrorLogging, withValidation } from "../wrappers";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
 import { OpportunitiesService } from "../../../services/opportunities.service";
 import { assertExtendedDataProvider } from "../typeGuards";
@@ -235,6 +235,8 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
    * This ensures ALL custom logic is protected by error logging.
    */
   return withErrorLogging(
-    withLifecycleCallbacks(withValidation(customOpportunitiesHandler), [opportunitiesCallbacks])
+    withLifecycleCallbacks(withSkipDelete(withValidation(customOpportunitiesHandler)), [
+      opportunitiesCallbacks,
+    ])
   );
 }

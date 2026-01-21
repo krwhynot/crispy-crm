@@ -28,6 +28,6 @@ import { organizationsCallbacks } from "../callbacks";
  */
 export function createOrganizationsHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withLifecycleCallbacks(withValidation(baseProvider), [organizationsCallbacks])
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [organizationsCallbacks])
   );
 }
