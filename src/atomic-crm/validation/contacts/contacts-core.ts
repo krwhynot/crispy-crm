@@ -10,6 +10,42 @@ import { optionalRaFileSchema } from "../shared/ra-file";
  * Implements validation rules from ContactInputs.tsx
  */
 
+/**
+ * Filter out empty email/phone entries that React Admin's SimpleFormIterator creates.
+ * When a user adds a row but leaves it empty, RA sends { value: "", type: "" }.
+ * This filter removes such empty entries BEFORE Zod validation runs.
+ *
+ * Per Engineering Constitution: validation at API boundary, not form layer.
+ * The provider should handle bad data defensively.
+ */
+function filterEmptyArrayEntries(data: Record<string, unknown>): Record<string, unknown> {
+  const filtered = { ...data };
+
+  if (Array.isArray(filtered.email)) {
+    filtered.email = filtered.email.filter(
+      (entry: unknown) =>
+        entry &&
+        typeof entry === "object" &&
+        "value" in entry &&
+        entry.value &&
+        String(entry.value).trim() !== ""
+    );
+  }
+
+  if (Array.isArray(filtered.phone)) {
+    filtered.phone = filtered.phone.filter(
+      (entry: unknown) =>
+        entry &&
+        typeof entry === "object" &&
+        "value" in entry &&
+        entry.value &&
+        String(entry.value).trim() !== ""
+    );
+  }
+
+  return filtered;
+}
+
 // LinkedIn URL validation
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin\.com\//;
 const isLinkedinUrl = z
@@ -273,8 +309,10 @@ export async function validateContactForm(data: unknown): Promise<void> {
   });
 
   try {
+    // Filter out empty email/phone entries before validation
+    const filteredData = filterEmptyArrayEntries(data as Record<string, unknown>);
     // Parse and validate the data
-    formSchema.parse(data);
+    formSchema.parse(filteredData);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
@@ -467,20 +505,14 @@ export async function validateCreateContact(data: unknown): Promise<void> {
         });
       }
 
-      // Ensure at least one email is provided for new contacts (skip for quick create)
-      if (!isQuickCreate) {
-        if (!data.email || !Array.isArray(data.email) || data.email.length === 0) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "At least one email address is required",
-            path: ["email"],
-          });
-        }
-      }
+      // NOTE: Email is OPTIONAL per business rules - removed incorrect requirement
+      // Empty email/phone entries are filtered out by filterEmptyArrayEntries() before validation
     });
 
   try {
-    createSchemaWithEmail.parse(data);
+    // Filter out empty email/phone entries before validation
+    const filteredData = filterEmptyArrayEntries(data as Record<string, unknown>);
+    createSchemaWithEmail.parse(filteredData);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
