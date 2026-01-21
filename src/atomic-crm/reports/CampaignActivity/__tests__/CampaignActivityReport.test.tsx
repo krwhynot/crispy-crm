@@ -27,13 +27,16 @@ vi.mock("jsonexport/dist", () => ({
 /**
  * Helper to create mock dataProvider for tests that need useReportData to return data.
  *
- * The component uses both:
- * - useGetList (from ra-core) - mocked globally above
- * - useReportData (uses useDataProvider().getList()) - needs dataProvider mock
+ * The component uses:
+ * - useReportData (uses useDataProvider().getList()) - needs dataProvider.getList mock
+ * - useCampaignActivityData (uses useDataProvider().rpc()) - needs dataProvider.rpc mock
  *
- * This helper creates a dataProvider.getList mock that returns the provided activities.
+ * This helper creates both getList and rpc mocks for complete test coverage.
  */
-const createMockDataProviderWithActivities = (activities: any[]) => ({
+const createMockDataProviderWithActivities = (
+  activities: any[],
+  opportunityCount: number = 1
+) => ({
   getList: vi.fn().mockImplementation((resource: string) => {
     if (resource === "activities") {
       return Promise.resolve({
@@ -44,13 +47,31 @@ const createMockDataProviderWithActivities = (activities: any[]) => ({
     }
     // Return opportunities with the default campaign for other resources
     if (resource === "opportunities") {
+      const mockOpps = Array.from({ length: opportunityCount }, (_, i) => ({
+        id: i + 1,
+        name: `Test Opp ${i + 1}`,
+        campaign: "Grand Rapids Trade Show",
+      }));
       return Promise.resolve({
-        data: [{ id: 1, name: "Test Opp", campaign: "Grand Rapids Trade Show" }],
-        total: 1,
+        data: mockOpps,
+        total: opportunityCount,
         pageInfo: { hasNextPage: false, hasPreviousPage: false },
       });
     }
     return Promise.resolve({ data: [], total: 0 });
+  }),
+  // Mock RPC for get_campaign_report_stats - required for useCampaignActivityData
+  rpc: vi.fn().mockImplementation((procedureName: string) => {
+    if (procedureName === "get_campaign_report_stats") {
+      return Promise.resolve({
+        campaign_options: [
+          { name: "Grand Rapids Trade Show", count: opportunityCount },
+        ],
+        sales_rep_options: [],
+        activity_type_counts: {},
+      });
+    }
+    return Promise.resolve({});
   }),
 });
 

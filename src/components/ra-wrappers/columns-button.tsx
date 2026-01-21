@@ -105,7 +105,10 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
   const storeKey = storeKeyProp ?? dataTableContext?.storeKey;
   const defaultHiddenColumns = dataTableContext?.defaultHiddenColumns ?? [];
   const [columnRanks, setColumnRanks] = useStore<number[] | undefined>(`${storeKey}_columnRanks`);
-  const [_hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey ?? "", defaultHiddenColumns);
+  const [_hiddenColumns, setHiddenColumns] = useStore<string[]>(
+    storeKey ?? "",
+    defaultHiddenColumns
+  );
 
   const [columnFilter, setColumnFilter] = useState<string>("");
 
