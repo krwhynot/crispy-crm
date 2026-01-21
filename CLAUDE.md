@@ -80,3 +80,9 @@
 - **Users:** Admin, Manager (All data), Rep (Own data).
 
 **Protocol:** Use `ref` MCP. Ask multiple-choice if context missing.
+
+ The Correct Workflow Should Be:                                                                                                               
+  1. Write migration SQL to supabase/migrations/ folder                                                                                         
+  2. Run supabase db reset or supabase migration up locally                                                                                     
+  3. Test locally to verify behavior                                                                                                            
+  4. Only then push to cloud via supabase db push or MCP      
