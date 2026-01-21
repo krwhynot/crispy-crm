@@ -27,13 +27,17 @@ export const FieldToggle = (props: FieldToggleProps) => {
     // imperative DOM manipulations using the native Drag API
     const selectedItem = event.target as HTMLElement;
     selectedItem.dataset.dragActive = "true";
-    const list = selectedItem.closest("ul");
+    // Find the scrollable container (parent div with overflow)
+    const list = selectedItem.parentElement;
     if (x.current == null || y.current == null) {
       return;
     }
     const elementAtDragCoordinates = document.elementFromPoint(x.current, y.current);
+    // Changed from "li" to "label" since we now use label elements
     let dropItem =
-      elementAtDragCoordinates === null ? selectedItem : elementAtDragCoordinates.closest("li");
+      elementAtDragCoordinates === null
+        ? selectedItem
+        : elementAtDragCoordinates.closest("label[data-index]");
 
     if (!dropItem) {
       return;
@@ -48,8 +52,8 @@ export const FieldToggle = (props: FieldToggleProps) => {
       return;
     }
     const dropItemParent = dropItem.parentNode;
-    if (list && dropItemParent instanceof HTMLElement && list === dropItemParent.closest("ul")) {
-      const dataIndex = dropItem.dataset.index;
+    if (list && dropItemParent instanceof HTMLElement && list === dropItemParent) {
+      const dataIndex = (dropItem as HTMLElement).dataset.index;
       if (dataIndex) {
         dropIndex.current = parseInt(dataIndex, 10);
       }
@@ -62,28 +66,29 @@ export const FieldToggle = (props: FieldToggleProps) => {
 
   const handleDragEnd = (event: React.DragEvent) => {
     const selectedItem = event.target as HTMLElement;
-    const list = selectedItem.closest("ul");
+    // Find the scrollable container (parent div)
+    const list = selectedItem.parentElement;
 
     const elementFromPoint =
       x.current != null && y.current != null
         ? document.elementFromPoint(x.current, y.current)
         : null;
 
+    // Changed from "li" to "label[data-index]"
     let dropItem =
       x.current == null || y.current == null || elementFromPoint === null
         ? selectedItem
-        : elementFromPoint.closest("li");
+        : elementFromPoint.closest("label[data-index]");
 
     if (y.current !== null && list && !dropItem) {
-      const closestUL = selectedItem.closest("ul");
-      if (closestUL && y.current > closestUL.getBoundingClientRect().bottom) {
+      if (y.current > list.getBoundingClientRect().bottom) {
         dropItem = list.lastChild as HTMLElement;
       } else {
         dropItem = list.firstChild as HTMLElement;
       }
     }
 
-    if (dropItem && list && dropItem.closest("ul") === list) {
+    if (dropItem && list && dropItem.parentElement === list) {
       if (onMove) {
         const dragIndex = selectedItem.dataset.index;
         const drop = dropIndex.current;
