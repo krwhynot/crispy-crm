@@ -97,15 +97,15 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       setValue("stage", newStage);
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      notify("Stage updated successfully", { type: "success" });
+      success("Stage updated successfully");
     } catch (error: unknown) {
       console.error("Stage update failed:", error);
       const message = error instanceof Error ? error.message : "Unknown error";
       if (message.includes("CONFLICT")) {
-        notify("This opportunity was modified by another user. Refreshing.", { type: "warning" });
+        warning("This opportunity was modified by another user. Refreshing.");
         refresh();
       } else {
-        notify(`Error updating stage: ${message}`, { type: "error" });
+        actionError(error, "update", "stage");
       }
     }
   };
@@ -126,13 +126,12 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
 
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-      notify("Activity created successfully", { type: "success" });
+      success("Activity created successfully");
       reset();
       onSuccess?.();
     } catch (error: unknown) {
       console.error("Activity creation failed:", error);
-      const message = error instanceof Error ? error.message : "Unknown error";
-      notify(`Error creating activity: ${message}`, { type: "error" });
+      actionError(error, "create", "activity");
     }
   };
 

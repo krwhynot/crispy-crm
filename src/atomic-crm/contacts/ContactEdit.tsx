@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveGrid } from "@/components/design-system";
-import { EditBase, Form, useEditContext, useNotify, useRefresh } from "ra-core";
+import { EditBase, Form, useEditContext, useRefresh } from "ra-core";
+import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { contactKeys, activityKeys, opportunityKeys } from "../queryKeys";
@@ -13,7 +14,7 @@ import { contactBaseSchema } from "@/atomic-crm/validation/contacts";
 
 export const ContactEdit = () => {
   const queryClient = useQueryClient();
-  const notify = useNotify();
+  const { success, actionError } = useSafeNotify();
   const refresh = useRefresh();
 
   return (

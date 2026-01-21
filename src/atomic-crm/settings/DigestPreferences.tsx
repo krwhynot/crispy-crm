@@ -75,10 +75,10 @@ export function DigestPreferences() {
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: digestKeys.all });
-      notify(data.message || "Preference updated successfully");
+      success(data.message || "Preference updated successfully");
     },
     onError: (error: Error) => {
-      notify(`Failed to update preference: ${error.message}`, { type: "error" });
+      actionError(error, "update", "preference");
     },
   });
 

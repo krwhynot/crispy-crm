@@ -57,16 +57,11 @@ export const useQuickAdd = () => {
         ? `Created opportunity for ${contactName} at ${orgName}`
         : `Created opportunity for ${orgName}`;
 
-      notify(message, {
-        type: "success",
-        autoHideDuration: 2000,
-      });
+      success(message);
     },
     onError: (error: Error) => {
       // Show error toast - form data is preserved automatically by React Hook Form
-      notify(`Failed to create opportunity: ${error.message}`, {
-        type: "error",
-      });
+      actionError(error, "create", "opportunity");
     },
   });
 

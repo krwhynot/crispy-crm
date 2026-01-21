@@ -1,5 +1,6 @@
 // src/atomic-crm/contacts/UnlinkConfirmDialog.tsx
-import { useDelete, useNotify } from "react-admin";
+import { useDelete } from "react-admin";
+import { useSafeNotify } from "../hooks/useSafeNotify";
 import {
   AlertDialog,
   AlertDialogContent,

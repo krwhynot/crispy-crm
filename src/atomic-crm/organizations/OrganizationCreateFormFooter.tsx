@@ -99,9 +99,7 @@ export const OrganizationCreateFormFooter = ({
               }
             },
             onError: (error: unknown) => {
-              notify(error instanceof Error ? error.message : "Failed to create organization", {
-                type: "error",
-              });
+              actionError(error, "create", "organization");
             },
           }
         );
@@ -109,7 +107,17 @@ export const OrganizationCreateFormFooter = ({
         setIsCreating(false);
       }
     },
-    [getValues, transformValues, create, bypassDuplicate, notify, redirectFn, preserveFields, reset]
+    [
+      getValues,
+      transformValues,
+      create,
+      bypassDuplicate,
+      success,
+      actionError,
+      redirectFn,
+      preserveFields,
+      reset,
+    ]
   );
 
   /**

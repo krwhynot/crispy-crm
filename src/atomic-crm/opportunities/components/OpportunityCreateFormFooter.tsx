@@ -39,7 +39,7 @@ export function OpportunityCreateFormFooter({
   tutorialAttribute = "opp-save-btn",
 }: OpportunityCreateFormFooterProps) {
   const translate = useTranslate();
-  const notify = useNotify();
+  const { success, actionError } = useSafeNotify();
   const redirectFn = useRedirect();
   const form = useFormContext();
   const saveContext = useSaveContext();

@@ -19,7 +19,7 @@ import { opportunitySchema } from "@/atomic-crm/validation/opportunities";
 
 const OpportunityEdit = () => {
   const queryClient = useQueryClient();
-  const notify = useNotify();
+  const { warning, actionError } = useSafeNotify();
   const refresh = useRefresh();
 
   return (
