@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-20T03:14:20.685Z",
+  "generated_at": "2026-01-21T05:04:07.722Z",
   "item_count": 75,
   "items": [
     {
@@ -136,7 +136,7 @@
     {
       "name": "CampaignGroupedList",
       "file": "src/atomic-crm/opportunities/CampaignGroupedList.tsx",
-      "line": 50,
+      "line": 51,
       "type": "presentational",
       "hooks": [
         "useListContext",
@@ -144,6 +144,7 @@
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/components/ui/accordion",
         "@/components/ui/badge",
         "@/components/ui/card",
@@ -657,7 +658,8 @@
       "isDefaultExport": false,
       "childComponents": [
         "FilterCategory",
-        "OPPORTUNITY_STAGES"
+        "OPPORTUNITY_STAGES",
+        "STAGE"
       ],
       "contextDependencies": [
         "useListContext"
@@ -732,7 +734,7 @@
     {
       "name": "OpportunityShow",
       "file": "src/atomic-crm/opportunities/OpportunityShow.tsx",
-      "line": 34,
+      "line": 35,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -754,6 +756,7 @@
         "./components",
         "./constants",
         "./opportunity",
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/components/design-system",
         "@/components/ra-wrappers/reference-array-field",
         "@/components/ra-wrappers/reference-field",
@@ -796,7 +799,7 @@
     {
       "name": "OpportunityShow",
       "file": "src/atomic-crm/opportunities/OpportunityShow.tsx",
-      "line": 34,
+      "line": 35,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -818,6 +821,7 @@
         "./components",
         "./constants",
         "./opportunity",
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/components/design-system",
         "@/components/ra-wrappers/reference-array-field",
         "@/components/ra-wrappers/reference-field",
@@ -977,7 +981,8 @@
       "isDefaultExport": false,
       "childComponents": [
         "Opportunity",
-        "StageStatus"
+        "StageStatus",
+        "STAGE"
       ],
       "contextDependencies": [
         "useListContext"
@@ -1006,7 +1011,7 @@
     {
       "name": "RelatedOpportunitiesSection",
       "file": "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1014,6 +1019,7 @@
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/components/ui/badge",
         "lucide-react",
         "ra-core",
@@ -1063,15 +1069,16 @@
     {
       "name": "ArchiveButton",
       "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
-      "line": 14,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useNotify",
+        "useQueryClient",
         "useRedirect",
-        "useRefresh",
         "useUpdate"
       ],
       "imports": [
+        "../../queryKeys",
         "../../services",
         "../../types",
         "../constants",
@@ -1092,16 +1099,17 @@
     {
       "name": "UnarchiveButton",
       "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
-      "line": 56,
+      "line": 58,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
         "useMutation",
         "useNotify",
-        "useRedirect",
-        "useRefresh"
+        "useQueryClient",
+        "useRedirect"
       ],
       "imports": [
+        "../../queryKeys",
         "../../services",
         "../../types",
         "../constants",
@@ -1136,7 +1144,7 @@
     {
       "name": "CloseOpportunityModal",
       "file": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
-      "line": 74,
+      "line": 75,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1145,6 +1153,7 @@
         "useWatch"
       ],
       "imports": [
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/atomic-crm/validation/opportunities",
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
@@ -1166,7 +1175,7 @@
     {
       "name": "CloseOpportunityModal",
       "file": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
-      "line": 74,
+      "line": 75,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1175,6 +1184,7 @@
         "useWatch"
       ],
       "imports": [
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/atomic-crm/validation/opportunities",
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
@@ -1683,7 +1693,7 @@
     {
       "name": "OpportunityCardActions",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
-      "line": 29,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1699,6 +1709,7 @@
       "imports": [
         "../../types",
         "../components/CloseOpportunityModal",
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/atomic-crm/validation/opportunities",
         "@/components/ra-wrappers/delete-confirm-dialog",
         "@/components/ui/dropdown-menu",
@@ -1752,7 +1763,7 @@
     {
       "name": "OpportunityListContent",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
-      "line": 111,
+      "line": 115,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1790,6 +1801,7 @@
       "childComponents": [
         "Opportunity",
         "OpportunityColumn",
+        "STAGE",
         "OPPORTUNITY_STAGES_LEGACY",
         "OpportunitiesByStage",
         "ColumnCustomizationMenu",
@@ -2091,6 +2103,7 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
+        "STAGE",
         "OPPORTUNITY_STAGE_CHOICES"
       ],
       "contextDependencies": [],
@@ -2161,7 +2174,7 @@
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 25,
+      "line": 26,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2175,6 +2188,7 @@
       "imports": [
         "./OpportunityDetailsFormSection",
         "./OpportunityDetailsViewSection",
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/opportunities",

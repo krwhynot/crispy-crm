@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-20T03:14:30.470Z",
+  "generated_at": "2026-01-21T05:04:17.431Z",
   "items": {
     "nodes": [
       {
@@ -130,10 +130,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactCreate.tsx:88:ContactFormContent",
+        "id": "src/atomic-crm/contacts/ContactCreate.tsx:91:ContactFormContent",
         "name": "ContactFormContent",
         "file": "src/atomic-crm/contacts/ContactCreate.tsx",
-        "line": 88,
+        "line": 91,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -382,10 +382,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "id": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "name": "OpportunitiesTab",
         "file": "src/atomic-crm/contacts/OpportunitiesTab.tsx",
-        "line": 36,
+        "line": 37,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1180,7 +1180,7 @@
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 22,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
@@ -1189,7 +1189,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 22,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
@@ -1198,7 +1198,7 @@
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 29,
+        "line": 34,
         "conditional": true,
         "inLoop": false
       },
@@ -1207,7 +1207,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 29,
+        "line": 34,
         "conditional": true,
         "inLoop": false
       },
@@ -1216,7 +1216,7 @@
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 30,
+        "line": 35,
         "conditional": true,
         "inLoop": false
       },
@@ -1225,7 +1225,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 30,
+        "line": 35,
         "conditional": true,
         "inLoop": false
       },
@@ -1234,7 +1234,7 @@
         "target": "ShadcnAvatar",
         "targetName": "ShadcnAvatar",
         "edgeType": "render",
-        "line": 26,
+        "line": 31,
         "conditional": false,
         "inLoop": false
       },
@@ -1243,7 +1243,7 @@
         "target": "AvatarFallback",
         "targetName": "AvatarFallback",
         "edgeType": "render",
-        "line": 28,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
@@ -1252,7 +1252,7 @@
         "target": "AvatarImage",
         "targetName": "AvatarImage",
         "edgeType": "render",
-        "line": 27,
+        "line": 32,
         "conditional": false,
         "inLoop": false
       },
@@ -2026,7 +2026,7 @@
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 131,
+        "line": 127,
         "conditional": false,
         "inLoop": false
       },
@@ -2035,7 +2035,7 @@
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 143,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
@@ -2089,7 +2089,7 @@
         "target": "EmailArrayField",
         "targetName": "EmailArrayField",
         "edgeType": "render",
-        "line": 132,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
@@ -2098,7 +2098,7 @@
         "target": "handleEmailPaste",
         "targetName": "handleEmailPaste",
         "edgeType": "callback",
-        "line": 134,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
@@ -2107,7 +2107,7 @@
         "target": "handleEmailBlur",
         "targetName": "handleEmailBlur",
         "edgeType": "callback",
-        "line": 135,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
@@ -2116,7 +2116,7 @@
         "target": "PhoneArrayField",
         "targetName": "PhoneArrayField",
         "edgeType": "render",
-        "line": 144,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
@@ -2125,7 +2125,7 @@
         "target": "ContactAdditionalDetails",
         "targetName": "ContactAdditionalDetails",
         "edgeType": "render",
-        "line": 149,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
@@ -2224,7 +2224,7 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 52,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
@@ -2233,7 +2233,7 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 53,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
@@ -2242,7 +2242,7 @@
         "target": "CreateBase",
         "targetName": "CreateBase",
         "edgeType": "render",
-        "line": 68,
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },
@@ -2251,7 +2251,7 @@
         "target": "FormProgressProvider",
         "targetName": "FormProgressProvider",
         "edgeType": "render",
-        "line": 71,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
@@ -2260,7 +2260,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 73,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
@@ -2269,7 +2269,7 @@
         "target": "FormLoadingSkeleton",
         "targetName": "FormLoadingSkeleton",
         "edgeType": "render",
-        "line": 61,
+        "line": 64,
         "conditional": true,
         "inLoop": false
       },
@@ -2278,7 +2278,7 @@
         "target": "FormProgressBar",
         "targetName": "FormProgressBar",
         "edgeType": "render",
-        "line": 72,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
@@ -2287,7 +2287,7 @@
         "target": "ContactFormContent",
         "targetName": "ContactFormContent",
         "edgeType": "render",
-        "line": 74,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
@@ -2296,25 +2296,25 @@
         "target": "ContactFormTutorial",
         "targetName": "ContactFormTutorial",
         "edgeType": "render",
-        "line": 79,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:88:ContactFormContent",
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:91:ContactFormContent",
         "target": "ContactInputs",
         "targetName": "ContactInputs",
         "edgeType": "render",
-        "line": 91,
+        "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactCreate.tsx:88:ContactFormContent",
+        "source": "src/atomic-crm/contacts/ContactCreate.tsx:91:ContactFormContent",
         "target": "CreateFormFooter",
         "targetName": "CreateFormFooter",
         "edgeType": "render",
-        "line": 92,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
@@ -8286,25 +8286,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "useShowContext",
         "targetName": "useShowContext",
-        "edgeType": "hook",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "useState",
-        "targetName": "useState",
         "edgeType": "hook",
         "line": 38,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -8313,587 +8304,596 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
-        "line": 42,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "useCreate",
-        "targetName": "useCreate",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
         "edgeType": "hook",
         "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "useCreate",
+        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
         "edgeType": "hook",
         "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "useGetList",
-        "targetName": "useGetList",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
         "edgeType": "hook",
-        "line": 49,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 60,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "useGetMany",
         "targetName": "useGetMany",
         "edgeType": "hook",
-        "line": 63,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 70,
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 82,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "slice",
         "targetName": "slice",
-        "edgeType": "call",
-        "line": 84,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 84,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "includes",
-        "targetName": "includes",
         "edgeType": "call",
         "line": 85,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "isClosedStage",
+        "targetName": "isClosedStage",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "refresh",
         "targetName": "refresh",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "setShowLinkModal",
+        "targetName": "setShowLinkModal",
         "edgeType": "call",
         "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "setShowLinkModal",
-        "targetName": "setShowLinkModal",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "refresh",
+        "targetName": "refresh",
         "edgeType": "call",
-        "line": 95,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "refresh",
-        "targetName": "refresh",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "setUnlinkingOpportunity",
+        "targetName": "setUnlinkingOpportunity",
         "edgeType": "call",
         "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "setUnlinkingOpportunity",
-        "targetName": "setUnlinkingOpportunity",
-        "edgeType": "call",
-        "line": 100,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 105,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "notify",
         "targetName": "notify",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "refresh",
+        "targetName": "refresh",
         "edgeType": "call",
         "line": 115,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "refresh",
-        "targetName": "refresh",
-        "edgeType": "call",
-        "line": 116,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 120,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 125,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 130,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "error",
         "targetName": "error",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 133,
+        "line": 136,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 137,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 142,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 162,
+        "line": 161,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "handleQuickLink",
         "targetName": "handleQuickLink",
         "edgeType": "call",
-        "line": 166,
+        "line": 165,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 171,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 180,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 197,
+        "line": 196,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 204,
+        "line": 203,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 212,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 212,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 214,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 219,
+        "line": 218,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "reduce",
         "targetName": "reduce",
         "edgeType": "call",
-        "line": 222,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 241,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setUnlinkingOpportunity",
         "targetName": "setUnlinkingOpportunity",
         "edgeType": "call",
-        "line": 281,
+        "line": 280,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 295,
+        "line": 294,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "setUnlinkingOpportunity",
         "targetName": "setUnlinkingOpportunity",
         "edgeType": "call",
-        "line": 302,
+        "line": 301,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 171,
+        "line": 170,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 197,
+        "line": 196,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 241,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "ListContextProvider",
         "targetName": "ListContextProvider",
+        "edgeType": "render",
+        "line": 243,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "Datagrid",
+        "targetName": "Datagrid",
         "edgeType": "render",
         "line": 244,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "Datagrid",
-        "targetName": "Datagrid",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "Link",
+        "targetName": "Link",
+        "edgeType": "render",
+        "line": 248,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 257,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "SuggestedOpportunityCard",
+        "targetName": "SuggestedOpportunityCard",
+        "edgeType": "render",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "LinkOpportunityModal",
+        "targetName": "LinkOpportunityModal",
+        "edgeType": "render",
+        "line": 174,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "handleLinkSuccess",
+        "targetName": "handleLinkSuccess",
+        "edgeType": "callback",
+        "line": 180,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "LinkOpportunityModal",
+        "targetName": "LinkOpportunityModal",
+        "edgeType": "render",
+        "line": 198,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "handleLinkSuccess",
+        "targetName": "handleLinkSuccess",
+        "edgeType": "callback",
+        "line": 204,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
         "edgeType": "render",
         "line": 245,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "Link",
-        "targetName": "Link",
-        "edgeType": "render",
-        "line": 249,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 258,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "SuggestedOpportunityCard",
-        "targetName": "SuggestedOpportunityCard",
-        "edgeType": "render",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "LinkOpportunityModal",
-        "targetName": "LinkOpportunityModal",
-        "edgeType": "render",
-        "line": 175,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "handleLinkSuccess",
-        "targetName": "handleLinkSuccess",
-        "edgeType": "callback",
-        "line": 181,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "LinkOpportunityModal",
-        "targetName": "LinkOpportunityModal",
-        "edgeType": "render",
-        "line": 199,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "handleLinkSuccess",
-        "targetName": "handleLinkSuccess",
-        "edgeType": "callback",
-        "line": 205,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
-        "edgeType": "render",
-        "line": 246,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 263,
+        "line": 262,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 266,
+        "line": 265,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "StageBadgeWithHealth",
         "targetName": "StageBadgeWithHealth",
         "edgeType": "render",
-        "line": 269,
+        "line": 268,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "NumberField",
         "targetName": "NumberField",
         "edgeType": "render",
-        "line": 273,
+        "line": 272,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 275,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "Trash2",
         "targetName": "Trash2",
         "edgeType": "render",
-        "line": 283,
+        "line": 282,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "LinkOpportunityModal",
         "targetName": "LinkOpportunityModal",
         "edgeType": "render",
-        "line": 290,
+        "line": 289,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "handleLinkSuccess",
         "targetName": "handleLinkSuccess",
         "edgeType": "callback",
-        "line": 296,
+        "line": 295,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "UnlinkConfirmDialog",
         "targetName": "UnlinkConfirmDialog",
         "edgeType": "render",
-        "line": 299,
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:36:OpportunitiesTab",
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:37:OpportunitiesTab",
         "target": "handleUnlinkSuccess",
         "targetName": "handleUnlinkSuccess",
         "edgeType": "callback",
-        "line": 303,
+        "line": 302,
         "conditional": false,
         "inLoop": false
       },

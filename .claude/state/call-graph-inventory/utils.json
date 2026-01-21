@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-20T03:14:30.526Z",
+  "generated_at": "2026-01-21T05:04:17.497Z",
   "items": {
     "nodes": [
       {
@@ -85,91 +85,91 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:72:getContactAvatar",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:73:getContactAvatar",
         "name": "getContactAvatar",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 72,
+        "line": 73,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:115:getOrganizationAvatar",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:116:getOrganizationAvatar",
         "name": "getOrganizationAvatar",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 115,
+        "line": 116,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:143:processContactAvatar",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:144:processContactAvatar",
         "name": "processContactAvatar",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 143,
+        "line": 144,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:169:processOrganizationLogo",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:170:processOrganizationLogo",
         "name": "processOrganizationLogo",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 169,
+        "line": 170,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:193:extractEmailDomain",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:194:extractEmailDomain",
         "name": "extractEmailDomain",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 193,
+        "line": 194,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:212:extractEmailLocalPart",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:213:extractEmailLocalPart",
         "name": "extractEmailLocalPart",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 212,
+        "line": 213,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:226:isValidEmailForAvatar",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:227:isValidEmailForAvatar",
         "name": "isValidEmailForAvatar",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 226,
+        "line": 227,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:238:getFallbackAvatarUrl",
         "name": "getFallbackAvatarUrl",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 237,
+        "line": 238,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:252:getOrganizationName",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:253:getOrganizationName",
         "name": "getOrganizationName",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 252,
+        "line": 253,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/avatar.utils.ts:264:cleanWebsiteUrl",
+        "id": "src/atomic-crm/utils/avatar.utils.ts:265:cleanWebsiteUrl",
         "name": "cleanWebsiteUrl",
         "file": "src/atomic-crm/utils/avatar.utils.ts",
-        "line": 264,
+        "line": 265,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -517,64 +517,64 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/stalenessCalculation.ts:70:isClosedStage",
+        "id": "src/atomic-crm/utils/stalenessCalculation.ts:64:isClosedStage",
         "name": "isClosedStage",
         "file": "src/atomic-crm/utils/stalenessCalculation.ts",
-        "line": 70,
+        "line": 64,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/stalenessCalculation.ts:77:isActivePipelineStage",
+        "id": "src/atomic-crm/utils/stalenessCalculation.ts:71:isActivePipelineStage",
         "name": "isActivePipelineStage",
         "file": "src/atomic-crm/utils/stalenessCalculation.ts",
-        "line": 77,
+        "line": 71,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/stalenessCalculation.ts:85:getStaleThreshold",
+        "id": "src/atomic-crm/utils/stalenessCalculation.ts:79:getStaleThreshold",
         "name": "getStaleThreshold",
         "file": "src/atomic-crm/utils/stalenessCalculation.ts",
-        "line": 85,
+        "line": 79,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/stalenessCalculation.ts:110:isOpportunityStale",
+        "id": "src/atomic-crm/utils/stalenessCalculation.ts:104:isOpportunityStale",
         "name": "isOpportunityStale",
         "file": "src/atomic-crm/utils/stalenessCalculation.ts",
-        "line": 110,
+        "line": 104,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/stalenessCalculation.ts:146:getDaysSinceActivity",
+        "id": "src/atomic-crm/utils/stalenessCalculation.ts:140:getDaysSinceActivity",
         "name": "getDaysSinceActivity",
         "file": "src/atomic-crm/utils/stalenessCalculation.ts",
-        "line": 146,
+        "line": 140,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/stalenessCalculation.ts:170:countStaleOpportunities",
+        "id": "src/atomic-crm/utils/stalenessCalculation.ts:164:countStaleOpportunities",
         "name": "countStaleOpportunities",
         "file": "src/atomic-crm/utils/stalenessCalculation.ts",
-        "line": 170,
+        "line": 164,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/stalenessCalculation.ts:188:filterStaleOpportunities",
+        "id": "src/atomic-crm/utils/stalenessCalculation.ts:182:filterStaleOpportunities",
         "name": "filterStaleOpportunities",
         "file": "src/atomic-crm/utils/stalenessCalculation.ts",
-        "line": 188,
+        "line": 182,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -753,182 +753,200 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:72:getContactAvatar",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:44:getFaviconUrl",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/avatar.utils.ts:73:getContactAvatar",
         "target": "getGravatarUrl",
         "targetName": "getGravatarUrl",
         "edgeType": "call",
-        "line": 79,
+        "line": 80,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:72:getContactAvatar",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:73:getContactAvatar",
         "target": "fetch",
         "targetName": "fetch",
         "edgeType": "call",
-        "line": 81,
+        "line": 82,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:72:getContactAvatar",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:73:getContactAvatar",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/avatar.utils.ts:73:getContactAvatar",
         "target": "split",
         "targetName": "split",
-        "edgeType": "call",
-        "line": 90,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:72:getContactAvatar",
-        "target": "getFaviconUrl",
-        "targetName": "getFaviconUrl",
         "edgeType": "call",
         "line": 91,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:115:getOrganizationAvatar",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:73:getContactAvatar",
+        "target": "getFaviconUrl",
+        "targetName": "getFaviconUrl",
+        "edgeType": "call",
+        "line": 92,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/avatar.utils.ts:116:getOrganizationAvatar",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 128,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:115:getOrganizationAvatar",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:116:getOrganizationAvatar",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 128,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:143:processContactAvatar",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:144:processContactAvatar",
         "target": "getContactAvatar",
         "targetName": "getContactAvatar",
         "edgeType": "call",
-        "line": 148,
+        "line": 149,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:169:processOrganizationLogo",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:170:processOrganizationLogo",
         "target": "getOrganizationAvatar",
         "targetName": "getOrganizationAvatar",
         "edgeType": "call",
-        "line": 174,
+        "line": 175,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:193:extractEmailDomain",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:194:extractEmailDomain",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 194,
+        "line": 195,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:212:extractEmailLocalPart",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:213:extractEmailLocalPart",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 213,
+        "line": 214,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:212:extractEmailLocalPart",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:213:extractEmailLocalPart",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 214,
+        "line": 215,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:226:isValidEmailForAvatar",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:227:isValidEmailForAvatar",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 227,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:238:getFallbackAvatarUrl",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 239,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:238:getFallbackAvatarUrl",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 239,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:238:getFallbackAvatarUrl",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 239,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:238:getFallbackAvatarUrl",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 241,
+        "line": 242,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:238:getFallbackAvatarUrl",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 241,
+        "line": 242,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:237:getFallbackAvatarUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:238:getFallbackAvatarUrl",
         "target": "encodeURIComponent",
         "targetName": "encodeURIComponent",
         "edgeType": "call",
-        "line": 243,
+        "line": 244,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:264:cleanWebsiteUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:265:cleanWebsiteUrl",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 265,
+        "line": 266,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/avatar.utils.ts:264:cleanWebsiteUrl",
+        "source": "src/atomic-crm/utils/avatar.utils.ts:265:cleanWebsiteUrl",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 265,
+        "line": 266,
         "conditional": false,
         "inLoop": false
       },
@@ -2814,146 +2832,146 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:70:isClosedStage",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:64:isClosedStage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 71,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:77:isActivePipelineStage",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:71:isActivePipelineStage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 78,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:85:getStaleThreshold",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:79:getStaleThreshold",
         "target": "isActivePipelineStage",
         "targetName": "isActivePipelineStage",
         "edgeType": "call",
-        "line": 86,
+        "line": 80,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:110:isOpportunityStale",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:104:isOpportunityStale",
         "target": "getStaleThreshold",
         "targetName": "getStaleThreshold",
         "edgeType": "call",
-        "line": 115,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:110:isOpportunityStale",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:104:isOpportunityStale",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:104:isOpportunityStale",
+        "target": "floor",
+        "targetName": "floor",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:104:isOpportunityStale",
+        "target": "getTime",
+        "targetName": "getTime",
         "edgeType": "call",
         "line": 127,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:110:isOpportunityStale",
-        "target": "floor",
-        "targetName": "floor",
-        "edgeType": "call",
-        "line": 132,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:110:isOpportunityStale",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:104:isOpportunityStale",
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 133,
+        "line": 127,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:110:isOpportunityStale",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:146:getDaysSinceActivity",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:140:getDaysSinceActivity",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 154,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:146:getDaysSinceActivity",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:140:getDaysSinceActivity",
         "target": "floor",
         "targetName": "floor",
         "edgeType": "call",
-        "line": 159,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:146:getDaysSinceActivity",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:140:getDaysSinceActivity",
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 159,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:146:getDaysSinceActivity",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:140:getDaysSinceActivity",
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 159,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:170:countStaleOpportunities",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:164:countStaleOpportunities",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 173,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:170:countStaleOpportunities",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:164:countStaleOpportunities",
         "target": "isOpportunityStale",
         "targetName": "isOpportunityStale",
         "edgeType": "call",
-        "line": 176,
+        "line": 170,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:188:filterStaleOpportunities",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:182:filterStaleOpportunities",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 191,
+        "line": 185,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/stalenessCalculation.ts:188:filterStaleOpportunities",
+        "source": "src/atomic-crm/utils/stalenessCalculation.ts:182:filterStaleOpportunities",
         "target": "isOpportunityStale",
         "targetName": "isOpportunityStale",
         "edgeType": "call",
-        "line": 193,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },

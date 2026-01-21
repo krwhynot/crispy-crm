@@ -1,17 +1,18 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-20T03:14:27.616Z",
+  "generated_at": "2026-01-21T05:04:14.335Z",
   "item_count": 13,
   "items": [
     {
       "name": "activityTypeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 10,
+      "line": 11,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
         "engagement",
-        "interaction"
+        "interaction",
+        "task"
       ],
       "relatedSchemas": [],
       "validationFunctions": [],
@@ -21,7 +22,7 @@
     {
       "name": "sampleStatusSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 36,
+      "line": 41,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -38,7 +39,7 @@
     {
       "name": "sentimentSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 44,
+      "line": 49,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -54,7 +55,7 @@
     {
       "name": "baseActivitiesSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 73,
+      "line": 81,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -316,6 +317,93 @@
           "nullable": true,
           "hasTransform": false,
           "hasDefault": false
+        },
+        {
+          "name": "due_date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "reminder_date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "completed",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "completed_at",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "priority",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false,
+          "enumValues": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        {
+          "name": "sales_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "snooze_until",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "overdue_notified_at",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "related_task_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
         }
       ],
       "relatedSchemas": [
@@ -329,7 +417,7 @@
     {
       "name": "activitiesSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 136,
+      "line": 160,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -345,7 +433,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 228,
+      "line": 252,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -358,7 +446,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 310,
+      "line": 334,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -371,8 +459,8 @@
     {
       "name": "updateActivitiesSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 440,
-      "schemaType": "other",
+      "line": 464,
+      "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
         "baseActivitiesSchema",
@@ -385,7 +473,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 535,
+      "line": 561,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -448,7 +536,7 @@
     {
       "name": "activityDisplayTypeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 571,
+      "line": 597,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [],
@@ -459,7 +547,7 @@
     {
       "name": "activityOutcomeSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 687,
+      "line": 713,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [],
@@ -470,7 +558,7 @@
     {
       "name": "quickLogFormBaseSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 700,
+      "line": 726,
       "schemaType": "object",
       "fields": [
         {
@@ -592,7 +680,7 @@
     {
       "name": "quickLogFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
-      "line": 723,
+      "line": 749,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [

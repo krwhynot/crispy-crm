@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-20T03:14:20.693Z",
+  "generated_at": "2026-01-21T05:04:07.729Z",
   "item_count": 23,
   "items": [
     {
@@ -52,7 +52,7 @@
     {
       "name": "SalesCreate",
       "file": "src/atomic-crm/sales/SalesCreate.tsx",
-      "line": 23,
+      "line": 24,
       "type": "presentational",
       "hooks": [
         "useCanAccess",
@@ -60,6 +60,7 @@
         "useEffect",
         "useMutation",
         "useNotify",
+        "useQueryClient",
         "useRedirect",
         "useState"
       ],
@@ -68,6 +69,7 @@
         "../types",
         "../validation/sales",
         "./SalesInputs",
+        "@/atomic-crm/queryKeys",
         "@/components/ra-wrappers/FormErrorSummary",
         "@/components/ra-wrappers/simple-form",
         "@/components/ui/card",

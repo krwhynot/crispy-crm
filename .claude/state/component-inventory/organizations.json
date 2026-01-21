@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-20T03:14:20.688Z",
+  "generated_at": "2026-01-21T05:04:07.724Z",
   "item_count": 76,
   "items": [
     {
@@ -1396,7 +1396,7 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 271,
+      "line": 273,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",

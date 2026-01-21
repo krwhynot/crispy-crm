@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-20T03:14:20.695Z",
+  "generated_at": "2026-01-21T05:04:07.731Z",
   "item_count": 27,
   "items": [
     {
@@ -226,7 +226,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 76,
+      "line": 75,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -234,7 +234,6 @@
         "useSlideOverState"
       ],
       "imports": [
-        "../contacts/ContactOption",
         "../hooks/useFilterCleanup",
         "../layout/TopToolbar",
         "../queryKeys",
@@ -324,7 +323,6 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "../contacts/ContactOption",
         "../sales/SaleName",
         "../types",
         "@/components/layouts/sidepane",
@@ -332,7 +330,8 @@
         "@/components/ra-wrappers/text-field",
         "@/components/ui/card",
         "lucide-react",
-        "ra-core"
+        "ra-core",
+        "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [

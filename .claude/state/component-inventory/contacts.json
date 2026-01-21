@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-20T03:14:20.680Z",
+  "generated_at": "2026-01-21T05:04:07.718Z",
   "item_count": 59,
   "items": [
     {
@@ -1112,7 +1112,7 @@
     {
       "name": "OpportunitiesTab",
       "file": "src/atomic-crm/contacts/OpportunitiesTab.tsx",
-      "line": 36,
+      "line": 37,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -1133,6 +1133,7 @@
         "./StageBadgeWithHealth",
         "./SuggestedOpportunityCard",
         "./UnlinkConfirmDialog",
+        "@/atomic-crm/opportunities/constants/stageConstants",
         "@/components/ui/button",
         "@tanstack/react-query",
         "lucide-react",

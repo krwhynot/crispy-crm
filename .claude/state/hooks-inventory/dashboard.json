@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-20T03:14:27.295Z",
+  "generated_at": "2026-01-21T05:04:14.015Z",
   "item_count": 13,
   "items": [
     {
@@ -77,7 +77,7 @@
     {
       "name": "useKPIMetrics",
       "file": "src/atomic-crm/dashboard/v3/hooks/useKPIMetrics.ts",
-      "line": 67,
+      "line": 68,
       "parameters": [],
       "returnType": "UseKPIMetricsReturn",
       "dependencies": [
@@ -91,7 +91,7 @@
     {
       "name": "useMyPerformance",
       "file": "src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts",
-      "line": 88,
+      "line": 89,
       "parameters": [],
       "returnType": "UseMyPerformanceReturn",
       "dependencies": [
