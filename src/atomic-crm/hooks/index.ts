@@ -10,8 +10,4 @@ export {
 } from "./useRecentSearches";
 export { useSmartDefaults } from "./useSmartDefaults";
 export { useRelatedRecordCounts } from "./useRelatedRecordCounts";
-export {
-  useSafeNotify,
-  type SafeNotifyOptions,
-  type SafeNotifyReturn,
-} from "./useSafeNotify";
+export { useSafeNotify, type SafeNotifyOptions, type SafeNotifyReturn } from "./useSafeNotify";
