@@ -101,3 +101,11 @@ export {
 
 // Notification utilities
 export { useNotifyWithRetry } from "./useNotifyWithRetry";
+
+// Error message sanitization
+export {
+  mapErrorToUserMessage,
+  getActionErrorMessage,
+  isNetworkError,
+  isAuthError,
+} from "./errorMessages";

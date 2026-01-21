@@ -6,7 +6,7 @@
  *
  * Pattern: Each save button checks for duplicates before triggering the hidden submit.
  */
-import { useNotify, useRedirect, useCreate } from "ra-core";
+import { useRedirect, useCreate } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
 import { useCallback, useRef, useState } from "react";
 

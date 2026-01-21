@@ -74,7 +74,11 @@ function sanitizeMessage(message: string): string {
   }
 
   // Foreign key constraint (23503)
-  if (msg.includes("foreign key") || msg.includes("23503") || msg.includes("violates foreign key")) {
+  if (
+    msg.includes("foreign key") ||
+    msg.includes("23503") ||
+    msg.includes("violates foreign key")
+  ) {
     if (msg.includes("delete") || msg.includes("update")) {
       return "Cannot delete — other records depend on this.";
     }
