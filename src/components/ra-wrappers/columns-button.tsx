@@ -1,4 +1,11 @@
-import { useState, Children, useCallback, useMemo, type ComponentProps, type ReactNode } from "react";
+import React, {
+  useState,
+  Children,
+  useCallback,
+  useMemo,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
 
 import * as diacritic from "diacritic";
 import {
@@ -80,7 +87,11 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
             </Button>
           )}
         </PopoverTrigger>
-        <PopoverContent align="start" className="p-0 min-w-[200px] w-72">
+        <PopoverContent
+          align="start"
+          className="w-56 p-0"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <ColumnsSelector storeKey={storeKey}>{children}</ColumnsSelector>
         </PopoverContent>
       </Popover>
@@ -105,7 +116,7 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
   const storeKey = storeKeyProp ?? dataTableContext?.storeKey;
   const defaultHiddenColumns = dataTableContext?.defaultHiddenColumns ?? [];
   const [columnRanks, setColumnRanks] = useStore<number[] | undefined>(`${storeKey}_columnRanks`);
-  const [_hiddenColumns, setHiddenColumns] = useStore<string[]>(
+  const [hiddenColumns, setHiddenColumns] = useStore<string[]>(
     storeKey ?? "",
     defaultHiddenColumns
   );
@@ -116,10 +127,57 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
   const paddedColumnRanks = padRanks(columnRanks ?? [], childrenArray.length);
   const shouldDisplaySearchInput = childrenArray.length > 5;
 
+  // Get all column sources for Show All / Reset logic
+  const allColumnSources = useMemo(() => {
+    return childrenArray
+      .map((child) => {
+        if (React.isValidElement<{ source?: string }>(child) && child.props?.source) {
+          return child.props.source;
+        }
+        return null;
+      })
+      .filter((source): source is string => source !== null);
+  }, [childrenArray]);
+
+  const totalCount = allColumnSources.length;
+  const visibleCount = totalCount - hiddenColumns.length;
+  const hasHiddenColumns = hiddenColumns.length > 0;
+  const allVisible = hiddenColumns.length === 0;
+
+  // Show all columns (clear hiddenColumns array)
+  const showAll = useCallback(() => {
+    setHiddenColumns([]);
+  }, [setHiddenColumns]);
+
+  // Reset to defaults (clear ranks and restore default hidden columns)
+  const resetToDefaults = useCallback(() => {
+    setColumnRanks(undefined);
+    setHiddenColumns(defaultHiddenColumns);
+  }, [setColumnRanks, setHiddenColumns, defaultHiddenColumns]);
+
   return (
-    <ul className="max-h-[50vh] p-2 overflow-auto">
-      {shouldDisplaySearchInput ? (
-        <li className="pb-2" tabIndex={-1}>
+    <>
+      {/* Header */}
+      <div className="flex items-center justify-between border-b px-3 py-2">
+        <span className="text-sm font-medium text-foreground">
+          {translate("ra.action.select_columns", { _: "Columns" })}
+        </span>
+        {hasHiddenColumns && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={resetToDefaults}
+            className="h-8 px-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <X className="mr-1 h-3 w-3" />
+            Reset
+          </Button>
+        )}
+      </div>
+
+      {/* Search (if > 5 columns) */}
+      {shouldDisplaySearchInput && (
+        <div className="border-b px-3 py-2">
           <div className="relative">
             <Input
               value={columnFilter}
@@ -145,28 +203,36 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
               </button>
             )}
           </div>
-        </li>
-      ) : null}
-      {paddedColumnRanks.map((position, index) => (
-        <DataTableColumnRankContext.Provider value={position} key={index}>
-          <DataTableColumnFilterContext.Provider value={columnFilter} key={index}>
-            {childrenArray[position]}
-          </DataTableColumnFilterContext.Provider>
-        </DataTableColumnRankContext.Provider>
-      ))}
-      <li className="text-center mt-2 px-3">
+        </div>
+      )}
+
+      {/* Checkbox list */}
+      <div className="max-h-64 overflow-y-auto p-2">
+        {paddedColumnRanks.map((position, index) => (
+          <DataTableColumnRankContext.Provider value={position} key={index}>
+            <DataTableColumnFilterContext.Provider value={columnFilter} key={index}>
+              {childrenArray[position]}
+            </DataTableColumnFilterContext.Provider>
+          </DataTableColumnRankContext.Provider>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between border-t px-3 py-2">
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
-          onClick={() => {
-            setColumnRanks(undefined);
-            setHiddenColumns(defaultHiddenColumns);
-          }}
+          onClick={showAll}
+          disabled={allVisible}
+          className="h-8 px-2 text-sm text-muted-foreground hover:text-foreground"
         >
-          Reset
+          Show All
         </Button>
-      </li>
-    </ul>
+        <span className="text-xs text-muted-foreground">
+          {visibleCount} of {totalCount} visible
+        </span>
+      </div>
+    </>
   );
 };
 

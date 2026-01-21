@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FieldTitle, useResourceContext } from "ra-core";
 import { GripVertical } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
 /**
@@ -105,10 +105,9 @@ export const FieldToggle = (props: FieldToggleProps) => {
   };
 
   return (
-    <li
+    <label
       key={source}
-      role="option"
-      aria-selected={false}
+      htmlFor={`checkbox_${index}`}
       draggable={onMove ? "true" : undefined}
       onDrag={onMove ? handleDrag : undefined}
       onDragStart={onMove ? handleDragStart : undefined}
@@ -116,23 +115,27 @@ export const FieldToggle = (props: FieldToggleProps) => {
       onDragOver={onMove ? handleDragOver : undefined}
       data-index={index}
       className={cn(
-        "flex justify-between items-center py-1",
+        "flex items-center gap-3 rounded-md px-2 py-2.5",
+        "cursor-pointer",
+        "min-h-[44px]", // Touch target
+        "hover:bg-accent hover:text-accent-foreground",
+        "transition-colors",
         "data-[drag-active=true]:bg-transparent data-[drag-active=true]:text-transparent data-[drag-active=true]:outline data-[drag-active=true]:outline-1 data-[drag-active=true]:outline-border"
       )}
     >
-      <label htmlFor={`switch_${index}`} className="flex items-center gap-2 cursor-pointer">
-        <Switch
-          id={`switch_${index}`}
-          checked={selected}
-          onCheckedChange={onToggle}
-          name={`${index}`}
-        />
-        <span className="text-sm">
-          <FieldTitle label={label} source={source} resource={resource} />
-        </span>
-      </label>
-      {onMove && <GripVertical className="cursor-move dragIcon w-4 h-4 text-muted-foreground" />}
-    </li>
+      <Checkbox
+        id={`checkbox_${index}`}
+        checked={selected}
+        onCheckedChange={onToggle}
+        name={`${index}`}
+      />
+      <span className="text-sm">
+        <FieldTitle label={label} source={source} resource={resource} />
+      </span>
+      {onMove && (
+        <GripVertical className="ml-auto h-4 w-4 cursor-move dragIcon text-muted-foreground" />
+      )}
+    </label>
   );
 };
 
