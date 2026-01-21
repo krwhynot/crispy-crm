@@ -64,18 +64,24 @@ describe("NextTaskBadge", () => {
     });
 
     it("shows 'Due today' for today's date", () => {
-      // Use fake timers to ensure consistent date behavior across timezones
-      // Fix: YYYY-MM-DD strings are parsed as midnight UTC, which can be "yesterday"
-      // in timezones behind UTC. Mocking system time ensures consistent behavior.
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date("2026-01-20T12:00:00")); // Noon to avoid edge cases
+      // Create today's date with explicit local timezone to avoid UTC parsing issues
+      // Using toLocaleDateString to get YYYY-MM-DD in local time
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      // Append local time to ensure date-fns parses it in local timezone
+      const todayWithTime = `${year}-${month}-${day}T12:00:00`;
 
       render(
-        <NextTaskBadge taskId={123} title="Today's task" dueDate="2026-01-20" priority="medium" />
+        <NextTaskBadge
+          taskId={123}
+          title="Today's task"
+          dueDate={todayWithTime}
+          priority="medium"
+        />
       );
       expect(screen.getByText("Due today")).toBeInTheDocument();
-
-      vi.useRealTimers();
     });
 
     it("shows day abbreviation for near-future dates (within 3 days)", () => {

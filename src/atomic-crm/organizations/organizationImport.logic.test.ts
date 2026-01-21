@@ -256,7 +256,7 @@ describe("validateTransformedOrganizations", () => {
       {
         name: "Complex Org",
         priority: "A",
-        phone: "555-1234",
+        phone: "555-123-4567",
         address: "123 Main St",
         city: "New York",
         state: "NY",
