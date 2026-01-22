@@ -17,9 +17,9 @@
 import { useState, useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useDataProvider } from "ra-core";
-import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
-import type { CheckSimilarOpportunitiesResponse } from "../../validation/rpc";
-import { type SimilarOpportunity, type SimilarityCheckResult } from "../../utils/levenshtein";
+import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
+import type { CheckSimilarOpportunitiesResponse } from "../validation/rpc";
+import { type SimilarOpportunity, type SimilarityCheckResult } from "../utils/levenshtein";
 
 /**
  * Hook return type

@@ -15,7 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useContactOrgMismatch } from "./useContactOrgMismatch";
-import type { Organization } from "../../types";
+import type { Organization } from "../types";
 import type { Identifier } from "ra-core";
 
 /**

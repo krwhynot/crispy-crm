@@ -11,7 +11,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRedirect } from "ra-core";
-import { useSafeNotify } from "../../hooks/useSafeNotify";
+import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate } from "ra-core";
 import { Loader2, Save } from "lucide-react";
@@ -19,7 +19,7 @@ import { Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { cn } from "@/lib/utils";
-import type { SimilarityCheckResult } from "../../utils/levenshtein";
+import type { SimilarityCheckResult } from "../utils/levenshtein";
 
 interface OpportunityCreateFormFooterProps {
   checkForSimilar: (name: string) => Promise<SimilarityCheckResult>;

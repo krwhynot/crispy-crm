@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
 import { Popover, PopoverContent, PopoverAnchor } from "@/components/ui/popover";
-import { US_CITIES } from "../data/us-cities";
+import { US_CITIES } from "./data/us-cities";
 import { cn } from "@/lib/utils";
 import { getStorageItem } from "@/atomic-crm/utils/secureStorage";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
