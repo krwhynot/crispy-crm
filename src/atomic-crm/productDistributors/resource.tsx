@@ -4,6 +4,7 @@ import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 const ProductDistributorListLazy = React.lazy(() => import("./ProductDistributorList"));
 const ProductDistributorEditLazy = React.lazy(() => import("./ProductDistributorEdit"));
 const ProductDistributorCreateLazy = React.lazy(() => import("./ProductDistributorCreate"));
+const ProductDistributorShowLazy = React.lazy(() => import("./ProductDistributorShow"));
 
 export const ProductDistributorListView = () => (
   <ResourceErrorBoundary resource="product_distributors" page="list">
@@ -23,8 +24,15 @@ export const ProductDistributorEditView = () => (
   </ResourceErrorBoundary>
 );
 
+export const ProductDistributorShowView = () => (
+  <ResourceErrorBoundary resource="product_distributors" page="show">
+    <ProductDistributorShowLazy />
+  </ResourceErrorBoundary>
+);
+
 export {
   ProductDistributorListView as ProductDistributorList,
   ProductDistributorEditView as ProductDistributorEdit,
   ProductDistributorCreateView as ProductDistributorCreate,
+  ProductDistributorShowView as ProductDistributorShow,
 };

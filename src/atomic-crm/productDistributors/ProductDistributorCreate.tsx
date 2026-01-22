@@ -59,8 +59,6 @@ const ProductDistributorFormContent = () => {
           label="Product *"
           filterToQuery={(q: string) => ({ "name@ilike": `%${q}%` })}
           helperText="Select the product"
-          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-          shouldRenderSuggestions={shouldRenderSuggestions}
         />
       </ReferenceInput>
 
@@ -73,8 +71,6 @@ const ProductDistributorFormContent = () => {
             organization_type: "distributor",
           })}
           helperText="Select the distributor"
-          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-          shouldRenderSuggestions={shouldRenderSuggestions}
         />
       </ReferenceInput>
 

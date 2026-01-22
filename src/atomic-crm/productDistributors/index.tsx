@@ -4,4 +4,6 @@ export {
   ProductDistributorList,
   ProductDistributorEdit,
   ProductDistributorCreate,
+  ProductDistributorShow,
 } from "./resource";
+export { ProductDistributorInputs } from "./ProductDistributorInputs";

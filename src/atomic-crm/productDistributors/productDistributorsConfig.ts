@@ -3,6 +3,7 @@ import {
   ProductDistributorListView,
   ProductDistributorCreateView,
   ProductDistributorEditView,
+  ProductDistributorShowView,
 } from "./resource";
 
 /**
@@ -13,6 +14,7 @@ const productDistributorsConfig = {
   list: ProductDistributorListView,
   edit: ProductDistributorEditView,
   create: ProductDistributorCreateView,
+  show: ProductDistributorShowView,
   icon: Package,
   options: { label: "DOT Numbers" },
 };

@@ -43,7 +43,7 @@ vi.mock("ra-core", async () => {
   };
 });
 
-// Test wrapper component
+// Test wrapper component - includes MemoryRouter for React Admin Form component
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -51,7 +51,11 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
       mutations: { retry: false },
     },
   });
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={["/opportunities"]}>{children}</MemoryRouter>
+    </QueryClientProvider>
+  );
 };
 
 /**

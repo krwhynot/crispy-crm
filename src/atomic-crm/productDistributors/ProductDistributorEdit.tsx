@@ -1,12 +1,17 @@
 import { Edit, SimpleForm, ReferenceField, TextField } from "react-admin";
-import { TextInput } from "@/components/ra-wrappers/text-input";
-import { DateInput } from "@/components/ra-wrappers/date-input";
-import { SelectInput } from "@/components/ra-wrappers/select-input";
-import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
+import { ProductDistributorInputs } from "./ProductDistributorInputs";
 
+/**
+ * ProductDistributorEdit
+ *
+ * Edit form for product-distributor authorizations.
+ * Product and Distributor are displayed read-only (immutable after creation).
+ * Uses shared ProductDistributorInputs for consistent form fields.
+ */
 export const ProductDistributorEdit = () => (
   <Edit redirect="list">
     <SimpleForm>
+      {/* Read-only display of Product/Distributor (immutable after creation) */}
       <div className="space-y-4 mb-6 p-4 bg-muted/50 rounded-lg">
         <h3 className="text-sm font-medium text-muted-foreground">
           Product-Distributor Relationship
@@ -27,25 +32,8 @@ export const ProductDistributorEdit = () => (
         </div>
       </div>
 
-      <TextInput
-        source="vendor_item_number"
-        label="DOT Number"
-        helperText="Distributor's internal product code"
-        fullWidth
-      />
-
-      <SelectInput
-        source="status"
-        label="Status"
-        choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES}
-        helperText={false}
-      />
-
-      <DateInput source="valid_from" label="Valid From" helperText={false} />
-
-      <DateInput source="valid_to" label="Valid To" helperText="Leave empty if ongoing" />
-
-      <TextInput source="notes" label="Notes" multiline rows={3} fullWidth helperText={false} />
+      {/* Shared editable inputs */}
+      <ProductDistributorInputs />
     </SimpleForm>
   </Edit>
 );
