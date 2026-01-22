@@ -31,7 +31,7 @@ import type { Opportunity } from "../types";
 import {
   OPPORTUNITY_STAGES,
   getOpportunityStageLabel,
-  getOpportunityStageColor,
+  getOpportunityStageClasses,
 } from "./constants";
 import { useExportOpportunities } from "./useExportOpportunities";
 
@@ -168,8 +168,7 @@ export const BulkActionsToolbar = ({
                   <div key={opp.id} className="text-sm flex items-center justify-between">
                     <span className="truncate">{opp.name}</span>
                     <Badge
-                      className="ml-2 text-xs shrink-0"
-                      style={{ backgroundColor: getOpportunityStageColor(opp.stage) }}
+                      className={`ml-2 text-xs shrink-0 ${getOpportunityStageClasses(opp.stage).bgClass} ${getOpportunityStageClasses(opp.stage).textClass}`}
                     >
                       {getOpportunityStageLabel(opp.stage)}
                     </Badge>
@@ -369,8 +368,7 @@ export const BulkActionsToolbar = ({
                   <div key={opp.id} className="text-sm flex items-center justify-between">
                     <span className="truncate">{opp.name}</span>
                     <Badge
-                      className="ml-2 text-xs shrink-0"
-                      style={{ backgroundColor: getOpportunityStageColor(opp.stage) }}
+                      className={`ml-2 text-xs shrink-0 ${getOpportunityStageClasses(opp.stage).bgClass} ${getOpportunityStageClasses(opp.stage).textClass}`}
                     >
                       {getOpportunityStageLabel(opp.stage)}
                     </Badge>

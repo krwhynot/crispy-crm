@@ -6,7 +6,7 @@ import type { Opportunity } from "../../types";
 import { OpportunityCard } from "./OpportunityCard";
 import {
   getOpportunityStageLabel,
-  getOpportunityStageColor,
+  getOpportunityStageBorderClass,
   getOpportunityStageElevation,
   getOpportunityStageDescription,
   getOpportunityMfbPhase,

@@ -107,10 +107,7 @@ export function SimilarOpportunitiesDialog({
                   <TableCell className="font-medium">{opp.name}</TableCell>
                   <TableCell>
                     <span
-                      className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium text-primary-foreground"
-                      style={{
-                        backgroundColor: getOpportunityStageColor(opp.stage),
-                      }}
+                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${getOpportunityStageClasses(opp.stage).bgClass} ${getOpportunityStageClasses(opp.stage).textClass}`}
                     >
                       {getOpportunityStageLabel(opp.stage)}
                     </span>
