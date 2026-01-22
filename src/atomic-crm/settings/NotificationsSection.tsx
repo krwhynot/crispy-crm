@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DigestPreferences } from "../DigestPreferences";
+import { DigestPreferences } from "./DigestPreferences";
 
 export function NotificationsSection() {
   return (

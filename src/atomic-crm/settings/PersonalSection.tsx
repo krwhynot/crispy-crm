@@ -8,8 +8,8 @@ import { useState } from "react";
 import { useFormState } from "react-hook-form";
 import { ImageEditorField } from "@/components/ui";
 import type { Sale, SalesFormData } from "../../types";
-import { useSalesUpdate } from "../hooks";
-import { TimeZoneSelect } from "../TimeZoneSelect";
+import { useSalesUpdate } from "./useSalesUpdate";
+import { TimeZoneSelect } from "./TimeZoneSelect";
 
 export function PersonalSection() {
   const [isEditMode, setEditMode] = useState(false);

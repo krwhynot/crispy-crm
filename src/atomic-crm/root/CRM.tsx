@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 import { Navigate, Route, useParams } from "react-router-dom";
 import organizations from "../organizations";
 import contacts from "../contacts";
-import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard/v3";
+import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard";
 import opportunities from "../opportunities";
 import products from "../products";
 import productDistributors from "../productDistributors";

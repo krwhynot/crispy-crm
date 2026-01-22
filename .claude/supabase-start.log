@@ -1,5 +1,3 @@
 WARN: no SMS provider is enabled. Disabling phone login
-supabase start is already running.
-WARN: no SMS provider is enabled. Disabling phone login
-supabase_db_crispy-crm container is not running: exited
-Try rerunning the command with --debug to troubleshoot the error.
+failed to inspect service: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+Docker Desktop is a prerequisite for local development. Follow the official docs to install: https://docs.docker.com/desktop

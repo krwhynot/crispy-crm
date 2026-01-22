@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Key, Shield } from "lucide-react";
 import { useGetIdentity } from "ra-core";
-import { RolePermissionsMatrix } from "../RolePermissionsMatrix";
+import { RolePermissionsMatrix } from "./RolePermissionsMatrix";
 
 interface SecuritySectionProps {
   onPasswordChange: () => void;

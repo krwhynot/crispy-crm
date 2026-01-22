@@ -4,12 +4,12 @@ import { User, Bell, Shield, History, Users } from "lucide-react";
 import type { CrmDataProvider } from "../providers/types";
 import type { SalesFormData } from "../types";
 import { SettingsLayout } from "./SettingsLayout";
-import { useSalesUpdate } from "./hooks";
-import { PersonalSection } from "./sections/PersonalSection";
-import { NotificationsSection } from "./sections/NotificationsSection";
-import { SecuritySection } from "./sections/SecuritySection";
-import { AuditLogSection } from "./sections/AuditLogSection";
-import { UsersSection } from "./sections/UsersSection";
+import { useSalesUpdate } from "./useSalesUpdate";
+import { PersonalSection } from "./PersonalSection";
+import { NotificationsSection } from "./NotificationsSection";
+import { SecuritySection } from "./SecuritySection";
+import { AuditLogSection } from "./AuditLogSection";
+import { UsersSection } from "./UsersSection";
 
 export const SettingsPage = () => {
   const {
