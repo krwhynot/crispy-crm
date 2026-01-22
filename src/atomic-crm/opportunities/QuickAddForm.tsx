@@ -1,12 +1,13 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useState, useEffect, useMemo } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { quickAddBaseSchema, quickAddSchema } from "@/atomic-crm/validation/quickAdd";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuickAdd } from "./useQuickAdd";
 import { useFilteredProducts } from "./useFilteredProducts";
-import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
+// React Admin Tier 2 imports - per MODULE_CHECKLIST.md Rule #4
+import { Form, useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

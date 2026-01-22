@@ -36,7 +36,6 @@ import { TaskActionMenu } from "./TaskActionMenu";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { TaskCompletionDialog } from "./TaskCompletionDialog";
-import { taskKeys } from "../queryKeys";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
