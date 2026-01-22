@@ -52,7 +52,7 @@ const createMockTasks = (): TaskItem[] => [
 const mockCompleteTask = vi.fn();
 
 // Mock useMyTasks hook - using vi.hoisted for proper hoisting
-vi.mock("../../hooks/useMyTasks", () => ({
+vi.mock("../useMyTasks", () => ({
   useMyTasks: vi.fn(() => ({
     tasks: createMockTasks(),
     loading: false,
@@ -85,7 +85,7 @@ vi.mock("@/components/ui/sheet", () => ({
 
 // Import component AFTER mocks are set up
 import { TaskCompleteSheet } from "../TaskCompleteSheet";
-import { useMyTasks } from "../../hooks/useMyTasks";
+import { useMyTasks } from "../useMyTasks";
 
 // Get the mocked function for manipulation
 const mockedUseMyTasks = vi.mocked(useMyTasks);

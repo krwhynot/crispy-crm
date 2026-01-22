@@ -76,7 +76,7 @@ export { CurrentSaleProvider } from "./CurrentSaleContext";
 
 // Note: Child components (PrincipalPipelineTable, TasksKanbanPanel, LogActivityFAB, QuickLogForm)
 // are internal implementation details and not exported from the public API.
-// They are imported directly within dashboard/v3 via relative paths.
+// They are imported directly within dashboard/ via relative paths.
 
 // Export types for consumers that need to work with dashboard data
 export type {

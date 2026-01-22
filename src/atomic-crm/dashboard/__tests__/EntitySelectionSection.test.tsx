@@ -4,7 +4,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { EntitySelectionSection } from "../EntitySelectionSection";
-import type { UseEntitySelectionReturn } from "../../hooks/useEntitySelection";
+import type { UseEntitySelectionReturn } from "../useEntitySelection";
 
 // Mock SidepaneSection
 vi.mock("@/components/layouts/sidepane", () => ({

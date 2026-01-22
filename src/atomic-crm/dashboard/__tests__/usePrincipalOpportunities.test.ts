@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { OpportunitySummary } from "../hooks/usePrincipalOpportunities";
+import type { OpportunitySummary } from "../usePrincipalOpportunities";
 
 /**
  * Raw opportunity data as returned from the database/API.

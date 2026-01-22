@@ -13,7 +13,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { usePrincipalPipeline } from "../usePrincipalPipeline";
-import type { PipelineSummaryRow } from "../../types";
+import type { PipelineSummaryRow } from "../types";
 
 // Create stable mock functions
 const mockGetList = vi.fn();
