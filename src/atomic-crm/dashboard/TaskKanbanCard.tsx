@@ -21,7 +21,7 @@ import {
   FileSignature,
   GripVertical,
 } from "lucide-react";
-import type { TaskItem } from "../types";
+import type { TaskItem } from "./types";
 import { TaskCompletionDialog } from "@/atomic-crm/tasks/TaskCompletionDialog";
 
 interface TaskKanbanCardProps {

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useGetList } from "react-admin";
-import type { OpportunityApiResponse } from "../types";
+import type { OpportunityApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**

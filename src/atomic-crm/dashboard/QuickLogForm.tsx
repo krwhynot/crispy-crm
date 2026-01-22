@@ -14,9 +14,9 @@ import {
   ACTIVITY_TYPE_MAP,
 } from "@/atomic-crm/validation/activities";
 import type { LogActivityWithTaskParams } from "@/atomic-crm/validation/rpc";
-import { useCurrentSale } from "../hooks/useCurrentSale";
-import { useEntityData } from "../hooks/useEntityData";
-import { useEntitySelection } from "../hooks/useEntitySelection";
+import { useCurrentSale } from "./useCurrentSale";
+import { useEntityData } from "./useEntityData";
+import { useEntitySelection } from "./useEntitySelection";
 import { ActivityTypeSection } from "./ActivityTypeSection";
 import { ActivityDateSection } from "./ActivityDateSection";
 import { EntitySelectionSection } from "./EntitySelectionSection";

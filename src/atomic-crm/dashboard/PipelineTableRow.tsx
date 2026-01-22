@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, Minus, AlertCircle } from "lucide-react";
-import type { PrincipalPipelineRow, Momentum } from "../types";
+import type { PrincipalPipelineRow, Momentum } from "./types";
 
 interface PipelineTableRowProps {
   row: PrincipalPipelineRow;

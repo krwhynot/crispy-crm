@@ -11,7 +11,7 @@ import {
   Briefcase,
   type LucideIcon,
 } from "lucide-react";
-import { useMyPerformance, type PerformanceMetric } from "../hooks/useMyPerformance";
+import { useMyPerformance, type PerformanceMetric } from "./useMyPerformance";
 
 /**
  * Performance metric type identifiers for configuration lookup

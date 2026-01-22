@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import type { TaskItem } from "../../types";
+import type { TaskItem } from "../types";
 import type * as ReactAdmin from "react-admin";
 
 // Mock react-admin hooks - use importOriginal to preserve all exports

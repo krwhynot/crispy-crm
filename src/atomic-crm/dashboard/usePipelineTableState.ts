@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import type { PrincipalPipelineRow, Momentum } from "../types";
+import type { PrincipalPipelineRow, Momentum } from "./types";
 
 export type SortField = "name" | "totalPipeline" | "activeThisWeek" | "activeLastWeek" | "momentum";
 export type SortDirection = "ascending" | "descending" | "none";

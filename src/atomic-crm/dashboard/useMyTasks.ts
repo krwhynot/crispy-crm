@@ -5,7 +5,7 @@ import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 
 import { taskKeys, opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 import { useCurrentSale } from "./useCurrentSale";
-import type { TaskItem, TaskStatus, TaskApiResponse } from "../types";
+import type { TaskItem, TaskStatus, TaskApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**

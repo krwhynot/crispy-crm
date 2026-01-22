@@ -3,7 +3,7 @@ import { FormField } from "@/components/ui/form";
 import { SidepaneSection } from "@/components/layouts/sidepane";
 import { EntityCombobox } from "./EntityCombobox";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
-import type { UseEntitySelectionReturn } from "../hooks/useEntitySelection";
+import type { UseEntitySelectionReturn } from "./useEntitySelection";
 
 interface EntityDataForSection {
   filteredContacts: Array<{ id: number; name: string; company_name?: string }>;
