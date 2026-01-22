@@ -40,9 +40,9 @@ export function SidepaneEmptyState({
       )}
       {message && <p className="text-sm text-muted-foreground">{message}</p>}
       {action && (
-        <Button variant="outline" size="sm" className="mt-4 min-h-[44px]" onClick={action.onClick}>
+        <AdminButton variant="outline" size="sm" className="mt-4" onClick={action.onClick}>
           {action.label}
-        </Button>
+        </AdminButton>
       )}
     </div>
   );

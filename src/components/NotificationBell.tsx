@@ -1,5 +1,5 @@
 import { Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { useGetIdentity, useGetList } from "ra-core";
 import { NotificationDropdown } from "./NotificationDropdown";
 
