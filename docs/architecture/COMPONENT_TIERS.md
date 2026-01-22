@@ -1,527 +1,583 @@
 # Component Tier Architecture
 
-> **Status**: Active | **Related**: [Presentation Layer](./01-presentation-layer.md), [MODULE_CHECKLIST.md](../../.claude/rules/MODULE_CHECKLIST.md)
+This document defines when direct shadcn/ui component usage is acceptable versus when React Admin wrappers are required. Following these guidelines ensures consistent behavior, accessibility, and maintainability across Crispy CRM.
 
-## Overview
-
-Crispy CRM implements a **Three-Tier Component Architecture** that balances flexibility with consistency. This document defines when direct shadcn/ui component usage is acceptable versus when React Admin wrappers are required.
-
-### The Three Tiers
-
-| Tier | Location | Purpose | Form Context |
-|------|----------|---------|--------------|
-| **Tier 1** | `src/components/ui/` | Pure UI primitives (shadcn/ui + Radix) | None |
-| **Tier 2** | `src/components/admin/` | React Admin wrappers with form integration | Required |
-| **Tier 3** | `src/atomic-crm/[feature]/` | Feature-specific business logic + composition | Varies |
-
-### Why This Matters
-
-The tier system enforces the **Engineering Constitution's Single Source of Truth** principle:
-
-- **Tier 2 components** automatically integrate with React Admin's form context, validation display, and error handling
-- **Tier 1 components** bypass these integrations - acceptable only when form context is genuinely unnecessary
-- Mixing tiers incorrectly leads to: silent validation failures, broken accessibility, inconsistent error display
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                            THREE-TIER COMPONENT ARCHITECTURE                    │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  TIER 1: Base (shadcn/ui)                                                       │
+│  ─────────────────────────────────────────────────────────────────────────────  │
+│  Direct Radix primitives + Tailwind styling                                     │
+│  Location: src/components/ui/                                                   │
+│  Examples: Button, Input, Select, Dialog, Sheet                                 │
+│                                                                                 │
+│           ↑                                                                     │
+│           │ (compose)                                                           │
+│           │                                                                     │
+│  TIER 2: Admin Wrappers                                                         │
+│  ─────────────────────────────────────────────────────────────────────────────  │
+│  React Admin integration + Form context + Validation                            │
+│  Location: src/components/admin/                                                │
+│  Examples: SubmitButtonGroup, FormSelectInput, TextInput                        │
+│                                                                                 │
+│           ↑                                                                     │
+│           │ (consume)                                                           │
+│           │                                                                     │
+│  TIER 3: Feature Components                                                     │
+│  ─────────────────────────────────────────────────────────────────────────────  │
+│  Business logic + Domain-specific behavior                                      │
+│  Location: src/atomic-crm/{feature}/                                            │
+│  Examples: ContactList, OpportunityEdit, QuickAddForm                           │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## Decision Tree
 
-Use this flowchart to determine which tier to use:
+Use this flowchart to determine which tier is appropriate:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    "Which tier should I use?"                   │
-└─────────────────────────────────────────────────────────────────┘
-                                │
-                                ▼
-                    ┌───────────────────────┐
-                    │ Is this component     │
-                    │ inside a React Admin  │
-                    │ form (<SimpleForm>,   │
-                    │ <Edit>, <Create>)?    │
-                    └───────────────────────┘
-                         │            │
-                        YES          NO
-                         │            │
-                         ▼            ▼
-            ┌─────────────────┐  ┌─────────────────────────────┐
-            │ Does it SUBMIT  │  │ Tier 1 is acceptable        │
-            │ or VALIDATE     │  │ (Dialog triggers, popovers, │
-            │ form data?      │  │  standalone actions)        │
-            └─────────────────┘  └─────────────────────────────┘
-                 │        │
-                YES       NO
-                 │        │
-                 ▼        ▼
-        ┌────────────┐  ┌──────────────────────────────────┐
-        │ USE TIER 2 │  │ Is the control part of React     │
-        │ (Required) │  │ Admin's data lifecycle?          │
-        │            │  │ (ReferenceInput, validation, etc)│
-        └────────────┘  └──────────────────────────────────┘
-                              │            │
-                             YES          NO
-                              │            │
-                              ▼            ▼
-                    ┌────────────┐  ┌─────────────────────┐
-                    │ USE TIER 2 │  │ Tier 1 is acceptable│
-                    │ (Required) │  │ (UI state only)     │
-                    └────────────┘  └─────────────────────┘
+                         ┌─────────────────────┐
+                         │  Is this component  │
+                         │  inside a form?     │
+                         └─────────┬───────────┘
+                                   │
+                    ┌──────────────┴──────────────┐
+                    │                             │
+                   YES                           NO
+                    │                             │
+                    ▼                             ▼
+          ┌─────────────────┐           ┌─────────────────┐
+          │ Does it need    │           │ Is it a simple  │
+          │ validation or   │           │ state toggle or │
+          │ error display?  │           │ standalone      │
+          └────────┬────────┘           │ action?         │
+                   │                    └────────┬────────┘
+        ┌──────────┴──────────┐                  │
+        │                     │           ┌──────┴──────┐
+       YES                   NO           │             │
+        │                     │          YES           NO
+        ▼                     ▼           │             │
+  ┌───────────┐        ┌───────────┐      ▼             ▼
+  │  TIER 2   │        │  TIER 1   │ ┌───────────┐ ┌───────────┐
+  │  Wrapper  │        │  Direct   │ │  TIER 1   │ │  Evaluate │
+  │  Required │        │  Allowed  │ │  Direct   │ │  Context  │
+  └───────────┘        └───────────┘ │  Allowed  │ └───────────┘
+                                     └───────────┘
+
+  Key Questions:
+  1. Form submit/cancel buttons → Use SubmitButtonGroup (Tier 2)
+  2. Select with validation → Use FormSelectInput (Tier 2)
+  3. Dialog trigger button → Direct Button allowed (Tier 1)
+  4. Filter toggle button → Direct Button with aria-pressed (Tier 1)
 ```
-
-### Quick Reference Rules
-
-| Context | Tier | Example |
-|---------|------|---------|
-| Form submit/save actions | **Tier 2** | `<SaveButtonGroup>`, `<DeleteButton>` |
-| Form inputs with validation | **Tier 2** | `<TextInput>`, `<SelectInput>` |
-| Reference/relationship inputs | **Tier 2** | `<ReferenceInput>`, `<AutocompleteInput>` |
-| Dialog/popover triggers | Tier 1 | `<Button>` opening a `<Dialog>` |
-| Filter toggle buttons | Tier 1 | `<Button aria-pressed>` for filter panels |
-| Quick-create popover inputs | Tier 1 | Isolated inputs in popovers (no RA form) |
-| Standalone action buttons | Tier 1 | Export, refresh, navigation buttons |
 
 ---
 
 ## Tier 1: Acceptable Direct Usage
 
-These patterns allow direct shadcn/ui component usage because they operate **outside React Admin's form lifecycle**.
+Direct shadcn/ui usage is acceptable when the component operates **outside React Admin's form lifecycle** and doesn't require centralized validation, error display, or form context.
 
 ### Pattern 1: Dialog/Popover Triggers
 
-**When**: Buttons that toggle open/closed state for dialogs, popovers, or sheets.
+**When to use:** Buttons that open dialogs, sheets, or popovers for navigation or modal content.
 
-**Why Tier 1 is OK**: The button only manages UI state (`open`/`closed`), not form data. No validation or submission occurs at the button level.
+**Rationale:** Trigger buttons don't participate in form validation — they simply toggle UI state. The dialog/sheet content may contain forms, but the trigger itself is a standalone action.
 
-```typescript
-// ✅ CORRECT: Tier 1 for dialog trigger
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+```tsx
+// src/atomic-crm/activities/QuickLogActivityDialog.tsx
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
-export function ContactActions({ contactId }: { contactId: string }) {
-  const [open, setOpen] = useState(false)
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="h-11">
-          Edit Contact
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        {/* Tier 2 components go INSIDE the dialog */}
-        <ContactEditForm contactId={contactId} onClose={() => setOpen(false)} />
-      </DialogContent>
-    </Dialog>
-  )
-}
+// ✅ CORRECT: Trigger is standalone, doesn't need form context
+<Sheet open={open} onOpenChange={onOpenChange}>
+  <SheetTrigger asChild>
+    <Button variant="outline" className="h-11">
+      <Plus className="mr-2 h-4 w-4" />
+      Log Activity
+    </Button>
+  </SheetTrigger>
+  <SheetContent>
+    {/* Form content inside uses Tier 2 components */}
+  </SheetContent>
+</Sheet>
 ```
 
-**Key Distinction**: The trigger button is Tier 1, but form components **inside** the dialog must be Tier 2.
+**Key Points:**
+- `asChild` pattern merges trigger behavior with Button styling
+- Touch target maintained via `h-11` (44px)
+- No validation state needed — action is binary (open/close)
 
 ---
 
 ### Pattern 2: Filter Toggle Buttons
 
-**When**: Buttons that toggle filter visibility or filter state using `aria-pressed` semantics.
+**When to use:** Buttons that toggle filter state on/off, with `aria-pressed` for accessibility.
 
-**Why Tier 1 is OK**: These control view state, not form submission. They update list filters via `useListContext`, not React Admin forms.
+**Rationale:** Filter toggles use view-level state (URL params via `useListContext`) rather than form state. They need `aria-pressed` semantics, not `aria-invalid`.
 
-```typescript
-// ✅ CORRECT: Tier 1 for filter toggles
-import { Button } from "@/components/ui/button"
-import { useListContext } from "react-admin"
+```tsx
+// src/atomic-crm/filters/StarredFilterToggle.tsx
+import { Button } from "@/components/ui/button";
+import { useListContext } from "react-admin";
+import { cn } from "@/lib/utils";
 
-export function ActiveOnlyToggle() {
-  const { filterValues, setFilters } = useListContext()
-  const isActive = filterValues.status === "active"
+// ✅ CORRECT: Toggle operates on URL filter state, not form
+export function StarredFilterToggle() {
+  const { filterValues, setFilters } = useListContext();
+  const isActive = filterValues.favorited === true;
+
+  const handleClick = () => {
+    setFilters(
+      isActive
+        ? { ...filterValues, favorited: undefined }
+        : { ...filterValues, favorited: true }
+    );
+  };
 
   return (
     <Button
       variant={isActive ? "default" : "outline"}
-      aria-pressed={isActive}
-      className="h-11"
-      onClick={() => {
-        setFilters(
-          isActive
-            ? { ...filterValues, status: undefined }
-            : { ...filterValues, status: "active" }
-        )
-      }}
+      size="sm"
+      onClick={handleClick}
+      aria-pressed={isActive}  // Accessibility: announces toggle state
+      className={cn(
+        "h-11 w-full justify-start gap-2 px-3",
+        isActive && "bg-primary text-primary-foreground"
+      )}
     >
-      Active Only
+      <Star className={cn("h-4 w-4", isActive && "fill-current")} />
+      Starred Only
     </Button>
-  )
+  );
 }
 ```
 
-**A11y Note**: Always include `aria-pressed` for toggle buttons per [WCAG 4.1.2](https://www.w3.org/WAI/WCAG21/Understanding/name-role-value.html).
+**Key Points:**
+- `aria-pressed` communicates toggle state to screen readers
+- Uses `useListContext` for filter state (not form state)
+- Visual feedback via variant and className, not validation colors
+- Per Engineering Constitution: touch target via `h-11`
 
 ---
 
 ### Pattern 3: Quick-Create Popover Inputs
 
-**When**: Simple inputs inside popovers that collect data outside React Admin's form system.
+**When to use:** Isolated mini-forms within popovers that create entities inline, separate from the main form lifecycle.
 
-**Why Tier 1 is OK**: These inputs submit via local callbacks (not `<SimpleForm>`), handle their own state, and don't participate in RA validation.
+**Rationale:** These operate in a bubble — they have their own local state, submit independently, and clear on completion. They don't participate in the parent form's validation flow.
 
-```typescript
-// ✅ CORRECT: Tier 1 for isolated popover input
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
-import { useCreate, useNotify } from "react-admin"
+```tsx
+// src/atomic-crm/opportunities/QuickAddForm.tsx (InlineCreateOrganization)
+import { Popover, PopoverContent, PopoverAnchor } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-export function QuickTagCreate({ onSuccess }: { onSuccess: (tag: Tag) => void }) {
-  const [name, setName] = useState("")
-  const [open, setOpen] = useState(false)
-  const [create] = useCreate()
-  const notify = useNotify()
+// ✅ CORRECT: Self-contained popover with local state
+function InlineCreateOrganization({ name, onCreated, onCancel }) {
+  const [isPending, setIsPending] = useState(false);
+  const [inputName, setInputName] = useState(name);
+  const dataProvider = useDataProvider();
+  const notify = useNotify();
 
-  const handleSubmit = async () => {
-    // Direct dataProvider call, not RA form submission
-    await create("tags", { data: { name } }, {
-      onSuccess: (data) => {
-        onSuccess(data)
-        setOpen(false)
-        setName("")
-      },
-      onError: (error) => notify(error.message, { type: "error" })
-    })
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputName.trim()) {
+      notify("Organization name is required", { type: "error" });
+      return;
+    }
+    setIsPending(true);
+    try {
+      const result = await dataProvider.create("organizations", {
+        data: { name: inputName.trim(), organization_type: "customer" },
+      });
+      onCreated(result.data);
+    } catch {
+      notify("Failed to create organization", { type: "error" });
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-11">
-          + Add Tag
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-64">
-        <div className="space-y-2">
-          <Input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Tag name"
-            className="h-11"
-            // No aria-invalid needed - validation happens on submit via provider
-          />
-          <Button onClick={handleSubmit} className="w-full h-11">
-            Create
-          </Button>
-        </div>
+    <Popover open={true} onOpenChange={(isOpen) => !isOpen && onCancel()}>
+      <PopoverAnchor />
+      <PopoverContent className="w-72 p-3" align="start">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <p className="font-medium text-sm">Create Organization</p>
+          <div className="space-y-1">
+            <Label htmlFor="inline-org-name">Name</Label>
+            <Input
+              id="inline-org-name"
+              value={inputName}
+              onChange={(e) => setInputName(e.target.value)}
+              className="h-9"
+              autoFocus
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" size="sm" onClick={onCancel} className="h-9">
+              Cancel
+            </Button>
+            <Button type="submit" size="sm" disabled={isPending} className="h-9">
+              Create
+            </Button>
+          </div>
+        </form>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 ```
 
-**Critical**: Validation still occurs at the API boundary (data provider Zod validation). The popover just doesn't use RA's form-level error display.
+**Key Points:**
+- Local `useState` for form state — not connected to parent form
+- `notify()` for error feedback instead of form-level error display
+- Independent submit handler calls `dataProvider` directly
+- Popover manages its own lifecycle
 
 ---
 
 ### Pattern 4: Report/Filter Selects
 
-**When**: Selects that control view parameters (sorting, date range, grouping) rather than form data.
+**When to use:** Select components that control view-level filtering, sorting, or display options — not bound to form submission.
 
-**Why Tier 1 is OK**: These selects update parent component state via callbacks, not form context. They're view controls, not data inputs.
+**Rationale:** These selects update URL query params or local UI state. They fire callbacks immediately on change and don't require validation, error messages, or form submission.
 
-```typescript
-// ✅ CORRECT: Tier 1 for view-level select
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+```tsx
+// src/atomic-crm/opportunities/QuickAddForm.tsx (Principal Select)
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
-export function ReportGroupingSelect({
-  value,
-  onChange
-}: {
-  value: GroupBy
-  onChange: (value: GroupBy) => void
-}) {
+// ✅ CORRECT: View-level select with immediate callback
+function PrincipalSelector({ value, onChange, options, isLoading, error }) {
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-[180px] h-11">
-        <SelectValue placeholder="Group by..." />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="day">By Day</SelectItem>
-        <SelectItem value="week">By Week</SelectItem>
-        <SelectItem value="month">By Month</SelectItem>
-        <SelectItem value="principal">By Principal</SelectItem>
-      </SelectContent>
-    </Select>
-  )
+    <div className="space-y-2">
+      <Label htmlFor="principal_id">
+        Principal
+        <span className="text-destructive" aria-hidden="true"> *</span>
+      </Label>
+      <Select
+        value={value?.toString()}
+        onValueChange={(value) => onChange(Number(value))}
+        disabled={isLoading}
+      >
+        <SelectTrigger
+          id="principal_id"
+          className="bg-background"
+          aria-invalid={error ? "true" : undefined}
+          aria-describedby={error ? "principal_id-error" : undefined}
+          aria-required="true"
+        >
+          <SelectValue placeholder={isLoading ? "Loading..." : "Select principal"} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {error && (
+        <p id="principal_id-error" role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
+    </div>
+  );
 }
 ```
+
+**Key Points:**
+- Manual ARIA attributes (`aria-invalid`, `aria-describedby`) required
+- Manual error message rendering with `role="alert"`
+- `onValueChange` fires immediately — no form submission needed
+- Error state comes from parent form context via props
 
 ---
 
 ### Pattern 5: Standalone Action Buttons
 
-**When**: Buttons that trigger actions unrelated to form submission (export, refresh, navigation).
+**When to use:** Buttons that trigger actions outside form submission — export, navigation, refresh, etc.
 
-**Why Tier 1 is OK**: No form context involvement. These are pure actions with their own handlers.
+**Rationale:** These buttons don't participate in form validation. They perform their action immediately on click.
 
-```typescript
-// ✅ CORRECT: Tier 1 for standalone actions
-import { Button } from "@/components/ui/button"
-import { RefreshCw, Download } from "lucide-react"
-import { useRefresh, useNotify } from "react-admin"
+```tsx
+// ✅ CORRECT: Export button - standalone action
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
-export function ListToolbar() {
-  const refresh = useRefresh()
-  const notify = useNotify()
-
-  const handleExport = async () => {
-    // Custom export logic
-    notify("Export started", { type: "info" })
-  }
-
+function ExportButton({ onExport, disabled }) {
   return (
-    <div className="flex gap-2">
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-11 w-11"
-        onClick={refresh}
-        aria-label="Refresh list"
-      >
-        <RefreshCw className="h-4 w-4" />
-      </Button>
-
-      <Button
-        variant="outline"
-        className="h-11"
-        onClick={handleExport}
-      >
-        <Download className="mr-2 h-4 w-4" />
-        Export CSV
-      </Button>
-    </div>
-  )
+    <Button
+      variant="outline"
+      onClick={onExport}
+      disabled={disabled}
+      className="h-11 gap-2"
+    >
+      <Download className="h-4 w-4" />
+      Export CSV
+    </Button>
+  );
 }
 ```
+
+```tsx
+// ✅ CORRECT: Refresh button in toolbar
+<Button
+  variant="ghost"
+  size="icon"
+  onClick={handleRefresh}
+  aria-label="Refresh data"
+  className="h-11 w-11"
+>
+  <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
+</Button>
+```
+
+**Key Points:**
+- `type="button"` implicit (not in a form) or explicit (inside form to prevent submission)
+- Touch target maintained via sizing classes
+- `aria-label` for icon-only buttons
+- No validation state needed
 
 ---
 
 ## Tier 2: Required Wrappers
 
-These patterns **must** use React Admin wrapper components to ensure proper form integration.
+Tier 2 wrappers are **required** when components participate in React Admin's form lifecycle, need centralized validation, or must display standardized error states.
 
-### Required Wrapper: SubmitButtonGroup
+### SubmitButtonGroup
 
-**When**: Any button group that submits, cancels, or performs form-level actions inside `<SimpleForm>`, `<Edit>`, or `<Create>`.
+**When to use:** Form submit/cancel button combinations in Create, Edit, and modal forms.
 
-**Why Tier 2 is Required**:
-- Form dirty state detection (`formState.isDirty`)
-- Submit handler integration (`handleSubmit`)
-- Loading state during submission
-- Proper disabled states during validation
-- Keyboard submit (Enter key)
+**Why required:**
+- Standardizes loading state with Loader2 spinner
+- Ensures consistent button ordering (Cancel → [Save & New] → Save)
+- Maintains 44px touch targets across all form buttons
+- Prevents duplicate save-button implementations
 
-```typescript
-// ❌ INCORRECT: Tier 1 in form context
-import { Button } from "@/components/ui/button"
-
-function BadForm() {
-  return (
-    <SimpleForm>
-      <TextInput source="name" />
-      {/* WRONG: Button doesn't know form is submitting */}
-      <Button type="submit">Save</Button>
-    </SimpleForm>
-  )
+```tsx
+// src/components/admin/form/SubmitButtonGroup.tsx
+export interface SubmitButtonGroupProps {
+  isSubmitting: boolean;       // Loading state from form
+  onCancel: () => void;        // Close form/dialog
+  showSaveAndNew?: boolean;    // Show continuous entry button
+  onSaveAndNew?: () => void;   // Reset form after save
+  labels?: { cancel?: string; save?: string; saveAndNew?: string };
+  compact?: boolean;           // Smaller padding for popovers
 }
 
-// ✅ CORRECT: Tier 2 for form submission
-import { SaveButton } from "@/components/admin/form/SaveButton"
-import { CancelButton } from "@/components/admin/cancel-button"
+// Usage in feature components:
+import { SubmitButtonGroup } from "@/components/admin/form/SubmitButtonGroup";
 
-function GoodForm() {
+function ContactCreate() {
+  const { formState: { isSubmitting } } = useFormContext();
+
   return (
-    <SimpleForm>
-      <TextInput source="name" />
-      <div className="flex gap-2 justify-end">
-        <CancelButton />
-        <SaveButton />
-      </div>
-    </SimpleForm>
-  )
+    <Form>
+      {/* Form fields... */}
+      <SubmitButtonGroup
+        isSubmitting={isSubmitting}
+        onCancel={() => navigate(-1)}
+        showSaveAndNew
+        onSaveAndNew={() => { reset(); focusFirstField(); }}
+      />
+    </Form>
+  );
 }
 ```
 
-**Implementation Note**: The project's `SaveButtonGroup` component combines Save, Cancel, and optionally "Save & New" with proper form context integration:
-
-```typescript
-// Usage
-<SaveButtonGroup
-  showSaveAndNew={true}
-  onSaveAndNew={() => redirect('create')}
-/>
-```
+**Props:**
+| Prop | Type | Description |
+|------|------|-------------|
+| `isSubmitting` | `boolean` | Shows spinner, disables all buttons |
+| `onCancel` | `() => void` | Cancel button handler |
+| `showSaveAndNew` | `boolean` | Show "Save & Add Another" button |
+| `onSaveAndNew` | `() => void` | Handler for continuous entry |
+| `labels` | `object` | Custom button labels |
+| `compact` | `boolean` | Reduced padding (still 44px height) |
 
 ---
 
-### Required Wrapper: FormSelectInput
+### FormSelectInput (Future Wrapper)
 
-**When**: Any select/dropdown that:
-1. Is inside a React Admin form
-2. Needs to display validation errors
-3. Uses `source` prop to bind to form data
-4. Should show `aria-invalid` on error
+**When to use:** Select inputs that are part of form submission and need validation integration.
 
-**Why Tier 2 is Required**:
-- `useInput()` hook integration for form binding
-- Error message display via `<FormError>`
-- `aria-invalid` + `aria-describedby` accessibility
-- Controlled value synced with form state
+**Why required:**
+- Auto-connects to `useFormField()` context for ARIA IDs
+- Displays validation errors with `role="alert"`
+- Handles `aria-invalid` state automatically
+- Consistent styling with other form inputs
 
-```typescript
-// ❌ INCORRECT: Tier 1 select in form
-import { Select } from "@/components/ui/select"
+```tsx
+// Future implementation: src/components/admin/form/FormSelectInput.tsx
+// This wrapper would provide:
+// 1. Integration with react-hook-form via Controller
+// 2. Auto-generated ARIA IDs from FormItem context
+// 3. Automatic error display below select
+// 4. Consistent 44px trigger height
 
-function BadContactForm() {
-  return (
-    <SimpleForm>
-      {/* WRONG: Select doesn't bind to form, no error display */}
-      <Select onValueChange={...}>
-        <SelectItem value="lead">Lead</SelectItem>
-      </Select>
-    </SimpleForm>
-  )
-}
+// Current pattern (manual ARIA - see Pattern 4 above):
+<Select ...>
+  <SelectTrigger
+    aria-invalid={error ? "true" : undefined}
+    aria-describedby={error ? "field-error" : undefined}
+  >
+    ...
+  </SelectTrigger>
+</Select>
+{error && <p id="field-error" role="alert">...</p>}
 
-// ✅ CORRECT: Tier 2 SelectInput
-import { SelectInput } from "@/components/admin/select-input"
-
-function GoodContactForm() {
-  return (
-    <SimpleForm>
-      <SelectInput
-        source="status"
-        label="Status"
-        choices={[
-          { id: "lead", name: "Lead" },
-          { id: "customer", name: "Customer" },
-        ]}
-      />
-    </SimpleForm>
-  )
-}
+// Future Tier 2 wrapper (automatic ARIA):
+<FormSelectInput
+  name="principal_id"
+  label="Principal"
+  options={principalOptions}
+  required
+/>
 ```
 
-**The Tier 2 SelectInput provides**:
-- Form binding via `source` prop
-- Error display below the field
-- `aria-invalid={!!error}` when validation fails
-- `aria-describedby` linking to error message
-- Consistent styling with other form inputs
+**Note:** Until FormSelectInput wrapper exists, use direct Select with manual ARIA attributes as shown in Pattern 4.
 
 ---
 
 ## Migration Guide
 
-### How to Identify Which Tier to Use
+When auditing existing components, use this checklist:
 
-When reviewing existing code or writing new components:
+### Step 1: Identify the Context
 
-#### Step 1: Check the Parent Context
+- [ ] Is this component inside a `<Form>` or `<form>` element?
+- [ ] Does it need to display validation errors?
+- [ ] Is it part of a submit/cancel button group?
+- [ ] Does it trigger immediate actions (export, filter, navigate)?
 
-```typescript
-// Find the nearest form ancestor
-const parentForms = [
-  '<SimpleForm>',
-  '<Edit>',
-  '<Create>',
-  '<Form>',
-  '<TabbedForm>'
-]
+### Step 2: Check for Tier Violations
 
-// If ANY of these are ancestors, consider Tier 2
-```
+| Scenario | Current Code | Correct Tier | Action |
+|----------|--------------|--------------|--------|
+| Save button in form | Direct `<Button type="submit">` | Tier 2 | Replace with `<SubmitButtonGroup>` |
+| Select with validation | Direct Select + manual ARIA | Tier 1 (acceptable) | Document manual ARIA pattern |
+| Dialog trigger | Direct `<Button>` | Tier 1 | Keep as-is |
+| Filter toggle | Direct `<Button aria-pressed>` | Tier 1 | Keep as-is |
+| Icon-only action | Direct `<Button>` without `aria-label` | Tier 1 | Add `aria-label` |
 
-#### Step 2: Check Component Purpose
+### Step 3: Validate Accessibility
 
-| Purpose | Tier |
-|---------|------|
-| Submits form data | **Tier 2** |
-| Cancels/resets form | **Tier 2** |
-| Input bound to `source` prop | **Tier 2** |
-| Displays validation errors | **Tier 2** |
-| Opens dialogs/popovers | Tier 1 |
-| Controls view parameters | Tier 1 |
-| Navigation actions | Tier 1 |
-| State toggles (`aria-pressed`) | Tier 1 |
+Every Tier 1 direct usage must have:
 
-#### Step 3: Check for These Red Flags
+- [ ] **Touch target:** `h-11` (44px) or `size-11` (44x44px)
+- [ ] **ARIA state:** `aria-pressed` for toggles, `aria-expanded` for dropdowns
+- [ ] **ARIA label:** `aria-label` for icon-only buttons
+- [ ] **Keyboard support:** `Enter` or `Space` triggers action
 
-**Signs you need Tier 2**:
-- Using `useInput()` or `useField()`
-- Accessing `formState` from react-hook-form
-- Manually wiring `aria-invalid`
-- Building custom error display
+### Step 4: Document Exceptions
 
-**If you're doing any of these with Tier 1 components, refactor to Tier 2**.
+If a component must use Tier 1 despite being in a form context, add a code comment:
 
-### Common Migration Patterns
-
-#### Pattern A: Tier 1 Button → SaveButton
-
-```typescript
-// Before (Tier 1)
-<Button type="submit" disabled={isSubmitting}>
-  {isSubmitting ? 'Saving...' : 'Save'}
+```tsx
+// TIER-1-EXCEPTION: This button triggers a preview action,
+// not form submission. No validation state needed.
+<Button type="button" onClick={handlePreview}>
+  Preview
 </Button>
-
-// After (Tier 2)
-<SaveButton />  // Handles all states automatically
-```
-
-#### Pattern B: Tier 1 Select → SelectInput
-
-```typescript
-// Before (Tier 1) - manually wiring everything
-<div>
-  <label>Status</label>
-  <Select
-    value={watch('status')}
-    onValueChange={(v) => setValue('status', v)}
-  >
-    ...
-  </Select>
-  {errors.status && <p className="text-destructive">{errors.status.message}</p>}
-</div>
-
-// After (Tier 2)
-<SelectInput
-  source="status"
-  label="Status"
-  choices={statusChoices}
-/>
 ```
 
 ---
 
-## Engineering Constitution Alignment
+## Anti-Patterns
 
-This document enforces several key principles:
+### 1. Custom Save Button in Forms
 
-| Principle | How This Document Enforces It |
-|-----------|------------------------------|
-| **Single Source of Truth** | Form state managed by React Admin, not duplicated in Tier 1 components |
-| **Fail-Fast** | Tier 2 components surface validation errors immediately, no silent failures |
-| **A11y (WCAG 2.1 AA)** | Required `aria-invalid`, `aria-describedby` enforced via Tier 2 |
-| **Touch Targets** | All examples include `h-11` (44px) minimum |
-| **Semantic Colors** | No hardcoded colors in examples |
+```tsx
+// ❌ WRONG: Reimplements loading state, inconsistent styling
+<Button type="submit" disabled={isSubmitting}>
+  {isSubmitting ? "Saving..." : "Save"}
+</Button>
+
+// ✅ CORRECT: Use standardized wrapper
+<SubmitButtonGroup
+  isSubmitting={isSubmitting}
+  onCancel={handleCancel}
+/>
+```
+
+### 2. Missing ARIA on Tier 1 Selects
+
+```tsx
+// ❌ WRONG: No accessibility for validation state
+<Select value={value} onValueChange={onChange}>
+  <SelectTrigger>
+    <SelectValue placeholder="Select..." />
+  </SelectTrigger>
+  ...
+</Select>
+{error && <p className="text-destructive">{error}</p>}
+
+// ✅ CORRECT: Manual ARIA attributes
+<Select value={value} onValueChange={onChange}>
+  <SelectTrigger
+    aria-invalid={error ? "true" : undefined}
+    aria-describedby={error ? "field-error" : undefined}
+  >
+    <SelectValue placeholder="Select..." />
+  </SelectTrigger>
+  ...
+</Select>
+{error && (
+  <p id="field-error" role="alert" className="text-sm text-destructive">
+    {error}
+  </p>
+)}
+```
+
+### 3. Toggle Button Without aria-pressed
+
+```tsx
+// ❌ WRONG: Visual-only toggle state
+<Button
+  variant={isActive ? "default" : "outline"}
+  onClick={handleToggle}
+>
+  Show Favorites
+</Button>
+
+// ✅ CORRECT: Accessible toggle
+<Button
+  variant={isActive ? "default" : "outline"}
+  onClick={handleToggle}
+  aria-pressed={isActive}
+>
+  Show Favorites
+</Button>
+```
+
+### 4. Undersized Touch Targets
+
+```tsx
+// ❌ WRONG: 32px is too small for touch
+<Button className="h-8 w-8" size="icon" onClick={handleAction}>
+  <X />
+</Button>
+
+// ✅ CORRECT: 44px minimum
+<Button className="h-11 w-11" size="icon" onClick={handleAction}>
+  <X />
+</Button>
+```
 
 ---
 
 ## Related Documentation
 
-- [Presentation Layer](./01-presentation-layer.md) - Full component inventory
-- [MODULE_CHECKLIST.md](../../.claude/rules/MODULE_CHECKLIST.md) - PR checklist for tier compliance
-- [PROVIDER_RULES.md](../../.claude/rules/PROVIDER_RULES.md) - Data provider patterns
-- [components/ui/PATTERNS.md](../../src/components/ui/PATTERNS.md) - Tier 1 conventions
-- [components/admin/PATTERNS.md](../../src/components/admin/PATTERNS.md) - Tier 2 conventions
-
----
-
-*Generated: 2026-01-22 | Engineering Constitution v1.0*
+- [Engineering Constitution](../../CLAUDE.md) — Core principles including fail-fast, Zod validation, form patterns
+- [UI Components](../patterns/tier-3-frontend/ui-components.md) — shadcn/ui patterns, accessibility, semantic colors
+- [MODULE_CHECKLIST.md](../../.claude/rules/MODULE_CHECKLIST.md) — Feature module standardization
+- [Accessibility Design](../design/ACCESSIBILITY.md) — ARIA patterns, touch targets, screen reader support
