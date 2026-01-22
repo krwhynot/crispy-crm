@@ -14,7 +14,7 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useNotify } from "react-admin";
 import { startOfDay, addDays, setHours, setMinutes } from "date-fns";
 // Card wrapper removed - parent DashboardTabPanel provides container
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";

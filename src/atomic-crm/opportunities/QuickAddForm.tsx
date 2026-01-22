@@ -9,7 +9,7 @@ import { useFilteredProducts } from "./useFilteredProducts";
 // React Admin Tier 2 imports - per MODULE_CHECKLIST.md Rule #4
 import { Form, useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormSelectInput } from "@/components/admin/inputs/FormSelectInput";

@@ -6,7 +6,7 @@ import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 
 import { opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Textarea } from "@/components/ui/textarea";
 import { ControlledDatePicker } from "@/components/ra-wrappers/controlled-date-picker";
 import { getOpportunityStageLabel } from "./constants";

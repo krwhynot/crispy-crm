@@ -19,7 +19,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useGetList, useRefresh, useDelete, useNotify } from "react-admin";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Import extracted components

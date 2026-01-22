@@ -2,7 +2,7 @@ import { useNotify, useRedirect } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
 import { useCallback, useState } from "react";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { ucFirst } from "@/atomic-crm/utils";

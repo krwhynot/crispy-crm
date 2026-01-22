@@ -7,7 +7,7 @@ import {
   useResourceContext,
   Translate,
 } from "ra-core";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Trash } from "lucide-react";
 import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dialog";
 import { useRelatedRecordCounts } from "../hooks/useRelatedRecordCounts";

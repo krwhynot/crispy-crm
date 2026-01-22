@@ -8,8 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import { Loader2, SaveIcon } from "lucide-react";
+import { SaveIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -166,24 +165,12 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
                 <AdminButton
                   type="submit"
                   variant="outline"
-                  disabled={isSubmitting}
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "text-primary",
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                  )}
+                  isLoading={isSubmitting}
+                  loadingText="Saving..."
+                  className="text-primary"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>
-                      <SaveIcon />
-                      Save
-                    </>
-                  )}
+                  <SaveIcon className="h-4 w-4" />
+                  Save
                 </AdminButton>
               </div>
             </form>

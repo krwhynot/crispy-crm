@@ -1,6 +1,6 @@
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,

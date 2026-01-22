@@ -2,7 +2,7 @@ import { useMemo, useEffect } from "react";
 import { Star } from "lucide-react";
 import { useListContext } from "ra-core";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/hooks/useFavorites";

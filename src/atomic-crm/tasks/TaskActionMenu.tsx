@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNotify, useUpdate, useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   DropdownMenu,
   DropdownMenuContent,

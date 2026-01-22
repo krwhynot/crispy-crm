@@ -12,7 +12,7 @@ import {
   CollapsibleSection,
   FormSectionWithProgress,
 } from "@/components/ra-wrappers/form";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";

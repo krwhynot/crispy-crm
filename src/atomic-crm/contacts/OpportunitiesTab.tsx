@@ -20,7 +20,7 @@ import {
   ListContextProvider,
 } from "react-admin";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Trash2 } from "lucide-react";
 import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 import { LinkOpportunityModal } from "./LinkOpportunityModal";

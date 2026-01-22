@@ -1,6 +1,6 @@
 import { useNotify } from "react-admin";
 import { useCallback, type ReactNode } from "react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 
 interface NotifyWithRetryOptions {
   type?: "error" | "warning";

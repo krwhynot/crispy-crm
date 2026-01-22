@@ -1,4 +1,4 @@
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Upload } from "lucide-react";
 import { useState } from "react";
 import { OrganizationImportDialog } from "./OrganizationImportDialog";

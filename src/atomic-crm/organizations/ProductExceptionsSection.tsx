@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRefresh, useDelete, useNotify } from "react-admin";
 import { Plus, Trash2, Check, X, Package } from "lucide-react";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parseDateSafely } from "@/lib/date-utils";

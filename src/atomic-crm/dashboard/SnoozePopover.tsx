@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { addDays, addWeeks, startOfDay, endOfDay, format } from "date-fns";
 import { AlarmClock, Calendar as CalendarIcon, Loader2, Sun, CalendarDays } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 

@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { ChevronDown, ChevronRight, ExternalLink, TrendingUp } from "lucide-react";
 import { AppliedFiltersBar, EmptyState } from "./components";
 import { useReportData } from "./hooks";

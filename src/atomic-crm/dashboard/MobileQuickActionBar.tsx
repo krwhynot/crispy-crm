@@ -1,6 +1,6 @@
 import { useState, useCallback, lazy, Suspense } from "react";
 import { MessageCircle, Package, Phone, Users, FileText, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Sheet,
   SheetContent,

@@ -22,7 +22,7 @@
 import { useState, useCallback, memo } from "react";
 import { useUpdate, useNotify } from "react-admin";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import {

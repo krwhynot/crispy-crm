@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils.ts";
 import { TextInput } from "@/components/ra-wrappers/text-input";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { getCurrentDate } from "../validation/notes";
 
 export const NoteInputs = () => {

@@ -21,7 +21,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { QuickAddDialog } from "./QuickAddDialog";
 

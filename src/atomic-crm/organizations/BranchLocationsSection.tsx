@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetList, useCreatePath, useRecordContext, Button } from "react-admin";
+import { useGetList, useCreatePath, useRecordContext, AdminButton } from "react-admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Store, MapPin, Phone, ExternalLink } from "lucide-react";

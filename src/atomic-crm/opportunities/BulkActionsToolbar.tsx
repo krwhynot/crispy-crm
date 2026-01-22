@@ -1,5 +1,5 @@
 import { useGetList } from "ra-core";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { useBulkActionsState } from "./useBulkActionsState";
 import {
   Dialog,

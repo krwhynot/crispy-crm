@@ -2,7 +2,7 @@ import { AlertTriangle } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetOne } from "react-admin";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   AlertDialog,
   AlertDialogAction,

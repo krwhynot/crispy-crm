@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ReferenceInput, useCreate, useRefresh } from "react-admin";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { PlusIcon } from "lucide-react";
 import { TagDialog } from "./TagDialog";
 import type { Tag } from "../types";

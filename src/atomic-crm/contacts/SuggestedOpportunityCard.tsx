@@ -1,4 +1,4 @@
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 import { formatCurrency } from "@/atomic-crm/utils/formatters";
 

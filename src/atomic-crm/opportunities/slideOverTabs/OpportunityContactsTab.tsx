@@ -12,7 +12,7 @@ import { OpportunitiesService } from "@/atomic-crm/services/opportunities.servic
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserIcon, Star } from "lucide-react";

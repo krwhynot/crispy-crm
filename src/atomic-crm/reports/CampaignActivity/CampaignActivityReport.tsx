@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ActivityTypeCard } from "./ActivityTypeCard";

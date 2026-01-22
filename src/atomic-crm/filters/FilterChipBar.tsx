@@ -8,7 +8,7 @@
  */
 
 import { useCallback, useRef } from "react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { cn } from "@/lib/utils";
 import type { ChipFilterConfig } from "./filterConfigSchema";
 import { useFilterChipBar } from "./useFilterChipBar";

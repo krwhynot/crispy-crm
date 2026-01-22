@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { QuickAddDialog } from "./QuickAddDialog";
 
 /**

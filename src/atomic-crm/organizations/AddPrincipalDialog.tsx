@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCreate, useNotify, useGetIdentity } from "react-admin";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,

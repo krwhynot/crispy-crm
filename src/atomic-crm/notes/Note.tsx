@@ -1,4 +1,4 @@
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CircleX, Edit, Save, Trash2 } from "lucide-react";
 import { Form, useDelete, useNotify, useResourceContext, useUpdate, WithRecord } from "ra-core";

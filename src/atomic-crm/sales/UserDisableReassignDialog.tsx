@@ -18,7 +18,7 @@ import { useUpdate, useNotify, useRefresh, useDataProvider, useGetList } from "r
 import type { DataProvider, Identifier, RaRecord } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { opportunityKeys, contactKeys, organizationKeys, taskKeys, saleKeys } from "../queryKeys";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,

@@ -8,7 +8,7 @@ import {
   useNotify,
 } from "react-admin";
 import { useSafeNotify } from "@/atomic-crm/hooks";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {

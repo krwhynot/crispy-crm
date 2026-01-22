@@ -13,7 +13,7 @@ import { useCallback, useEffect, useRef, type MouseEvent } from "react";
 import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate, useRecordFromLocation } from "ra-core";
 import { Loader2, Save } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { cn } from "@/lib/utils";
 import type { SimilarityCheckResult } from "../utils/levenshtein";
 

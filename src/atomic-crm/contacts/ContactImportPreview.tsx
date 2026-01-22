@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CheckCircle, AlertCircle, Building2, Tag, User, AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { DialogFooter } from "@/components/ui/dialog";
 import type { DataQualityDecisions } from "./contactImport.types";
 import { ContactImportFieldMapper } from "./ContactImportFieldMapper";

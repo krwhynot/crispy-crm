@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, lazy, Suspense, useRef, useMemo } from "react";
 import { PencilLine } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Sheet,
   SheetContent,

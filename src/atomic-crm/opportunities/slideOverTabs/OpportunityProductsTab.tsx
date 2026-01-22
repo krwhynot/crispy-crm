@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { activityKeys } from "@/atomic-crm/queryKeys";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Package } from "lucide-react";

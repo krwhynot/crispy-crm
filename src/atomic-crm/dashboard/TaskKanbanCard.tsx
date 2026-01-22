@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Badge } from "@/components/ui/badge";
 import { SnoozeBadge } from "@/components/ui/snooze-badge";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ucFirst } from "@/atomic-crm/utils";
 import { TaskActionMenu } from "@/atomic-crm/tasks/TaskActionMenu";

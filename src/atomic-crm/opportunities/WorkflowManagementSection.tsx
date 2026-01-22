@@ -16,7 +16,7 @@ import { useShowContext, useUpdate, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { format, isValid, isPast, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { ControlledDatePicker } from "@/components/ra-wrappers/controlled-date-picker";
 import { Textarea } from "@/components/ui/textarea";

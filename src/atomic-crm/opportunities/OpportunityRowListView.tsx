@@ -1,6 +1,6 @@
 import { useListContext, RecordContextProvider, useGetIdentity } from "ra-core";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { Badge } from "@/components/ui/badge";

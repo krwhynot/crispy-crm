@@ -1,5 +1,5 @@
 import { RotateCcw } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { FilterChip } from "./FilterChip";
 
 interface FilterItem {

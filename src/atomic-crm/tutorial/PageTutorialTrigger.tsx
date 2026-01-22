@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { HelpCircle } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTutorial } from "./TutorialProvider";
 import type { TutorialChapter } from "./types";

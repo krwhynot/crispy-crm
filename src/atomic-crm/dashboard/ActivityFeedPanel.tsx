@@ -21,7 +21,7 @@
 import { memo, useMemo } from "react";
 import { pluralize } from "@/lib/utils/pluralize";
 // Card wrapper removed - parent DashboardTabPanel provides container
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Activity } from "lucide-react";

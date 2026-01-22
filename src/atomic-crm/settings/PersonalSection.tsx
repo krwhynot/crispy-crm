@@ -1,6 +1,6 @@
 import { RecordField } from "@/components/ra-wrappers/record-field";
 import { TextInput } from "@/components/ra-wrappers/text-input";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { CircleX, Loader2, Pencil, Save } from "lucide-react";
 import { useGetIdentity, useRecordContext } from "ra-core";

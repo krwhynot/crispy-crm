@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export const NamingConventionHelp: React.FC = () => {

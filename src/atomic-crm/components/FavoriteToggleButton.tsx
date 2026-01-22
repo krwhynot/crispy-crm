@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useFavorites } from "@/hooks/useFavorites";
 import type { FavoriteEntityType } from "@/atomic-crm/validation/favorites";

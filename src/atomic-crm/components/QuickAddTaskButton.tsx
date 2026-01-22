@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 
 interface QuickAddTaskButtonProps {
   contactId?: number;

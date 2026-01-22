@@ -3,7 +3,7 @@ import { useShowContext, useGetList } from "react-admin";
 import { format } from "date-fns";
 import { History, User, Calendar, Filter, Download, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

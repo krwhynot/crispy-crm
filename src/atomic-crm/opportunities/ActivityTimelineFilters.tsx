@@ -16,7 +16,7 @@ import { useGetList } from "ra-core";
 // es-toolkit: Deep object equality comparison
 import { isEqual } from "es-toolkit";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";

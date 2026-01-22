@@ -1,4 +1,4 @@
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { FileDown } from "lucide-react";
 import { downloadCSV } from "ra-core";

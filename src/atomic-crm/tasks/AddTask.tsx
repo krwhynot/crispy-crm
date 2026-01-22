@@ -4,7 +4,7 @@ import { TextInput } from "@/components/ra-wrappers/text-input";
 import { DateInput } from "@/components/ra-wrappers/date-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { SaveButton } from "@/components/ra-wrappers/form";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,

@@ -2,7 +2,7 @@ import { useRef, useCallback, useState, useEffect } from "react";
 import { HelpCircle } from "lucide-react";
 import { driver, type Driver } from "driver.js";
 import "driver.js/dist/driver.css";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DASHBOARD_TUTORIAL_STEPS } from "./dashboardTutorialSteps";
 

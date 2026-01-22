@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCreate, useNotify, useGetIdentity } from "react-admin";
 import { AlertTriangle, Check, X } from "lucide-react";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,

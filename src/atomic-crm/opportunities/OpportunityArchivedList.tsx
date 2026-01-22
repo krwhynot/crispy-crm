@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,

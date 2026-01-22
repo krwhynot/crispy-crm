@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useGetList } from "ra-core";
 import { Calendar, User, RotateCcw } from "lucide-react";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Select,
   SelectContent,

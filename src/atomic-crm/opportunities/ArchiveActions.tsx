@@ -4,7 +4,7 @@ import { useDataProvider, useNotify, useRedirect } from "react-admin";
 
 import { opportunityKeys } from "../queryKeys";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { OpportunitiesService } from "../services";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 import type { Opportunity } from "../types";

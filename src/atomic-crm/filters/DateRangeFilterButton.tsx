@@ -14,7 +14,7 @@ import { useListContext } from "react-admin";
 import { format, startOfDay, endOfDay, parseISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

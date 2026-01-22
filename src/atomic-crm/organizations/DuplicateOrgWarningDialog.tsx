@@ -31,7 +31,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 
 interface DuplicateOrgWarningDialogProps {
   /** Whether the dialog is open */

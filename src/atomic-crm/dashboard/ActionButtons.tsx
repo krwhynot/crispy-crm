@@ -1,4 +1,4 @@
-import { Button } from "@/components/admin/AdminButton";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Loader2 } from "lucide-react";
 
 interface ActionButtonsProps {
