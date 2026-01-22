@@ -24,7 +24,7 @@ export const TagCreate = () => {
             <CardContent>
               <Form defaultValues={defaultValues} mode="onBlur">
                 <TagInputs />
-                <CreateFormFooter resourceName="tag" redirectPath="/tags" redirect="list" />
+                <CreateFormFooter resourceName="tag" redirectPath="/tags" />
               </Form>
             </CardContent>
           </Card>
