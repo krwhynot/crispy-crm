@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNotify, useGetIdentity, useListContext, downloadCSV, type Exporter } from "ra-core";
-import { useQueryClient } from "@tanstack/react-query";
+import { useGetIdentity, useListContext, downloadCSV, type Exporter } from "ra-core";
 import jsonExport from "jsonexport/dist";
 
 import { FunctionField } from "react-admin";
@@ -120,13 +119,18 @@ const TaskListLayout = ({
   isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
-  const [update] = useUpdate();
-  const notify = useNotify();
-  const queryClient = useQueryClient();
 
   // State for completion dialog
   const [showCompletionDialog, setShowCompletionDialog] = useState(false);
   const [pendingTask, setPendingTask] = useState<Task | null>(null);
+
+  // Task completion hook - extracted business logic
+  const { completeTask, reopenTask } = useTaskCompletion({
+    onSuccess: () => {
+      setShowCompletionDialog(false);
+      setPendingTask(null);
+    },
+  });
 
   // Handler for when user clicks completion checkbox
   const handleCompletionRequest = (task: Task, checked: boolean) => {
@@ -135,35 +139,15 @@ const TaskListLayout = ({
       setPendingTask(task);
       setShowCompletionDialog(true);
     } else {
-      // Unchecking - update directly without dialog
-      update("tasks", {
-        id: task.id,
-        data: { completed: false, completed_at: null },
-        previousData: task,
-      });
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      notify("Task reopened", { type: "success" });
+      // Unchecking - reopen task directly without dialog
+      reopenTask(task);
     }
   };
 
-  // Handler for dialog completion
-  const handleDialogComplete = async () => {
+  // Handler for dialog completion - delegates to hook
+  const handleDialogComplete = () => {
     if (!pendingTask) return;
-    try {
-      await update("tasks", {
-        id: pendingTask.id,
-        data: { completed: true, completed_at: new Date().toISOString() },
-        previousData: pendingTask,
-      });
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      notify("Task completed", { type: "success" });
-    } catch (error: unknown) {
-      notify("Error completing task", { type: "error" });
-      throw new Error(`Failed to complete task ${pendingTask.id}: ${error}`);
-    } finally {
-      setShowCompletionDialog(false);
-      setPendingTask(null);
-    }
+    completeTask(pendingTask);
   };
 
   // Handler for dialog close without completing
