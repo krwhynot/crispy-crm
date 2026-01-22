@@ -1,6 +1,6 @@
 import type { Identifier } from "ra-core";
 import type { Opportunity } from "../types";
-import { diffProducts, type Product } from "../opportunities/utils/diffProducts";
+import { diffProducts, type Product } from "../opportunities/diffProducts";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 import { devLog, devError } from "@/lib/devLogger";
 

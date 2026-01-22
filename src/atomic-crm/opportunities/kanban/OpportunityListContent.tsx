@@ -29,7 +29,7 @@ import {
   type OpportunitiesByStage,
 } from "../constants";
 import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
-import { getOpportunitiesByStage } from "../constants/stages";
+import { getOpportunitiesByStage } from "../constants";
 import { useColumnPreferences } from "../hooks/useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";

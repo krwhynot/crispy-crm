@@ -32,7 +32,7 @@ import {
   OPPORTUNITY_STAGES,
   getOpportunityStageLabel,
   getOpportunityStageColor,
-} from "./constants/stageConstants";
+} from "./constants";
 import { useExportOpportunities } from "./useExportOpportunities";
 
 interface BulkActionsToolbarProps {

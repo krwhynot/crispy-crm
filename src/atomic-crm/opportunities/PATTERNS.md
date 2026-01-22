@@ -850,7 +850,7 @@ Opportunities grouped by principal/campaign with status priority sorting (red fi
 ```tsx
 // src/atomic-crm/opportunities/PrincipalGroupedList.tsx
 import { useListContext } from "ra-core";
-import { getStageStatus, type StageStatus } from "./constants/stageThresholds";
+import { getStageStatus, type StageStatus } from "./constants";
 
 // Status priority for sorting (red first)
 function getStatusPriority(status: StageStatus): number {

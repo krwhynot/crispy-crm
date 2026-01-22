@@ -8,8 +8,8 @@ import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV } from "ra-core";
 import type { Opportunity, Organization, Sale } from "../types";
-import { formatSalesName } from "../utils/formatters";
-import { getOpportunityStageLabel } from "./constants/stageConstants";
+import { formatSalesName } from "../utils";
+import { getOpportunityStageLabel } from "./constants";
 
 /**
  * Sanitize value for CSV export to prevent formula injection

@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from "react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetOne } from "ra-core";
-import { generateOpportunityName } from "../utils/generateOpportunityName";
+import { generateOpportunityName } from "./generateOpportunityName";
 
 /**
  * Checks if current name matches auto-generated pattern
