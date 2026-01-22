@@ -35,7 +35,7 @@ function FormActions({
     >
       {onDelete && (
         <div className="flex-shrink-0">
-          <Button type="button" variant="destructive" onClick={onDelete}>
+          <Button type="button" variant="destructive" onClick={onDelete} className="h-11">
             <Trash2 className="h-4 w-4" />
             Delete
           </Button>
@@ -43,14 +43,14 @@ function FormActions({
       )}
 
       <div className="flex items-center gap-3">
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button type="button" variant="outline" onClick={onCancel} className="h-11">
           Cancel
         </Button>
 
         {showSaveAndNew && onSave && onSaveAndNew ? (
           <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
         ) : (
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting} className="h-11">
             {isSubmitting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
