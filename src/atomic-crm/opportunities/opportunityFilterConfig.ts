@@ -9,7 +9,7 @@
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
 // Import from existing constants - note camelCase exports
-import { stageChoices, priorityChoices } from "./constants/filterChoices";
+import { stageChoices, priorityChoices } from "./constants";
 
 /**
  * Filter configuration for Opportunities list

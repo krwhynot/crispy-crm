@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Settings2 } from "lucide-react";
-import { OPPORTUNITY_STAGES } from "../constants/stageConstants";
+import { OPPORTUNITY_STAGES } from "../constants";
 import type { OpportunityStageValue } from "../../types";
 import { Checkbox } from "@/components/ui/checkbox";
 

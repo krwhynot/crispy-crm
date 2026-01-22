@@ -11,9 +11,9 @@ import { useGetIdentity, useGetList } from "ra-core";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import type { Opportunity } from "../types";
-import { getOpportunityStageLabel } from "./constants/stageConstants";
+import { getOpportunityStageLabel } from "./constants";
 import { parseDateSafely } from "@/lib/date-utils";
-import { ucFirst } from "../utils/formatters";
+import { ucFirst } from "../utils";
 
 export const OpportunityArchivedList = () => {
   const { data: identity } = useGetIdentity();

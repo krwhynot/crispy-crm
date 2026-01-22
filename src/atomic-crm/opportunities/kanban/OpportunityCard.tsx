@@ -5,7 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import { OpportunityCardActions } from "./OpportunityCardActions";
 import { StageStatusDot } from "./StageStatusDot";
-import { getStageStatus } from "../constants/stageThresholds";
+import { getStageStatus } from "../constants";
 import type { Opportunity } from "../../types";
 import { parseDateSafely } from "@/lib/date-utils";
 

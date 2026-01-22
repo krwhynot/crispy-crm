@@ -10,7 +10,7 @@ import {
   getOpportunityStageElevation,
   getOpportunityStageDescription,
   getOpportunityMfbPhase,
-} from "../constants/stageConstants";
+} from "../constants";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useStageMetrics } from "../hooks/useStageMetrics";
 import { QuickAddOpportunity } from "./QuickAddOpportunity";
