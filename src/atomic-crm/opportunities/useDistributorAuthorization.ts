@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useGetList, useGetOne } from "react-admin";
 import type { Identifier, RaRecord } from "ra-core";
-import type { Organization } from "../../types";
+import type { Organization } from "../types";
 
 /**
  * Distributor-Principal Authorization Record

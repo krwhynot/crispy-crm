@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { generateOpportunityName, formatMonthYear } from "./generateOpportunityName";
+import { generateOpportunityName, formatMonthYear } from "../generateOpportunityName";
 
 describe("formatMonthYear", () => {
   it("should return 0125 for January 2025", () => {

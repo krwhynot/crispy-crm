@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useGetMany } from "react-admin";
-import type { Contact } from "../../types";
+import type { Contact } from "../types";
 import type { Identifier } from "ra-core";
 
 /**
