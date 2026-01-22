@@ -19,7 +19,7 @@ vi.mock("../usePrincipalPipeline", () => ({
   }),
 }));
 
-vi.mock("../hooks/useMyTasks", () => ({
+vi.mock("../useMyTasks", () => ({
   useMyTasks: () => ({
     tasks: [],
     loading: false,
@@ -36,7 +36,7 @@ vi.mock("../hooks/useMyTasks", () => ({
 }));
 
 // Mock the usePrincipalOpportunities hook (used by PipelineDrillDownSheet)
-vi.mock("../hooks/usePrincipalOpportunities", () => ({
+vi.mock("../usePrincipalOpportunities", () => ({
   usePrincipalOpportunities: () => ({
     opportunities: [],
     loading: false,
@@ -45,7 +45,7 @@ vi.mock("../hooks/usePrincipalOpportunities", () => ({
 }));
 
 // Mock the useMyPerformance hook (used by MyPerformanceWidget)
-vi.mock("../hooks/useMyPerformance", () => ({
+vi.mock("../useMyPerformance", () => ({
   useMyPerformance: () => ({
     metrics: {
       activitiesThisWeek: { value: 5, previousValue: 3, trend: 67, direction: "up" as const },
@@ -58,7 +58,7 @@ vi.mock("../hooks/useMyPerformance", () => ({
 }));
 
 // Mock the useTeamActivities hook (used by ActivityFeedPanel)
-vi.mock("../hooks/useTeamActivities", () => ({
+vi.mock("../useTeamActivities", () => ({
   useTeamActivities: () => ({
     activities: [],
     loading: false,
@@ -67,7 +67,7 @@ vi.mock("../hooks/useTeamActivities", () => ({
 }));
 
 // Mock the useTaskCount hook (used by DashboardTabPanel for badge)
-vi.mock("../hooks/useTaskCount", () => ({
+vi.mock("../useTaskCount", () => ({
   useTaskCount: () => ({
     pendingCount: 0,
     isLoading: false,
@@ -86,7 +86,7 @@ vi.mock("../components/TaskCompleteSheet", () => ({
 
 // Mock the useKPIMetrics hook (used by KPISummaryRow)
 // Updated to match PRD v1.9: KPI #1 = Open Opportunities count (not $), KPI #4 = Stale Deals
-vi.mock("../hooks/useKPIMetrics", () => ({
+vi.mock("../useKPIMetrics", () => ({
   useKPIMetrics: () => ({
     metrics: {
       openOpportunitiesCount: 8,

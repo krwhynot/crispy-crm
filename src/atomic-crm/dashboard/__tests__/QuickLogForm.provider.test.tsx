@@ -35,7 +35,7 @@ vi.mock("@/atomic-crm/providers/supabase/supabase", () => ({
 }));
 
 // Mock useCurrentSale to provide salesId
-vi.mock("../../hooks/useCurrentSale", () => ({
+vi.mock("../useCurrentSale", () => ({
   useCurrentSale: () => ({ salesId: 1, loading: false, error: null }),
   CurrentSaleContext: {
     Provider: ({ children }: { children: React.ReactNode }) => children,
@@ -43,7 +43,7 @@ vi.mock("../../hooks/useCurrentSale", () => ({
 }));
 
 // Mock useEntityData to avoid complex data fetching
-vi.mock("../../hooks/useEntityData", () => ({
+vi.mock("../useEntityData", () => ({
   useEntityData: () => ({
     contacts: [{ id: 1, name: "John Doe", organization_id: 1, company_name: "Acme Corp" }],
     organizations: [{ id: 1, name: "Acme Corp" }],

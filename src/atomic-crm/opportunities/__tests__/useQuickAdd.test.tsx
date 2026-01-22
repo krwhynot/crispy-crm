@@ -121,7 +121,7 @@ describe("useQuickAdd", () => {
     // Verify success toast was shown with new message format: "Created opportunity for {contact} at {org}"
     expect(mockNotify).toHaveBeenCalledWith("Created opportunity for John Doe at Acme Corp", {
       type: "success",
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   });
 
@@ -147,7 +147,7 @@ describe("useQuickAdd", () => {
     // Verify success toast shows org-only message when no contact name
     expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Tech Corp", {
       type: "success",
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   });
 
@@ -166,11 +166,11 @@ describe("useQuickAdd", () => {
     // Verify success toast uses "Organization" as fallback when no org_name
     expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Jane Smith at Organization", {
       type: "success",
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   });
 
-  test("error shows error toast with new message format", async () => {
+  test("error shows error toast with user-friendly message", async () => {
     // Setup error response
     const errorMessage = "Database connection failed";
     mockDataProvider.createBoothVisitor.mockRejectedValue(new Error(errorMessage));
@@ -183,10 +183,15 @@ describe("useQuickAdd", () => {
     // Wait for mutation to fail
     await waitFor(() => expect(result.current.isError).toBe(true));
 
-    // Verify error toast uses "opportunity" instead of "booth visitor"
-    expect(mockNotify).toHaveBeenCalledWith(`Failed to create opportunity: ${errorMessage}`, {
-      type: "error",
-    });
+    // Verify error toast shows sanitized message (via actionError -> mapErrorToUserMessage)
+    // "Database connection failed" matches "connection" and becomes user-friendly message
+    expect(mockNotify).toHaveBeenCalledWith(
+      "Connection issue. Please check your internet and try again.",
+      {
+        type: "error",
+        autoHideDuration: 5000,
+      }
+    );
 
     // Verify localStorage was NOT updated on error
     expect(localStorage.getItem("last_campaign")).toBeNull();

@@ -20,7 +20,7 @@ import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 
 // Lazy load QuickLogForm - saves ~15-20KB from initial chunk
 const QuickLogForm = lazy(() =>
-  import("../dashboard/v3/components/QuickLogForm").then((m) => ({
+  import("../dashboard/QuickLogForm").then((m) => ({
     default: m.QuickLogForm,
   }))
 );

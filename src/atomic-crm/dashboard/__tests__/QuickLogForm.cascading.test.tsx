@@ -456,7 +456,7 @@ vi.mock("react-admin", async (importOriginal) => {
   };
 });
 
-vi.mock("../../hooks/useCurrentSale", () => ({
+vi.mock("../useCurrentSale", () => ({
   useCurrentSale: () => ({ salesId: 1, loading: false, error: null }),
 }));
 

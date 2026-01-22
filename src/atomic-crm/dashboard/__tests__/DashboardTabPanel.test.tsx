@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { DashboardTabPanel } from "../DashboardTabPanel";
 
 // Mock the hooks
-vi.mock("../../hooks/useTaskCount", () => ({
+vi.mock("../useTaskCount", () => ({
   useTaskCount: () => ({ pendingCount: 3, isLoading: false }),
 }));
 
