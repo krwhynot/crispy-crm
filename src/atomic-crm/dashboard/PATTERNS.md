@@ -1080,3 +1080,378 @@ When adding a new widget/panel to the dashboard:
 10. [ ] **Update KPI metrics** if widget affects dashboard totals
     - Add to `useKPIMetrics` Promise.allSettled array
     - Handle failure gracefully (show 0, log error)
+
+---
+
+## Pattern K: Defensive Validation at Submission
+
+Pre-submission validation that verifies entity IDs still exist before database write.
+
+```tsx
+// components/QuickLogForm.tsx (lines 134-181)
+const submitActivity = useCallback(
+  async (data: ActivityLogInput, closeAfterSave = true) => {
+    if (!salesId) {
+      notify("Cannot log activity: user session expired. Please refresh and try again.", {
+        type: "error",
+      });
+      return;
+    }
+
+    // Defensive validation: Verify entity IDs exist in loaded data
+    // Prevents FK violations from stale drafts or recently deleted records
+    if (data.contactId) {
+      const contactExists = entityData.filteredContacts.some((c) => c.id === data.contactId);
+      if (!contactExists) {
+        notify("Selected contact no longer exists. Please select a different contact.", {
+          type: "error",
+        });
+        form.setValue("contactId", undefined);
+        return;
+      }
+    }
+
+    if (data.organizationId) {
+      const orgExists = entityData.filteredOrganizations.some(
+        (o) => o.id === data.organizationId
+      );
+      if (!orgExists) {
+        notify(
+          "Selected organization no longer exists. Please select a different organization.",
+          {
+            type: "error",
+          }
+        );
+        form.setValue("organizationId", undefined);
+        return;
+      }
+    }
+
+    if (data.opportunityId) {
+      const oppExists = entityData.filteredOpportunities.some((o) => o.id === data.opportunityId);
+      if (!oppExists) {
+        notify("Selected opportunity no longer exists. Please select a different opportunity.", {
+          type: "error",
+        });
+        form.setValue("opportunityId", undefined);
+        return;
+      }
+    }
+
+    // ... proceed with submission
+  },
+  [salesId, notify, entityData, form]
+);
+```
+
+**When to use**: Forms with entity selectors that may hold stale draft data or reference recently deleted records. Critical for forms with localStorage draft persistence.
+
+**Key points:**
+- Check existence BEFORE database call to prevent FK constraint errors
+- Clear invalid form values and notify user of the issue
+- Guard against session expiry (salesId check)
+- Applies to any foreign key reference in form data
+- Use `some()` for O(n) lookup against fetched entity lists
+
+**Example:** `src/atomic-crm/dashboard/QuickLogForm.tsx` (lines 134-181)
+
+---
+
+## Pattern L: Atomic RPC for Transactional Operations
+
+Single database call for multi-table operations requiring transactional consistency.
+
+```tsx
+// providers/supabase/extensions/rpcExtension.ts (lines 162-178)
+logActivityWithTask: async (
+  params: LogActivityWithTaskParams
+): Promise<LogActivityWithTaskResponse> => {
+  devLog("DataProvider RPC", "Calling log_activity_with_task", params);
+
+  const { data, error } = await supabaseClient.rpc("log_activity_with_task", {
+    p_activity: params.p_activity,
+    p_task: params.p_task,
+  });
+
+  if (error) {
+    logError("logActivityWithTask", "log_activity_with_task", params, error);
+    throw new HttpError(error.message, 500);
+  }
+
+  return data as LogActivityWithTaskResponse;
+};
+```
+
+```tsx
+// Usage in QuickLogForm.tsx (lines 219-224)
+// Single atomic RPC call for activity + optional task
+// Data provider throws HttpError on failure (fail-fast)
+const rpcResult = await dataProvider.logActivityWithTask({
+  p_activity: activityPayload,
+  p_task: taskPayload,
+});
+```
+
+**When to use**: Operations that create/update multiple related records where partial success would leave data inconsistent. Examples: activity with follow-up task, opportunity with contacts, booth visitor capture.
+
+**Key points:**
+- RPC function wraps multiple inserts in database transaction
+- Single round-trip to database (vs multiple API calls)
+- Fail-fast: entire operation succeeds or fails atomically
+- Zod validation at RPC boundary (`validation/rpc.ts`)
+- Type-safe params and response via TypeScript inference
+- HttpError thrown on failure for consistent error handling
+
+**Database function pattern:**
+```sql
+-- supabase/migrations/xxx_log_activity_with_task.sql
+CREATE OR REPLACE FUNCTION log_activity_with_task(
+  p_activity JSONB,
+  p_task JSONB DEFAULT NULL
+) RETURNS JSONB AS $$
+DECLARE
+  v_activity_id BIGINT;
+  v_task_id BIGINT;
+BEGIN
+  -- Insert activity
+  INSERT INTO activities (...) VALUES (...)
+  RETURNING id INTO v_activity_id;
+
+  -- Insert task if provided
+  IF p_task IS NOT NULL THEN
+    INSERT INTO tasks (...) VALUES (...)
+    RETURNING id INTO v_task_id;
+  END IF;
+
+  RETURN jsonb_build_object(
+    'success', true,
+    'activity_id', v_activity_id,
+    'task_id', v_task_id
+  );
+END;
+$$ LANGUAGE plpgsql;
+```
+
+**Example:** `src/atomic-crm/providers/supabase/extensions/rpcExtension.ts`
+
+---
+
+## Pattern M: useEntityData Hook Abstraction
+
+Composable hook that encapsulates complex entity fetching with cascading filters.
+
+```tsx
+// hooks/useEntityData.ts
+export function useEntityData({
+  form,
+  selectedOrganizationId,
+  selectedContactId,
+  selectedOpportunityId,
+}: UseEntityDataOptions) {
+  const notify = useNotify();
+
+  // Debounced search state for each dropdown
+  const contactSearch = useDebouncedSearch();
+  const orgSearch = useDebouncedSearch();
+  const oppSearch = useDebouncedSearch();
+
+  // Build filter with server-side search
+  const contactFilter = useMemo(() => {
+    const filter: Record<string, unknown> = {};
+    if (selectedOrganizationId) {
+      filter.organization_id = selectedOrganizationId;
+    }
+    if (contactSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH) {
+      filter.q = contactSearch.debouncedTerm;
+    }
+    return filter;
+  }, [selectedOrganizationId, contactSearch.debouncedTerm]);
+
+  // Fetch contacts with hybrid approach (cached + search)
+  const { data: contacts = [], isPending: contactsLoading } = useGetList<Contact>(
+    "contacts",
+    {
+      pagination: { page: 1, perPage: shouldSearchContacts ? 50 : INITIAL_PAGE_SIZE },
+      sort: { field: "name", order: "ASC" },
+      filter: contactFilter,
+    },
+    {
+      staleTime: STALE_TIME_MS,
+      placeholderData: (prev) => prev,
+    }
+  );
+
+  // Anchor organization detection (from org, contact, or opportunity)
+  const anchorOrganizationId = useMemo(() => {
+    if (selectedOrganizationId) return selectedOrganizationId;
+    if (selectedContact?.organization_id) return selectedContact.organization_id;
+    if (selectedOpportunity?.customer_organization_id)
+      return selectedOpportunity.customer_organization_id;
+    return null;
+  }, [selectedOrganizationId, selectedContact, selectedOpportunity]);
+
+  // Fallback fetch for anchor org not in paginated list
+  const { data: fetchedAnchorOrg } = useGetOne<Organization>(
+    "organizations",
+    { id: anchorOrganizationId! },
+    { enabled: anchorOrgMissing && anchorOrganizationId !== null }
+  );
+
+  // Side effect: Auto-fill organization from opportunity selection
+  useEffect(() => {
+    if (selectedOpportunity?.customer_organization_id) {
+      form.setValue("organizationId", selectedOpportunity.customer_organization_id);
+      // Clear mismatched contact
+      // ...
+    }
+  }, [selectedOpportunity?.customer_organization_id, contacts, form, notify]);
+
+  return {
+    // Raw data
+    contacts, organizations, opportunities,
+    // Filtered data
+    filteredContacts, filteredOrganizations, filteredOpportunities,
+    // Loading states
+    contactsLoading, organizationsLoading, opportunitiesLoading, isInitialLoading,
+    // Search controls
+    contactSearch, orgSearch, oppSearch,
+    // Derived state
+    anchorOrganizationId,
+  };
+}
+```
+
+**When to use**: Forms with multiple related entity dropdowns where selections cascade (Contact → Organization → Opportunity). Extracts 300+ lines of logic from form components.
+
+**Key points:**
+- **Hybrid search**: Initial cache (100 records) + server search (50 records)
+- **Anchor organization**: Derived from any entity selection, cascades to filter others
+- **Fallback fetches**: Separate `useGetOne` for anchor org not in paginated results
+- **Side effects**: Auto-fill and clear mismatched entities with user notification
+- **Debounced search**: 300ms delay, 2-character minimum
+- **5-minute staleTime**: Reduces refetches while maintaining freshness
+
+**Example:** `src/atomic-crm/dashboard/useEntityData.ts`
+
+---
+
+## Pattern N: Optimistic Updates with Rollback
+
+Immediate UI updates with automatic rollback on API failure.
+
+```tsx
+// hooks/useMyTasks.ts
+export function useMyTasks() {
+  // Local optimistic state for immediate UI updates
+  const [optimisticUpdates, setOptimisticUpdates] = useState<
+    Map<number, Partial<TaskItem> & { deleted?: boolean }>
+  >(new Map());
+
+  // Merge server data with optimistic updates
+  const tasks = useMemo(() => {
+    return serverTasks
+      .map((task) => ({
+        ...task,
+        ...(optimisticUpdates.get(task.id) || {}),
+      }))
+      .filter((task) => !optimisticUpdates.get(task.id)?.deleted);
+  }, [serverTasks, optimisticUpdates]);
+
+  // Ref to track tasks for callbacks without causing recreations
+  const tasksRef = useRef<TaskItem[]>(tasks);
+  useEffect(() => {
+    tasksRef.current = tasks;
+  }, [tasks]);
+
+  const completeTask = useCallback(
+    async (taskId: number) => {
+      const task = tasksRef.current.find((t) => t.id === taskId);
+      if (!task) return;
+
+      // Optimistic UI update - mark as deleted immediately
+      setOptimisticUpdates((prev) => {
+        const next = new Map(prev);
+        next.set(taskId, { deleted: true });
+        return next;
+      });
+
+      try {
+        await dataProvider.update("tasks", {
+          id: taskId,
+          data: { completed: true, completed_at: new Date().toISOString() },
+          previousData: task,
+        });
+
+        // Clear optimistic update on success
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
+
+        // Invalidate caches
+        queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      } catch (error: unknown) {
+        console.error("Failed to complete task:", error);
+        // Rollback optimistic update on failure
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
+        throw error;
+      }
+    },
+    [dataProvider, queryClient]
+  );
+
+  const updateTaskDueDate = useCallback(
+    async (taskId: number, newDueDate: Date) => {
+      const task = tasksRef.current.find((t) => t.id === taskId);
+      if (!task) return;
+
+      const newStatus = calculateStatus(newDueDate);
+
+      // Optimistic UI update - immediately move task to new column
+      setOptimisticUpdates((prev) => {
+        const next = new Map(prev);
+        next.set(taskId, { dueDate: newDueDate, status: newStatus });
+        return next;
+      });
+
+      try {
+        await dataProvider.update("tasks", { /* ... */ });
+        // Clear on success, rollback on failure (same pattern)
+      } catch (error) {
+        // Rollback
+      }
+    },
+    [dataProvider, calculateStatus, queryClient]
+  );
+
+  return {
+    tasks, // Merged with optimistic updates
+    completeTask,
+    updateTaskDueDate,
+    // ... other methods
+  };
+}
+```
+
+**When to use**: Operations where immediate feedback improves UX (drag-drop, task completion, deletes). Especially valuable for Kanban boards where items move between columns.
+
+**Key points:**
+- **Map-based tracking**: `Map<taskId, partialUpdate>` for O(1) lookup
+- **Merge strategy**: Server data + optimistic updates via `useMemo`
+- **Ref pattern**: `tasksRef` prevents callback recreation on task changes
+- **Rollback**: Clear optimistic update in catch block
+- **Cache invalidation**: `queryClient.invalidateQueries` after success
+- **Delete pattern**: `{ deleted: true }` flag filters item from merged list
+
+**Rollback sequence:**
+1. Apply optimistic update immediately
+2. Make API call
+3. On success: Clear optimistic update, invalidate cache
+4. On failure: Clear optimistic update (reverts to server state)
+
+**Example:** `src/atomic-crm/dashboard/useMyTasks.ts`

@@ -182,6 +182,51 @@ Deno.serve(async (req: Request) => {
 - Always handle OPTIONS preflight with 204 No Content
 - Include `Access-Control-Allow-Credentials: true` for auth cookies
 
+### Helper Functions
+
+Two additional helper functions are exported for debugging and custom validation:
+
+```ts
+// supabase/functions/_shared/cors-config.ts
+
+/**
+ * Check if an origin is in the allowlist.
+ * Used internally by createCorsHeaders() but exported for custom validation.
+ */
+function isOriginAllowed(origin: string | null, allowedOrigins: string[]): boolean {
+  if (!origin) return false;
+  return allowedOrigins.includes(origin);
+}
+
+/**
+ * Get the full list of allowed origins for debugging/logging.
+ * Combines DEVELOPMENT_ORIGINS, PRODUCTION_ORIGINS, and ALLOWED_ORIGINS env var.
+ */
+export function getAllowedOrigins(): string[] {
+  return getAllAllowedOrigins();  // Internal function that builds the list
+}
+```
+
+**When to use**:
+- `getAllowedOrigins()`: Debugging CORS issues, logging which origins are configured
+- `isOriginAllowed()`: Custom validation logic outside of `createCorsHeaders()`
+
+**Example: Debugging CORS configuration**:
+```ts
+import { getAllowedOrigins, createCorsHeaders } from "../_shared/cors-config.ts";
+
+Deno.serve(async (req: Request) => {
+  const origin = req.headers.get("origin");
+  const allowedOrigins = getAllowedOrigins();
+
+  console.log(`Request origin: ${origin}`);
+  console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
+
+  const corsHeaders = createCorsHeaders(origin);
+  // ...
+});
+```
+
 ---
 
 ## Pattern C: Edge Function Types

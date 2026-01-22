@@ -433,94 +433,82 @@ export const PriorityBadge = memo(function PriorityBadge({ priority }) {
 
 ---
 
-## Pattern F: Bulk Reassign Workflow
+## Pattern F: Bulk Actions Toolbar
 
-Sequential updates with cancellation support.
+Floating toolbar with organization-specific bulk actions using shared wrapper components.
 
 ```tsx
-// src/atomic-crm/organizations/BulkReassignButton.tsx
-export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const { selectedIds, data: organizations, onUnselectItems } = useListContext();
-  const dataProvider = useDataProvider();
+// src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx
+import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
+import { BulkExportButton } from "@/components/ra-wrappers/bulk-export-button";
+import { BulkReassignButton } from "@/components/ra-wrappers/bulk-reassign-button";
+import { OrganizationBulkDeleteButton } from "./OrganizationBulkDeleteButton";
+import { organizationKeys } from "../queryKeys";
+import type { Organization } from "../types";
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => abortControllerRef.current?.abort();
-  }, []);
-
-  const handleExecuteReassign = async () => {
-    abortControllerRef.current = new AbortController();
-    const { signal } = abortControllerRef.current;
-
-    setIsProcessing(true);
-    let successCount = 0, failureCount = 0, wasCancelled = false;
-
-    for (const id of selectedIds) {
-      // Check if operation was cancelled before each update
-      if (signal.aborted) {
-        wasCancelled = true;
-        break;
-      }
-
-      try {
-        await dataProvider.update("organizations", {
-          id,
-          data: { sales_id: parseInt(selectedSalesId) },
-          previousData: organizations?.find((org) => org.id === id),
-        });
-        successCount++;
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") {
-          wasCancelled = true;
-          break;
-        }
-        failureCount++;
-      }
-    }
-
-    // Show results notification
-    if (wasCancelled && successCount > 0) {
-      notify(`Cancelled after reassigning ${successCount} organizations`, { type: "warning" });
-    } else if (successCount > 0) {
-      notify(`Successfully reassigned ${successCount} organizations`, { type: "success" });
-    }
-
-    refresh();
-    onUnselectItems();
-  };
-
-  const handleCancelOperation = () => {
-    abortControllerRef.current?.abort();
-    notify("Operation cancelled", { type: "info" });
-  };
-
+/**
+ * OrganizationBulkActionsToolbar - Custom bulk actions for the organizations list
+ *
+ * Extends the generic BulkActionsToolbar with organization-specific actions:
+ * - Reassign: Bulk reassign organizations to a different sales rep
+ * - Export: Export selected organizations to CSV
+ * - Delete: Soft delete selected organizations (blocked for orgs with child branches)
+ *
+ * Uses the floating card pattern from the base BulkActionsToolbar
+ * which appears at the bottom of the screen when items are selected.
+ */
+export const OrganizationBulkActionsToolbar = () => {
   return (
-    <>
-      <Button onClick={handleOpenDialog} className="h-11">
-        <UserPlus className="h-4 w-4" /> Reassign
-      </Button>
-      <Dialog>
-        {/* Preview, selector, and action buttons */}
-        {isProcessing && (
-          <Button variant="destructive" onClick={handleCancelOperation}>
-            Cancel Operation
-          </Button>
-        )}
-      </Dialog>
-    </>
+    <BulkActionsToolbar>
+      <BulkReassignButton<Organization>
+        resource="organizations"
+        queryKeys={organizationKeys}
+        itemDisplayName={(org) => org.name}
+        itemSubtitle={(org) => org.organization_type}
+      />
+      <BulkExportButton />
+      <OrganizationBulkDeleteButton />
+    </BulkActionsToolbar>
   );
 };
+```
+
+### Bulk Actions Available
+
+| Action | Component | Description |
+|--------|-----------|-------------|
+| Reassign | `BulkReassignButton` (shared) | Sequential updates with AbortController cancellation |
+| Export | `BulkExportButton` (shared) | Export selected records to CSV |
+| Delete | `OrganizationBulkDeleteButton` | Soft delete (blocked if org has child branches) |
+
+### Shared BulkReassignButton Pattern
+
+The generic `BulkReassignButton` from `@/components/ra-wrappers/bulk-reassign-button` implements:
+
+- **Sequential updates** with AbortController cancellation support
+- **Preview dialog** showing all selected items before action
+- **Sales rep selector** with disabled reps filtered out
+- **Partial success reporting** (shows count of successful vs failed)
+- **Query cache invalidation** via provided queryKeys
+
+```tsx
+// Usage pattern for BulkReassignButton
+<BulkReassignButton<Organization>
+  resource="organizations"           // Resource name for dataProvider
+  queryKeys={organizationKeys}       // For cache invalidation
+  itemDisplayName={(org) => org.name}  // Display in preview
+  itemSubtitle={(org) => org.organization_type}  // Secondary info
+  onSuccess={() => {}}               // Optional callback
+/>
 ```
 
 ### When to Use
 
 - **Reassigning owner** for multiple organizations
-- **Bulk status changes** requiring user confirmation
-- **Any multi-record update** where partial success is acceptable
+- **Bulk exports** for reporting or data migration
+- **Bulk soft deletes** with validation (e.g., no child branches)
 
-**Key design decision:** AbortController enables mid-operation cancellation with partial success reporting.
+**Key design decision:** Uses shared wrapper components from `@/components/ra-wrappers/` for consistency across modules. Organization-specific logic (like child branch validation) lives in dedicated components.
 
 ---
 

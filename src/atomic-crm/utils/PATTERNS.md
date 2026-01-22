@@ -19,9 +19,12 @@ Standard patterns for utility functions in Crispy CRM.
 │  ┌──────────────────────────┐    ┌──────────────────────────────────────┐  │
 │  │  Business Logic          │    │  Security & Storage                  │  │
 │  │  ├─ stalenessCalculation │    │  ├─ secureStorage.ts                 │  │
-│  │  ├─ getActivityIcon.tsx  │    │  ├─ rateLimiter.ts                   │  │
+│  │  ├─ getActivityIcon.tsx* │    │  ├─ rateLimiter.ts                   │  │
 │  │  └─ saleOptionRenderer   │    │  └─ safeJsonParse.ts                 │  │
 │  └──────────────────────────┘    └──────────────────────────────────────┘  │
+│                                                                             │
+│  * getActivityIcon.tsx: Returns LucideIcon type (not JSX). Uses .tsx       │
+│    extension for TypeScript compatibility with Lucide imports only.        │
 │                                                                             │
 │  ┌──────────────────────────┐    ┌──────────────────────────────────────┐  │
 │  │  List Configuration      │    │  Avatar Processing                   │  │
@@ -788,56 +791,41 @@ Need a utility?
 
 ## Anti-Patterns
 
-### 1. Duplicate Function Names
+### 1. Duplicate Function Names (RESOLVED)
 
-**Problem**: `formatFullName` exists in TWO files with different signatures:
+**Status**: RESOLVED - The naming conflict has been eliminated.
 
-```typescript
-// formatters.ts:8 - Takes (firstName, lastName) - COMBINES name parts
-export function formatFullName(firstName?: string | null, lastName?: string | null): string
-// Returns: "John Doe", "John", "Doe", or "--"
+**Previous Problem**: `formatFullName` existed in TWO files with different signatures.
 
-// formatName.ts:22 - Takes single (name) - TRIMS existing full name
-export function formatFullName(name?: string | null): string
-// Returns: trimmed name or "--"
-```
+**Resolution Applied**:
+- `formatName.ts` function was renamed to `formatSingleName` (with deprecation notice)
+- `formatters.ts` retains the canonical `formatFullName(firstName, lastName)` signature
+- Barrel export (`index.ts`) now exports only one `formatFullName` from `formatters.ts`
 
-**When to Use Each**:
+**Current Usage**:
 
-| Scenario | Use | Import From |
-|----------|-----|-------------|
-| Contact/Sale with `first_name` + `last_name` fields | `formatters.ts` version | `@/atomic-crm/utils/formatters` |
-| Organization/Entity with single `name` field | `formatName.ts` version | `@/atomic-crm/utils/formatName` |
-| Barrel import via `@/atomic-crm/utils` | Gets `formatters.ts` version (shadows other) | N/A |
-
-**Resolution**:
-- **Default**: Use `formatters.ts` for separate first/last name fields (most common)
-- **Single name string**: Use `formatName.ts` for pre-combined names (import directly)
-- **Always import explicitly** to avoid confusion:
-  ```typescript
-  // For contacts/sales with separate name fields
-  import { formatFullName } from "@/atomic-crm/utils/formatters";
-
-  // For single name strings (organizations, etc.)
-  import { formatFullName } from "@/atomic-crm/utils/formatName";
-  ```
-
-**Consider Renaming**: The `formatName.ts:formatFullName` should arguably be renamed to `formatSingleName` or `trimName` to eliminate confusion.
-
-### 2. Barrel Export Shadowing
-
-**Problem**: `index.ts` exports `formatFullName` from both files:
+| Scenario | Function | Import From |
+|----------|----------|-------------|
+| Contact/Sale with `first_name` + `last_name` fields | `formatFullName` | `@/atomic-crm/utils` or `@/atomic-crm/utils/formatters` |
+| Organization/Entity with single `name` field | `formatSingleName` | `@/atomic-crm/utils` or `@/atomic-crm/utils/formatName` |
 
 ```typescript
-// index.ts lines 2 and 22
-export { formatName, formatFullName } from "./formatName";
-export { formatFullName, ... } from "./formatters";  // Shadows the above!
+// For contacts/sales with separate name fields (CANONICAL)
+import { formatFullName } from "@/atomic-crm/utils";
+
+// For single name strings (deprecated but available)
+import { formatSingleName } from "@/atomic-crm/utils";
 ```
 
-**Resolution**: Import directly from the source file when using `formatName.ts` version:
-```typescript
-import { formatFullName } from "@/atomic-crm/utils/formatName";
-```
+### 2. Barrel Export Shadowing (RESOLVED)
+
+**Status**: RESOLVED - No longer an issue.
+
+**Previous Problem**: `index.ts` exported `formatFullName` from both files causing shadowing.
+
+**Resolution Applied**: The `formatName.ts` function was renamed to `formatSingleName`, eliminating the conflict. The barrel now cleanly exports:
+- `formatSingleName` from `formatName.ts`
+- `formatFullName` from `formatters.ts`
 
 ### 3. Mixed File Naming Conventions
 

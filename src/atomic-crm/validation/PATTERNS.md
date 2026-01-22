@@ -225,18 +225,23 @@ When React Admin sends form data back during updates, these view-only fields cau
 
 | Layer | Method | When to Use |
 |-------|--------|-------------|
-| **TransformService** | `FIELDS_TO_STRIP` constant | Complex resources (Opportunities, Contacts) |
+| **TransformService** | `transformForValidation()` method with `FIELDS_TO_STRIP` | Complex resources (Opportunities, Contacts) |
 | **Schema `.strip()`** | `updateSchema = baseSchema.strip()` | Simple resources (Products, Segments) |
 
 ```tsx
 // Layer 1: TransformService (runtime stripping before validation)
 // src/atomic-crm/providers/supabase/services/TransformService.ts
+//
+// TransformService.transformForValidation() strips view-only and computed fields
+// BEFORE Zod validation. This prevents validation failures when SQL View data
+// (with JOINs and aggregates) is sent back through update operations.
 
 const OPPORTUNITY_FIELDS_TO_STRIP = [
   "principal_organization_name",  // JOIN from organizations
   "nb_interactions",              // COUNT aggregate
   "next_task_title",              // Subquery result
   "customer_organization_name",   // JOIN from organizations
+  // ... plus ~30 more fields (see full list in TransformService.ts)
 ] as const;
 
 // Called in handler BEFORE Zod validation

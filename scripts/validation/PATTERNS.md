@@ -176,7 +176,7 @@ if (import.meta.url === new URL(process.argv[1], "file://").href) {
 
 ### Variants by Validator
 
-- **DataQualityAssessor**: Uses `assessAll()` instead of `validateAll()`, stores in `this.metrics`
+- **DataQualityAssessor**: Uses `assessAll()` instead of `validateAll()`, stores in `this.metrics`. Uses weighted scoring across 4 categories: completeness (40%), accuracy (30%), consistency (20%), validity (10%)
 - **UniqueConstraintValidator**: Uses `this.conflicts` instead of `violations`
 - **RequiredFieldsValidator**: Adds `fixable: boolean` to violations
 
@@ -220,7 +220,7 @@ const SEVERITIES = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
 // Data quality variant (adds category)
 {
   type: "INVALID_EMAIL_FORMAT",
-  category: "accuracy",               // accuracy | completeness | consistency
+  category: "accuracy",               // accuracy | completeness | consistency | validity
   severity: "MEDIUM",
   message: `15 invalid email formats found`,
   samples: ["bad@", "@nodomain", "spaces in@email.com"],

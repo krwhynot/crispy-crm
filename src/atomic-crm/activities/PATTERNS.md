@@ -91,7 +91,7 @@ export interface QuickLogActivityDialogConfig {
 ```tsx
 // Saves ~15-20KB from initial chunk via lazy loading
 const QuickLogForm = lazy(() =>
-  import("../dashboard/v3/components/QuickLogForm").then((m) => ({
+  import("../dashboard/QuickLogForm").then((m) => ({
     default: m.QuickLogForm,
   }))
 );
