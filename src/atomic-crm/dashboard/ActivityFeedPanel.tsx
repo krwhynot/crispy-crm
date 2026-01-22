@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Activity } from "lucide-react";
-import { useTeamActivities, type TeamActivity } from "../hooks/useTeamActivities";
+import { useTeamActivities, type TeamActivity } from "./useTeamActivities";
 import { getActivityIcon, ucFirst, getInitials, extractEmailLocalPart } from "@/atomic-crm/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 

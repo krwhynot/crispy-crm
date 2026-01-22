@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { CurrentSaleProvider } from "./context";
+import { CurrentSaleProvider } from "./CurrentSaleContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
 /**
@@ -72,7 +72,7 @@ function PrincipalDashboardV3WithProvider() {
 // Public API exports - export the wrapped version
 export { PrincipalDashboardV3WithProvider as PrincipalDashboardV3 };
 export { DashboardErrorBoundary } from "./DashboardErrorBoundary";
-export { CurrentSaleProvider } from "./context";
+export { CurrentSaleProvider } from "./CurrentSaleContext";
 
 // Note: Child components (PrincipalPipelineTable, TasksKanbanPanel, LogActivityFAB, QuickLogForm)
 // are internal implementation details and not exported from the public API.
@@ -91,6 +91,6 @@ export type {
 } from "./types";
 
 // Export KPI-related types for external use
-export type { KPIMetrics } from "./hooks/useKPIMetrics";
+export type { KPIMetrics } from "./useKPIMetrics";
 // KPICard is now centralized in @/components/ui/kpi-card
 export type { KPICardProps } from "@/components/ui/kpi-card";

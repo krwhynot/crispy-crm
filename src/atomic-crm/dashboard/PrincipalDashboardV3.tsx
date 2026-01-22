@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { DashboardTabPanel } from "./components/DashboardTabPanel";
-import { LogActivityFAB } from "./components/LogActivityFAB";
-import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
-import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
-import { KPISummaryRow } from "./components/KPISummaryRow";
+import { DashboardTabPanel } from "./DashboardTabPanel";
+import { LogActivityFAB } from "./LogActivityFAB";
+import { MobileQuickActionBar } from "./MobileQuickActionBar";
+import { TaskCompleteSheet } from "./TaskCompleteSheet";
+import { KPISummaryRow } from "./KPISummaryRow";
 import { DashboardTutorial } from "./DashboardTutorial";
 
 /**

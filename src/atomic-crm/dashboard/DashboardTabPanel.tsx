@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { useTaskCount } from "../hooks/useTaskCount";
+import { useTaskCount } from "./useTaskCount";
 import { useRecentSearches, type RecentSearchItem } from "../../../hooks/useRecentSearches";
 import {
   LayoutGrid,
