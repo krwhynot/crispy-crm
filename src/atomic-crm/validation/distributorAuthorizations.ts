@@ -11,42 +11,63 @@ import { z } from "zod";
  */
 
 /**
- * Schema for creating/updating a distributor-principal authorization
+ * Base object schema for distributor-principal authorization (no refinements)
+ * Zod v4: .omit()/.pick()/.partial() require base object without refinements
+ */
+const distributorAuthorizationBaseSchema = z.strictObject({
+  id: z.union([z.string(), z.number()]).optional(),
+
+  // Required foreign keys
+  distributor_id: z.coerce.number().int().positive("Distributor is required"),
+  principal_id: z.coerce.number().int().positive("Principal is required"),
+
+  // Authorization metadata
+  is_authorized: z.coerce.boolean().default(true),
+  authorization_date: z.coerce.date().optional().nullable(),
+  expiration_date: z.coerce.date().optional().nullable(),
+  territory_restrictions: z.array(z.string().max(255)).max(50).optional().nullable(),
+  notes: z.string().max(2000).optional().nullable(),
+
+  // Audit fields (system-managed)
+  created_by: z.coerce.number().int().optional().nullable(),
+  created_at: z.string().max(50).optional(),
+  updated_at: z.string().max(50).optional(),
+  deleted_at: z.string().max(50).optional().nullable(),
+});
+
+/** Refinement: Distributor and Principal cannot be the same */
+const notSameOrgRefinement = <T extends { distributor_id?: number; principal_id?: number }>(
+  data: T
+) => {
+  if (data.distributor_id !== undefined && data.principal_id !== undefined) {
+    return data.distributor_id !== data.principal_id;
+  }
+  return true;
+};
+
+/** Refinement: Expiration must be after authorization date */
+const dateOrderRefinement = <
+  T extends { expiration_date?: Date | null; authorization_date?: Date | null },
+>(
+  data: T
+) => {
+  if (data.expiration_date && data.authorization_date) {
+    return new Date(data.expiration_date) > new Date(data.authorization_date);
+  }
+  return true;
+};
+
+/**
+ * Full schema with refinements for validation
  * Follows Engineering Constitution: Single validation at API boundary
  */
-export const distributorAuthorizationSchema = z
-  .strictObject({
-    id: z.union([z.string(), z.number()]).optional(),
-
-    // Required foreign keys
-    distributor_id: z.coerce.number().int().positive("Distributor is required"),
-    principal_id: z.coerce.number().int().positive("Principal is required"),
-
-    // Authorization metadata
-    is_authorized: z.coerce.boolean().default(true),
-    authorization_date: z.coerce.date().optional().nullable(),
-    expiration_date: z.coerce.date().optional().nullable(),
-    territory_restrictions: z.array(z.string().max(255)).max(50).optional().nullable(),
-    notes: z.string().max(2000).optional().nullable(),
-
-    // Audit fields (system-managed)
-    created_by: z.coerce.number().int().optional().nullable(),
-    created_at: z.string().max(50).optional(),
-    updated_at: z.string().max(50).optional(),
-    deleted_at: z.string().max(50).optional().nullable(),
-  })
-  .refine((data) => data.distributor_id !== data.principal_id, {
+export const distributorAuthorizationSchema = distributorAuthorizationBaseSchema
+  .refine(notSameOrgRefinement, {
     message: "Distributor and Principal cannot be the same organization",
   })
-  .refine(
-    (data) => {
-      if (data.expiration_date && data.authorization_date) {
-        return new Date(data.expiration_date) > new Date(data.authorization_date);
-      }
-      return true;
-    },
-    { message: "Expiration date must be after authorization date" }
-  );
+  .refine(dateOrderRefinement, {
+    message: "Expiration date must be after authorization date",
+  });
 
 /**
  * Type inference from schema
