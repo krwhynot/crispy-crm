@@ -9,7 +9,7 @@
 
 import React from "react";
 import { X } from "lucide-react";
-import { AdminButton } from "../../components/ui/button";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { cn } from "@/lib/utils";
 
 interface FilterChipProps {

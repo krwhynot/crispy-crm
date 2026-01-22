@@ -234,8 +234,13 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
           <AdminButton type="button" variant="outline" onClick={handleSkip} disabled={isSubmitting}>
             Skip
           </AdminButton>
-          <AdminButton type="button" onClick={handleSave} disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save Activity"}
+          <AdminButton
+            type="button"
+            onClick={handleSave}
+            isLoading={isSubmitting}
+            loadingText="Saving..."
+          >
+            Save Activity
           </AdminButton>
         </DialogFooter>
       </DialogContent>
