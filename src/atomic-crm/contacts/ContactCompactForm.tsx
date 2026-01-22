@@ -1,4 +1,3 @@
-import { required } from "react-admin";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
@@ -57,7 +56,6 @@ export const ContactCompactForm = () => {
                 label="First Name"
                 helperText="First name is required"
                 autoComplete="given-name"
-                validate={required("First name is required")}
               />
             </FormFieldWrapper>
           </div>
