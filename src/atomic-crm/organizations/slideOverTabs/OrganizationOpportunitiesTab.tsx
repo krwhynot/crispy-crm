@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
-import { getOpportunityStageLabel } from "../../opportunities/constants/stageConstants";
+import { getOpportunityStageLabel } from "../../opportunities/constants";
 import { MAX_RELATED_ITEMS } from "../constants";
 import { parseDateSafely } from "@/lib/date-utils";
 

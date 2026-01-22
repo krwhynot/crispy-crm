@@ -15,7 +15,7 @@ import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants/
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { parseDateSafely } from "@/lib/date-utils";
-import { NextTaskBadge } from "./components/NextTaskBadge";
+import { NextTaskBadge } from "./NextTaskBadge";
 import { getOpportunityRowClassName } from "./utils/rowStyling";
 
 interface OpportunityRowListViewProps {

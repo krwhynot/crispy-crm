@@ -14,7 +14,7 @@ import { useReportData } from "./hooks";
 import { MultiSelectInput } from "@/components/ra-wrappers/multi-select-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
-import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import type { Opportunity, Sale } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";

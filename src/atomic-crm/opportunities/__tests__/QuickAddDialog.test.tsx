@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { QuickAddDialog } from "../quick-add/QuickAddDialog";
+import { QuickAddDialog } from "../QuickAddDialog";
 
 // Mock QuickAddForm since it's created in Task 5
 vi.mock("../quick-add/QuickAddForm", () => ({

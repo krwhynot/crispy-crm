@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { QuickAddButton } from "../quick-add/QuickAddButton";
+import { QuickAddButton } from "../QuickAddButton";
 
 // Mock QuickAddForm to isolate button tests - form is tested separately in QuickAddForm.test.tsx
 vi.mock("../quick-add/QuickAddForm", () => ({

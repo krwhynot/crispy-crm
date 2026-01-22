@@ -13,8 +13,8 @@ import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { FormToolbar } from "@/components/ra-wrappers/simple-form";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
-import { OpportunityCompactForm } from "./forms/OpportunityCompactForm";
-import { OpportunityActivitySection } from "./components/OpportunityActivitySection";
+import { OpportunityCompactForm } from "./OpportunityCompactForm";
+import { OpportunityActivitySection } from "./OpportunityActivitySection";
 import { opportunitySchema } from "@/atomic-crm/validation/opportunities";
 
 const OpportunityEdit = () => {

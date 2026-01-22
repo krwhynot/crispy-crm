@@ -23,7 +23,7 @@ import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { QuickAddDialog } from "./quick-add/QuickAddDialog";
+import { QuickAddDialog } from "./QuickAddDialog";
 
 export interface OpportunitySpeedDialProps {
   /**
