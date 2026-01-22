@@ -17,17 +17,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { RefreshCw } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetIdentity, useRefresh } from "ra-core";
-import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
-import { QuickCreateContactPopover } from "../../contacts/QuickCreateContactPopover";
-import { contactOptionText } from "../../contacts/ContactOption";
+import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
+import { QuickCreateContactPopover } from "../contacts/QuickCreateContactPopover";
+import { contactOptionText } from "../contacts/ContactOption";
 import { ContactOrgMismatchWarning } from "./ContactOrgMismatchWarning";
 import { DistributorAuthorizationWarning } from "./DistributorAuthorizationWarning";
 import { NamingConventionHelp } from "./NamingConventionHelp";
 import { useAutoGenerateName } from "./useAutoGenerateName";
-import { OPPORTUNITY_STAGE_CHOICES } from "../constants";
-import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
-import { enableGetChoices } from "../../utils/autocompleteDefaults";
-import { LeadSourceInput } from "../LeadSourceInput";
+import { OPPORTUNITY_STAGE_CHOICES } from "./constants";
+import { saleOptionRenderer } from "../utils/saleOptionRenderer";
+import { enableGetChoices } from "../utils/autocompleteDefaults";
+import { LeadSourceInput } from "./LeadSourceInput";
 
 const priorityChoices = [
   { id: "low", name: "Low" },

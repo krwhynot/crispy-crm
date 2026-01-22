@@ -10,7 +10,7 @@ import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteO
 import { SidepaneSection } from "@/components/layouts/sidepane";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants";
 import { LeadSourceInput } from "../LeadSourceInput";
-import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
+import { CloseOpportunityModal } from "../CloseOpportunityModal";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";
 

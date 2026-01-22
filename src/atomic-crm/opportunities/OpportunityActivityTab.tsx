@@ -3,7 +3,7 @@ import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-fiel
 import { Separator } from "@/components/ui/separator";
 import { ActivityNoteForm } from "./ActivityNoteForm";
 import { NotesIterator } from "../notes";
-import type { Opportunity } from "./types";
+import type { Opportunity } from "../types";
 
 export const OpportunityActivityTab = () => {
   const record = useRecordContext<Opportunity>();
