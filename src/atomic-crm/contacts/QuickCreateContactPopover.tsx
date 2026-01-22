@@ -170,8 +170,8 @@ export function QuickCreateContactPopover({
               variant="ghost"
               size="sm"
               onClick={handleQuickCreate}
-              disabled={isPending}
-              className="text-xs h-11"
+              isLoading={isPending}
+              className="text-xs"
             >
               Just use name
             </AdminButton>
@@ -184,11 +184,10 @@ export function QuickCreateContactPopover({
                   setOpen(false);
                   onCancel();
                 }}
-                className="h-11"
               >
                 Cancel
               </AdminButton>
-              <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
+              <AdminButton type="submit" size="sm" isLoading={isPending}>
                 Create
               </AdminButton>
             </div>
@@ -352,8 +351,8 @@ export function QuickCreateContactRA({
               variant="ghost"
               size="sm"
               onClick={handleQuickCreate}
-              disabled={isPending}
-              className="text-xs h-11"
+              isLoading={isPending}
+              className="text-xs"
             >
               Just use name
             </AdminButton>
@@ -364,11 +363,10 @@ export function QuickCreateContactRA({
                 size="sm"
                 onClick={() => onCancel()}
                 disabled={isPending}
-                className="h-11"
               >
                 Cancel
               </AdminButton>
-              <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
+              <AdminButton type="submit" size="sm" isLoading={isPending}>
                 Create
               </AdminButton>
             </div>
