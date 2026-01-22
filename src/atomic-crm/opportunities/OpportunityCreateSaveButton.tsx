@@ -15,7 +15,7 @@ import { setSubmissionErrors, useSaveContext, useTranslate, useRecordFromLocatio
 import { Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { SimilarityCheckResult } from "../../utils/levenshtein";
+import type { SimilarityCheckResult } from "../utils/levenshtein";
 
 export interface OpportunityCreateSaveButtonProps {
   /** Function to check for similar opportunities */

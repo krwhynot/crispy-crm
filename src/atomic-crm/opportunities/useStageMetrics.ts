@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { Opportunity } from "../types";
-import { getStageStatus } from "../constants";
+import { getStageStatus } from "./constants";
 import { parseDateSafely } from "@/lib/date-utils";
 
 export interface StageMetrics {
