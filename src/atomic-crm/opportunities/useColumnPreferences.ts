@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { z } from "zod";
 import type { OpportunityStageValue } from "../types";
-import { OPPORTUNITY_STAGES } from "../constants";
+import { OPPORTUNITY_STAGES } from "./constants";
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 
 const COLLAPSED_KEY = "opportunity.kanban.collapsed_stages";

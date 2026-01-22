@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNotify } from "ra-core";
-import type { Opportunity } from "../../types";
-import { getOpportunityStageLabel } from "../constants";
+import type { Opportunity } from "../types";
+import { getOpportunityStageLabel } from "./constants";
 import { format } from "date-fns";
 import { parseDateSafely } from "@/lib/date-utils";
 

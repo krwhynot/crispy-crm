@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { DETAIL_FIELD_MIN_WIDTH } from "../constants";
+import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 
 export interface MetadataFieldProps {
   label: string;

@@ -2,12 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Archive, ArchiveRestore } from "lucide-react";
 import { useDataProvider, useNotify, useRedirect, useUpdate } from "react-admin";
 
-import { opportunityKeys } from "../../queryKeys";
+import { opportunityKeys } from "../queryKeys";
 
 import { Button } from "@/components/ui/button";
-import { OpportunitiesService } from "../../services";
-import type { Opportunity } from "../../types";
-import { TOUCH_TARGET_MIN_HEIGHT } from "../constants";
+import { OpportunitiesService } from "../services";
+import type { Opportunity } from "../types";
+import { TOUCH_TARGET_MIN_HEIGHT } from "./constants";
 
 export interface ArchiveActionsProps {
   record?: Opportunity;

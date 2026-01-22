@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNotify, useRefresh, useDataProvider } from "ra-core";
-import type { Opportunity, OpportunityStageValue } from "../../types";
+import type { Opportunity, OpportunityStageValue } from "../types";
 import { opportunityKeys } from "@/atomic-crm/queryKeys";
 
 export type BulkAction = "change_stage" | "change_status" | "assign_owner" | "archive" | null;
