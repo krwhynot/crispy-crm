@@ -1,5 +1,5 @@
 import React from "react";
-import type { StageStatus } from "../constants/stageThresholds";
+import type { StageStatus } from "../constants";
 
 interface StageStatusDotProps {
   /** Status derived from getStageStatus() */

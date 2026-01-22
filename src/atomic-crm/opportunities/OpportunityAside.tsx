@@ -13,7 +13,7 @@ import { TasksIterator } from "../tasks/TasksIterator";
 import { SaleName } from "../sales/SaleName";
 import { SaleAvatar } from "../sales/SaleAvatar";
 import type { Opportunity } from "../types";
-import { getOpportunityStageLabel, getStageBadgeVariant } from "./constants/stageConstants";
+import { getOpportunityStageLabel, getStageBadgeVariant } from "./constants";
 import { parseDateSafely } from "@/lib/date-utils";
 
 export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {

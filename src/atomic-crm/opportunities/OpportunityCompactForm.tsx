@@ -24,7 +24,7 @@ import { ContactOrgMismatchWarning } from "../components/ContactOrgMismatchWarni
 import { DistributorAuthorizationWarning } from "../components/DistributorAuthorizationWarning";
 import { NamingConventionHelp } from "./NamingConventionHelp";
 import { useAutoGenerateName } from "../hooks/useAutoGenerateName";
-import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../constants";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { enableGetChoices } from "../../utils/autocompleteDefaults";
 import { LeadSourceInput } from "../LeadSourceInput";

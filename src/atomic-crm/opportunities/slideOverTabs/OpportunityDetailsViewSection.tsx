@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
 import { ucFirst } from "@/atomic-crm/utils";
-import { STAGE, OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
+import { STAGE, OPPORTUNITY_STAGE_CHOICES } from "../constants";
 import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
 import { formatDateDisplay } from "@/lib/formatDate";
 import type { Opportunity } from "@/atomic-crm/types";

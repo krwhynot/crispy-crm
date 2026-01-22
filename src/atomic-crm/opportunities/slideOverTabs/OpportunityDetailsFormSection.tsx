@@ -8,7 +8,7 @@ import { saleOptionRenderer } from "@/atomic-crm/utils/saleOptionRenderer";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { SidepaneSection } from "@/components/layouts/sidepane";
-import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../constants";
 import { LeadSourceInput } from "../LeadSourceInput";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";

@@ -26,8 +26,8 @@ import {
   STAGE,
   OPPORTUNITY_STAGES_LEGACY,
   getOpportunityStageLabel,
-} from "../constants/stageConstants";
-import type { OpportunitiesByStage } from "../constants/stages";
+  type OpportunitiesByStage,
+} from "../constants";
 import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 import { getOpportunitiesByStage } from "../constants/stages";
 import { useColumnPreferences } from "../hooks/useColumnPreferences";

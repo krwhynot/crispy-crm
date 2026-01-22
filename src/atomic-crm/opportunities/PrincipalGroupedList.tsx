@@ -4,8 +4,7 @@ import { Factory, TrendingUp, TrendingDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { Opportunity } from "../types";
-import { getStageStatus, type StageStatus } from "./constants/stageThresholds";
-import { getOpportunityStageLabel, STAGE } from "./constants/stageConstants";
+import { getStageStatus, type StageStatus, getOpportunityStageLabel, STAGE } from "./constants";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**
