@@ -36,10 +36,15 @@ docs/
 |----------|---------|
 | `architecture/data-model.md` | Complete entity reference |
 | `architecture/rls-policies.md` | Row-level security policies |
+| `architecture/COMPONENT_TIERS.md` | Three-tier component hierarchy (shadcn → RA wrappers → Features) |
+| `architecture/TEST_PATTERNS.md` | Testing patterns and mock utilities |
 | `design/INDEX.md` | Design system navigation hub |
 | `design/ACCESSIBILITY.md` | WCAG 2.1 AA compliance guide |
+| `design-system/touch-targets.md` | 44px minimum touch target standards |
 | `decisions.md` | Architecture Decision Records |
 | `technical-debt.md` | Tracked technical debt items |
+
+**Engineering Constitution:** Core principles are documented in [`/CLAUDE.md`](../CLAUDE.md) at project root.
 
 ## Auto-Generated Docs
 

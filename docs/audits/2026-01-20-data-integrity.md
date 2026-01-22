@@ -293,7 +293,7 @@ Checked for banned patterns:
 ## Related Resources
 
 - **Provider Rules:** `.claude/rules/PROVIDER_RULES.md`
-- **Engineering Constitution:** `docs/development/ENGINEERING_CONSTITUTION.md`
+- **Engineering Constitution:** `/CLAUDE.md` (project root)
 - **Security Model:** `docs/SECURITY_MODEL.md`
 - **RLS Audit:** Run `/audit:rls-table` separately
 - **Full Code Review:** Run `/code-review` for broader analysis
