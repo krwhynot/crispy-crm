@@ -9,12 +9,16 @@ import { selectCityAndVerifyState } from "@/tests/utils/combobox";
 
 // Mock the external dependencies
 vi.mock("../useQuickAdd");
-vi.mock("ra-core", () => ({
-  useGetList: vi.fn(),
-  useGetIdentity: vi.fn(),
-  useDataProvider: vi.fn(),
-  useNotify: vi.fn(),
-}));
+vi.mock("ra-core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("ra-core")>();
+  return {
+    ...actual,
+    useGetList: vi.fn(),
+    useGetIdentity: vi.fn(),
+    useDataProvider: vi.fn(),
+    useNotify: vi.fn(),
+  };
+});
 
 // Mock localStorage
 const mockLocalStorage = {
