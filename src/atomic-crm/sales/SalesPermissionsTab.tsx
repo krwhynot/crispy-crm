@@ -100,33 +100,30 @@ export function SalesPermissionsTab({
   // Prevent editing own account
   const isSelfEdit = record?.id === identity?.id;
 
-  // Remove user (soft-delete by setting deleted_at)
-  const handleRemoveUser = async () => {
+  // Remove user (soft-delete handled by Data Provider layer)
+  const handleRemoveUser = () => {
     if (isSelfEdit) {
       notify("You cannot remove your own account", { type: "warning" });
       return;
     }
 
-    setIsDeleting(true);
-    try {
-      // CRITICAL: previousData required by ra-data-postgrest's getChanges()
-      await update(
-        "sales",
-        { id: record.id, data: { deleted_at: new Date().toISOString() }, previousData: record },
-        {
-          onSuccess: () => {
-            notify("User removed successfully", { type: "success" });
-            refresh();
-            redirect("/sales");
-          },
-          onError: (error: Error) => {
-            notify(error.message || "Failed to remove user", { type: "error" });
-          },
-        }
-      );
-    } finally {
-      setIsDeleting(false);
-    }
+    // useDelete hook handles soft-delete conversion via Data Provider
+    // The withSkipDelete wrapper intercepts and sets deleted_at automatically
+    deleteOne(
+      "sales",
+      { id: record.id, previousData: record },
+      {
+        onSuccess: () => {
+          notify("User removed successfully", { type: "success" });
+          refresh();
+          redirect("/sales");
+        },
+        onError: (error: unknown) => {
+          const message = error instanceof Error ? error.message : "Failed to remove user";
+          notify(message, { type: "error" });
+        },
+      }
+    );
   };
 
   // Update form field

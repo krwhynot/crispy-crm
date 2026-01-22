@@ -145,7 +145,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "new_lead",
     label: "New Lead",
-    color: "var(--info-subtle)",
+    bgClass: "bg-sky-100",
+    borderClass: "border-sky-300",
+    textClass: "text-sky-800",
     description:
       "New prospect identified. Research the operator's menu, identify which principal products fit, and prepare your pitch.",
     elevation: 3, // Prominent - new opportunities should stand out
@@ -159,7 +161,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "initial_outreach",
     label: "Initial Outreach",
-    color: "var(--tag-teal-bg)",
+    bgClass: "bg-teal-100",
+    borderClass: "border-teal-300",
+    textClass: "text-teal-800",
     description:
       "First contact made. Introduce MFB and relevant principals, qualify interest, and schedule a follow-up call or visit.",
     elevation: 2, // Medium - active engagement
@@ -173,7 +177,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "sample_visit_offered",
     label: "Sample/Visit Offered",
-    color: "var(--warning-subtle)",
+    bgClass: "bg-amber-100",
+    borderClass: "border-amber-300",
+    textClass: "text-amber-800",
     description:
       "Product sample sent or site visit scheduled. Follow up within 3-5 days to gather feedback—this is a critical stage.",
     elevation: 2, // Medium - active opportunity
@@ -187,7 +193,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "feedback_logged",
     label: "Feedback Logged",
-    color: "var(--tag-blue-bg)",
+    bgClass: "bg-blue-100",
+    borderClass: "border-blue-300",
+    textClass: "text-blue-800",
     description:
       "Operator feedback recorded. Evaluate fit, address concerns, and determine if a formal demo or pricing discussion is warranted.",
     elevation: 2, // Medium - active analysis
@@ -201,7 +209,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "demo_scheduled",
     label: "Demo Scheduled",
-    color: "var(--success-subtle)",
+    bgClass: "bg-emerald-100",
+    borderClass: "border-emerald-300",
+    textClass: "text-emerald-800",
     description:
       "Final product demonstration or tasting scheduled. Confirm distributor availability and prepare pricing/terms for close.",
     elevation: 3, // Prominent - important milestone
@@ -215,7 +225,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "closed_won",
     label: "Closed - Won",
-    color: "var(--success-strong)",
+    bgClass: "bg-emerald-500",
+    borderClass: "border-emerald-600",
+    textClass: "text-white",
     description:
       "Deal won! First purchase order placed. Ensure distributor authorization is active and hand off to account management.",
     elevation: 2, // Medium - completed but notable
@@ -229,7 +241,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "closed_lost",
     label: "Closed - Lost",
-    color: "var(--error-subtle)",
+    bgClass: "bg-red-100",
+    borderClass: "border-red-300",
+    textClass: "text-red-800",
     description:
       "Opportunity lost. Review the loss reason and consider re-engagement after 90 days if circumstances change.",
     elevation: 1, // Subtle - less emphasis on lost deals
@@ -248,9 +262,46 @@ export function getOpportunityStageLabel(stageValue: string): string {
   return stage?.label || stageValue;
 }
 
-export function getOpportunityStageColor(stageValue: string): string {
+/**
+ * Get the Tailwind background class for an opportunity stage
+ * @deprecated Use getOpportunityStageClasses() for full class set
+ */
+export function getOpportunityStageBgClass(stageValue: string): string {
   const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
-  return stage?.color || "var(--muted)";
+  return stage?.bgClass || "bg-muted";
+}
+
+/**
+ * Get the Tailwind border class for an opportunity stage
+ */
+export function getOpportunityStageBorderClass(stageValue: string): string {
+  const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
+  return stage?.borderClass || "border-border";
+}
+
+/**
+ * Get the Tailwind text class for an opportunity stage
+ */
+export function getOpportunityStageTextClass(stageValue: string): string {
+  const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
+  return stage?.textClass || "text-foreground";
+}
+
+/**
+ * Get all Tailwind classes for an opportunity stage (bg, border, text)
+ * @returns Object with bgClass, borderClass, textClass
+ */
+export function getOpportunityStageClasses(stageValue: string): {
+  bgClass: string;
+  borderClass: string;
+  textClass: string;
+} {
+  const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
+  return {
+    bgClass: stage?.bgClass || "bg-muted",
+    borderClass: stage?.borderClass || "border-border",
+    textClass: stage?.textClass || "text-foreground",
+  };
 }
 
 export function getOpportunityStageDescription(stageValue: string): string {

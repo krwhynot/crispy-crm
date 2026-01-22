@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import type { SimilarOpportunity } from "../utils/levenshtein";
-import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants";
+import { getOpportunityStageLabel, getOpportunityStageClasses } from "./constants";
 
 export interface SimilarOpportunitiesDialogProps {
   /** Whether the dialog is open */
