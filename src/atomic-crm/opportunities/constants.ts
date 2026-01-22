@@ -130,7 +130,12 @@ export interface MfbPhaseInfo {
 export interface OpportunityStage {
   value: OpportunityStageValue; // Now typed to canonical enum
   label: string;
-  color: string;
+  /** Tailwind background class for stage badges */
+  bgClass: string;
+  /** Tailwind border class for stage indicators */
+  borderClass: string;
+  /** Tailwind text class for stage labels on colored backgrounds */
+  textClass: string;
   description: string;
   elevation: 1 | 2 | 3; // Visual depth: 1=subtle, 2=medium, 3=prominent
   mfbPhase: MfbPhaseInfo; // MFB 7-phase process mapping (PRD Section 7.4)

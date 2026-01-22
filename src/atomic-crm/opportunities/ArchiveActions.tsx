@@ -6,6 +6,7 @@ import { opportunityKeys } from "../queryKeys";
 
 import { Button } from "@/components/ui/button";
 import { OpportunitiesService } from "../services";
+import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 import type { Opportunity } from "../types";
 import { TOUCH_TARGET_MIN_HEIGHT } from "./constants";
 
@@ -20,7 +21,7 @@ export const ArchiveButton = ({ record }: ArchiveActionsProps) => {
   const queryClient = useQueryClient();
 
   // Create service instance for mutation (React Hooks must be called unconditionally)
-  const opportunitiesService = new OpportunitiesService(dataProvider);
+  const opportunitiesService = new OpportunitiesService(dataProvider as ExtendedDataProvider);
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => {
@@ -64,7 +65,7 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
   const queryClient = useQueryClient();
 
   // Create service instance for mutation (React Hooks must be called unconditionally)
-  const opportunitiesService = new OpportunitiesService(dataProvider);
+  const opportunitiesService = new OpportunitiesService(dataProvider as ExtendedDataProvider);
 
   const { mutate } = useMutation({
     mutationFn: () => {

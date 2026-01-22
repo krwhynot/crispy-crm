@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { useUpdate, useGetIdentity, useRedirect, useRefresh, useNotify } from "react-admin";
+import {
+  useUpdate,
+  useDelete,
+  useGetIdentity,
+  useRedirect,
+  useRefresh,
+  useNotify,
+} from "react-admin";
 import { useSafeNotify } from "@/atomic-crm/hooks";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -59,11 +66,11 @@ export function SalesPermissionsTab({
   onDirtyChange,
 }: SalesPermissionsTabProps) {
   const [update, { isLoading }] = useUpdate();
+  const [deleteOne, { isPending: isDeleting }] = useDelete();
   const notify = useNotify();
   const redirect = useRedirect();
   const refresh = useRefresh();
   const { data: identity } = useGetIdentity();
-  const [isDeleting, setIsDeleting] = useState(false);
   // FIX [WF-C04]: Show reassign dialog before disabling user
   const [showDisableDialog, setShowDisableDialog] = useState(false);
 
