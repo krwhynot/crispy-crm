@@ -12,13 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FormSelectInput } from "@/components/admin/inputs/FormSelectInput";
 import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
 import { Popover, PopoverContent, PopoverAnchor } from "@/components/ui/popover";
 import { US_CITIES } from "./data/us-cities";
@@ -342,9 +336,9 @@ const QuickAddFormContent = ({
   }, [identityId, identityLoading, setValue]);
 
   // Watch form values for dependent UI updates
-  const [organizationId, principalId, cityValue, productIds, accountManagerId] = useWatch({
+  const [organizationId, principalId, cityValue, productIds] = useWatch({
     control,
-    name: ["organization_id", "principal_id", "city", "product_ids", "account_manager_id"],
+    name: ["organization_id", "principal_id", "city", "product_ids"],
   });
 
   const {
@@ -398,22 +392,10 @@ const QuickAddFormContent = ({
     }
   };
 
-  const principalOptions =
-    principalsList?.map((org) => ({
-      value: org.id.toString(),
-      label: org.name,
-    })) || [];
-
   const organizationOptions =
     organizationsList?.map((org) => ({
       value: org.id.toString(),
       label: org.name,
-    })) || [];
-
-  const salesOptions =
-    salesList?.map((sale) => ({
-      value: sale.id.toString(),
-      label: sale.name || sale.email || `Sales #${sale.id}`,
     })) || [];
 
   const productOptions =
@@ -463,44 +445,18 @@ const QuickAddFormContent = ({
             disabled={principalsLoading}
           />
 
-          <div className="space-y-2">
-            <Label htmlFor="account_manager_id">
-              Account Manager
-              <span className="text-destructive" aria-hidden="true">
-                {" "}
-                *
-              </span>
-            </Label>
-            <Select
-              value={accountManagerId?.toString()}
-              onValueChange={(value) => setValue("account_manager_id", Number(value))}
-              disabled={salesLoading}
-            >
-              <SelectTrigger
-                id="account_manager_id"
-                className="bg-background"
-                aria-invalid={errors.account_manager_id ? "true" : undefined}
-                aria-describedby={
-                  errors.account_manager_id ? "account_manager_id-error" : undefined
-                }
-                aria-required="true"
-              >
-                <SelectValue placeholder={salesLoading ? "Loading..." : "Select account manager"} />
-              </SelectTrigger>
-              <SelectContent>
-                {salesOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.account_manager_id && (
-              <p id="account_manager_id-error" role="alert" className="text-sm text-destructive">
-                {errors.account_manager_id.message}
-              </p>
-            )}
-          </div>
+          <FormSelectInput
+            source="account_manager_id"
+            label="Account Manager"
+            choices={
+              salesList?.map((sale) => ({
+                id: sale.id,
+                name: sale.name || sale.email || `Sales #${sale.id}`,
+              })) ?? []
+            }
+            placeholder={salesLoading ? "Loading..." : "Select account manager"}
+            disabled={salesLoading}
+          />
 
           <AccessibleField name="campaign" label="Campaign" error={errors.campaign?.message}>
             <Input
