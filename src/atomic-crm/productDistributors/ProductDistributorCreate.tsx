@@ -9,7 +9,6 @@ import { SaveButton } from "@/components/ra-wrappers/form";
 import { FormToolbar } from "@/components/ra-wrappers/simple-form";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { productDistributorSchema } from "../validation/productDistributors";
-import { AUTOCOMPLETE_DEBOUNCE_MS, shouldRenderSuggestions } from "../utils/autocompleteDefaults";
 import { ProductDistributorInputs } from "./ProductDistributorInputs";
 
 // Human-readable field labels for error messages
@@ -56,45 +55,30 @@ const ProductDistributorFormContent = () => {
 
       <ReferenceInput source="product_id" reference="products" isRequired>
         <AutocompleteInput
-          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-          shouldRenderSuggestions={shouldRenderSuggestions}
           optionText="name"
           label="Product *"
-          filterToQuery={(q) => ({ "name@ilike": `%${q}%` })}
+          filterToQuery={(q: string) => ({ "name@ilike": `%${q}%` })}
           helperText="Select the product"
+          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+          shouldRenderSuggestions={shouldRenderSuggestions}
         />
       </ReferenceInput>
 
       <ReferenceInput source="distributor_id" reference="organizations" isRequired>
         <AutocompleteInput
-          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-          shouldRenderSuggestions={shouldRenderSuggestions}
           optionText="name"
           label="Distributor *"
-          filterToQuery={(q) => ({ "name@ilike": `%${q}%`, organization_type: "distributor" })}
+          filterToQuery={(q: string) => ({
+            "name@ilike": `%${q}%`,
+            organization_type: "distributor",
+          })}
           helperText="Select the distributor"
+          debounce={AUTOCOMPLETE_DEBOUNCE_MS}
+          shouldRenderSuggestions={shouldRenderSuggestions}
         />
       </ReferenceInput>
 
-      <TextInput
-        source="vendor_item_number"
-        label="DOT Number (Vendor Item #)"
-        helperText="e.g., USF# 4587291, Sysco# 1092847"
-        fullWidth
-      />
-
-      <SelectInput
-        source="status"
-        label="Status"
-        choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES}
-        helperText={false}
-      />
-
-      <DateInput source="valid_from" label="Valid From" helperText={false} />
-
-      <DateInput source="valid_to" label="Valid To" helperText="Leave empty if ongoing" />
-
-      <TextInput source="notes" label="Notes" multiline rows={3} fullWidth helperText={false} />
+      <ProductDistributorInputs />
 
       <FormToolbar>
         <div className="flex flex-row gap-2 justify-end">

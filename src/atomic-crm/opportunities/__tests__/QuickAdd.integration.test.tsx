@@ -24,6 +24,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { render, screen, waitFor, fireEvent, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddForm } from "../QuickAddForm";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
