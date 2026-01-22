@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
-import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
+import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { SnoozeIndicator } from "@/components/ui/snooze-badge";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
