@@ -89,12 +89,12 @@ describe("Product Filtering E2E Integration", () => {
       expect(error).toBeNull();
 
       if (data && data.length > 0) {
-        const firstProduct = data[0];
-        expect(firstProduct).toHaveProperty("principal_name");
+        const product = data[0]!;
+        expect(product).toHaveProperty("principal_name");
         // principal_name can be null (if organization doesn't exist) or string
-        expect(
-          firstProduct.principal_name === null || typeof firstProduct.principal_name === "string"
-        ).toBe(true);
+        expect(product.principal_name === null || typeof product.principal_name === "string").toBe(
+          true
+        );
       }
     });
 

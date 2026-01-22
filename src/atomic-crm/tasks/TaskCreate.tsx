@@ -4,7 +4,7 @@ import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedir
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
-import { TaskCompactForm } from "./TaskCompactForm";
+import { TaskInputs } from "./TaskInputs";
 import { getTaskDefaultValues, taskCreateSchema } from "../validation/task";
 
 // Map URL param values to task type enum values
@@ -66,7 +66,7 @@ export default function TaskCreate() {
               mode="onBlur"
               resolver={zodResolver(taskCreateSchema)}
             >
-              <TaskCompactForm />
+              <TaskInputs />
               <CreateFormFooter
                 resourceName="task"
                 redirectPath="/tasks"

@@ -108,13 +108,15 @@ export function FormSelectInput(props: FormSelectInputProps) {
   const resource = useResourceContext();
 
   // useInput provides React Admin form integration
-  const { id, field, isRequired } = useInput({
+  const { id, field, fieldState, isRequired } = useInput({
     source,
     defaultValue,
     validate,
     disabled,
     readOnly,
   });
+
+  const hasError = fieldState?.invalid;
 
   // useChoices handles optionText/optionValue mapping with translation
   const { getChoiceText, getChoiceValue } = useChoices({
@@ -126,6 +128,12 @@ export function FormSelectInput(props: FormSelectInputProps) {
   // Handle selection change - adapt shadcn's onValueChange to React Admin's onChange
   const handleChange = useCallback(
     (value: string) => {
+      // Guard against Radix bug #3135: onValueChange fires with empty string
+      // when controlled value changes programmatically. Ignore unless intentional.
+      if (value === "" && !allowEmpty && field.value !== "") {
+        return;
+      }
+
       if (value === emptyValue) {
         field.onChange(emptyValue);
       } else {
@@ -134,7 +142,7 @@ export function FormSelectInput(props: FormSelectInputProps) {
         field.onChange(choice ? getChoiceValue(choice) : value);
       }
     },
-    [field, choices, getChoiceValue, emptyValue]
+    [field, choices, getChoiceValue, emptyValue, allowEmpty]
   );
 
   // Render empty option text
@@ -163,9 +171,6 @@ export function FormSelectInput(props: FormSelectInputProps) {
       )}
       <FormControl>
         <Select
-          // Key fixes Radix bug where onValueChange fires with empty string
-          // when controlled value changes: https://github.com/radix-ui/primitives/issues/3135
-          key={`select:${String(field.value ?? emptyValue)}`}
           value={String(field.value ?? emptyValue)}
           onValueChange={handleChange}
           disabled={disabled || readOnly}

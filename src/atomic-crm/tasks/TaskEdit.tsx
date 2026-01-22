@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import { taskKeys, opportunityKeys } from "../queryKeys";
-import { TaskCompactForm } from "./TaskCompactForm";
+import { TaskInputs } from "./TaskInputs";
 import { FormToolbar } from "../layout/FormToolbar";
 import { taskSchema } from "@/atomic-crm/validation/task";
 import type { Task } from "../types";
@@ -48,7 +48,7 @@ const TaskEditForm = () => {
         <Card>
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-4">Edit Task</h2>
-            <TaskCompactForm />
+            <TaskInputs />
             <FormToolbar />
           </CardContent>
         </Card>
