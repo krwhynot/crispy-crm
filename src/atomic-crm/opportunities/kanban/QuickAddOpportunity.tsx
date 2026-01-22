@@ -141,8 +141,10 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       console.log("[QuickAdd] create() threw error:", error);
 
       // Handle Zod validation errors with specific field messages (fail-fast principle)
-      if (error instanceof z.ZodError) {
-        const fieldErrors = error.issues.map((issue) => issue.message).join(", ");
+      if (error instanceof ZodError) {
+        const fieldErrors = error.issues
+          .map((issue: { message: string }) => issue.message)
+          .join(", ");
         notify(`Validation failed: ${fieldErrors}`, { type: "error" });
         return;
       }

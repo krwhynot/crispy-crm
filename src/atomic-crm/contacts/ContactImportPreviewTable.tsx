@@ -72,7 +72,8 @@ export function ContactImportPreviewTable({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sampleRows.slice(0, 5).map((row, index) => {
+                  {sampleRows.slice(0, 5).map((rawRow, index) => {
+                    const row = rawRow as ImportPreviewRow;
                     const validation = sampleValidation[index];
                     return (
                       <TableRow key={index}>
@@ -86,11 +87,13 @@ export function ContactImportPreviewTable({
                             )}
                           </div>
                         </TableCell>
-                        <TableCell>{row.name || `${row.first_name} ${row.last_name}`}</TableCell>
-                        <TableCell className="font-mono text-sm">
-                          {row.email?.[0]?.email || "-"}
+                        <TableCell>
+                          {row.name || `${row.first_name ?? ""} ${row.last_name ?? ""}`}
                         </TableCell>
-                        <TableCell>{row.organization_name || "-"}</TableCell>
+                        <TableCell className="font-mono text-sm">
+                          {row.email?.[0]?.email ?? row.email?.[0]?.value ?? "-"}
+                        </TableCell>
+                        <TableCell>{row.organization_name ?? "-"}</TableCell>
                         <TableCell>
                           <Badge variant="outline" className="text-xs">
                             {validation?.valid ? "Valid" : "Has Issues"}
