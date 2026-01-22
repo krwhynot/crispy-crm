@@ -9,7 +9,7 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
-import { OPPORTUNITY_STAGE_CHOICES, OPPORTUNITY_STAGES_LEGACY } from "../constants/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES, OPPORTUNITY_STAGES_LEGACY } from "../constants";
 import { OpportunityListContent } from "../kanban/OpportunityListContent";
 
 // Mock useListContext to test components directly

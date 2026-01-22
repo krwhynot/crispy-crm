@@ -24,8 +24,7 @@ import { addDays } from "date-fns";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { OPPORTUNITY_STAGES, STAGE } from "./constants/stageConstants";
-import { priorityChoices } from "./constants/priorityChoices";
+import { OPPORTUNITY_STAGES, STAGE, priorityChoices } from "./constants";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
 export const OpportunityListFilter = () => {

@@ -4,7 +4,7 @@ import {
   isRotting,
   getWarningThreshold,
   getStageStatus,
-} from "../constants/stageThresholds";
+} from "../constants";
 
 describe("stageThresholds", () => {
   describe("STAGE_ROTTING_THRESHOLDS", () => {
