@@ -655,6 +655,13 @@ export const SaleAvatar = (props: {
 - Handle null gracefully: return null if no name data
 - Use optional `title` prop for tooltips
 
+**Avatar field types:**
+- `Sale.avatar` - Object with `src` property (`RAFile` type) - used for display
+- `SalesFormData.avatar_url` - Plain URL string - used for form submissions
+- `SaleWithProfile.avatar_url` - Extended type in `SalesProfileTab` for form editing
+
+**Note:** Validation removed from form components - all validation occurs at API boundary (Edge Function) per Engineering Constitution.
+
 ---
 
 ## Pattern H: Resource Configuration (Expanded)

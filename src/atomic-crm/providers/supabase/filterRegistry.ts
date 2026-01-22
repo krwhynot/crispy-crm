@@ -328,6 +328,7 @@ export const filterableFields = {
   ],
 
   // Activities resource
+  // NOTE: Also used by tasks (STI pattern) - task-specific fields included for tasksHandler forwarding
   activities: [
     "id",
     "activity_type",
@@ -347,6 +348,8 @@ export const filterableFields = {
     "updated_at",
     "deleted_at", // Soft delete timestamp
     "created_by", // FK to sales (for filtering by creator/owner - activities table uses created_by, NOT sales_id)
+    "sales_id", // Task assignee filtering (STI: tasks stored in activities table)
+    "completed", // Task completion filtering (STI: tasks stored in activities table)
     "q", // Special: full-text search parameter
     // Nested relationship filters for CampaignActivityReport
     "opportunities.campaign", // Filter by related opportunity's campaign
@@ -465,6 +468,7 @@ export const filterableFields = {
     "entity_id",
     "read",
     "created_at",
+    "deleted_at", // Soft delete timestamp
     "q", // Special: full-text search parameter
   ],
 
@@ -636,7 +640,18 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
 
   // Handle React Admin underscore convention (field_operator)
   // Per React Admin docs: "suffix the filter name with an operator, e.g. '_gte'"
-  const RA_OPERATORS = ["_gte", "_lte", "_gt", "_lt", "_neq", "_like", "_ilike", "_in", "_nin"];
+  const RA_OPERATORS = [
+    "_gte",
+    "_lte",
+    "_gt",
+    "_lt",
+    "_neq",
+    "_like",
+    "_ilike",
+    "_in",
+    "_nin",
+    "_is",
+  ];
   for (const op of RA_OPERATORS) {
     if (filterKey.endsWith(op)) {
       baseField = filterKey.slice(0, -op.length);
