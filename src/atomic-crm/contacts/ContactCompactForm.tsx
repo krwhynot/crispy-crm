@@ -10,7 +10,7 @@ import {
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { EmailArrayField, PhoneArrayField } from "@/components/domain/forms";
-import { OrganizationPicker } from "@/atomic-crm/contacts/components/OrganizationPicker";
+import { OrganizationPicker } from "./OrganizationPicker";
 import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
@@ -116,11 +116,7 @@ export const ContactCompactForm = () => {
         {/* Email - full width row (optional) */}
         <div data-tutorial="contact-email">
           <FormFieldWrapper name="email">
-            <EmailArrayField
-              onEmailPaste={handleEmailPaste}
-              onEmailBlur={handleEmailBlur}
-              validate={validateEmailOnBlur}
-            />
+            <EmailArrayField onEmailPaste={handleEmailPaste} onEmailBlur={handleEmailBlur} />
           </FormFieldWrapper>
         </div>
 

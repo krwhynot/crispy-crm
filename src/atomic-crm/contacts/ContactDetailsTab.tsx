@@ -76,7 +76,7 @@ export function ContactDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record} mode="onBlur">
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <FormProgressProvider>
             <div className="space-y-6">

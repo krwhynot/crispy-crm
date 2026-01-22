@@ -4,23 +4,6 @@ import { FormSection, CompactFormRow, FormFieldWrapper } from "@/components/ra-w
 import { ContactManagerInput } from "./ContactManagerInput";
 import { DEPARTMENT_CHOICES } from "./constants";
 
-const LINKEDIN_URL_REGEX = /^https?:\/\/(?:www\.)?linkedin\.com\//;
-
-const validateLinkedInUrl = (value: string | undefined | null) => {
-  if (!value || value.trim() === "") return undefined; // Optional field
-
-  try {
-    const url = new URL(value);
-    if (!LINKEDIN_URL_REGEX.test(url.href)) {
-      return "URL must be from linkedin.com (e.g., https://linkedin.com/in/username)";
-    }
-  } catch {
-    return "Please enter a valid URL";
-  }
-
-  return undefined;
-};
-
 export const ContactAdditionalDetails = () => {
   return (
     <>
@@ -45,7 +28,6 @@ export const ContactAdditionalDetails = () => {
               source="linkedin_url"
               label="LinkedIn URL"
               helperText="Format: https://linkedin.com/in/username"
-              validate={validateLinkedInUrl}
             />
           </FormFieldWrapper>
           <FormFieldWrapper name="notes">

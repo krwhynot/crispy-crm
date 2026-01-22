@@ -30,7 +30,7 @@ export {
 export { QuickLogActivity } from "./QuickLogActivity";
 
 // Export shared components
-export { ActivityTimelineEntry } from "./components/ActivityTimelineEntry";
+export { ActivityTimelineEntry } from "./ActivityTimelineEntry";
 
 // Export slide-over component
 export { ActivitySlideOver } from "./ActivitySlideOver";
