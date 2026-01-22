@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetList, useCreatePath, useRecordContext, AdminButton } from "react-admin";
+import { useGetList, useCreatePath, useRecordContext, Button } from "react-admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Store, MapPin, Phone, ExternalLink } from "lucide-react";
@@ -46,9 +46,9 @@ export const BranchLocationsSection = () => {
             {branchCount} {branchCount === 1 ? "Branch" : "Branches"}
           </Badge>
         </div>
-        <AdminButton
-          size="sm"
-          variant="outline"
+        <Button
+          size="small"
+          variant="outlined"
           onClick={() => {
             const createUrl = createPath({
               resource: "organizations",
@@ -63,7 +63,7 @@ export const BranchLocationsSection = () => {
         >
           <Plus className="h-4 w-4 mr-1" />
           Add Branch
-        </AdminButton>
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">

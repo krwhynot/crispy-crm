@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useCreate, useRefresh, useGetIdentity, useGetList, useNotify } from "react-admin";
-import { Loader2, X } from "lucide-react";
+import { X } from "lucide-react";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
 import { ZodError } from "../../validation";
 import type { OpportunityStageValue, Organization, Opportunity } from "../../types";
@@ -330,31 +331,24 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
               </div>
 
               <div className="flex gap-2 justify-end">
-                <button
+                <AdminButton
                   type="button"
+                  variant="outline"
                   onClick={() => {
                     setIsOpen(false);
                     setName("");
                   }}
-                  className="px-4 h-11 text-sm border border-border rounded hover:bg-accent active:bg-accent/80 transition-colors motion-safe:active:scale-[0.98]"
                   disabled={isLoading}
                 >
                   Cancel
-                </button>
-                <button
+                </AdminButton>
+                <AdminButton
                   type="submit"
-                  className="px-4 h-11 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 active:bg-primary/80 transition-colors motion-safe:active:scale-[0.98] disabled:opacity-50 inline-flex items-center gap-2"
-                  disabled={isLoading}
+                  isLoading={isLoading}
+                  loadingText="Creating..."
                 >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Creating...
-                    </>
-                  ) : (
-                    "Create"
-                  )}
-                </button>
+                  Create
+                </AdminButton>
               </div>
             </form>
           </div>

@@ -236,8 +236,8 @@ export function QuickCreatePopover({
               variant="ghost"
               size="sm"
               onClick={handleQuickCreate}
-              disabled={isPending}
-              className="text-xs h-11"
+              isLoading={isPending}
+              className="text-xs"
             >
               Just use name
             </AdminButton>
@@ -250,7 +250,6 @@ export function QuickCreatePopover({
                   setOpen(false);
                   onCancel();
                 }}
-                className="h-11"
               >
                 Cancel
               </AdminButton>
@@ -416,16 +415,10 @@ export function QuickCreateOrganizationRA({
 
           {minimalMode ? (
             <div className="flex justify-end gap-2 pt-2">
-              <AdminButton
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => onCancel()}
-                className="h-11"
-              >
+              <AdminButton type="button" variant="outline" size="sm" onClick={() => onCancel()}>
                 Cancel
               </AdminButton>
-              <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
+              <AdminButton type="submit" size="sm" isLoading={isPending}>
                 Create
               </AdminButton>
             </div>
@@ -436,22 +429,16 @@ export function QuickCreateOrganizationRA({
                 variant="ghost"
                 size="sm"
                 onClick={handleQuickCreate}
-                disabled={isPending}
-                className="text-xs h-11"
+                isLoading={isPending}
+                className="text-xs"
               >
                 Just use name
               </AdminButton>
               <div className="flex gap-2">
-                <AdminButton
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onCancel()}
-                  className="h-11"
-                >
+                <AdminButton type="button" variant="outline" size="sm" onClick={() => onCancel()}>
                   Cancel
                 </AdminButton>
-                <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
+                <AdminButton type="submit" size="sm" isLoading={isPending}>
                   Create
                 </AdminButton>
               </div>
