@@ -342,11 +342,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                 >
                   Cancel
                 </AdminButton>
-                <AdminButton
-                  type="submit"
-                  isLoading={isLoading}
-                  loadingText="Creating..."
-                >
+                <AdminButton type="submit" isLoading={isLoading} loadingText="Creating...">
                   Create
                 </AdminButton>
               </div>

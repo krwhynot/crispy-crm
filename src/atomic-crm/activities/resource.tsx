@@ -17,6 +17,7 @@ const ActivityCreateLazy = React.lazy(() => import("./ActivityCreate"));
 const ActivityEditLazy = React.lazy(() =>
   import("./ActivityEdit").then((module) => ({ default: module.ActivityEdit }))
 );
+const ActivityShowLazy = React.lazy(() => import("./ActivityShow"));
 
 // Wrap lazy components with resource-specific error boundaries
 export const ActivityListView = () => (
@@ -37,6 +38,12 @@ export const ActivityEditView = () => (
   </ResourceErrorBoundary>
 );
 
+export const ActivityShowView = () => (
+  <ResourceErrorBoundary resource="activities" page="show">
+    <ActivityShowLazy />
+  </ResourceErrorBoundary>
+);
+
 const activityRecordRepresentation = (record: ActivityRecord) =>
   `${record?.type || "Activity"} - ${
     record?.activity_date
@@ -49,5 +56,6 @@ export default {
   list: ActivityListView,
   create: ActivityCreateView,
   edit: ActivityEditView,
+  show: ActivityShowView,
   recordRepresentation: activityRecordRepresentation,
 };

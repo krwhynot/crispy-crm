@@ -13,6 +13,7 @@
 export { default as ActivityList } from "./ActivityList";
 export { default as ActivityCreate } from "./ActivityCreate";
 export { ActivityEdit } from "./ActivityEdit";
+export { default as ActivityShow } from "./ActivityShow";
 
 // Export shared form inputs
 export { ActivityInputs } from "./ActivityInputs";

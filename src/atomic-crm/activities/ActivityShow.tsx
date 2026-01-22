@@ -5,11 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { ActivityRecord } from "../types";
 import { ucFirst } from "@/atomic-crm/utils";
-import {
-  INTERACTION_TYPE_OPTIONS,
-  SAMPLE_STATUS_OPTIONS,
-  ACTIVITY_TYPE_FROM_API,
-} from "../validation/activities";
+import { SAMPLE_STATUS_OPTIONS, ACTIVITY_TYPE_FROM_API } from "../validation/activities";
 
 /**
  * ActivityShow Component
