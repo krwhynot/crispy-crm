@@ -14,9 +14,9 @@ import { Filter, ArrowUpDown, ArrowUp, ArrowDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import type { PrincipalPipelineRow, Momentum } from "../types";
-import { usePrincipalPipeline } from "../hooks/usePrincipalPipeline";
-import { usePipelineTableState, type SortField } from "../hooks/usePipelineTableState";
+import type { PrincipalPipelineRow, Momentum } from "./types";
+import { usePrincipalPipeline } from "./usePrincipalPipeline";
+import { usePipelineTableState, type SortField } from "./usePipelineTableState";
 import { PipelineTableRow } from "./PipelineTableRow";
 
 // Lazy load PipelineDrillDownSheet - saves ~3-5KB from main dashboard chunk

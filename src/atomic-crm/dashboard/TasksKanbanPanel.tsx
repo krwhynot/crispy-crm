@@ -20,8 +20,8 @@ import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { TaskKanbanColumn, type TaskColumnId } from "./TaskKanbanColumn";
 import { TaskKanbanCard } from "./TaskKanbanCard";
-import type { TaskItem } from "../types";
-import { useMyTasks } from "../hooks/useMyTasks";
+import type { TaskItem } from "./types";
+import { useMyTasks } from "./useMyTasks";
 
 /**
  * TasksKanbanPanel - Kanban board for tasks with time-horizon columns

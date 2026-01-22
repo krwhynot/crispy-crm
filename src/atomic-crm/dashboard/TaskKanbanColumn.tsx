@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { TaskKanbanCard } from "./TaskKanbanCard";
-import type { TaskItem } from "../types";
+import type { TaskItem } from "./types";
 import { cn } from "@/lib/utils";
 
 /**

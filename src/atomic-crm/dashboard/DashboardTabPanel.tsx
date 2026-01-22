@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { useTaskCount } from "./useTaskCount";
-import { useRecentSearches, type RecentSearchItem } from "../../../hooks/useRecentSearches";
+import { useRecentSearches, type RecentSearchItem } from "../hooks/useRecentSearches";
 import {
   LayoutGrid,
   CheckSquare,

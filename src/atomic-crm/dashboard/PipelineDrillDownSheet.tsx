@@ -12,10 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ExternalLink, TrendingUp, Calendar, DollarSign } from "lucide-react";
-import {
-  usePrincipalOpportunities,
-  type OpportunitySummary,
-} from "../hooks/usePrincipalOpportunities";
+import { usePrincipalOpportunities, type OpportunitySummary } from "./usePrincipalOpportunities";
 import { formatCurrency } from "@/atomic-crm/utils/formatters";
 
 interface PipelineDrillDownSheetProps {

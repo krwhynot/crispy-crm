@@ -17,7 +17,7 @@
 
 import { type ReactNode, useMemo, useCallback } from "react";
 import { useGetIdentity } from "react-admin";
-import { CurrentSaleContext } from "../hooks/useCurrentSale";
+import { CurrentSaleContext } from "./useCurrentSale";
 import { devLog } from "@/lib/devLogger";
 
 interface CurrentSaleProviderProps {

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { AlertCircle, Activity, Briefcase, AlertTriangle } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
-import { useKPIMetrics } from "../hooks/useKPIMetrics";
+import { useKPIMetrics } from "./useKPIMetrics";
 
 /**
  * KPI navigation URLs (preserved from original KPI_CONFIG)

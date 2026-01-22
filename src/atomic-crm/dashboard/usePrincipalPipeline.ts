@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useGetList } from "react-admin";
 import { useCurrentSale } from "./useCurrentSale";
-import type { PrincipalPipelineRow, PipelineSummaryRow } from "../types";
+import type { PrincipalPipelineRow, PipelineSummaryRow } from "./types";
 import { devLog } from "@/lib/devLogger";
 
 // Stable empty array to avoid new reference creation on each render
