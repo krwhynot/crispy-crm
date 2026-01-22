@@ -11,12 +11,12 @@ import { formatDistance, format } from "date-fns";
 import { Building2, X } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
 import type { Opportunity } from "../types";
-import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants/stageConstants";
+import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants";
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { parseDateSafely } from "@/lib/date-utils";
 import { NextTaskBadge } from "./NextTaskBadge";
-import { getOpportunityRowClassName } from "./utils/rowStyling";
+import { getOpportunityRowClassName } from "./rowStyling";
 
 interface OpportunityRowListViewProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;

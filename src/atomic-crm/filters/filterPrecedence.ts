@@ -3,7 +3,7 @@ import { FILTER_KEYS } from "./types";
 import { getStorageItem, setStorageItem, removeStorageItem } from "../utils/secureStorage";
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { filterValueSchema } from "../validation/filters";
-import { ACTIVE_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { ACTIVE_STAGES } from "@/atomic-crm/opportunities/constants";
 
 /**
  * Filter precedence utilities

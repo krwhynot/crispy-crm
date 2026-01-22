@@ -1,7 +1,4 @@
-import {
-  OPPORTUNITY_STAGE_CHOICES,
-  CLOSED_STAGES,
-} from "../opportunities/constants/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES, CLOSED_STAGES } from "../opportunities/constants";
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { urlFilterSchema } from "../validation/filters";

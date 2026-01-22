@@ -8,7 +8,7 @@ import {
   lossReasonSchema,
   opportunityProductSchema,
 } from "./opportunities-core";
-import { STAGE, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { STAGE, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
 
 /**
  * Operation-specific schemas for opportunities

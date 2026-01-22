@@ -18,4 +18,4 @@ export type USTimezone = (typeof US_TIMEZONES)[number]["id"];
 
 // Re-export from existing locations (maintain single source of truth)
 export { US_STATES } from "@/atomic-crm/organizations/constants";
-export { LEAD_SOURCE_CHOICES } from "@/atomic-crm/opportunities/constants/LeadSourceInput.constants";
+export { LEAD_SOURCE_CHOICES } from "@/atomic-crm/opportunities/constants";

@@ -1,7 +1,7 @@
-import type { OpportunityStage } from "./constants/stageConstants";
-import { getOpportunityStageLabel } from "./constants/stageConstants";
+import type { OpportunityStage } from "./constants";
+import { getOpportunityStageLabel } from "./constants";
 
-export type { OpportunityStage } from "./constants/stageConstants";
+export type { OpportunityStage } from "./constants";
 
 export const findOpportunityLabel = (
   opportunityStages: OpportunityStage[],
@@ -12,4 +12,4 @@ export const findOpportunityLabel = (
 };
 
 // Legacy compatibility - use centralized lookup
-export { findOpportunityLabel as legacyFindOpportunityLabel } from "./constants/stageConstants";
+export { findOpportunityLabel as legacyFindOpportunityLabel } from "./constants";
