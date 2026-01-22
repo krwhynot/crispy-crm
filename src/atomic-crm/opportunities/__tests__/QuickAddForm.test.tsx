@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, beforeAll, type Mock } from "vite
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MemoryRouter } from "react-router-dom";
 import { QuickAddForm } from "../QuickAddForm";
 import { useQuickAdd } from "../useQuickAdd";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
@@ -31,7 +32,7 @@ const mockLocalStorage = {
 };
 Object.defineProperty(window, "localStorage", { value: mockLocalStorage });
 
-// Test wrapper component
+// Test wrapper component - includes MemoryRouter for React Admin Form component
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -39,7 +40,13 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
       mutations: { retry: false },
     },
   });
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        {children}
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
 };
 
 describe("QuickAddForm", () => {

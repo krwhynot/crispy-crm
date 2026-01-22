@@ -243,11 +243,80 @@ type QuickAddFormValues = {
   quick_note?: string;
 };
 
+/**
+ * QuickAddForm - Tier 2 React Admin Form Component
+ *
+ * Uses React Admin's Form component for proper form context integration.
+ * Custom inputs (Combobox, MultiSelectCombobox) are retained where RA
+ * doesn't provide equivalent functionality.
+ *
+ * Architecture: Wrapper (Form context) + Content (form logic)
+ * per MODULE_CHECKLIST.md Rule #4 (Component Tiers)
+ */
 export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
-  const { mutate, isPending } = useQuickAdd();
-
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
 
+  // Compute default values from schema and localStorage
+  const schemaDefaults = quickAddBaseSchema.partial().parse({});
+
+  const defaultValues = useMemo(
+    () => ({
+      ...schemaDefaults,
+      campaign:
+        getStorageItem<string>("last_campaign", { type: "local" }) ?? schemaDefaults.campaign ?? "",
+      principal_id:
+        Number(getStorageItem<string>("last_principal", { type: "local" }) ?? "") || undefined,
+      account_manager_id: identity?.id ? Number(identity.id) : undefined,
+      product_ids: schemaDefaults.product_ids ?? [],
+    }),
+    [identity?.id, schemaDefaults]
+  );
+
+  // React Admin Form component provides FormProvider context
+  // mode="onBlur" per Engineering Constitution - no onChange validation
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Zod resolver type mismatch with RA Form
+  return (
+    <Form defaultValues={defaultValues} mode="onBlur" resolver={zodResolver(quickAddSchema) as any}>
+      <QuickAddFormContent
+        onSuccess={onSuccess}
+        identityId={identity?.id}
+        identityLoading={identityLoading}
+      />
+    </Form>
+  );
+};
+
+/**
+ * QuickAddFormContent - Inner form component using useFormContext
+ *
+ * Consumes the FormProvider context from the parent Form wrapper.
+ * Handles all form logic, data fetching, and rendering.
+ */
+interface QuickAddFormContentProps {
+  onSuccess: () => void;
+  identityId?: string | number;
+  identityLoading: boolean;
+}
+
+const QuickAddFormContent = ({
+  onSuccess,
+  identityId,
+  identityLoading,
+}: QuickAddFormContentProps) => {
+  const { mutate, isPending } = useQuickAdd();
+
+  // Use useFormContext to access form methods from RA's Form wrapper
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    formState: { errors },
+    setValue,
+    control,
+    reset,
+  } = useFormContext<QuickAddFormValues>();
+
+  // Data fetching hooks
   const { data: principalsList, isLoading: principalsLoading } = useGetList("organizations", {
     filter: { organization_type: "principal" },
     pagination: { page: 1, perPage: 100 },
@@ -265,39 +334,14 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     sort: { field: "name", order: "ASC" },
   });
 
-  const schemaDefaults = quickAddBaseSchema.partial().parse({});
-
-  const defaultValues = {
-    ...schemaDefaults,
-    campaign:
-      getStorageItem<string>("last_campaign", { type: "local" }) ?? schemaDefaults.campaign ?? "",
-    principal_id:
-      Number(getStorageItem<string>("last_principal", { type: "local" }) ?? "") || undefined,
-    account_manager_id: identity?.id ? Number(identity.id) : undefined,
-  };
-
-  const {
-    register,
-    handleSubmit,
-    setFocus,
-    formState: { errors },
-    setValue,
-    control,
-    reset,
-  } = useForm<QuickAddFormValues>({
-    resolver: zodResolver(quickAddSchema) as never,
-    defaultValues: {
-      ...defaultValues,
-      product_ids: defaultValues.product_ids ?? [],
-    },
-  });
-
+  // Sync account_manager_id with identity when loaded
   useEffect(() => {
-    if (identity?.id && !identityLoading) {
-      setValue("account_manager_id", Number(identity.id));
+    if (identityId && !identityLoading) {
+      setValue("account_manager_id", Number(identityId));
     }
-  }, [identity, identityLoading, setValue]);
+  }, [identityId, identityLoading, setValue]);
 
+  // Watch form values for dependent UI updates
   const [organizationId, principalId, cityValue, productIds, accountManagerId] = useWatch({
     control,
     name: ["organization_id", "principal_id", "city", "product_ids", "account_manager_id"],
