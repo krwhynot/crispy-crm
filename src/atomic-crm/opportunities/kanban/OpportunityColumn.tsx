@@ -152,8 +152,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
           <Tooltip>
             <TooltipTrigger asChild>
               <h2
-                className="font-semibold text-base text-foreground cursor-help"
-                style={{ borderBottom: `2px solid ${getOpportunityStageColor(stage)}` }}
+                className={`font-semibold text-base text-foreground cursor-help border-b-2 ${getOpportunityStageBorderClass(stage)}`}
               >
                 {getOpportunityStageLabel(stage)}
               </h2>
