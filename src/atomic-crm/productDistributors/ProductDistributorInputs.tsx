@@ -19,13 +19,12 @@ export const ProductDistributorInputs = () => (
       source="vendor_item_number"
       label="DOT Number (Vendor Item #)"
       helperText="e.g., USF# 4587291, Sysco# 1092847"
-      fullWidth
     />
 
     <SelectInput
       source="status"
       label="Status"
-      choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES}
+      choices={[...PRODUCT_DISTRIBUTOR_STATUS_CHOICES]}
       helperText={false}
     />
 
@@ -33,7 +32,7 @@ export const ProductDistributorInputs = () => (
 
     <DateInput source="valid_to" label="Valid To" helperText="Leave empty if ongoing" />
 
-    <TextInput source="notes" label="Notes" multiline rows={3} fullWidth helperText={false} />
+    <TextInput source="notes" label="Notes" multiline rows={3} helperText={false} />
   </>
 );
 

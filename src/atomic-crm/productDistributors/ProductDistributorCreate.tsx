@@ -2,9 +2,6 @@ import { useMemo } from "react";
 import { CreateBase, Form } from "ra-core";
 import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
-import { TextInput } from "@/components/ra-wrappers/text-input";
-import { DateInput } from "@/components/ra-wrappers/date-input";
-import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { CancelButton } from "@/components/ra-wrappers/cancel-button";
@@ -12,8 +9,8 @@ import { SaveButton } from "@/components/ra-wrappers/form";
 import { FormToolbar } from "@/components/ra-wrappers/simple-form";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { productDistributorSchema } from "../validation/productDistributors";
-import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
 import { AUTOCOMPLETE_DEBOUNCE_MS, shouldRenderSuggestions } from "../utils/autocompleteDefaults";
+import { ProductDistributorInputs } from "./ProductDistributorInputs";
 
 // Human-readable field labels for error messages
 const FIELD_LABELS: Record<string, string> = {
