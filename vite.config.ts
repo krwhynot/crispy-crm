@@ -155,7 +155,7 @@ export default defineConfig(({ mode }) => ({
         "./src/main.tsx",
         "./src/App.tsx",
         "./src/atomic-crm/root/CRM.tsx",
-        "./src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
+        "./src/atomic-crm/dashboard/PrincipalDashboardV3.tsx",
       ],
     },
     watch: {

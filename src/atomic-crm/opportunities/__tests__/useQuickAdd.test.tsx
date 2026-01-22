@@ -276,7 +276,7 @@ describe("useQuickAdd", () => {
     // Verify success toast with minimal data (no contact name)
     expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Tech Inc", {
       type: "success",
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   });
 
@@ -300,7 +300,7 @@ describe("useQuickAdd", () => {
     // Should show just first name
     expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Jane at Tech Inc", {
       type: "success",
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   });
 
@@ -324,7 +324,7 @@ describe("useQuickAdd", () => {
     // Should show just last name
     expect(mockNotify).toHaveBeenCalledWith("Created opportunity for Smith at Tech Inc", {
       type: "success",
-      autoHideDuration: 2000,
+      autoHideDuration: 3000,
     });
   });
 
@@ -356,9 +356,11 @@ describe("useQuickAdd", () => {
     // Execute mutation with async and expect rejection
     await expect(result.current.mutateAsync(testFormData)).rejects.toThrow("Validation failed");
 
-    // Verify error toast uses new "opportunity" wording
-    expect(mockNotify).toHaveBeenCalledWith("Failed to create opportunity: Validation failed", {
+    // Verify error toast shows sanitized message (via actionError -> mapErrorToUserMessage)
+    // "Validation failed" matches "validation failed" and becomes user-friendly message
+    expect(mockNotify).toHaveBeenCalledWith("Please check the form for errors.", {
       type: "error",
+      autoHideDuration: 5000,
     });
   });
 

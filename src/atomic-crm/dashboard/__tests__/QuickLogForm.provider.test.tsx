@@ -12,7 +12,6 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { QuickLogForm } from "../QuickLogForm";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 

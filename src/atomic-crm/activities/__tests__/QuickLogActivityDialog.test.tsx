@@ -45,7 +45,7 @@ vi.mock("react-admin", async (importOriginal) => {
 });
 
 // Mock the lazy-loaded QuickLogForm module
-vi.mock("../../dashboard/v3/components/QuickLogForm", () => ({
+vi.mock("../../dashboard/QuickLogForm", () => ({
   QuickLogForm: ({
     onComplete,
     initialDraft,
