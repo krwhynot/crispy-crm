@@ -1,6 +1,6 @@
 {
   "chunk_name": "layout",
-  "generated_at": "2026-01-21T14:56:20.048Z",
+  "generated_at": "2026-01-22T16:45:42.319Z",
   "item_count": 5,
   "items": [
     {
@@ -32,7 +32,7 @@
       "imports": [
         "../root/ConfigurationContext",
         "../tutorial/TutorialLauncher",
-        "@/atomic-crm/dashboard/components/NotificationBell",
+        "@/components/NotificationBell",
         "@/components/ra-wrappers/refresh-button",
         "@/components/ra-wrappers/theme-mode-toggle",
         "@/components/ra-wrappers/user-menu",

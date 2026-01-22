@@ -67,7 +67,7 @@ Infrastructure:
   src/atomic-crm/contexts/PATTERNS.md
   src/atomic-crm/utils/PATTERNS.md
   src/atomic-crm/services/PATTERNS.md
-  src/atomic-crm/dashboard/v3/PATTERNS.md
+  src/atomic-crm/dashboard/PATTERNS.md
   src/atomic-crm/productDistributors/PATTERNS.md
 
 UI Components:

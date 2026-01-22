@@ -1,11 +1,11 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-21T14:56:26.456Z",
+  "generated_at": "2026-01-22T16:45:47.608Z",
   "item_count": 13,
   "items": [
     {
       "name": "useCurrentSale",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts",
+      "file": "src/atomic-crm/dashboard/useCurrentSale.ts",
       "line": 65,
       "parameters": [],
       "returnType": "{ salesId: number; loading: boolean; error: Error; }",
@@ -17,7 +17,7 @@
     },
     {
       "name": "useDebouncedSearch",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useDebouncedSearch.ts",
+      "file": "src/atomic-crm/dashboard/useDebouncedSearch.ts",
       "line": 12,
       "parameters": [
         "delay"
@@ -32,7 +32,7 @@
     },
     {
       "name": "useEntityData",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useEntityData.ts",
+      "file": "src/atomic-crm/dashboard/useEntityData.ts",
       "line": 52,
       "parameters": [
         "{\n  form,\n  selectedOrganizationId,\n  selectedContactId,\n  selectedOpportunityId,\n}"
@@ -48,7 +48,7 @@
     },
     {
       "name": "useEntitySelection",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts",
+      "file": "src/atomic-crm/dashboard/useEntitySelection.ts",
       "line": 38,
       "parameters": [
         "{\n  setValue,\n  getValues,\n  entityStores,\n  notify,\n}"
@@ -61,7 +61,7 @@
     },
     {
       "name": "useHybridSearch",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useHybridSearch.ts",
+      "file": "src/atomic-crm/dashboard/useHybridSearch.ts",
       "line": 62,
       "parameters": [
         "{\n  resource,\n  initialPageSize = 100,\n  minSearchLength = 2,\n  debounceMs = 300,\n  staleTimeMs = 5 * 60 * 1000, // 5 minutes default\n  sortField = \"name\",\n  additionalFilter = {},\n  enabled = true,\n}"
@@ -76,7 +76,7 @@
     },
     {
       "name": "useKPIMetrics",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useKPIMetrics.ts",
+      "file": "src/atomic-crm/dashboard/useKPIMetrics.ts",
       "line": 68,
       "parameters": [],
       "returnType": "UseKPIMetricsReturn",
@@ -90,7 +90,7 @@
     },
     {
       "name": "useMyPerformance",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts",
+      "file": "src/atomic-crm/dashboard/useMyPerformance.ts",
       "line": 89,
       "parameters": [],
       "returnType": "UseMyPerformanceReturn",
@@ -104,10 +104,10 @@
     },
     {
       "name": "useMyTasks",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts",
+      "file": "src/atomic-crm/dashboard/useMyTasks.ts",
       "line": 19,
       "parameters": [],
-      "returnType": "{ tasks: { id: number; subject: string; dueDate: Date; priority: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").Priority; taskType: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").TaskType; relatedTo: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").RelatedEntity; status: TaskStatus; owner?: string; notes: string; snoozeUntil: Date; deleted?: boolean; }[]; loading: boolean; error: Error; completeTask: (taskId: number) => Promise<void>; snoozeTask: (taskId: number) => Promise<void>; deleteTask: (taskId: number) => Promise<void>; viewTask: (taskId: number) => void; updateTaskDueDate: (taskId: number, newDueDate: Date) => Promise<void>; updateTaskLocally: (taskId: number, updates: Partial<TaskItem>) => void; rollbackTask: (taskId: number, _previousState: TaskItem) => void; calculateStatus: (dueDate: Date) => TaskStatus; }",
+      "returnType": "{ tasks: { id: number; subject: string; dueDate: Date; priority: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").Priority; taskType: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").TaskType; relatedTo: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").RelatedEntity; status: TaskStatus; owner?: string; notes: string; snoozeUntil: Date; deleted?: boolean; }[]; loading: boolean; error: Error; completeTask: (taskId: number) => Promise<void>; snoozeTask: (taskId: number) => Promise<void>; deleteTask: (taskId: number) => Promise<void>; viewTask: (taskId: number) => void; updateTaskDueDate: (taskId: number, newDueDate: Date) => Promise<void>; updateTaskLocally: (taskId: number, updates: Partial<TaskItem>) => void; rollbackTask: (taskId: number, _previousState: TaskItem) => void; calculateStatus: (dueDate: Date) => TaskStatus; }",
       "dependencies": [
         "useCallback",
         "useCurrentSale",
@@ -120,7 +120,7 @@
     },
     {
       "name": "usePipelineTableState",
-      "file": "src/atomic-crm/dashboard/v3/hooks/usePipelineTableState.ts",
+      "file": "src/atomic-crm/dashboard/usePipelineTableState.ts",
       "line": 20,
       "parameters": [
         "{ data }"
@@ -135,7 +135,7 @@
     },
     {
       "name": "usePrincipalOpportunities",
-      "file": "src/atomic-crm/dashboard/v3/hooks/usePrincipalOpportunities.ts",
+      "file": "src/atomic-crm/dashboard/usePrincipalOpportunities.ts",
       "line": 30,
       "parameters": [
         "{\n  principalId,\n  enabled = true,\n}"
@@ -148,7 +148,7 @@
     },
     {
       "name": "usePrincipalPipeline",
-      "file": "src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts",
+      "file": "src/atomic-crm/dashboard/usePrincipalPipeline.ts",
       "line": 10,
       "parameters": [
         "filters"
@@ -162,7 +162,7 @@
     },
     {
       "name": "useTaskCount",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useTaskCount.ts",
+      "file": "src/atomic-crm/dashboard/useTaskCount.ts",
       "line": 16,
       "parameters": [],
       "returnType": "UseTaskCountResult",
@@ -174,7 +174,7 @@
     },
     {
       "name": "useTeamActivities",
-      "file": "src/atomic-crm/dashboard/v3/hooks/useTeamActivities.ts",
+      "file": "src/atomic-crm/dashboard/useTeamActivities.ts",
       "line": 57,
       "parameters": [
         "limit"

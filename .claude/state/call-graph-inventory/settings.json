@@ -1,15 +1,51 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-21T14:56:28.753Z",
+  "generated_at": "2026-01-22T16:45:49.767Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "name": "DigestPreferences",
-        "file": "src/atomic-crm/settings/DigestPreferences.tsx",
-        "line": 40,
+        "id": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "name": "AuditLogSection",
+        "file": "src/atomic-crm/settings/AuditLogSection.tsx",
+        "line": 9,
         "nodeType": "component",
         "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "name": "DigestPreferences",
+        "file": "src/atomic-crm/settings/DigestPreferences.tsx",
+        "line": 41,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/settings/NotificationsSection.tsx:4:NotificationsSection",
+        "name": "NotificationsSection",
+        "file": "src/atomic-crm/settings/NotificationsSection.tsx",
+        "line": 4,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "name": "PersonalSection",
+        "file": "src/atomic-crm/settings/PersonalSection.tsx",
+        "line": 14,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/settings/PersonalSection.tsx:87:TextRender",
+        "name": "TextRender",
+        "file": "src/atomic-crm/settings/PersonalSection.tsx",
+        "line": 87,
+        "nodeType": "component",
+        "exported": false,
         "async": false
       },
       {
@@ -17,6 +53,15 @@
         "name": "RolePermissionsMatrix",
         "file": "src/atomic-crm/settings/RolePermissionsMatrix.tsx",
         "line": 51,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "name": "SecuritySection",
+        "file": "src/atomic-crm/settings/SecuritySection.tsx",
+        "line": 13,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -49,11 +94,11 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "name": "useSalesUpdate",
-        "file": "src/atomic-crm/settings/hooks/useSalesUpdate.ts",
-        "line": 38,
-        "nodeType": "hook",
+        "id": "src/atomic-crm/settings/UsersSection.tsx:12:UsersSection",
+        "name": "UsersSection",
+        "file": "src/atomic-crm/settings/UsersSection.tsx",
+        "line": 12,
+        "nodeType": "component",
         "exported": true,
         "async": false
       },
@@ -67,306 +112,378 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "name": "AuditLogSection",
-        "file": "src/atomic-crm/settings/sections/AuditLogSection.tsx",
-        "line": 9,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/settings/sections/NotificationsSection.tsx:4:NotificationsSection",
-        "name": "NotificationsSection",
-        "file": "src/atomic-crm/settings/sections/NotificationsSection.tsx",
-        "line": 4,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "name": "PersonalSection",
-        "file": "src/atomic-crm/settings/sections/PersonalSection.tsx",
-        "line": 14,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/settings/sections/PersonalSection.tsx:87:TextRender",
-        "name": "TextRender",
-        "file": "src/atomic-crm/settings/sections/PersonalSection.tsx",
-        "line": 87,
-        "nodeType": "component",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "name": "SecuritySection",
-        "file": "src/atomic-crm/settings/sections/SecuritySection.tsx",
-        "line": 13,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/settings/sections/UsersSection.tsx:12:UsersSection",
-        "name": "UsersSection",
-        "file": "src/atomic-crm/settings/sections/UsersSection.tsx",
-        "line": 12,
-        "nodeType": "component",
+        "id": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "name": "useSalesUpdate",
+        "file": "src/atomic-crm/settings/useSalesUpdate.ts",
+        "line": 38,
+        "nodeType": "hook",
         "exported": true,
         "async": false
       }
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 41,
+        "line": 10,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 13,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "formatDistanceToNow",
+        "targetName": "formatDistanceToNow",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 26,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 27,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "ScrollArea",
+        "targetName": "ScrollArea",
+        "edgeType": "render",
+        "line": 49,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/AuditLogSection.tsx:9:AuditLogSection",
+        "target": "History",
+        "targetName": "History",
+        "edgeType": "render",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "useSafeNotify",
+        "targetName": "useSafeNotify",
         "edgeType": "hook",
         "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
         "edgeType": "hook",
         "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "useQuery",
         "targetName": "useQuery",
         "edgeType": "hook",
-        "line": 50,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 54,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "useMutation",
         "targetName": "useMutation",
         "edgeType": "hook",
-        "line": 60,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 63,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 76,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 77,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "success",
+        "targetName": "success",
         "edgeType": "call",
-        "line": 80,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "actionError",
+        "targetName": "actionError",
+        "edgeType": "call",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "updatePreference",
         "targetName": "updatePreference",
         "edgeType": "call",
-        "line": 85,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 91,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 92,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 93,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 98,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 114,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 115,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "CardTitle",
         "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 116,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 121,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 134,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 135,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardDescription",
-        "targetName": "CardDescription",
-        "edgeType": "render",
-        "line": 139,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 143,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 152,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "Mail",
-        "targetName": "Mail",
         "edgeType": "render",
         "line": 94,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
-        "line": 101,
+        "line": 99,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 116,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 122,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 134,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 135,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardDescription",
+        "targetName": "CardDescription",
+        "edgeType": "render",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 144,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 153,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "Mail",
+        "targetName": "Mail",
+        "edgeType": "render",
+        "line": 95,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -375,65 +492,353 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 104,
+        "line": 103,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
-        "target": "Mail",
-        "targetName": "Mail",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 117,
+        "line": 105,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "Mail",
         "targetName": "Mail",
         "edgeType": "render",
-        "line": 136,
+        "line": 118,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "target": "Mail",
+        "targetName": "Mail",
+        "edgeType": "render",
+        "line": 137,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "Bell",
         "targetName": "Bell",
         "edgeType": "render",
-        "line": 147,
+        "line": 148,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "BellOff",
         "targetName": "BellOff",
         "edgeType": "render",
-        "line": 149,
+        "line": 150,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "Switch",
         "targetName": "Switch",
         "edgeType": "render",
-        "line": 162,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:40:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
         "target": "handleToggle",
         "targetName": "handleToggle",
         "edgeType": "callback",
-        "line": 165,
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/NotificationsSection.tsx:4:NotificationsSection",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 9,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/NotificationsSection.tsx:4:NotificationsSection",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 10,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/NotificationsSection.tsx:4:NotificationsSection",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 11,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/NotificationsSection.tsx:4:NotificationsSection",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 13,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/NotificationsSection.tsx:4:NotificationsSection",
+        "target": "DigestPreferences",
+        "targetName": "DigestPreferences",
+        "edgeType": "render",
+        "line": 7,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "useRecordContext",
+        "targetName": "useRecordContext",
+        "edgeType": "hook",
+        "line": 16,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 17,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "useFormState",
+        "targetName": "useFormState",
+        "edgeType": "hook",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "useSalesUpdate",
+        "targetName": "useSalesUpdate",
+        "edgeType": "hook",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "refetch",
+        "targetName": "refetch",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "setEditMode",
+        "targetName": "setEditMode",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "mutateSale",
+        "targetName": "mutateSale",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "mutateSale",
+        "targetName": "mutateSale",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "setEditMode",
+        "targetName": "setEditMode",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "ImageEditorField",
+        "targetName": "ImageEditorField",
+        "edgeType": "render",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "handleAvatarUpdate",
+        "targetName": "handleAvatarUpdate",
+        "edgeType": "callback",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "TextRender",
+        "targetName": "TextRender",
+        "edgeType": "render",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "TextRender",
+        "targetName": "TextRender",
+        "edgeType": "render",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "TextRender",
+        "targetName": "TextRender",
+        "edgeType": "render",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "TimeZoneSelect",
+        "targetName": "TimeZoneSelect",
+        "edgeType": "render",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "CircleX",
+        "targetName": "CircleX",
+        "edgeType": "render",
+        "line": 66,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "Pencil",
+        "targetName": "Pencil",
+        "edgeType": "render",
+        "line": 66,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "Loader2",
+        "targetName": "Loader2",
+        "edgeType": "render",
+        "line": 77,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
+        "target": "Save",
+        "targetName": "Save",
+        "edgeType": "render",
+        "line": 77,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:87:TextRender",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 95,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/PersonalSection.tsx:87:TextRender",
+        "target": "RecordField",
+        "targetName": "RecordField",
+        "edgeType": "render",
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
@@ -516,6 +921,132 @@
         "edgeType": "render",
         "line": 80,
         "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 14,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 17,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "onPasswordChange",
+        "targetName": "onPasswordChange",
+        "edgeType": "callback",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Shield",
+        "targetName": "Shield",
+        "edgeType": "render",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "Key",
+        "targetName": "Key",
+        "edgeType": "render",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
+        "target": "RolePermissionsMatrix",
+        "targetName": "RolePermissionsMatrix",
+        "edgeType": "render",
+        "line": 55,
+        "conditional": false,
         "inLoop": false
       },
       {
@@ -870,74 +1401,29 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/settings/UsersSection.tsx:12:UsersSection",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
         "edgeType": "hook",
-        "line": 39,
+        "line": 13,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
+        "source": "src/atomic-crm/settings/UsersSection.tsx:12:UsersSection",
+        "target": "useEffect",
+        "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 40,
+        "line": 15,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "useMutation",
-        "targetName": "useMutation",
-        "edgeType": "hook",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "salesUpdate",
-        "targetName": "salesUpdate",
+        "source": "src/atomic-crm/settings/UsersSection.tsx:12:UsersSection",
+        "target": "redirect",
+        "targetName": "redirect",
         "edgeType": "call",
-        "line": 48,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
-        "edgeType": "call",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/hooks/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 56,
+        "line": 17,
         "conditional": false,
         "inLoop": false
       },
@@ -960,560 +1446,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "useGetIdentity",
-        "targetName": "useGetIdentity",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 10,
+        "line": 39,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "useGetList",
-        "targetName": "useGetList",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
         "edgeType": "hook",
-        "line": 13,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 51,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "formatDistanceToNow",
-        "targetName": "formatDistanceToNow",
-        "edgeType": "call",
-        "line": 65,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 65,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 26,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 27,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "useMutation",
+        "targetName": "useMutation",
+        "edgeType": "hook",
         "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "ScrollArea",
-        "targetName": "ScrollArea",
-        "edgeType": "render",
-        "line": 49,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 62,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/AuditLogSection.tsx:9:AuditLogSection",
-        "target": "History",
-        "targetName": "History",
-        "edgeType": "render",
-        "line": 38,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/NotificationsSection.tsx:4:NotificationsSection",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 9,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/NotificationsSection.tsx:4:NotificationsSection",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 10,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/NotificationsSection.tsx:4:NotificationsSection",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 11,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/NotificationsSection.tsx:4:NotificationsSection",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 13,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/NotificationsSection.tsx:4:NotificationsSection",
-        "target": "DigestPreferences",
-        "targetName": "DigestPreferences",
-        "edgeType": "render",
-        "line": 7,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 15,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "useRecordContext",
-        "targetName": "useRecordContext",
-        "edgeType": "hook",
-        "line": 16,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "useGetIdentity",
-        "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 17,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "useFormState",
-        "targetName": "useFormState",
-        "edgeType": "hook",
-        "line": 18,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "useSalesUpdate",
-        "targetName": "useSalesUpdate",
-        "edgeType": "hook",
-        "line": 20,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "refetch",
-        "targetName": "refetch",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "salesUpdate",
+        "targetName": "salesUpdate",
         "edgeType": "call",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "setEditMode",
-        "targetName": "setEditMode",
-        "edgeType": "call",
-        "line": 24,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "mutateSale",
-        "targetName": "mutateSale",
-        "edgeType": "call",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "mutateSale",
-        "targetName": "mutateSale",
-        "edgeType": "call",
-        "line": 53,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "setEditMode",
-        "targetName": "setEditMode",
-        "edgeType": "call",
-        "line": 62,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 59,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 71,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "ImageEditorField",
-        "targetName": "ImageEditorField",
-        "edgeType": "render",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "handleAvatarUpdate",
-        "targetName": "handleAvatarUpdate",
-        "edgeType": "callback",
-        "line": 45,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "TextRender",
-        "targetName": "TextRender",
-        "edgeType": "render",
         "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "TextRender",
-        "targetName": "TextRender",
-        "edgeType": "render",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "TextRender",
-        "targetName": "TextRender",
-        "edgeType": "render",
-        "line": 50,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "TimeZoneSelect",
-        "targetName": "TimeZoneSelect",
-        "edgeType": "render",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
         "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "CircleX",
-        "targetName": "CircleX",
-        "edgeType": "render",
-        "line": 66,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "Pencil",
-        "targetName": "Pencil",
-        "edgeType": "render",
-        "line": 66,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "Loader2",
-        "targetName": "Loader2",
-        "edgeType": "render",
-        "line": 77,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:14:PersonalSection",
-        "target": "Save",
-        "targetName": "Save",
-        "edgeType": "render",
-        "line": 77,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:87:TextRender",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 95,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/PersonalSection.tsx:87:TextRender",
-        "target": "RecordField",
-        "targetName": "RecordField",
-        "edgeType": "render",
-        "line": 99,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "useGetIdentity",
-        "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 14,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 17,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 18,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 19,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 24,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 29,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "onPasswordChange",
-        "targetName": "onPasswordChange",
-        "edgeType": "callback",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 41,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 44,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
+        "edgeType": "call",
         "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Shield",
-        "targetName": "Shield",
-        "edgeType": "render",
-        "line": 20,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "Key",
-        "targetName": "Key",
-        "edgeType": "render",
-        "line": 28,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/SecuritySection.tsx:13:SecuritySection",
-        "target": "RolePermissionsMatrix",
-        "targetName": "RolePermissionsMatrix",
-        "edgeType": "render",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
         "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/sections/UsersSection.tsx:12:UsersSection",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
-        "edgeType": "hook",
-        "line": 13,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/UsersSection.tsx:12:UsersSection",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 15,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/sections/UsersSection.tsx:12:UsersSection",
-        "target": "redirect",
-        "targetName": "redirect",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 17,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       }

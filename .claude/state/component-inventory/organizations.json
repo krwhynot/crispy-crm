@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-21T14:56:20.051Z",
+  "generated_at": "2026-01-22T16:45:42.322Z",
   "item_count": 76,
   "items": [
     {
@@ -36,6 +36,111 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "AddPrincipalDialog",
+      "file": "src/atomic-crm/organizations/AddPrincipalDialog.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useGetIdentity",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "./authorization-types",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/textarea",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "AddPrincipalDialogProps"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "AddProductExceptionDialog",
+      "file": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useGetIdentity",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "./authorization-types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/textarea",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "AddProductExceptionDialogProps"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "AuthorizationCard",
+      "file": "src/atomic-crm/organizations/AuthorizationCard.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "./ProductExceptionsSection",
+        "./authorization-types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/collapsible",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "AuthorizationCardProps",
+        "PrincipalOrganization",
+        "Product",
+        "ProductAuthorization",
+        "ProductExceptionsSection"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "AuthorizationsEmptyState",
+      "file": "src/atomic-crm/organizations/AuthorizationsEmptyState.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/button",
+        "lucide-react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "AuthorizationsTab",
       "file": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
       "line": 40,
@@ -48,11 +153,11 @@
         "useState"
       ],
       "imports": [
-        "./components/AddPrincipalDialog",
-        "./components/AuthorizationCard",
-        "./components/AuthorizationsEmptyState",
-        "./components/RemoveConfirmDialog",
-        "./components/authorization-types",
+        "./AddPrincipalDialog",
+        "./AuthorizationCard",
+        "./AuthorizationsEmptyState",
+        "./RemoveConfirmDialog",
+        "./authorization-types",
         "@/components/ui/button",
         "@/components/ui/skeleton",
         "lucide-react",
@@ -85,11 +190,11 @@
         "useState"
       ],
       "imports": [
-        "./components/AddPrincipalDialog",
-        "./components/AuthorizationCard",
-        "./components/AuthorizationsEmptyState",
-        "./components/RemoveConfirmDialog",
-        "./components/authorization-types",
+        "./AddPrincipalDialog",
+        "./AuthorizationCard",
+        "./AuthorizationsEmptyState",
+        "./RemoveConfirmDialog",
+        "./authorization-types",
         "@/components/ui/button",
         "@/components/ui/skeleton",
         "lucide-react",
@@ -535,20 +640,21 @@
     {
       "name": "OrganizationCreateFormFooter",
       "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
-      "line": 30,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useCreate",
         "useFormContext",
         "useFormState",
-        "useNotify",
         "useRedirect",
         "useRef",
+        "useSafeNotify",
         "useState"
       ],
       "imports": [
         "./types",
+        "@/atomic-crm/hooks/useSafeNotify",
         "@/components/ra-wrappers/form",
         "@/components/ui/button",
         "@/components/ui/unsaved-changes-dialog",
@@ -1359,6 +1465,39 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "ProductExceptionsSection",
+      "file": "src/atomic-crm/organizations/ProductExceptionsSection.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "./AddProductExceptionDialog",
+        "./RemoveConfirmDialog",
+        "./authorization-types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "@/lib/date-utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductExceptionsSectionProps",
+        "ProductAuthorization",
+        "AddProductExceptionDialog",
+        "RemoveConfirmDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
       "line": 88,
@@ -1430,146 +1569,8 @@
       "componentRole": "leaf"
     },
     {
-      "name": "AddPrincipalDialog",
-      "file": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx",
-      "line": 25,
-      "type": "presentational",
-      "hooks": [
-        "useCreate",
-        "useGetIdentity",
-        "useNotify",
-        "useState"
-      ],
-      "imports": [
-        "./authorization-types",
-        "@/components/ui/button",
-        "@/components/ui/dialog",
-        "@/components/ui/label",
-        "@/components/ui/select",
-        "@/components/ui/textarea",
-        "react",
-        "react-admin"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AddPrincipalDialogProps"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "AddProductExceptionDialog",
-      "file": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx",
-      "line": 27,
-      "type": "presentational",
-      "hooks": [
-        "useCreate",
-        "useGetIdentity",
-        "useNotify",
-        "useState"
-      ],
-      "imports": [
-        "./authorization-types",
-        "@/components/ui/badge",
-        "@/components/ui/button",
-        "@/components/ui/dialog",
-        "@/components/ui/label",
-        "@/components/ui/select",
-        "@/components/ui/textarea",
-        "lucide-react",
-        "react",
-        "react-admin"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AddProductExceptionDialogProps"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "AuthorizationCard",
-      "file": "src/atomic-crm/organizations/components/AuthorizationCard.tsx",
-      "line": 28,
-      "type": "presentational",
-      "hooks": [
-        "useGetList",
-        "useState"
-      ],
-      "imports": [
-        "./ProductExceptionsSection",
-        "./authorization-types",
-        "@/components/ui/badge",
-        "@/components/ui/button",
-        "@/components/ui/collapsible",
-        "@/lib/date-utils",
-        "date-fns",
-        "lucide-react",
-        "react",
-        "react-admin"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "AuthorizationCardProps",
-        "PrincipalOrganization",
-        "Product",
-        "ProductAuthorization",
-        "ProductExceptionsSection"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "AuthorizationsEmptyState",
-      "file": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx",
-      "line": 14,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "@/components/ui/button",
-        "lucide-react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "ProductExceptionsSection",
-      "file": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx",
-      "line": 14,
-      "type": "presentational",
-      "hooks": [
-        "useDelete",
-        "useNotify",
-        "useRefresh",
-        "useState"
-      ],
-      "imports": [
-        "./AddProductExceptionDialog",
-        "./RemoveConfirmDialog",
-        "./authorization-types",
-        "@/components/ui/badge",
-        "@/components/ui/button",
-        "@/components/ui/skeleton",
-        "@/lib/date-utils",
-        "lucide-react",
-        "react",
-        "react-admin"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "ProductExceptionsSectionProps",
-        "ProductAuthorization",
-        "AddProductExceptionDialog",
-        "RemoveConfirmDialog"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
       "name": "RemoveConfirmDialog",
-      "file": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx",
+      "file": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx",
       "line": 13,
       "type": "presentational",
       "hooks": [],
@@ -1962,7 +1963,7 @@
         "useNavigate"
       ],
       "imports": [
-        "../../opportunities/constants/stageConstants",
+        "../../opportunities/constants",
         "../../types",
         "../constants",
         "@/components/layouts/sidepane",

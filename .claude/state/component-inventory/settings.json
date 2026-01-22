@@ -1,23 +1,47 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-21T14:56:20.055Z",
+  "generated_at": "2026-01-22T16:45:42.325Z",
   "item_count": 13,
   "items": [
     {
+      "name": "AuditLogSection",
+      "file": "src/atomic-crm/settings/AuditLogSection.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useGetList"
+      ],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/scroll-area",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "DigestPreferences",
       "file": "src/atomic-crm/settings/DigestPreferences.tsx",
-      "line": 40,
+      "line": 41,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
         "useMutation",
-        "useNotify",
         "useQuery",
-        "useQueryClient"
+        "useQueryClient",
+        "useSafeNotify"
       ],
       "imports": [
         "../providers/supabase/extensions/types",
         "../queryKeys",
+        "@/atomic-crm/hooks/useSafeNotify",
         "@/components/ui/card",
         "@/components/ui/label",
         "@/components/ui/skeleton",
@@ -36,6 +60,61 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "NotificationsSection",
+      "file": "src/atomic-crm/settings/NotificationsSection.tsx",
+      "line": 4,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./DigestPreferences",
+        "@/components/ui/card"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "DigestPreferences"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "PersonalSection",
+      "file": "src/atomic-crm/settings/PersonalSection.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useFormState",
+        "useGetIdentity",
+        "useRecordContext",
+        "useSalesUpdate",
+        "useState"
+      ],
+      "imports": [
+        "../../types",
+        "./TimeZoneSelect",
+        "./useSalesUpdate",
+        "@/components/ra-wrappers/record-field",
+        "@/components/ra-wrappers/text-input",
+        "@/components/ui",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale",
+        "SalesFormData",
+        "TimeZoneSelect"
+      ],
+      "contextDependencies": [
+        "useFormState",
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
       "name": "RolePermissionsMatrix",
       "file": "src/atomic-crm/settings/RolePermissionsMatrix.tsx",
       "line": 51,
@@ -50,6 +129,30 @@
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
+    },
+    {
+      "name": "SecuritySection",
+      "file": "src/atomic-crm/settings/SecuritySection.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity"
+      ],
+      "imports": [
+        "./RolePermissionsMatrix",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/label",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "RolePermissionsMatrix"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SettingsLayout",
@@ -87,13 +190,13 @@
       "imports": [
         "../providers/types",
         "../types",
+        "./AuditLogSection",
+        "./NotificationsSection",
+        "./PersonalSection",
+        "./SecuritySection",
         "./SettingsLayout",
-        "./hooks",
-        "./sections/AuditLogSection",
-        "./sections/NotificationsSection",
-        "./sections/PersonalSection",
-        "./sections/SecuritySection",
-        "./sections/UsersSection",
+        "./UsersSection",
+        "./useSalesUpdate",
         "@tanstack/react-query",
         "lucide-react",
         "ra-core"
@@ -123,6 +226,24 @@
       "imports": [
         "@/components/ra-wrappers/generic-select-input",
         "@/constants/choices"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "UsersSection",
+      "file": "src/atomic-crm/settings/UsersSection.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useRedirect"
+      ],
+      "imports": [
+        "react",
+        "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -190,126 +311,6 @@
       ],
       "contextDependencies": [],
       "componentRole": "entry"
-    },
-    {
-      "name": "AuditLogSection",
-      "file": "src/atomic-crm/settings/sections/AuditLogSection.tsx",
-      "line": 9,
-      "type": "presentational",
-      "hooks": [
-        "useGetIdentity",
-        "useGetList"
-      ],
-      "imports": [
-        "@/components/ui/badge",
-        "@/components/ui/card",
-        "@/components/ui/scroll-area",
-        "@/lib/date-utils",
-        "date-fns",
-        "lucide-react",
-        "ra-core"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "NotificationsSection",
-      "file": "src/atomic-crm/settings/sections/NotificationsSection.tsx",
-      "line": 4,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "../DigestPreferences",
-        "@/components/ui/card"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "DigestPreferences"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "PersonalSection",
-      "file": "src/atomic-crm/settings/sections/PersonalSection.tsx",
-      "line": 14,
-      "type": "presentational",
-      "hooks": [
-        "useFormState",
-        "useGetIdentity",
-        "useRecordContext",
-        "useSalesUpdate",
-        "useState"
-      ],
-      "imports": [
-        "../../types",
-        "../TimeZoneSelect",
-        "../hooks",
-        "@/components/ra-wrappers/record-field",
-        "@/components/ra-wrappers/text-input",
-        "@/components/ui",
-        "@/components/ui/button",
-        "@/components/ui/card",
-        "lucide-react",
-        "ra-core",
-        "react",
-        "react-hook-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "Sale",
-        "SalesFormData",
-        "TimeZoneSelect"
-      ],
-      "contextDependencies": [
-        "useFormState",
-        "useRecordContext"
-      ],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "SecuritySection",
-      "file": "src/atomic-crm/settings/sections/SecuritySection.tsx",
-      "line": 13,
-      "type": "presentational",
-      "hooks": [
-        "useGetIdentity"
-      ],
-      "imports": [
-        "../RolePermissionsMatrix",
-        "@/components/ui/badge",
-        "@/components/ui/button",
-        "@/components/ui/card",
-        "@/components/ui/label",
-        "lucide-react",
-        "ra-core"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "RolePermissionsMatrix"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "UsersSection",
-      "file": "src/atomic-crm/settings/sections/UsersSection.tsx",
-      "line": 12,
-      "type": "presentational",
-      "hooks": [
-        "useEffect",
-        "useRedirect"
-      ],
-      "imports": [
-        "react",
-        "react-admin"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
     }
   ]
 }

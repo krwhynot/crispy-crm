@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-21T14:56:28.736Z",
+  "generated_at": "2026-01-22T16:45:49.751Z",
   "items": {
     "nodes": [
       {
@@ -8,6 +8,42 @@
         "name": "ActivitiesTab",
         "file": "src/atomic-crm/organizations/ActivitiesTab.tsx",
         "line": 7,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "name": "AddPrincipalDialog",
+        "file": "src/atomic-crm/organizations/AddPrincipalDialog.tsx",
+        "line": 25,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "name": "AddProductExceptionDialog",
+        "file": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx",
+        "line": 27,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "name": "AuthorizationCard",
+        "file": "src/atomic-crm/organizations/AuthorizationCard.tsx",
+        "line": 28,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/organizations/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
+        "name": "AuthorizationsEmptyState",
+        "file": "src/atomic-crm/organizations/AuthorizationsEmptyState.tsx",
+        "line": 14,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -166,10 +202,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "id": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "name": "OrganizationCreateFormFooter",
         "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
-        "line": 30,
+        "line": 31,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -454,6 +490,15 @@
         "async": false
       },
       {
+        "id": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "name": "ProductExceptionsSection",
+        "file": "src/atomic-crm/organizations/ProductExceptionsSection.tsx",
+        "line": 14,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
         "id": "src/atomic-crm/organizations/QuickCreatePopover.tsx:35:OrganizationTypeSelect",
         "name": "OrganizationTypeSelect",
         "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
@@ -490,54 +535,9 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "name": "AddPrincipalDialog",
-        "file": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx",
-        "line": 25,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "name": "AddProductExceptionDialog",
-        "file": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx",
-        "line": 27,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "name": "AuthorizationCard",
-        "file": "src/atomic-crm/organizations/components/AuthorizationCard.tsx",
-        "line": 28,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
-        "name": "AuthorizationsEmptyState",
-        "file": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx",
-        "line": 14,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "name": "ProductExceptionsSection",
-        "file": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx",
-        "line": 14,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "id": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "name": "RemoveConfirmDialog",
-        "file": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx",
+        "file": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx",
         "line": 13,
         "nodeType": "component",
         "exported": true,
@@ -839,6 +839,1212 @@
         "targetName": "UnifiedTimeline",
         "edgeType": "render",
         "line": 12,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "useCreate",
+        "targetName": "useCreate",
+        "edgeType": "hook",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 40,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "setSelectedPrincipalId",
+        "targetName": "setSelectedPrincipalId",
+        "edgeType": "call",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "setNotes",
+        "targetName": "setNotes",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "setSelectedPrincipalId",
+        "targetName": "setSelectedPrincipalId",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "setNotes",
+        "targetName": "setNotes",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "onOpenChange",
+        "targetName": "onOpenChange",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "setNotes",
+        "targetName": "setNotes",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Dialog",
+        "targetName": "Dialog",
+        "edgeType": "render",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "handleClose",
+        "targetName": "handleClose",
+        "edgeType": "callback",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "DialogContent",
+        "targetName": "DialogContent",
+        "edgeType": "render",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "DialogHeader",
+        "targetName": "DialogHeader",
+        "edgeType": "render",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "DialogTitle",
+        "targetName": "DialogTitle",
+        "edgeType": "render",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "DialogDescription",
+        "targetName": "DialogDescription",
+        "edgeType": "render",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 89,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 93,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 95,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "DialogFooter",
+        "targetName": "DialogFooter",
+        "edgeType": "render",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "handleClose",
+        "targetName": "handleClose",
+        "edgeType": "callback",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "handleSubmit",
+        "targetName": "handleSubmit",
+        "edgeType": "callback",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
+        "target": "Textarea",
+        "targetName": "Textarea",
+        "edgeType": "render",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "useCreate",
+        "targetName": "useCreate",
+        "edgeType": "hook",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "setSelectedProductId",
+        "targetName": "setSelectedProductId",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "setIsAuthorized",
+        "targetName": "setIsAuthorized",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "setNotes",
+        "targetName": "setNotes",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "setSelectedProductId",
+        "targetName": "setSelectedProductId",
+        "edgeType": "call",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "setIsAuthorized",
+        "targetName": "setIsAuthorized",
+        "edgeType": "call",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "setNotes",
+        "targetName": "setNotes",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "onOpenChange",
+        "targetName": "onOpenChange",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "setNotes",
+        "targetName": "setNotes",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Dialog",
+        "targetName": "Dialog",
+        "edgeType": "render",
+        "line": 84,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "handleClose",
+        "targetName": "handleClose",
+        "edgeType": "callback",
+        "line": 84,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "DialogContent",
+        "targetName": "DialogContent",
+        "edgeType": "render",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "DialogHeader",
+        "targetName": "DialogHeader",
+        "edgeType": "render",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "DialogTitle",
+        "targetName": "DialogTitle",
+        "edgeType": "render",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "DialogDescription",
+        "targetName": "DialogDescription",
+        "edgeType": "render",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 104,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 109,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 151,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "DialogFooter",
+        "targetName": "DialogFooter",
+        "edgeType": "render",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 163,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "handleClose",
+        "targetName": "handleClose",
+        "edgeType": "callback",
+        "line": 163,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "handleSubmit",
+        "targetName": "handleSubmit",
+        "edgeType": "callback",
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Check",
+        "targetName": "Check",
+        "edgeType": "render",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "X",
+        "targetName": "X",
+        "edgeType": "render",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "AlertTriangle",
+        "targetName": "AlertTriangle",
+        "edgeType": "render",
+        "line": 145,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
+        "target": "Textarea",
+        "targetName": "Textarea",
+        "edgeType": "render",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 148,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Collapsible",
+        "targetName": "Collapsible",
+        "edgeType": "render",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "CollapsibleTrigger",
+        "targetName": "CollapsibleTrigger",
+        "edgeType": "render",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "onRemove",
+        "targetName": "onRemove",
+        "edgeType": "callback",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "CollapsibleContent",
+        "targetName": "CollapsibleContent",
+        "edgeType": "render",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "ChevronDown",
+        "targetName": "ChevronDown",
+        "edgeType": "render",
+        "line": 85,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "ChevronRight",
+        "targetName": "ChevronRight",
+        "edgeType": "render",
+        "line": 87,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Building2",
+        "targetName": "Building2",
+        "edgeType": "render",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Package",
+        "targetName": "Package",
+        "edgeType": "render",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Trash2",
+        "targetName": "Trash2",
+        "edgeType": "render",
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Calendar",
+        "targetName": "Calendar",
+        "edgeType": "render",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "Calendar",
+        "targetName": "Calendar",
+        "edgeType": "render",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "MapPin",
+        "targetName": "MapPin",
+        "edgeType": "render",
+        "line": 147,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "FileText",
+        "targetName": "FileText",
+        "edgeType": "render",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationCard.tsx:28:AuthorizationCard",
+        "target": "ProductExceptionsSection",
+        "targetName": "ProductExceptionsSection",
+        "edgeType": "render",
+        "line": 163,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
+        "target": "onAddClick",
+        "targetName": "onAddClick",
+        "edgeType": "callback",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
+        "target": "Building2",
+        "targetName": "Building2",
+        "edgeType": "render",
+        "line": 17,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
+        "target": "Plus",
+        "targetName": "Plus",
+        "edgeType": "render",
+        "line": 23,
         "conditional": false,
         "inLoop": false
       },
@@ -3192,61 +4398,52 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "useSafeNotify",
+        "targetName": "useSafeNotify",
         "edgeType": "hook",
         "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "useFormContext",
-        "targetName": "useFormContext",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
         "edgeType": "hook",
         "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "useFormState",
-        "targetName": "useFormState",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "useFormContext",
+        "targetName": "useFormContext",
         "edgeType": "hook",
         "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "useCreate",
-        "targetName": "useCreate",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "useFormState",
+        "targetName": "useFormState",
         "edgeType": "hook",
         "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "useCreate",
+        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -3255,353 +4452,362 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "useRef",
-        "targetName": "useRef",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
-        "line": 48,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "useRef",
         "targetName": "useRef",
         "edgeType": "hook",
-        "line": 50,
+        "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 52,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "setShowCancelDialog",
         "targetName": "setShowCancelDialog",
         "edgeType": "call",
-        "line": 54,
+        "line": 55,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 57,
+        "line": 58,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 64,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "getValues",
         "targetName": "getValues",
-        "edgeType": "call",
-        "line": 66,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "transformValues",
-        "targetName": "transformValues",
         "edgeType": "call",
         "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "transformValues",
+        "targetName": "transformValues",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "setIsCreating",
         "targetName": "setIsCreating",
         "edgeType": "call",
-        "line": 69,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 71,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "bypassDuplicate",
         "targetName": "bypassDuplicate",
-        "edgeType": "call",
-        "line": 76,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 77,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "success",
+        "targetName": "success",
+        "edgeType": "call",
+        "line": 78,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 80,
+        "line": 81,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "getValues",
         "targetName": "getValues",
-        "edgeType": "call",
-        "line": 84,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "reduce",
-        "targetName": "reduce",
         "edgeType": "call",
         "line": 85,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "reset",
-        "targetName": "reset",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "reduce",
+        "targetName": "reduce",
         "edgeType": "call",
-        "line": 94,
+        "line": 86,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 96,
+        "line": 95,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "reset",
+        "targetName": "reset",
         "edgeType": "call",
-        "line": 101,
+        "line": 97,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "actionError",
+        "targetName": "actionError",
+        "edgeType": "call",
+        "line": 102,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "setIsCreating",
         "targetName": "setIsCreating",
         "edgeType": "call",
-        "line": 108,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 119,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "preventDefault",
         "targetName": "preventDefault",
-        "edgeType": "call",
-        "line": 121,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "trigger",
-        "targetName": "trigger",
-        "edgeType": "call",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "getValues",
-        "targetName": "getValues",
-        "edgeType": "call",
-        "line": 129,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "trim",
-        "targetName": "trim",
         "edgeType": "call",
         "line": 130,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "checkForDuplicate",
-        "targetName": "checkForDuplicate",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "trigger",
+        "targetName": "trigger",
         "edgeType": "call",
-        "line": 137,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "onDuplicateFound",
-        "targetName": "onDuplicateFound",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "getValues",
+        "targetName": "getValues",
         "edgeType": "call",
-        "line": 141,
-        "conditional": true,
+        "line": 138,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
-        "target": "performSave",
-        "targetName": "performSave",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "checkForDuplicate",
+        "targetName": "checkForDuplicate",
         "edgeType": "call",
         "line": 146,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "onDuplicateFound",
+        "targetName": "onDuplicateFound",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
+        "target": "performSave",
+        "targetName": "performSave",
+        "edgeType": "call",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "buttonLabel",
         "targetName": "buttonLabel",
         "edgeType": "call",
-        "line": 177,
+        "line": 186,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "handleSaveClick",
         "targetName": "handleSaveClick",
         "edgeType": "call",
-        "line": 181,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "buttonLabel",
         "targetName": "buttonLabel",
         "edgeType": "call",
-        "line": 185,
+        "line": 194,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "handleSaveClick",
         "targetName": "handleSaveClick",
         "edgeType": "call",
-        "line": 188,
+        "line": 197,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "setShowCancelDialog",
         "targetName": "setShowCancelDialog",
         "edgeType": "call",
-        "line": 195,
+        "line": 204,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "redirectFn",
         "targetName": "redirectFn",
         "edgeType": "call",
-        "line": 196,
+        "line": 205,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "setShowCancelDialog",
         "targetName": "setShowCancelDialog",
         "edgeType": "call",
-        "line": 198,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 170,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 170,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 175,
+        "line": 184,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 183,
+        "line": 192,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:30:OrganizationCreateFormFooter",
+        "source": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx:31:OrganizationCreateFormFooter",
         "target": "UnsavedChangesDialog",
         "targetName": "UnsavedChangesDialog",
         "edgeType": "render",
-        "line": 192,
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
@@ -8880,6 +10086,393 @@
         "inLoop": false
       },
       {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
+        "edgeType": "hook",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "useDelete",
+        "targetName": "useDelete",
+        "edgeType": "hook",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "deleteOne",
+        "targetName": "deleteOne",
+        "edgeType": "call",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 46,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "setRemoveException",
+        "targetName": "setRemoveException",
+        "edgeType": "call",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "setAddExceptionOpen",
+        "targetName": "setAddExceptionOpen",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "setRemoveException",
+        "targetName": "setRemoveException",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 169,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "setAddExceptionOpen",
+        "targetName": "setAddExceptionOpen",
+        "edgeType": "call",
+        "line": 170,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "setRemoveException",
+        "targetName": "setRemoveException",
+        "edgeType": "call",
+        "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 146,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 65,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 66,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Package",
+        "targetName": "Package",
+        "edgeType": "render",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Plus",
+        "targetName": "Plus",
+        "edgeType": "render",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Check",
+        "targetName": "Check",
+        "edgeType": "render",
+        "line": 124,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "X",
+        "targetName": "X",
+        "edgeType": "render",
+        "line": 126,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "Trash2",
+        "targetName": "Trash2",
+        "edgeType": "render",
+        "line": 153,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "AddProductExceptionDialog",
+        "targetName": "AddProductExceptionDialog",
+        "edgeType": "render",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "RemoveConfirmDialog",
+        "targetName": "RemoveConfirmDialog",
+        "edgeType": "render",
+        "line": 174,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
+        "target": "handleRemoveException",
+        "targetName": "handleRemoveException",
+        "edgeType": "callback",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
         "source": "src/atomic-crm/organizations/QuickCreatePopover.tsx:35:OrganizationTypeSelect",
         "target": "useWatch",
         "targetName": "useWatch",
@@ -9969,1600 +11562,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 32,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "useCreate",
-        "targetName": "useCreate",
-        "edgeType": "hook",
-        "line": 34,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "useGetIdentity",
-        "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 40,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "create",
-        "targetName": "create",
-        "edgeType": "call",
-        "line": 45,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 50,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "split",
-        "targetName": "split",
-        "edgeType": "call",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 53,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 60,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "setSelectedPrincipalId",
-        "targetName": "setSelectedPrincipalId",
-        "edgeType": "call",
-        "line": 61,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "setNotes",
-        "targetName": "setNotes",
-        "edgeType": "call",
-        "line": 62,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
-        "edgeType": "call",
-        "line": 63,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 66,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "setSelectedPrincipalId",
-        "targetName": "setSelectedPrincipalId",
-        "edgeType": "call",
-        "line": 71,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "setNotes",
-        "targetName": "setNotes",
-        "edgeType": "call",
-        "line": 72,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "onOpenChange",
-        "targetName": "onOpenChange",
-        "edgeType": "call",
-        "line": 73,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 99,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 100,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "setNotes",
-        "targetName": "setNotes",
-        "edgeType": "call",
-        "line": 115,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Dialog",
-        "targetName": "Dialog",
-        "edgeType": "render",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "handleClose",
-        "targetName": "handleClose",
-        "edgeType": "callback",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "DialogContent",
-        "targetName": "DialogContent",
-        "edgeType": "render",
-        "line": 78,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "DialogHeader",
-        "targetName": "DialogHeader",
-        "edgeType": "render",
-        "line": 79,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "DialogTitle",
-        "targetName": "DialogTitle",
-        "edgeType": "render",
-        "line": 80,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "DialogDescription",
-        "targetName": "DialogDescription",
-        "edgeType": "render",
-        "line": 81,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 90,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 93,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 95,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 100,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 110,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "DialogFooter",
-        "targetName": "DialogFooter",
-        "edgeType": "render",
-        "line": 121,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 122,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "handleClose",
-        "targetName": "handleClose",
-        "edgeType": "callback",
-        "line": 122,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 125,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "handleSubmit",
-        "targetName": "handleSubmit",
-        "edgeType": "callback",
-        "line": 126,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
-        "edgeType": "render",
-        "line": 91,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx:25:AddPrincipalDialog",
-        "target": "Textarea",
-        "targetName": "Textarea",
-        "edgeType": "render",
-        "line": 111,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "useCreate",
-        "targetName": "useCreate",
-        "edgeType": "hook",
-        "line": 38,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "useGetIdentity",
-        "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 40,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 44,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "create",
-        "targetName": "create",
-        "edgeType": "call",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 53,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "split",
-        "targetName": "split",
-        "edgeType": "call",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "toISOString",
-        "targetName": "toISOString",
-        "edgeType": "call",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 57,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 64,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "setSelectedProductId",
-        "targetName": "setSelectedProductId",
-        "edgeType": "call",
-        "line": 65,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "setIsAuthorized",
-        "targetName": "setIsAuthorized",
-        "edgeType": "call",
-        "line": 66,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "setNotes",
-        "targetName": "setNotes",
-        "edgeType": "call",
-        "line": 67,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
-        "edgeType": "call",
-        "line": 68,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 72,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "setSelectedProductId",
-        "targetName": "setSelectedProductId",
-        "edgeType": "call",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "setIsAuthorized",
-        "targetName": "setIsAuthorized",
-        "edgeType": "call",
-        "line": 78,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "setNotes",
-        "targetName": "setNotes",
-        "edgeType": "call",
-        "line": 79,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "onOpenChange",
-        "targetName": "onOpenChange",
-        "edgeType": "call",
-        "line": 80,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 113,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 114,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "setNotes",
-        "targetName": "setNotes",
-        "edgeType": "call",
-        "line": 156,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Dialog",
-        "targetName": "Dialog",
-        "edgeType": "render",
-        "line": 84,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "handleClose",
-        "targetName": "handleClose",
-        "edgeType": "callback",
-        "line": 84,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "DialogContent",
-        "targetName": "DialogContent",
-        "edgeType": "render",
-        "line": 85,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "DialogHeader",
-        "targetName": "DialogHeader",
-        "edgeType": "render",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "DialogTitle",
-        "targetName": "DialogTitle",
-        "edgeType": "render",
-        "line": 87,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "DialogDescription",
-        "targetName": "DialogDescription",
-        "edgeType": "render",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 91,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 102,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 103,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 104,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 109,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 114,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 125,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 126,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 129,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 136,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 151,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "DialogFooter",
-        "targetName": "DialogFooter",
-        "edgeType": "render",
-        "line": 162,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "handleClose",
-        "targetName": "handleClose",
-        "edgeType": "callback",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 166,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "handleSubmit",
-        "targetName": "handleSubmit",
-        "edgeType": "callback",
-        "line": 167,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
-        "edgeType": "render",
-        "line": 105,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
-        "edgeType": "render",
-        "line": 127,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Check",
-        "targetName": "Check",
-        "edgeType": "render",
-        "line": 132,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "X",
-        "targetName": "X",
-        "edgeType": "render",
-        "line": 138,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "AlertTriangle",
-        "targetName": "AlertTriangle",
-        "edgeType": "render",
-        "line": 145,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx:27:AddProductExceptionDialog",
-        "target": "Textarea",
-        "targetName": "Textarea",
-        "edgeType": "render",
-        "line": 152,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "useGetList",
-        "targetName": "useGetList",
-        "edgeType": "hook",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "useGetList",
-        "targetName": "useGetList",
-        "edgeType": "hook",
-        "line": 40,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "useGetList",
-        "targetName": "useGetList",
-        "edgeType": "hook",
-        "line": 50,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 62,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 67,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 67,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 69,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 69,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 129,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 148,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Collapsible",
-        "targetName": "Collapsible",
-        "edgeType": "render",
-        "line": 74,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "CollapsibleTrigger",
-        "targetName": "CollapsibleTrigger",
-        "edgeType": "render",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 78,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 102,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 106,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 112,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "onRemove",
-        "targetName": "onRemove",
-        "edgeType": "callback",
-        "line": 116,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "CollapsibleContent",
-        "targetName": "CollapsibleContent",
-        "edgeType": "render",
-        "line": 162,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "ChevronDown",
-        "targetName": "ChevronDown",
-        "edgeType": "render",
-        "line": 85,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "ChevronRight",
-        "targetName": "ChevronRight",
-        "edgeType": "render",
-        "line": 87,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Building2",
-        "targetName": "Building2",
-        "edgeType": "render",
-        "line": 94,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Package",
-        "targetName": "Package",
-        "edgeType": "render",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Trash2",
-        "targetName": "Trash2",
-        "edgeType": "render",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Calendar",
-        "targetName": "Calendar",
-        "edgeType": "render",
-        "line": 126,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "Calendar",
-        "targetName": "Calendar",
-        "edgeType": "render",
-        "line": 138,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "MapPin",
-        "targetName": "MapPin",
-        "edgeType": "render",
-        "line": 147,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "FileText",
-        "targetName": "FileText",
-        "edgeType": "render",
-        "line": 155,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationCard.tsx:28:AuthorizationCard",
-        "target": "ProductExceptionsSection",
-        "targetName": "ProductExceptionsSection",
-        "edgeType": "render",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
-        "target": "onAddClick",
-        "targetName": "onAddClick",
-        "edgeType": "callback",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
-        "target": "Building2",
-        "targetName": "Building2",
-        "edgeType": "render",
-        "line": 17,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx:14:AuthorizationsEmptyState",
-        "target": "Plus",
-        "targetName": "Plus",
-        "edgeType": "render",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 21,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
-        "edgeType": "hook",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "useDelete",
-        "targetName": "useDelete",
-        "edgeType": "hook",
-        "line": 24,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 25,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 27,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 29,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 29,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 29,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 33,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "deleteOne",
-        "targetName": "deleteOne",
-        "edgeType": "call",
-        "line": 41,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 46,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "refresh",
-        "targetName": "refresh",
-        "edgeType": "call",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "setRemoveException",
-        "targetName": "setRemoveException",
-        "edgeType": "call",
-        "line": 48,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 53,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "setAddExceptionOpen",
-        "targetName": "setAddExceptionOpen",
-        "edgeType": "call",
-        "line": 82,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 102,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 103,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 103,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 106,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "setRemoveException",
-        "targetName": "setRemoveException",
-        "edgeType": "call",
-        "line": 150,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "refresh",
-        "targetName": "refresh",
-        "edgeType": "call",
-        "line": 169,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "setAddExceptionOpen",
-        "targetName": "setAddExceptionOpen",
-        "edgeType": "call",
-        "line": 170,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "setRemoveException",
-        "targetName": "setRemoveException",
-        "edgeType": "call",
-        "line": 183,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 79,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 143,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 146,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 65,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 66,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Package",
-        "targetName": "Package",
-        "edgeType": "render",
-        "line": 75,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Plus",
-        "targetName": "Plus",
-        "edgeType": "render",
-        "line": 85,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Check",
-        "targetName": "Check",
-        "edgeType": "render",
-        "line": 124,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "X",
-        "targetName": "X",
-        "edgeType": "render",
-        "line": 126,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "Trash2",
-        "targetName": "Trash2",
-        "edgeType": "render",
-        "line": 153,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "AddProductExceptionDialog",
-        "targetName": "AddProductExceptionDialog",
-        "edgeType": "render",
-        "line": 162,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "RemoveConfirmDialog",
-        "targetName": "RemoveConfirmDialog",
-        "edgeType": "render",
-        "line": 174,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx:14:ProductExceptionsSection",
-        "target": "handleRemoveException",
-        "targetName": "handleRemoveException",
-        "edgeType": "callback",
-        "line": 184,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialog",
         "targetName": "AlertDialog",
         "edgeType": "render",
@@ -11571,7 +11571,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
@@ -11580,7 +11580,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialogContent",
         "targetName": "AlertDialogContent",
         "edgeType": "render",
@@ -11589,7 +11589,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialogHeader",
         "targetName": "AlertDialogHeader",
         "edgeType": "render",
@@ -11598,7 +11598,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialogTitle",
         "targetName": "AlertDialogTitle",
         "edgeType": "render",
@@ -11607,7 +11607,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialogDescription",
         "targetName": "AlertDialogDescription",
         "edgeType": "render",
@@ -11616,7 +11616,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialogFooter",
         "targetName": "AlertDialogFooter",
         "edgeType": "render",
@@ -11625,7 +11625,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialogCancel",
         "targetName": "AlertDialogCancel",
         "edgeType": "render",
@@ -11634,7 +11634,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "AlertDialogAction",
         "targetName": "AlertDialogAction",
         "edgeType": "render",
@@ -11643,7 +11643,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
+        "source": "src/atomic-crm/organizations/RemoveConfirmDialog.tsx:13:RemoveConfirmDialog",
         "target": "onConfirm",
         "targetName": "onConfirm",
         "edgeType": "callback",

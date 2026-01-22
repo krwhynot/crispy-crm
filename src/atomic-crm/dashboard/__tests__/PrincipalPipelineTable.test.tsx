@@ -48,12 +48,12 @@ const mockMultiplePipelineData = [
 
 // Mock the usePrincipalPipeline hook with vi.fn() for per-test control
 const mockUsePrincipalPipeline = vi.fn();
-vi.mock("../../hooks/usePrincipalPipeline", () => ({
+vi.mock("../usePrincipalPipeline", () => ({
   usePrincipalPipeline: () => mockUsePrincipalPipeline(),
 }));
 
 // Mock the usePrincipalOpportunities hook (used by PipelineDrillDownSheet)
-vi.mock("../../hooks/usePrincipalOpportunities", () => ({
+vi.mock("../usePrincipalOpportunities", () => ({
   usePrincipalOpportunities: () => ({
     opportunities: [],
     loading: false,

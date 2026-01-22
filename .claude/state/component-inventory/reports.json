@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-21T14:56:20.053Z",
+  "generated_at": "2026-01-22T16:45:42.324Z",
   "item_count": 23,
   "items": [
     {
@@ -138,7 +138,7 @@
         "useState"
       ],
       "imports": [
-        "../opportunities/constants/stageConstants",
+        "../opportunities/constants",
         "../types",
         "./ReportLayout",
         "./components",
@@ -489,7 +489,7 @@
         "useState"
       ],
       "imports": [
-        "../../opportunities/constants/stageConstants",
+        "../../opportunities/constants",
         "../charts/ActivityTrendChart",
         "../charts/PipelineChart",
         "../charts/RepPerformanceChart",

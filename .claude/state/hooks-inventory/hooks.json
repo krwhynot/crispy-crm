@@ -1,7 +1,7 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-21T14:56:26.457Z",
-  "item_count": 7,
+  "generated_at": "2026-01-22T16:45:47.609Z",
+  "item_count": 8,
   "items": [
     {
       "name": "useAppBarHeight",
@@ -77,6 +77,18 @@
         "useDataProvider",
         "useEffect",
         "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSafeNotify",
+      "file": "src/atomic-crm/hooks/useSafeNotify.ts",
+      "line": 60,
+      "parameters": [],
+      "returnType": "SafeNotifyReturn",
+      "dependencies": [
+        "useCallback",
+        "useNotify"
       ],
       "isReact19Action": false
     },

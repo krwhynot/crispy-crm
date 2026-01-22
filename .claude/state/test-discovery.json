@@ -27,25 +27,25 @@
     "src/atomic-crm/contacts/__tests__/contactImport.helpers.test.ts",
     "src/atomic-crm/contacts/__tests__/useColumnMapping.test.ts",
     "src/atomic-crm/contacts/__tests__/useImportWizard.test.ts",
-    "src/atomic-crm/dashboard/v3/__tests__/DashboardErrorBoundary.test.tsx",
-    "src/atomic-crm/dashboard/v3/__tests__/PipelineDrillDown.test.tsx",
-    "src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx",
-    "src/atomic-crm/dashboard/v3/__tests__/PrincipalPipelineFiltering.test.tsx",
-    "src/atomic-crm/dashboard/v3/__tests__/types.test.ts",
-    "src/atomic-crm/dashboard/v3/__tests__/usePrincipalOpportunities.test.ts",
-    "src/atomic-crm/dashboard/v3/components/__tests__/DashboardTabPanel.test.tsx",
-    "src/atomic-crm/dashboard/v3/components/__tests__/MobileQuickActionBar.test.tsx",
-    "src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx",
-    "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.cascading.test.tsx",
-    "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.simple.test.tsx",
-    "src/atomic-crm/dashboard/v3/components/__tests__/TaskCompleteSheet.test.tsx",
-    "src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts",
-    "src/atomic-crm/dashboard/v3/hooks/__tests__/useHybridSearch.test.ts",
-    "src/atomic-crm/dashboard/v3/hooks/__tests__/useKPIMetrics.test.ts",
-    "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyPerformance.test.ts",
-    "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts",
-    "src/atomic-crm/dashboard/v3/hooks/__tests__/usePrincipalPipeline.test.ts",
-    "src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts",
+    "src/atomic-crm/dashboard/__tests__/DashboardErrorBoundary.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/PipelineDrillDown.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/PrincipalDashboardV3.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/PrincipalPipelineFiltering.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/types.test.ts",
+    "src/atomic-crm/dashboard/__tests__/usePrincipalOpportunities.test.ts",
+    "src/atomic-crm/dashboard/__tests__/DashboardTabPanel.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/MobileQuickActionBar.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/PrincipalPipelineTable.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/QuickLogForm.cascading.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/QuickLogForm.simple.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/TaskCompleteSheet.test.tsx",
+    "src/atomic-crm/dashboard/__tests__/useCurrentSale.test.ts",
+    "src/atomic-crm/dashboard/__tests__/useHybridSearch.test.ts",
+    "src/atomic-crm/dashboard/__tests__/useKPIMetrics.test.ts",
+    "src/atomic-crm/dashboard/__tests__/useMyPerformance.test.ts",
+    "src/atomic-crm/dashboard/__tests__/useMyTasks.test.ts",
+    "src/atomic-crm/dashboard/__tests__/usePrincipalPipeline.test.ts",
+    "src/atomic-crm/dashboard/__tests__/useTeamActivities.test.ts",
     "src/atomic-crm/filters/__tests__/FilterChipBar.test.tsx",
     "src/atomic-crm/filters/__tests__/opportunityStagePreferences.test.ts",
     "src/atomic-crm/filters/__tests__/useFilterChipBar.test.tsx",
@@ -987,7 +987,7 @@
       "describe_blocks": 1
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/__tests__/usePrincipalOpportunities.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/usePrincipalOpportunities.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 13,
@@ -996,7 +996,7 @@
       "describe_blocks": 6
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/__tests__/types.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/types.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 2,
@@ -1005,7 +1005,7 @@
       "describe_blocks": 1
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useHybridSearch.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/useHybridSearch.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 18,
@@ -1014,7 +1014,7 @@
       "describe_blocks": 9
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/useTeamActivities.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 15,
@@ -1023,7 +1023,7 @@
       "describe_blocks": 7
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/usePrincipalPipeline.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/usePrincipalPipeline.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 13,
@@ -1032,7 +1032,7 @@
       "describe_blocks": 7
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/useCurrentSale.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 3,
@@ -1041,7 +1041,7 @@
       "describe_blocks": 1
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useKPIMetrics.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/useKPIMetrics.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 16,
@@ -1050,7 +1050,7 @@
       "describe_blocks": 7
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/useMyTasks.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 18,
@@ -1059,7 +1059,7 @@
       "describe_blocks": 9
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyPerformance.test.ts",
+      "file": "src/atomic-crm/dashboard/__tests__/useMyPerformance.test.ts",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 15,
@@ -2139,7 +2139,7 @@
       "describe_blocks": 1
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/PrincipalDashboardV3.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 9,
@@ -2148,7 +2148,7 @@
       "describe_blocks": 1
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/__tests__/DashboardErrorBoundary.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/DashboardErrorBoundary.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 4,
@@ -2157,7 +2157,7 @@
       "describe_blocks": 1
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/__tests__/PipelineDrillDown.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/PipelineDrillDown.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 16,
@@ -2166,7 +2166,7 @@
       "describe_blocks": 8
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/__tests__/PrincipalPipelineFiltering.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/PrincipalPipelineFiltering.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 14,
@@ -2175,7 +2175,7 @@
       "describe_blocks": 5
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.cascading.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/QuickLogForm.cascading.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 10,
@@ -2184,7 +2184,7 @@
       "describe_blocks": 7
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/components/__tests__/TaskCompleteSheet.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/TaskCompleteSheet.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 15,
@@ -2193,7 +2193,7 @@
       "describe_blocks": 10
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/PrincipalPipelineTable.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 11,
@@ -2202,7 +2202,7 @@
       "describe_blocks": 4
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/components/__tests__/DashboardTabPanel.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/DashboardTabPanel.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 6,
@@ -2211,7 +2211,7 @@
       "describe_blocks": 1
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/components/__tests__/MobileQuickActionBar.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/MobileQuickActionBar.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 21,
@@ -2220,7 +2220,7 @@
       "describe_blocks": 8
     },
     {
-      "file": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.simple.test.tsx",
+      "file": "src/atomic-crm/dashboard/__tests__/QuickLogForm.simple.test.tsx",
       "category": "unit",
       "feature_area": "dashboard",
       "test_count": 5,

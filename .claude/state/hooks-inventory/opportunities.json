@@ -1,11 +1,11 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-21T14:56:26.457Z",
+  "generated_at": "2026-01-22T16:45:47.610Z",
   "item_count": 12,
   "items": [
     {
       "name": "useAutoGenerateName",
-      "file": "src/atomic-crm/opportunities/hooks/useAutoGenerateName.ts",
+      "file": "src/atomic-crm/opportunities/useAutoGenerateName.ts",
       "line": 43,
       "parameters": [
         "mode"
@@ -22,7 +22,7 @@
     },
     {
       "name": "useBulkActionsState",
-      "file": "src/atomic-crm/opportunities/hooks/useBulkActionsState.ts",
+      "file": "src/atomic-crm/opportunities/useBulkActionsState.ts",
       "line": 36,
       "parameters": [
         "{\n  selectedIds,\n  opportunities,\n  onUnselectItems,\n  resource = \"opportunities\",\n}"
@@ -40,10 +40,10 @@
     },
     {
       "name": "useColumnPreferences",
-      "file": "src/atomic-crm/opportunities/hooks/useColumnPreferences.ts",
+      "file": "src/atomic-crm/opportunities/useColumnPreferences.ts",
       "line": 23,
       "parameters": [],
-      "returnType": "{ collapsedStages: OpportunityStageValue[]; visibleStages: OpportunityStageValue[]; toggleCollapse: (stage: OpportunityStageValue) => void; toggleVisibility: (stage: OpportunityStageValue) => void; collapseAll: () => void; expandAll: () => void; resetPreferences: () => void; }",
+      "returnType": "{ collapsedStages: (\"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\")[]; visibleStages: (\"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\")[]; toggleCollapse: (stage: OpportunityStageValue) => void; toggleVisibility: (stage: OpportunityStageValue) => void; collapseAll: () => void; expandAll: () => void; resetPreferences: () => void; }",
       "dependencies": [
         "useEffect"
       ],
@@ -51,7 +51,7 @@
     },
     {
       "name": "useContactOrgMismatch",
-      "file": "src/atomic-crm/opportunities/hooks/useContactOrgMismatch.ts",
+      "file": "src/atomic-crm/opportunities/useContactOrgMismatch.ts",
       "line": 40,
       "parameters": [
         "contactIds",
@@ -65,7 +65,7 @@
     },
     {
       "name": "useCustomerDistributors",
-      "file": "src/atomic-crm/opportunities/hooks/useCustomerDistributors.ts",
+      "file": "src/atomic-crm/opportunities/useCustomerDistributors.ts",
       "line": 57,
       "parameters": [
         "customerId"
@@ -78,7 +78,7 @@
     },
     {
       "name": "useDistributorAuthorization",
-      "file": "src/atomic-crm/opportunities/hooks/useDistributorAuthorization.ts",
+      "file": "src/atomic-crm/opportunities/useDistributorAuthorization.ts",
       "line": 64,
       "parameters": [
         "principalId",
@@ -92,7 +92,7 @@
     },
     {
       "name": "useExportOpportunities",
-      "file": "src/atomic-crm/opportunities/hooks/useExportOpportunities.ts",
+      "file": "src/atomic-crm/opportunities/useExportOpportunities.ts",
       "line": 8,
       "parameters": [],
       "returnType": "{ exportToCSV: (opportunities: Opportunity[], filename?: string) => void; }",
@@ -104,7 +104,7 @@
     },
     {
       "name": "useFilteredProducts",
-      "file": "src/atomic-crm/opportunities/hooks/useFilteredProducts.ts",
+      "file": "src/atomic-crm/opportunities/useFilteredProducts.ts",
       "line": 23,
       "parameters": [
         "principalId"
@@ -115,12 +115,12 @@
     },
     {
       "name": "useOpportunityContacts",
-      "file": "src/atomic-crm/opportunities/hooks/useOpportunityContacts.ts",
+      "file": "src/atomic-crm/opportunities/useOpportunityContacts.ts",
       "line": 16,
       "parameters": [
         "contactIds"
       ],
-      "returnType": "{ contacts: Contact[]; primaryContact: any; isLoading: boolean; error: Error; }",
+      "returnType": "{ contacts: Contact[]; primaryContact: Contact; isLoading: boolean; error: Error; }",
       "dependencies": [
         "useMemo"
       ],
@@ -128,21 +128,21 @@
     },
     {
       "name": "useQuickAdd",
-      "file": "src/atomic-crm/opportunities/hooks/useQuickAdd.ts",
-      "line": 24,
+      "file": "src/atomic-crm/opportunities/useQuickAdd.ts",
+      "line": 25,
       "parameters": [],
       "returnType": "import(\"/home/krwhynot/projects/crispy-crm/node_modules/@tanstack/react-query/build/legacy/types\").UseMutationResult<any, Error, { principal_id: number; account_manager_id: number; product_ids: number[]; organization_id?: number; org_name?: string; first_name?: string; last_name?: string; phone?: string; email?: string; city?: string; state?: string; campaign?: string; quick_note?: string; }, unknown>",
       "dependencies": [
         "useDataProvider",
         "useMutation",
-        "useNotify",
-        "useQueryClient"
+        "useQueryClient",
+        "useSafeNotify"
       ],
       "isReact19Action": false
     },
     {
       "name": "useSimilarOpportunityCheck",
-      "file": "src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.ts",
+      "file": "src/atomic-crm/opportunities/useSimilarOpportunityCheck.ts",
       "line": 92,
       "parameters": [
         "options"
@@ -158,7 +158,7 @@
     },
     {
       "name": "useStageMetrics",
-      "file": "src/atomic-crm/opportunities/hooks/useStageMetrics.ts",
+      "file": "src/atomic-crm/opportunities/useStageMetrics.ts",
       "line": 46,
       "parameters": [
         "opportunities"

@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-21T14:56:20.046Z",
+  "generated_at": "2026-01-22T16:45:42.316Z",
   "item_count": 59,
   "items": [
     {
@@ -83,7 +83,7 @@
     {
       "name": "ContactAdditionalDetails",
       "file": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx",
-      "line": 24,
+      "line": 7,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -253,7 +253,7 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 28,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useFormContext"
@@ -262,7 +262,7 @@
         "../utils/saleOptionRenderer",
         "./Avatar",
         "./ContactAdditionalDetails",
-        "@/atomic-crm/contacts/components/OrganizationPicker",
+        "./OrganizationPicker",
         "@/atomic-crm/utils",
         "@/components/domain/forms",
         "@/components/ra-wrappers/form",
@@ -271,13 +271,13 @@
         "@/components/ra-wrappers/text-input",
         "react",
         "react-admin",
-        "react-hook-form",
-        "zod"
+        "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [
         "Avatar",
-        "ContactAdditionalDetails"
+        "ContactAdditionalDetails",
+        "OrganizationPicker"
       ],
       "contextDependencies": [
         "useFormContext"
@@ -395,14 +395,15 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
-        "useNotify",
         "useQueryClient",
-        "useRefresh"
+        "useRefresh",
+        "useSafeNotify"
       ],
       "imports": [
+        "../hooks/useSafeNotify",
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
@@ -428,14 +429,15 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
-        "useNotify",
         "useQueryClient",
-        "useRefresh"
+        "useRefresh",
+        "useSafeNotify"
       ],
       "imports": [
+        "../hooks/useSafeNotify",
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
@@ -1133,7 +1135,7 @@
         "./StageBadgeWithHealth",
         "./SuggestedOpportunityCard",
         "./UnlinkConfirmDialog",
-        "@/atomic-crm/opportunities/constants/stageConstants",
+        "@/atomic-crm/opportunities/constants",
         "@/components/ui/button",
         "@tanstack/react-query",
         "lucide-react",
@@ -1156,6 +1158,22 @@
         "useDataProvider"
       ],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "OrganizationPicker",
+      "file": "src/atomic-crm/contacts/OrganizationPicker.tsx",
+      "line": 30,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/organizations/AutocompleteOrganizationInput",
+        "@/atomic-crm/utils/autocompleteDefaults",
+        "@/components/ra-wrappers/reference-input"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "QuickCreateContactPopover",
@@ -1317,31 +1335,16 @@
     {
       "name": "UnlinkConfirmDialog",
       "file": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
-      "line": 21,
+      "line": 22,
       "type": "presentational",
       "hooks": [
         "useDelete",
-        "useNotify"
+        "useSafeNotify"
       ],
       "imports": [
+        "../hooks/useSafeNotify",
         "@/components/ui/alert-dialog",
         "react-admin"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "OrganizationPicker",
-      "file": "src/atomic-crm/contacts/components/OrganizationPicker.tsx",
-      "line": 30,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "@/atomic-crm/organizations/AutocompleteOrganizationInput",
-        "@/atomic-crm/utils/autocompleteDefaults",
-        "@/components/ra-wrappers/reference-input"
       ],
       "isDefaultExport": false,
       "childComponents": [],

@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-21T14:56:20.044Z",
+  "generated_at": "2026-01-22T16:45:42.313Z",
   "item_count": 29,
   "items": [
     {
@@ -275,6 +275,30 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "ActivityTimelineEntry",
+      "file": "src/atomic-crm/activities/ActivityTimelineEntry.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../types",
+        "@/atomic-crm/utils",
+        "@/components/ra-wrappers/reference-field",
+        "@/components/ui/badge",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
       "name": "QuickLogActivity",
       "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
       "line": 97,
@@ -340,30 +364,6 @@
         "Contact",
         "Organization",
         "Opportunity"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "ActivityTimelineEntry",
-      "file": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx",
-      "line": 15,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "../../types",
-        "@/atomic-crm/utils",
-        "@/components/ra-wrappers/reference-field",
-        "@/components/ui/badge",
-        "@/lib/date-utils",
-        "date-fns",
-        "lucide-react",
-        "ra-core",
-        "react-router-dom"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "ActivityRecord"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -649,7 +649,7 @@
         "useNavigate"
       ],
       "imports": [
-        "../../opportunities/constants/stageConstants",
+        "../../opportunities/constants",
         "../../types",
         "@/components/layouts/ResourceSlideOver",
         "@/components/layouts/sidepane",

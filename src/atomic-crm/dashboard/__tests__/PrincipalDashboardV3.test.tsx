@@ -11,7 +11,7 @@ vi.mock("../components/LogActivityFAB", () => ({
 }));
 
 // Mock the hooks
-vi.mock("../hooks/usePrincipalPipeline", () => ({
+vi.mock("../usePrincipalPipeline", () => ({
   usePrincipalPipeline: () => ({
     data: [],
     loading: false,

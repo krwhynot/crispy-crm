@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-21T14:56:28.753Z",
+  "generated_at": "2026-01-22T16:45:49.768Z",
   "items": {
     "nodes": [
       {
@@ -49,19 +49,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
+        "id": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
         "name": "TagQuickInput",
         "file": "src/atomic-crm/tags/TagQuickInput.tsx",
-        "line": 14,
+        "line": 15,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "id": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "name": "TagSelectWithCreate",
         "file": "src/atomic-crm/tags/TagSelectWithCreate.tsx",
-        "line": 18,
+        "line": 19,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -726,133 +726,124 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
         "target": "useState",
         "targetName": "useState",
-        "edgeType": "hook",
-        "line": 15,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "useCreate",
-        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 16,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "useCreate",
+        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 17,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "useSafeNotify",
+        "targetName": "useSafeNotify",
         "edgeType": "hook",
         "line": 18,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 21,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "create",
-        "targetName": "create",
-        "edgeType": "call",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 25,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 28,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "refresh",
-        "targetName": "refresh",
-        "edgeType": "call",
-        "line": 29,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 32,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "handleQuickCreate",
-        "targetName": "handleQuickCreate",
-        "edgeType": "call",
-        "line": 46,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagQuickInput.tsx:14:TagQuickInput",
-        "target": "GenericSelectInput",
-        "targetName": "GenericSelectInput",
-        "edgeType": "render",
-        "line": 40,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
         "edgeType": "hook",
         "line": 19,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 22,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "success",
+        "targetName": "success",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "notifyError",
+        "targetName": "notifyError",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "handleQuickCreate",
+        "targetName": "handleQuickCreate",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
+        "edgeType": "render",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagQuickInput.tsx:15:TagQuickInput",
+        "target": "GenericSelectInput",
+        "targetName": "GenericSelectInput",
+        "edgeType": "render",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -861,146 +852,155 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "useCreate",
-        "targetName": "useCreate",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
         "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "useCreate",
+        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 22,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "useSafeNotify",
+        "targetName": "useSafeNotify",
         "edgeType": "hook",
         "line": 23,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
+        "edgeType": "hook",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 26,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "setDialogOpen",
-        "targetName": "setDialogOpen",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "success",
+        "targetName": "success",
         "edgeType": "call",
         "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "refresh",
-        "targetName": "refresh",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "setDialogOpen",
+        "targetName": "setDialogOpen",
         "edgeType": "call",
         "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "refresh",
+        "targetName": "refresh",
         "edgeType": "call",
-        "line": 36,
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "notifyError",
+        "targetName": "notifyError",
+        "edgeType": "call",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "target": "setDialogOpen",
         "targetName": "setDialogOpen",
         "edgeType": "call",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "target": "setDialogOpen",
         "targetName": "setDialogOpen",
         "edgeType": "call",
-        "line": 71,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 43,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "PlusIcon",
-        "targetName": "PlusIcon",
-        "edgeType": "render",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "GenericSelectInput",
-        "targetName": "GenericSelectInput",
         "edgeType": "render",
         "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
-        "target": "TagDialog",
-        "targetName": "TagDialog",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "PlusIcon",
+        "targetName": "PlusIcon",
         "edgeType": "render",
-        "line": 66,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:18:TagSelectWithCreate",
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "GenericSelectInput",
+        "targetName": "GenericSelectInput",
+        "edgeType": "render",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
+        "target": "TagDialog",
+        "targetName": "TagDialog",
+        "edgeType": "render",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagSelectWithCreate.tsx:19:TagSelectWithCreate",
         "target": "handleCreateTag",
         "targetName": "handleCreateTag",
         "edgeType": "callback",
-        "line": 70,
+        "line": 71,
         "conditional": false,
         "inLoop": false
       },

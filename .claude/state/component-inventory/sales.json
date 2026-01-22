@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-21T14:56:20.055Z",
+  "generated_at": "2026-01-22T16:45:42.324Z",
   "item_count": 23,
   "items": [
     {
@@ -248,9 +248,10 @@
     {
       "name": "SalesPermissionsTab",
       "file": "src/atomic-crm/sales/SalesPermissionsTab.tsx",
-      "line": 54,
+      "line": 62,
       "type": "presentational",
       "hooks": [
+        "useDelete",
         "useEffect",
         "useGetIdentity",
         "useNotify",
@@ -262,6 +263,7 @@
       "imports": [
         "../providers/supabase/authProvider",
         "./UserDisableReassignDialog",
+        "@/atomic-crm/hooks",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/sales",
         "@/components/ui/alert-dialog",

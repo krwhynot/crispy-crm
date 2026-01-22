@@ -12,7 +12,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+        "path": "src/atomic-crm/dashboard/QuickLogForm.tsx",
         "edit_count": 19,
         "recent_7d": 14,
         "authors": []
@@ -162,7 +162,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts",
+        "path": "src/atomic-crm/dashboard/useMyTasks.ts",
         "edit_count": 8,
         "recent_7d": 2,
         "authors": []
@@ -318,7 +318,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.provider.test.tsx",
+        "path": "src/atomic-crm/dashboard/__tests__/QuickLogForm.provider.test.tsx",
         "edit_count": 6,
         "recent_7d": 6,
         "authors": []
@@ -666,7 +666,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.cascading.test.tsx",
+        "path": "src/atomic-crm/dashboard/__tests__/QuickLogForm.cascading.test.tsx",
         "edit_count": 4,
         "recent_7d": 3,
         "authors": []
@@ -696,7 +696,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/__tests__/EntitySelectionSection.test.tsx",
+        "path": "src/atomic-crm/dashboard/__tests__/EntitySelectionSection.test.tsx",
         "edit_count": 4,
         "recent_7d": 4,
         "authors": []
@@ -708,7 +708,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
+        "path": "src/atomic-crm/dashboard/ActivityFeedPanel.tsx",
         "edit_count": 4,
         "recent_7d": 4,
         "authors": []
@@ -1158,7 +1158,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx",
+        "path": "src/atomic-crm/dashboard/ActivityTypeSection.tsx",
         "edit_count": 3,
         "recent_7d": 3,
         "authors": []
@@ -1224,7 +1224,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx",
+        "path": "src/atomic-crm/dashboard/TaskKanbanCard.tsx",
         "edit_count": 3,
         "recent_7d": 3,
         "authors": []
@@ -1272,7 +1272,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts",
+        "path": "src/atomic-crm/dashboard/__tests__/useMyTasks.test.ts",
         "edit_count": 3,
         "recent_7d": 1,
         "authors": []
@@ -1326,7 +1326,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/useKPIMetrics.ts",
+        "path": "src/atomic-crm/dashboard/useKPIMetrics.ts",
         "edit_count": 3,
         "recent_7d": 0,
         "authors": []
@@ -2142,13 +2142,13 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/useEntitySelection.ts",
+        "path": "src/atomic-crm/dashboard/useEntitySelection.ts",
         "edit_count": 2,
         "recent_7d": 2,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/ActivityDateSection.tsx",
+        "path": "src/atomic-crm/dashboard/ActivityDateSection.tsx",
         "edit_count": 2,
         "recent_7d": 2,
         "authors": []
@@ -2208,19 +2208,19 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/index.ts",
+        "path": "src/atomic-crm/dashboard/index.ts",
         "edit_count": 2,
         "recent_7d": 2,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/__tests__/ActivityDateSection.test.tsx",
+        "path": "src/atomic-crm/dashboard/__tests__/ActivityDateSection.test.tsx",
         "edit_count": 2,
         "recent_7d": 2,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/__tests__/ActionButtons.test.tsx",
+        "path": "src/atomic-crm/dashboard/__tests__/ActionButtons.test.tsx",
         "edit_count": 2,
         "recent_7d": 2,
         "authors": []
@@ -2316,7 +2316,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx",
+        "path": "src/atomic-crm/dashboard/PipelineDrillDownSheet.tsx",
         "edit_count": 2,
         "recent_7d": 2,
         "authors": []
@@ -2346,7 +2346,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts",
+        "path": "src/atomic-crm/dashboard/usePrincipalPipeline.ts",
         "edit_count": 2,
         "recent_7d": 1,
         "authors": []
@@ -2436,7 +2436,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/types.ts",
+        "path": "src/atomic-crm/dashboard/types.ts",
         "edit_count": 2,
         "recent_7d": 2,
         "authors": []
@@ -2538,7 +2538,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx",
+        "path": "src/atomic-crm/dashboard/__tests__/PrincipalDashboardV3.test.tsx",
         "edit_count": 2,
         "recent_7d": 0,
         "authors": []
@@ -2550,7 +2550,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
+        "path": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx",
         "edit_count": 2,
         "recent_7d": 0,
         "authors": []
@@ -2700,7 +2700,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
+        "path": "src/atomic-crm/dashboard/DashboardTabPanel.tsx",
         "edit_count": 2,
         "recent_7d": 0,
         "authors": []
@@ -4626,7 +4626,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/useEntityData.ts",
+        "path": "src/atomic-crm/dashboard/useEntityData.ts",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
@@ -4710,7 +4710,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/index.ts",
+        "path": "src/atomic-crm/dashboard/index.ts",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
@@ -4722,31 +4722,31 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/EntitySelectionSection.tsx",
+        "path": "src/atomic-crm/dashboard/EntitySelectionSection.tsx",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/ActionButtons.tsx",
+        "path": "src/atomic-crm/dashboard/ActionButtons.tsx",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/NotesSection.tsx",
+        "path": "src/atomic-crm/dashboard/NotesSection.tsx",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/__tests__/NotesSection.test.tsx",
+        "path": "src/atomic-crm/dashboard/__tests__/NotesSection.test.tsx",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useEntitySelection.test.ts",
+        "path": "src/atomic-crm/dashboard/__tests__/useEntitySelection.test.ts",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
@@ -4842,13 +4842,13 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/KPICard.tsx",
+        "path": "src/atomic-crm/dashboard/KPICard.tsx",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/index.tsx",
+        "path": "src/atomic-crm/dashboard/index.tsx",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
@@ -4866,7 +4866,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/KPISummaryRow.tsx",
+        "path": "src/atomic-crm/dashboard/KPISummaryRow.tsx",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
@@ -5004,7 +5004,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/usePrincipalOpportunities.ts",
+        "path": "src/atomic-crm/dashboard/usePrincipalOpportunities.ts",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
@@ -5016,7 +5016,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/useTeamActivities.ts",
+        "path": "src/atomic-crm/dashboard/useTeamActivities.ts",
         "edit_count": 1,
         "recent_7d": 1,
         "authors": []
@@ -5256,13 +5256,13 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/__tests__/usePrincipalOpportunities.test.ts",
+        "path": "src/atomic-crm/dashboard/__tests__/usePrincipalOpportunities.test.ts",
         "edit_count": 1,
         "recent_7d": 0,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts",
+        "path": "src/atomic-crm/dashboard/__tests__/useTeamActivities.test.ts",
         "edit_count": 1,
         "recent_7d": 0,
         "authors": []
@@ -5790,19 +5790,19 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/context/CurrentSaleContext.tsx",
+        "path": "src/atomic-crm/dashboard/CurrentSaleContext.tsx",
         "edit_count": 1,
         "recent_7d": 0,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts",
+        "path": "src/atomic-crm/dashboard/useCurrentSale.ts",
         "edit_count": 1,
         "recent_7d": 0,
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts",
+        "path": "src/atomic-crm/dashboard/useMyPerformance.ts",
         "edit_count": 1,
         "recent_7d": 0,
         "authors": []
@@ -6420,7 +6420,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts",
+        "path": "src/atomic-crm/dashboard/__tests__/useCurrentSale.test.ts",
         "edit_count": 1,
         "recent_7d": 0,
         "authors": []
@@ -6498,7 +6498,7 @@
         "authors": []
       },
       {
-        "path": "src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx",
+        "path": "src/atomic-crm/dashboard/LogActivityFAB.tsx",
         "edit_count": 1,
         "recent_7d": 0,
         "authors": []
@@ -6722,8 +6722,8 @@
         "confidence": 0.0066555740432612314
       },
       {
-        "file_a": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
-        "file_b": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.provider.test.tsx",
+        "file_a": "src/atomic-crm/dashboard/QuickLogForm.tsx",
+        "file_b": "src/atomic-crm/dashboard/__tests__/QuickLogForm.provider.test.tsx",
         "co_change_count": 4,
         "confidence": 0.0066555740432612314
       },
@@ -6787,7 +6787,7 @@
       },
       {
         "type": "high_churn",
-        "target": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+        "target": "src/atomic-crm/dashboard/QuickLogForm.tsx",
         "reason": "19 edits with 73% in last week - accelerating churn",
         "suggested_action": "Consider: Extract into smaller modules or address root cause",
         "data": {

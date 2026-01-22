@@ -1,11 +1,11 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-21T14:56:26.815Z",
+  "generated_at": "2026-01-22T16:45:47.971Z",
   "item_count": 13,
   "items": [
     {
       "name": "PrincipalPipelineRow",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 37,
       "kind": "interface",
       "properties": [
@@ -57,7 +57,7 @@
     },
     {
       "name": "RelatedEntity",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 52,
       "kind": "interface",
       "properties": [
@@ -85,7 +85,7 @@
     },
     {
       "name": "TaskItem",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 58,
       "kind": "interface",
       "properties": [
@@ -155,7 +155,7 @@
     },
     {
       "name": "PipelineSummaryRow",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 80,
       "kind": "interface",
       "properties": [
@@ -213,7 +213,7 @@
     },
     {
       "name": "TaskApiResponse",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 95,
       "kind": "interface",
       "properties": [
@@ -313,7 +313,7 @@
     },
     {
       "name": "OpportunityApiResponse",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 118,
       "kind": "interface",
       "properties": [
@@ -371,7 +371,7 @@
     },
     {
       "name": "ActivityLogInput",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 28,
       "kind": "type_alias",
       "typeExpression": "QuickLogFormInput",
@@ -380,7 +380,7 @@
     },
     {
       "name": "ActivityType",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 31,
       "kind": "type_alias",
       "typeExpression": "z.infer<typeof activityDisplayTypeSchema>",
@@ -390,7 +390,7 @@
     },
     {
       "name": "ActivityOutcome",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 32,
       "kind": "type_alias",
       "typeExpression": "z.infer<typeof activityOutcomeSchema>",
@@ -400,7 +400,7 @@
     },
     {
       "name": "Momentum",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 35,
       "kind": "type_alias",
       "typeExpression": "\"increasing\" | \"steady\" | \"decreasing\" | \"stale\"",
@@ -409,7 +409,7 @@
     },
     {
       "name": "Priority",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 48,
       "kind": "type_alias",
       "typeExpression": "\"critical\" | \"high\" | \"medium\" | \"low\"",
@@ -418,7 +418,7 @@
     },
     {
       "name": "TaskStatus",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 49,
       "kind": "type_alias",
       "typeExpression": "\"overdue\" | \"today\" | \"tomorrow\" | \"upcoming\" | \"later\"",
@@ -427,7 +427,7 @@
     },
     {
       "name": "TaskType",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "file": "src/atomic-crm/dashboard/types.ts",
       "line": 50,
       "kind": "type_alias",
       "typeExpression": "\"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\" | \"Other\"",

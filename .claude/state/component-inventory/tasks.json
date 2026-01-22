@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-21T14:56:20.056Z",
+  "generated_at": "2026-01-22T16:45:42.325Z",
   "item_count": 27,
   "items": [
     {
@@ -59,8 +59,8 @@
       "imports": [
         "../queryKeys",
         "../types",
+        "./TaskCompletionDialog",
         "./TaskEdit",
-        "./components/TaskCompletionDialog",
         "@/components/ra-wrappers/date-field",
         "@/components/ra-wrappers/reference-field",
         "@/components/ui/button",
@@ -85,6 +85,31 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "TaskActionMenu",
+      "file": "src/atomic-crm/tasks/TaskActionMenu.tsx",
+      "line": 52,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useNotify",
+        "useQueryClient",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/dropdown-menu",
+        "@tanstack/react-query",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "TaskCompactForm",
       "file": "src/atomic-crm/tasks/TaskCompactForm.tsx",
       "line": 30,
@@ -104,6 +129,44 @@
         "@/components/ra-wrappers/text-input"
       ],
       "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "TaskCompletionDialog",
+      "file": "src/atomic-crm/tasks/TaskCompletionDialog.tsx",
+      "line": 38,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "TaskCompletionDialog",
+      "file": "src/atomic-crm/tasks/TaskCompletionDialog.tsx",
+      "line": 38,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true,
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
@@ -226,7 +289,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 75,
+      "line": 67,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -236,17 +299,17 @@
       "imports": [
         "../hooks/useFilterCleanup",
         "../layout/TopToolbar",
-        "../queryKeys",
         "../sales/SaleName",
         "../tutorial",
         "../types",
         "../utils/listPatterns",
+        "./TaskActionMenu",
+        "./TaskCompletionDialog",
         "./TaskEmpty",
         "./TaskListFilter",
         "./TaskSlideOver",
         "./TasksDatagridHeader",
-        "./components/TaskActionMenu",
-        "./components/TaskCompletionDialog",
+        "./hooks",
         "./taskFilterConfig",
         "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
@@ -268,7 +331,6 @@
         "@/components/ui/truncated-text",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
-        "@tanstack/react-query",
         "jsonexport/dist",
         "ra-core",
         "react",
@@ -406,7 +468,7 @@
         "../root/ConfigurationContext",
         "../sales/SaleName",
         "../types",
-        "./components/TaskCompletionDialog",
+        "./TaskCompletionDialog",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/boolean-input",
@@ -504,69 +566,6 @@
         "useListContext"
       ],
       "componentRole": "wrapper"
-    },
-    {
-      "name": "TaskActionMenu",
-      "file": "src/atomic-crm/tasks/components/TaskActionMenu.tsx",
-      "line": 52,
-      "type": "presentational",
-      "hooks": [
-        "useDelete",
-        "useNotify",
-        "useQueryClient",
-        "useState",
-        "useUpdate"
-      ],
-      "imports": [
-        "@/components/ui/button",
-        "@/components/ui/dropdown-menu",
-        "@tanstack/react-query",
-        "lucide-react",
-        "react",
-        "react-admin"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "TaskCompletionDialog",
-      "file": "src/atomic-crm/tasks/components/TaskCompletionDialog.tsx",
-      "line": 38,
-      "type": "presentational",
-      "hooks": [
-        "useNavigate"
-      ],
-      "imports": [
-        "@/components/ui/button",
-        "@/components/ui/dialog",
-        "lucide-react",
-        "react-router-dom"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
-    {
-      "name": "TaskCompletionDialog",
-      "file": "src/atomic-crm/tasks/components/TaskCompletionDialog.tsx",
-      "line": 38,
-      "type": "presentational",
-      "hooks": [
-        "useNavigate"
-      ],
-      "imports": [
-        "@/components/ui/button",
-        "@/components/ui/dialog",
-        "lucide-react",
-        "react-router-dom"
-      ],
-      "isDefaultExport": true,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
     },
     {
       "name": "TaskListView",

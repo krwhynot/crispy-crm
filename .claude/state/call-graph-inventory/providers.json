@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-21T14:56:28.744Z",
+  "generated_at": "2026-01-22T16:45:49.758Z",
   "items": {
     "nodes": [
       {
@@ -980,6 +980,15 @@
         "name": "withErrorLogging",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
         "line": 281,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withSkipDelete.ts:51:withSkipDelete",
+        "name": "withSkipDelete",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withSkipDelete.ts",
+        "line": 51,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -3328,6 +3337,15 @@
       },
       {
         "source": "src/atomic-crm/providers/supabase/handlers/contactsHandler.ts:29:createContactsHandler",
+        "target": "withSkipDelete",
+        "targetName": "withSkipDelete",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/contactsHandler.ts:29:createContactsHandler",
         "target": "withValidation",
         "targetName": "withValidation",
         "edgeType": "call",
@@ -3841,6 +3859,15 @@
       },
       {
         "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:96:createOpportunitiesHandler",
+        "target": "withSkipDelete",
+        "targetName": "withSkipDelete",
+        "edgeType": "call",
+        "line": 238,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:96:createOpportunitiesHandler",
         "target": "withValidation",
         "targetName": "withValidation",
         "edgeType": "call",
@@ -3861,6 +3888,15 @@
         "source": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts:29:createOrganizationsHandler",
         "target": "withLifecycleCallbacks",
         "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts:29:createOrganizationsHandler",
+        "target": "withSkipDelete",
+        "targetName": "withSkipDelete",
         "edgeType": "call",
         "line": 31,
         "conditional": false,
@@ -5988,6 +6024,24 @@
         "edgeType": "call",
         "line": 333,
         "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withSkipDelete.ts:51:withSkipDelete",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withSkipDelete.ts:51:withSkipDelete",
+        "target": "deleteMany",
+        "targetName": "deleteMany",
+        "edgeType": "call",
+        "line": 84,
+        "conditional": false,
         "inLoop": false
       },
       {

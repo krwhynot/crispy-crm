@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-21T14:56:28.722Z",
+  "generated_at": "2026-01-22T16:45:49.741Z",
   "items": {
     "nodes": [
       {
@@ -71,6 +71,15 @@
         "name": "useRelatedRecordCounts",
         "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
         "line": 102,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "name": "useSafeNotify",
+        "file": "src/atomic-crm/hooks/useSafeNotify.ts",
+        "line": 60,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -1118,6 +1127,132 @@
         "targetName": "fetchCounts",
         "edgeType": "call",
         "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "mapErrorToUserMessage",
+        "targetName": "mapErrorToUserMessage",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "mapErrorToUserMessage",
+        "targetName": "mapErrorToUserMessage",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "getActionErrorMessage",
+        "targetName": "getActionErrorMessage",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },

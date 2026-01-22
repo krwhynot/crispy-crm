@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-21T14:56:28.703Z",
+  "generated_at": "2026-01-22T16:45:49.726Z",
   "items": {
     "nodes": [
       {
@@ -112,6 +112,15 @@
         "async": false
       },
       {
+        "id": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "name": "ActivityTimelineEntry",
+        "file": "src/atomic-crm/activities/ActivityTimelineEntry.tsx",
+        "line": 15,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
         "id": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
         "name": "inferActivityTypeFromTitle",
         "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
@@ -179,15 +188,6 @@
         "name": "QuickLogActivityDialog",
         "file": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
         "line": 349,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "name": "ActivityTimelineEntry",
-        "file": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx",
-        "line": 15,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -2067,6 +2067,186 @@
         "inLoop": false
       },
       {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "getActivityIcon",
+        "targetName": "getActivityIcon",
+        "edgeType": "call",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "ucFirst",
+        "targetName": "ucFirst",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "RecordContextProvider",
+        "targetName": "RecordContextProvider",
+        "edgeType": "render",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "RouterLink",
+        "targetName": "RouterLink",
+        "edgeType": "render",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "RouterLink",
+        "targetName": "RouterLink",
+        "edgeType": "render",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "RouterLink",
+        "targetName": "RouterLink",
+        "edgeType": "render",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Phone",
+        "targetName": "Phone",
+        "edgeType": "render",
+        "line": 19,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Mail",
+        "targetName": "Mail",
+        "edgeType": "render",
+        "line": 21,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Users",
+        "targetName": "Users",
+        "edgeType": "render",
+        "line": 23,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "FileText",
+        "targetName": "FileText",
+        "edgeType": "render",
+        "line": 25,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Target",
+        "targetName": "Target",
+        "edgeType": "render",
+        "line": 27,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Check",
+        "targetName": "Check",
+        "edgeType": "render",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "Target",
+        "targetName": "Target",
+        "edgeType": "render",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
+        "target": "FileText",
+        "targetName": "FileText",
+        "edgeType": "render",
+        "line": 92,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
         "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
@@ -3485,186 +3665,6 @@
         "targetName": "handleComplete",
         "edgeType": "callback",
         "line": 593,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "getActivityIcon",
-        "targetName": "getActivityIcon",
-        "edgeType": "call",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 44,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "ucFirst",
-        "targetName": "ucFirst",
-        "edgeType": "call",
-        "line": 44,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 53,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 54,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "RecordContextProvider",
-        "targetName": "RecordContextProvider",
-        "edgeType": "render",
-        "line": 32,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "RouterLink",
-        "targetName": "RouterLink",
-        "edgeType": "render",
-        "line": 70,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "RouterLink",
-        "targetName": "RouterLink",
-        "edgeType": "render",
-        "line": 79,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "RouterLink",
-        "targetName": "RouterLink",
-        "edgeType": "render",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 115,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Phone",
-        "targetName": "Phone",
-        "edgeType": "render",
-        "line": 19,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Mail",
-        "targetName": "Mail",
-        "edgeType": "render",
-        "line": 21,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Users",
-        "targetName": "Users",
-        "edgeType": "render",
-        "line": 23,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "FileText",
-        "targetName": "FileText",
-        "edgeType": "render",
-        "line": 25,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Target",
-        "targetName": "Target",
-        "edgeType": "render",
-        "line": 27,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 48,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Check",
-        "targetName": "Check",
-        "edgeType": "render",
-        "line": 74,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "Target",
-        "targetName": "Target",
-        "edgeType": "render",
-        "line": 83,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx:15:ActivityTimelineEntry",
-        "target": "FileText",
-        "targetName": "FileText",
-        "edgeType": "render",
-        "line": 92,
         "conditional": false,
         "inLoop": false
       },
