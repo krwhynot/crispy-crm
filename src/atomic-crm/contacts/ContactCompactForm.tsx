@@ -14,16 +14,7 @@ import { OrganizationPicker } from "@/atomic-crm/contacts/components/Organizatio
 import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
-import { z } from "zod";
 import { ucFirst, extractEmailLocalPart } from "@/atomic-crm/utils";
-
-const emailSchema = z.string().email("Invalid email address");
-
-const validateEmailOnBlur = (value: string) => {
-  if (!value || value.trim() === "") return undefined;
-  const result = emailSchema.safeParse(value.trim());
-  return result.success ? undefined : result.error.issues[0]?.message;
-};
 
 export const ContactCompactForm = () => {
   const { setValue, getValues } = useFormContext();
