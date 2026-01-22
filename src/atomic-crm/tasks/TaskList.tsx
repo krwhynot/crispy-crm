@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  useUpdate,
-  useNotify,
-  useGetIdentity,
-  useListContext,
-  downloadCSV,
-  type Exporter,
-} from "ra-core";
+import { useNotify, useGetIdentity, useListContext, downloadCSV, type Exporter } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import jsonExport from "jsonexport/dist";
 
@@ -27,6 +20,7 @@ import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { TaskListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { useTaskCompletion } from "./hooks";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";

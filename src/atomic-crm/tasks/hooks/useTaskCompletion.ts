@@ -57,9 +57,7 @@ interface UseTaskCompletionReturn {
  * reopenTask(task);
  * ```
  */
-export function useTaskCompletion(
-  options: UseTaskCompletionOptions = {}
-): UseTaskCompletionReturn {
+export function useTaskCompletion(options: UseTaskCompletionOptions = {}): UseTaskCompletionReturn {
   const [update] = useUpdate();
   const notify = useNotify();
   const queryClient = useQueryClient();
@@ -90,9 +88,7 @@ export function useTaskCompletion(
         options.onSuccess?.();
       } catch (error: unknown) {
         const err =
-          error instanceof Error
-            ? error
-            : new Error(`Failed to complete task ${task.id}`);
+          error instanceof Error ? error : new Error(`Failed to complete task ${task.id}`);
         notify("Error completing task", { type: "error" });
         options.onError?.(err);
         throw err;
