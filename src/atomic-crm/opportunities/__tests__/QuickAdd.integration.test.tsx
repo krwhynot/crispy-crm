@@ -27,10 +27,10 @@ import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddForm } from "../QuickAddForm";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
-import { useQuickAdd } from "../hooks/useQuickAdd";
+import { useQuickAdd } from "../useQuickAdd";
 
 // Mock the external dependencies
-vi.mock("../hooks/useQuickAdd");
+vi.mock("../useQuickAdd");
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
   return {

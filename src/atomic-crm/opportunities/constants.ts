@@ -496,10 +496,9 @@ export const getOpportunitiesByStage = (
   // CHANGED: Sort each column by status priority (red first, then yellow, then green)
   // Previously sorted by created_at DESC
   stages.forEach((stage) => {
-    if (opportunitiesByStage[stage.value]) {
-      opportunitiesByStage[stage.value] = sortOpportunitiesByStatus(
-        opportunitiesByStage[stage.value]
-      );
+    const stageKey = stage.value as Opportunity["stage"];
+    if (opportunitiesByStage[stageKey]) {
+      opportunitiesByStage[stageKey] = sortOpportunitiesByStatus(opportunitiesByStage[stageKey]);
     }
   });
 

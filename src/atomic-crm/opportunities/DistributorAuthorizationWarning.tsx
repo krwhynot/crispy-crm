@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useDistributorAuthorization } from "../hooks/useDistributorAuthorization";
+import { useDistributorAuthorization } from "./useDistributorAuthorization";
 import type { Identifier } from "ra-core";
 
 /**
