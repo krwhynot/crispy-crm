@@ -441,8 +441,9 @@ const QuickAddFormContent = ({
     }
   };
 
+  // Use div instead of form - React Admin's Form component already provides the <form> wrapper
   return (
-    <form className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <div className="rounded-lg bg-success/10 p-4 space-y-4">
         <h3 className="text-sm font-medium text-foreground">Opportunity Details</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
@@ -660,6 +661,6 @@ const QuickAddFormContent = ({
           </Button>
         </div>
       </div>
-    </form>
+    </div>
   );
 };

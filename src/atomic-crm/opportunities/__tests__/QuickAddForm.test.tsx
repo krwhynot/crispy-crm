@@ -42,9 +42,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   });
   return (
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        {children}
-      </MemoryRouter>
+      <MemoryRouter>{children}</MemoryRouter>
     </QueryClientProvider>
   );
 };
