@@ -65,7 +65,7 @@ const MockFormWrapper = ({
 
   const form = useForm({
     defaultValues,
-    mode: "onChange",
+    mode: "onBlur",
   });
 
   return (
