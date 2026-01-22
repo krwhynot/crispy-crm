@@ -30,9 +30,9 @@ import {
 } from "../constants";
 import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 import { getOpportunitiesByStage } from "../constants";
-import { useColumnPreferences } from "../hooks/useColumnPreferences";
+import { useColumnPreferences } from "../useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
-import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
+import { CloseOpportunityModal } from "../CloseOpportunityModal";
 import {
   type CloseOpportunityInput,
   validateCloseOpportunity,

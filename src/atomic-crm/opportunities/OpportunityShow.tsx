@@ -31,7 +31,7 @@ import { SaleAvatar } from "../sales/SaleAvatar";
 import { WorkflowManagementSection } from "./WorkflowManagementSection";
 import { ActivityTimelineFilters } from "./ActivityTimelineFilters";
 import { RelatedOpportunitiesSection } from "./RelatedOpportunitiesSection";
-import { TrackRecordView } from "../components/TrackRecordView";
+import { TrackRecordView } from "@/atomic-crm/components/TrackRecordView";
 
 const OpportunityShow = () => (
   <ShowBase>

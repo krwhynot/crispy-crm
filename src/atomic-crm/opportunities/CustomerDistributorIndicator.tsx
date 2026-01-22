@@ -1,7 +1,7 @@
 import { useWatch } from "react-hook-form";
 import { Star, Users, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCustomerDistributors } from "../hooks/useCustomerDistributors";
+import { useCustomerDistributors } from "./useCustomerDistributors";
 
 /**
  * Visual indicator showing distributor-customer relationship status.
