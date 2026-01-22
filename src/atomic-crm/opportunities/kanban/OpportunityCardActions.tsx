@@ -20,7 +20,7 @@ import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
 import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dialog";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
-import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { STAGE } from "@/atomic-crm/opportunities/constants";
 
 interface OpportunityCardActionsProps {
   opportunityId: number;

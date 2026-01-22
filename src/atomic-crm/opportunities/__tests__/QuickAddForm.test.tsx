@@ -3,12 +3,12 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddForm } from "../QuickAddForm";
-import { useQuickAdd } from "../hooks/useQuickAdd";
+import { useQuickAdd } from "../useQuickAdd";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
 import { selectCityAndVerifyState } from "@/tests/utils/combobox";
 
 // Mock the external dependencies
-vi.mock("../hooks/useQuickAdd");
+vi.mock("../useQuickAdd");
 vi.mock("ra-core", () => ({
   useGetList: vi.fn(),
   useGetIdentity: vi.fn(),

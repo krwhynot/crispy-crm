@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";
 import { activityKeys } from "@/atomic-crm/queryKeys";
-import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { STAGE } from "@/atomic-crm/opportunities/constants";
 import { OpportunityDetailsFormSection } from "./OpportunityDetailsFormSection";
 import { OpportunityDetailsViewSection } from "./OpportunityDetailsViewSection";
 

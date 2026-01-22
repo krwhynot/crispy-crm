@@ -7,7 +7,7 @@ import { parseDateSafely } from "@/lib/date-utils";
 import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 import { ArchivedBanner } from "./ArchivedBanner";
 import { ArchiveButton, UnarchiveButton } from "./ArchiveActions";
-import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { STAGE } from "@/atomic-crm/opportunities/constants";
 
 import { ReferenceArrayField } from "@/components/ra-wrappers/reference-array-field";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";

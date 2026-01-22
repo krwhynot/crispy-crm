@@ -6,7 +6,7 @@ import {
   STAGE_STALE_THRESHOLDS,
   isOpportunityStale,
 } from "@/atomic-crm/utils/stalenessCalculation";
-import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
 
 // Re-export for backward compatibility
 export { STAGE_STALE_THRESHOLDS };
