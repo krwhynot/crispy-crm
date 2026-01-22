@@ -1,6 +1,6 @@
 import { differenceInDays, isPast, isToday } from "date-fns";
 import { cn } from "@/lib/utils";
-import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { STAGE } from "@/atomic-crm/opportunities/constants";
 
 /**
  * Row styling utilities for Opportunity list

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { calculateStageMetrics } from "../hooks/useStageMetrics";
+import { calculateStageMetrics } from "../useStageMetrics";
 import type { Opportunity } from "../../types";
 
 /**

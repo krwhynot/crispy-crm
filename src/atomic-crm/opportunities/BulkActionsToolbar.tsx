@@ -1,6 +1,6 @@
 import { useGetList } from "ra-core";
 import { Button } from "@/components/ui/button";
-import { useBulkActionsState } from "./hooks";
+import { useBulkActionsState } from "./useBulkActionsState";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +33,7 @@ import {
   getOpportunityStageLabel,
   getOpportunityStageColor,
 } from "./constants/stageConstants";
-import { useExportOpportunities } from "./hooks/useExportOpportunities";
+import { useExportOpportunities } from "./useExportOpportunities";
 
 interface BulkActionsToolbarProps {
   selectedIds: (string | number)[];

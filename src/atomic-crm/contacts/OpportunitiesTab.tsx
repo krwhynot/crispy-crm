@@ -26,7 +26,7 @@ import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 import { LinkOpportunityModal } from "./LinkOpportunityModal";
 import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { SuggestedOpportunityCard } from "./SuggestedOpportunityCard";
-import { isClosedStage } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { isClosedStage } from "@/atomic-crm/opportunities/constants";
 import type { Contact, Opportunity, OpportunityContact } from "../types";
 
 // Extended type for opportunities with junction table metadata

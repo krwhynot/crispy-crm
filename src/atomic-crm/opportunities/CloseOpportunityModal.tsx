@@ -25,7 +25,7 @@ import {
   type WinReason,
   type LossReason,
 } from "@/atomic-crm/validation/opportunities";
-import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { STAGE } from "@/atomic-crm/opportunities/constants";
 
 /**
  * Props for CloseOpportunityModal

@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddButton } from "../QuickAddButton";
 
 // Mock QuickAddForm to isolate button tests - form is tested separately in QuickAddForm.test.tsx
-vi.mock("../quick-add/QuickAddForm", () => ({
+vi.mock("../QuickAddForm", () => ({
   QuickAddForm: ({ onSuccess }: { onSuccess: () => void }) => (
     <div data-testid="quick-add-form-mock">
       <button type="button" onClick={onSuccess}>

@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ExternalLink, FolderOpen, Building2, Factory } from "lucide-react";
 import type { Opportunity } from "../types";
-import { STAGE } from "@/atomic-crm/opportunities/constants/stageConstants";
+import { STAGE } from "@/atomic-crm/opportunities/constants";
 
 /**
  * Campaign Grouped List View
