@@ -1,9 +1,56 @@
 import { z } from "zod";
+import { contactSchema } from "./contacts-core";
 
 /**
  * Contact import validation schema
  * Validates raw string fields from CSV imports
  */
+
+/**
+ * Result type for import row validation
+ * Encapsulates Zod error handling - UI components import this type, not Zod
+ */
+export interface ImportValidationError {
+  field: string;
+  message: string;
+}
+
+export interface ImportValidationResult {
+  row: number;
+  valid: boolean;
+  errors?: ImportValidationError[];
+}
+
+/**
+ * Validates a single import row against the contact schema
+ * Encapsulates Zod validation so UI components don't need to import Zod
+ *
+ * @param row - The data row to validate
+ * @param rowIndex - 0-based row index (displayed as rowIndex + 1)
+ * @returns Structured validation result with field-level errors
+ */
+export function validateContactImportRow(
+  row: unknown,
+  rowIndex: number
+): ImportValidationResult {
+  try {
+    contactSchema.parse(row);
+    return { row: rowIndex + 1, valid: true };
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      return {
+        row: rowIndex + 1,
+        valid: false,
+        errors: error.issues.map((issue) => ({
+          field: issue.path.join("."),
+          message: issue.message,
+        })),
+      };
+    }
+    // Non-Zod error - return generic failure
+    return { row: rowIndex + 1, valid: false, errors: [] };
+  }
+}
 
 // LinkedIn URL validation
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin\.com\//;
