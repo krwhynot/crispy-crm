@@ -8,7 +8,7 @@
  */
 
 import { useCallback, useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { cn } from "@/lib/utils";
 import type { ChipFilterConfig } from "./filterConfigSchema";
 import { useFilterChipBar } from "./useFilterChipBar";
@@ -119,7 +119,7 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
         ))}
       </div>
       {activeCount >= 2 && (
-        <Button
+        <AdminButton
           variant="ghost"
           size="sm"
           onClick={clearAllFilters}
@@ -127,7 +127,7 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
           aria-label={`Clear all ${activeCount} filters`}
         >
           Clear all
-        </Button>
+        </AdminButton>
       )}
     </div>
   );

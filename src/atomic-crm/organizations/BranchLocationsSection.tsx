@@ -46,7 +46,7 @@ export const BranchLocationsSection = () => {
             {branchCount} {branchCount === 1 ? "Branch" : "Branches"}
           </Badge>
         </div>
-        <Button
+        <AdminButton
           size="sm"
           variant="outline"
           onClick={() => {
@@ -63,7 +63,7 @@ export const BranchLocationsSection = () => {
         >
           <Plus className="h-4 w-4 mr-1" />
           Add Branch
-        </Button>
+        </AdminButton>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">

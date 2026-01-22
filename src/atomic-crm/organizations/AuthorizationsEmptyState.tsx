@@ -5,7 +5,7 @@
  */
 
 import { Building2, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 
 interface AuthorizationsEmptyStateProps {
   onAddClick: () => void;
@@ -19,10 +19,10 @@ export function AuthorizationsEmptyState({ onAddClick }: AuthorizationsEmptyStat
       <p className="text-sm text-muted-foreground mb-4">
         Add principals that are authorized to sell through this distributor.
       </p>
-      <Button variant="outline" onClick={onAddClick} className="h-11">
+      <AdminButton variant="outline" onClick={onAddClick} className="h-11">
         <Plus className="h-4 w-4 mr-1" />
         Add First Principal
-      </Button>
+      </AdminButton>
     </div>
   );
 }

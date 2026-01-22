@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -155,7 +155,7 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
                           </span>
                         </td>
                         <td className="py-3 px-3 text-center">
-                          <Button
+                          <AdminButton
                             variant="link"
                             size="sm"
                             onClick={() => navigate(`/opportunities/${opp.id}/show`)}
@@ -163,7 +163,7 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
                             aria-label={`View opportunity ${opp.name || opp.id}`}
                           >
                             View Opportunity
-                          </Button>
+                          </AdminButton>
                         </td>
                       </tr>
                     );

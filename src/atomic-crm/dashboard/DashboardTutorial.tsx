@@ -2,7 +2,7 @@ import { useRef, useCallback, useState, useEffect } from "react";
 import { HelpCircle } from "lucide-react";
 import { driver, type Driver } from "driver.js";
 import "driver.js/dist/driver.css";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DASHBOARD_TUTORIAL_STEPS } from "./dashboardTutorialSteps";
 
@@ -73,7 +73,7 @@ export function DashboardTutorial() {
     <div className="fixed bottom-4 left-4 z-50">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
+          <AdminButton
             variant="default"
             size="icon"
             onClick={startTutorial}
@@ -81,7 +81,7 @@ export function DashboardTutorial() {
             aria-label="Start dashboard tutorial"
           >
             <HelpCircle className="h-5 w-5" />
-          </Button>
+          </AdminButton>
         </TooltipTrigger>
         <TooltipContent side="right">
           <p>Learn about the dashboard</p>

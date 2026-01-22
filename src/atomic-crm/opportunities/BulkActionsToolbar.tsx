@@ -1,5 +1,5 @@
 import { useGetList } from "ra-core";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { useBulkActionsState } from "./useBulkActionsState";
 import {
   Dialog,
@@ -95,51 +95,51 @@ export const BulkActionsToolbar = ({
       <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-muted/30 px-4 py-3">
         <span className="text-sm font-medium text-muted-foreground">Bulk Actions:</span>
 
-        <Button
+        <AdminButton
           variant="outline"
           onClick={() => handleOpenDialog("change_stage")}
           className="h-11 gap-2 touch-manipulation"
         >
           <Layers className="h-4 w-4" />
           Change Stage
-        </Button>
+        </AdminButton>
 
-        <Button
+        <AdminButton
           variant="outline"
           onClick={() => handleOpenDialog("change_status")}
           className="h-11 gap-2 touch-manipulation"
         >
           <CircleDot className="h-4 w-4" />
           Change Status
-        </Button>
+        </AdminButton>
 
-        <Button
+        <AdminButton
           variant="outline"
           onClick={() => handleOpenDialog("assign_owner")}
           className="h-11 gap-2 touch-manipulation"
         >
           <UserPlus className="h-4 w-4" />
           Assign Owner
-        </Button>
+        </AdminButton>
 
         {/* Destructive actions - right side */}
         <div className="ml-auto flex items-center gap-2">
-          <Button
+          <AdminButton
             variant="default"
             onClick={handleExport}
             className="h-11 gap-2 touch-manipulation"
           >
             <Download className="h-4 w-4" />
             Export CSV
-          </Button>
-          <Button
+          </AdminButton>
+          <AdminButton
             variant="destructive"
             onClick={() => handleOpenDialog("archive")}
             className="h-11 gap-2 touch-manipulation"
           >
             <Archive className="h-4 w-4" />
             Archive Selected
-          </Button>
+          </AdminButton>
         </div>
       </div>
 
@@ -198,12 +198,12 @@ export const BulkActionsToolbar = ({
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
+            <AdminButton variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
               Cancel
-            </Button>
-            <Button onClick={handleExecuteBulkAction} disabled={!canExecute() || isProcessing}>
+            </AdminButton>
+            <AdminButton onClick={handleExecuteBulkAction} disabled={!canExecute() || isProcessing}>
               {isProcessing ? "Updating..." : "Update Stage"}
-            </Button>
+            </AdminButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -261,12 +261,12 @@ export const BulkActionsToolbar = ({
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
+            <AdminButton variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
               Cancel
-            </Button>
-            <Button onClick={handleExecuteBulkAction} disabled={!canExecute() || isProcessing}>
+            </AdminButton>
+            <AdminButton onClick={handleExecuteBulkAction} disabled={!canExecute() || isProcessing}>
               {isProcessing ? "Updating..." : "Update Status"}
-            </Button>
+            </AdminButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -321,12 +321,12 @@ export const BulkActionsToolbar = ({
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
+            <AdminButton variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
               Cancel
-            </Button>
-            <Button onClick={handleExecuteBulkAction} disabled={!canExecute() || isProcessing}>
+            </AdminButton>
+            <AdminButton onClick={handleExecuteBulkAction} disabled={!canExecute() || isProcessing}>
               {isProcessing ? "Assigning..." : "Assign Owner"}
-            </Button>
+            </AdminButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -379,14 +379,14 @@ export const BulkActionsToolbar = ({
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
+            <AdminButton variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
               Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleBulkArchive} disabled={isProcessing}>
+            </AdminButton>
+            <AdminButton variant="destructive" onClick={handleBulkArchive} disabled={isProcessing}>
               {isProcessing
                 ? "Archiving..."
                 : `Archive ${selectedIds.length} Opportunit${selectedIds.length === 1 ? "y" : "ies"}`}
-            </Button>
+            </AdminButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

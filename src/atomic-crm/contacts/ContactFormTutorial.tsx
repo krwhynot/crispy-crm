@@ -2,7 +2,7 @@ import { useRef, useCallback } from "react";
 import { driver, type DriveStep } from "driver.js";
 import "driver.js/dist/driver.css";
 import { HelpCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
@@ -135,7 +135,7 @@ export function ContactFormTutorial() {
     <div className="fixed bottom-4 left-4 z-50">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
+          <AdminButton
             variant="default"
             size="icon"
             onClick={startTutorial}
@@ -143,7 +143,7 @@ export function ContactFormTutorial() {
             aria-label="Start contact form tutorial"
           >
             <HelpCircle className="h-5 w-5" />
-          </Button>
+          </AdminButton>
         </TooltipTrigger>
         <TooltipContent side="right">
           <p>Learn how to add a contact</p>

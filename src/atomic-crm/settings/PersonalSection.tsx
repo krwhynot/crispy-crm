@@ -1,6 +1,6 @@
 import { RecordField } from "@/components/ra-wrappers/record-field";
 import { TextInput } from "@/components/ra-wrappers/text-input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { CircleX, Loader2, Pencil, Save } from "lucide-react";
 import { useGetIdentity, useRecordContext } from "ra-core";
@@ -56,7 +56,7 @@ export function PersonalSection() {
         </div>
 
         <div className="flex flex-row justify-end gap-2">
-          <Button
+          <AdminButton
             type="button"
             variant={isEditMode ? "ghost" : "outline"}
             onClick={() => setEditMode(!isEditMode)}
@@ -65,10 +65,10 @@ export function PersonalSection() {
           >
             {isEditMode ? <CircleX /> : <Pencil />}
             {isEditMode ? "Cancel" : "Edit"}
-          </Button>
+          </AdminButton>
 
           {isEditMode && (
-            <Button
+            <AdminButton
               type="submit"
               disabled={!isDirty || isPending}
               variant="outline"
@@ -76,7 +76,7 @@ export function PersonalSection() {
             >
               {isPending ? <Loader2 className="animate-spin" /> : <Save />}
               {isPending ? "Saving..." : "Save"}
-            </Button>
+            </AdminButton>
           )}
         </div>
       </CardContent>

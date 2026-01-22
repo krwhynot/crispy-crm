@@ -14,7 +14,7 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useNotify } from "react-admin";
 import { startOfDay, addDays, setHours, setMinutes } from "date-fns";
 // Card wrapper removed - parent DashboardTabPanel provides container
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
@@ -305,7 +305,7 @@ function TasksKanbanPanel() {
                 {tasksByColumn.overdue.length} overdue
               </Badge>
             )}
-            <Button
+            <AdminButton
               variant="outline"
               size="sm"
               className="h-11 gap-1"
@@ -315,7 +315,7 @@ function TasksKanbanPanel() {
             >
               <Plus className="h-4 w-4" />
               New Task
-            </Button>
+            </AdminButton>
           </div>
         </div>
       </div>

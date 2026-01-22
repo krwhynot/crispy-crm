@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CheckCircle, AlertCircle, Building2, Tag, User, AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { DialogFooter } from "@/components/ui/dialog";
 import type { DataQualityDecisions } from "./contactImport.types";
 import { ContactImportFieldMapper } from "./ContactImportFieldMapper";
@@ -192,21 +192,21 @@ export function ContactImportPreview({
       />
 
       <DialogFooter className="gap-2">
-        <Button variant="outline" onClick={onCancel}>
+        <AdminButton variant="outline" onClick={onCancel}>
           Cancel
-        </Button>
+        </AdminButton>
         {preview.lowConfidenceMappings > 0 && onRemap && (
-          <Button variant="outline" onClick={onRemap}>
+          <AdminButton variant="outline" onClick={onRemap}>
             Review Mappings ({preview.lowConfidenceMappings} uncertain)
-          </Button>
+          </AdminButton>
         )}
-        <Button
+        <AdminButton
           variant="default"
           onClick={() => onContinue(dataQualityDecisions)}
           disabled={preview.validCount === 0 || hasDuplicates}
         >
           Continue Import ({preview.validCount} contacts)
-        </Button>
+        </AdminButton>
       </DialogFooter>
     </div>
   );

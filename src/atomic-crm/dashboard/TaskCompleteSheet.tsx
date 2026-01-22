@@ -19,7 +19,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -76,7 +76,7 @@ function TaskItemCard({ task, onComplete, isCompleting }: TaskItemCardProps) {
       )}
     >
       {/* Complete button - 44px touch target */}
-      <Button
+      <AdminButton
         variant="ghost"
         size="icon"
         className={cn(
@@ -90,7 +90,7 @@ function TaskItemCard({ task, onComplete, isCompleting }: TaskItemCardProps) {
         aria-label={`Mark "${task.subject}" as complete`}
       >
         <CheckCircle2 className="h-6 w-6" />
-      </Button>
+      </AdminButton>
 
       {/* Task info */}
       <div className="min-w-0 flex-1">

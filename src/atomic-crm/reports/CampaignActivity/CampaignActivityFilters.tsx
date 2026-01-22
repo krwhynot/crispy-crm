@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { format } from "date-fns";
@@ -65,34 +65,34 @@ export const CampaignActivityFilters: React.FC<CampaignActivityFiltersProps> = (
             <h4 className="text-sm font-medium mb-3">Date Range</h4>
             <div className="space-y-3">
               <div className="flex gap-2 flex-wrap">
-                <Button
+                <AdminButton
                   variant={datePreset === "allTime" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setDatePresetHandler("allTime")}
                 >
                   All time
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   variant={datePreset === "last7" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setDatePresetHandler("last7")}
                 >
                   Last 7 days
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   variant={datePreset === "last30" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setDatePresetHandler("last30")}
                 >
                   Last 30 days
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   variant={datePreset === "thisMonth" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setDatePresetHandler("thisMonth")}
                 >
                   This month
-                </Button>
+                </AdminButton>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="flex-1">
@@ -140,7 +140,7 @@ export const CampaignActivityFilters: React.FC<CampaignActivityFiltersProps> = (
           <div>
             <div className="flex items-center justify-between mb-3">
               <h4 className="text-sm font-medium">Activity Type</h4>
-              <Button
+              <AdminButton
                 variant="link"
                 size="sm"
                 onClick={toggleAllActivityTypes}
@@ -149,7 +149,7 @@ export const CampaignActivityFilters: React.FC<CampaignActivityFiltersProps> = (
                 {selectedActivityTypes.length === activityTypeOptions.length
                   ? "Deselect All"
                   : "Select All"}
-              </Button>
+              </AdminButton>
             </div>
             <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
               {activityTypeOptions.map((option) => {

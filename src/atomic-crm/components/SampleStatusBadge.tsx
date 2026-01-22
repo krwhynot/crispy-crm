@@ -22,7 +22,7 @@
 import { useState, useCallback, memo } from "react";
 import { useUpdate, useNotify } from "react-admin";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import {
@@ -387,7 +387,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
           {/* Quick Actions */}
           <div className="flex flex-col gap-2">
             {nextStatus && (
-              <Button
+              <AdminButton
                 onClick={handleAdvanceStatus}
                 disabled={isUpdating}
                 className="w-full h-11"
@@ -404,7 +404,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
                     <ChevronRight className="h-4 w-4 ml-1" />
                   </>
                 )}
-              </Button>
+              </AdminButton>
             )}
 
             {!nextStatus && (
@@ -427,7 +427,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
                 const isCurrent = selectStatus === status;
 
                 return (
-                  <Button
+                  <AdminButton
                     key={selectStatus}
                     variant={isCurrent ? "default" : "outline"}
                     size="sm"
@@ -438,7 +438,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
                     <SelectIcon className="h-3 w-3 mr-2" />
                     {selectConfig.shortLabel}
                     {isCurrent && <Check className="h-3 w-3 ml-auto" />}
-                  </Button>
+                  </AdminButton>
                 );
               })}
             </div>

@@ -1,7 +1,7 @@
 import { useGetList, RecordContextProvider } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -98,7 +98,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
           <p className="text-sm text-muted-foreground">
             {opportunities.length} opportunit{opportunities.length !== 1 ? "ies" : "y"}
           </p>
-          <Button
+          <AdminButton
             variant="outline"
             size="sm"
             onClick={() => navigate(createOpportunityUrl)}
@@ -106,7 +106,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
           >
             <Plus className="h-4 w-4 mr-1" />
             Add Opportunity
-          </Button>
+          </AdminButton>
         </div>
 
         {/* Opportunities list */}

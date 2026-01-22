@@ -13,7 +13,7 @@ import { useCallback, useEffect, useRef, type MouseEvent } from "react";
 import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate, useRecordFromLocation } from "ra-core";
 import { Loader2, Save } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { cn } from "@/lib/utils";
 import type { SimilarityCheckResult } from "../utils/levenshtein";
 
@@ -118,7 +118,7 @@ export function OpportunityCreateSaveButton({
   const displayedLabel = translate(label, { _: label });
 
   return (
-    <Button
+    <AdminButton
       type="button" // Use button type to prevent default form submission
       variant="default"
       disabled={disabled}
@@ -136,6 +136,6 @@ export function OpportunityCreateSaveButton({
         <Save className="mr-2 h-4 w-4" />
       )}
       {displayedLabel}
-    </Button>
+    </AdminButton>
   );
 }

@@ -19,7 +19,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useGetList, useRefresh, useDelete, useNotify } from "react-admin";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Import extracted components
@@ -163,10 +163,15 @@ export function AuthorizationsTab({
             ? "No authorized principals"
             : `${authorizationsList.length} authorized principal${authorizationsList.length !== 1 ? "s" : ""}`}
         </p>
-        <Button variant="outline" size="sm" onClick={() => setAddDialogOpen(true)} className="h-11">
+        <AdminButton
+          variant="outline"
+          size="sm"
+          onClick={() => setAddDialogOpen(true)}
+          className="h-11"
+        >
           <Plus className="h-4 w-4 mr-1" />
           Add Principal
-        </Button>
+        </AdminButton>
       </div>
 
       {/* Authorizations List */}

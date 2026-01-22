@@ -1,6 +1,6 @@
 import { useState, useCallback, lazy, Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -329,7 +329,7 @@ function MomentumFilterDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
+        <AdminButton variant="outline" size="sm">
           <Filter className="mr-2 h-4 w-4" />
           Filters
           {momentumFilters.size > 0 && (
@@ -337,7 +337,7 @@ function MomentumFilterDropdown({
               {momentumFilters.size}
             </Badge>
           )}
-        </Button>
+        </AdminButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">
         <div className="p-2">

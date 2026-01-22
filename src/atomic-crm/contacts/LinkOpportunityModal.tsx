@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import type { Opportunity } from "@/atomic-crm/types";
 
 interface LinkOpportunityModalProps {
@@ -126,12 +126,12 @@ export function LinkOpportunityModal({
           </ReferenceInput>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+            <AdminButton type="button" variant="outline" onClick={onClose}>
               Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading}>
+            </AdminButton>
+            <AdminButton type="submit" disabled={isLoading}>
               {isLoading ? "Linking..." : "Link Opportunity"}
-            </Button>
+            </AdminButton>
           </DialogFooter>
         </Form>
       </DialogContent>

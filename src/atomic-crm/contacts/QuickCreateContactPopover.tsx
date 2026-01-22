@@ -165,7 +165,7 @@ export function QuickCreateContactPopover({
           </div>
 
           <div className="flex justify-between pt-2">
-            <Button
+            <AdminButton
               type="button"
               variant="ghost"
               size="sm"
@@ -174,9 +174,9 @@ export function QuickCreateContactPopover({
               className="text-xs h-11"
             >
               Just use name
-            </Button>
+            </AdminButton>
             <div className="flex gap-2">
-              <Button
+              <AdminButton
                 type="button"
                 variant="outline"
                 size="sm"
@@ -187,10 +187,10 @@ export function QuickCreateContactPopover({
                 className="h-11"
               >
                 Cancel
-              </Button>
-              <Button type="submit" size="sm" disabled={isPending} className="h-11">
+              </AdminButton>
+              <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
                 Create
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </form>
@@ -347,7 +347,7 @@ export function QuickCreateContactRA({
           </div>
 
           <div className="flex justify-between pt-2">
-            <Button
+            <AdminButton
               type="button"
               variant="ghost"
               size="sm"
@@ -356,9 +356,9 @@ export function QuickCreateContactRA({
               className="text-xs h-11"
             >
               Just use name
-            </Button>
+            </AdminButton>
             <div className="flex gap-2">
-              <Button
+              <AdminButton
                 type="button"
                 variant="outline"
                 size="sm"
@@ -367,10 +367,10 @@ export function QuickCreateContactRA({
                 className="h-11"
               >
                 Cancel
-              </Button>
-              <Button type="submit" size="sm" disabled={isPending} className="h-11">
+              </AdminButton>
+              <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
                 Create
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </form>

@@ -13,7 +13,7 @@ import {
   Package,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -75,7 +75,7 @@ export function AuthorizationCard({
       <div className="border border-border rounded-lg hover:bg-muted/50 transition-colors">
         <div className="flex gap-4 p-4">
           <CollapsibleTrigger asChild>
-            <Button
+            <AdminButton
               variant="ghost"
               size="sm"
               className="h-11 w-11 p-0 flex-shrink-0 mt-0.5"
@@ -86,7 +86,7 @@ export function AuthorizationCard({
               ) : (
                 <ChevronRight className="h-4 w-4" />
               )}
-            </Button>
+            </AdminButton>
           </CollapsibleTrigger>
 
           <div className="flex-shrink-0 mt-1">
@@ -109,7 +109,7 @@ export function AuthorizationCard({
                   </Badge>
                 )}
               </div>
-              <Button
+              <AdminButton
                 variant="ghost"
                 size="sm"
                 className="h-11 w-11 p-0 text-muted-foreground hover:text-destructive"
@@ -117,7 +117,7 @@ export function AuthorizationCard({
                 title="Remove authorization"
               >
                 <Trash2 className="h-4 w-4" />
-              </Button>
+              </AdminButton>
             </div>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mt-2">

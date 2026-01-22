@@ -2,7 +2,7 @@ import { useMemo, useEffect } from "react";
 import { Star } from "lucide-react";
 import { useListContext } from "ra-core";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -80,7 +80,7 @@ export function StarredFilterToggle({ entityType, className }: StarredFilterTogg
   };
 
   const button = (
-    <Button
+    <AdminButton
       variant={isActive ? "secondary" : "ghost"}
       size="sm"
       onClick={handleClick}
@@ -99,7 +99,7 @@ export function StarredFilterToggle({ entityType, className }: StarredFilterTogg
       {hasFavorites && (
         <span className="ml-auto text-xs text-muted-foreground">{favoriteIds.length}</span>
       )}
-    </Button>
+    </AdminButton>
   );
 
   // Wrap in tooltip when disabled to explain how to use

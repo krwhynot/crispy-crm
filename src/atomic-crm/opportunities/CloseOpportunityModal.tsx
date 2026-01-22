@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { cn } from "@/lib/utils";
@@ -235,7 +235,7 @@ export const CloseOpportunityModal = ({
             )}
 
             <DialogFooter className="gap-2 pt-4 sm:gap-0">
-              <Button
+              <AdminButton
                 type="button"
                 variant="outline"
                 onClick={handleCancel}
@@ -243,8 +243,8 @@ export const CloseOpportunityModal = ({
                 className="h-11 min-w-[100px]"
               >
                 Cancel
-              </Button>
-              <Button
+              </AdminButton>
+              <AdminButton
                 type="submit"
                 disabled={!isValid || isSubmitting}
                 className={cn(
@@ -255,7 +255,7 @@ export const CloseOpportunityModal = ({
                 )}
               >
                 {isSubmitting ? "Saving..." : isWin ? "Close as Won" : "Close as Lost"}
-              </Button>
+              </AdminButton>
             </DialogFooter>
           </form>
         </FormProvider>

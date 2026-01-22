@@ -4,7 +4,7 @@ import { TextInput } from "@/components/ra-wrappers/text-input";
 import { DateInput } from "@/components/ra-wrappers/date-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { SaveButton } from "@/components/ra-wrappers/form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -87,24 +87,29 @@ export const AddTask = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
+              <AdminButton
                 size="sm"
                 variant="ghost"
                 className="h-11 w-11 p-0 cursor-pointer"
                 onClick={handleOpen}
               >
                 <Plus className="w-4 h-4" />
-              </Button>
+              </AdminButton>
             </TooltipTrigger>
             <TooltipContent>Create task</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       ) : (
         <div className="my-2">
-          <Button variant="outline" className="h-11 cursor-pointer" onClick={handleOpen} size="sm">
+          <AdminButton
+            variant="outline"
+            className="h-11 cursor-pointer"
+            onClick={handleOpen}
+            size="sm"
+          >
             <Plus className="w-4 h-4" />
             Add task
-          </Button>
+          </AdminButton>
         </div>
       )}
 

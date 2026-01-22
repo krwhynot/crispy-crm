@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -279,10 +279,14 @@ export const WhatsNew = () => {
                       <span className="text-sm font-medium">Tour Completed</span>
                     </div>
                   )}
-                  <Button onClick={() => startTour(feature)} variant="outline" className="w-full">
+                  <AdminButton
+                    onClick={() => startTour(feature)}
+                    variant="outline"
+                    className="w-full"
+                  >
                     <Play className="h-4 w-4 mr-2" />
                     Start Feature Tour
-                  </Button>
+                  </AdminButton>
                 </CardContent>
               </Card>
             ))}
@@ -342,24 +346,24 @@ export const WhatsNew = () => {
                   </div>
 
                   <div className="flex justify-between">
-                    <Button onClick={prevStep} disabled={currentStep === 0} variant="outline">
+                    <AdminButton onClick={prevStep} disabled={currentStep === 0} variant="outline">
                       <ChevronLeft className="h-4 w-4 mr-2" />
                       Previous
-                    </Button>
+                    </AdminButton>
                     <div className="space-x-2">
                       {currentStep === selectedFeature.steps.length - 1 ? (
-                        <Button
+                        <AdminButton
                           onClick={() => handleFeatureComplete(selectedFeature.id)}
                           className="bg-success text-success-foreground hover:bg-success/90"
                         >
                           <CheckCircle className="h-4 w-4 mr-2" />
                           Complete Tour
-                        </Button>
+                        </AdminButton>
                       ) : (
-                        <Button onClick={nextStep}>
+                        <AdminButton onClick={nextStep}>
                           Next
                           <ChevronRight className="h-4 w-4 ml-2" />
-                        </Button>
+                        </AdminButton>
                       )}
                     </div>
                   </div>
@@ -382,7 +386,7 @@ export const WhatsNew = () => {
             <CardContent>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {newFeatures.map((feature) => (
-                  <Button
+                  <AdminButton
                     key={feature.id}
                     onClick={() => startTour(feature)}
                     variant={selectedFeature.id === feature.id ? "default" : "outline"}
@@ -397,7 +401,7 @@ export const WhatsNew = () => {
                         )}
                       </div>
                     </div>
-                  </Button>
+                  </AdminButton>
                 ))}
               </div>
             </CardContent>
@@ -455,30 +459,30 @@ export const WhatsNew = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="space-y-2">
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  <AdminButton asChild variant="outline" className="w-full justify-start">
                     <a href="/migration/checklist">
                       <CheckCircle className="h-4 w-4 mr-2" />
                       Complete Verification Checklist
                     </a>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  </AdminButton>
+                  <AdminButton asChild variant="outline" className="w-full justify-start">
                     <a href="/opportunities">
                       <Briefcase className="h-4 w-4 mr-2" />
                       View Your Opportunities
                     </a>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  </AdminButton>
+                  <AdminButton asChild variant="outline" className="w-full justify-start">
                     <a href="/contacts">
                       <Users className="h-4 w-4 mr-2" />
                       Review Contact Organizations
                     </a>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  </AdminButton>
+                  <AdminButton asChild variant="outline" className="w-full justify-start">
                     <a href="/organizations">
                       <Building className="h-4 w-4 mr-2" />
                       Set Organization Types
                     </a>
-                  </Button>
+                  </AdminButton>
                 </div>
               </CardContent>
             </Card>
@@ -492,15 +496,15 @@ export const WhatsNew = () => {
                   Need help with the new features or have feedback about the migration?
                 </p>
                 <div className="flex gap-3">
-                  <Button asChild>
+                  <AdminButton asChild>
                     <a href="mailto:support@atomiccrm.com">Contact Support</a>
-                  </Button>
-                  <Button asChild variant="outline">
+                  </AdminButton>
+                  <AdminButton asChild variant="outline">
                     <a href="/feedback">
                       <ArrowRight className="h-4 w-4 mr-2" />
                       Share Feedback
                     </a>
-                  </Button>
+                  </AdminButton>
                 </div>
               </CardContent>
             </Card>

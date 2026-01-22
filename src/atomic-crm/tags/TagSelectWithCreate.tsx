@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ReferenceInput, useCreate, useRefresh } from "react-admin";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { PlusIcon } from "lucide-react";
 import { TagDialog } from "./TagDialog";
 import type { Tag } from "../types";
@@ -41,7 +41,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
   };
 
   const footer = (
-    <Button
+    <AdminButton
       type="button"
       variant="ghost"
       className="h-11 w-full justify-start text-sm"
@@ -49,7 +49,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
     >
       <PlusIcon className="mr-2 h-4 w-4" />
       Create new tag
-    </Button>
+    </AdminButton>
   );
 
   return (

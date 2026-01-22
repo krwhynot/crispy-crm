@@ -8,7 +8,7 @@ import {
   useNotify,
 } from "react-admin";
 import { useSafeNotify } from "@/atomic-crm/hooks";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -371,10 +371,15 @@ export function SalesPermissionsTab({
             </p>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" disabled={isDeleting} className="gap-2">
+                <AdminButton
+                  variant="destructive"
+                  size="sm"
+                  disabled={isDeleting}
+                  className="gap-2"
+                >
                   <Trash2 className="h-4 w-4" />
                   {isDeleting ? "Removing..." : "Remove User"}
-                </Button>
+                </AdminButton>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +29,7 @@ export function SettingsLayout({ sections }: SettingsLayoutProps) {
           <CardContent className="p-2">
             <nav className="space-y-1">
               {sections.map((section) => (
-                <Button
+                <AdminButton
                   key={section.id}
                   variant={activeSection === section.id ? "secondary" : "ghost"}
                   className={cn(
@@ -43,7 +43,7 @@ export function SettingsLayout({ sections }: SettingsLayoutProps) {
                   {activeSection === section.id && (
                     <ChevronRight className="ml-auto h-4 w-4" aria-hidden="true" />
                   )}
-                </Button>
+                </AdminButton>
               ))}
             </nav>
           </CardContent>

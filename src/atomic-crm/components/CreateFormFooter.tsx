@@ -2,7 +2,7 @@ import { useNotify, useRedirect } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
 import { useCallback, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { ucFirst } from "@/atomic-crm/utils";
@@ -45,9 +45,9 @@ export const CreateFormFooter = ({
 
   return (
     <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-      <Button variant="outline" onClick={handleCancel} className="h-11">
+      <AdminButton variant="outline" onClick={handleCancel} className="h-11">
         Cancel
-      </Button>
+      </AdminButton>
       <div className="flex gap-2">
         <SaveButton
           type="button"

@@ -3,7 +3,7 @@ import { useShowContext, useGetList } from "react-admin";
 import { format } from "date-fns";
 import { History, User, Calendar, Filter, Download, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -223,7 +223,7 @@ export const ChangeLogTab = () => {
           </Badge>
         </div>
         <div className="flex items-center gap-2">
-          <Button
+          <AdminButton
             variant="outline"
             size="sm"
             onClick={() => setShowFilters(!showFilters)}
@@ -236,8 +236,8 @@ export const ChangeLogTab = () => {
                 Active
               </Badge>
             )}
-          </Button>
-          <Button
+          </AdminButton>
+          <AdminButton
             variant="outline"
             size="sm"
             onClick={handleExport}
@@ -246,7 +246,7 @@ export const ChangeLogTab = () => {
           >
             <Download className="w-4 h-4" />
             Export CSV
-          </Button>
+          </AdminButton>
         </div>
       </div>
 
@@ -257,7 +257,7 @@ export const ChangeLogTab = () => {
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-sm font-semibold">Filter Change Log</h4>
               {hasActiveFilters && (
-                <Button
+                <AdminButton
                   variant="ghost"
                   size="sm"
                   onClick={clearFilters}
@@ -265,7 +265,7 @@ export const ChangeLogTab = () => {
                 >
                   <X className="w-3 h-3" />
                   Clear Filters
-                </Button>
+                </AdminButton>
               )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

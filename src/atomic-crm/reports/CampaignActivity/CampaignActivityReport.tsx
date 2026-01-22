@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ActivityTypeCard } from "./ActivityTypeCard";
@@ -375,11 +375,11 @@ export default function CampaignActivityReport() {
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             {hasActiveFilters && (
-              <Button variant="outline" onClick={clearFilters} className="w-full sm:w-auto">
+              <AdminButton variant="outline" onClick={clearFilters} className="w-full sm:w-auto">
                 Clear Filters
-              </Button>
+              </AdminButton>
             )}
-            <Button
+            <AdminButton
               variant="default"
               onClick={handleExport}
               disabled={
@@ -389,7 +389,7 @@ export default function CampaignActivityReport() {
               className="w-full sm:w-auto"
             >
               Export to CSV
-            </Button>
+            </AdminButton>
           </div>
         </div>
 

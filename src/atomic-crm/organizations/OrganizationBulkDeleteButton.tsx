@@ -7,7 +7,7 @@ import {
   useResourceContext,
   Translate,
 } from "ra-core";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Trash } from "lucide-react";
 import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dialog";
 import { useRelatedRecordCounts } from "../hooks/useRelatedRecordCounts";
@@ -102,7 +102,7 @@ export const OrganizationBulkDeleteButton = () => {
 
   return (
     <>
-      <Button
+      <AdminButton
         variant="destructive"
         type="button"
         onClick={handleClick}
@@ -112,7 +112,7 @@ export const OrganizationBulkDeleteButton = () => {
       >
         <Trash className="h-4 w-4" />
         <Translate i18nKey="ra.action.delete">Delete</Translate>
-      </Button>
+      </AdminButton>
       <DeleteConfirmDialog
         open={showConfirm}
         count={selectedIds?.length ?? 0}

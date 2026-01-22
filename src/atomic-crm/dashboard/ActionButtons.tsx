@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Loader2 } from "lucide-react";
 
 interface ActionButtonsProps {
@@ -10,7 +10,7 @@ interface ActionButtonsProps {
 export function ActionButtons({ isSubmitting, onCancel, onSaveAndNew }: ActionButtonsProps) {
   return (
     <div className="flex justify-between pt-4">
-      <Button
+      <AdminButton
         type="button"
         variant="outline"
         onClick={onCancel}
@@ -18,9 +18,9 @@ export function ActionButtons({ isSubmitting, onCancel, onSaveAndNew }: ActionBu
         className="h-11"
       >
         Cancel
-      </Button>
+      </AdminButton>
       <div className="flex gap-2">
-        <Button type="submit" className="h-11" disabled={isSubmitting}>
+        <AdminButton type="submit" className="h-11" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
@@ -29,8 +29,8 @@ export function ActionButtons({ isSubmitting, onCancel, onSaveAndNew }: ActionBu
           ) : (
             "Save & Close"
           )}
-        </Button>
-        <Button
+        </AdminButton>
+        <AdminButton
           type="button"
           variant="secondary"
           className="h-11"
@@ -38,7 +38,7 @@ export function ActionButtons({ isSubmitting, onCancel, onSaveAndNew }: ActionBu
           onClick={onSaveAndNew}
         >
           {isSubmitting ? "Saving..." : "Save & New"}
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

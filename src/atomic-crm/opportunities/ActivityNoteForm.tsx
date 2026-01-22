@@ -6,7 +6,7 @@ import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 
 import { opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Textarea } from "@/components/ui/textarea";
 import { ControlledDatePicker } from "@/components/ra-wrappers/controlled-date-picker";
 import { getOpportunityStageLabel } from "./constants";
@@ -274,14 +274,14 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
 
       {/* Submit Button */}
       <div className="flex justify-end">
-        <Button
+        <AdminButton
           type="button"
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
           className="bg-primary text-primary-foreground hover:bg-primary/90"
         >
           {isSubmitting ? "Creating..." : "Add Activity"}
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

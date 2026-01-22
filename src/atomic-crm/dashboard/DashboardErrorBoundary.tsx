@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Component } from "react";
 import { AlertTriangle, Home, RotateCcw } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { logger } from "@/lib/logger";
 
@@ -57,14 +57,14 @@ export class DashboardErrorBoundary extends Component<Props, State> {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
-                <Button onClick={this.handleReload} variant="outline" className="flex-1 gap-2">
+                <AdminButton onClick={this.handleReload} variant="outline" className="flex-1 gap-2">
                   <RotateCcw className="h-4 w-4" />
                   Reload Dashboard
-                </Button>
-                <Button onClick={this.handleGoHome} className="flex-1 gap-2">
+                </AdminButton>
+                <AdminButton onClick={this.handleGoHome} className="flex-1 gap-2">
                   <Home className="h-4 w-4" />
                   Go Home
-                </Button>
+                </AdminButton>
               </div>
               {/* Error details (development only) */}
               {import.meta.env.DEV && this.state.error && (

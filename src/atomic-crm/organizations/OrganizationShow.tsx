@@ -19,7 +19,7 @@ import {
   useShowContext,
 } from "ra-core";
 import { Link as RouterLink, useLocation, useMatch, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
@@ -221,7 +221,7 @@ const ContactsIterator = () => {
 const CreateRelatedContactButton = () => {
   const organization = useRecordContext<Company>();
   return (
-    <Button variant="outline" asChild size="sm" className="h-11">
+    <AdminButton variant="outline" asChild size="sm" className="h-11">
       <RouterLink
         to="/contacts/create"
         state={organization ? { record: { organization_id: organization.id } } : undefined}
@@ -230,14 +230,14 @@ const CreateRelatedContactButton = () => {
         <UserPlus className="h-4 w-4" />
         Add contact
       </RouterLink>
-    </Button>
+    </AdminButton>
   );
 };
 
 const CreateRelatedOpportunityButton = () => {
   const organization = useRecordContext<Company>();
   return (
-    <Button variant="outline" asChild size="sm" className="h-11">
+    <AdminButton variant="outline" asChild size="sm" className="h-11">
       <RouterLink
         to="/opportunities/create"
         state={organization ? { record: { customer_organization_id: organization.id } } : undefined}
@@ -246,7 +246,7 @@ const CreateRelatedOpportunityButton = () => {
         <Briefcase className="h-4 w-4" />
         Add opportunity
       </RouterLink>
-    </Button>
+    </AdminButton>
   );
 };
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDataProvider, useNotify, useGetOne } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -231,12 +231,12 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
         </div>
 
         <DialogFooter className="gap-2 sm:gap-0">
-          <Button type="button" variant="outline" onClick={handleSkip} disabled={isSubmitting}>
+          <AdminButton type="button" variant="outline" onClick={handleSkip} disabled={isSubmitting}>
             Skip
-          </Button>
-          <Button type="button" onClick={handleSave} disabled={isSubmitting}>
+          </AdminButton>
+          <AdminButton type="button" onClick={handleSave} disabled={isSubmitting}>
             {isSubmitting ? "Saving..." : "Save Activity"}
-          </Button>
+          </AdminButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

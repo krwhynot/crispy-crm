@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -242,7 +242,7 @@ export function OrganizationImportResult({ open, onClose, result }: Organization
                   Rejected Records ({result.errors.length})
                 </h3>
                 <div className="flex gap-2">
-                  <Button
+                  <AdminButton
                     variant="outline"
                     size="sm"
                     onClick={handleDownloadErrors}
@@ -250,7 +250,7 @@ export function OrganizationImportResult({ open, onClose, result }: Organization
                   >
                     <Download className="h-3 w-3" />
                     Export
-                  </Button>
+                  </AdminButton>
                 </div>
               </div>
 
@@ -304,16 +304,16 @@ export function OrganizationImportResult({ open, onClose, result }: Organization
           <div className="flex gap-2 w-full justify-between">
             <div className="flex gap-2">
               {hasErrors && result.errors.length > 0 && (
-                <Button variant="outline" onClick={handleDownloadErrors} className="gap-2">
+                <AdminButton variant="outline" onClick={handleDownloadErrors} className="gap-2">
                   <FileText className="h-4 w-4" />
                   Download Error Report
-                </Button>
+                </AdminButton>
               )}
             </div>
             <div className="flex gap-2">
-              <Button onClick={onClose} variant={isComplete ? "default" : "outline"}>
+              <AdminButton onClick={onClose} variant={isComplete ? "default" : "outline"}>
                 {isComplete ? "Done" : "Close"}
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </DialogFooter>

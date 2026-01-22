@@ -10,7 +10,7 @@ import { FilterLiveForm } from "ra-core";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -190,7 +190,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
 
       {/* Mark as Read Button */}
       {!notification.read && (
-        <Button
+        <AdminButton
           variant="ghost"
           size="icon"
           className="flex-shrink-0 h-11 w-11"
@@ -198,7 +198,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
           aria-label="Mark as read"
         >
           <Eye className="h-4 w-4" />
-        </Button>
+        </AdminButton>
       )}
     </div>
   );
@@ -238,10 +238,10 @@ const NotificationsBulkActions = () => {
   };
 
   return (
-    <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-11 text-xs">
+    <AdminButton variant="ghost" size="sm" onClick={markAllAsRead} className="h-11 text-xs">
       <Check className="h-4 w-4 mr-2" />
       Mark as read
-    </Button>
+    </AdminButton>
   );
 };
 

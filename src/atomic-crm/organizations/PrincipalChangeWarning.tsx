@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Organization } from "../types";
 
@@ -100,9 +100,9 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <Button variant="outline" onClick={onClose}>
+          <AdminButton variant="outline" onClick={onClose}>
             Close
-          </Button>
+          </AdminButton>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -57,9 +57,9 @@ export const OpportunityArchivedList = () => {
 
   return (
     <div className="w-full flex flex-row items-center justify-center">
-      <Button variant="ghost" onClick={() => setOpenDialog(true)} className="my-4">
+      <AdminButton variant="ghost" onClick={() => setOpenDialog(true)} className="my-4">
         View archived opportunities
-      </Button>
+      </AdminButton>
       <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
         <DialogContent className="lg:max-w-4xl overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
           <DialogHeader>

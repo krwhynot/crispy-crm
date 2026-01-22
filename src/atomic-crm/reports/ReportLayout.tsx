@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Download } from "lucide-react";
 
 interface ReportLayoutProps {
@@ -26,10 +26,10 @@ export function ReportLayout({ title, children, onExport, actions }: ReportLayou
         <div className="flex items-center gap-2">
           {actions}
           {onExport && (
-            <Button onClick={onExport} variant="outline" size="sm">
+            <AdminButton onClick={onExport} variant="outline" size="sm">
               <Download className="w-4 h-4 mr-2" />
               Export CSV
-            </Button>
+            </AdminButton>
           )}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Upload } from "lucide-react";
 import { useState } from "react";
 import { ContactImportDialog } from "./ContactImportDialog";
@@ -16,13 +16,13 @@ export const ContactImportButton = () => {
 
   return (
     <>
-      <Button
+      <AdminButton
         variant="outline"
         onClick={handleOpenModal}
         className="flex items-center gap-2 cursor-pointer"
       >
         <Upload /> Import
-      </Button>
+      </AdminButton>
       <ContactImportDialog open={modalOpen} onClose={handleCloseModal} />
     </>
   );

@@ -4,7 +4,7 @@ import { useDataProvider, useNotify, useRedirect } from "react-admin";
 
 import { opportunityKeys } from "../queryKeys";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { OpportunitiesService } from "../services";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 import type { Opportunity } from "../types";
@@ -45,7 +45,7 @@ export const ArchiveButton = ({ record }: ArchiveActionsProps) => {
   };
 
   return (
-    <Button
+    <AdminButton
       onClick={handleClick}
       size="sm"
       variant="outline"
@@ -54,7 +54,7 @@ export const ArchiveButton = ({ record }: ArchiveActionsProps) => {
     >
       <Archive className="w-4 h-4" />
       {isPending ? "Archiving..." : "Archive"}
-    </Button>
+    </AdminButton>
   );
 };
 
@@ -92,7 +92,7 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
   };
 
   return (
-    <Button
+    <AdminButton
       onClick={handleClick}
       size="sm"
       variant="outline"
@@ -100,6 +100,6 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
     >
       <ArchiveRestore className="w-4 h-4" />
       Send back to the board
-    </Button>
+    </AdminButton>
   );
 };

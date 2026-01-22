@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { HelpCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTutorial } from "./TutorialProvider";
 import type { TutorialChapter } from "./types";
@@ -71,7 +71,7 @@ export function PageTutorialTrigger({
     <div className={`fixed ${POSITION_CLASSES[position]} z-50`}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
+          <AdminButton
             variant="default"
             size="icon"
             onClick={() => startTutorial(chapter)}
@@ -79,7 +79,7 @@ export function PageTutorialTrigger({
             aria-label={`Start ${CHAPTER_LABELS[chapter]} tutorial`}
           >
             <HelpCircle className="h-5 w-5" />
-          </Button>
+          </AdminButton>
         </TooltipTrigger>
         <TooltipContent side="left">
           <p>Learn about {CHAPTER_LABELS[chapter]}</p>

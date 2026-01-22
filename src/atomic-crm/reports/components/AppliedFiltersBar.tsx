@@ -1,5 +1,5 @@
 import { RotateCcw } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { FilterChip } from "./FilterChip";
 
 interface FilterItem {
@@ -36,10 +36,10 @@ export const AppliedFiltersBar = ({
           />
         ))}
       </div>
-      <Button variant="ghost" size="sm" onClick={onResetAll} className="h-11 shrink-0">
+      <AdminButton variant="ghost" size="sm" onClick={onResetAll} className="h-11 shrink-0">
         <RotateCcw className="mr-2 h-4 w-4" />
         Reset All
-      </Button>
+      </AdminButton>
     </div>
   );
 };

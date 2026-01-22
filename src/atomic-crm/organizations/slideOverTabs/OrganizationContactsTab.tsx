@@ -1,7 +1,7 @@
 import { useGetList, RecordContextProvider } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
@@ -109,7 +109,7 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
           <p className="text-sm text-muted-foreground">
             {contacts.length} contact{contacts.length !== 1 ? "s" : ""}
           </p>
-          <Button
+          <AdminButton
             variant="outline"
             size="sm"
             onClick={() => navigate(`/contacts/create?organization_id=${record.id}`)}
@@ -117,7 +117,7 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
           >
             <Plus className="h-4 w-4 mr-1" />
             Add Contact
-          </Button>
+          </AdminButton>
         </div>
 
         {/* Contacts list */}

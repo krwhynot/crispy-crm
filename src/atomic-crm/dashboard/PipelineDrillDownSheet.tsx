@@ -8,7 +8,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ExternalLink, TrendingUp, Calendar, DollarSign } from "lucide-react";
@@ -206,10 +206,10 @@ function OpportunityCard({
 
       {/* View link (visible on hover) */}
       <div className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button variant="link" size="sm" className="h-auto p-0 text-primary">
+        <AdminButton variant="link" size="sm" className="h-auto p-0 text-primary">
           <ExternalLink className="h-3 w-3 mr-1" />
           View Details
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

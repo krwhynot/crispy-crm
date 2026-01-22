@@ -54,7 +54,7 @@ export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove, classNa
       )}
     >
       <span className="truncate max-w-[150px]">{label}</span>
-      <Button
+      <AdminButton
         variant="ghost"
         size="icon"
         className={cn(
@@ -66,7 +66,7 @@ export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove, classNa
         aria-label={`Remove ${label} filter`}
       >
         <X className="size-4" aria-hidden="true" />
-      </Button>
+      </AdminButton>
     </div>
   );
 };

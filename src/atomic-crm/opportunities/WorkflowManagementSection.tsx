@@ -16,7 +16,7 @@ import { useShowContext, useUpdate, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { format, isValid, isPast, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { ControlledDatePicker } from "@/components/ra-wrappers/controlled-date-picker";
 import { Textarea } from "@/components/ui/textarea";
@@ -163,9 +163,9 @@ export const WorkflowManagementSection: React.FC = () => {
               placeholder="Add tag..."
               className="text-sm"
             />
-            <Button onClick={handleAddTag} size="sm" variant="outline" className="h-11">
+            <AdminButton onClick={handleAddTag} size="sm" variant="outline" className="h-11">
               Add
-            </Button>
+            </AdminButton>
           </div>
         </div>
 
@@ -208,7 +208,7 @@ export const WorkflowManagementSection: React.FC = () => {
         <Collapsible open={isDecisionCriteriaOpen} onOpenChange={setIsDecisionCriteriaOpen}>
           <div className="space-y-2">
             <CollapsibleTrigger asChild>
-              <Button
+              <AdminButton
                 variant="ghost"
                 className="w-full justify-between p-0 h-auto hover:bg-transparent"
               >
@@ -221,7 +221,7 @@ export const WorkflowManagementSection: React.FC = () => {
                 ) : (
                   <ChevronDown className="w-4 h-4" />
                 )}
-              </Button>
+              </AdminButton>
             </CollapsibleTrigger>
             <CollapsibleContent>
               <Textarea

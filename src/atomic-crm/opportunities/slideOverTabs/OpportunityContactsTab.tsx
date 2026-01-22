@@ -12,7 +12,7 @@ import { OpportunitiesService } from "@/atomic-crm/services/opportunities.servic
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserIcon, Star } from "lucide-react";
@@ -77,12 +77,12 @@ function ContactEditFormContent({
       </ReferenceArrayInput>
 
       <div className="flex gap-2 pt-4">
-        <Button type="submit" disabled={isSaving} className="flex-1">
+        <AdminButton type="submit" disabled={isSaving} className="flex-1">
           {isSaving ? "Saving..." : "Save Changes"}
-        </Button>
-        <Button type="button" variant="outline" onClick={onCancel} disabled={isSaving}>
+        </AdminButton>
+        <AdminButton type="button" variant="outline" onClick={onCancel} disabled={isSaving}>
           Cancel
-        </Button>
+        </AdminButton>
       </div>
     </>
   );

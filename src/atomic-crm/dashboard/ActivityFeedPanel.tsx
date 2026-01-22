@@ -21,7 +21,7 @@
 import { memo, useMemo } from "react";
 import { pluralize } from "@/lib/utils/pluralize";
 // Card wrapper removed - parent DashboardTabPanel provides container
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Activity } from "lucide-react";
@@ -186,7 +186,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
             </h3>
             <p className="text-sm text-muted-foreground">Recent activities across the team</p>
           </div>
-          <Button
+          <AdminButton
             variant="ghost"
             size="sm"
             className="h-11 gap-1 text-primary hover:text-primary/80"
@@ -197,7 +197,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
           >
             View All
             <ArrowRight className="h-4 w-4" />
-          </Button>
+          </AdminButton>
         </div>
         {activityCount > 0 && (
           <p className="mt-2 text-xs text-muted-foreground">

@@ -16,7 +16,7 @@ import { useGetList } from "ra-core";
 // es-toolkit: Deep object equality comparison
 import { isEqual } from "es-toolkit";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -126,7 +126,7 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
     <div className="flex items-center gap-2 mb-4">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="h-11 gap-2 touch-manipulation">
+          <AdminButton variant="outline" className="h-11 gap-2 touch-manipulation">
             <Filter className="w-4 h-4" />
             Filters
             {activeFilterCount > 0 && (
@@ -134,20 +134,20 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
                 {activeFilterCount}
               </Badge>
             )}
-          </Button>
+          </AdminButton>
         </PopoverTrigger>
         <PopoverContent className="w-80 p-4" align="start">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h4 className="font-semibold text-sm">Filter Activities</h4>
               {hasActiveFilters && (
-                <Button
+                <AdminButton
                   variant="ghost"
                   onClick={clearAllFilters}
                   className="h-11 px-3 text-xs touch-manipulation"
                 >
                   Clear all
-                </Button>
+                </AdminButton>
               )}
             </div>
 

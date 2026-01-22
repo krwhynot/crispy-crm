@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, lazy, Suspense, useRef, useMemo } from "react";
 import { PencilLine } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Sheet,
   SheetContent,
@@ -237,7 +237,7 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
-        <Button
+        <AdminButton
           ref={fabRef}
           size="icon"
           className={cn(
@@ -276,7 +276,7 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
               aria-hidden="true"
             />
           )}
-        </Button>
+        </AdminButton>
       </SheetTrigger>
 
       <SheetContent

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export const NamingConventionHelp: React.FC = () => {
@@ -16,7 +16,7 @@ export const NamingConventionHelp: React.FC = () => {
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger asChild>
-        <Button
+        <AdminButton
           type="button"
           variant="ghost"
           size="sm"
@@ -25,7 +25,7 @@ export const NamingConventionHelp: React.FC = () => {
           <Lightbulb className="w-3 h-3" />
           {isOpen ? "Hide naming tips" : "Show naming tips"}
           {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-        </Button>
+        </AdminButton>
       </CollapsibleTrigger>
       <CollapsibleContent className="mt-2">
         <div className="rounded-lg border border-border bg-muted/50 p-4 space-y-3 text-sm">

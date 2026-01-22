@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Badge } from "@/components/ui/badge";
 import { SnoozeBadge } from "@/components/ui/snooze-badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ucFirst } from "@/atomic-crm/utils";
 import { TaskActionMenu } from "@/atomic-crm/tasks/TaskActionMenu";
@@ -234,7 +234,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
 
         {/* Actions */}
         <div data-action-button className="flex items-center gap-0.5 shrink-0 -mr-1">
-          <Button
+          <AdminButton
             variant="ghost"
             size="sm"
             className="h-11 w-11 p-0"
@@ -248,7 +248,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
             ) : (
               <AlarmClock className="h-4 w-4" />
             )}
-          </Button>
+          </AdminButton>
           <TaskActionMenu
             task={{ ...task, subject: task.subject, dueDate: task.dueDate }}
             onView={onView}

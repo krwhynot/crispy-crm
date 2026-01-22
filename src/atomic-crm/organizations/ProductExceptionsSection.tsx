@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRefresh, useDelete, useNotify } from "react-admin";
 import { Plus, Trash2, Check, X, Package } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parseDateSafely } from "@/lib/date-utils";
@@ -76,7 +76,7 @@ export function ProductExceptionsSection({
           Product Exceptions
         </h4>
         {productsWithoutExceptions.length > 0 && (
-          <Button
+          <AdminButton
             variant="ghost"
             size="sm"
             onClick={() => setAddExceptionOpen(true)}
@@ -84,7 +84,7 @@ export function ProductExceptionsSection({
           >
             <Plus className="h-4 w-4 mr-1" />
             Add Exception
-          </Button>
+          </AdminButton>
         )}
       </div>
 
@@ -143,7 +143,7 @@ export function ProductExceptionsSection({
                   <Badge variant={isAuthorized ? "default" : "destructive"} className="text-xs">
                     {isAuthorized ? "Authorized" : "Not Authorized"}
                   </Badge>
-                  <Button
+                  <AdminButton
                     variant="ghost"
                     size="sm"
                     className="h-11 w-11 p-0 text-muted-foreground hover:text-destructive"
@@ -151,7 +151,7 @@ export function ProductExceptionsSection({
                     title="Remove exception"
                   >
                     <Trash2 className="h-4 w-4" />
-                  </Button>
+                  </AdminButton>
                 </div>
               </div>
             );

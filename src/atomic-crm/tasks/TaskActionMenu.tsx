@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNotify, useUpdate, useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -160,7 +160,7 @@ export function TaskActionMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
+        <AdminButton
           variant="ghost"
           size="sm"
           className="h-11 w-11 p-0"
@@ -173,7 +173,7 @@ export function TaskActionMenu({
           ) : (
             <MoreHorizontal className="h-4 w-4" />
           )}
-        </Button>
+        </AdminButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={handleView} className="min-h-11">

@@ -14,7 +14,7 @@ import { useListContext } from "react-admin";
 import { format, startOfDay, endOfDay, parseISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -131,7 +131,7 @@ export function DateRangeFilterButton({ filterKeyPrefix, className }: DateRangeF
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button
+        <AdminButton
           variant="ghost"
           className={cn(
             "w-full justify-between h-11 px-3 font-normal",
@@ -143,7 +143,7 @@ export function DateRangeFilterButton({ filterKeyPrefix, className }: DateRangeF
             <CalendarIcon className="h-4 w-4 text-muted-foreground" />
             {getButtonLabel()}
           </span>
-        </Button>
+        </AdminButton>
       </PopoverTrigger>
       <PopoverContent className="w-72 p-4" align="start">
         <div className="flex flex-col gap-4">
@@ -179,12 +179,17 @@ export function DateRangeFilterButton({ filterKeyPrefix, className }: DateRangeF
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2 border-t">
-            <Button variant="outline" size="sm" className="flex-1 h-10" onClick={handleClear}>
+            <AdminButton variant="outline" size="sm" className="flex-1 h-10" onClick={handleClear}>
               Clear
-            </Button>
-            <Button size="sm" className="flex-1 h-10" onClick={handleApply} disabled={!canApply}>
+            </AdminButton>
+            <AdminButton
+              size="sm"
+              className="flex-1 h-10"
+              onClick={handleApply}
+              disabled={!canApply}
+            >
               Apply
-            </Button>
+            </AdminButton>
           </div>
         </div>
       </PopoverContent>

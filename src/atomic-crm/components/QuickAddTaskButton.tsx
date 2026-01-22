@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 
 interface QuickAddTaskButtonProps {
   contactId?: number;
@@ -43,9 +43,9 @@ export function QuickAddTaskButton({
   }
 
   return (
-    <Button type="button" onClick={handleClick} variant="outline" size="sm" className="h-11">
+    <AdminButton type="button" onClick={handleClick} variant="outline" size="sm" className="h-11">
       <Plus className="h-4 w-4 mr-2" />
       Add Task
-    </Button>
+    </AdminButton>
   );
 }

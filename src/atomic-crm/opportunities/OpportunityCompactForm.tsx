@@ -12,7 +12,7 @@ import {
   CollapsibleSection,
   FormSectionWithProgress,
 } from "@/components/ra-wrappers/form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
@@ -102,7 +102,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
+                    <AdminButton
                       type="button"
                       variant="ghost"
                       size="sm"
@@ -110,7 +110,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                       disabled={!canGenerate || isLoading}
                     >
                       <RefreshCw className="w-4 h-4" />
-                    </Button>
+                    </AdminButton>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Generate name from customer and principal</p>

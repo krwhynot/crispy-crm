@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCreate, useNotify, useGetIdentity } from "react-admin";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -119,16 +119,16 @@ export function AddPrincipalDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose} className="h-11">
+          <AdminButton variant="outline" onClick={handleClose} className="h-11">
             Cancel
-          </Button>
-          <Button
+          </AdminButton>
+          <AdminButton
             onClick={handleSubmit}
             disabled={isPending || !selectedPrincipalId}
             className="h-11"
           >
             {isPending ? "Adding..." : "Add Authorization"}
-          </Button>
+          </AdminButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

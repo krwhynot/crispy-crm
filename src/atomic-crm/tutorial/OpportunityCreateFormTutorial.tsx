@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { HelpCircle } from "lucide-react";
 import { driver, type Driver, type Config } from "driver.js";
 import "driver.js/dist/driver.css";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { opportunityCreateFormSteps } from "./steps/opportunityCreateFormSteps";
 import { waitForElement, filterValidSteps } from "./waitForElement";
@@ -105,7 +105,7 @@ export function OpportunityCreateFormTutorial() {
     <div className="fixed bottom-4 left-4 z-50">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
+          <AdminButton
             variant="default"
             size="icon"
             onClick={startTutorial}
@@ -113,7 +113,7 @@ export function OpportunityCreateFormTutorial() {
             aria-label="Start form tutorial"
           >
             <HelpCircle className="h-5 w-5" />
-          </Button>
+          </AdminButton>
         </TooltipTrigger>
         <TooltipContent side="right">
           <p>Learn about this form</p>

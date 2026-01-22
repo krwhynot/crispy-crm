@@ -12,7 +12,7 @@
  */
 
 import { AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -133,7 +133,7 @@ export function SimilarOpportunitiesDialog({
         </p>
 
         <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-end">
-          <Button
+          <AdminButton
             type="button"
             variant="outline"
             onClick={onClose}
@@ -141,8 +141,8 @@ export function SimilarOpportunitiesDialog({
             className="h-11 min-w-[120px]"
           >
             Go Back
-          </Button>
-          <Button
+          </AdminButton>
+          <AdminButton
             type="button"
             variant="default"
             onClick={onConfirm}
@@ -150,7 +150,7 @@ export function SimilarOpportunitiesDialog({
             className="h-11 min-w-[150px]"
           >
             {isLoading ? "Creating..." : "Create Anyway"}
-          </Button>
+          </AdminButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

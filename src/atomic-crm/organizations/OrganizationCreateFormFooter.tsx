@@ -10,7 +10,7 @@ import { useRedirect, useCreate } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
 import { useCallback, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
@@ -176,9 +176,9 @@ export const OrganizationCreateFormFooter = ({
           tabIndex={-1}
         />
 
-        <Button variant="outline" onClick={handleCancel} disabled={isCreating}>
+        <AdminButton variant="outline" onClick={handleCancel} disabled={isCreating}>
           Cancel
-        </Button>
+        </AdminButton>
 
         <div className="flex gap-2">
           <SaveButton

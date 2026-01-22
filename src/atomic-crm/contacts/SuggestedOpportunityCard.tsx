@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 import { formatCurrency } from "@/atomic-crm/utils/formatters";
 
@@ -30,9 +30,9 @@ export function SuggestedOpportunityCard({ opportunity, onLink }: SuggestedOppor
           )}
         </div>
       </div>
-      <Button onClick={onLink} size="sm">
+      <AdminButton onClick={onLink} size="sm">
         Link
-      </Button>
+      </AdminButton>
     </div>
   );
 }

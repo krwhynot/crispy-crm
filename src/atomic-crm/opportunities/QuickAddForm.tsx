@@ -9,7 +9,7 @@ import { useFilteredProducts } from "./useFilteredProducts";
 // React Admin Tier 2 imports - per MODULE_CHECKLIST.md Rule #4
 import { Form, useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormSelectInput } from "@/components/admin/inputs/FormSelectInput";
@@ -129,12 +129,18 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
             />
           </div>
           <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" size="sm" onClick={onCancel} className="h-11">
+            <AdminButton
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onCancel}
+              className="h-11"
+            >
               Cancel
-            </Button>
-            <Button type="submit" size="sm" disabled={isPending} className="h-11">
+            </AdminButton>
+            <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
               Create
-            </Button>
+            </AdminButton>
           </div>
         </form>
       </PopoverContent>
@@ -565,7 +571,7 @@ const QuickAddFormContent = ({
       </div>
 
       <div className="flex items-center justify-between pt-4 border-t">
-        <Button
+        <AdminButton
           type="button"
           variant="outline"
           onClick={onSuccess}
@@ -573,19 +579,19 @@ const QuickAddFormContent = ({
           className="h-11"
         >
           Cancel
-        </Button>
+        </AdminButton>
 
         <div className="flex gap-2">
-          <Button
+          <AdminButton
             type="button"
             onClick={handleSubmit((data) => onSubmit(data, false), onValidationError)}
             disabled={isPending}
             className="h-11"
           >
             Save & Add Another
-          </Button>
+          </AdminButton>
 
-          <Button
+          <AdminButton
             type="button"
             variant="secondary"
             onClick={handleSubmit((data) => onSubmit(data, true), onValidationError)}
@@ -593,7 +599,7 @@ const QuickAddFormContent = ({
             className="h-11"
           >
             Save & Close
-          </Button>
+          </AdminButton>
         </div>
       </div>
     </div>

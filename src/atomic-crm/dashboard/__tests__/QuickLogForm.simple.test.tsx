@@ -45,17 +45,17 @@ describe("QuickLogForm - Cascading Filter Implementation", () => {
 
   it("should have clear buttons with proper ARIA labels", () => {
     const componentSource = `
-      <Button
+      <AdminButton
         aria-label="Clear contact selection"
       >
         <X className="h-4 w-4" />
-      </Button>
+      </AdminButton>
 
-      <Button
+      <AdminButton
         aria-label="Clear organization selection"
       >
         <X className="h-4 w-4" />
-      </Button>
+      </AdminButton>
     `;
 
     expect(componentSource).toContain("Clear contact selection");
@@ -64,7 +64,7 @@ describe("QuickLogForm - Cascading Filter Implementation", () => {
 
   it("should have ARIA attributes on comboboxes", () => {
     const componentSource = `
-      <Button
+      <AdminButton
         role="combobox"
         aria-expanded={contactOpen}
         aria-haspopup="listbox"
@@ -80,7 +80,7 @@ describe("QuickLogForm - Cascading Filter Implementation", () => {
   it("should have minimum 44px touch targets", () => {
     const componentSource = `
       <CommandItem className="h-11">
-      <Button className="h-11 w-11">
+      <AdminButton className="h-11 w-11">
     `;
 
     // h-11 = 44px in Tailwind

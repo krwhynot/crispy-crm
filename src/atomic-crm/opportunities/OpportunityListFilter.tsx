@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Select,
   SelectContent,
@@ -148,7 +148,7 @@ export const OpportunityListFilter = () => {
           defaultExpanded
           data-tutorial="opp-quick-filters"
         >
-          <Button
+          <AdminButton
             type="button"
             variant={isPresetActive({ opportunity_owner_id: identity?.id }) ? "default" : "outline"}
             size="sm"
@@ -158,9 +158,9 @@ export const OpportunityListFilter = () => {
           >
             <User className="w-3.5 h-3.5 mr-2" />
             My Opportunities
-          </Button>
+          </AdminButton>
 
-          <Button
+          <AdminButton
             type="button"
             variant={
               isPresetActive({
@@ -182,9 +182,9 @@ export const OpportunityListFilter = () => {
           >
             <Calendar className="w-3.5 h-3.5 mr-2" />
             Closing This Month
-          </Button>
+          </AdminButton>
 
-          <Button
+          <AdminButton
             type="button"
             variant={isPresetActive({ priority: ["high", "critical"] }) ? "default" : "outline"}
             size="sm"
@@ -194,9 +194,9 @@ export const OpportunityListFilter = () => {
           >
             <AlertCircle className="w-3.5 h-3.5 mr-2" />
             High Priority
-          </Button>
+          </AdminButton>
 
-          <Button
+          <AdminButton
             type="button"
             variant={
               isPresetActive({ next_action_date_lte: today.toISOString().split("T")[0] })
@@ -212,9 +212,9 @@ export const OpportunityListFilter = () => {
           >
             <Flag className="w-3.5 h-3.5 mr-2" />
             Needs Action
-          </Button>
+          </AdminButton>
 
-          <Button
+          <AdminButton
             type="button"
             variant={
               isPresetActive({
@@ -236,7 +236,7 @@ export const OpportunityListFilter = () => {
           >
             <Trophy className="w-3.5 h-3.5 mr-2" />
             Recent Wins
-          </Button>
+          </AdminButton>
         </FilterCategory>
 
         <FilterCategory

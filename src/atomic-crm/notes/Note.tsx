@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CircleX, Edit, Save, Trash2 } from "lucide-react";
 import { Form, useDelete, useNotify, useResourceContext, useUpdate, WithRecord } from "ra-core";
@@ -115,7 +115,7 @@ export const Note = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
+                <AdminButton
                   variant="ghost"
                   size="icon"
                   onClick={handleEnterEditMode}
@@ -123,7 +123,7 @@ export const Note = ({
                   aria-label="Edit note"
                 >
                   <Edit className="size-4" />
-                </Button>
+                </AdminButton>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Edit note</p>
@@ -133,7 +133,7 @@ export const Note = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
+                <AdminButton
                   variant="ghost"
                   size="icon"
                   onClick={handleDelete}
@@ -141,7 +141,7 @@ export const Note = ({
                   aria-label="Delete note"
                 >
                   <Trash2 className="size-4" />
-                </Button>
+                </AdminButton>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Delete note</p>
@@ -158,7 +158,7 @@ export const Note = ({
         <Form onSubmit={handleNoteUpdate} record={note}>
           <NoteInputs />
           <div className="flex justify-end mt-4 space-x-4">
-            <Button
+            <AdminButton
               variant="ghost"
               onClick={handleCancelEdit}
               type="button"
@@ -166,15 +166,15 @@ export const Note = ({
             >
               <CircleX className="size-4" />
               Cancel
-            </Button>
-            <Button
+            </AdminButton>
+            <AdminButton
               type="submit"
               disabled={isPending}
               className="flex items-center gap-2 cursor-pointer"
             >
               <Save className="size-4" />
               Update note
-            </Button>
+            </AdminButton>
           </div>
         </Form>
       ) : (

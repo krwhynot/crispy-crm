@@ -21,7 +21,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { QuickAddDialog } from "./QuickAddDialog";
 
@@ -44,7 +44,7 @@ export const OpportunitySpeedDial: React.FC<OpportunitySpeedDialProps> = ({ clas
       <div className={cn("fixed bottom-4 right-4 md:bottom-6 md:right-6", "z-50", className)}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
+            <AdminButton
               onClick={() => setIsQuickAddOpen(true)}
               aria-label="Quick Add Opportunity"
               className={cn(
@@ -68,7 +68,7 @@ export const OpportunitySpeedDial: React.FC<OpportunitySpeedDialProps> = ({ clas
               )}
             >
               <Zap className="size-6" />
-            </Button>
+            </AdminButton>
           </TooltipTrigger>
           <TooltipContent side="left">Quick Add Opportunity</TooltipContent>
         </Tooltip>

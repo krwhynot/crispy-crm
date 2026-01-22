@@ -2,7 +2,7 @@ import { AlertTriangle } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetOne } from "react-admin";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -113,13 +113,13 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
         <div className="flex gap-2 mt-3">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button
+              <AdminButton
                 variant="outline"
                 size="sm"
                 className="border-warning text-warning hover:bg-warning-subtle"
               >
                 Keep Anyway
-              </Button>
+              </AdminButton>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -149,9 +149,9 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
             </AlertDialogContent>
           </AlertDialog>
 
-          <Button variant="destructive" size="sm" onClick={handleClearMismatched}>
+          <AdminButton variant="destructive" size="sm" onClick={handleClearMismatched}>
             Remove Mismatched
-          </Button>
+          </AdminButton>
         </div>
       </AlertDescription>
     </Alert>

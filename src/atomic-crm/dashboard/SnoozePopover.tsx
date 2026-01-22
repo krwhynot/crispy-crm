@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { addDays, addWeeks, startOfDay, endOfDay, format } from "date-fns";
 import { AlarmClock, Calendar as CalendarIcon, Loader2, Sun, CalendarDays } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -94,7 +94,7 @@ export function SnoozePopover({
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button
+        <AdminButton
           variant="ghost"
           size="sm"
           className="h-11 w-11 p-0"
@@ -109,7 +109,7 @@ export function SnoozePopover({
           ) : (
             <AlarmClock className="h-4 w-4" />
           )}
-        </Button>
+        </AdminButton>
       </PopoverTrigger>
       <PopoverContent
         className="w-72 p-0"
@@ -181,7 +181,7 @@ export function SnoozePopover({
           <div className="flex flex-col">
             {/* Calendar header with back button */}
             <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-              <Button
+              <AdminButton
                 variant="ghost"
                 size="icon"
                 className="h-11 w-11"
@@ -189,7 +189,7 @@ export function SnoozePopover({
                 aria-label="Back to snooze options"
               >
                 <span aria-hidden="true">←</span>
-              </Button>
+              </AdminButton>
               <div>
                 <h3 className="text-sm font-semibold">Pick a date</h3>
                 <p className="text-xs text-muted-foreground">
@@ -214,7 +214,7 @@ export function SnoozePopover({
 
             {/* Confirm button */}
             <div className="border-t border-border p-3">
-              <Button
+              <AdminButton
                 onClick={handleCustomDateConfirm}
                 disabled={!selectedDate || isSubmitting}
                 className="w-full"
@@ -231,7 +231,7 @@ export function SnoozePopover({
                     Snooze until {selectedDate ? format(selectedDate, "MMM d") : "selected date"}
                   </>
                 )}
-              </Button>
+              </AdminButton>
             </div>
           </div>
         )}

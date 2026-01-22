@@ -23,7 +23,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { logger, type MetricEntry } from "@/lib/logger";
@@ -173,10 +173,10 @@ export function HealthDashboard() {
               Updated {lastUpdated.toLocaleTimeString()}
             </span>
           )}
-          <Button variant="outline" size="sm" onClick={refreshMetrics} disabled={isRefreshing}>
+          <AdminButton variant="outline" size="sm" onClick={refreshMetrics} disabled={isRefreshing}>
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
             Refresh
-          </Button>
+          </AdminButton>
         </div>
       </div>
 
@@ -192,13 +192,13 @@ export function HealthDashboard() {
                 for details.
               </p>
             </div>
-            <Button
+            <AdminButton
               variant="destructive"
               size="sm"
               onClick={() => window.open("https://sentry.io", "_blank")}
             >
               View in Sentry
-            </Button>
+            </AdminButton>
           </CardContent>
         </Card>
       )}

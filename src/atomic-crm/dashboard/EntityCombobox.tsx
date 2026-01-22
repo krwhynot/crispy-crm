@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Command,
   CommandEmpty,
@@ -109,7 +109,7 @@ export function EntityCombobox({
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <FormControl>
-              <Button
+              <AdminButton
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
@@ -123,7 +123,7 @@ export function EntityCombobox({
                 ) : (
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 )}
-              </Button>
+              </AdminButton>
             </FormControl>
           </PopoverTrigger>
           <PopoverContent className="w-full p-0" align="start">
@@ -178,7 +178,7 @@ export function EntityCombobox({
           </PopoverContent>
         </Popover>
         {value && (
-          <Button
+          <AdminButton
             type="button"
             variant="outline"
             size="icon"
@@ -190,7 +190,7 @@ export function EntityCombobox({
             aria-label={`Clear ${label.toLowerCase()} selection`}
           >
             <X className="h-4 w-4" />
-          </Button>
+          </AdminButton>
         )}
       </div>
       {description && <FormDescription>{description}</FormDescription>}

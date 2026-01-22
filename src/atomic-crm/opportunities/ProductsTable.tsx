@@ -13,7 +13,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Table,
   TableBody,
@@ -122,7 +122,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({
                 </TableCell>
                 {onRemove && (
                   <TableCell className="text-right">
-                    <Button
+                    <AdminButton
                       variant="ghost"
                       onClick={() => handleRemoveClick(product)}
                       disabled={isRemoving}
@@ -130,7 +130,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({
                       aria-label={`Remove ${product.product_name}`}
                     >
                       <Trash2 className="h-5 w-5 text-destructive" />
-                    </Button>
+                    </AdminButton>
                   </TableCell>
                 )}
               </TableRow>

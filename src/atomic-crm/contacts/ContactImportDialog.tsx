@@ -1,5 +1,5 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -180,11 +180,11 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
         <Alert>
           <AlertDescription className="flex flex-col gap-4">
             Here is a sample CSV file you can use as a template
-            <Button asChild variant="outline" size="sm">
+            <AdminButton asChild variant="outline" size="sm">
               <Link to={SAMPLE_URL} download={"crm_contacts_sample.csv"}>
                 Download CSV sample
               </Link>
-            </Button>
+            </AdminButton>
           </AlertDescription>
         </Alert>
 
@@ -227,13 +227,13 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
 
         {/* Action Button */}
         <div className="flex justify-start pt-6 gap-2">
-          <Button
+          <AdminButton
             onClick={startImport}
             disabled={!selectedFile || isParsing || validationErrors.length > 0}
           >
             {isParsing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
             Import
-          </Button>
+          </AdminButton>
         </div>
       </>
     );
@@ -246,9 +246,9 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
     <div className="flex flex-col items-center justify-center py-8 space-y-4">
       <Loader2 className="h-11 w-11 animate-spin text-primary" />
       <p className="text-muted-foreground">Parsing CSV file...</p>
-      <Button variant="ghost" onClick={handleClose}>
+      <AdminButton variant="ghost" onClick={handleClose}>
         Cancel
-      </Button>
+      </AdminButton>
     </div>
   );
 
@@ -272,14 +272,14 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
               <span className="font-medium">Processing CSV Import</span>
             </div>
             <div className="ml-auto">
-              <Button
+              <AdminButton
                 variant="ghost"
                 size="sm"
                 onClick={handleReset}
                 className="h-11 px-4 text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 Cancel Import
-              </Button>
+              </AdminButton>
             </div>
           </div>
 
@@ -337,9 +337,9 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
         </AlertDescription>
       </Alert>
       <div className="flex justify-start pt-6 gap-2">
-        <Button variant="outline" onClick={handleClose}>
+        <AdminButton variant="outline" onClick={handleClose}>
           Close
-        </Button>
+        </AdminButton>
       </div>
     </>
   );

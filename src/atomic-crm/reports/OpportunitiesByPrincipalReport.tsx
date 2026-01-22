@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { ChevronDown, ChevronRight, ExternalLink, TrendingUp } from "lucide-react";
 import { AppliedFiltersBar, EmptyState } from "./components";
 import { useReportData } from "./hooks";
@@ -127,9 +127,15 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
 
         {/* Clear Filters */}
         {hasActiveFilters && (
-          <Button variant="ghost" size="sm" onClick={clearFilters} type="button" className="h-11">
+          <AdminButton
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            type="button"
+            className="h-11"
+          >
             Clear Filters
-          </Button>
+          </AdminButton>
         )}
       </form>
     </FormProvider>
@@ -580,7 +586,7 @@ function PrincipalGroupCard({
                       {salesMap.get(opp.opportunity_owner_id!) || "Unassigned"}
                     </td>
                     <td className="py-2 px-2 text-center">
-                      <Button
+                      <AdminButton
                         variant="ghost"
                         size="sm"
                         onClick={(e) => {
@@ -589,7 +595,7 @@ function PrincipalGroupCard({
                         }}
                       >
                         <ExternalLink className="w-4 h-4" />
-                      </Button>
+                      </AdminButton>
                     </td>
                   </tr>
                 ))}

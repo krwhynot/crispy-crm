@@ -1,5 +1,5 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -195,7 +195,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
                     className="hidden"
                     id="csv-file-input"
                   />
-                  <Button
+                  <AdminButton
                     type="button"
                     variant="outline"
                     onClick={() => upload.fileInputRef.current?.click()}
@@ -203,7 +203,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
                   >
                     <Upload className="mr-2 h-4 w-4" />
                     {upload.file ? upload.file.name : "Choose CSV file"}
-                  </Button>
+                  </AdminButton>
                   {upload.file && (
                     <p className="text-sm text-muted-foreground">
                       Selected: {upload.file.name} ({Math.round(upload.file.size / 1024)} KB)
@@ -238,12 +238,12 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
                 )}
 
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={handleClose}>
+                  <AdminButton variant="outline" onClick={handleClose}>
                     Cancel
-                  </Button>
-                  <Button onClick={handleImport} disabled={!upload.file}>
+                  </AdminButton>
+                  <AdminButton onClick={handleImport} disabled={!upload.file}>
                     Import
-                  </Button>
+                  </AdminButton>
                 </div>
               </>
             )}
@@ -315,7 +315,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
                 )}
 
                 <div className="flex justify-end">
-                  <Button onClick={handleClose}>Close</Button>
+                  <AdminButton onClick={handleClose}>Close</AdminButton>
                 </div>
               </div>
             )}
@@ -328,7 +328,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
                   </AlertDescription>
                 </Alert>
                 <div className="flex justify-end">
-                  <Button onClick={handleClose}>Close</Button>
+                  <AdminButton onClick={handleClose}>Close</AdminButton>
                 </div>
               </div>
             )}

@@ -16,7 +16,7 @@ import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate } from "ra-core";
 import { Loader2, Save } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { cn } from "@/lib/utils";
 import type { SimilarityCheckResult } from "../utils/levenshtein";
@@ -202,11 +202,11 @@ export function OpportunityCreateFormFooter({
   return (
     <>
       <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-        <Button variant="outline" onClick={handleCancel} className="h-11">
+        <AdminButton variant="outline" onClick={handleCancel} className="h-11">
           {translate("ra.action.cancel", { _: "Cancel" })}
-        </Button>
+        </AdminButton>
         <div className="flex gap-2">
-          <Button
+          <AdminButton
             type="button"
             variant="default"
             disabled={disabled}
@@ -223,8 +223,8 @@ export function OpportunityCreateFormFooter({
               <Save className="mr-2 h-4 w-4" />
             )}
             {translate("ra.action.save", { _: "Save & Close" })}
-          </Button>
-          <Button
+          </AdminButton>
+          <AdminButton
             type="button"
             variant="default"
             disabled={disabled}
@@ -240,7 +240,7 @@ export function OpportunityCreateFormFooter({
               <Save className="mr-2 h-4 w-4" />
             )}
             Save & Add Another
-          </Button>
+          </AdminButton>
         </div>
       </div>
       <UnsavedChangesDialog

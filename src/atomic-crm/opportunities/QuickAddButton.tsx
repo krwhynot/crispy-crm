@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { QuickAddDialog } from "./QuickAddDialog";
 
 /**
@@ -14,14 +14,14 @@ export const QuickAddButton = () => {
 
   return (
     <>
-      <Button
+      <AdminButton
         onClick={() => setOpen(true)}
         variant="outline"
         size="default"
         className="min-h-[44px] min-w-[44px]" // Ensure touch target minimum
       >
         ⚡ Quick Add
-      </Button>
+      </AdminButton>
       <QuickAddDialog open={open} onOpenChange={setOpen} />
     </>
   );

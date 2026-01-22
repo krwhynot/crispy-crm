@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils.ts";
 import { TextInput } from "@/components/ra-wrappers/text-input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { getCurrentDate } from "../validation/notes";
 
 export const NoteInputs = () => {
@@ -22,7 +22,7 @@ export const NoteInputs = () => {
 
       {!displayMore && (
         <div className="flex justify-end items-center gap-2">
-          <Button
+          <AdminButton
             variant="link"
             size="sm"
             onClick={() => {
@@ -32,7 +32,7 @@ export const NoteInputs = () => {
             className="text-sm text-muted-foreground underline hover:no-underline p-0 h-auto cursor-pointer"
           >
             Show options
-          </Button>
+          </AdminButton>
           <span className="text-sm text-muted-foreground">(change date/time)</span>
         </div>
       )}

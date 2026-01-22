@@ -9,7 +9,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useGetList } from "ra-core";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
 import { QuickLogActivityDialog } from "../activities";
@@ -88,10 +88,10 @@ export const UnifiedTimeline = ({
     <div className="space-y-4">
       {/* Action buttons */}
       <div className="flex justify-end gap-2">
-        <Button variant="outline" className="h-11 gap-2" onClick={() => setIsDialogOpen(true)}>
+        <AdminButton variant="outline" className="h-11 gap-2" onClick={() => setIsDialogOpen(true)}>
           <Plus className="h-4 w-4" />
           Log Activity
-        </Button>
+        </AdminButton>
       </div>
 
       {/* Timeline entries */}

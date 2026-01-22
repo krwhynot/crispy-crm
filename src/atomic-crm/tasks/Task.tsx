@@ -1,6 +1,6 @@
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -169,9 +169,9 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="shrink-0" aria-label="task actions">
+            <AdminButton variant="ghost" size="icon" className="shrink-0" aria-label="task actions">
               <MoreVertical className="h-4 w-4" />
-            </Button>
+            </AdminButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {canPostponeTomorrow && (

@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { buttonVariants } from "@/components/ui/button.constants";
+import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -164,7 +163,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
               </div>
 
               <div className="flex justify-end pt-4">
-                <Button
+                <AdminButton
                   type="submit"
                   variant="outline"
                   disabled={isSubmitting}
@@ -185,7 +184,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
                       Save
                     </>
                   )}
-                </Button>
+                </AdminButton>
               </div>
             </form>
           </FormProvider>

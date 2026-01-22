@@ -1,6 +1,6 @@
 import { useState, useCallback, lazy, Suspense } from "react";
 import { MessageCircle, Package, Phone, Users, FileText, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Sheet,
   SheetContent,
@@ -221,7 +221,7 @@ export function MobileQuickActionBar({
           {QUICK_ACTIONS.map((action) => {
             const Icon = action.icon;
             return (
-              <Button
+              <AdminButton
                 key={action.id}
                 variant="ghost"
                 className={cn(
@@ -242,7 +242,7 @@ export function MobileQuickActionBar({
               >
                 <Icon className="h-5 w-5" aria-hidden="true" />
                 <span className="text-xs font-medium leading-none">{action.label}</span>
-              </Button>
+              </AdminButton>
             );
           })}
         </div>

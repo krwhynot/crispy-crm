@@ -1,6 +1,6 @@
 import { useListContext, RecordContextProvider, useGetIdentity } from "ra-core";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { Badge } from "@/components/ui/badge";
@@ -98,14 +98,14 @@ export const OpportunityRowListView = ({
                 {selectedIds.length} opportunit{selectedIds.length === 1 ? "y" : "ies"} selected
               </span>
             </div>
-            <Button
+            <AdminButton
               variant="ghost"
               onClick={onUnselectItems}
               className="h-11 gap-1.5 touch-manipulation"
             >
               <X className="h-4 w-4" />
               Clear selection
-            </Button>
+            </AdminButton>
           </div>
 
           {/* Bulk actions toolbar */}

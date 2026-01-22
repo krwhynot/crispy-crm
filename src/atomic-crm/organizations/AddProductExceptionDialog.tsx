@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCreate, useNotify, useGetIdentity } from "react-admin";
 import { AlertTriangle, Check, X } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
@@ -160,16 +160,16 @@ export function AddProductExceptionDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose} className="h-11">
+          <AdminButton variant="outline" onClick={handleClose} className="h-11">
             Cancel
-          </Button>
-          <Button
+          </AdminButton>
+          <AdminButton
             onClick={handleSubmit}
             disabled={isPending || !selectedProductId}
             className="h-11"
           >
             {isPending ? "Adding..." : "Add Exception"}
-          </Button>
+          </AdminButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

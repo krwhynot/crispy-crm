@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Key, Shield } from "lucide-react";
@@ -30,9 +30,9 @@ export function SecuritySection({ onPasswordChange }: SecuritySectionProps) {
             </div>
             <p className="text-sm text-muted-foreground">Change your account password</p>
           </div>
-          <Button variant="outline" onClick={onPasswordChange} className="min-h-[44px]">
+          <AdminButton variant="outline" onClick={onPasswordChange} className="min-h-[44px]">
             Change Password
-          </Button>
+          </AdminButton>
         </div>
 
         <div className="border-t pt-4">

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Upload } from "lucide-react";
 import { useState } from "react";
 import { OrganizationImportDialog } from "./OrganizationImportDialog";
@@ -16,13 +16,13 @@ export const OrganizationImportButton = () => {
 
   return (
     <>
-      <Button
+      <AdminButton
         variant="outline"
         onClick={handleOpenModal}
         className="flex items-center gap-2 cursor-pointer"
       >
         <Upload /> Import
-      </Button>
+      </AdminButton>
       <OrganizationImportDialog open={modalOpen} onClose={handleCloseModal} />
     </>
   );

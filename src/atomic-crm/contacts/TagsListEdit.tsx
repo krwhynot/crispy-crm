@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -104,10 +104,10 @@ export const TagsListEdit = () => {
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-11 px-3 cursor-pointer">
+            <AdminButton variant="outline" size="sm" className="h-11 px-3 cursor-pointer">
               <Plus className="h-4 w-4 mr-1" />
               Add tag
-            </Button>
+            </AdminButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {unselectedTags?.map((tag) => (
@@ -121,10 +121,14 @@ export const TagsListEdit = () => {
               </DropdownMenuItem>
             ))}
             <DropdownMenuItem onClick={openTagCreateDialog}>
-              <Button variant="ghost" size="sm" className="w-full justify-start p-0 cursor-pointer">
+              <AdminButton
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start p-0 cursor-pointer"
+              >
                 <Edit className="h-3 w-3 mr-2" />
                 Create new tag
-              </Button>
+              </AdminButton>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

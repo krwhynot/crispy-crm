@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useFavorites } from "@/hooks/useFavorites";
 import type { FavoriteEntityType } from "@/atomic-crm/validation/favorites";
@@ -38,7 +38,7 @@ export function FavoriteToggleButton({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button
+        <AdminButton
           variant="ghost"
           size="icon"
           onClick={handleClick}
@@ -53,7 +53,7 @@ export function FavoriteToggleButton({
               favorited ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"
             )}
           />
-        </Button>
+        </AdminButton>
       </TooltipTrigger>
       <TooltipContent>
         <p>{getTooltipMessage()}</p>

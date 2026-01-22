@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 
 interface TaskCompletionDialogProps {
   task: {
@@ -103,7 +103,7 @@ export const TaskCompletionDialog = ({
         </DialogHeader>
 
         <div className="flex flex-col gap-3 pt-2">
-          <Button
+          <AdminButton
             onClick={handleLogActivity}
             variant="default"
             className="min-h-[64px] w-full justify-start gap-3 px-6 text-left"
@@ -113,9 +113,9 @@ export const TaskCompletionDialog = ({
               <div className="font-semibold">Log Activity</div>
               <div className="text-xs opacity-90">Record what you did</div>
             </div>
-          </Button>
+          </AdminButton>
 
-          <Button
+          <AdminButton
             onClick={handleCreateFollowUp}
             variant="default"
             className="min-h-[64px] w-full justify-start gap-3 px-6 text-left"
@@ -125,9 +125,9 @@ export const TaskCompletionDialog = ({
               <div className="font-semibold">Create Follow-up</div>
               <div className="text-xs opacity-90">Schedule next action</div>
             </div>
-          </Button>
+          </AdminButton>
 
-          <Button
+          <AdminButton
             onClick={handleJustComplete}
             variant="outline"
             className="min-h-[64px] w-full justify-start gap-3 px-6 text-left"
@@ -137,7 +137,7 @@ export const TaskCompletionDialog = ({
               <div className="font-semibold">Just Complete</div>
               <div className="text-xs opacity-90">No follow-up needed</div>
             </div>
-          </Button>
+          </AdminButton>
         </div>
       </DialogContent>
     </Dialog>

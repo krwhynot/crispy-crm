@@ -31,7 +31,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 
 interface DuplicateOrgWarningDialogProps {
   /** Whether the dialog is open */
@@ -79,9 +79,9 @@ export function DuplicateOrgWarningDialog({
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col sm:flex-row gap-2">
           {onViewExisting && duplicateOrgId && (
-            <Button variant="outline" onClick={onViewExisting} className="w-full sm:w-auto">
+            <AdminButton variant="outline" onClick={onViewExisting} className="w-full sm:w-auto">
               View Existing
-            </Button>
+            </AdminButton>
           )}
           <AlertDialogCancel onClick={onCancel}>Change Name</AlertDialogCancel>
           <AlertDialogAction

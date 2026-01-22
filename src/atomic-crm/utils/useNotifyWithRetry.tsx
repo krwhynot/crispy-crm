@@ -1,6 +1,6 @@
 import { useNotify } from "react-admin";
 import { useCallback, type ReactNode } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 
 interface NotifyWithRetryOptions {
   type?: "error" | "warning";
@@ -40,7 +40,7 @@ export const useNotifyWithRetry = () => {
   return useCallback(
     (message: string, retryAction: () => void, options?: NotifyWithRetryOptions) => {
       const RetryButton = (): ReactNode => (
-        <Button
+        <AdminButton
           variant="ghost"
           size="sm"
           onClick={() => {
@@ -49,7 +49,7 @@ export const useNotifyWithRetry = () => {
           className="text-inherit underline hover:no-underline h-auto p-0 ml-2"
         >
           Retry
-        </Button>
+        </AdminButton>
       );
 
       notify(message, {

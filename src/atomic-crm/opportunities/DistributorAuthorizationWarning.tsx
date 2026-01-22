@@ -1,7 +1,7 @@
 import { AlertTriangle, Clock, FileWarning } from "lucide-react";
 import { useWatch } from "react-hook-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -138,13 +138,13 @@ export function DistributorAuthorizationWarning() {
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button
+            <AdminButton
               variant="outline"
               size="sm"
               className="border-warning text-warning hover:bg-warning-subtle"
             >
               I Understand, Continue
-            </Button>
+            </AdminButton>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>

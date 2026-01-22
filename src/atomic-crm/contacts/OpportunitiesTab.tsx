@@ -20,7 +20,7 @@ import {
   ListContextProvider,
 } from "react-admin";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import { Trash2 } from "lucide-react";
 import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 import { LinkOpportunityModal } from "./LinkOpportunityModal";
@@ -167,9 +167,9 @@ export function OpportunitiesTab() {
             ))}
           </div>
 
-          <Button variant="outline" onClick={() => setShowLinkModal(true)}>
+          <AdminButton variant="outline" onClick={() => setShowLinkModal(true)}>
             Or search all opportunities
-          </Button>
+          </AdminButton>
 
           <LinkOpportunityModal
             open={showLinkModal}
@@ -193,7 +193,7 @@ export function OpportunitiesTab() {
           </p>
         </div>
 
-        <Button onClick={() => setShowLinkModal(true)}>Link Opportunity</Button>
+        <AdminButton onClick={() => setShowLinkModal(true)}>Link Opportunity</AdminButton>
 
         <LinkOpportunityModal
           open={showLinkModal}
@@ -237,7 +237,7 @@ export function OpportunitiesTab() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button onClick={() => setShowLinkModal(true)}>Link Opportunity</Button>
+        <AdminButton onClick={() => setShowLinkModal(true)}>Link Opportunity</AdminButton>
       </div>
 
       <ListContextProvider value={listContext}>

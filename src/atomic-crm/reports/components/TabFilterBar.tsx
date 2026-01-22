@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useGetList } from "ra-core";
 import { Calendar, User, RotateCcw } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Select,
   SelectContent,
@@ -140,10 +140,10 @@ export function TabFilterBar({
 
       {/* Reset */}
       {hasActiveFilters && onReset && (
-        <Button variant="ghost" size="sm" onClick={onReset} className="h-11">
+        <AdminButton variant="ghost" size="sm" onClick={onReset} className="h-11">
           <RotateCcw className="h-4 w-4 mr-2" aria-hidden="true" />
           Reset Filters
-        </Button>
+        </AdminButton>
       )}
     </div>
   );

@@ -18,7 +18,7 @@ import { useUpdate, useNotify, useRefresh, useDataProvider, useGetList } from "r
 import type { DataProvider, Identifier, RaRecord } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { opportunityKeys, contactKeys, organizationKeys, taskKeys, saleKeys } from "../queryKeys";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/admin/AdminButton";
 import {
   Dialog,
   DialogContent,
@@ -517,41 +517,41 @@ export function UserDisableReassignDialog({
 
         <DialogFooter>
           {step === "loading" && (
-            <Button variant="outline" onClick={handleCancel}>
+            <AdminButton variant="outline" onClick={handleCancel}>
               Cancel
-            </Button>
+            </AdminButton>
           )}
 
           {step === "noRecords" && (
             <>
-              <Button variant="outline" onClick={handleCancel}>
+              <AdminButton variant="outline" onClick={handleCancel}>
                 Cancel
-              </Button>
-              <Button variant="destructive" onClick={handleDirectDisable}>
+              </AdminButton>
+              <AdminButton variant="destructive" onClick={handleDirectDisable}>
                 Disable User
-              </Button>
+              </AdminButton>
             </>
           )}
 
           {step === "reassign" && (
             <>
-              <Button variant="outline" onClick={handleCancel}>
+              <AdminButton variant="outline" onClick={handleCancel}>
                 Cancel
-              </Button>
-              <Button
+              </AdminButton>
+              <AdminButton
                 variant="destructive"
                 onClick={handleReassignAndDisable}
                 disabled={!selectedSalesId}
               >
                 Reassign {totalRecords} Records & Disable
-              </Button>
+              </AdminButton>
             </>
           )}
 
           {step === "processing" && (
-            <Button variant="destructive" onClick={handleCancel}>
+            <AdminButton variant="destructive" onClick={handleCancel}>
               Cancel Operation
-            </Button>
+            </AdminButton>
           )}
         </DialogFooter>
       </DialogContent>
