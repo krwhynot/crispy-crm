@@ -97,7 +97,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -118,13 +117,12 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
         expect(screen.getByText("interaction")).toBeInTheDocument();
-        // Type is formatted through ACTIVITY_TYPE_FROM_API
-        expect(screen.getByText(/call/i)).toBeInTheDocument();
+        // Type is formatted through ACTIVITY_TYPE_FROM_API - "Call" badge exists
+        expect(screen.getByText("Call")).toBeInTheDocument();
       });
     });
 
@@ -138,7 +136,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -159,7 +156,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -182,7 +178,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -205,7 +200,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -228,7 +222,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -251,7 +244,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -273,7 +265,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {
@@ -295,7 +286,6 @@ describe("ActivityShow", () => {
 
       renderWithAdminContext(<ActivityShow />, {
         resource: "activities",
-        record: mockActivity,
       });
 
       await waitFor(() => {

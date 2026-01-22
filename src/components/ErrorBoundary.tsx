@@ -21,7 +21,7 @@ import type { ReactNode, ErrorInfo } from "react";
 import { Component } from "react";
 import * as Sentry from "@sentry/react";
 import { AlertTriangle, Home, RotateCcw } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { logger } from "@/lib/logger";
 
@@ -121,14 +121,14 @@ export class ErrorBoundary extends Component<Props, State> {
             <CardContent className="space-y-4">
               {/* Action buttons */}
               <div className="flex gap-2">
-                <Button onClick={this.handleRetry} variant="outline" className="flex-1 gap-2">
+                <AdminButton onClick={this.handleRetry} variant="outline" className="flex-1 gap-2">
                   <RotateCcw className="size-4" />
                   Try Again
-                </Button>
-                <Button onClick={this.handleGoHome} className="flex-1 gap-2">
+                </AdminButton>
+                <AdminButton onClick={this.handleGoHome} className="flex-1 gap-2">
                   <Home className="size-4" />
                   Go Home
-                </Button>
+                </AdminButton>
               </div>
 
               {/* Error details (development only) */}

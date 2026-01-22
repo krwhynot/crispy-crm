@@ -28,12 +28,7 @@ export const NotificationBell = () => {
 
   return (
     <NotificationDropdown onOpenChange={(open) => open && refetch()}>
-      <Button
-        variant="ghost"
-        size="icon"
-        aria-label={ariaLabel}
-        className="relative min-h-[44px] min-w-[44px]"
-      >
+      <AdminButton variant="ghost" size="icon" aria-label={ariaLabel} className="relative">
         <Bell className="size-5" aria-hidden="true" />
         {unreadCount > 0 && (
           <span
@@ -43,7 +38,7 @@ export const NotificationBell = () => {
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
-      </Button>
+      </AdminButton>
     </NotificationDropdown>
   );
 };
