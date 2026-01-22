@@ -2,7 +2,7 @@ import { useRecordContext } from "react-admin";
 import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { Separator } from "@/components/ui/separator";
 import { ActivityNoteForm } from "./ActivityNoteForm";
-import { NotesIterator } from "../../notes";
+import { NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
 
 export const OpportunityActivitySection = () => {

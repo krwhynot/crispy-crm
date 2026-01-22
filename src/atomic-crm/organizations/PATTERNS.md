@@ -11,8 +11,10 @@ Organizations Module (index.tsx, resource.tsx)
 │   ├── OrganizationDatagridHeader (filterable columns)
 │   ├── PremiumDatagrid
 │   │   └── OrganizationTypeBadge, PriorityBadge [Pattern E]
-│   ├── OrganizationBulkActionsToolbar
-│   │   └── BulkReassignButton [Pattern F]
+│   ├── OrganizationBulkActionsToolbar [Pattern F]
+│   │   ├── BulkReassignButton (shared ra-wrapper)
+│   │   ├── BulkExportButton (shared ra-wrapper)
+│   │   └── OrganizationBulkDeleteButton
 │   └── OrganizationImportButton [Pattern C]
 │
 ├── Create View (OrganizationCreate.tsx)
