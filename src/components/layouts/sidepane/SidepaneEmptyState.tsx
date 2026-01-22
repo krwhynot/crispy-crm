@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AdminButton } from "@/components/admin/AdminButton";
 
 interface SidepaneEmptyStateProps {
   /** Icon to display above message (optional for text-only mode) */

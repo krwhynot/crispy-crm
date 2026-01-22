@@ -40,7 +40,12 @@ export { ActivitySlideOver } from "./ActivitySlideOver";
 export { ACTIVITY_PAGE_SIZE } from "./constants";
 
 // Export wrapped views (with error boundaries)
-export { ActivityListView, ActivityCreateView, ActivityEditView } from "./resource";
+export {
+  ActivityListView,
+  ActivityCreateView,
+  ActivityEditView,
+  ActivityShowView,
+} from "./resource";
 
 // React Admin resource configuration (with error boundaries)
 export { default } from "./resource";
