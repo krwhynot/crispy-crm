@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-22T16:45:49.757Z",
+  "generated_at": "2026-01-22T23:55:44.646Z",
   "items": {
     "nodes": [
       {
@@ -1510,8 +1510,8 @@
       },
       {
         "source": "src/atomic-crm/products/ProductFormTutorial.tsx:108:ProductFormTutorial",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 142,
         "conditional": false,

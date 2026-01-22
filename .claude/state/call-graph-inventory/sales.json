@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-22T16:45:49.765Z",
+  "generated_at": "2026-01-22T23:55:44.686Z",
   "items": {
     "nodes": [
       {
@@ -1846,7 +1846,7 @@
         "target": "setShowDisableDialog",
         "targetName": "setShowDisableDialog",
         "edgeType": "call",
-        "line": 422,
+        "line": 427,
         "conditional": false,
         "inLoop": false
       },
@@ -1996,8 +1996,8 @@
       },
       {
         "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 374,
         "conditional": false,
@@ -2008,7 +2008,7 @@
         "target": "AlertDialogContent",
         "targetName": "AlertDialogContent",
         "edgeType": "render",
-        "line": 379,
+        "line": 384,
         "conditional": false,
         "inLoop": false
       },
@@ -2017,7 +2017,7 @@
         "target": "AlertDialogHeader",
         "targetName": "AlertDialogHeader",
         "edgeType": "render",
-        "line": 380,
+        "line": 385,
         "conditional": false,
         "inLoop": false
       },
@@ -2026,7 +2026,7 @@
         "target": "AlertDialogTitle",
         "targetName": "AlertDialogTitle",
         "edgeType": "render",
-        "line": 381,
+        "line": 386,
         "conditional": false,
         "inLoop": false
       },
@@ -2035,7 +2035,7 @@
         "target": "AlertDialogDescription",
         "targetName": "AlertDialogDescription",
         "edgeType": "render",
-        "line": 382,
+        "line": 387,
         "conditional": false,
         "inLoop": false
       },
@@ -2044,7 +2044,7 @@
         "target": "AlertDialogFooter",
         "targetName": "AlertDialogFooter",
         "edgeType": "render",
-        "line": 394,
+        "line": 399,
         "conditional": false,
         "inLoop": false
       },
@@ -2053,7 +2053,7 @@
         "target": "AlertDialogCancel",
         "targetName": "AlertDialogCancel",
         "edgeType": "render",
-        "line": 395,
+        "line": 400,
         "conditional": false,
         "inLoop": false
       },
@@ -2062,7 +2062,7 @@
         "target": "AlertDialogAction",
         "targetName": "AlertDialogAction",
         "edgeType": "render",
-        "line": 396,
+        "line": 401,
         "conditional": false,
         "inLoop": false
       },
@@ -2071,7 +2071,7 @@
         "target": "handleRemoveUser",
         "targetName": "handleRemoveUser",
         "edgeType": "callback",
-        "line": 397,
+        "line": 402,
         "conditional": false,
         "inLoop": false
       },
@@ -2080,7 +2080,7 @@
         "target": "handleFormSubmit",
         "targetName": "handleFormSubmit",
         "edgeType": "callback",
-        "line": 415,
+        "line": 420,
         "conditional": true,
         "inLoop": false
       },
@@ -2152,7 +2152,7 @@
         "target": "Trash2",
         "targetName": "Trash2",
         "edgeType": "render",
-        "line": 375,
+        "line": 380,
         "conditional": false,
         "inLoop": false
       },
@@ -2161,7 +2161,7 @@
         "target": "UserDisableReassignDialog",
         "targetName": "UserDisableReassignDialog",
         "edgeType": "render",
-        "line": 419,
+        "line": 424,
         "conditional": true,
         "inLoop": false
       },
@@ -2170,7 +2170,7 @@
         "target": "handleDisableSuccess",
         "targetName": "handleDisableSuccess",
         "edgeType": "callback",
-        "line": 423,
+        "line": 428,
         "conditional": true,
         "inLoop": false
       },
@@ -3652,8 +3652,8 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 520,
         "conditional": false,
@@ -3670,8 +3670,8 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 527,
         "conditional": false,
@@ -3688,8 +3688,8 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 530,
         "conditional": false,
@@ -3706,8 +3706,8 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 538,
         "conditional": false,
@@ -3724,8 +3724,8 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 541,
         "conditional": false,
@@ -3742,8 +3742,8 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 552,
         "conditional": false,

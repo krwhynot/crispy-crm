@@ -1,6 +1,6 @@
 {
   "chunk_name": "tutorial",
-  "generated_at": "2026-01-22T16:45:49.771Z",
+  "generated_at": "2026-01-22T23:55:44.701Z",
   "items": {
     "nodes": [
       {
@@ -304,8 +304,8 @@
       },
       {
         "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 108,
         "conditional": false,
@@ -430,8 +430,8 @@
       },
       {
         "source": "src/atomic-crm/tutorial/PageTutorialTrigger.tsx:41:PageTutorialTrigger",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 74,
         "conditional": false,

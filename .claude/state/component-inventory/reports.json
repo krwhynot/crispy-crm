@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-22T16:45:42.324Z",
+  "generated_at": "2026-01-22T23:55:24.920Z",
   "item_count": 23,
   "items": [
     {
@@ -33,7 +33,7 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/utils/stalenessCalculation",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/card",
         "@/components/ui/checkbox",
         "@/components/ui/label",
@@ -67,7 +67,7 @@
         "@/atomic-crm/reports/ReportLayout",
         "@/atomic-crm/reports/components",
         "@/atomic-crm/validation/activities",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/card",
         "@/components/ui/empty-state",
         "@/components/ui/label",
@@ -111,8 +111,8 @@
       ],
       "imports": [
         "@/atomic-crm/utils",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/lib/date-utils",
         "date-fns",
@@ -127,7 +127,7 @@
     {
       "name": "OpportunitiesByPrincipalReport",
       "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-      "line": 153,
+      "line": 159,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -144,11 +144,11 @@
         "./components",
         "./hooks",
         "@/atomic-crm/utils/csvUploadValidator",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/autocomplete-array-input",
         "@/components/ra-wrappers/multi-select-input",
         "@/components/ra-wrappers/reference-input",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/lib/date-utils",
         "date-fns",
@@ -178,7 +178,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/card",
         "lucide-react",
         "react"
@@ -350,7 +350,7 @@
       "hooks": [],
       "imports": [
         "./FilterChip",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "lucide-react"
       ],
       "isDefaultExport": false,
@@ -432,7 +432,7 @@
       ],
       "imports": [
         "../../types",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/select",
         "lucide-react",
         "ra-core",

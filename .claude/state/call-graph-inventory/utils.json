@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-22T16:45:49.772Z",
+  "generated_at": "2026-01-22T23:55:44.703Z",
   "items": {
     "nodes": [
       {
@@ -3661,8 +3661,8 @@
       },
       {
         "source": "src/atomic-crm/utils/useNotifyWithRetry.tsx:37:useNotifyWithRetry",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 43,
         "conditional": false,

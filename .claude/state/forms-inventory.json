@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-22T16:45:48.223Z",
+  "generated_at": "2026-01-22T23:55:39.437Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:674c6f28d6455c59",
+  "checksum": "sha256:300027510a157055",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "98682150ee67",
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
@@ -18,55 +18,60 @@
     "src/atomic-crm/activity-log/ActivityLogOpportunityCreated.tsx": "796619cbf306",
     "src/atomic-crm/activity-log/ActivityLogOpportunityNoteCreated.tsx": "25e42adad3e8",
     "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx": "1d986129288e",
-    "src/atomic-crm/components/CreateFormFooter.tsx": "28f14e7b8fbc",
-    "src/atomic-crm/contacts/ContactCompactForm.tsx": "740ce1eb10de",
+    "src/atomic-crm/components/CreateFormFooter.tsx": "e7fb58ed7693",
+    "src/atomic-crm/contacts/ContactCompactForm.tsx": "72a00f60f207",
     "src/atomic-crm/contacts/ContactCreate.tsx": "c547ff8c0c91",
     "src/atomic-crm/contacts/ContactEdit.tsx": "994479019d99",
-    "src/atomic-crm/contacts/ContactFormTutorial.tsx": "c8b35aa930c8",
+    "src/atomic-crm/contacts/ContactFormTutorial.tsx": "9cd29ebd9e91",
     "src/atomic-crm/contacts/ContactInputs.tsx": "b947f5833ed1",
-    "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "81fe1dd6ac4e",
-    "src/atomic-crm/contacts/TagsListEdit.tsx": "740faec91d7c",
+    "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "4265676ec924",
+    "src/atomic-crm/contacts/TagsListEdit.tsx": "1061b1fc5162",
     "src/atomic-crm/contexts/FormOptionsContext.tsx": "164b5fa6c2d5",
     "src/atomic-crm/dashboard/QuickLogForm.tsx": "213d9360fa2d",
     "src/atomic-crm/layout/FormToolbar.tsx": "044f9a3b944a",
     "src/atomic-crm/notes/NoteCreate.tsx": "a133ac8c8701",
-    "src/atomic-crm/notes/NoteInputs.tsx": "0d5d2d4ebf4a",
-    "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "437528bbf799",
-    "src/atomic-crm/opportunities/OpportunityCompactForm.tsx": "f294a2a0f1d9",
+    "src/atomic-crm/notes/NoteInputs.tsx": "530ab4f5e475",
+    "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "1519b77f65dd",
+    "src/atomic-crm/opportunities/OpportunityCompactForm.tsx": "4d1eb9b3e1de",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "2eddc50f8bbe",
-    "src/atomic-crm/opportunities/OpportunityCreateFormFooter.tsx": "b247fbddd512",
-    "src/atomic-crm/opportunities/OpportunityCreateSaveButton.tsx": "60bae8a5e720",
+    "src/atomic-crm/opportunities/OpportunityCreateFormFooter.tsx": "88173505307c",
+    "src/atomic-crm/opportunities/OpportunityCreateSaveButton.tsx": "83818b422465",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "96f67bf0a804",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "cbfd56f63ef9",
-    "src/atomic-crm/opportunities/QuickAddForm.tsx": "de11f2994d11",
+    "src/atomic-crm/opportunities/QuickAddForm.tsx": "9744bea3129f",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "f2603be715b4",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "ebb98786e021",
     "src/atomic-crm/organizations/OrganizationCreate.tsx": "1c4bb32a6be6",
-    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "d3a7264bd3a8",
+    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "9e7675994664",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "c3719606f37e",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "8752b8f423a8",
-    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "9ae8de60d8da",
-    "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "4e40d4eabdfc",
-    "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "3fe160a036b6",
+    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "17115e740dd8",
+    "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "e050a042ace3",
+    "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "2d07c0f44d70",
+    "src/atomic-crm/productDistributors/ProductDistributorInputs.tsx": "fd7d784c4fa5",
     "src/atomic-crm/products/ProductCreate.tsx": "1f308484e9d8",
     "src/atomic-crm/products/ProductEdit.tsx": "7164734ff790",
-    "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
+    "src/atomic-crm/products/ProductFormTutorial.tsx": "3fb96de41777",
     "src/atomic-crm/products/ProductInputs.tsx": "77234845cab9",
     "src/atomic-crm/sales/SalesCreate.tsx": "109ed48ab55d",
     "src/atomic-crm/sales/SalesEdit.tsx": "e1773f798f6b",
     "src/atomic-crm/sales/SalesInputs.tsx": "753987f85097",
     "src/atomic-crm/sales/SalesPermissionsInputs.tsx": "16daf9f86108",
+    "src/atomic-crm/tags/TagCreate.tsx": "461c7caede76",
     "src/atomic-crm/tags/TagCreateModal.tsx": "0f6d4e2f2e1d",
+    "src/atomic-crm/tags/TagEdit.tsx": "332dd009f717",
     "src/atomic-crm/tags/TagEditModal.tsx": "da8202cbdc29",
-    "src/atomic-crm/tags/TagSelectWithCreate.tsx": "81cd27f336e3",
+    "src/atomic-crm/tags/TagInputs.tsx": "10c6d4bd63e9",
+    "src/atomic-crm/tags/TagSelectWithCreate.tsx": "97e24bfd3b83",
     "src/atomic-crm/tasks/TaskCompactForm.tsx": "39309698a061",
-    "src/atomic-crm/tasks/TaskCreate.tsx": "64d1ff1e985f",
-    "src/atomic-crm/tasks/TaskEdit.tsx": "fe3f620112fa",
-    "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "aad9f5488661"
+    "src/atomic-crm/tasks/TaskCreate.tsx": "5eab0e7fbc9a",
+    "src/atomic-crm/tasks/TaskEdit.tsx": "1044b9be9f0a",
+    "src/atomic-crm/tasks/TaskInputs.tsx": "f4d7201dd42f",
+    "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "c46fc9622a1d"
   },
   "summary": {
-    "total_items": 43,
-    "react_admin_forms": 30,
+    "total_items": 48,
+    "react_admin_forms": 34,
     "react19_action_forms": 0,
     "react_hook_form_direct": 5,
     "with_zod_resolver": 10,
@@ -175,7 +180,7 @@
     {
       "componentName": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 19,
+      "line": 18,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
@@ -308,7 +313,7 @@
     {
       "componentName": "QuickCreateContactRA",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 207,
+      "line": 206,
       "formType": "react-hook-form-direct",
       "formPatterns": {
         "primary": "useForm",
@@ -877,7 +882,7 @@
     {
       "componentName": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 273,
+      "line": 272,
       "formType": "react-hook-form-direct",
       "formPatterns": {
         "primary": "useForm",
@@ -909,7 +914,7 @@
     {
       "componentName": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 29,
+      "line": 25,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -925,14 +930,12 @@
         "hasProgress": false
       },
       "componentChain": [
-        "ProductDistributorCreate"
+        "ProductDistributorCreate",
+        "ProductDistributorInputs"
       ],
       "inputComponentsDeep": [
         "AutocompleteInput",
-        "DateInput",
-        "ReferenceInput",
-        "SelectInput",
-        "TextInput"
+        "ReferenceInput"
       ],
       "formContextWrappers": [
         "ProductDistributorCreate"
@@ -941,7 +944,7 @@
     {
       "componentName": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 29,
+      "line": 25,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -957,14 +960,12 @@
         "hasProgress": false
       },
       "componentChain": [
-        "ProductDistributorCreate"
+        "ProductDistributorCreate",
+        "ProductDistributorInputs"
       ],
       "inputComponentsDeep": [
         "AutocompleteInput",
-        "DateInput",
-        "ReferenceInput",
-        "SelectInput",
-        "TextInput"
+        "ReferenceInput"
       ],
       "formContextWrappers": [
         "ProductDistributorCreate"
@@ -973,17 +974,13 @@
     {
       "componentName": "ProductDistributorEdit",
       "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
-      "line": 7,
+      "line": 11,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "SimpleForm",
         "secondary": []
       },
-      "inputComponents": [
-        "DateInput",
-        "SelectInput",
-        "TextInput"
-      ],
+      "inputComponents": [],
       "hasZodResolver": false,
       "features": {
         "hasTabs": false,
@@ -991,29 +988,22 @@
         "hasProgress": false
       },
       "componentChain": [
-        "ProductDistributorEdit"
+        "ProductDistributorEdit",
+        "ProductDistributorInputs"
       ],
-      "inputComponentsDeep": [
-        "DateInput",
-        "SelectInput",
-        "TextInput"
-      ],
+      "inputComponentsDeep": [],
       "formContextWrappers": []
     },
     {
       "componentName": "ProductDistributorEdit",
       "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
-      "line": 7,
+      "line": 11,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "SimpleForm",
         "secondary": []
       },
-      "inputComponents": [
-        "DateInput",
-        "SelectInput",
-        "TextInput"
-      ],
+      "inputComponents": [],
       "hasZodResolver": false,
       "features": {
         "hasTabs": false,
@@ -1021,13 +1011,10 @@
         "hasProgress": false
       },
       "componentChain": [
-        "ProductDistributorEdit"
+        "ProductDistributorEdit",
+        "ProductDistributorInputs"
       ],
-      "inputComponentsDeep": [
-        "DateInput",
-        "SelectInput",
-        "TextInput"
-      ],
+      "inputComponentsDeep": [],
       "formContextWrappers": []
     },
     {
@@ -1181,6 +1168,132 @@
       "formContextWrappers": []
     },
     {
+      "componentName": "TagCreate",
+      "file": "src/atomic-crm/tags/TagCreate.tsx",
+      "line": 12,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "componentChain": [
+        "TagCreate",
+        "TagInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
+    },
+    {
+      "componentName": "TagCreate",
+      "file": "src/atomic-crm/tags/TagCreate.tsx",
+      "line": 12,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "componentChain": [
+        "TagCreate",
+        "TagInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
+    },
+    {
+      "componentName": "TagEdit",
+      "file": "src/atomic-crm/tags/TagEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "componentChain": [
+        "TagEdit",
+        "FormToolbar",
+        "TagInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
+    },
+    {
+      "componentName": "TagEdit",
+      "file": "src/atomic-crm/tags/TagEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "componentChain": [
+        "TagEdit",
+        "FormToolbar",
+        "TagInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
+    },
+    {
+      "componentName": "TagInputs",
+      "file": "src/atomic-crm/tags/TagInputs.tsx",
+      "line": 12,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": []
+      },
+      "inputComponents": [
+        "TextInput"
+      ],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "componentChain": [
+        "TagInputs"
+      ],
+      "inputComponentsDeep": [
+        "TextInput"
+      ],
+      "formContextWrappers": [
+        "TagInputs"
+      ]
+    },
+    {
       "componentName": "TaskCreate",
       "file": "src/atomic-crm/tasks/TaskCreate.tsx",
       "line": 33,
@@ -1200,7 +1313,7 @@
       },
       "componentChain": [
         "TaskCreate",
-        "TaskCompactForm"
+        "TaskInputs"
       ],
       "inputComponentsDeep": [],
       "formContextWrappers": [],
@@ -1224,7 +1337,7 @@
       },
       "componentChain": [
         "TaskEdit",
-        "TaskCompactForm",
+        "TaskInputs",
         "FormToolbar"
       ],
       "inputComponentsDeep": [],
@@ -1248,7 +1361,7 @@
       },
       "componentChain": [
         "TaskEdit",
-        "TaskCompactForm",
+        "TaskInputs",
         "FormToolbar"
       ],
       "inputComponentsDeep": [],

@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-22T16:45:49.768Z",
+  "generated_at": "2026-01-22T23:55:44.696Z",
   "items": {
     "nodes": [
       {
@@ -98,6 +98,15 @@
         "name": "TaskHierarchyBreadcrumb",
         "file": "src/atomic-crm/tasks/TaskHierarchyBreadcrumb.tsx",
         "line": 32,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/tasks/TaskInputs.tsx:41:TaskInputs",
+        "name": "TaskInputs",
+        "file": "src/atomic-crm/tasks/TaskInputs.tsx",
+        "line": 41,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -424,7 +433,7 @@
         "target": "getTaskDefaultValues",
         "targetName": "getTaskDefaultValues",
         "edgeType": "call",
-        "line": 114,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
@@ -433,7 +442,7 @@
         "target": "setOpen",
         "targetName": "setOpen",
         "edgeType": "call",
-        "line": 120,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
@@ -442,7 +451,7 @@
         "target": "getQSearchAutocompleteProps",
         "targetName": "getQSearchAutocompleteProps",
         "edgeType": "call",
-        "line": 149,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
@@ -451,7 +460,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 162,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
@@ -484,8 +493,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/AddTask.tsx:35:AddTask",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 90,
         "conditional": true,
@@ -511,8 +520,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/AddTask.tsx:35:AddTask",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 104,
         "conditional": true,
@@ -523,7 +532,7 @@
         "target": "handleOpen",
         "targetName": "handleOpen",
         "edgeType": "callback",
-        "line": 104,
+        "line": 107,
         "conditional": true,
         "inLoop": false
       },
@@ -532,7 +541,7 @@
         "target": "CreateBase",
         "targetName": "CreateBase",
         "edgeType": "render",
-        "line": 111,
+        "line": 116,
         "conditional": false,
         "inLoop": false
       },
@@ -541,7 +550,7 @@
         "target": "Dialog",
         "targetName": "Dialog",
         "edgeType": "render",
-        "line": 120,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
@@ -550,7 +559,7 @@
         "target": "DialogContent",
         "targetName": "DialogContent",
         "edgeType": "render",
-        "line": 121,
+        "line": 126,
         "conditional": false,
         "inLoop": false
       },
@@ -559,7 +568,7 @@
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 122,
+        "line": 127,
         "conditional": false,
         "inLoop": false
       },
@@ -568,7 +577,7 @@
         "target": "DialogHeader",
         "targetName": "DialogHeader",
         "edgeType": "render",
-        "line": 123,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
@@ -577,7 +586,7 @@
         "target": "DialogTitle",
         "targetName": "DialogTitle",
         "edgeType": "render",
-        "line": 124,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
@@ -586,7 +595,7 @@
         "target": "DialogDescription",
         "targetName": "DialogDescription",
         "edgeType": "render",
-        "line": 128,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
@@ -595,7 +604,7 @@
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 147,
+        "line": 152,
         "conditional": false,
         "inLoop": false
       },
@@ -604,7 +613,7 @@
         "target": "DialogFooter",
         "targetName": "DialogFooter",
         "edgeType": "render",
-        "line": 170,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
@@ -622,7 +631,7 @@
         "target": "Plus",
         "targetName": "Plus",
         "edgeType": "render",
-        "line": 105,
+        "line": 110,
         "conditional": true,
         "inLoop": false
       },
@@ -631,7 +640,7 @@
         "target": "RecordRepresentation",
         "targetName": "RecordRepresentation",
         "edgeType": "render",
-        "line": 126,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
@@ -640,7 +649,7 @@
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 133,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
@@ -649,7 +658,7 @@
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 139,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
@@ -658,7 +667,7 @@
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 148,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
@@ -667,7 +676,7 @@
         "target": "DateInput",
         "targetName": "DateInput",
         "edgeType": "render",
-        "line": 158,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       },
@@ -676,7 +685,7 @@
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 159,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
@@ -685,7 +694,7 @@
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 171,
+        "line": 176,
         "conditional": false,
         "inLoop": false
       },
@@ -1051,8 +1060,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/Task.tsx:33:Task",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 172,
         "conditional": false,
@@ -1582,8 +1591,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskActionMenu.tsx:52:TaskActionMenu",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 163,
         "conditional": false,
@@ -2266,8 +2275,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 106,
         "conditional": false,
@@ -2284,8 +2293,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 118,
         "conditional": false,
@@ -2302,8 +2311,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 130,
         "conditional": false,
@@ -2518,8 +2527,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskCreate.tsx:33:TaskCreate",
-        "target": "TaskCompactForm",
-        "targetName": "TaskCompactForm",
+        "target": "TaskInputs",
+        "targetName": "TaskInputs",
         "edgeType": "render",
         "line": 69,
         "conditional": false,
@@ -2644,8 +2653,8 @@
       },
       {
         "source": "src/atomic-crm/tasks/TaskEdit.tsx:38:TaskEditForm",
-        "target": "TaskCompactForm",
-        "targetName": "TaskCompactForm",
+        "target": "TaskInputs",
+        "targetName": "TaskInputs",
         "edgeType": "render",
         "line": 51,
         "conditional": false,
@@ -2747,6 +2756,51 @@
         "targetName": "CheckSquare",
         "edgeType": "render",
         "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskInputs.tsx:41:TaskInputs",
+        "target": "useFormState",
+        "targetName": "useFormState",
+        "edgeType": "hook",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskInputs.tsx:41:TaskInputs",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskInputs.tsx:41:TaskInputs",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskInputs.tsx:41:TaskInputs",
+        "target": "FormErrorSummary",
+        "targetName": "FormErrorSummary",
+        "edgeType": "render",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskInputs.tsx:41:TaskInputs",
+        "target": "TaskCompactForm",
+        "targetName": "TaskCompactForm",
+        "edgeType": "render",
+        "line": 54,
         "conditional": false,
         "inLoop": false
       },

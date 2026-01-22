@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-22T16:45:42.318Z",
+  "generated_at": "2026-01-22T23:55:24.902Z",
   "item_count": 7,
   "items": [
     {
@@ -13,7 +13,7 @@
         "useState"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/input",
         "@/components/ui/label",
         "@/components/ui/popover",
@@ -56,17 +56,15 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "../../components/ui/button",
+        "@/components/admin/AdminButton",
         "@/lib/utils",
         "lucide-react",
         "react"
       ],
       "isDefaultExport": false,
-      "childComponents": [
-        "Button"
-      ],
+      "childComponents": [],
       "contextDependencies": [],
-      "componentRole": "wrapper"
+      "componentRole": "leaf"
     },
     {
       "name": "FilterChipBar",
@@ -82,7 +80,7 @@
         "./FilterChip",
         "./filterConfigSchema",
         "./useFilterChipBar",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/lib/utils",
         "react"
       ],
@@ -151,7 +149,7 @@
       ],
       "imports": [
         "@/atomic-crm/validation/favorites",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "@/hooks/useFavorites",
         "@/lib/utils",

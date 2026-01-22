@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-22T16:45:42.315Z",
+  "generated_at": "2026-01-22T23:55:24.892Z",
   "item_count": 25,
   "items": [
     {
@@ -18,8 +18,8 @@
       ],
       "imports": [
         "@/atomic-crm/utils",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/form",
-        "@/components/ui/button",
         "@/components/ui/unsaved-changes-dialog",
         "ra-core",
         "react",
@@ -43,7 +43,7 @@
       ],
       "imports": [
         "@/atomic-crm/validation/favorites",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "@/hooks/useFavorites",
         "@/lib/utils",
@@ -63,7 +63,7 @@
         "useNavigate"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "lucide-react",
         "react-router-dom"
       ],
@@ -353,8 +353,8 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",
@@ -374,8 +374,8 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",
@@ -395,8 +395,8 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",
@@ -416,8 +416,8 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",
@@ -437,8 +437,8 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",
@@ -458,8 +458,8 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",
@@ -484,8 +484,8 @@
       ],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",
@@ -510,8 +510,8 @@
       ],
       "imports": [
         "@/atomic-crm/validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/popover",
         "@/lib/utils",
         "lucide-react",

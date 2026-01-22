@@ -1,6 +1,6 @@
 {
   "chunk_name": "notifications",
-  "generated_at": "2026-01-22T16:45:42.320Z",
+  "generated_at": "2026-01-22T23:55:24.907Z",
   "item_count": 3,
   "items": [
     {
@@ -12,12 +12,12 @@
       "imports": [
         "../filters/FilterCategory",
         "../layout/TopToolbar",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/bulk-actions-toolbar",
         "@/components/ra-wrappers/list",
         "@/components/ra-wrappers/search-input",
         "@/components/ra-wrappers/toggle-filter-button",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/lib/date-utils",
         "@/lib/utils",

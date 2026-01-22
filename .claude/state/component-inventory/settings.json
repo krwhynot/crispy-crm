@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-22T16:45:42.325Z",
+  "generated_at": "2026-01-22T23:55:24.928Z",
   "item_count": 13,
   "items": [
     {
@@ -92,10 +92,10 @@
         "../../types",
         "./TimeZoneSelect",
         "./useSalesUpdate",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/record-field",
         "@/components/ra-wrappers/text-input",
         "@/components/ui",
-        "@/components/ui/button",
         "@/components/ui/card",
         "lucide-react",
         "ra-core",
@@ -140,8 +140,8 @@
       ],
       "imports": [
         "./RolePermissionsMatrix",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/label",
         "lucide-react",
@@ -163,7 +163,7 @@
         "useState"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/card",
         "@/lib/utils",
         "lucide-react",

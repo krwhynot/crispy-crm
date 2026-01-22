@@ -90,54 +90,35 @@ export interface DistributorAuthorizationWithNames extends DistributorAuthorizat
 
 /**
  * Create-specific schema (stricter requirements)
- * Omits system-managed fields
+ * Omits system-managed fields - uses BASE schema per Zod v4 requirements
  */
-export const createDistributorAuthorizationSchema = distributorAuthorizationSchema
+export const createDistributorAuthorizationSchema = distributorAuthorizationBaseSchema
   .omit({
     id: true,
     created_at: true,
     updated_at: true,
     deleted_at: true,
   })
-  .refine((data) => data.distributor_id !== data.principal_id, {
+  .refine(notSameOrgRefinement, {
     message: "Distributor and Principal cannot be the same organization",
   })
-  .refine(
-    (data) => {
-      if (data.expiration_date && data.authorization_date) {
-        return new Date(data.expiration_date) > new Date(data.authorization_date);
-      }
-      return true;
-    },
-    { message: "Expiration date must be after authorization date" }
-  );
+  .refine(dateOrderRefinement, {
+    message: "Expiration date must be after authorization date",
+  });
 
 /**
  * Update-specific schema (more flexible)
- * ID is required, other fields are optional
+ * ID is required, other fields are optional - uses BASE schema per Zod v4 requirements
  */
-export const updateDistributorAuthorizationSchema = distributorAuthorizationSchema
+export const updateDistributorAuthorizationSchema = distributorAuthorizationBaseSchema
   .partial()
   .required({ id: true })
-  .refine(
-    (data) => {
-      // Only validate when both fields are being updated
-      if (data.distributor_id !== undefined && data.principal_id !== undefined) {
-        return data.distributor_id !== data.principal_id;
-      }
-      return true;
-    },
-    { message: "Distributor and Principal cannot be the same organization" }
-  )
-  .refine(
-    (data) => {
-      if (data.expiration_date && data.authorization_date) {
-        return new Date(data.expiration_date) > new Date(data.authorization_date);
-      }
-      return true;
-    },
-    { message: "Expiration date must be after authorization date" }
-  );
+  .refine(notSameOrgRefinement, {
+    message: "Distributor and Principal cannot be the same organization",
+  })
+  .refine(dateOrderRefinement, {
+    message: "Expiration date must be after authorization date",
+  });
 
 /**
  * Validation function for React Admin forms
@@ -199,7 +180,8 @@ export const specialPricingSchema = z
   .passthrough(); // Allow additional fields for flexibility
 
 /**
- * Product Distributor Authorization schema
+ * Base object schema for product distributor authorization (no refinements)
+ * Zod v4: .omit()/.pick()/.partial() require base object without refinements
  *
  * Allows product-specific overrides to org-level authorizations.
  * Resolution order:
@@ -209,41 +191,39 @@ export const specialPricingSchema = z
  *
  * @see supabase/migrations/20251129051625_add_product_distributor_authorizations.sql
  */
-export const productDistributorAuthorizationSchema = z
-  .strictObject({
-    id: z.union([z.string(), z.number()]).optional(),
+const productDistributorAuthorizationBaseSchema = z.strictObject({
+  id: z.union([z.string(), z.number()]).optional(),
 
-    // Required foreign keys
-    product_id: z.coerce.number().int().positive("Product is required"),
-    distributor_id: z.coerce.number().int().positive("Distributor is required"),
+  // Required foreign keys
+  product_id: z.coerce.number().int().positive("Product is required"),
+  distributor_id: z.coerce.number().int().positive("Distributor is required"),
 
-    // Authorization metadata
-    is_authorized: z.coerce.boolean().default(true),
-    authorization_date: z.coerce.date().optional().nullable(),
-    expiration_date: z.coerce.date().optional().nullable(),
+  // Authorization metadata
+  is_authorized: z.coerce.boolean().default(true),
+  authorization_date: z.coerce.date().optional().nullable(),
+  expiration_date: z.coerce.date().optional().nullable(),
 
-    // Product-specific pricing (JSONB)
-    special_pricing: specialPricingSchema.optional().nullable(),
+  // Product-specific pricing (JSONB)
+  special_pricing: specialPricingSchema.optional().nullable(),
 
-    // Territory restrictions (array)
-    territory_restrictions: z.array(z.string().max(255)).max(50).optional().nullable(),
-    notes: z.string().max(2000).optional().nullable(),
+  // Territory restrictions (array)
+  territory_restrictions: z.array(z.string().max(255)).max(50).optional().nullable(),
+  notes: z.string().max(2000).optional().nullable(),
 
-    // Audit fields (system-managed)
-    created_by: z.coerce.number().int().optional().nullable(),
-    created_at: z.string().max(50).optional(),
-    updated_at: z.string().max(50).optional(),
-    deleted_at: z.string().max(50).optional().nullable(),
-  })
-  .refine(
-    (data) => {
-      if (data.expiration_date && data.authorization_date) {
-        return new Date(data.expiration_date) > new Date(data.authorization_date);
-      }
-      return true;
-    },
-    { message: "Expiration date must be after authorization date" }
-  );
+  // Audit fields (system-managed)
+  created_by: z.coerce.number().int().optional().nullable(),
+  created_at: z.string().max(50).optional(),
+  updated_at: z.string().max(50).optional(),
+  deleted_at: z.string().max(50).optional().nullable(),
+});
+
+/**
+ * Full schema with refinements for validation
+ */
+export const productDistributorAuthorizationSchema =
+  productDistributorAuthorizationBaseSchema.refine(dateOrderRefinement, {
+    message: "Expiration date must be after authorization date",
+  });
 
 /**
  * Type inference from schema
@@ -268,39 +248,29 @@ export interface ProductDistributorAuthorizationWithNames extends ProductDistrib
 
 /**
  * Create-specific schema (stricter requirements)
+ * Uses BASE schema per Zod v4 requirements
  */
-export const createProductDistributorAuthorizationSchema = productDistributorAuthorizationSchema
+export const createProductDistributorAuthorizationSchema = productDistributorAuthorizationBaseSchema
   .omit({
     id: true,
     created_at: true,
     updated_at: true,
     deleted_at: true,
   })
-  .refine(
-    (data) => {
-      if (data.expiration_date && data.authorization_date) {
-        return new Date(data.expiration_date) > new Date(data.authorization_date);
-      }
-      return true;
-    },
-    { message: "Expiration date must be after authorization date" }
-  );
+  .refine(dateOrderRefinement, {
+    message: "Expiration date must be after authorization date",
+  });
 
 /**
  * Update-specific schema (more flexible)
+ * Uses BASE schema per Zod v4 requirements
  */
-export const updateProductDistributorAuthorizationSchema = productDistributorAuthorizationSchema
+export const updateProductDistributorAuthorizationSchema = productDistributorAuthorizationBaseSchema
   .partial()
   .required({ id: true })
-  .refine(
-    (data) => {
-      if (data.expiration_date && data.authorization_date) {
-        return new Date(data.expiration_date) > new Date(data.authorization_date);
-      }
-      return true;
-    },
-    { message: "Expiration date must be after authorization date" }
-  );
+  .refine(dateOrderRefinement, {
+    message: "Expiration date must be after authorization date",
+  });
 
 /**
  * Validation function for React Admin forms

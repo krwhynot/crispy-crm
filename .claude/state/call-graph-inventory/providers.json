@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-22T16:45:49.758Z",
+  "generated_at": "2026-01-22T23:55:44.654Z",
   "items": {
     "nodes": [
       {
@@ -490,28 +490,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/filterRegistry.ts:594:getFilterableFields",
+        "id": "src/atomic-crm/providers/supabase/filterRegistry.ts:598:getFilterableFields",
         "name": "getFilterableFields",
         "file": "src/atomic-crm/providers/supabase/filterRegistry.ts",
-        "line": 594,
+        "line": 598,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/filterRegistry.ts:609:isRegisteredResource",
+        "id": "src/atomic-crm/providers/supabase/filterRegistry.ts:613:isRegisteredResource",
         "name": "isRegisteredResource",
         "file": "src/atomic-crm/providers/supabase/filterRegistry.ts",
-        "line": 609,
+        "line": 613,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "id": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "name": "isValidFilterField",
         "file": "src/atomic-crm/providers/supabase/filterRegistry.ts",
-        "line": 620,
+        "line": 624,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -3228,65 +3228,65 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "target": "getFilterableFields",
         "targetName": "getFilterableFields",
         "edgeType": "call",
-        "line": 622,
+        "line": 626,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 628,
+        "line": 632,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "target": "split",
         "targetName": "split",
         "edgeType": "call",
-        "line": 635,
+        "line": 639,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "target": "endsWith",
         "targetName": "endsWith",
         "edgeType": "call",
-        "line": 641,
+        "line": 656,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 642,
+        "line": 657,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 647,
+        "line": 662,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:620:isValidFilterField",
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:624:isValidFilterField",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 647,
+        "line": 662,
         "conditional": false,
         "inLoop": false
       },

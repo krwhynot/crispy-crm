@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-22T16:45:42.317Z",
+  "generated_at": "2026-01-22T23:55:24.901Z",
   "item_count": 33,
   "items": [
     {
@@ -10,7 +10,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "lucide-react"
       ],
       "isDefaultExport": false,
@@ -26,7 +26,7 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/calendar",
         "@/components/ui/form",
         "@/components/ui/popover",
@@ -52,8 +52,8 @@
       "imports": [
         "./useTeamActivities",
         "@/atomic-crm/utils",
+        "@/components/admin/AdminButton",
         "@/components/ui/avatar",
-        "@/components/ui/button",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
         "@/lib/utils/pluralize",
@@ -79,8 +79,8 @@
       "imports": [
         "./useTeamActivities",
         "@/atomic-crm/utils",
+        "@/components/admin/AdminButton",
         "@/components/ui/avatar",
-        "@/components/ui/button",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
         "@/lib/utils/pluralize",
@@ -207,7 +207,7 @@
       ],
       "imports": [
         "./dashboardTutorialSteps",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "driver.js",
         "driver.js/dist/driver.css",
@@ -231,7 +231,7 @@
         "useState"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/command",
         "@/components/ui/form",
         "@/components/ui/popover",
@@ -274,7 +274,7 @@
       "hooks": [],
       "imports": [
         "@/atomic-crm/validation/activities",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/calendar",
         "@/components/ui/form",
         "@/components/ui/popover",
@@ -327,7 +327,7 @@
         "@/atomic-crm/hooks/useRecentSearches",
         "@/atomic-crm/utils/safeJsonParse",
         "@/atomic-crm/validation/activities",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/sheet",
         "@/components/ui/skeleton",
         "@/lib/utils",
@@ -350,7 +350,7 @@
       ],
       "imports": [
         "@/atomic-crm/validation/activities",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/sheet",
         "@/components/ui/skeleton",
         "@/lib/utils",
@@ -433,8 +433,8 @@
       "imports": [
         "./usePrincipalOpportunities",
         "@/atomic-crm/utils/formatters",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/scroll-area",
         "@/components/ui/sheet",
         "@/components/ui/skeleton",
@@ -517,8 +517,8 @@
         "./types",
         "./usePipelineTableState",
         "./usePrincipalPipeline",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/checkbox",
         "@/components/ui/dropdown-menu",
         "@/components/ui/input",
@@ -556,8 +556,8 @@
         "./types",
         "./usePipelineTableState",
         "./usePrincipalPipeline",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/checkbox",
         "@/components/ui/dropdown-menu",
         "@/components/ui/input",
@@ -666,7 +666,7 @@
         "useState"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/calendar",
         "@/components/ui/popover",
         "date-fns",
@@ -692,8 +692,8 @@
       "imports": [
         "./types",
         "./useMyTasks",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/sheet",
         "@/components/ui/skeleton",
         "@/lib/utils",
@@ -724,8 +724,8 @@
         "@/atomic-crm/tasks/TaskActionMenu",
         "@/atomic-crm/tasks/TaskCompletionDialog",
         "@/atomic-crm/utils",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/checkbox",
         "@/components/ui/snooze-badge",
         "@dnd-kit/sortable",
@@ -786,8 +786,8 @@
         "./TaskKanbanColumn",
         "./types",
         "./useMyTasks",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/skeleton",
         "@dnd-kit/core",
         "@dnd-kit/sortable",
@@ -825,8 +825,8 @@
         "./TaskKanbanColumn",
         "./types",
         "./useMyTasks",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/skeleton",
         "@dnd-kit/core",
         "@dnd-kit/sortable",

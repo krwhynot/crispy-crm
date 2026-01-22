@@ -1,6 +1,6 @@
 {
   "chunk_name": "timeline",
-  "generated_at": "2026-01-22T16:45:42.326Z",
+  "generated_at": "2026-01-22T23:55:24.937Z",
   "item_count": 4,
   "items": [
     {
@@ -57,8 +57,8 @@
       "imports": [
         "../activities",
         "./TimelineEntry",
+        "@/components/admin/AdminButton",
         "@/components/layouts/sidepane",
-        "@/components/ui/button",
         "@/components/ui/skeleton",
         "lucide-react",
         "ra-core",
@@ -84,8 +84,8 @@
       "imports": [
         "../activities",
         "./TimelineEntry",
+        "@/components/admin/AdminButton",
         "@/components/layouts/sidepane",
-        "@/components/ui/button",
         "@/components/ui/skeleton",
         "lucide-react",
         "ra-core",

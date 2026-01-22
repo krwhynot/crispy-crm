@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-22T16:45:49.729Z",
+  "generated_at": "2026-01-22T23:55:44.571Z",
   "items": {
     "nodes": [
       {
@@ -295,8 +295,8 @@
       },
       {
         "source": "src/atomic-crm/components/CreateFormFooter.tsx:18:CreateFormFooter",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 48,
         "conditional": false,
@@ -403,8 +403,8 @@
       },
       {
         "source": "src/atomic-crm/components/FavoriteToggleButton.tsx:14:FavoriteToggleButton",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 41,
         "conditional": false,
@@ -529,8 +529,8 @@
       },
       {
         "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 46,
         "conditional": false,

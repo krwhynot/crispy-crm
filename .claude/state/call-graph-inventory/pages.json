@@ -1,6 +1,6 @@
 {
   "chunk_name": "pages",
-  "generated_at": "2026-01-22T16:45:49.757Z",
+  "generated_at": "2026-01-22T23:55:44.643Z",
   "items": {
     "nodes": [
       {
@@ -136,7 +136,7 @@
         "target": "startTour",
         "targetName": "startTour",
         "edgeType": "call",
-        "line": 282,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
@@ -145,7 +145,7 @@
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 300,
+        "line": 304,
         "conditional": false,
         "inLoop": false
       },
@@ -154,7 +154,7 @@
         "target": "getCategoryColor",
         "targetName": "getCategoryColor",
         "edgeType": "call",
-        "line": 300,
+        "line": 304,
         "conditional": false,
         "inLoop": false
       },
@@ -163,7 +163,7 @@
         "target": "handleFeatureComplete",
         "targetName": "handleFeatureComplete",
         "edgeType": "call",
-        "line": 352,
+        "line": 356,
         "conditional": false,
         "inLoop": false
       },
@@ -172,7 +172,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 384,
+        "line": 388,
         "conditional": false,
         "inLoop": false
       },
@@ -181,7 +181,7 @@
         "target": "startTour",
         "targetName": "startTour",
         "edgeType": "call",
-        "line": 387,
+        "line": 391,
         "conditional": false,
         "inLoop": false
       },
@@ -190,7 +190,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 395,
+        "line": 399,
         "conditional": false,
         "inLoop": false
       },
@@ -304,8 +304,8 @@
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 282,
         "conditional": false,
@@ -316,7 +316,7 @@
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 292,
+        "line": 296,
         "conditional": false,
         "inLoop": false
       },
@@ -325,7 +325,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 293,
+        "line": 297,
         "conditional": false,
         "inLoop": false
       },
@@ -334,7 +334,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 294,
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
@@ -343,7 +343,7 @@
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 295,
+        "line": 299,
         "conditional": false,
         "inLoop": false
       },
@@ -352,7 +352,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 300,
+        "line": 304,
         "conditional": false,
         "inLoop": false
       },
@@ -361,34 +361,34 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 309,
+        "line": 313,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 345,
+        "line": 349,
         "conditional": true,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 351,
+        "line": 355,
         "conditional": true,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 359,
+        "line": 363,
         "conditional": true,
         "inLoop": false
       },
@@ -397,7 +397,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 378,
+        "line": 382,
         "conditional": false,
         "inLoop": false
       },
@@ -406,7 +406,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 379,
+        "line": 383,
         "conditional": false,
         "inLoop": false
       },
@@ -415,7 +415,7 @@
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 380,
+        "line": 384,
         "conditional": false,
         "inLoop": false
       },
@@ -424,16 +424,16 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 382,
+        "line": 386,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 385,
+        "line": 389,
         "conditional": false,
         "inLoop": false
       },
@@ -442,52 +442,16 @@
         "target": "TabsContent",
         "targetName": "TabsContent",
         "edgeType": "render",
-        "line": 407,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 409,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 410,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
         "line": 411,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 416,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 449,
+        "line": 413,
         "conditional": false,
         "inLoop": false
       },
@@ -496,7 +460,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 450,
+        "line": 414,
         "conditional": false,
         "inLoop": false
       },
@@ -505,7 +469,7 @@
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 451,
+        "line": 415,
         "conditional": false,
         "inLoop": false
       },
@@ -514,43 +478,7 @@
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 456,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 458,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 464,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 470,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
-        "edgeType": "render",
-        "line": 476,
+        "line": 420,
         "conditional": false,
         "inLoop": false
       },
@@ -559,7 +487,7 @@
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 486,
+        "line": 453,
         "conditional": false,
         "inLoop": false
       },
@@ -568,7 +496,7 @@
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 487,
+        "line": 454,
         "conditional": false,
         "inLoop": false
       },
@@ -577,7 +505,7 @@
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 488,
+        "line": 455,
         "conditional": false,
         "inLoop": false
       },
@@ -585,6 +513,51 @@
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
         "target": "CardContent",
         "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 460,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 462,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 468,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 474,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 480,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 490,
         "conditional": false,
@@ -592,19 +565,46 @@
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
         "edgeType": "render",
-        "line": 495,
+        "line": 491,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 498,
+        "line": 492,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 494,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 499,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
@@ -622,7 +622,7 @@
         "target": "Play",
         "targetName": "Play",
         "edgeType": "render",
-        "line": 283,
+        "line": 287,
         "conditional": false,
         "inLoop": false
       },
@@ -631,7 +631,7 @@
         "target": "ChevronLeft",
         "targetName": "ChevronLeft",
         "edgeType": "render",
-        "line": 346,
+        "line": 350,
         "conditional": true,
         "inLoop": false
       },
@@ -640,7 +640,7 @@
         "target": "CheckCircle",
         "targetName": "CheckCircle",
         "edgeType": "render",
-        "line": 355,
+        "line": 359,
         "conditional": true,
         "inLoop": false
       },
@@ -649,7 +649,7 @@
         "target": "ChevronRight",
         "targetName": "ChevronRight",
         "edgeType": "render",
-        "line": 361,
+        "line": 365,
         "conditional": true,
         "inLoop": false
       },
@@ -658,7 +658,7 @@
         "target": "CheckCircle",
         "targetName": "CheckCircle",
         "edgeType": "render",
-        "line": 396,
+        "line": 400,
         "conditional": false,
         "inLoop": false
       },
@@ -667,7 +667,7 @@
         "target": "BookOpen",
         "targetName": "BookOpen",
         "edgeType": "render",
-        "line": 412,
+        "line": 416,
         "conditional": false,
         "inLoop": false
       },
@@ -676,7 +676,7 @@
         "target": "Target",
         "targetName": "Target",
         "edgeType": "render",
-        "line": 452,
+        "line": 456,
         "conditional": false,
         "inLoop": false
       },
@@ -685,7 +685,7 @@
         "target": "CheckCircle",
         "targetName": "CheckCircle",
         "edgeType": "render",
-        "line": 460,
+        "line": 464,
         "conditional": false,
         "inLoop": false
       },
@@ -694,7 +694,7 @@
         "target": "Briefcase",
         "targetName": "Briefcase",
         "edgeType": "render",
-        "line": 466,
+        "line": 470,
         "conditional": false,
         "inLoop": false
       },
@@ -703,7 +703,7 @@
         "target": "Users",
         "targetName": "Users",
         "edgeType": "render",
-        "line": 472,
+        "line": 476,
         "conditional": false,
         "inLoop": false
       },
@@ -712,7 +712,7 @@
         "target": "Building",
         "targetName": "Building",
         "edgeType": "render",
-        "line": 478,
+        "line": 482,
         "conditional": false,
         "inLoop": false
       },
@@ -721,7 +721,7 @@
         "target": "ArrowRight",
         "targetName": "ArrowRight",
         "edgeType": "render",
-        "line": 500,
+        "line": 504,
         "conditional": false,
         "inLoop": false
       }

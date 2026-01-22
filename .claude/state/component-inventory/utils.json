@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-22T16:45:42.326Z",
+  "generated_at": "2026-01-22T23:55:24.943Z",
   "item_count": 3,
   "items": [
     {
@@ -27,7 +27,7 @@
         "useNotify"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "react",
         "react-admin"
       ],
@@ -46,7 +46,7 @@
         "useNotify"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "react",
         "react-admin"
       ],

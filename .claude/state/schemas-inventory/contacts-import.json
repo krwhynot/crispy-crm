@@ -1,12 +1,12 @@
 {
   "chunk_name": "contacts-import",
-  "generated_at": "2026-01-22T16:45:47.853Z",
+  "generated_at": "2026-01-22T23:55:38.633Z",
   "item_count": 1,
   "items": [
     {
       "name": "importContactSchema",
       "file": "src/atomic-crm/validation/contacts/contacts-import.ts",
-      "line": 13,
+      "line": 57,
       "schemaType": "object",
       "fields": [
         {

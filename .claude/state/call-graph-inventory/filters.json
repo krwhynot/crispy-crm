@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-22T16:45:49.739Z",
+  "generated_at": "2026-01-22T23:55:44.602Z",
   "items": {
     "nodes": [
       {
@@ -718,8 +718,8 @@
       },
       {
         "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 134,
         "conditional": false,
@@ -754,8 +754,8 @@
       },
       {
         "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 182,
         "conditional": false,
@@ -772,8 +772,8 @@
       },
       {
         "source": "src/atomic-crm/filters/DateRangeFilterButton.tsx:50:DateRangeFilterButton",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 185,
         "conditional": false,
@@ -784,7 +784,7 @@
         "target": "handleApply",
         "targetName": "handleApply",
         "edgeType": "callback",
-        "line": 185,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
@@ -907,8 +907,8 @@
       },
       {
         "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 57,
         "conditional": false,
@@ -1096,8 +1096,8 @@
       },
       {
         "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 122,
         "conditional": false,
@@ -1573,8 +1573,8 @@
       },
       {
         "source": "src/atomic-crm/filters/StarredFilterToggle.tsx:27:StarredFilterToggle",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 83,
         "conditional": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-22T16:45:42.316Z",
+  "generated_at": "2026-01-22T23:55:24.893Z",
   "item_count": 59,
   "items": [
     {
@@ -253,7 +253,7 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 19,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useFormContext"
@@ -270,7 +270,6 @@
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
         "react",
-        "react-admin",
         "react-hook-form"
       ],
       "isDefaultExport": false,
@@ -485,7 +484,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "lucide-react",
         "ra-core"
@@ -505,7 +504,7 @@
         "useRef"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "driver.js",
         "driver.js/dist/driver.css",
@@ -549,7 +548,7 @@
       ],
       "imports": [
         "./ContactImportDialog",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "lucide-react",
         "react"
       ],
@@ -586,10 +585,10 @@
         "./useContactImportUpload",
         "./useImportWizard",
         "./useImportWizard.types",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/file-field",
         "@/components/ra-wrappers/file-input",
         "@/components/ui/alert",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/dialog",
         "@/components/ui/progress",
@@ -644,8 +643,8 @@
         "./ContactImportPreviewTable",
         "./ContactImportValidationPanel",
         "./contactImport.types",
+        "@/components/admin/AdminButton",
         "@/components/ui/alert",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "lucide-react",
         "react"
@@ -673,8 +672,8 @@
         "./ContactImportPreviewTable",
         "./ContactImportValidationPanel",
         "./contactImport.types",
+        "@/components/admin/AdminButton",
         "@/components/ui/alert",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "lucide-react",
         "react"
@@ -692,7 +691,7 @@
     {
       "name": "ContactImportPreviewTable",
       "file": "src/atomic-crm/contacts/ContactImportPreviewTable.tsx",
-      "line": 22,
+      "line": 33,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -701,8 +700,7 @@
         "@/components/ui/card",
         "@/components/ui/collapsible",
         "@/components/ui/table",
-        "lucide-react",
-        "zod"
+        "lucide-react"
       ],
       "isDefaultExport": false,
       "childComponents": [],
@@ -716,9 +714,9 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/components/admin/AdminButton",
         "@/components/ui/alert",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "lucide-react",
         "react"
@@ -1098,8 +1096,8 @@
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
         "@/atomic-crm/utils/autocompleteDefaults",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/autocomplete-input",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "@tanstack/react-query",
         "react-admin"
@@ -1136,7 +1134,7 @@
         "./SuggestedOpportunityCard",
         "./UnlinkConfirmDialog",
         "@/atomic-crm/opportunities/constants",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@tanstack/react-query",
         "lucide-react",
         "ra-core",
@@ -1190,7 +1188,7 @@
       "imports": [
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/contacts",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/input",
         "@/components/ui/label",
         "@/components/ui/popover",
@@ -1211,7 +1209,7 @@
     {
       "name": "QuickCreateContactRA",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 207,
+      "line": 206,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1224,7 +1222,7 @@
       "imports": [
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/contacts",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/input",
         "@/components/ui/label",
         "@/components/ui/popover",
@@ -1267,7 +1265,7 @@
       "imports": [
         "./StageBadgeWithHealth",
         "@/atomic-crm/utils/formatters",
-        "@/components/ui/button"
+        "@/components/admin/AdminButton"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -1312,8 +1310,8 @@
         "../tags/TagCreateModal",
         "../tags/tag-colors",
         "../types",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/dropdown-menu",
         "@/lib/utils",
         "lucide-react",

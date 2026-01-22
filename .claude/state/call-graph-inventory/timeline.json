@@ -1,6 +1,6 @@
 {
   "chunk_name": "timeline",
-  "generated_at": "2026-01-22T16:45:49.771Z",
+  "generated_at": "2026-01-22T23:55:44.700Z",
   "items": {
     "nodes": [
       {
@@ -277,8 +277,8 @@
       },
       {
         "source": "src/atomic-crm/timeline/UnifiedTimeline.tsx:41:UnifiedTimeline",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 91,
         "conditional": false,

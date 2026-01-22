@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-22T16:45:42.320Z",
+  "generated_at": "2026-01-22T23:55:24.904Z",
   "item_count": 5,
   "items": [
     {
@@ -22,9 +22,9 @@
         "../sales/SaleName",
         "../types",
         "./NoteInputs",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/reference-field",
         "@/components/ui",
-        "@/components/ui/button",
         "@/components/ui/tooltip",
         "@tanstack/react-query",
         "lucide-react",
@@ -83,8 +83,8 @@
       ],
       "imports": [
         "../validation/notes",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/text-input",
-        "@/components/ui/button",
         "@/lib/utils.ts",
         "react",
         "react-hook-form"

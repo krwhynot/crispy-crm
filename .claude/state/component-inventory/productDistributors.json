@@ -1,29 +1,25 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-22T16:45:42.323Z",
-  "item_count": 16,
+  "generated_at": "2026-01-22T23:55:24.917Z",
+  "item_count": 24,
   "items": [
     {
       "name": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 29,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useMemo"
       ],
       "imports": [
-        "../utils/autocompleteDefaults",
         "../validation/productDistributors",
-        "./constants",
+        "./ProductDistributorInputs",
         "@/components/ra-wrappers/FormErrorSummary",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/cancel-button",
-        "@/components/ra-wrappers/date-input",
         "@/components/ra-wrappers/form",
         "@/components/ra-wrappers/reference-input",
-        "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/simple-form",
-        "@/components/ra-wrappers/text-input",
         "@/components/ui/card",
         "ra-core",
         "react",
@@ -31,8 +27,7 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES",
-        "AUTOCOMPLETE_DEBOUNCE_MS"
+        "ProductDistributorInputs"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -40,24 +35,20 @@
     {
       "name": "ProductDistributorCreate",
       "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-      "line": 29,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useMemo"
       ],
       "imports": [
-        "../utils/autocompleteDefaults",
         "../validation/productDistributors",
-        "./constants",
+        "./ProductDistributorInputs",
         "@/components/ra-wrappers/FormErrorSummary",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/cancel-button",
-        "@/components/ra-wrappers/date-input",
         "@/components/ra-wrappers/form",
         "@/components/ra-wrappers/reference-input",
-        "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/simple-form",
-        "@/components/ra-wrappers/text-input",
         "@/components/ui/card",
         "ra-core",
         "react",
@@ -65,8 +56,7 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES",
-        "AUTOCOMPLETE_DEBOUNCE_MS"
+        "ProductDistributorInputs"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -74,15 +64,48 @@
     {
       "name": "ProductDistributorEdit",
       "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
-      "line": 7,
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ProductDistributorInputs",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductDistributorInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ProductDistributorEdit",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ProductDistributorInputs",
+        "react-admin"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "ProductDistributorInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ProductDistributorInputs",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorInputs.tsx",
+      "line": 16,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
         "@/components/ra-wrappers/date-input",
         "@/components/ra-wrappers/select-input",
-        "@/components/ra-wrappers/text-input",
-        "react-admin"
+        "@/components/ra-wrappers/text-input"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -92,17 +115,16 @@
       "componentRole": "wrapper"
     },
     {
-      "name": "ProductDistributorEdit",
-      "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
-      "line": 7,
+      "name": "ProductDistributorInputs",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorInputs.tsx",
+      "line": 16,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
         "@/components/ra-wrappers/date-input",
         "@/components/ra-wrappers/select-input",
-        "@/components/ra-wrappers/text-input",
-        "react-admin"
+        "@/components/ra-wrappers/text-input"
       ],
       "isDefaultExport": true,
       "childComponents": [
@@ -153,6 +175,52 @@
       "childComponents": [
         "PRODUCT_DISTRIBUTOR_STATUS_CHOICES",
         "AUTOCOMPLETE_DEBOUNCE_MS"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ProductDistributorShow",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorShow.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useShowContext"
+      ],
+      "imports": [
+        "../validation/productDistributors",
+        "@/components/ra-wrappers/date-field",
+        "@/components/ra-wrappers/reference-field",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "ProductDistributor"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "ProductDistributorShow",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorShow.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useShowContext"
+      ],
+      "imports": [
+        "../validation/productDistributors",
+        "@/components/ra-wrappers/date-field",
+        "@/components/ra-wrappers/reference-field",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductDistributor"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -160,7 +228,7 @@
     {
       "name": "productDistributorsConfig",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -172,7 +240,7 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 8,
+      "line": 9,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -184,7 +252,7 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 20,
+      "line": 21,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -196,7 +264,31 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 14,
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "ProductDistributorShowView",
+      "file": "src/atomic-crm/productDistributors/index.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "ProductDistributorInputs",
+      "file": "src/atomic-crm/productDistributors/index.tsx",
+      "line": 16,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -208,7 +300,7 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 8,
+      "line": 9,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -223,7 +315,7 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -238,7 +330,22 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 20,
+      "line": 21,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "ProductDistributorShowView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -253,7 +360,7 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 8,
+      "line": 9,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -268,7 +375,7 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 20,
+      "line": 21,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -283,7 +390,22 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 14,
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "ProductDistributorShowView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [

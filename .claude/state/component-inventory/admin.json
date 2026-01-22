@@ -1,6 +1,6 @@
 {
   "chunk_name": "admin",
-  "generated_at": "2026-01-22T16:45:42.315Z",
+  "generated_at": "2026-01-22T23:55:24.888Z",
   "item_count": 2,
   "items": [
     {
@@ -14,8 +14,8 @@
         "useState"
       ],
       "imports": [
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/progress",
         "@/lib/logger",
@@ -38,8 +38,8 @@
         "useState"
       ],
       "imports": [
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/progress",
         "@/lib/logger",

@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-22T16:45:42.324Z",
+  "generated_at": "2026-01-22T23:55:24.927Z",
   "item_count": 23,
   "items": [
     {
@@ -266,9 +266,9 @@
         "@/atomic-crm/hooks",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/sales",
+        "@/components/admin/AdminButton",
         "@/components/ui/alert-dialog",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/label",
         "@/components/ui/select",
         "@/components/ui/skeleton",
@@ -395,7 +395,7 @@
         "../queryKeys",
         "../types",
         "../utils/formatName",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/components/ui/select",
         "@tanstack/react-query",
@@ -433,7 +433,7 @@
         "../queryKeys",
         "../types",
         "../utils/formatName",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/components/ui/select",
         "@tanstack/react-query",

@@ -1,6 +1,17 @@
 {
   "chunk_name": "contacts-import",
-  "generated_at": "2026-01-22T16:45:48.238Z",
-  "item_count": 0,
-  "items": []
+  "generated_at": "2026-01-22T23:55:39.482Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "validateContactImportRow",
+      "file": "src/atomic-crm/validation/contacts/contacts-import.ts",
+      "line": 32,
+      "type": "formatter",
+      "schemaReference": "contactSchema",
+      "errorFormatting": true,
+      "isAsync": false,
+      "customValidators": []
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "chunk_name": "admin",
-  "generated_at": "2026-01-22T16:45:49.729Z",
+  "generated_at": "2026-01-22T23:55:44.569Z",
   "items": {
     "nodes": [
       {
@@ -430,8 +430,8 @@
       },
       {
         "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 176,
         "conditional": false,
@@ -457,8 +457,8 @@
       },
       {
         "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 195,
         "conditional": false,

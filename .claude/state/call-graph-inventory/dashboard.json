@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-22T16:45:49.735Z",
+  "generated_at": "2026-01-22T23:55:44.590Z",
   "items": {
     "nodes": [
       {
@@ -619,8 +619,8 @@
     "edges": [
       {
         "source": "src/atomic-crm/dashboard/ActionButtons.tsx:10:ActionButtons",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 13,
         "conditional": false,
@@ -637,8 +637,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/ActionButtons.tsx:10:ActionButtons",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 23,
         "conditional": false,
@@ -646,8 +646,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/ActionButtons.tsx:10:ActionButtons",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 33,
         "conditional": false,
@@ -745,8 +745,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/ActivityDateSection.tsx:15:ActivityDateSection",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 35,
         "conditional": false,
@@ -997,8 +997,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/ActivityFeedPanel.tsx:131:ActivityFeedPanel",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 189,
         "conditional": false,
@@ -2257,8 +2257,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/DashboardTutorial.tsx:21:DashboardTutorial",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 76,
         "conditional": false,
@@ -2473,8 +2473,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/EntityCombobox.tsx:71:EntityCombobox",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 112,
         "conditional": false,
@@ -2536,8 +2536,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/EntityCombobox.tsx:71:EntityCombobox",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 181,
         "conditional": false,
@@ -2833,8 +2833,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/FollowUpSection.tsx:23:FollowUpSection",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 49,
         "conditional": false,
@@ -3580,8 +3580,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/LogActivityFAB.tsx:157:LogActivityFAB",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 240,
         "conditional": false,
@@ -3985,8 +3985,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/MobileQuickActionBar.tsx:156:MobileQuickActionBar",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 224,
         "conditional": false,
@@ -4624,8 +4624,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/PipelineDrillDownSheet.tsx:155:OpportunityCard",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 209,
         "conditional": false,
@@ -5596,8 +5596,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/PrincipalPipelineTable.tsx:325:MomentumFilterDropdown",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 332,
         "conditional": false,
@@ -6667,8 +6667,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/SnoozePopover.tsx:30:SnoozePopover",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 97,
         "conditional": false,
@@ -6685,8 +6685,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/SnoozePopover.tsx:30:SnoozePopover",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 184,
         "conditional": true,
@@ -6703,8 +6703,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/SnoozePopover.tsx:30:SnoozePopover",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 217,
         "conditional": true,
@@ -6856,8 +6856,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/TaskCompleteSheet.tsx:64:TaskItemCard",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 79,
         "conditional": false,
@@ -7684,8 +7684,8 @@
       },
       {
         "source": "src/atomic-crm/dashboard/TasksKanbanPanel.tsx:69:TasksKanbanPanel",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 308,
         "conditional": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-22T16:45:42.321Z",
+  "generated_at": "2026-01-22T23:55:24.908Z",
   "item_count": 74,
   "items": [
     {
@@ -48,8 +48,8 @@
         "./constants",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/atomic-crm/queryKeys",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/controlled-date-picker",
-        "@/components/ui/button",
         "@/components/ui/select",
         "@/components/ui/select-ui",
         "@/components/ui/textarea",
@@ -84,8 +84,8 @@
       "imports": [
         "../types",
         "../validation/activities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/checkbox",
         "@/components/ui/input",
         "@/components/ui/label",
@@ -122,7 +122,7 @@
         "../services",
         "../types",
         "./constants",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@tanstack/react-query",
         "lucide-react",
         "react-admin"
@@ -157,7 +157,7 @@
         "../services",
         "../types",
         "./constants",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@tanstack/react-query",
         "lucide-react",
         "react-admin"
@@ -201,8 +201,8 @@
         "./constants",
         "./useBulkActionsState",
         "./useExportOpportunities",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "@/components/ui/select",
         "lucide-react",
@@ -258,8 +258,8 @@
       "imports": [
         "../types",
         "@/atomic-crm/utils/formatters",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/input",
         "@/components/ui/label",
@@ -291,9 +291,9 @@
       "imports": [
         "@/atomic-crm/opportunities/constants",
         "@/atomic-crm/validation/opportunities",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "@/lib/utils",
         "@hookform/resolvers/zod",
@@ -322,9 +322,9 @@
       "imports": [
         "@/atomic-crm/opportunities/constants",
         "@/atomic-crm/validation/opportunities",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "@/lib/utils",
         "@hookform/resolvers/zod",
@@ -375,9 +375,9 @@
       "imports": [
         "../types",
         "./useContactOrgMismatch",
+        "@/components/admin/AdminButton",
         "@/components/ui/alert",
         "@/components/ui/alert-dialog",
-        "@/components/ui/button",
         "lucide-react",
         "ra-core",
         "react-admin",
@@ -426,9 +426,9 @@
       ],
       "imports": [
         "./useDistributorAuthorization",
+        "@/components/admin/AdminButton",
         "@/components/ui/alert",
         "@/components/ui/alert-dialog",
-        "@/components/ui/button",
         "lucide-react",
         "ra-core",
         "react-hook-form"
@@ -493,7 +493,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/collapsible",
         "lucide-react",
         "react"
@@ -567,9 +567,9 @@
         "useRecordContext"
       ],
       "imports": [
-        "../../notes",
-        "../ActivityNoteForm",
+        "../notes",
         "../types",
+        "./ActivityNoteForm",
         "@/components/ra-wrappers/reference-many-field",
         "@/components/ui/separator",
         "react-admin"
@@ -622,7 +622,7 @@
         "../types",
         "../utils",
         "./constants",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/lib/date-utils",
         "date-fns",
@@ -651,7 +651,7 @@
         "../types",
         "../utils",
         "./constants",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/lib/date-utils",
         "date-fns",
@@ -730,6 +730,7 @@
         "./NamingConventionHelp",
         "./constants",
         "./useAutoGenerateName",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/array-input",
         "@/components/ra-wrappers/autocomplete-array-input",
         "@/components/ra-wrappers/date-input",
@@ -739,7 +740,6 @@
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/simple-form-iterator",
         "@/components/ra-wrappers/text-input",
-        "@/components/ui/button",
         "@/components/ui/tooltip",
         "lucide-react",
         "ra-core",
@@ -859,7 +859,7 @@
       "imports": [
         "../hooks/useSafeNotify",
         "../utils/levenshtein",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/unsaved-changes-dialog",
         "@/lib/utils",
         "lucide-react",
@@ -896,7 +896,7 @@
       ],
       "imports": [
         "../utils/levenshtein",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/lib/utils",
         "lucide-react",
         "ra-core",
@@ -1142,10 +1142,10 @@
       "imports": [
         "../filters/FilterCategory",
         "./constants",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/OwnerFilterDropdown",
         "@/components/ra-wrappers/search-input",
         "@/components/ra-wrappers/toggle-filter-button",
-        "@/components/ui/button",
         "@/components/ui/select",
         "date-fns",
         "lucide-react",
@@ -1173,7 +1173,7 @@
         "useRef"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "driver.js",
         "driver.js/dist/driver.css",
@@ -1202,11 +1202,11 @@
         "./NextTaskBadge",
         "./constants",
         "./rowStyling",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/edit-button",
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/text-field",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/checkbox",
         "@/components/ui/skeleton",
@@ -1404,7 +1404,7 @@
       ],
       "imports": [
         "./QuickAddDialog",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "@/lib/utils",
         "lucide-react",
@@ -1492,8 +1492,8 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/components/admin/AdminButton",
         "@/components/ui/alert-dialog",
-        "@/components/ui/button",
         "@/components/ui/table",
         "lucide-react",
         "react",
@@ -1514,7 +1514,7 @@
       ],
       "imports": [
         "./QuickAddDialog",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "react"
       ],
       "isDefaultExport": false,
@@ -1558,12 +1558,12 @@
         "@/atomic-crm/utils/secureStorage",
         "@/atomic-crm/validation/quickAdd",
         "@/atomic-crm/validation/segments",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
+        "@/components/admin/inputs/FormSelectInput",
         "@/components/ui/combobox",
         "@/components/ui/input",
         "@/components/ui/label",
         "@/components/ui/popover",
-        "@/components/ui/select",
         "@/lib/utils",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
@@ -1611,8 +1611,8 @@
       "imports": [
         "../utils/levenshtein",
         "./constants",
+        "@/components/admin/AdminButton",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "@/components/ui/table",
         "lucide-react"
@@ -1638,9 +1638,9 @@
       ],
       "imports": [
         "../types",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/controlled-date-picker",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/collapsible",
         "@/components/ui/input",
@@ -1877,7 +1877,7 @@
     {
       "name": "QuickAddOpportunity",
       "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -1890,15 +1890,17 @@
       ],
       "imports": [
         "../../types",
+        "../../validation",
         "../../validation/opportunities",
         "@/atomic-crm/utils/formatters",
+        "@/components/admin/AdminButton",
         "lucide-react",
         "react",
-        "react-admin",
-        "zod"
+        "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [
+        "ZodError",
         "OpportunityStageValue",
         "Organization",
         "Opportunity"
@@ -1998,10 +2000,10 @@
         "@/atomic-crm/services/opportunities.service",
         "@/atomic-crm/types",
         "@/atomic-crm/utils/autocompleteDefaults",
+        "@/components/admin/AdminButton",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-array-input",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/scroll-area",
         "lucide-react",
@@ -2132,10 +2134,10 @@
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
         "@/atomic-crm/utils/autocompleteDefaults",
+        "@/components/admin/AdminButton",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-array-input",
         "@/components/ui/badge",
-        "@/components/ui/button",
         "@/components/ui/card",
         "@/components/ui/scroll-area",
         "@tanstack/react-query",

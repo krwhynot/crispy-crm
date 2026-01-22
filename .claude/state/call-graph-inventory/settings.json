@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-22T16:45:49.767Z",
+  "generated_at": "2026-01-22T23:55:44.693Z",
   "items": {
     "nodes": [
       {
@@ -718,8 +718,8 @@
       },
       {
         "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 59,
         "conditional": false,
@@ -727,8 +727,8 @@
       },
       {
         "source": "src/atomic-crm/settings/PersonalSection.tsx:14:PersonalSection",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 71,
         "conditional": false,
@@ -979,8 +979,8 @@
       },
       {
         "source": "src/atomic-crm/settings/SecuritySection.tsx:13:SecuritySection",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 33,
         "conditional": false,
@@ -1114,8 +1114,8 @@
       },
       {
         "source": "src/atomic-crm/settings/SettingsLayout.tsx:18:SettingsLayout",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 32,
         "conditional": false,

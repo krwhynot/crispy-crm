@@ -1,7 +1,7 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-22T16:45:42.325Z",
-  "item_count": 7,
+  "generated_at": "2026-01-22T23:55:24.935Z",
+  "item_count": 22,
   "items": [
     {
       "name": "RoundButton",
@@ -42,6 +42,52 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "TagCreate",
+      "file": "src/atomic-crm/tags/TagCreate.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../validation/tags",
+        "./TagInputs",
+        "@/atomic-crm/components",
+        "@/components/ui/card",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "TagInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "TagCreate",
+      "file": "src/atomic-crm/tags/TagCreate.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../validation/tags",
+        "./TagInputs",
+        "@/atomic-crm/components",
+        "@/components/ui/card",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "TagInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
       "name": "TagCreateModal",
       "file": "src/atomic-crm/tags/TagCreateModal.tsx",
       "line": 11,
@@ -65,7 +111,7 @@
     {
       "name": "TagDialog",
       "file": "src/atomic-crm/tags/TagDialog.tsx",
-      "line": 40,
+      "line": 38,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -79,15 +125,13 @@
         "../validation/tags",
         "./RoundButton",
         "./colors",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/FormErrorSummary",
-        "@/components/ui/button",
-        "@/components/ui/button.constants",
         "@/components/ui/dialog",
         "@/components/ui/input",
         "@/components/ui/label",
         "@/components/ui/unsaved-changes-dialog",
         "@/lib/color-types",
-        "@/lib/utils",
         "@hookform/resolvers/zod",
         "lucide-react",
         "react",
@@ -102,6 +146,54 @@
       "contextDependencies": [
         "useWatch"
       ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "TagEdit",
+      "file": "src/atomic-crm/tags/TagEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "../validation/tags",
+        "./TagInputs",
+        "@/components/ui/card",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "FormToolbar",
+        "TagInputs",
+        "Tag"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "TagEdit",
+      "file": "src/atomic-crm/tags/TagEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "../validation/tags",
+        "./TagInputs",
+        "@/components/ui/card",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "FormToolbar",
+        "TagInputs",
+        "Tag"
+      ],
+      "contextDependencies": [],
       "componentRole": "wrapper"
     },
     {
@@ -121,6 +213,69 @@
       "childComponents": [
         "Tag",
         "TagDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "TagInputs",
+      "file": "src/atomic-crm/tags/TagInputs.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useFormContext"
+      ],
+      "imports": [
+        "./RoundButton",
+        "./colors",
+        "@/components/ui/label",
+        "@/lib/color-types",
+        "react-admin",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "RoundButton"
+      ],
+      "contextDependencies": [
+        "useFormContext"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "TagList",
+      "file": "src/atomic-crm/tags/TagList.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "./tag-colors",
+        "@/lib/utils",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "Tag"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "TagList",
+      "file": "src/atomic-crm/tags/TagList.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "./tag-colors",
+        "@/lib/utils",
+        "react-admin"
+      ],
+      "isDefaultExport": true,
+      "childComponents": [
+        "Tag"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -162,8 +317,8 @@
         "../types",
         "./TagDialog",
         "@/atomic-crm/hooks/useSafeNotify",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/generic-select-input",
-        "@/components/ui/button",
         "lucide-react",
         "react",
         "react-admin"
@@ -175,6 +330,123 @@
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "TagList",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "TagCreate",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "TagEdit",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "TagInputs",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useFormContext"
+      ],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useFormContext"
+      ],
+      "componentRole": "entry"
+    },
+    {
+      "name": "TagSelectWithCreate",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 19,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useRefresh",
+        "useSafeNotify",
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "TagChip",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
+    },
+    {
+      "name": "TagDialog",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 38,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useForm",
+        "useMemo",
+        "useState",
+        "useWatch"
+      ],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "entry"
+    },
+    {
+      "name": "RoundButton",
+      "file": "src/atomic-crm/tags/index.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     }
   ]
 }

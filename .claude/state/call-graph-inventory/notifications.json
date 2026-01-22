@@ -1,6 +1,6 @@
 {
   "chunk_name": "notifications",
-  "generated_at": "2026-01-22T16:45:49.744Z",
+  "generated_at": "2026-01-22T23:55:44.614Z",
   "items": {
     "nodes": [
       {
@@ -439,8 +439,8 @@
       },
       {
         "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 193,
         "conditional": false,
@@ -592,8 +592,8 @@
       },
       {
         "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 241,
         "conditional": false,

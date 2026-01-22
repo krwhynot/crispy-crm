@@ -1,7 +1,7 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-22T16:45:42.325Z",
-  "item_count": 27,
+  "generated_at": "2026-01-22T23:55:24.936Z",
+  "item_count": 28,
   "items": [
     {
       "name": "AddTask",
@@ -22,13 +22,13 @@
         "../root/ConfigurationContext",
         "../validation/task",
         "@/atomic-crm/utils/autocompleteDefaults",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/date-input",
         "@/components/ra-wrappers/form",
         "@/components/ra-wrappers/reference-input",
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/text-input",
-        "@/components/ui/button",
         "@/components/ui/dialog",
         "@/components/ui/tooltip",
         "lucide-react",
@@ -61,9 +61,9 @@
         "../types",
         "./TaskCompletionDialog",
         "./TaskEdit",
+        "@/components/admin/AdminButton",
         "@/components/ra-wrappers/date-field",
         "@/components/ra-wrappers/reference-field",
-        "@/components/ui/button",
         "@/components/ui/checkbox",
         "@/components/ui/dropdown-menu",
         "@/lib/date-utils",
@@ -97,7 +97,7 @@
         "useUpdate"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/dropdown-menu",
         "@tanstack/react-query",
         "lucide-react",
@@ -142,7 +142,7 @@
         "useNavigate"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "lucide-react",
         "react-router-dom"
@@ -161,7 +161,7 @@
         "useNavigate"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "lucide-react",
         "react-router-dom"
@@ -182,7 +182,7 @@
       ],
       "imports": [
         "../validation/task",
-        "./TaskCompactForm",
+        "./TaskInputs",
         "@/atomic-crm/components",
         "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/ra-wrappers/form",
@@ -192,7 +192,7 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "TaskCompactForm"
+        "TaskInputs"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -209,7 +209,7 @@
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
-        "./TaskCompactForm",
+        "./TaskInputs",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
         "@tanstack/react-query",
@@ -218,7 +218,7 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "TaskCompactForm",
+        "TaskInputs",
         "FormToolbar",
         "Task"
       ],
@@ -237,7 +237,7 @@
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
-        "./TaskCompactForm",
+        "./TaskInputs",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
         "@tanstack/react-query",
@@ -246,7 +246,7 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
-        "TaskCompactForm",
+        "TaskInputs",
         "FormToolbar",
         "Task"
       ],
@@ -285,6 +285,28 @@
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
+    },
+    {
+      "name": "TaskInputs",
+      "file": "src/atomic-crm/tasks/TaskInputs.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [
+        "./TaskCompactForm",
+        "@/components/ra-wrappers/FormErrorSummary",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "TaskCompactForm"
+      ],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "TaskList",

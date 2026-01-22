@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-22T16:45:49.743Z",
+  "generated_at": "2026-01-22T23:55:44.613Z",
   "items": {
     "nodes": [
       {
@@ -376,8 +376,8 @@
       },
       {
         "source": "src/atomic-crm/notes/Note.tsx:17:Note",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 118,
         "conditional": false,
@@ -430,8 +430,8 @@
       },
       {
         "source": "src/atomic-crm/notes/Note.tsx:17:Note",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 136,
         "conditional": false,
@@ -475,8 +475,8 @@
       },
       {
         "source": "src/atomic-crm/notes/Note.tsx:17:Note",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 161,
         "conditional": true,
@@ -493,8 +493,8 @@
       },
       {
         "source": "src/atomic-crm/notes/Note.tsx:17:Note",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 170,
         "conditional": true,
@@ -889,8 +889,8 @@
       },
       {
         "source": "src/atomic-crm/notes/NoteInputs.tsx:9:NoteInputs",
-        "target": "Button",
-        "targetName": "Button",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
         "line": 25,
         "conditional": false,

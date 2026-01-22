@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-22T16:45:42.323Z",
+  "generated_at": "2026-01-22T23:55:24.918Z",
   "item_count": 30,
   "items": [
     {
@@ -275,7 +275,7 @@
         "useRef"
       ],
       "imports": [
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "driver.js",
         "driver.js/dist/driver.css",

@@ -1,6 +1,6 @@
 {
   "chunk_name": "tutorial",
-  "generated_at": "2026-01-22T16:45:42.326Z",
+  "generated_at": "2026-01-22T23:55:24.938Z",
   "item_count": 10,
   "items": [
     {
@@ -18,7 +18,7 @@
       "imports": [
         "./steps/opportunityCreateFormSteps",
         "./waitForElement",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "driver.js",
         "driver.js/dist/driver.css",
@@ -44,7 +44,7 @@
       "imports": [
         "./TutorialProvider",
         "./types",
-        "@/components/ui/button",
+        "@/components/admin/AdminButton",
         "@/components/ui/tooltip",
         "lucide-react",
         "react"
