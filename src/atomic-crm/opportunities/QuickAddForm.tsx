@@ -455,42 +455,13 @@ const QuickAddFormContent = ({
             error={errors.organization_id?.message}
           />
 
-          <div className="space-y-2">
-            <Label htmlFor="principal_id">
-              Principal
-              <span className="text-destructive" aria-hidden="true">
-                {" "}
-                *
-              </span>
-            </Label>
-            <Select
-              value={principalId?.toString()}
-              onValueChange={(value) => setValue("principal_id", Number(value))}
-              disabled={principalsLoading}
-            >
-              <SelectTrigger
-                id="principal_id"
-                className="bg-background"
-                aria-invalid={errors.principal_id ? "true" : undefined}
-                aria-describedby={errors.principal_id ? "principal_id-error" : undefined}
-                aria-required="true"
-              >
-                <SelectValue placeholder={principalsLoading ? "Loading..." : "Select principal"} />
-              </SelectTrigger>
-              <SelectContent>
-                {principalOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.principal_id && (
-              <p id="principal_id-error" role="alert" className="text-sm text-destructive">
-                {errors.principal_id.message}
-              </p>
-            )}
-          </div>
+          <FormSelectInput
+            source="principal_id"
+            label="Principal"
+            choices={principalsList?.map((org) => ({ id: org.id, name: org.name })) ?? []}
+            placeholder={principalsLoading ? "Loading..." : "Select principal"}
+            disabled={principalsLoading}
+          />
 
           <div className="space-y-2">
             <Label htmlFor="account_manager_id">

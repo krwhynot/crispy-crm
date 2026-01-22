@@ -39,7 +39,10 @@ function SaveButtonGroup({ onSave, onSaveAndNew, className }: SaveButtonGroupPro
         type="button"
         onClick={createSubmitHandler("save")}
         disabled={isSubmitting}
-        className={cn("flex items-center gap-2", isSubmitting && "opacity-50 cursor-not-allowed")}
+        className={cn(
+          "h-11 flex items-center gap-2",
+          isSubmitting && "opacity-50 cursor-not-allowed"
+        )}
       >
         {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
         Save
@@ -53,7 +56,7 @@ function SaveButtonGroup({ onSave, onSaveAndNew, className }: SaveButtonGroupPro
             size="icon"
             disabled={isSubmitting}
             aria-label="More save options"
-            className={cn(isSubmitting && "opacity-50 cursor-not-allowed")}
+            className={cn("h-11 w-11", isSubmitting && "opacity-50 cursor-not-allowed")}
           >
             <ChevronDown className="h-4 w-4" />
           </Button>
