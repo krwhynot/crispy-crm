@@ -353,7 +353,7 @@ export function QuickCreateContactRA({
               size="sm"
               onClick={handleQuickCreate}
               disabled={isPending}
-              className="text-xs h-9"
+              className="text-xs h-11"
             >
               Just use name
             </Button>
@@ -364,11 +364,11 @@ export function QuickCreateContactRA({
                 size="sm"
                 onClick={() => onCancel()}
                 disabled={isPending}
-                className="h-9"
+                className="h-11"
               >
                 Cancel
               </Button>
-              <Button type="submit" size="sm" disabled={isPending} className="h-9">
+              <Button type="submit" size="sm" disabled={isPending} className="h-11">
                 Create
               </Button>
             </div>

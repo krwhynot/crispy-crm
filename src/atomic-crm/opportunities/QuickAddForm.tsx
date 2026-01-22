@@ -123,16 +123,16 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
               id="inline-org-name"
               value={inputName}
               onChange={(e) => setInputName(e.target.value)}
-              className="h-9"
+              className="h-11"
               // eslint-disable-next-line jsx-a11y/no-autofocus -- Popover context, autoFocus is appropriate
               autoFocus
             />
           </div>
           <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" size="sm" onClick={onCancel} className="h-9">
+            <Button type="button" variant="outline" size="sm" onClick={onCancel} className="h-11">
               Cancel
             </Button>
-            <Button type="submit" size="sm" disabled={isPending} className="h-9">
+            <Button type="submit" size="sm" disabled={isPending} className="h-11">
               Create
             </Button>
           </div>
@@ -565,7 +565,13 @@ const QuickAddFormContent = ({
       </div>
 
       <div className="flex items-center justify-between pt-4 border-t">
-        <Button type="button" variant="outline" onClick={onSuccess} disabled={isPending}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onSuccess}
+          disabled={isPending}
+          className="h-11"
+        >
           Cancel
         </Button>
 
@@ -574,6 +580,7 @@ const QuickAddFormContent = ({
             type="button"
             onClick={handleSubmit((data) => onSubmit(data, false), onValidationError)}
             disabled={isPending}
+            className="h-11"
           >
             Save & Add Another
           </Button>
@@ -583,6 +590,7 @@ const QuickAddFormContent = ({
             variant="secondary"
             onClick={handleSubmit((data) => onSubmit(data, true), onValidationError)}
             disabled={isPending}
+            className="h-11"
           >
             Save & Close
           </Button>
