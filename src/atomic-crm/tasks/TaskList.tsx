@@ -39,10 +39,10 @@ import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
-import { TaskActionMenu } from "./components/TaskActionMenu";
+import { TaskActionMenu } from "./TaskActionMenu";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
-import { TaskCompletionDialog } from "./components/TaskCompletionDialog";
+import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { taskKeys } from "../queryKeys";
 import type { Task, Opportunity, Organization } from "../types";
 

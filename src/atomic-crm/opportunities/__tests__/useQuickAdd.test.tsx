@@ -6,10 +6,14 @@ import { useQuickAdd } from "../useQuickAdd";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 
 // Mock React Admin hooks
-vi.mock("ra-core", () => ({
-  useDataProvider: vi.fn(),
-  useNotify: vi.fn(),
-}));
+vi.mock("ra-core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("ra-core")>();
+  return {
+    ...actual,
+    useDataProvider: vi.fn(),
+    useNotify: vi.fn(),
+  };
+});
 
 // Import mocked modules
 import { useDataProvider, useNotify } from "ra-core";
