@@ -10,8 +10,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { contactSchema } from "@/atomic-crm/validation/contacts";
-import { z } from "zod";
+import {
+  validateContactImportRow,
+  type ImportContactInput,
+} from "@/atomic-crm/validation/contacts";
+
+/**
+ * Extended type for preview display - includes computed fields
+ * from CSV transformation that aren't in the import schema
+ */
+interface ImportPreviewRow extends Partial<ImportContactInput> {
+  name?: string;
+  email?: Array<{ value?: string; email?: string }>;
+}
 
 interface ContactImportPreviewTableProps {
   sampleRows: unknown[];
@@ -25,26 +36,7 @@ export function ContactImportPreviewTable({
   onToggle,
 }: ContactImportPreviewTableProps) {
   const validateSampleRows = () => {
-    const validationResults = sampleRows.map((row, index) => {
-      try {
-        contactSchema.parse(row);
-        return { row: index + 1, valid: true };
-      } catch (error: unknown) {
-        if (error instanceof z.ZodError) {
-          return {
-            row: index + 1,
-            valid: false,
-            errors: error.issues.map((issue) => ({
-              field: issue.path.join("."),
-              message: issue.message,
-            })),
-          };
-        }
-        return { row: index + 1, valid: false, errors: [] };
-      }
-    });
-
-    return validationResults;
+    return sampleRows.map((row, index) => validateContactImportRow(row, index));
   };
 
   const sampleValidation = validateSampleRows();

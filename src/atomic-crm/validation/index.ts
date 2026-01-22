@@ -24,6 +24,11 @@
  * Plan: Create new validators with standard names, deprecate old ones, migrate gradually.
  */
 
+// Re-export ZodError for UI error handling
+// UI components should import ZodError from validation layer, not directly from 'zod'
+// This keeps Zod imports centralized per Engineering Constitution
+export { ZodError } from "zod";
+
 // Constants and utilities
 export * from "./constants";
 export * from "./utils";

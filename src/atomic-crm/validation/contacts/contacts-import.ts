@@ -29,10 +29,7 @@ export interface ImportValidationResult {
  * @param rowIndex - 0-based row index (displayed as rowIndex + 1)
  * @returns Structured validation result with field-level errors
  */
-export function validateContactImportRow(
-  row: unknown,
-  rowIndex: number
-): ImportValidationResult {
+export function validateContactImportRow(row: unknown, rowIndex: number): ImportValidationResult {
   try {
     contactSchema.parse(row);
     return { row: rowIndex + 1, valid: true };

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useCreate, useRefresh, useGetIdentity, useGetList, useNotify } from "react-admin";
 import { Loader2, X } from "lucide-react";
-import { z } from "zod";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
+import { ZodError } from "../../validation";
 import type { OpportunityStageValue, Organization, Opportunity } from "../../types";
 import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
 
