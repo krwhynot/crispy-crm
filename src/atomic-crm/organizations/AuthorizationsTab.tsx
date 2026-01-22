@@ -27,11 +27,11 @@ import {
   type AuthorizationsTabProps,
   type AuthorizationWithPrincipal,
   type PrincipalOrganization,
-} from "./components/authorization-types";
-import { AuthorizationsEmptyState } from "./components/AuthorizationsEmptyState";
-import { AuthorizationCard } from "./components/AuthorizationCard";
-import { AddPrincipalDialog } from "./components/AddPrincipalDialog";
-import { RemoveConfirmDialog } from "./components/RemoveConfirmDialog";
+} from "./authorization-types";
+import { AuthorizationsEmptyState } from "./AuthorizationsEmptyState";
+import { AuthorizationCard } from "./AuthorizationCard";
+import { AddPrincipalDialog } from "./AddPrincipalDialog";
+import { RemoveConfirmDialog } from "./RemoveConfirmDialog";
 
 // =====================================================
 // Main Component

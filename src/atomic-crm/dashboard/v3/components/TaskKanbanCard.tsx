@@ -22,7 +22,7 @@ import {
   GripVertical,
 } from "lucide-react";
 import type { TaskItem } from "../types";
-import { TaskCompletionDialog } from "@/atomic-crm/tasks/components/TaskCompletionDialog";
+import { TaskCompletionDialog } from "@/atomic-crm/tasks/TaskCompletionDialog";
 
 interface TaskKanbanCardProps {
   task: TaskItem;
