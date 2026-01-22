@@ -175,7 +175,11 @@ export function FormSelectInput(props: FormSelectInputProps) {
           onValueChange={handleChange}
           disabled={disabled || readOnly}
         >
-          <SelectTrigger id={id} className={cn("w-full transition-all hover:bg-accent")}>
+          <SelectTrigger
+            id={id}
+            className={cn("w-full transition-all hover:bg-accent")}
+            aria-invalid={hasError || undefined}
+          >
             <SelectValue placeholder={placeholder ?? renderEmptyText()}>
               {selectedChoice ? getChoiceText(selectedChoice) : null}
             </SelectValue>
