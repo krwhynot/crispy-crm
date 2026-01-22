@@ -3,61 +3,82 @@ Based on your **Engineering Constitution** and our specific strategy for the **D
 You can paste these rules at the top of any future task or save them as `PROVIDER_RULES.md` in your project root to keep Claude Code (and human developers) aligned.
 
 ---
-
 # 🛡️ Data Provider Golden Rules
 
-*For the React Admin + Supabase Architecture*
+> **Status:** Active & Enforced
+> **Architecture:** Composed Proxy Pattern (No Monoliths)
 
-### 1. The "Strangler Fig" Strategy (Migration Rule)
+These rules govern the `src/atomic-crm/providers/supabase/` subsystem.
 
-* **Existing Resources:** Do **NOT** refactor existing resources in `unifiedDataProvider.ts` unless you are specifically assigned a "Migration Task." If fixing a bug, apply the **minimal patch** to the existing file.
-* **New Resources:** **NEVER** add new resources to `unifiedDataProvider.ts`. All new resources must be built using the **Composed Handler Pattern** in `src/providers/supabase/handlers/`.
-* **Goal:** The `unifiedDataProvider.ts` should only shrink, never grow.
+---
 
-### 2. View vs. Table Duality (Read/Write Rule)
+### 1. Composed Architecture Only (No Monoliths)
 
-* **Reads (`getList`, `getOne`):** Query the **SQL View** (e.g., `*_summary`) to get computed fields (counts, joined names) efficiently.
-* **Writes (`create`, `update`):** Write directly to the **Base Table**.
-* **The Transform:** You **MUST** strip "View-Only" fields (like `customer_organization_name` or `nb_notes`) before sending data back to the Base Table. Use the `TransformService` for this.
+* **The Monolith is Dead:** The old `unifiedDataProvider.ts` has been deleted. Never try to recreate it.
+* **Modular Handlers:** Every resource **MUST** have its own dedicated handler file in `handlers/[resource]Handler.ts` (e.g., `contactsHandler.ts`, `tasksHandler.ts`).
+* **Central Registration:** All handlers must be registered in the `composedDataProvider.ts` registry.
+* **Factory Pattern:** Use factory functions (e.g., `createTasksHandler`) to build providers, not inline object literals.
+
+### 2. View vs. Table Duality (Read/Write Separation)
+
+* **Reads (`getList`, `getOne`):**
+    * Always query the **SQL View** (e.g., `contacts_summary`, `opportunities_summary`) to fetch computed fields efficiently.
+* **Writes (`create`, `update`):**
+    * Always write directly to the **Base Table**.
+* **The Strip Rule:**
+    * You **MUST** define `COMPUTED_FIELDS` in your `callbacks/[resource]Callbacks.ts`.
+    * The `withLifecycleCallbacks` wrapper will automatically strip these fields before saving to the database.
 
 ### 3. Zod at the Boundary (Validation Rule)
 
-* **Single Source of Truth:** Do not rely on React Admin form validation alone.
-* **Mandatory Validation:** Every `create` and `update` method in a Handler **MUST** validate inputs using the schemas in `src/atomic-crm/validation/`.
-* **Fail Fast:** If Zod fails, throw an `HttpError` with the `body: { errors: ... }` payload so the UI highlights the specific fields.
+* **Single Source of Truth:** Never rely solely on React Admin form validation.
+* **API Boundary:** Validation must happen in the Provider layer, just before the database call.
+* **Implementation:**
+    * Create schemas in `src/atomic-crm/validation/`.
+    * Register them in `services/ValidationService.ts`.
+    * The `withValidation` wrapper will automatically enforce them and throw `400` errors.
 
 ### 4. Service Layer Encapsulation (Business Logic Rule)
 
-* **Provider = Translator:** The Data Provider is for **Translation Only** (React Admin params  Supabase params).
-* **Services = Logic:** Complex operations (e.g., "Create Opportunity AND sync Products AND update status") belong in a **Service Class** (e.g., `OpportunitiesService`), not inside the Handler/Provider.
-* **No Raw Supabase Calls:** Handlers should generally not call `supabase.from()` directly for complex logic; they should delegate to a Service.
+* **Handlers = Plumbing:** Handlers should only map React Admin parameters to Supabase parameters.
+* **Services = Logic:** Complex business operations belong in **Service Classes** (`src/services/`), not handlers.
+    * *Example:* "Archive Opportunity" -> `OpportunitiesService`
+    * *Example:* "Create User" -> `SalesService` (Edge Functions)
+* **No Raw RPCs:** Do not call `supabase.rpc()` inside a handler if it involves business logic. Delegate to a Service.
 
 ### 5. Soft Deletes Only (Data Safety Rule)
 
-* **Never DELETE:** Unless explicitly instructed (e.g., for `Tags`), always use `update({ deleted_at: new Date() })`.
-* **Filter Automatically:** Ensure all `getList` queries automatically append `.is('deleted_at', null)` unless the user specifically asks for "Archived" records.
+* **Never DELETE:** Unless explicitly exempted (like `Tags`), always use **Soft Deletes**.
+* **Configuration:** Set `supportsSoftDelete: true` in your `createResourceCallbacks` config.
+* **Enforcement:** The `withSkipDelete` wrapper intercepts delete requests and converts them to `UPDATE ... SET deleted_at = NOW()`.
+* **Filtering:** Your `getList` handler must filter `deleted_at IS NULL` (usually handled automatically by the Database View).
 
 ### 6. Explicit Error Handling (DX Rule)
 
-* **No Generic Errors:** Never throw `new Error("Failed")`.
-* **Catch & Map:** Always catch errors and map them to:
-* **Validation:** `400` + Field Errors
-* **Foreign Key:** `409` + "This record is used by another resource"
-* **RLS/Auth:** `403` + "You do not have permission"
+* **Structured Logging:** All handlers **MUST** be wrapped with `withErrorLogging`.
+* **No Console Logs:** Do not use `console.log` or `console.error`. The wrapper handles Sentry reporting and context logging automatically.
+* **Idempotency:** Delete operations must return **success** if the record is already deleted (handled by the wrapper).
 
+### 7. Explicit Composition Order (Simplicity Rule)
 
+When creating a new handler, you must compose the wrappers in this exact order (Innermost to Outermost) to ensure safety:
 
-### 7. No Magic, Just Handlers (Simplicity Rule)
-
-* **Explicit Composition:** When creating a new Handler, explicitly compose the wrappers:
 ```typescript
-// Correct Order: Validation -> Lifecycle (stripping) -> Error Logging
-return withErrorLogging(
-   withLifecycleCallbacks(
-      withValidation(baseHandler), 
-      callbacks
-   )
-);
+// handlers/myResourceHandler.ts
+
+export function createMyHandler(baseProvider: DataProvider): DataProvider {
+  // 1. baseProvider: The raw database connection
+  // 2. withValidation: Checks data validity FIRST
+  // 3. withLifecycleCallbacks: Strips computed fields & runs hooks
+  // 4. withErrorLogging: Catches errors from all layers below
+
+  return withErrorLogging(
+    withLifecycleCallbacks(
+      withValidation(baseProvider),
+      [myResourceCallbacks]
+    )
+  );
+}
 
 ```
 
@@ -68,7 +89,10 @@ return withErrorLogging(
 
 ### 📝 Quick Checklist for Code Reviews
 
-* [ ] Did I add code to `unifiedDataProvider.ts`? (If YES -> **STOP**. Is this a bug fix? If not, move to a Handler.)
-* [ ] Am I writing to a View? (If YES -> **STOP**. Write to the Base Table.)
-* [ ] Did I use Zod validation?
-* [ ] Did I put business logic (like sending emails) in the Provider? (If YES -> **STOP**. Move to a Service.)
+* [ ] File Location: Is this a new file in handlers/? (If in unifiedDataProvider -> REJECT)
+* [ ] Registration: Is it added to composedDataProvider.ts?
+* [ ] View Duality: Does it read from _summary view and write to base table?
+* [ ] Cleanup: Are COMPUTED_FIELDS defined in the callbacks?
+* [ ] Validation: Is the Zod schema registered in ValidationService?
+* [ ] Safety: Is supportsSoftDelete enabled?
+* [ ] Logging: Is withErrorLogging the outermost wrapper?
