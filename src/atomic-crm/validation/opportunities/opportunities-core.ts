@@ -99,7 +99,11 @@ const opportunityProductItemSchema = z
  * Product array schema for opportunities_summary view
  * Exported for testing and type inference
  */
-export const opportunityProductSchema = z.array(opportunityProductItemSchema).optional().nullable();
+export const opportunityProductSchema = z
+  .array(opportunityProductItemSchema)
+  .max(100, "Maximum 100 products")
+  .optional()
+  .nullable();
 
 // Type export for product item
 export type OpportunityProductItem = z.infer<typeof opportunityProductItemSchema>;
@@ -153,7 +157,11 @@ const opportunityBaseSchema = z.strictObject({
   // OpportunityContactsInput fields
   // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
   // This provides defense-in-depth against UI bugs that might add invalid IDs
-  contact_ids: z.array(z.coerce.number().int().positive()).optional().default([]),
+  contact_ids: z
+    .array(z.coerce.number().int().positive())
+    .max(100, "Maximum 100 contacts")
+    .optional()
+    .default([]),
 
   // Campaign & Workflow Tracking fields (added 2025-11-03)
   campaign: z

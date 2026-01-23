@@ -35,8 +35,12 @@ export const quickCreateContactSchema = z.strictObject({
 
   // OPTIONAL: Can be empty for quick create
   last_name: z.string().trim().max(100).optional().default(""),
-  email: z.array(emailAndTypeSchema).optional().default([]),
-  phone: z.array(phoneNumberAndTypeSchema).optional().default([]),
+  email: z.array(emailAndTypeSchema).max(10, "Maximum 10 email addresses").optional().default([]),
+  phone: z
+    .array(phoneNumberAndTypeSchema)
+    .max(10, "Maximum 10 phone numbers")
+    .optional()
+    .default([]),
 
   // PASS-THROUGH: Other valid fields
   sales_id: z.coerce.number().int().positive().optional(),

@@ -81,8 +81,8 @@ export const contactBaseSchema = z.strictObject({
 
   // Contact information - ContactPersonalInformationInputs
   // JSONB arrays in database: email and phone
-  email: z.array(emailAndTypeSchema).default([]),
-  phone: z.array(phoneNumberAndTypeSchema).default([]),
+  email: z.array(emailAndTypeSchema).max(10, "Maximum 10 email addresses").default([]),
+  phone: z.array(phoneNumberAndTypeSchema).max(10, "Maximum 10 phone numbers").default([]),
 
   // Professional information - ContactPositionInputs
   title: z.string().trim().max(100, "Title too long").optional().nullable(),

@@ -107,7 +107,11 @@ const opportunityBaseSchema = z.strictObject({
   // OpportunityContactsInput fields
   // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
   // This provides defense-in-depth against UI bugs that might add invalid IDs
-  contact_ids: z.array(z.coerce.number().int().positive()).max(100, "Maximum 100 contacts").optional().default([]),
+  contact_ids: z
+    .array(z.coerce.number().int().positive())
+    .max(100, "Maximum 100 contacts")
+    .optional()
+    .default([]),
 
   // Campaign & Workflow Tracking fields (added 2025-11-03)
   campaign: z
@@ -214,7 +218,10 @@ export const createOpportunitySchema = opportunityBaseSchema
     // They create minimal opportunities that users enrich later via slide-over
     // The .refine() below enforces min(1) only when contact_ids is explicitly provided
     // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
-    contact_ids: z.array(z.coerce.number().int().positive()).optional(),
+    contact_ids: z
+      .array(z.coerce.number().int().positive())
+      .max(100, "Maximum 100 contacts")
+      .optional(),
 
     // Auto-default: 30 days from now (industry standard placeholder)
     estimated_close_date: z.coerce
@@ -228,7 +235,10 @@ export const createOpportunitySchema = opportunityBaseSchema
 
     // Products are optional for opportunity creation
     // Uses canonical input schema - product_id_reference is REQUIRED per product
-    products_to_sync: z.array(opportunityProductSyncInputSchema).optional(),
+    products_to_sync: z
+      .array(opportunityProductSyncInputSchema)
+      .max(100, "Maximum 100 products")
+      .optional(),
 
     // Customer REQUIRED (Salesforce standard + business rule Q12)
     customer_organization_id: z.union([z.string(), z.number()]),
@@ -319,12 +329,18 @@ export const updateOpportunitySchema = opportunityBaseSchema
   .extend({
     // Override contact_ids to remove the default([]) that causes issues with partial updates
     // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
-    contact_ids: z.array(z.coerce.number().int().positive()).optional(), // No .default([]) here!
+    contact_ids: z
+      .array(z.coerce.number().int().positive())
+      .max(100, "Maximum 100 contacts")
+      .optional(), // No .default([]) here!
 
     // Virtual field: products_to_sync (stripped by TransformService before DB save)
     // Must be declared here since opportunityBaseSchema uses strictObject()
     // Uses canonical input schema - product_id_reference is REQUIRED per product
-    products_to_sync: z.array(opportunityProductSyncInputSchema).optional(),
+    products_to_sync: z
+      .array(opportunityProductSyncInputSchema)
+      .max(100, "Maximum 100 products")
+      .optional(),
   })
   .required({
     id: true,
