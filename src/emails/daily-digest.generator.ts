@@ -312,7 +312,7 @@ export function createSampleDigestData(): DailyDigestData {
         opportunity_name: "New Menu Items Q1",
         principal_name: "Local Harvest",
         customer_name: "Girl & The Goat",
-        stage: "feedback_logged",
+        stage: STAGE.FEEDBACK_LOGGED,
         stage_label: "Feedback",
         stage_bg_color: "#FEF9C3",
         stage_text_color: "#A16207",

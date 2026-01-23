@@ -9,6 +9,9 @@ vi.mock("react-admin", async (importOriginal) => {
   return {
     ...actual,
     useCreate: () => [vi.fn().mockResolvedValue({ data: { id: 1 } }), { isLoading: false }],
+    useDataProvider: () => ({
+      create: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+    }),
     useNotify: () => vi.fn(),
     useRefresh: () => vi.fn(),
     useGetIdentity: () => ({ identity: { id: 1 }, isLoading: false }),
