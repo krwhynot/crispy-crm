@@ -156,7 +156,13 @@ export class StorageService {
       // Try to fetch the URL to verify it exists
       const response = await fetch(data.publicUrl, { method: "HEAD" });
       return response.ok;
-    } catch {
+    } catch (error) {
+      // Network or storage errors during existence check - file assumed not to exist
+      console.debug("[StorageService.exists] File existence check failed", {
+        bucket,
+        path,
+        error: error instanceof Error ? error.message : String(error),
+      });
       return false;
     }
   }

@@ -51,9 +51,18 @@ const opportunityProductItemSchema = z.strictObject({
 
 export const syncOpportunityWithProductsParamsSchema = z.strictObject({
   opportunity_data: z.unknown(),
-  products_to_create: z.array(opportunityProductItemSchema).default([]),
-  products_to_update: z.array(opportunityProductItemSchema).default([]),
-  product_ids_to_delete: z.array(z.number().int().positive()).default([]),
+  products_to_create: z
+    .array(opportunityProductItemSchema)
+    .max(100, "Maximum 100 products to create")
+    .default([]),
+  products_to_update: z
+    .array(opportunityProductItemSchema)
+    .max(100, "Maximum 100 products to update")
+    .default([]),
+  product_ids_to_delete: z
+    .array(z.number().int().positive())
+    .max(100, "Maximum 100 products to delete")
+    .default([]),
 });
 
 /**
@@ -122,8 +131,16 @@ export type CheckAuthorizationResponse = z.infer<typeof checkAuthorizationRespon
 export const checkAuthorizationBatchParamsSchema = z
   .strictObject({
     _distributor_id: z.number().int().positive("Distributor ID must be a positive integer"),
-    _product_ids: z.array(z.number().int().positive()).optional().nullable(),
-    _principal_ids: z.array(z.number().int().positive()).optional().nullable(),
+    _product_ids: z
+      .array(z.number().int().positive())
+      .max(500, "Maximum 500 product IDs")
+      .optional()
+      .nullable(),
+    _principal_ids: z
+      .array(z.number().int().positive())
+      .max(500, "Maximum 500 principal IDs")
+      .optional()
+      .nullable(),
   })
   .refine(
     (data) => {
@@ -146,7 +163,7 @@ export const checkAuthorizationBatchResponseSchema = z.strictObject({
   distributor_id: z.number(),
   total_checked: z.number(),
   all_authorized: z.boolean().nullable(),
-  results: z.array(checkAuthorizationResponseSchema),
+  results: z.array(checkAuthorizationResponseSchema).max(500, "Maximum 500 results"),
 });
 
 export type CheckAuthorizationBatchParams = z.infer<typeof checkAuthorizationBatchParamsSchema>;
@@ -206,16 +223,18 @@ export const checkSimilarOpportunitiesParamsSchema = z.strictObject({
   p_limit: z.number().int().positive().max(50).default(10),
 });
 
-export const checkSimilarOpportunitiesResponseSchema = z.array(
-  z.strictObject({
-    id: z.number(),
-    name: z.string(),
-    stage: z.string(),
-    similarity_score: z.number(),
-    principal_organization_name: z.string().nullable(),
-    customer_organization_name: z.string().nullable(),
-  })
-);
+export const checkSimilarOpportunitiesResponseSchema = z
+  .array(
+    z.strictObject({
+      id: z.number(),
+      name: z.string(),
+      stage: z.string(),
+      similarity_score: z.number(),
+      principal_organization_name: z.string().nullable(),
+      customer_organization_name: z.string().nullable(),
+    })
+  )
+  .max(50, "Maximum 50 similar opportunities");
 
 export type CheckSimilarOpportunitiesParams = z.infer<typeof checkSimilarOpportunitiesParamsSchema>;
 export type CheckSimilarOpportunitiesResponse = z.infer<
@@ -243,8 +262,8 @@ const salesRepOptionSchema = z.strictObject({
 });
 
 export const getCampaignReportStatsResponseSchema = z.strictObject({
-  campaign_options: z.array(campaignOptionSchema),
-  sales_rep_options: z.array(salesRepOptionSchema),
+  campaign_options: z.array(campaignOptionSchema).max(200, "Maximum 200 campaign options"),
+  sales_rep_options: z.array(salesRepOptionSchema).max(200, "Maximum 200 sales rep options"),
   activity_type_counts: z.record(z.string(), z.number().int().nonnegative()),
 });
 
