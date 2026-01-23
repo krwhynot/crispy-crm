@@ -53,7 +53,9 @@ export function OpportunityCreateFormTutorial() {
       try {
         await waitForElement(firstElementStep.element, 3000);
       } catch {
-        console.warn("Tutorial: First element not found, starting anyway");
+        logger.warn("Tutorial: First element not found, starting anyway", {
+          feature: "OpportunityCreateFormTutorial",
+        });
       }
     }
 
@@ -91,7 +93,9 @@ export function OpportunityCreateFormTutorial() {
       setIsActive(true);
       driverRef.current.drive();
     } catch (error: unknown) {
-      console.error("Failed to start create form tutorial:", error);
+      logger.error("Failed to start create form tutorial", error, {
+        feature: "OpportunityCreateFormTutorial",
+      });
       setIsActive(false);
       driverRef.current = null;
     }

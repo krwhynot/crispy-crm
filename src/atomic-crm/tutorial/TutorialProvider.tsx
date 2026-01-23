@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { driver, type Driver, type Config } from "driver.js";
 import "driver.js/dist/driver.css";
 
+import { logger } from "@/lib/logger";
 import { useTutorialProgress } from "./useTutorialProgress";
 import { waitForElement } from "./waitForElement";
 import { getChapterSteps } from "./steps";
@@ -77,10 +78,12 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       // Wait for the element if this step has one
       if (step.element) {
         try {
-          await waitForElement(step.element, 8000); // 8 second timeout
+          await waitForElement(step.element, 8000);
           return true;
         } catch (_error) {
-          console.warn(`Tutorial: Element not found: ${step.element}`);
+          logger.warn(`Tutorial: Element not found: ${step.element}`, {
+            feature: "TutorialProvider",
+          });
           return false;
         }
       }
@@ -99,7 +102,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       const steps = getChapterSteps(chapter);
 
       if (steps.length === 0) {
-        console.warn("No tutorial steps found");
+        logger.warn("No tutorial steps found", { feature: "TutorialProvider" });
         return;
       }
 
@@ -110,10 +113,11 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       // Set current chapter in progress
       setCurrentChapter(chapter);
 
-      // Prepare the FIRST step before starting (navigate + wait for element)
       const firstStepReady = await prepareStep(steps[0]);
       if (!firstStepReady) {
-        console.warn("Tutorial: First step element not found, aborting");
+        logger.warn("Tutorial: First step element not found, aborting", {
+          feature: "TutorialProvider",
+        });
         return;
       }
 
