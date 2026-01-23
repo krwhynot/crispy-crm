@@ -1,6 +1,12 @@
 import { useState, useMemo, useCallback } from "react";
 import { useGetList } from "react-admin";
 
+import {
+  SEARCH_DEBOUNCE_MS,
+  DEFAULT_STALE_TIME_MS,
+  AUTOCOMPLETE_MIN_CHARS,
+} from "@/atomic-crm/constants";
+
 /**
  * Configuration for hybrid search behavior
  */
@@ -62,9 +68,9 @@ interface HybridSearchResult<T> {
 export function useHybridSearch<T extends { id: number | string }>({
   resource,
   initialPageSize = 100,
-  minSearchLength = 2,
-  debounceMs = 300,
-  staleTimeMs = 5 * 60 * 1000, // 5 minutes default
+  minSearchLength = AUTOCOMPLETE_MIN_CHARS,
+  debounceMs = SEARCH_DEBOUNCE_MS,
+  staleTimeMs = DEFAULT_STALE_TIME_MS,
   sortField = "name",
   additionalFilter = {},
   enabled = true,

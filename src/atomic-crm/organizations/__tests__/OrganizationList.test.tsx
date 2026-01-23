@@ -499,13 +499,13 @@ describe("OrganizationList 6-column structure", () => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
 
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
     });
 
-    (useListContext as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue({
       data: [
         {
           id: 1,
@@ -579,13 +579,13 @@ describe("OrganizationList column sorting configuration", () => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
 
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
     });
 
-    (useListContext as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue({
       data: [
         {
           id: 1,

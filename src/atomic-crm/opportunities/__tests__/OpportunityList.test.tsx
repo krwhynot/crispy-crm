@@ -84,7 +84,7 @@ describe("OpportunityListContent", () => {
     vi.clearAllMocks();
 
     // Setup default useListContext mock
-    (useListContext as any).mockReturnValue(defaultListContext);
+    vi.mocked(useListContext).mockReturnValue(defaultListContext);
   });
 
   afterEach(() => {
@@ -115,7 +115,7 @@ describe("OpportunityListContent", () => {
       },
     };
 
-    (useListContext as any).mockReturnValue(contextWithFilters);
+    vi.mocked(useListContext).mockReturnValue(contextWithFilters);
 
     renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
@@ -142,7 +142,7 @@ describe("OpportunityListContent", () => {
       total: 0,
     };
 
-    (useListContext as any).mockReturnValue(emptyContext);
+    vi.mocked(useListContext).mockReturnValue(emptyContext);
 
     renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
@@ -177,7 +177,7 @@ describe("OpportunityListContent", () => {
       page: 1,
     };
 
-    (useListContext as any).mockReturnValue(paginatedContext);
+    vi.mocked(useListContext).mockReturnValue(paginatedContext);
 
     renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
@@ -199,7 +199,7 @@ describe("OpportunityListContent", () => {
       ],
     };
 
-    (useListContext as any).mockReturnValue(contextWithGrouping);
+    vi.mocked(useListContext).mockReturnValue(contextWithGrouping);
 
     renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 

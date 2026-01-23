@@ -393,7 +393,7 @@ describe("ContactList", () => {
     mockToggleMode.mockClear();
 
     // Setup default mocks
-    (useListContext as any).mockReturnValue(defaultListContext);
+    vi.mocked(useListContext).mockReturnValue(defaultListContext);
     (useGetList as any).mockReturnValue({
       data: mockTags,
       total: mockTags.length,
@@ -461,7 +461,7 @@ describe("ContactList", () => {
       filterValues: {},
     };
 
-    (useListContext as any).mockReturnValue(emptyContext);
+    vi.mocked(useListContext).mockReturnValue(emptyContext);
 
     renderWithAdminContext(<ContactList />);
 
@@ -479,7 +479,7 @@ describe("ContactList", () => {
       filterValues: { tags: [1] }, // Has active filters
     };
 
-    (useListContext as any).mockReturnValue(emptyWithFiltersContext);
+    vi.mocked(useListContext).mockReturnValue(emptyWithFiltersContext);
 
     renderWithAdminContext(<ContactList />);
 
@@ -520,7 +520,7 @@ describe("ContactList 7-column structure", () => {
       isPending: false,
     });
 
-    (useListContext as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue({
       data: [
         {
           id: 1,
@@ -622,7 +622,7 @@ describe("ContactListFilter", () => {
       isPending: false,
     });
 
-    (useListContext as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue({
       filterValues: {},
       setFilters: vi.fn(),
       data: [],
