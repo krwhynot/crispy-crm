@@ -31,7 +31,13 @@ export const quickAddBaseSchema = z.strictObject({
   // Optional location/detail fields
   city: z.string().max(100).optional(),
   state: z.string().max(50).optional(),
-  campaign: z.string().max(255).optional(),
+  // Campaign: transform empty strings to undefined to prevent "" from leaking through (WF-C2-003)
+  // If campaign is provided, it must be non-empty meaningful data
+  campaign: z
+    .string()
+    .max(255)
+    .transform((val) => (val?.trim() === "" ? undefined : val?.trim()))
+    .optional(),
   product_ids: z.array(z.number()).optional().default([]),
   quick_note: z.string().max(2000).optional(),
 });

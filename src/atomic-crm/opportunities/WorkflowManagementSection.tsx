@@ -233,8 +233,8 @@ export const WorkflowManagementSection: React.FC = () => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <Textarea
-                value={decisionCriteria}
-                onChange={(e) => setDecisionCriteria(e.target.value)}
+                value={decisionCriteria ?? ""}
+                onChange={(e) => setDecisionCriteria(e.target.value || null)}
                 onBlur={handleDecisionCriteriaBlur}
                 placeholder="What criteria will determine whether this opportunity closes?"
                 className="min-h-[100px] text-sm"
