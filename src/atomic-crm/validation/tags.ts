@@ -101,7 +101,7 @@ export const updateTagSchema = tagSchema
  * Schema for soft deleting a tag
  * Used by withLifecycleCallbacks when supportsSoftDelete is true
  */
-export const deleteTagSchema = z.object({
+export const deleteTagSchema = z.strictObject({
   id: z.union([z.string(), z.number()]),
   deleted_at: z.union([z.string(), z.date()]),
 });

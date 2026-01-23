@@ -86,7 +86,7 @@ function transformZodToReactAdmin(zodError: ZodError): ReactAdminValidationError
     const fieldPath = issue.path.join(".");
     // Use the field path as key, or "_error" for root-level errors
     const key = fieldPath || "_error";
-    errors[key] = getFriendlyErrorMessage(issue as any);
+    errors[key] = getFriendlyErrorMessage(issue as ZodIssue);
   }
 
   return {

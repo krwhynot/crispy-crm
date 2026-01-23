@@ -11,3 +11,6 @@ export * from "./opportunities-operations";
 
 // Duplicate detection
 export * from "./opportunities-duplicates";
+
+// Junction table schemas (participants, contacts)
+export * from "./opportunities-junctions";

@@ -12,6 +12,12 @@ import type { OpportunityStageValue, LeadSource } from "./validation/opportuniti
 import type { SampleStatus } from "./validation/activities";
 import type { Database } from "@/types/database.generated";
 
+// ============================================================================
+// P2 TYPE CONSOLIDATION: Zod-inferred types as Single Source of Truth
+// Manual interfaces are replaced with z.infer<typeof schema> types
+// View types extend base types with computed fields from database views
+// ============================================================================
+
 // Re-export enum types from canonical validation schemas (P1/P2 consolidation)
 export type { OrganizationType, OrganizationPriority } from "./validation/organizations";
 export type {
@@ -20,7 +26,16 @@ export type {
   OpportunityPriority,
 } from "./validation/opportunities";
 export type { SampleStatus, Sentiment } from "./validation/activities";
-export type { SalesRole } from "./validation/sales";
+export type { SalesRole, Sale } from "./validation/sales";
+
+// Re-export Zod-inferred types from validation schemas (P2 consolidation)
+export type { Tag } from "./validation/tags";
+export type { Task, TaskType, PriorityLevel } from "./validation/task";
+export type { RAFile } from "./validation/shared/ra-file";
+export type {
+  OpportunityParticipant,
+  OpportunityContact,
+} from "./validation/opportunities";
 
 // Use generated enum as single source of truth for interaction types
 // Note: This comes from database.generated.ts, validation schema mirrors it

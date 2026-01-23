@@ -723,7 +723,7 @@ export const activityOutcomeSchema = z.enum(ALL_OUTCOMES);
  *
  * When submitting, use ACTIVITY_TYPE_TO_API to convert activityType to API format
  */
-export const quickLogFormBaseSchema = z.object({
+export const quickLogFormBaseSchema = z.strictObject({
   activityType: activityDisplayTypeSchema,
   outcome: activityOutcomeSchema,
   date: z.date().default(() => new Date()),
