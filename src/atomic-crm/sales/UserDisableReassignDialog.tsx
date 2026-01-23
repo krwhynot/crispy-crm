@@ -383,7 +383,11 @@ export function UserDisableReassignDialog({
         setStep("reassign");
         return;
       }
-      console.error("[UserDisableReassign] Failed:", error);
+      logger.error("Failed to reassign records", error, {
+        feature: "UserDisableReassign",
+        userId: user.id,
+        targetSalesId: selectedSalesId,
+      });
       notify("Failed to reassign records", { type: "error" });
       setStep("reassign");
     } finally {

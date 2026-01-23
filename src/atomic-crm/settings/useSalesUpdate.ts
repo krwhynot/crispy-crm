@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDataProvider, useNotify } from "ra-core";
+import { logger } from "@/lib/logger";
 import type { CrmDataProvider } from "../../providers/types";
 import type { SalesFormData } from "../../types";
 
@@ -52,7 +53,7 @@ export function useSalesUpdate({ userId, onSuccess }: UseSalesUpdateOptions) {
       onSuccess?.();
     },
     onError: (error) => {
-      console.error("Profile update failed:", error);
+      logger.error("Profile update failed", error, { feature: "useSalesUpdate", userId });
       notify("An error occurred. Please try again.", {
         type: "error",
       });

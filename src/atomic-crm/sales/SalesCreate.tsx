@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saleKeys } from "@/atomic-crm/queryKeys";
 import { useCanAccess, useDataProvider, useNotify, useRedirect } from "ra-core";
+import { logger } from "@/lib/logger";
 import { useFormContext, useFormState } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { SalesService } from "../services";
@@ -61,8 +62,7 @@ export default function SalesCreate() {
       redirect("/sales");
     },
     onError: (error: Error) => {
-      // Log for debugging
-      console.error("[SalesCreate] Creation failed:", error);
+      logger.error("SalesCreate failed", error, { feature: "SalesCreate" });
 
       // Handle authentication errors with redirect
       if (error.message?.includes("Not authenticated")) {

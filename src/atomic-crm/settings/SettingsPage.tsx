@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { Form, useDataProvider, useGetIdentity, useGetOne, useNotify } from "ra-core";
 import { User, Bell, Shield, History, Users } from "lucide-react";
+import { logger } from "@/lib/logger";
 import type { CrmDataProvider } from "../providers/types";
 import type { SalesFormData } from "../types";
 import { SettingsLayout } from "./SettingsLayout";
@@ -43,7 +44,7 @@ export const SettingsPage = () => {
       notify("A reset password email has been sent to your email address");
     },
     onError: (error) => {
-      console.error("Password update failed:", error);
+      logger.error("Password update failed", error, { feature: "SettingsPage" });
       notify("An error occurred. Please try again.", {
         type: "error",
       });
