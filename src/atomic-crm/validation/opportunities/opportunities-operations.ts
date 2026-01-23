@@ -397,10 +397,26 @@ export const updateOpportunitySchema = opportunityBaseSchema
       path: ["contact_ids"],
     }
   )
-  // Win/Loss reason validation (TODO-004a)
+  // ============================================================================
+  // Win/Loss Reason Validation (WG-002 / TODO-004a)
+  // ============================================================================
+  // DEFENSE IN DEPTH: These rules are enforced at TWO layers:
+  //   1. DATABASE: CHECK constraints (single source of truth)
+  //      - opportunities_closed_won_check: stage != 'closed_won' OR win_reason IS NOT NULL
+  //      - opportunities_closed_lost_check: stage != 'closed_lost' OR loss_reason IS NOT NULL
+  //   2. APP LAYER: Zod refinements below (UX layer for friendly error messages)
+  //
+  // The app-layer validation exists for UX purposes only:
+  //   - Provides user-friendly error messages
+  //   - Enables field-level error highlighting via path: ["field"]
+  //   - Prevents unnecessary round-trips to server
+  //
+  // The database is the ultimate authority. If app validation is bypassed,
+  // the DB constraint will reject the invalid data with a constraint violation.
+  // ============================================================================
   .refine(
     (data) => {
-      // If stage is closed_won, win_reason is required
+      // DB: opportunities_closed_won_check enforces this at database level
       if (data.stage === STAGE.CLOSED_WON) {
         return !!data.win_reason;
       }
@@ -413,7 +429,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
   )
   .refine(
     (data) => {
-      // If stage is closed_lost, loss_reason is required
+      // DB: opportunities_closed_lost_check enforces this at database level
       if (data.stage === STAGE.CLOSED_LOST) {
         return !!data.loss_reason;
       }
@@ -426,7 +442,8 @@ export const updateOpportunitySchema = opportunityBaseSchema
   )
   .refine(
     (data) => {
-      // If reason is "other", close_reason_notes is required
+      // Note: "other" requires notes is NOT enforced at DB level (business logic only)
+      // This is intentional - DB should not care about the specific reason value
       if (data.win_reason === "other" || data.loss_reason === "other") {
         return !!data.close_reason_notes && data.close_reason_notes.trim().length > 0;
       }
@@ -459,10 +476,16 @@ export const closeOpportunityBaseSchema = z.strictObject({
  * Close Opportunity Schema with refinements - for validation
  * Enforces win/loss reason based on target stage
  * Use closeOpportunityBaseSchema.partial().parse({}) for form defaults
+ *
+ * DEFENSE IN DEPTH (WG-002):
+ * - DB Layer: CHECK constraints are the single source of truth
+ * - App Layer: Zod refinements below provide UX-friendly error messages
+ * See updateOpportunitySchema comments for full explanation.
  */
 export const closeOpportunitySchema = closeOpportunityBaseSchema
   .refine(
     (data) => {
+      // DB: opportunities_closed_won_check enforces this at database level
       if (data.stage === STAGE.CLOSED_WON) {
         return !!data.win_reason;
       }
@@ -475,6 +498,7 @@ export const closeOpportunitySchema = closeOpportunityBaseSchema
   )
   .refine(
     (data) => {
+      // DB: opportunities_closed_lost_check enforces this at database level
       if (data.stage === STAGE.CLOSED_LOST) {
         return !!data.loss_reason;
       }
@@ -487,6 +511,7 @@ export const closeOpportunitySchema = closeOpportunityBaseSchema
   )
   .refine(
     (data) => {
+      // Note: "other" requires notes is app-layer only (business logic, not DB enforced)
       if (data.win_reason === "other" || data.loss_reason === "other") {
         return !!data.close_reason_notes && data.close_reason_notes.trim().length > 0;
       }
