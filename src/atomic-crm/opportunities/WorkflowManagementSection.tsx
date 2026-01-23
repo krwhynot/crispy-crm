@@ -34,10 +34,10 @@ export const WorkflowManagementSection: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Local state for inline editing
-  const [nextAction, setNextAction] = useState(record?.next_action || "");
-  const [nextActionDate, setNextActionDate] = useState(record?.next_action_date || "");
-  const [decisionCriteria, setDecisionCriteria] = useState(record?.decision_criteria || "");
+  // Local state for inline editing (use ?? null to preserve NULL vs empty string distinction)
+  const [nextAction, setNextAction] = useState<string | null>(record?.next_action ?? null);
+  const [nextActionDate, setNextActionDate] = useState<string | null>(record?.next_action_date ?? null);
+  const [decisionCriteria, setDecisionCriteria] = useState<string | null>(record?.decision_criteria ?? null);
   const [newTag, setNewTag] = useState("");
   const [isDecisionCriteriaOpen, setIsDecisionCriteriaOpen] = useState(false);
 

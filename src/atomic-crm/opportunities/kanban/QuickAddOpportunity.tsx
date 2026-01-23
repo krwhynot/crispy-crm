@@ -97,6 +97,26 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       const selectedCustomer = customers?.find((c) => c.id === Number(customerId));
       const selectedPrincipal = principals?.find((p) => p.id === Number(principalId));
 
+      // FIX [WF-C2-002]: Fail-fast if organization names cannot be resolved
+      // This guards against race conditions where IDs are valid but lists haven't loaded
+      if (!selectedCustomer?.name || !selectedPrincipal?.name) {
+        console.log("[QuickAdd] Organization lookup failed:", {
+          customerId,
+          principalId,
+          selectedCustomer,
+          selectedPrincipal,
+        });
+        const orgErrors: typeof errors = {};
+        if (!selectedCustomer?.name) {
+          orgErrors.customerId = "Customer organization not found. Please try again.";
+        }
+        if (!selectedPrincipal?.name) {
+          orgErrors.principalId = "Principal organization not found. Please try again.";
+        }
+        setErrors(orgErrors);
+        return;
+      }
+
       // Create returns the new record - use it for optimistic updates
       // NOTE: returnPromise: true is REQUIRED to get the created record back
       console.log("[QuickAdd] Calling create() with data:", validatedData);
