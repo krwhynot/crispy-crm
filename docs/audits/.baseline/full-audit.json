@@ -160,10 +160,7 @@
       "Architecture: 6 issues resolved (100%)",
       "Accessibility: 10 issues resolved (100%)"
     ],
-    "new": [
-      "CQ-001: Dead admin module",
-      "CQ-003: Unused @nivo/bar dependency"
-    ],
+    "new": ["CQ-001: Dead admin module", "CQ-003: Unused @nivo/bar dependency"],
     "unchanged": [
       "EH-001: Fire-and-forget storage cleanup",
       "TS-DOUBLE-CAST-001: TypeScript cast patterns",

@@ -326,11 +326,10 @@ export const NoteInputs = () => {
           !displayMore ? "scale-y-0 max-h-0" : "scale-y-100"
         )}
       >
-        <TextInput
+        <DateInput
           source="date"
           label="Date & Time"
           helperText={false}
-          type="datetime-local"
           // Defaults come from Zod schema (Constitution #5)
         />
       </div>

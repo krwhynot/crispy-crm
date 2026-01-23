@@ -45,7 +45,8 @@ src/atomic-crm/validation/
 │   ├── index.ts                  # Barrel re-export
 │   ├── opportunities-core.ts     # Base schema, enums, types
 │   ├── opportunities-operations.ts # Create, update, close schemas
-│   └── opportunities-duplicates.ts # Duplicate detection schemas
+│   ├── opportunities-duplicates.ts # Duplicate detection schemas
+│   └── opportunities-junctions.ts # Opportunity participant junction schemas
 │
 ├── contacts/                     # Modularized (500-line rule)
 │   ├── index.ts                  # Barrel re-export

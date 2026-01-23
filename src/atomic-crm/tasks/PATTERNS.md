@@ -21,7 +21,7 @@ Task Lifecycle Flow:
 │  WithProgress      (Row + Menu)                          WithProgress   │
 │                         │                                               │
 │                         ▼                                               │
-│               QuickLogActivity                                          │
+│               TaskCompletionDialog                                      │
 │               (Activity Logging)                                        │
 └─────────────────────────────────────────────────────────────────────────┘
 
@@ -116,7 +116,7 @@ const handleCheck = (checked: boolean) => {
 
 // Render activity dialog after completion
 {openActivityDialog && (
-  <QuickLogActivity
+  <TaskCompletionDialog
     open={openActivityDialog}
     onClose={handleCloseActivityDialog}
     task={task}
