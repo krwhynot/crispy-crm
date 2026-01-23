@@ -1,25 +1,25 @@
 {
   "lastAudit": "2026-01-22",
-  "lastAuditTime": "18:19",
+  "lastAuditTime": "22:53",
   "mode": "full",
-  "duration_minutes": 21,
+  "duration_minutes": 11,
   "totals": {
-    "critical": 26,
-    "high": 93,
-    "medium": 59
+    "critical": 28,
+    "high": 136,
+    "medium": 390
   },
   "by_category": {
-    "security": { "critical": 2, "high": 20, "medium": 3 },
-    "data-integrity": { "critical": 3, "high": 5, "medium": 2 },
-    "error-handling": { "critical": 3, "high": 8, "medium": 4 },
-    "db-hardening": { "critical": 1, "high": 23, "medium": 8 },
-    "stale-state": { "critical": 0, "high": 2, "medium": 4 },
-    "workflow-gaps": { "critical": 3, "high": 4, "medium": 2 },
-    "architecture": { "critical": 0, "high": 0, "medium": 2 },
-    "typescript": { "critical": 2, "high": 3, "medium": 2 },
-    "accessibility": { "critical": 2, "high": 6, "medium": 2 },
-    "performance": { "critical": 2, "high": 8, "medium": 6 },
-    "code-quality": { "critical": 8, "high": 14, "medium": 24 }
+    "security": { "critical": 2, "high": 3, "medium": 1 },
+    "data-integrity": { "critical": 0, "high": 0, "medium": 1 },
+    "error-handling": { "critical": 1, "high": 3, "medium": 4 },
+    "db-hardening": { "critical": 1, "high": 24, "medium": 52 },
+    "stale-state": { "critical": 3, "high": 8, "medium": 6 },
+    "workflow-gaps": { "critical": 6, "high": 5, "medium": 4 },
+    "architecture": { "critical": 2, "high": 8, "medium": 12 },
+    "typescript": { "critical": 3, "high": 65, "medium": 280 },
+    "accessibility": { "critical": 5, "high": 8, "medium": 12 },
+    "performance": { "critical": 2, "high": 4, "medium": 6 },
+    "code-quality": { "critical": 3, "high": 8, "medium": 12 }
   },
   "critical_findings": [
     {
@@ -33,52 +33,22 @@
       "status": "open"
     },
     {
-      "source_audit": "data-integrity",
-      "id": "DI-001",
-      "severity": "critical",
-      "check": "Hard DELETE",
-      "location": "supabase/migrations/20251117121913_phase2c_correct_misnamed_restaurants.sql:71",
-      "description": "Hard DELETE of organization without soft delete",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-002",
-      "severity": "critical",
-      "check": "Hard DELETE",
-      "location": "supabase/migrations/20251117123500_phase2d_consolidate_duplicates.sql",
-      "description": "Hard DELETE of duplicate organizations",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-003",
-      "severity": "critical",
-      "check": "Hard DELETE",
-      "location": "supabase/migrations/20251116210019_fix_sales_schema_consistency.sql",
-      "description": "Hard DELETE of orphaned sales records",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
       "source_audit": "workflow-gaps",
       "id": "WG-001",
       "severity": "critical",
-      "check": "Required Field Fallbacks",
-      "location": "opportunities.stage DEFAULT 'new_lead'",
-      "description": "Creates opportunities without explicit stage assignment",
-      "firstSeen": "2026-01-20",
+      "check": "Missing Activity Logging",
+      "location": "supabase/migrations",
+      "description": "Stage transitions don't create activity records",
+      "firstSeen": "2026-01-22",
       "status": "open"
     },
     {
       "source_audit": "workflow-gaps",
       "id": "WG-002",
       "severity": "critical",
-      "check": "Required Field Fallbacks",
-      "location": "product_distributors.status DEFAULT 'active'",
-      "description": "Masks missing status data entry",
+      "check": "Win/Loss Validation App-Only",
+      "location": "opportunities-operations.ts:385-423",
+      "description": "Database has no CHECK constraints for close reasons",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -86,9 +56,69 @@
       "source_audit": "workflow-gaps",
       "id": "WG-003",
       "severity": "critical",
-      "check": "Nullable Required FKs",
-      "location": "opportunities.customer_organization_id",
-      "description": "Allows NULL despite being core business requirement",
+      "check": "Nullable founding_interaction_id",
+      "location": "types.ts",
+      "description": "Core FK nullable despite business requirement",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-004",
+      "severity": "critical",
+      "check": "Missing Owner Check at Close",
+      "location": "closeOpportunitySchema",
+      "description": "Can close opportunity without owner assigned",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-005",
+      "severity": "critical",
+      "check": "Stage DEFAULT Masks Errors",
+      "location": "opportunities.stage DEFAULT 'new_lead'",
+      "description": "Missing stage silently defaults instead of failing",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-006",
+      "severity": "critical",
+      "check": "Hardcoded Stage Strings",
+      "location": "Multiple files",
+      "description": "String literals instead of STAGE constant",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-001",
+      "severity": "critical",
+      "check": "Missing Query Invalidation",
+      "location": "WorkflowManagementSection.tsx:52-70",
+      "description": "useUpdate doesn't invalidate opportunity queries",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-002",
+      "severity": "critical",
+      "check": "refetch() Instead of invalidateQueries",
+      "location": "useFavorites.ts:37-46",
+      "description": "refetch() misses cascade invalidation",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-003",
+      "severity": "critical",
+      "check": "Hardcoded Query Key",
+      "location": "TaskSlideOverDetailsTab.tsx:69",
+      "description": "Uses [\"tasks\"] instead of taskKeys factory",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -97,8 +127,8 @@
       "id": "ARCH-001",
       "severity": "critical",
       "check": "Direct Supabase Import",
-      "location": "src/atomic-crm/contacts/ContactShow.tsx:4",
-      "description": "Direct import of supabase client in feature layer",
+      "location": "useCurrentSale.ts:3",
+      "description": "Auth context bypasses provider pattern",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -106,19 +136,119 @@
       "source_audit": "architecture",
       "id": "ARCH-002",
       "severity": "critical",
-      "check": "Direct Supabase Import",
-      "location": "src/atomic-crm/opportunities/OpportunityShow.tsx:6",
-      "description": "Direct import of supabase client in feature layer",
+      "check": "Auth Provider Coupling",
+      "location": "SalesPermissionsTab.tsx:39",
+      "description": "Tight coupling to authProvider implementation",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
     {
-      "source_audit": "architecture",
-      "id": "ARCH-005",
+      "source_audit": "security",
+      "id": "SEC-001",
       "severity": "critical",
-      "check": "Deprecated Patterns",
-      "location": "src/atomic-crm/contacts/types.ts:12",
-      "description": "Usage of deprecated company_id field",
+      "check": "XSS innerHTML",
+      "location": "trade-show-data-entry.html:758",
+      "description": "Dynamic innerHTML without sanitization in prototype",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "security",
+      "id": "SEC-002",
+      "severity": "critical",
+      "check": "innerHTML in Test",
+      "location": "FilterChipBar.test.tsx:113",
+      "description": "Test uses innerHTML inspection",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "error-handling",
+      "id": "ERR-001",
+      "severity": "critical",
+      "check": "Silent Catch Block",
+      "location": "organizationsCallbacks.ts:130",
+      "description": "Fire-and-forget storage cleanup silently fails",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-001",
+      "severity": "critical",
+      "check": "any in Production",
+      "location": "zodErrorFormatting.ts:36,70,94",
+      "description": "issue as any casts in production code",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-002",
+      "severity": "critical",
+      "check": "Implicit any Callbacks",
+      "location": "zodErrorFormatting.ts",
+      "description": "Callbacks accept implicit any parameters",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-003",
+      "severity": "critical",
+      "check": "Test Mock Pollution",
+      "location": "typed-mocks.ts",
+      "description": "348 as any patterns in test utilities",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "accessibility",
+      "id": "A11Y-001",
+      "severity": "critical",
+      "check": "Hardcoded Tailwind Colors",
+      "location": "constants.ts:148-246",
+      "description": "Pipeline stages use bg-sky-100 instead of semantic",
+      "firstSeen": "2026-01-20",
+      "status": "open"
+    },
+    {
+      "source_audit": "accessibility",
+      "id": "A11Y-002",
+      "severity": "critical",
+      "check": "Hex Colors in Email",
+      "location": "email templates",
+      "description": "50+ hardcoded hex values",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "accessibility",
+      "id": "A11Y-003",
+      "severity": "critical",
+      "check": "Touch Target h-8",
+      "location": "columns-button.tsx:170",
+      "description": "32px < 44px minimum",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "accessibility",
+      "id": "A11Y-004",
+      "severity": "critical",
+      "check": "Button Size Inconsistent",
+      "location": "button.constants.ts:28-31",
+      "description": "h-12 and size-12 instead of h-11",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "accessibility",
+      "id": "A11Y-005",
+      "severity": "critical",
+      "check": "Missing Role Propagation",
+      "location": "FormErrorSummary.tsx",
+      "description": "Child errors may lack role=alert",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -126,9 +256,19 @@
       "source_audit": "performance",
       "id": "PERF-001",
       "severity": "critical",
-      "check": "watch() Instead of useWatch()",
-      "location": "src/atomic-crm/opportunities/OpportunityInputs.tsx:153-155",
-      "description": "Using watch() triggers full form re-renders",
+      "check": "Missing React.memo",
+      "location": "List row renderers",
+      "description": "FunctionField inline renderers not memoized",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "performance",
+      "id": "PERF-002",
+      "severity": "critical",
+      "check": "N+1 Exporter Queries",
+      "location": "TaskList.tsx:367-387",
+      "description": "O(n) queries for CSV export",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -136,115 +276,54 @@
       "source_audit": "code-quality",
       "id": "CQ-001",
       "severity": "critical",
-      "check": "Large Files",
+      "check": "Large File",
+      "location": "supabase.ts (5288 lines)",
+      "description": "Generated types file exceeds limit",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "code-quality",
+      "id": "CQ-002",
+      "severity": "critical",
+      "check": "Large Test File",
       "location": "CampaignActivityReport.test.tsx (1330 lines)",
       "description": "Test file exceeds 500 line limit",
       "firstSeen": "2026-01-22",
       "status": "open"
-    }
-  ],
-  "high_findings_top10": [
-    {
-      "source_audit": "security",
-      "id": "SEC-002",
-      "severity": "high",
-      "check": "Zod Missing .max()",
-      "location": "src/atomic-crm/validation/contactSchemas.ts",
-      "description": "String fields without .max() constraints allow unbounded input"
-    },
-    {
-      "source_audit": "db-hardening",
-      "id": "DB-002",
-      "severity": "high",
-      "check": "Function Search Path",
-      "location": "deprecated_tasks_access_notice, set_activity_created_by",
-      "description": "3 functions have mutable search_path"
-    },
-    {
-      "source_audit": "db-hardening",
-      "id": "DB-003",
-      "severity": "high",
-      "check": "Unindexed FK",
-      "location": "distributor_principal_authorizations.principal_id",
-      "description": "Foreign key missing index"
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-004",
-      "severity": "high",
-      "check": "Hard DELETE in RPC",
-      "location": "sync_opportunity_contacts RPC",
-      "description": "Fixed in 20260120000001 - verify migration applied"
-    },
-    {
-      "source_audit": "error-handling",
-      "id": "ERR-013",
-      "severity": "high",
-      "check": "Missing Error Propagation",
-      "location": "src/atomic-crm/hooks/useActivityTracking.ts:45",
-      "description": "Catch block logs error but doesn't inform user"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-006",
-      "severity": "high",
-      "check": "Missing Activity Logging",
-      "location": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-      "description": "Stage transitions do not create activity records"
-    },
-    {
-      "source_audit": "architecture",
-      "id": "ARCH-009",
-      "severity": "high",
-      "check": "Feature Structure",
-      "location": "src/atomic-crm/contacts/",
-      "description": "Missing ContactInputs.tsx for shared form inputs"
-    },
-    {
-      "source_audit": "performance",
-      "id": "PERF-005",
-      "severity": "high",
-      "check": "Missing React.memo",
-      "location": "src/atomic-crm/opportunities/OpportunityInputs.tsx",
-      "description": "Component not memoized, re-renders on parent changes"
     },
     {
       "source_audit": "code-quality",
-      "id": "CQ-017",
-      "severity": "high",
-      "check": "Direct Supabase Imports",
-      "location": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts",
-      "description": "Direct Supabase import outside provider layer"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-033",
-      "severity": "high",
-      "check": "Console Statements",
-      "location": "68 files with 137 console statements",
-      "description": "Production code contains console.log/warn/error"
+      "id": "CQ-003",
+      "severity": "critical",
+      "check": "Console in Production",
+      "location": "40+ files",
+      "description": "console.error/warn in production code",
+      "firstSeen": "2026-01-22",
+      "status": "open"
     }
   ],
   "strangler_fig_status": {
     "unifiedDataProvider_lines": 0,
     "composedDataProvider_lines": 260,
-    "handler_count": 13,
+    "handler_count": 19,
     "status": "COMPLETED"
   },
   "excellence_areas": [
-    "Strangler Fig: 100% COMPLETE - 13 composed handlers",
-    "RLS Coverage: 28/29 tables (96.6%)",
+    "Strangler Fig: 100% COMPLETE - 19 composed handlers",
+    "RLS Coverage: 30/31 tables (97%)",
     "Fail-Fast: NO retry logic found",
-    "Stale State: ZERO issues - React Admin handles caching",
-    "Code Splitting: React.lazy on resource routes",
-    "Optimistic Updates: Proper rollback patterns"
+    "Soft Deletes: RLS enforced",
+    "Code Splitting: React.lazy on routes",
+    "Form Accessibility: role=alert, aria-live",
+    "Validation: Zod at API boundary",
+    "Sanitization: DOMPurify configured"
   ],
-  "audit_coverage_note": "Increased issue counts reflect more comprehensive scanning (TypeScript any, ARIA attributes, error fallbacks) rather than codebase degradation. Core critical issues unchanged from 2026-01-20.",
+  "audit_coverage_note": "Issue counts increased due to expanded detection (stale-state, workflow validation, TypeScript any, ARIA attributes). Core critical issues (RLS, stage defaults) unchanged.",
   "trend": {
     "direction": "EXPANDED_COVERAGE",
-    "note": "Issue counts increased due to broader detection (TypeScript: +147 critical any, Accessibility: +147 critical ARIA). Core architecture issues stable.",
-    "previous_critical": 11,
-    "current_critical": 340,
-    "new_detection_categories": ["any usage", "ARIA attributes", "error fallbacks", "large files"]
+    "note": "More comprehensive scanning in stale-state and workflow-gaps categories",
+    "previous_critical": 26,
+    "current_critical": 28
   }
 }
