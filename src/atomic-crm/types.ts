@@ -32,6 +32,7 @@ export type { SalesRole, Sale } from "./validation/sales";
 export type { Tag } from "./validation/tags";
 export type { Task, TaskType, PriorityLevel } from "./validation/task";
 export type { RAFile } from "./validation/shared/ra-file";
+import type { RAFile as RAFileBase } from "./validation/shared/ra-file";
 export type { OpportunityParticipant, OpportunityContact } from "./validation/opportunities";
 
 // Use generated enum as single source of truth for interaction types
@@ -355,12 +356,12 @@ export type Activity = RaRecord &
 
 // RAFile type is now exported from validation/shared/ra-file.ts (P2 consolidation)
 // Extended RAFile type with legacy fields for backward compatibility
-export type RAFileView = RAFile & {
+export type RAFileView = RAFileBase & {
   path?: string;
   type?: string;
 };
 
-export type AttachmentNote = RAFile;
+export type AttachmentNote = RAFileBase;
 // DealStage interface removed - use OpportunityStage instead
 
 export interface NoteStatus {

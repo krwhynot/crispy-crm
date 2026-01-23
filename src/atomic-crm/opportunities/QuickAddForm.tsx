@@ -278,7 +278,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     <Form
       defaultValues={defaultValues}
       mode="onBlur"
-      resolver={zodResolver(quickAddSchema) as Resolver<FieldValues>}
+      resolver={zodResolver(quickAddSchema) as unknown as Resolver<FieldValues>}
     >
       <QuickAddFormContent
         onSuccess={onSuccess}
