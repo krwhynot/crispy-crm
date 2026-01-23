@@ -46,7 +46,7 @@ export const opportunityProductSyncInputSchema = z.strictObject({
  * - Key missing from payload (undefined)
  * - Key present but empty in DB (null)
  */
-export const opportunityProductSyncHandlerSchema = z.object({
+export const opportunityProductSyncHandlerSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   product_id_reference: z.union([z.string(), z.number()]),
   product_name: z.string().optional(),
