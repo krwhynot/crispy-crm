@@ -1,6 +1,5 @@
-import { useEffect, useState, useContext, createContext } from "react";
-import { useDataProvider } from "react-admin";
-import { supabase } from "@/atomic-crm/providers/supabase/supabase";
+import { useContext, createContext } from "react";
+import { useGetIdentity } from "react-admin";
 import { devLog } from "@/lib/devLogger";
 
 /**
