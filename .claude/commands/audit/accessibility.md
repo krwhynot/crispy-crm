@@ -51,6 +51,23 @@ Store as `AUDIT_DATE` for report naming.
 
 ---
 
+## Tier-Based Severity Adjustment
+
+Findings are escalated based on where violations occur in the component hierarchy. Foundation issues propagate systemically and require higher priority.
+
+| File Location | Severity Level | Rationale |
+|---------------|----------------|-----------|
+| `src/components/ui/` (Tier 1) | Critical | Foundation violations propagate everywhere |
+| `src/components/ra-wrappers/` (Tier 2) | High | Affects all feature consumers |
+| `src/atomic-crm/` (Features) | High | Local fixes, contained scope |
+
+**Severity Escalation Rules:**
+- A "High" severity finding in Tier 1 becomes **Critical**
+- A "Medium" severity finding in Tier 1 becomes **High**
+- Tier 2 and Feature findings retain their base severity
+
+---
+
 ## Phase 2: Local Accessibility Checks (Always Run)
 
 Run these `rg` patterns and collect findings. Each finding should include:
@@ -247,14 +264,61 @@ Save to: `docs/audits/YYYY-MM-DD-accessibility.md`
 
 ## Current Findings
 
-### Critical (WCAG 2.1 AA Violations)
+### Tier 1 Violations (CRITICAL) - Foundation Issues
 
-These issues MUST be fixed for accessibility compliance.
+**Scope:** `src/components/ui/` - Systemic issues that propagate to all consumers.
+
+> These violations affect EVERY component built on top of Tier 1. Fix immediately as they have maximum blast radius.
+
+#### Foundation WCAG Violations
+
+| ID | Check | Location | Risk |
+|----|-------|----------|------|
+| [ID] | [check] | [file:line] | [risk description] |
+
+#### Foundation Color/Token Violations
+
+| ID | Check | Location | Risk |
+|----|-------|----------|------|
+| [ID] | [check] | [file:line] | [risk description] |
+
+**Example Fix Pattern (Tier 1):**
+\`\`\`tsx
+// src/components/ui/input.tsx - CORRECT
+<input
+  aria-invalid={!!error}
+  aria-describedby={error ? `${id}-error` : undefined}
+  className="focus-visible:ring-2 focus-visible:ring-ring"
+  {...props}
+/>
+\`\`\`
+
+---
+
+### Tier 2 Violations (HIGH) - Wrapper Issues
+
+**Scope:** `src/components/ra-wrappers/` - Issues affecting all feature consumers.
+
+> These violations affect all features using React Admin wrappers. High priority as they multiply across modules.
+
+#### Wrapper ARIA/Accessibility Issues
+
+| ID | Check | Location | Risk |
+|----|-------|----------|------|
+| [ID] | [check] | [file:line] | [risk description] |
+
+---
+
+### Feature Violations (HIGH) - Local Issues
+
+**Scope:** `src/atomic-crm/` - Contained issues with local fixes.
+
+> These violations are scoped to individual features. Still high priority but fixes are isolated.
 
 #### [A01] Missing aria-invalid on Error Inputs
 
 **Files Affected:**
-- `src/path/Component.tsx:123` - Input field lacks `aria-invalid={!!error}`
+- `src/atomic-crm/contacts/ContactEdit.tsx:123` - Input field lacks `aria-invalid={!!error}`
 
 **Risk:** Screen readers do not announce validation errors to users.
 
@@ -272,14 +336,10 @@ These issues MUST be fixed for accessibility compliance.
 )}
 \`\`\`
 
----
-
-### High (Usability Barriers)
-
 #### [A05] Hardcoded Hex Colors
 
 **Files Affected:**
-- `src/path/Component.tsx:45` - Uses `#3B82F6` instead of semantic token
+- `src/atomic-crm/contacts/ContactList.tsx:45` - Uses `#3B82F6` instead of semantic token
 
 **Risk:** Color not in design system, breaks theme consistency.
 
@@ -289,7 +349,7 @@ These issues MUST be fixed for accessibility compliance.
 #### [A07] Small Touch Targets
 
 **Files Affected:**
-- `src/path/Component.tsx:78` - Button uses `h-8 w-8` (32px)
+- `src/atomic-crm/opportunities/OpportunityEdit.tsx:78` - Button uses `h-8 w-8` (32px)
 
 **Risk:** Touch target under 44px minimum for accessibility.
 
@@ -297,7 +357,7 @@ These issues MUST be fixed for accessibility compliance.
 
 ---
 
-### Medium (Best Practices)
+### Medium Severity (Best Practices)
 
 #### [A11] Images Without Alt Text
 

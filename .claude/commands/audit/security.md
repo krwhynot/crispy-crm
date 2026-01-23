@@ -66,6 +66,7 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | C5 | Hardcoded secrets | `rg "sk_live\|pk_live\|password\s*=\s*['\"][^'\"]+['\"]" --type ts src/ -n` | Credential leak |
 | C6 | eval() usage | `rg "eval\(" --type ts src/ -n` | Code injection |
 | C7 | Exposed API keys | `rg "api_key\s*=\s*['\"][^'\"]+['\"]" --type ts src/ -n` | Credential leak |
+| C8 | z.any() escape hatch | `rg "z\.any\(\)" --type ts src/atomic-crm/ -n` | Type safety bypass |
 
 ### High Severity Checks
 

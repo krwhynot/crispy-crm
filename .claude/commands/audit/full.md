@@ -61,6 +61,25 @@ You are performing a **comprehensive codebase audit** for Crispy CRM by orchestr
 
 ---
 
+## Layer Architecture Model
+
+Findings are grouped by architectural layer to show where fixes apply:
+
+| Layer | Audits Mapped |
+|-------|---------------|
+| L1 - Database | db-hardening, data-integrity.soft_deletes |
+| L2 - Domain | typescript, security.validation |
+| L3 - Provider | architecture.handlers, error-handling, data-integrity.strangler_fig |
+| L4 - UI Foundation | accessibility.systemic, performance.wrappers |
+| L5 - Features | forms, code-quality, stale-state, workflow-gaps, accessibility.feature |
+
+**Layer Status Indicators:**
+- **OK** - No critical or high issues in this layer
+- **WARN** - High issues exist but no criticals
+- **CRITICAL** - Critical issues exist that block deployment
+
+---
+
 ## Arguments
 
 **$ARGUMENTS**
@@ -516,6 +535,75 @@ Create a combined findings array, tagged with source audit:
     },
     ...
   ]
+}
+```
+
+### 3.4 Classify Findings by Layer
+
+For each finding, assign a `layer` field based on:
+1. `source_audit` primary mapping
+2. Check ID pattern matching for multi-layer audits
+
+**Layer Classification Rules:**
+
+| source_audit | Default Layer | Override Rules |
+|--------------|---------------|----------------|
+| db-hardening | L1 | Always L1 |
+| data-integrity | L1 | Check contains "Strangler" → L3 |
+| typescript | L2 | Always L2 |
+| security | L2 | Check contains "RLS" → L1 |
+| architecture | L3 | Check contains "Tier 1" → L4 |
+| error-handling | L3 | Always L3 |
+| accessibility | L4 | Location in `src/atomic-crm/` → L5 |
+| performance | L4 | Check contains "form" → L5 |
+| forms | L5 | Always L5 |
+| code-quality | L5 | Always L5 |
+| stale-state | L5 | Always L5 |
+| workflow-gaps | L5 | Always L5 |
+
+**Example Classifications:**
+- `source_audit: "data-integrity", check: "Hard DELETE"` → L1
+- `source_audit: "data-integrity", check: "Strangler Fig"` → L3
+- `source_audit: "accessibility", location: "src/components/ui/button.tsx"` → L4
+- `source_audit: "accessibility", location: "src/atomic-crm/contacts/ContactList.tsx"` → L5
+
+```json
+{
+  "all_findings": [
+    {
+      "source_audit": "security",
+      "id": "C1-001",
+      "severity": "critical",
+      "layer": "L1",
+      "check": "Missing RLS",
+      "location": "file:line",
+      "description": "...",
+      "fix": "..."
+    }
+  ]
+}
+```
+
+### 3.5 Group Findings by Layer
+
+After classification, group all findings:
+
+```
+L1_findings = all_findings.filter(f => f.layer === "L1")
+L2_findings = all_findings.filter(f => f.layer === "L2")
+L3_findings = all_findings.filter(f => f.layer === "L3")
+L4_findings = all_findings.filter(f => f.layer === "L4")
+L5_findings = all_findings.filter(f => f.layer === "L5")
+```
+
+Calculate layer totals:
+```
+LAYER_SUMMARY = {
+  L1_database: { critical: count, high: count, status: determineStatus() },
+  L2_domain: { critical: count, high: count, status: determineStatus() },
+  L3_provider: { critical: count, high: count, status: determineStatus() },
+  L4_ui_foundation: { critical: count, high: count, status: determineStatus() },
+  L5_features: { critical: count, high: count, status: determineStatus() }
 }
 ```
 

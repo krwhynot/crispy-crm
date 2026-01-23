@@ -64,6 +64,8 @@ Execute these rg checks. Capture file:line for each finding.
 | `H003` | Missing handlers for new resources | Check if new resources exist in unifiedDataProvider but not in handlers/ | Strangler Fig violation |
 | `H004` | Direct Supabase in components | `rg "supabase\.from\|createClient" --type tsx -n src/atomic-crm/` | Bypass data provider |
 | `H005` | Form-level schema validation | `rg "zodResolver|yupResolver" --type tsx -n src/atomic-crm/` | Validation at wrong boundary |
+| `H006` | Tier 1 imports in features | `rg "from ['\"]@/components/ui/" --type ts -n src/atomic-crm/` | Bypass Tier 2 wrappers |
+| `H007` | Manual interfaces in validation | `rg "export interface" --type ts -n src/atomic-crm/validation/` | Schema drift (use z.infer) |
 
 ### Medium Severity (Structure Issues)
 
@@ -306,6 +308,8 @@ Issues that indicate technical debt or inconsistency.
 | H003 | Missing handlers | New resources in provider | Strangler Fig pattern |
 | H004 | Direct Supabase in components | `supabase.from` | Bypass data provider |
 | H005 | Form-level validation | `zodResolver` | Wrong validation boundary |
+| H006 | Tier 1 imports in features | `@/components/ui/` | Bypasses Tier 2 wrappers |
+| H007 | Manual interfaces in validation | `export interface` | Use z.infer for type derivation |
 
 ### Medium Checks
 | ID | Name | Description | Why Medium |

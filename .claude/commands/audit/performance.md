@@ -60,13 +60,14 @@ rg "mode.*['\"]onChange['\"]|mode:\s*['\"]onChange['\"]" --type tsx -n
 
 #### 1.2 watch() Instead of useWatch
 ```bash
-# Find watch() calls that should use useWatch
-rg "watch\(\)" --type tsx -n
+# Find watch() calls that should use useWatch (excludes legitimate useWatch)
+rg "watch\(" --type ts -n src/atomic-crm/ | grep -v "useWatch"
 ```
 
 **What to look for:**
 - Direct `watch()` calls from react-hook-form
 - Should use `useWatch()` hook for isolated subscriptions
+- Note: The grep excludes `useWatch` which is the correct pattern
 
 **Risk:** Full form re-render - watch() causes entire form to re-render on field change
 
@@ -161,6 +162,44 @@ const handleClick = useCallback(() => {
 }, [deps]);
 
 <Button onClick={handleClick} />
+```
+
+#### 1.10 Non-lazy Resource Components
+```bash
+# Find Resource components without lazy loading (flag if no lazy())
+rg "<Resource" --type tsx -n src/ -A 3
+```
+
+**What to look for:**
+- `<Resource>` components with direct imports (not lazy loaded)
+- Missing `React.lazy()` wrapper for list/edit/create/show components
+- All resources loading at initial bundle
+
+**Risk:** Large initial bundle - all resource components load upfront even if not visited
+
+**Correct Pattern:**
+```tsx
+// WRONG: Direct imports load everything upfront
+import { ContactList, ContactEdit, ContactCreate } from './contacts';
+
+<Resource
+  name="contacts"
+  list={ContactList}
+  edit={ContactEdit}
+  create={ContactCreate}
+/>
+
+// CORRECT: Lazy loading for code splitting
+const ContactList = lazy(() => import('./contacts/ContactList'));
+const ContactEdit = lazy(() => import('./contacts/ContactEdit'));
+const ContactCreate = lazy(() => import('./contacts/ContactCreate'));
+
+<Resource
+  name="contacts"
+  list={ContactList}
+  edit={ContactEdit}
+  create={ContactCreate}
+/>
 ```
 
 ---
@@ -379,6 +418,20 @@ import _ from 'lodash'; // Imports entire 70KB+ library
 **Fix:**
 \`\`\`tsx
 import { debounce } from 'lodash-es'; // Tree-shakeable
+\`\`\`
+
+#### PERF-010: Non-lazy Resource Components
+**File:** `src/App.tsx:15`
+**Pattern Found:**
+\`\`\`tsx
+import { ContactList, ContactEdit } from './contacts';
+<Resource name="contacts" list={ContactList} edit={ContactEdit} />
+\`\`\`
+**Fix:**
+\`\`\`tsx
+const ContactList = lazy(() => import('./contacts/ContactList'));
+const ContactEdit = lazy(() => import('./contacts/ContactEdit'));
+<Resource name="contacts" list={ContactList} edit={ContactEdit} />
 \`\`\`
 
 ### Medium (Optimization Opportunities)

@@ -73,6 +73,7 @@ These patterns DIRECTLY VIOLATE the fail-fast principle and must be removed.
 | C6 | Graceful fallbacks (return null) | `rg "catch.*return.*null" --type ts -n $SCOPE` | Silent failures (null) |
 | C7 | Graceful fallbacks (return cache) | `rg "catch.*return.*cache\|catch.*\.cache" --type ts -n $SCOPE` | Silent failures (stale data) |
 | C8 | Graceful fallbacks (default value) | `rg "catch.*return.*default\|catch.*return.*fallback" --type ts -n $SCOPE` | Silent failures |
+| C9 | Raw Supabase outside providers | `rg "supabase\." --type ts -n src/atomic-crm/ --glob '!**/providers/**'` | Bypasses error transformation |
 
 ### High Severity (Error Swallowing)
 
@@ -302,6 +303,40 @@ async function getContacts() {
   const data = await api.fetchContacts();
   if (data.error) throw data.error;
   return data;
+}
+```
+
+---
+
+#### [C9] Raw Supabase Outside Providers - Bypassed Error Handling
+
+**Files Affected:**
+- `src/atomic-crm/contacts/ContactList.tsx:42` - `supabase.from('contacts').select()`
+
+**Risk:** Direct Supabase calls outside the provider layer bypass:
+- Error transformation to user-friendly messages
+- ValidationService at API boundary
+- Centralized logging/monitoring via withErrorLogging wrapper
+
+**Fix:** Use React Admin hooks (`useDataProvider`, `useGetList`, `useGetOne`) which route through the provider layer.
+
+```typescript
+// WRONG: Direct Supabase call bypasses error handling
+import { supabase } from '@/lib/supabase';
+
+async function getContacts() {
+  const { data, error } = await supabase.from('contacts').select();
+  if (error) throw error; // Raw Supabase error, no transformation
+  return data;
+}
+
+// CORRECT: Use React Admin hooks via provider
+import { useGetList } from 'react-admin';
+
+function ContactsList() {
+  const { data, isLoading, error } = useGetList('contacts');
+  // Error already transformed by provider layer
+  // Logging already captured by withErrorLogging wrapper
 }
 ```
 

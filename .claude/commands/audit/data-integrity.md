@@ -41,32 +41,55 @@ If $ARGUMENTS contains a path (e.g., "src/atomic-crm/"):
 
 Execute these rg checks in parallel. Capture file:line for each finding.
 
-### Critical Severity
+---
+
+### Group 1: Database Integrity (Layer 1)
+
+Checks for data persistence violations that affect the database layer directly.
+
+#### Critical Severity
 
 | Check ID | Description | Command | Risk |
 |----------|-------------|---------|------|
-| `C001` | Hard DELETE usage | `rg "DELETE FROM" --type ts -n $SCOPE` | Data loss |
-| `C002` | Direct .delete() calls | `rg "\.delete\(\)" --type ts -n $SCOPE` | Data loss |
-| `C003` | Writing to _summary views | `rg "\.insert\(.*_summary\|\.update\(.*_summary" --type ts -n $SCOPE` | Write fails |
-| `C004` | Strangler Fig violation | See special check below | Architecture debt |
+| `DB-C001` | Hard DELETE usage | `rg "DELETE FROM" --type ts -n $SCOPE` | Data loss |
+| `DB-C002` | Direct .delete() calls | `rg "\.delete\(\)" --type ts -n $SCOPE` | Data loss |
+| `DB-C003` | Writing to _summary views | `rg "\.insert\(.*_summary\|\.update\(.*_summary" --type ts -n $SCOPE` | Write fails |
 
-### High Severity
+#### High Severity
 
 | Check ID | Description | Command | Risk |
 |----------|-------------|---------|------|
-| `H001` | Missing soft delete filter | `rg "\.from\(['\"](?!.*_summary)[^'\"]+['\"]\)" --type ts -n $SCOPE` then check for missing deleted_at | Shows deleted records |
-| `H002` | Deprecated company_id | `rg "company_id" --type ts -n src/atomic-crm/` | Schema violation |
-| `H003` | Deprecated archived_at | `rg "archived_at" --type ts -n $SCOPE` | Use deleted_at |
-| `H004` | Direct Supabase import | `rg "from ['\"]@supabase/supabase-js['\"]" --type ts -n src/atomic-crm/` | Bypass data provider |
+| `DB-H001` | Missing soft delete filter | `rg "\.from\(['\"](?!.*_summary)[^'\"]+['\"]\)" --type ts -n $SCOPE` then check for missing deleted_at | Shows deleted records |
 
-### Medium Severity
+---
+
+### Group 2: Architecture Integrity (Layer 3)
+
+Checks for provider-layer violations that affect system architecture.
+
+#### Critical Severity
+
+| Check ID | Description | Command | Risk |
+|----------|-------------|---------|------|
+| `ARCH-C001` | Strangler Fig violation | See special check below | Architecture debt |
+
+#### High Severity
+
+| Check ID | Description | Command | Risk |
+|----------|-------------|---------|------|
+| `ARCH-H001` | Deprecated company_id | `rg "company_id" --type ts -n src/atomic-crm/` | Schema violation |
+| `ARCH-H002` | Direct Supabase import | `rg "from ['\"]@supabase/supabase-js['\"]" --type ts -n src/atomic-crm/` | Bypass data provider |
+
+---
+
+### Medium Severity (Cross-Layer)
 
 | Check ID | Description | Command | Risk |
 |----------|-------------|---------|------|
 | `M001` | View-only fields in mutations | Check for computed fields in update/insert payloads | Silent data loss |
 | `M002` | Missing TransformService | Updates without stripping view fields | Data corruption |
 
-### Special Check: Strangler Fig Violation (C004)
+### Special Check: Strangler Fig Violation (ARCH-C001)
 
 ```bash
 # Get current line count of unifiedDataProvider.ts
@@ -154,10 +177,10 @@ cat docs/audits/.baseline/data-integrity.json
   },
   "knownIssues": [
     {
-      "id": "H002-1",
+      "id": "ARCH-H001-1",
       "file": "src/atomic-crm/contacts/ContactShow.tsx",
       "line": 45,
-      "check": "H002",
+      "check": "ARCH-H001",
       "status": "acknowledged"
     }
   ]
@@ -357,23 +380,34 @@ After completing all phases, display:
 
 ## Check Definitions Reference
 
-### Critical Checks
+### Database Integrity Checks (Layer 1)
+
+#### Critical
 | ID | Name | Pattern | Why Critical |
 |----|------|---------|--------------|
-| C001 | Hard DELETE SQL | `DELETE FROM` | Permanent data loss, violates soft-delete rule |
-| C002 | Direct .delete() | `.delete()` | Supabase delete bypasses soft-delete |
-| C003 | View Writes | `insert/update.*_summary` | Views are read-only, will fail silently |
-| C004 | Strangler Fig | Provider growth | Architecture regression, should shrink |
+| DB-C001 | Hard DELETE SQL | `DELETE FROM` | Permanent data loss, violates soft-delete rule |
+| DB-C002 | Direct .delete() | `.delete()` | Supabase delete bypasses soft-delete |
+| DB-C003 | View Writes | `insert/update.*_summary` | Views are read-only, will fail silently |
 
-### High Checks
+#### High
 | ID | Name | Pattern | Why High |
 |----|------|---------|----------|
-| H001 | Missing Soft Delete Filter | `.from()` without `deleted_at` | Shows deleted records to users |
-| H002 | Deprecated company_id | `company_id` | Use contact_organizations junction |
-| H003 | Deprecated archived_at | `archived_at` | Use deleted_at instead |
-| H004 | Direct Supabase | `@supabase/supabase-js` | Bypass data provider validation |
+| DB-H001 | Missing Soft Delete Filter | `.from()` without `deleted_at` | Shows deleted records to users |
 
-### Medium Checks
+### Architecture Integrity Checks (Layer 3)
+
+#### Critical
+| ID | Name | Pattern | Why Critical |
+|----|------|---------|--------------|
+| ARCH-C001 | Strangler Fig | Provider growth | Architecture regression, should shrink |
+
+#### High
+| ID | Name | Pattern | Why High |
+|----|------|---------|----------|
+| ARCH-H001 | Deprecated company_id | `company_id` | Use contact_organizations junction |
+| ARCH-H002 | Direct Supabase | `@supabase/supabase-js` | Bypass data provider validation |
+
+### Medium Checks (Cross-Layer)
 | ID | Name | Description | Why Medium |
 |----|------|-------------|------------|
 | M001 | View Fields in Writes | Computed fields in mutations | Data ignored, potential confusion |

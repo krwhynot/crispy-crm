@@ -124,6 +124,21 @@ rg "VARCHAR\(\d+\)" supabase/migrations/ --type sql
 rg "TEXT" supabase/migrations/ --type sql
 ```
 
+### 2.7 View Duality Code Patterns
+
+**Verify feature code reads from `*_summary` views, not base tables:**
+
+| Check ID | Description | Command | Severity |
+|----------|-------------|---------|----------|
+| `VIEW-001` | Read from base contacts table | `rg "\.from\(['\"]contacts['\"]" --type ts -n src/atomic-crm/ --glob '!**/providers/**'` | High |
+| `VIEW-002` | Read from base opportunities table | `rg "\.from\(['\"]opportunities['\"]" --type ts -n src/atomic-crm/ --glob '!**/providers/**'` | High |
+| `VIEW-003` | Read from base organizations table | `rg "\.from\(['\"]organizations['\"]" --type ts -n src/atomic-crm/ --glob '!**/providers/**'` | High |
+
+**Rationale:** Reads should use `*_summary` views for pre-calculated fields (computed stats, denormalized joins). Provider handlers are excluded since they correctly route reads to views and writes to base tables.
+
+**Severity:** High
+**Risk:** Missing computed fields, inconsistent data representation, N+1 query patterns
+
 ---
 
 ## Phase 3: Live DB Checks (Full Mode Only)

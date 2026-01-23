@@ -688,6 +688,14 @@ Top 3 files needing attention:
 
 ---
 
+## Related Checks (See Other Audits)
+
+| Check | Description | See |
+|-------|-------------|-----|
+| Tier 1 import leaks | `rg "from ['\"]@/components/ui/"` | `/audit/architecture` H006 |
+
+---
+
 ## Related Commands
 
 - `/audit/typescript` - TypeScript audit (any types, strict mode)
