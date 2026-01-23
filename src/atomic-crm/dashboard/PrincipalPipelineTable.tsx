@@ -90,10 +90,10 @@ export function PrincipalPipelineTable() {
               <Skeleton className="h-4 w-80" />
             </div>
             <div className="flex items-center gap-2">
-              <Skeleton className="h-9 w-48" />
+              <Skeleton className="h-11 w-48" />
               <Skeleton className="h-5 w-10" />
               <Skeleton className="h-4 w-28" />
-              <Skeleton className="h-9 w-20" />
+              <Skeleton className="h-11 w-20" />
             </div>
           </div>
         </div>
@@ -157,7 +157,7 @@ export function PrincipalPipelineTable() {
                 placeholder="Search principals..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 w-48 pl-8"
+                className="h-11 w-48 pl-8"
               />
             </div>
             <div className="flex items-center gap-2">
