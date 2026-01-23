@@ -3,10 +3,7 @@
   "audit_type": "WCAG 2.1 AA Compliance",
   "mode": "comprehensive",
   "date": "2026-01-22",
-  "scope": [
-    "src/atomic-crm/**/*.tsx",
-    "src/components/**/*.tsx"
-  ],
+  "scope": ["src/atomic-crm/**/*.tsx", "src/components/**/*.tsx"],
   "critical": 2,
   "high": 6,
   "medium": 2,
@@ -70,9 +67,7 @@
       "example": "bgClass: \"bg-teal-100\", textClass: \"text-teal-800\"",
       "fix": "See A11Y-003: consolidate all stage colors into a centralized, semantic color mapping.",
       "impact": "Theme inconsistency. Contrast risk in alternative color schemes.",
-      "evidence": [
-        "Lines 164-166"
-      ]
+      "evidence": ["Lines 164-166"]
     },
     {
       "id": "A11Y-005",
@@ -84,9 +79,7 @@
       "example": "bgClass: \"bg-amber-100\", textClass: \"text-amber-800\"",
       "fix": "See A11Y-003: centralize color mapping.",
       "impact": "Maintenance and contrast compliance risk.",
-      "evidence": [
-        "Lines 180-182"
-      ]
+      "evidence": ["Lines 180-182"]
     },
     {
       "id": "A11Y-006",
@@ -98,9 +91,7 @@
       "example": "bgClass: \"bg-emerald-100\", textClass: \"text-emerald-800\"",
       "fix": "See A11Y-003: centralize color mapping.",
       "impact": "Maintenance and contrast compliance risk.",
-      "evidence": [
-        "Lines 212-214"
-      ]
+      "evidence": ["Lines 212-214"]
     },
     {
       "id": "A11Y-007",

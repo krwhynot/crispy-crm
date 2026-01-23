@@ -59,18 +59,18 @@ React Admin's `getOne`, `edit`, and `delete` operations pass a single `id` param
 ```tsx
 // src/atomic-crm/services/productDistributors.service.ts
 
-// Parse "123-456" → { product_id: 123, distributor_id: 456 }
+// Parse "123_456" → { product_id: 123, distributor_id: 456 }
 export const parseCompositeId = (id: string): { product_id: number; distributor_id: number } => {
-  const [product_id, distributor_id] = id.split('-').map(Number);
+  const [product_id, distributor_id] = id.split('_').map(Number);
   if (isNaN(product_id) || isNaN(distributor_id)) {
-    throw new Error(`Invalid composite ID format: ${id}. Expected format: product_id-distributor_id`);
+    throw new Error(`Invalid composite ID format: ${id}. Expected format: product_id_distributor_id`);
   }
   return { product_id, distributor_id };
 };
 
 // Create string ID from two FKs
 export const createCompositeId = (product_id: number, distributor_id: number): string => {
-  return `${product_id}-${distributor_id}`;
+  return `${product_id}_${distributor_id}`;
 };
 ```
 

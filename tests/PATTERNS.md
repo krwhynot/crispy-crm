@@ -182,11 +182,13 @@ Both `beforeAll` and `beforeEach` are valid patterns - choose based on test isol
 
 | Hook | Use When | Example |
 |------|----------|---------|
-| `beforeAll` | Setup is expensive and can be shared across tests (DB connections, auth, fixtures) | RLS tests: create users once, run multiple permission checks |
+| `beforeAll` | Setup is expensive and can be shared across tests (DB connections, auth, fixtures) | Recommended for RLS tests: create users once, run multiple permission checks |
 | `beforeEach` | Tests may mutate state and need fresh setup for isolation | CSV import: fresh harness per test to avoid data pollution |
 
+**Note**: Current RLS tests (`rls-policies.test.ts`) use `beforeEach` for stricter isolation, creating fresh users per test. This is safer but less efficient than the `beforeAll` recommendation.
+
 ```typescript
-// beforeAll: Shared expensive setup
+// beforeAll: Shared expensive setup (RECOMMENDED for RLS)
 describe("RLS Policies", () => {
   let adminClient: SupabaseClient;
 
@@ -200,7 +202,7 @@ describe("RLS Policies", () => {
   });
 });
 
-// beforeEach: Isolated per-test setup
+// beforeEach: Isolated per-test setup (CURRENT IMPLEMENTATION)
 describe("CSV Import", () => {
   let harness: TestHarness;
 

@@ -651,14 +651,16 @@ When adding a new validator to the framework:
 
 ## File Reference
 
-| File | LOC | Purpose |
-|------|-----|---------|
-| `run-pre-validation.js` | 403 | SQL-based validation runner, DB connection |
-| `go-no-go.js` | 560 | Decision engine, multi-validator orchestration |
-| `data-quality.js` | 968 | Completeness, accuracy, consistency scoring |
-| `referential-integrity.js` | 449 | Foreign key validation, orphaned records |
-| `required-fields.js` | 641 | Missing field detection per entity |
-| `unique-constraints.js` | 481 | Duplicate detection, conflict identification |
-| `test-validation-framework.js` | 71 | Module verification test harness |
-| `pre-migration-validation.sql` | 530 | Database-level validation queries |
-| `capture-current-state.sql` | 620 | Snapshot for rollback comparison |
+| File | LOC | Purpose | Status |
+|------|-----|---------|--------|
+| `run-pre-validation.js` | 403 | SQL-based validation runner, DB connection | ✅ Implemented |
+| `go-no-go.js` | 560 | Decision engine, multi-validator orchestration | ✅ Implemented |
+| `data-quality.js` | 968 | Completeness, accuracy, consistency scoring | ✅ Implemented |
+| `referential-integrity.js` | 449 | Foreign key validation, orphaned records | ✅ Implemented |
+| `required-fields.js` | 641 | Missing field detection per entity | ✅ Implemented |
+| `unique-constraints.js` | 481 | Duplicate detection, conflict identification | ✅ Implemented |
+| `test-validation-framework.js` | 71 | Module verification test harness | ✅ Implemented |
+| `pre-migration-validation.sql` | ~530 | Database-level validation queries | 🚧 Planned (not yet implemented) |
+| `capture-current-state.sql` | ~620 | Snapshot for rollback comparison | 🚧 Planned (not yet implemented) |
+
+**Note**: SQL-based validators (`pre-migration-validation.sql`, `capture-current-state.sql`) are planned infrastructure but not yet implemented. Current validation uses JavaScript validators with Supabase SDK.
