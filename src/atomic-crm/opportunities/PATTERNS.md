@@ -317,7 +317,7 @@ import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
-import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
+import { useSimilarOpportunityCheck } from "./useSimilarOpportunityCheck";
 
 const OpportunityCreate = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -430,7 +430,7 @@ export const OpportunityCompactForm = ({ mode = "create" }) => {
 ### Similar Opportunity Detection
 
 ```tsx
-// src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.ts
+// src/atomic-crm/opportunities/useSimilarOpportunityCheck.ts
 // Prevents duplicate opportunities via Levenshtein fuzzy matching
 
 export const useSimilarOpportunityCheck = () => {
@@ -471,7 +471,7 @@ Trade show mode for 30-second data entry with "Save & Add Another" pattern.
 **When to use:** High-frequency data entry scenarios (trade shows, batch imports).
 
 ```tsx
-// src/atomic-crm/opportunities/quick-add/QuickAddDialog.tsx
+// src/atomic-crm/opportunities/QuickAddDialog.tsx
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { QuickAddForm } from "./QuickAddForm";
 
