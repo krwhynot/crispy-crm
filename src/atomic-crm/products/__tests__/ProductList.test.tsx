@@ -406,7 +406,7 @@ describe("ProductList", () => {
     sortableColumns.length = 0;
 
     vi.mocked(useListContext).mockReturnValue(defaultListContext);
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
@@ -510,7 +510,7 @@ describe("ProductList 5-column structure", () => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
 
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
@@ -586,7 +586,7 @@ describe("ProductList column sorting configuration", () => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
 
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
@@ -690,7 +690,7 @@ describe("ProductList badge components", () => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
 
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
