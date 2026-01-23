@@ -9,19 +9,8 @@
 -- ============================================================
 
 -- 1.1 Enable RLS on task_id_mapping (SEC-001)
--- Rollback: ALTER TABLE task_id_mapping DISABLE ROW LEVEL SECURITY;
-ALTER TABLE task_id_mapping ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "task_id_mapping_authenticated_select"
-ON task_id_mapping FOR SELECT
-TO authenticated
-USING (true);
-
-CREATE POLICY "task_id_mapping_service_role_all"
-ON task_id_mapping FOR ALL
-TO service_role
-USING (true)
-WITH CHECK (true);
+-- MOVED TO: 20260122231125_enable_rls_task_id_mapping.sql
+-- Reason: Removed permissive WITH CHECK (true) pattern
 
 -- 1.2 Fix audit_trail policy - admin only (was USING(true))
 -- Rollback: DROP POLICY audit_trail_admin_select; CREATE POLICY authenticated_select_audit_trail...

@@ -14,6 +14,8 @@ import * as React from "react";
 import { useState } from "react";
 import { useShowContext, useUpdate, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { opportunityKeys } from "../queryKeys";
 import { format, isValid, isPast, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { AdminButton } from "@/components/admin/AdminButton";
@@ -26,10 +28,11 @@ import { Calendar, ChevronDown, ChevronUp, Tag as TagIcon, Target, FileText } fr
 import type { Opportunity } from "../types";
 
 export const WorkflowManagementSection: React.FC = () => {
-  const { record, refetch } = useShowContext<Opportunity>();
+  const { record } = useShowContext<Opportunity>();
   const [update] = useUpdate();
   const notify = useNotify();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Local state for inline editing
   const [nextAction, setNextAction] = useState(record?.next_action || "");
