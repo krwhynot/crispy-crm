@@ -94,37 +94,15 @@ export interface PhoneNumberAndType {
   type: "work" | "home" | "other";
 }
 
-export interface Contact extends Pick<RaRecord, "id"> {
-  first_name: string;
-  last_name: string;
-  title: string;
-  email: EmailAndType[];
-  avatar?: Partial<RAFileBase>;
-  linkedin_url?: string | null;
-  first_seen: string;
-  last_seen: string;
-  has_newsletter: boolean;
-  tags: Identifier[];
-  gender: string;
-  opportunity_owner_id: Identifier;
-  status: string;
-  background: string;
-  phone: PhoneNumberAndType[];
-
-  // Organization relationship (one-to-many)
-  organization_id?: Identifier | null;
-  department?: string;
-  deleted_at?: string;
-
-  // Sales assignment (optional - matches database schema where sales_id is nullable)
-  sales_id?: Identifier | null;
-
-  // Calculated fields from contacts_summary view
-  nb_notes?: number;
-  nb_tasks?: number;
-  nb_activities?: number;
-  company_name?: string;
-}
+// Contact type is now exported from validation/contacts/contacts-core.ts (P2 consolidation)
+// The schema includes: id, first_name, last_name, name, title, email, phone, avatar,
+// linkedin_url, first_seen, last_seen, tags, gender, status, notes, organization_id,
+// department, department_type, manager_id, sales_id, district_code, territory_name,
+// birthday, twitter_handle, address fields, created_at/updated_at/deleted_at,
+// nb_notes, nb_tasks, nb_activities, company_name (computed view fields)
+//
+// Legacy fields removed (not in database schema):
+// - has_newsletter, opportunity_owner_id, background
 
 // ContactOrganization interface removed - junction table was deprecated.
 // Contacts now use a direct organization_id FK (single org per contact).
@@ -332,7 +310,7 @@ export interface ActivityContactCreated extends Pick<RaRecord, "id"> {
   type: typeof CONTACT_CREATED;
   customer_organization_id: Identifier;
   opportunity_owner_id?: Identifier;
-  contact: Contact;
+  contact: ContactBase;
   date: string;
 }
 
