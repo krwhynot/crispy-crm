@@ -759,84 +759,137 @@
           contextInfo.replaceChildren();
 
           // Create info div
-          const infoDiv = document.createElement('div');
-          infoDiv.style.marginBottom = '12px';
+          const infoDiv = document.createElement("div");
+          infoDiv.style.marginBottom = "12px";
 
-          const eventLabel = document.createElement('strong');
-          eventLabel.textContent = 'Event:';
+          const eventLabel = document.createElement("strong");
+          eventLabel.textContent = "Event:";
           infoDiv.appendChild(eventLabel);
-          infoDiv.appendChild(document.createTextNode(' NRA Show 2025'));
-          infoDiv.appendChild(document.createElement('br'));
+          infoDiv.appendChild(document.createTextNode(" NRA Show 2025"));
+          infoDiv.appendChild(document.createElement("br"));
 
-          const locationLabel = document.createElement('strong');
-          locationLabel.textContent = 'Location:';
+          const locationLabel = document.createElement("strong");
+          locationLabel.textContent = "Location:";
           infoDiv.appendChild(locationLabel);
-          infoDiv.appendChild(document.createTextNode(' Booth #1247'));
-          infoDiv.appendChild(document.createElement('br'));
+          infoDiv.appendChild(document.createTextNode(" Booth #1247"));
+          infoDiv.appendChild(document.createElement("br"));
 
-          const userLabel = document.createElement('strong');
-          userLabel.textContent = 'User:';
+          const userLabel = document.createElement("strong");
+          userLabel.textContent = "User:";
           infoDiv.appendChild(userLabel);
-          infoDiv.appendChild(document.createTextNode(' Sarah Johnson'));
+          infoDiv.appendChild(document.createTextNode(" Sarah Johnson"));
 
           contextInfo.appendChild(infoDiv);
 
           // Create stat grid
-          const statGrid = document.createElement('div');
-          statGrid.className = 'stat-grid';
+          const statGrid = document.createElement("div");
+          statGrid.className = "stat-grid";
 
-          const todayStat = document.createElement('div');
-          todayStat.className = 'stat';
-          const todayValue = document.createElement('div');
-          todayValue.className = 'value';
-          todayValue.textContent = '47';
-          const todayLabel = document.createElement('div');
-          todayLabel.className = 'label';
-          todayLabel.textContent = 'Today';
+          const todayStat = document.createElement("div");
+          todayStat.className = "stat";
+          const todayValue = document.createElement("div");
+          todayValue.className = "value";
+          todayValue.textContent = "47";
+          const todayLabel = document.createElement("div");
+          todayLabel.className = "label";
+          todayLabel.textContent = "Today";
           todayStat.appendChild(todayValue);
           todayStat.appendChild(todayLabel);
 
-          const totalStat = document.createElement('div');
-          totalStat.className = 'stat';
-          const totalValue = document.createElement('div');
-          totalValue.className = 'value';
-          totalValue.textContent = '132';
-          const totalLabel = document.createElement('div');
-          totalLabel.className = 'label';
-          totalLabel.textContent = 'Total';
+          const totalStat = document.createElement("div");
+          totalStat.className = "stat";
+          const totalValue = document.createElement("div");
+          totalValue.className = "value";
+          totalValue.textContent = "132";
+          const totalLabel = document.createElement("div");
+          totalLabel.className = "label";
+          totalLabel.textContent = "Total";
           totalStat.appendChild(totalValue);
           totalStat.appendChild(totalLabel);
 
           statGrid.appendChild(todayStat);
           statGrid.appendChild(totalStat);
           contextInfo.appendChild(statGrid);
-          tipsContent.innerHTML = `
-                    <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: var(--text-muted);">
-                        <li>Use badge scanner for quick contact entry</li>
-                        <li>Same visitor, different principal? Use "Same Contact" button</li>
-                        <li>Can expand to full details after the show</li>
-                        <li>All booth visitors automatically tagged with campaign</li>
-                    </ul>
-                `;
+
+          // Create tips list
+          tipsContent.replaceChildren();
+          const tipsList = document.createElement("ul");
+          tipsList.style.paddingLeft = "20px";
+          tipsList.style.margin = "0";
+          tipsList.style.fontSize = "14px";
+          tipsList.style.color = "var(--text-muted)";
+
+          const tips = [
+            "Use badge scanner for quick contact entry",
+            'Same visitor, different principal? Use "Same Contact" button',
+            "Can expand to full details after the show",
+            "All booth visitors automatically tagged with campaign",
+          ];
+
+          tips.forEach((tipText) => {
+            const li = document.createElement("li");
+            li.textContent = tipText;
+            tipsList.appendChild(li);
+          });
+
+          tipsContent.appendChild(tipsList);
           relatedCard.style.display = "none";
         } else {
-          contextInfo.innerHTML = `
-                    <div style="margin-bottom: 12px;">
-                        <strong>Mode:</strong> Direct Sales Visit<br>
-                        <strong>Focus:</strong> Single Opportunity<br>
-                        <strong>User:</strong> Sarah Johnson
-                    </div>
-                    <div class="stat-grid">
-                        <div class="stat">
-                            <div class="value">3</div>
-                            <div class="label">Today</div>
-                        </div>
-                        <div class="stat">
-                            <div class="value">12</div>
-                            <div class="label">This Week</div>
-                        </div>
-                    </div>
-                `;
+          // Clear existing content
+          contextInfo.replaceChildren();
+
+          // Create info div
+          const infoDiv = document.createElement("div");
+          infoDiv.style.marginBottom = "12px";
+
+          const modeLabel = document.createElement("strong");
+          modeLabel.textContent = "Mode:";
+          infoDiv.appendChild(modeLabel);
+          infoDiv.appendChild(document.createTextNode(" Direct Sales Visit"));
+          infoDiv.appendChild(document.createElement("br"));
+
+          const focusLabel = document.createElement("strong");
+          focusLabel.textContent = "Focus:";
+          infoDiv.appendChild(focusLabel);
+          infoDiv.appendChild(document.createTextNode(" Single Opportunity"));
+          infoDiv.appendChild(document.createElement("br"));
+
+          const userLabel = document.createElement("strong");
+          userLabel.textContent = "User:";
+          infoDiv.appendChild(userLabel);
+          infoDiv.appendChild(document.createTextNode(" Sarah Johnson"));
+
+          contextInfo.appendChild(infoDiv);
+
+          // Create stat grid
+          const statGrid = document.createElement("div");
+          statGrid.className = "stat-grid";
+
+          const todayStat = document.createElement("div");
+          todayStat.className = "stat";
+          const todayValue = document.createElement("div");
+          todayValue.className = "value";
+          todayValue.textContent = "3";
+          const todayLabel = document.createElement("div");
+          todayLabel.className = "label";
+          todayLabel.textContent = "Today";
+          todayStat.appendChild(todayValue);
+          todayStat.appendChild(todayLabel);
+
+          const weekStat = document.createElement("div");
+          weekStat.className = "stat";
+          const weekValue = document.createElement("div");
+          weekValue.className = "value";
+          weekValue.textContent = "12";
+          const weekLabel = document.createElement("div");
+          weekLabel.className = "label";
+          weekLabel.textContent = "This Week";
+          weekStat.appendChild(weekValue);
+          weekStat.appendChild(weekLabel);
+
+          statGrid.appendChild(todayStat);
+          statGrid.appendChild(weekStat);
+          contextInfo.appendChild(statGrid);
           tipsContent.innerHTML = `
                     <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: var(--text-muted);">
                         <li>Complete all fields for accurate pipeline tracking</li>

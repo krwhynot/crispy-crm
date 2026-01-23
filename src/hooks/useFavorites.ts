@@ -1,5 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useGetList, useCreate, useUpdate, useNotify, useGetIdentity } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
+import { userFavoriteKeys } from "@/atomic-crm/queryKeys";
 import type { Favorite, FavoriteEntityType } from "@/atomic-crm/validation/favorites";
 
 const MAX_FAVORITES = 10;

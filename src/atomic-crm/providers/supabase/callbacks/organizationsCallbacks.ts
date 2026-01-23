@@ -131,11 +131,12 @@ async function organizationsBeforeDelete(
     void deleteStorageFiles(filePaths).catch((err: unknown) => {
       // EH-002 FIX: Structured logging with context for debugging
       const errorMessage = err instanceof Error ? err.message : String(err);
-      console.warn(`[organizationsBeforeDelete] Storage cleanup failed`, {
+      logger.warn(`Storage cleanup failed after organization archive`, {
         organizationId: params.id,
         fileCount: filePaths.length,
         files: filePaths.slice(0, 5), // First 5 for debugging, avoid huge logs
         error: errorMessage,
+        operation: "organizationsBeforeDelete",
         note: "Archive succeeded - orphaned files can be cleaned up later",
       });
     });

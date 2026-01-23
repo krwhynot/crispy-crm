@@ -1,5 +1,5 @@
 {
-  "lastAudit": "2026-01-20T14:09:09Z",
+  "lastAudit": "2026-01-23T00:00:00Z",
   "composedDataProviderLines": 260,
   "unifiedProviderLines": 0,
   "findings": {
@@ -83,9 +83,9 @@
   ],
   "databaseChecks": {
     "viewTableDuality": {
-      "totalTables": 27,
+      "totalTables": 28,
       "tablesWithViews": 4,
-      "missingViewsCount": 23,
+      "missingViewsCount": 24,
       "coreViewsPresent": [
         "contacts -> contacts_summary",
         "opportunities -> opportunities_summary",
@@ -94,17 +94,11 @@
       ]
     },
     "softDeleteConsistency": {
-      "totalTables": 27,
-      "tablesWithDeletedAt": 22,
-      "missingDeletedAtCount": 5,
-      "tablesMissingDeletedAt": [
-        "audit_trail",
-        "dashboard_snapshots",
-        "migration_history",
-        "test_user_metadata",
-        "tutorial_progress"
-      ],
-      "complianceRate": "81.5%"
+      "totalTables": 28,
+      "tablesWithDeletedAt": 25,
+      "missingDeletedAtCount": 3,
+      "tablesMissingDeletedAt": ["task_id_mapping", "test_user_metadata", "tutorial_progress"],
+      "complianceRate": "89.3%"
     },
     "orphanedRecords": 0,
     "deprecatedPatternsFound": 0

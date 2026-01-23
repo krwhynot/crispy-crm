@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
+import { taskKeys } from "../queryKeys";
 import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { SnoozeIndicator } from "@/components/ui/snooze-badge";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -66,7 +67,7 @@ export function TaskSlideOverDetailsTab({
         data,
         previousData: record,
       });
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
       notify("Task updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
