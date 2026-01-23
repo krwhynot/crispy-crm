@@ -52,14 +52,10 @@ export { CurrentSaleContext };
  * Hook to get current user's sales ID
  *
  * PERFORMANCE: Uses cached context when available (inside CurrentSaleProvider),
- * falls back to direct query when outside provider for backward compatibility.
+ * falls back to useGetIdentity when outside provider for backward compatibility.
  *
- * CRITICAL: Uses Supabase auth.getUser() and user.id (UUID) for lookup.
- * DO NOT use React Admin identity.id - it's a string representation
- * of sales.id which causes type mismatches in queries.
- *
- * This hook queries: SELECT id FROM sales WHERE user_id = auth.uid()
- * OR falls back to email match for legacy users with NULL user_id
+ * The authProvider.getIdentity() returns { id: sale.id, user_id, fullName, avatar, role }
+ * where id is the numeric sales.id we need for queries.
  */
 export function useCurrentSale() {
   // Try to use cached context first
@@ -96,104 +92,35 @@ export function useCurrentSale() {
 }
 
 /**
- * Direct query implementation (used as fallback or standalone)
+ * Direct hook implementation (used as fallback or standalone)
  * Kept separate to allow context-based hook to call it when needed.
  *
- * ARCHITECTURE NOTE: Uses data provider for sales table query (single entry point),
- * but still requires direct Supabase auth.getUser() call because:
- * 1. React Admin's useGetIdentity returns the sales record (not auth user)
- * 2. We need the auth user's UUID to query the sales table
- * 3. Auth state is outside the data provider's scope
+ * SECURITY FIX (H-SEC-001): Replaced direct Supabase import with useGetIdentity.
+ * React Admin's authProvider.getIdentity() already:
+ * 1. Returns the sales record with id (the sales.id we need)
+ * 2. Handles auth state management
+ * 3. Caches results (15-minute TTL in authProvider)
+ * 4. Falls back to email match for legacy users
+ *
+ * This eliminates the direct Supabase import while maintaining all functionality.
  */
 function useCurrentSaleDirect() {
-  const dataProvider = useDataProvider();
-  const [salesId, setSalesId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const { data: identity, isLoading, error: identityError } = useGetIdentity();
 
-  useEffect(() => {
-    let isMounted = true;
+  // Extract sales ID from identity
+  // The authProvider.getIdentity() returns { id: sale.id, user_id, fullName, avatar, role }
+  const salesId = identity?.id ? Number(identity.id) : null;
 
-    const fetchSaleId = async () => {
-      try {
-        setLoading(true);
+  // Debug logging for development
+  if (import.meta.env.DEV && identity && salesId) {
+    devLog("useCurrentSaleDirect", "Using identity from authProvider", {
+      salesId,
+      hasIdentity: !!identity,
+    });
+  }
 
-        // Get current user from Supabase auth
-        // NOTE: This is the ONLY acceptable direct Supabase import in this hook
-        // because auth state is outside the data provider's responsibility
-        const {
-          data: { user },
-          error: userError,
-        } = await supabase.auth.getUser();
+  // Convert identity error to Error type
+  const error = identityError instanceof Error ? identityError : null;
 
-        if (userError) throw userError;
-        if (!user) {
-          if (isMounted) setLoading(false);
-          return;
-        }
-
-        // Query sales table using data provider (single entry point)
-        // This is the ONLY correct way to get sales.id
-        // Handle legacy users with NULL user_id by falling back to email match
-        // Uses PostgREST "or@" syntax (same pattern as applyFullTextSearch)
-        const { data: salesRecords } = await dataProvider.getList("sales", {
-          filter: {
-            "or@": `(user_id.eq.${user.id},email.eq.${user.email})`,
-          },
-          sort: { field: "id", order: "ASC" },
-          pagination: { page: 1, perPage: 1 },
-        });
-
-        const sale = salesRecords?.[0] as
-          | { id: number; user_id?: string | null; email: string }
-          | undefined;
-
-        if (isMounted) {
-          if (sale?.id) {
-            setSalesId(sale.id); // This is a number (bigint from DB)
-
-            // Debug logging for B1 filtering investigation
-            if (import.meta.env.DEV) {
-              devLog("useCurrentSale", "Found sales record", {
-                salesId: sale.id,
-                hasUserId: !!sale.user_id,
-                email: sale.email,
-              });
-            }
-
-            // If this is a legacy user without user_id, log a warning
-            if (!sale.user_id) {
-              console.warn(
-                `Sales record ${sale.id} matched by email but has NULL user_id. Consider running migration to populate user_id.`
-              );
-            }
-          } else {
-            // Debug logging when no sales record found
-            if (import.meta.env.DEV) {
-              devLog("useCurrentSale", "No sales record found for user", {
-                userId: user.id,
-                email: user.email,
-              });
-            }
-          }
-        }
-      } catch (error: unknown) {
-        console.error(
-          "Failed to fetch sales ID:",
-          error instanceof Error ? error.message : String(error)
-        );
-        if (isMounted) setError(error instanceof Error ? error : new Error(String(error)));
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    fetchSaleId();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [dataProvider]); // Run once on mount (dataProvider is stable)
-
-  return { salesId, loading, error };
+  return { salesId, loading: isLoading, error };
 }

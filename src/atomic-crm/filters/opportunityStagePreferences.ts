@@ -38,7 +38,11 @@ export const getStoredStagePreferences = (): string[] => {
       return DEFAULT_VISIBLE_STAGES;
     }
     return stored;
-  } catch {
+  } catch (error) {
+    // Log storage read failures for debugging - non-critical, graceful fallback to defaults
+    console.warn("[opportunityStagePreferences] Failed to read stage preferences from storage", {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return DEFAULT_VISIBLE_STAGES;
   }
 };

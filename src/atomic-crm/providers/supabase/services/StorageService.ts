@@ -36,8 +36,16 @@ export class StorageService {
           if (data?.publicUrl) {
             return fi;
           }
-        } catch {
-          // File doesn't exist, proceed with upload
+        } catch (error) {
+          // File doesn't exist or check failed - proceed with upload
+          // Debug level: expected flow when uploading new files
+          console.debug(
+            "[StorageService.uploadToBucket] File existence check failed, proceeding with upload",
+            {
+              path: fi.path,
+              error: error instanceof Error ? error.message : String(error),
+            }
+          );
         }
       }
     }

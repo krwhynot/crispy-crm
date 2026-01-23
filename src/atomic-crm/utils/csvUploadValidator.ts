@@ -115,7 +115,13 @@ export async function validateCsvFile(file: File): Promise<CsvValidationResult> 
     if (/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/.test(chunk)) {
       warnings.push("File may contain control characters or binary data");
     }
-  } catch {
+  } catch (error) {
+    // Log file read failures - helps debug encoding/corruption issues
+    devLog("CSV Security", "File read failed", {
+      fileName: file.name,
+      fileSize: file.size,
+      error: error instanceof Error ? error.message : String(error),
+    });
     errors.push({
       field: "encoding",
       message: "Unable to read file. Ensure it is valid UTF-8 encoded text.",

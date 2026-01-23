@@ -61,7 +61,12 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
 
     // Older than 7 days: show abbreviated date using user's locale
     return targetDate.toLocaleDateString(locale, { month: "short", day: "numeric" });
-  } catch {
+  } catch (error) {
+    // Date formatting errors - return fallback but log for debugging
+    console.debug("[formatRelativeTime] Date formatting failed", {
+      date: String(date),
+      error: error instanceof Error ? error.message : String(error),
+    });
     return "unknown";
   }
 }
