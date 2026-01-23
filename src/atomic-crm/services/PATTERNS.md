@@ -19,14 +19,13 @@ Standard patterns for business logic services in Crispy CRM.
 │     │  │ SalesService │ Opportunities│ ActivitiesService    │ │     │
 │     │  │       ✅     │ Service ✅   │         ✅          │ │     │
 │     │  ├──────────────┼──────────────┼──────────────────────┤ │     │
-│     │  │ Junctions    │ Segments     │ Products        ✅  │ │     │
+│     │  │ Junctions    │ Segments     │                      │ │     │
 │     │  │ Service ✅   │ Service ✅   │                      │ │     │
-│     │  ├──────────────┼──────────────┼──────────────────────┤ │     │
-│     │  │ ProductDist- │              │                      │ │     │
-│     │  │ ributors ✅  │              │                      │ │     │
 │     │  └──────────────┴──────────────┴──────────────────────┘ │     │
 │     │                                                          │     │
 │     │  🚧 Planned (not yet registered):                       │     │
+│     │     ProductsService - Product CRUD with distributors    │     │
+│     │     ProductDistributorsService - Composite key junctions│     │
 │     │     DigestService - Overdue tasks & notifications       │     │
 │     └─────────────────────────────────────────────────────────┘     │
 │                                                                      │
@@ -388,9 +387,10 @@ export interface ServiceContainer {
   activities: ActivitiesService;
   junctions: JunctionsService;
   segments: SegmentsService;
-  products: ProductsService;
-  productDistributors: ProductDistributorsService;
-  // Note: DigestService exists but is not yet registered in ServiceContainer
+  // 🚧 Not yet registered (but implemented):
+  // - ProductsService
+  // - ProductDistributorsService
+  // - DigestService
 }
 
 export function createServiceContainer(baseProvider: DataProvider): ServiceContainer {
@@ -412,13 +412,17 @@ export function createServiceContainer(baseProvider: DataProvider): ServiceConta
     // Segments service - Get-or-create pattern for segment tagging
     segments: new SegmentsService(baseProvider),
 
-    // Products service - Product CRUD with distributor relationships, soft delete via RPC
-    products: new ProductsService(baseProvider),
-
-    // ProductDistributors service - Composite key junction table operations
-    productDistributors: new ProductDistributorsService(baseProvider),
-
     // 🚧 Implemented but not registered:
+    // - ProductsService (src/atomic-crm/services/products.service.ts)
+    //   Purpose: Product CRUD with distributor relationships, soft delete via RPC
+    //   Methods: getOneWithDistributors(), createWithDistributors(), softDelete()
+    //   TODO: Add to ServiceContainer interface and factory
+    //
+    // - ProductDistributorsService (src/atomic-crm/services/productDistributors.service.ts)
+    //   Purpose: Composite key junction table operations
+    //   Methods: getOne(), create(), update(), delete(), getDistributorsForProduct()
+    //   TODO: Add to ServiceContainer interface and factory
+    //
     // - DigestService (src/atomic-crm/services/digest.service.ts)
     //   Purpose: Overdue tasks and digest notifications
     //   Methods: getOverdueTasksForUser()
