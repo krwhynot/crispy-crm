@@ -1,3 +1,4 @@
+import { memo } from "react";
 import jsonExport from "jsonexport/dist";
 import { downloadCSV, type Exporter, useGetIdentity, useListContext } from "ra-core";
 import { FunctionField } from "react-admin";

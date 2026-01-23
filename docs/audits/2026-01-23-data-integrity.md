@@ -50,19 +50,26 @@
 
 ✅ **No critical violations found**
 
-### High (7 issues - Verification Required)
+### High (0 issues - All Verified)
 
-All High-severity findings are in **storageCleanup.ts** - a GDPR compliance utility that may **intentionally** query deleted records for cleanup.
+✅ **All previously flagged High-severity items have been verified as resolved or intentional exceptions.**
 
-| ID | Check | Location | Evidence | Risk | Status |
-|----|-------|----------|----------|------|--------|
-| H001-1 | Missing soft-delete filter | src/atomic-crm/providers/supabase/authProvider.ts:164 | Sales query without `deleted_at IS NULL` | Shows deleted sales records | ⚠️ Requires fix |
-| H001-2 | Missing soft-delete filter | src/atomic-crm/providers/supabase/utils/storageCleanup.ts:147 | Activities query without filter | May be intentional for GDPR cleanup | 🔍 Needs verification |
-| H001-3 | Missing soft-delete filter | src/atomic-crm/providers/supabase/utils/storageCleanup.ts:160 | Contact notes query without filter | May be intentional for GDPR cleanup | 🔍 Needs verification |
-| H001-4 | Missing soft-delete filter | src/atomic-crm/providers/supabase/utils/storageCleanup.ts:195 | Organizations query without filter | May be intentional for GDPR cleanup | 🔍 Needs verification |
-| H001-5 | Missing soft-delete filter | src/atomic-crm/providers/supabase/utils/storageCleanup.ts:207 | Organization notes query without filter | May be intentional for GDPR cleanup | 🔍 Needs verification |
-| H001-6 | Missing soft-delete filter | src/atomic-crm/providers/supabase/utils/storageCleanup.ts:234 | Opportunities query without filter | May be intentional for GDPR cleanup | 🔍 Needs verification |
-| H001-7 | Missing soft-delete filter | src/atomic-crm/providers/supabase/utils/storageCleanup.ts:244 | Opportunity notes query without filter | May be intentional for GDPR cleanup | 🔍 Needs verification |
+| ID | Check | Location | Evidence | Status |
+|----|-------|----------|----------|--------|
+| H001-1 | Soft-delete filter | authProvider.ts:167 | Has `.is("deleted_at", null)` | ✅ **Already Fixed** |
+| H001-2 | GDPR cleanup | storageCleanup.ts:147 | Activities query - GDPR exception documented | ✅ **Intentional** |
+| H001-3 | GDPR cleanup | storageCleanup.ts:160 | Contact notes query - GDPR exception documented | ✅ **Intentional** |
+| H001-4 | Single fetch | storageCleanup.ts:195 | Organizations query - single-record fetch by ID | ✅ **N/A** |
+| H001-5 | GDPR cleanup | storageCleanup.ts:207 | Organization notes query - GDPR exception documented | ✅ **Intentional** |
+| H001-6 | Soft-delete filter | storageCleanup.ts:239 | Has `.is("deleted_at", null)` | ✅ **Already Filtered** |
+| H001-7 | GDPR cleanup | storageCleanup.ts:244 | Opportunity notes query - GDPR exception documented | ✅ **Intentional** |
+
+**GDPR Exception Documentation (storageCleanup.ts lines 134-136):**
+```typescript
+* INTENTIONAL: Queries include soft-deleted activities/notes because
+* file cleanup must occur regardless of record state (GDPR compliance).
+* When archiving an entity, we delete ALL orphaned files, not just active ones.
+```
 
 **H004 - Acknowledged Safe Pattern:**
 - **Location:** src/atomic-crm/providers/supabase/extensions/* (5 files) + supabase.ts
@@ -223,38 +230,30 @@ SELECT * FROM contacts WHERE deleted_at IS NOT NULL  // Find soft-deleted record
 
 ## Recommendations
 
-### Immediate Actions (High Priority)
+### Immediate Actions
 
-1. **[H001-1] Fix authProvider.ts sales query**
-   - Add `deleted_at IS NULL` filter to line 164
-   - This is NOT a GDPR cleanup utility - should respect soft deletes
-   - **Impact:** Users may see deleted sales records in auth context
-
-2. **[Verification Required] Audit storageCleanup.ts**
-   - Verify queries intentionally include deleted records for GDPR cleanup
-   - If intentional: Add code comments explaining the exception
-   - If unintentional: Add `deleted_at IS NULL` filters to 6 queries
+✅ **None Required** - All High-severity items verified as resolved or intentional exceptions.
 
 ### Short-Term Actions (Medium Priority)
 
-3. **[M001] Document TransformService pattern**
+1. **[M001] Document TransformService pattern** (Optional)
    - Current approach (lifecycle callbacks) is correct but implicit
-   - Add architecture doc explaining field-stripping via callbacks
-   - Consider explicit `TransformService` imports for clarity
+   - Consider adding architecture doc explaining field-stripping via callbacks
+   - Low priority since the pattern works correctly
 
-4. **Add activities_summary view**
+2. **Add activities_summary view** (Performance optimization)
    - Activities table has high read volume (dashboard widgets)
    - Pre-computing activity counts would improve performance
    - **Estimated effort:** 2 hours (migration + handler update)
 
 ### Long-Term Monitoring
 
-5. **Track composedDataProvider.ts line count**
+3. **Track composedDataProvider.ts line count**
    - Current: 260 lines (stable)
    - Alert if grows above 300 lines (indicates new monolith forming)
    - Enforce via pre-commit hook
 
-6. **Quarterly RLS policy audit**
+4. **Quarterly RLS policy audit**
    - Use `/audit:security` skill for comprehensive RLS review
    - Verify all new tables have proper `deleted_at IS NULL` policies
 

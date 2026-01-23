@@ -39,6 +39,65 @@ import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
+ * Memoized cell components for TaskList datagrid
+ * These prevent unnecessary re-renders when other rows update
+ */
+
+const TaskTitleCell = React.memo(function TaskTitleCell({ record }: { record: Task }) {
+  return (
+    <div className="flex items-center gap-2">
+      <TruncatedText className="max-w-[200px]">{record.title}</TruncatedText>
+      <SnoozeBadge snoozeUntil={record.snooze_until} />
+    </div>
+  );
+});
+
+const TaskPriorityCell = React.memo(function TaskPriorityCell({ record }: { record: Task }) {
+  if (!record.priority) return null;
+  return (
+    <FilterableBadge source="priority" value={record.priority}>
+      <PriorityBadge priority={record.priority} />
+    </FilterableBadge>
+  );
+});
+
+const TaskTypeCell = React.memo(function TaskTypeCell({ record }: { record: Task }) {
+  if (!record.type) return null;
+  return (
+    <FilterableBadge source="type" value={record.type}>
+      <Badge variant="outline">{record.type}</Badge>
+    </FilterableBadge>
+  );
+});
+
+const TaskContactNameCell = React.memo(function TaskContactNameCell({
+  record,
+}: {
+  record: { first_name?: string; last_name?: string };
+}) {
+  return <>{[record?.first_name, record?.last_name].filter(Boolean).join(" ") || "—"}</>;
+});
+
+interface TaskActionsCellProps {
+  record: Task;
+  openSlideOver: (id: number, mode: "view" | "edit") => void;
+}
+
+const TaskActionsCell = React.memo(function TaskActionsCell({
+  record,
+  openSlideOver,
+}: TaskActionsCellProps) {
+  return (
+    <TaskActionMenu
+      task={record}
+      onView={(id) => openSlideOver(id, "view")}
+      onEdit={(id) => openSlideOver(id, "edit")}
+      useInternalHandlers
+    />
+  );
+});
+
+/**
  * TaskListActions - TopToolbar actions for Tasks list
  *
  * Includes SortButton + ExportButton following ContactList pattern.
