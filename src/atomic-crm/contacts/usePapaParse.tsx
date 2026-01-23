@@ -2,6 +2,14 @@ import * as Papa from "papaparse";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { parseRawCsvData } from "./csvProcessor";
 
+/**
+ * Type guard to safely cast PapaParse results to array of arrays.
+ * When PapaParse is used with header: false, data is always string[][].
+ */
+function isArrayOfArrays(data: unknown): data is unknown[][] {
+  return Array.isArray(data) && (data.length === 0 || Array.isArray(data[0]));
+}
+
 type Import =
   | {
       state: "idle";
@@ -78,10 +86,12 @@ export function usePapaParse<T = Record<string, unknown>>({
           let transformedData: T[];
           let headers: string[];
           try {
-            // REFACTORED: Use the single source of truth to process raw CSV data.
-            // results.data is string[][] when header: false
-            const rawData = results.data as unknown[][];
-            const parseResult = parseRawCsvData(rawData);
+            // PapaParse with header: false returns string[][] but types it as T[]
+            // Use type guard to safely narrow to the expected array-of-arrays format
+            if (!isArrayOfArrays(results.data)) {
+              throw new Error("Invalid CSV format: expected array of arrays");
+            }
+            const parseResult = parseRawCsvData(results.data);
             transformedData = parseResult.contacts as T[];
             headers = parseResult.headers;
           } catch (error: unknown) {
@@ -95,8 +105,10 @@ export function usePapaParse<T = Record<string, unknown>>({
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
             // Pass raw data rows (skip first 3 rows: instructions, empty, headers)
-            const rawData = results.data as unknown[][];
-            const rawDataRows = rawData.slice(3);
+            if (!isArrayOfArrays(results.data)) {
+              throw new Error("Invalid CSV format: expected array of arrays");
+            }
+            const rawDataRows = results.data.slice(3);
             onPreview({ rows: transformedData, headers, rawDataRows });
             setImporter({
               state: "idle",

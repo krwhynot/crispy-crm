@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useState, useEffect, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import type { FieldErrors, FieldValues, Resolver } from "react-hook-form";
+import type { FieldErrors } from "react-hook-form";
 import { quickAddBaseSchema, quickAddSchema } from "@/atomic-crm/validation/quickAdd";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { useQuickAdd } from "./useQuickAdd";
 import { useFilteredProducts } from "./useFilteredProducts";
 // React Admin Tier 2 imports - per MODULE_CHECKLIST.md Rule #4
@@ -276,11 +276,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   // React Admin Form component provides FormProvider context
   // mode="onBlur" per Engineering Constitution - no onChange validation
   return (
-    <Form
-      defaultValues={defaultValues}
-      mode="onBlur"
-      resolver={zodResolver(quickAddSchema) as unknown as Resolver<FieldValues>}
-    >
+    <Form defaultValues={defaultValues} mode="onBlur" resolver={createFormResolver(quickAddSchema)}>
       <QuickAddFormContent
         onSuccess={onSuccess}
         identityId={identity?.id}

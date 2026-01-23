@@ -125,3 +125,37 @@ export function createValidationError(
     body: { errors: zodErrorToFormErrors(error) },
   };
 }
+
+/**
+ * Create a type-safe resolver for React Admin Form components using Zod schemas.
+ *
+ * React Admin's Form component expects Resolver<FieldValues>, but zodResolver
+ * returns a more specific Resolver<z.infer<TSchema>>. These types are structurally
+ * compatible at runtime, but TypeScript cannot infer this relationship.
+ *
+ * This helper provides a documented, type-safe way to bridge the gap without
+ * inline `as unknown as` casts scattered throughout the codebase.
+ *
+ * @param schema - A Zod schema to use for form validation
+ * @returns A Resolver compatible with React Admin's Form component
+ *
+ * @example
+ * ```typescript
+ * import { quickAddSchema } from "@/validation/quickAdd";
+ * import { createFormResolver } from "@/lib/zodErrorFormatting";
+ *
+ * <Form
+ *   defaultValues={defaultValues}
+ *   resolver={createFormResolver(quickAddSchema)}
+ * >
+ *   ...
+ * </Form>
+ * ```
+ */
+export function createFormResolver<TSchema extends ZodSchema>(
+  schema: TSchema
+): Resolver<FieldValues> {
+  // zodResolver returns Resolver<z.infer<TSchema>> which is a subset of FieldValues
+  // The cast is safe because all Zod schema outputs are valid FieldValues
+  return zodResolver(schema) as Resolver<FieldValues>;
+}
