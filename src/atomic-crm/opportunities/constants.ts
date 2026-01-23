@@ -141,13 +141,28 @@ export interface OpportunityStage {
   mfbPhase: MfbPhaseInfo; // MFB 7-phase process mapping (PRD Section 7.4)
 }
 
+/**
+ * Pipeline stage definitions with semantic color tokens.
+ *
+ * Color classes use CSS custom properties (--stage-*) defined in index.css
+ * to support theming (light/dark mode) and maintain design system consistency.
+ *
+ * Color Token Mapping:
+ * - new_lead: Info blue (new/unprocessed)
+ * - initial_outreach: Teal (active engagement)
+ * - sample_visit_offered: Warning amber (needs follow-up)
+ * - feedback_logged: Blue variant (analysis phase)
+ * - demo_scheduled: Success subtle (positive progress)
+ * - closed_won: Success strong (prominent win)
+ * - closed_lost: Error subtle (lost opportunity)
+ */
 export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "new_lead",
     label: "New Lead",
-    bgClass: "bg-sky-100",
-    borderClass: "border-sky-300",
-    textClass: "text-sky-800",
+    bgClass: "bg-[var(--stage-new-bg)]",
+    borderClass: "border-[var(--stage-new-border)]",
+    textClass: "text-[var(--stage-new-text)]",
     description:
       "New prospect identified. Research the operator's menu, identify which principal products fit, and prepare your pitch.",
     elevation: 3, // Prominent - new opportunities should stand out
@@ -161,9 +176,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "initial_outreach",
     label: "Initial Outreach",
-    bgClass: "bg-teal-100",
-    borderClass: "border-teal-300",
-    textClass: "text-teal-800",
+    bgClass: "bg-[var(--stage-outreach-bg)]",
+    borderClass: "border-[var(--stage-outreach-border)]",
+    textClass: "text-[var(--stage-outreach-text)]",
     description:
       "First contact made. Introduce MFB and relevant principals, qualify interest, and schedule a follow-up call or visit.",
     elevation: 2, // Medium - active engagement
@@ -177,9 +192,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "sample_visit_offered",
     label: "Sample/Visit Offered",
-    bgClass: "bg-amber-100",
-    borderClass: "border-amber-300",
-    textClass: "text-amber-800",
+    bgClass: "bg-[var(--stage-sample-bg)]",
+    borderClass: "border-[var(--stage-sample-border)]",
+    textClass: "text-[var(--stage-sample-text)]",
     description:
       "Product sample sent or site visit scheduled. Follow up within 3-5 days to gather feedback—this is a critical stage.",
     elevation: 2, // Medium - active opportunity
@@ -193,9 +208,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "feedback_logged",
     label: "Feedback Logged",
-    bgClass: "bg-blue-100",
-    borderClass: "border-blue-300",
-    textClass: "text-blue-800",
+    bgClass: "bg-[var(--stage-feedback-bg)]",
+    borderClass: "border-[var(--stage-feedback-border)]",
+    textClass: "text-[var(--stage-feedback-text)]",
     description:
       "Operator feedback recorded. Evaluate fit, address concerns, and determine if a formal demo or pricing discussion is warranted.",
     elevation: 2, // Medium - active analysis
@@ -209,9 +224,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "demo_scheduled",
     label: "Demo Scheduled",
-    bgClass: "bg-emerald-100",
-    borderClass: "border-emerald-300",
-    textClass: "text-emerald-800",
+    bgClass: "bg-[var(--stage-demo-bg)]",
+    borderClass: "border-[var(--stage-demo-border)]",
+    textClass: "text-[var(--stage-demo-text)]",
     description:
       "Final product demonstration or tasting scheduled. Confirm distributor availability and prepare pricing/terms for close.",
     elevation: 3, // Prominent - important milestone
@@ -225,9 +240,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "closed_won",
     label: "Closed - Won",
-    bgClass: "bg-emerald-500",
-    borderClass: "border-emerald-600",
-    textClass: "text-white",
+    bgClass: "bg-[var(--stage-won-bg)]",
+    borderClass: "border-[var(--stage-won-border)]",
+    textClass: "text-[var(--stage-won-text)]",
     description:
       "Deal won! First purchase order placed. Ensure distributor authorization is active and hand off to account management.",
     elevation: 2, // Medium - completed but notable
@@ -241,9 +256,9 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "closed_lost",
     label: "Closed - Lost",
-    bgClass: "bg-red-100",
-    borderClass: "border-red-300",
-    textClass: "text-red-800",
+    bgClass: "bg-[var(--stage-lost-bg)]",
+    borderClass: "border-[var(--stage-lost-border)]",
+    textClass: "text-[var(--stage-lost-text)]",
     description:
       "Opportunity lost. Review the loss reason and consider re-engagement after 90 days if circumstances change.",
     elevation: 1, // Subtle - less emphasis on lost deals

@@ -795,6 +795,52 @@
   --tag-cocoa-fg: oklch(20% 0.02 85);
 
   /* ========================================
+     PIPELINE STAGE COLORS
+     ========================================
+
+     Semantic tokens for opportunity pipeline stages.
+     Replaces hardcoded Tailwind colors (bg-sky-100, etc.)
+     to support theming and maintain design system consistency.
+
+     Each stage has: bg (background), border, text (foreground)
+  */
+
+  /* New Lead - Info blue (cool, new/unprocessed) */
+  --stage-new-bg: var(--info-bg);
+  --stage-new-border: var(--info-border);
+  --stage-new-text: var(--info-strong);
+
+  /* Initial Outreach - Teal (active engagement) */
+  --stage-outreach-bg: var(--tag-teal-bg);
+  --stage-outreach-border: oklch(70% 0.06 200);
+  --stage-outreach-text: oklch(35% 0.07 200);
+
+  /* Sample/Visit Offered - Warning amber (needs follow-up) */
+  --stage-sample-bg: var(--warning-bg);
+  --stage-sample-border: var(--warning-border);
+  --stage-sample-text: var(--warning-strong);
+
+  /* Feedback Logged - Info blue variant (analysis phase) */
+  --stage-feedback-bg: var(--tag-blue-bg);
+  --stage-feedback-border: oklch(68% 0.08 270);
+  --stage-feedback-text: oklch(35% 0.09 270);
+
+  /* Demo Scheduled - Success subtle (positive progress) */
+  --stage-demo-bg: var(--success-bg);
+  --stage-demo-border: var(--success-border);
+  --stage-demo-text: var(--success-strong);
+
+  /* Closed Won - Success strong (prominent win) */
+  --stage-won-bg: var(--success-default);
+  --stage-won-border: var(--success-strong);
+  --stage-won-text: var(--success-foreground);
+
+  /* Closed Lost - Error subtle (lost opportunity) */
+  --stage-lost-bg: var(--error-bg);
+  --stage-lost-border: var(--error-border);
+  --stage-lost-text: var(--error-strong);
+
+  /* ========================================
      PRINCIPAL BRAND COLORS
      ========================================
 
@@ -1130,6 +1176,45 @@
   --tag-amber-fg: oklch(20% 0.02 85);
   --tag-cocoa-bg: oklch(83% 0.06 75);
   --tag-cocoa-fg: oklch(20% 0.02 85);
+
+  /* Pipeline Stage Colors - Dark Mode */
+  /* Stage tokens use semantic refs which auto-update for dark mode */
+  /* Only override where base tokens don't provide sufficient contrast */
+
+  /* New Lead - Info blue */
+  --stage-new-bg: var(--info-bg);
+  --stage-new-border: var(--info-border);
+  --stage-new-text: var(--info-strong);
+
+  /* Initial Outreach - Teal */
+  --stage-outreach-bg: var(--tag-teal-bg);
+  --stage-outreach-border: oklch(55% 0.08 200);
+  --stage-outreach-text: oklch(25% 0.05 200);
+
+  /* Sample/Visit Offered - Warning amber */
+  --stage-sample-bg: var(--warning-bg);
+  --stage-sample-border: var(--warning-border);
+  --stage-sample-text: var(--warning-strong);
+
+  /* Feedback Logged - Blue variant */
+  --stage-feedback-bg: var(--tag-blue-bg);
+  --stage-feedback-border: oklch(55% 0.1 270);
+  --stage-feedback-text: oklch(25% 0.07 270);
+
+  /* Demo Scheduled - Success subtle */
+  --stage-demo-bg: var(--success-bg);
+  --stage-demo-border: var(--success-border);
+  --stage-demo-text: var(--success-strong);
+
+  /* Closed Won - Success strong */
+  --stage-won-bg: var(--success-default);
+  --stage-won-border: var(--success-strong);
+  --stage-won-text: var(--success-foreground);
+
+  /* Closed Lost - Error subtle */
+  --stage-lost-bg: var(--error-bg);
+  --stage-lost-border: var(--error-border);
+  --stage-lost-text: var(--error-strong);
 
   /* Loading states - dark mode */
   --loading-surface: oklch(20% 0 0);

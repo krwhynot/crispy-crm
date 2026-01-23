@@ -62,7 +62,8 @@ export const WorkflowManagementSection: React.FC = () => {
       },
       {
         onSuccess: () => {
-          refetch();
+          // Invalidate all opportunity queries to ensure UI consistency
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
           notify(`${field.replace(/_/g, " ")} updated`, { type: "info" });
         },
         onError: () => {
