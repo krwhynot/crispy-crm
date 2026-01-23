@@ -22,7 +22,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { RaRecord } from "react-admin";
+
+/**
+ * Generic record interface for tab components
+ * Matches React Admin's RaRecord shape but avoids Tier 1 → react-admin dependency
+ * ARCH-001: Tier 1 UI components must not import from react-admin
+ */
+interface GenericRecord {
+  id: string | number;
+  [key: string]: unknown;
+}
 
 /**
  * Tab configuration interface - matches ResourceSlideOver.TabConfig
@@ -32,14 +41,14 @@ export interface TabConfig {
   label: string;
   component: React.ComponentType<unknown>;
   icon?: React.ComponentType<{ className?: string }>;
-  countFromRecord?: (record: RaRecord) => number | undefined | null;
+  countFromRecord?: (record: GenericRecord) => number | undefined | null;
 }
 
 interface PriorityTabsListProps {
   tabs: TabConfig[];
   value: string;
   onValueChange: (value: string) => void;
-  record?: RaRecord;
+  record?: GenericRecord;
   className?: string;
 }
 

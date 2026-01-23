@@ -68,7 +68,8 @@ export function getFieldError(
   const issue = error.issues.find(
     (issue) => issue.path.join(".") === fieldPath
   );
-  return issue ? getFriendlyErrorMessage(issue as any) : undefined;
+  // ZodIssue is structurally compatible with ZodIssueBase
+  return issue ? getFriendlyErrorMessage(issue as ZodIssueBase) : undefined;
 }
 
 /**
@@ -92,7 +93,8 @@ export function hasFieldError(error: ZodError, fieldPath: string): boolean {
 export function getAllErrorMessages(error: ZodError): string[] {
   return error.issues.map((issue) => {
     const path = issue.path.join(".");
-    const message = getFriendlyErrorMessage(issue as any);
+    // ZodIssue is structurally compatible with ZodIssueBase
+    const message = getFriendlyErrorMessage(issue as ZodIssueBase);
     return path ? `${path}: ${message}` : message;
   });
 }
