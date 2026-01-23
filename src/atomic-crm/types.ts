@@ -34,6 +34,8 @@ export type { Task, TaskType, PriorityLevel } from "./validation/task";
 export type { RAFile } from "./validation/shared/ra-file";
 import type { RAFile as RAFileBase } from "./validation/shared/ra-file";
 export type { OpportunityParticipant, OpportunityContact } from "./validation/opportunities";
+export type { ProductFormData } from "./validation/products";
+import type { ProductFormData as ProductBase } from "./validation/products";
 
 // Use generated enum as single source of truth for interaction types
 // Note: This comes from database.generated.ts, validation schema mirrors it
@@ -86,7 +88,7 @@ export interface Contact extends Pick<RaRecord, "id"> {
   last_name: string;
   title: string;
   email: EmailAndType[];
-  avatar?: Partial<RAFile>;
+  avatar?: Partial<RAFileBase>;
   linkedin_url?: string | null;
   first_seen: string;
   last_seen: string;
