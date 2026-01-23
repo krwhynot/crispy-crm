@@ -6,6 +6,7 @@
  */
 
 import { fetchWithTimeout, DOMAINS_NOT_SUPPORTING_FAVICON } from "./avatar";
+import { logger } from "@/lib/logger";
 import type { Contact } from "../types";
 import type { Organization } from "../validation/organizations";
 import { emailAndTypeSchema } from "../validation/contacts";

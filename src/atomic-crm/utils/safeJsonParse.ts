@@ -28,13 +28,16 @@ export function safeJsonParse<T>(json: string | null, schema: ZodSchema<T>): T |
     const result = schema.safeParse(parsed);
 
     if (!result.success) {
-      console.warn("[safeJsonParse] Validation failed:", result.error.flatten());
+      logger.warn("JSON validation failed", {
+        feature: "safeJsonParse",
+        error: result.error.flatten(),
+      });
       return null;
     }
 
     return result.data;
   } catch (error: unknown) {
-    console.warn("[safeJsonParse] JSON.parse failed:", error);
+    logger.warn("JSON.parse failed", { feature: "safeJsonParse", error });
     return null;
   }
 }
