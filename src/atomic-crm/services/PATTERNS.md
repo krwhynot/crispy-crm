@@ -14,17 +14,20 @@ Standard patterns for business logic services in Crispy CRM.
 ┌─────────────────────────────────────────────────────────────────────┐
 │                      composedDataProvider                            │
 │     ┌─────────────────────────────────────────────────────────┐     │
-│     │                   Service Registry                       │     │
+│     │               Service Registry (Actual)                  │     │
 │     │  ┌──────────────┬──────────────┬──────────────────────┐ │     │
 │     │  │ SalesService │ Opportunities│ ActivitiesService    │ │     │
-│     │  │              │ Service      │                      │ │     │
+│     │  │       ✅     │ Service ✅   │         ✅          │ │     │
 │     │  ├──────────────┼──────────────┼──────────────────────┤ │     │
-│     │  │ Junctions    │ Segments     │ DigestService        │ │     │
-│     │  │ Service      │ Service      │                      │ │     │
+│     │  │ Junctions    │ Segments     │ Products        ✅  │ │     │
+│     │  │ Service ✅   │ Service ✅   │                      │ │     │
 │     │  ├──────────────┼──────────────┼──────────────────────┤ │     │
-│     │  │ Products     │ ProductDist- │                      │ │     │
-│     │  │ Service      │ ributors Svc │                      │ │     │
+│     │  │ ProductDist- │              │                      │ │     │
+│     │  │ ributors ✅  │              │                      │ │     │
 │     │  └──────────────┴──────────────┴──────────────────────┘ │     │
+│     │                                                          │     │
+│     │  🚧 Planned (not yet registered):                       │     │
+│     │     DigestService - Overdue tasks & notifications       │     │
 │     └─────────────────────────────────────────────────────────┘     │
 │                                                                      │
 │     ┌─────────────────────────────────────────────────────────┐     │
@@ -387,10 +390,13 @@ export interface ServiceContainer {
   segments: SegmentsService;
   products: ProductsService;
   productDistributors: ProductDistributorsService;
+  // Note: DigestService exists but is not yet registered in ServiceContainer
 }
 
 export function createServiceContainer(baseProvider: DataProvider): ServiceContainer {
   return {
+    // ✅ Registered Services:
+
     // Sales service - Account manager CRUD via Edge Functions
     sales: new SalesService(baseProvider),
 
@@ -411,6 +417,12 @@ export function createServiceContainer(baseProvider: DataProvider): ServiceConta
 
     // ProductDistributors service - Composite key junction table operations
     productDistributors: new ProductDistributorsService(baseProvider),
+
+    // 🚧 Implemented but not registered:
+    // - DigestService (src/atomic-crm/services/digest.service.ts)
+    //   Purpose: Overdue tasks and digest notifications
+    //   Methods: getOverdueTasksForUser()
+    //   TODO: Add to ServiceContainer interface and factory
   };
 }
 ```

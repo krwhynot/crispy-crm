@@ -381,7 +381,7 @@ export default productDistributors;
 
 | Aspect | Junction Table (Many-to-Many) | Direct FK (One-to-Many) |
 |--------|-------------------------------|-------------------------|
-| **ID Format** | Composite (`{fk1}-{fk2}`) | Single integer |
+| **ID Format** | Composite (`{fk1}_{fk2}`) | Single integer |
 | **Create: FK Fields** | Two required, both editable | One required, editable |
 | **Edit: FK Fields** | Both immutable (read-only) | Usually editable |
 | **List Columns** | Two `ReferenceField` columns | One `ReferenceField` column |
@@ -454,17 +454,17 @@ export type ProductDistributorStatus = "pending" | "active" | "inactive";
 ### 3. String IDs Without Composite Helpers
 
 ```tsx
-// ❌ WRONG: Manual string concatenation
-const id = `${product_id}_${distributor_id}`;
-const [p, d] = id.split('_'); // Fragile, no validation
+// ❌ WRONG: Manual string concatenation with hyphen (incorrect delimiter)
+const id = `${product_id}-${distributor_id}`;
+const [p, d] = id.split('-'); // Fragile, no validation, wrong delimiter
 
-// ✅ CORRECT: Use typed helper functions
+// ✅ CORRECT: Use typed helper functions with underscore delimiter
 import { parseCompositeId, createCompositeId } from './services/productDistributors.service';
-const id = createCompositeId(product_id, distributor_id);
+const id = createCompositeId(product_id, distributor_id);  // Returns "123_456"
 const { product_id, distributor_id } = parseCompositeId(id);
 ```
 
-**Why it's wrong**: Inconsistent delimiter, no type safety, no error handling.
+**Why it's wrong**: Inconsistent delimiter (underscore is standard, not hyphen), no type safety, no error handling.
 
 ### 4. Form-Level Validation
 
