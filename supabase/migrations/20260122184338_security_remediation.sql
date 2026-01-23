@@ -33,8 +33,9 @@ TO authenticated
 USING (is_admin());
 
 -- 1.3 Fix products update policy - add ownership check
--- Rollback: DROP POLICY update_products_owned; CREATE POLICY update_products... USING(true)
+-- Rollback: DROP POLICY update_products_owned; CREATE POLICY products_update_privileged...
 DROP POLICY IF EXISTS update_products ON products;
+DROP POLICY IF EXISTS products_update_privileged ON products;
 
 CREATE POLICY "update_products_owned"
 ON products FOR UPDATE
@@ -43,8 +44,9 @@ USING (is_admin() OR created_by = current_sales_id())
 WITH CHECK (is_admin() OR created_by = current_sales_id());
 
 -- 1.4 Fix tags DELETE policy - admin only (tags are shared resources, no created_by column)
--- Rollback: DROP POLICY delete_tags_admin; CREATE POLICY authenticated_delete_tags... USING(true)
+-- Rollback: DROP POLICY delete_tags_admin; CREATE POLICY tags_delete_admin... USING(true)
 DROP POLICY IF EXISTS authenticated_delete_tags ON tags;
+DROP POLICY IF EXISTS tags_delete_admin ON tags;
 
 CREATE POLICY "delete_tags_admin"
 ON tags FOR DELETE
@@ -52,8 +54,9 @@ TO authenticated
 USING (is_admin());
 
 -- 1.5 Fix tags UPDATE policy - admin only (tags are shared resources, no created_by column)
--- Rollback: DROP POLICY update_tags_admin; CREATE POLICY authenticated_update_tags... USING(true)
+-- Rollback: DROP POLICY update_tags_admin; CREATE POLICY tags_update_privileged...
 DROP POLICY IF EXISTS authenticated_update_tags ON tags;
+DROP POLICY IF EXISTS tags_update_privileged ON tags;
 
 CREATE POLICY "update_tags_admin"
 ON tags FOR UPDATE
