@@ -8,9 +8,8 @@ import type {
   OPPORTUNITY_NOTE_CREATED,
 } from "./consts";
 import type { Organization } from "./validation/organizations";
-import type { OpportunityStageValue, LeadSource } from "./validation/opportunities";
-import type { SampleStatus } from "./validation/activities";
-import type { Database } from "@/types/database.generated";
+// Note: OpportunityStageValue, LeadSource, SampleStatus are re-exported below
+// Database enum import removed - InteractionType now comes from re-exported ActivityRecord
 
 // ============================================================================
 // P2 TYPE CONSOLIDATION: Zod-inferred types as Single Source of Truth
@@ -48,9 +47,8 @@ import type { Contact as ContactBase } from "./validation/contacts/contacts-core
 export type { ActivityRecord } from "./validation/activities";
 import type { ActivityRecord as ActivityRecordBase } from "./validation/activities";
 
-// Use generated enum as single source of truth for interaction types
-// Note: This comes from database.generated.ts, validation schema mirrors it
-type InteractionType = Database["public"]["Enums"]["interaction_type"];
+// InteractionType is now derived from ActivityRecord schema
+// (exported from validation/activities.ts as part of P2 consolidation)
 
 // SignUpData type removed - all users created through Sales management
 
@@ -115,33 +113,12 @@ export interface PhoneNumberAndType {
 
 // SampleStatus type removed - now imported from validation/activities.ts (P2 consolidation)
 
-export interface ActivityRecord extends Pick<RaRecord, "id"> {
-  id: Identifier;
-  activity_type: "engagement" | "interaction";
-  type: InteractionType;
-  subject: string;
-  description?: string;
-  activity_date: string;
-  duration_minutes?: number;
-  contact_id?: Identifier;
-  organization_id?: Identifier;
-  opportunity_id?: Identifier; // NULL for engagements, required for interactions
-  follow_up_required?: boolean;
-  follow_up_date?: string;
-  follow_up_notes?: string;
-  outcome?: string;
-  sentiment?: "positive" | "neutral" | "negative";
-  attachments?: string[];
-  location?: string;
-  attendees?: string[];
-  tags?: string[];
-  // Sample tracking (PRD §4.4) - only set when type === 'sample'
-  sample_status?: SampleStatus;
-  created_at: string;
-  updated_at?: string;
-  created_by?: Identifier;
-  deleted_at?: string;
-}
+// ActivityRecord type is now exported from validation/activities.ts (P2 consolidation)
+// The schema includes: id, activity_type, type, subject, description, activity_date,
+// duration_minutes, contact_id, organization_id, opportunity_id, follow_up_required,
+// follow_up_date, follow_up_notes, outcome, sentiment, attachments, location, attendees,
+// tags, sample_status, created_by, created_at, updated_at, deleted_at,
+// and STI task fields (due_date, reminder_date, completed, priority, etc.)
 
 export interface InteractionParticipant extends Pick<RaRecord, "id"> {
   id: Identifier;
@@ -166,85 +143,15 @@ export interface ContactNote extends Pick<RaRecord, "id"> {
 // Deal type removed - use Opportunity instead
 // LeadSource type removed - now imported from validation/opportunities.ts (P1 consolidation)
 
-/**
- * Opportunity entity - represents a sales deal in the CRM.
- *
- * OWNERSHIP PATTERN (3 fields, intentionally different from other entities):
- * - `opportunity_owner_id` - Sales rep who owns/drives this deal (closes it)
- * - `account_manager_id` - Sales rep who manages the customer relationship (may differ from owner)
- * - `created_by` - Audit trail: who originally created this opportunity
- *
- * This split ownership model supports enterprise sales scenarios where the deal owner
- * and account manager may be different people. Other entities (contacts, tasks, etc.)
- * use a simpler `sales_id` field for single ownership.
- *
- * RLS policies check ALL THREE fields for UPDATE access.
- */
-export interface Opportunity extends Pick<RaRecord, "id"> {
-  name: string;
-  customer_organization_id: Identifier;
-  principal_organization_id?: Identifier;
-  distributor_organization_id?: Identifier;
-  contact_ids: Identifier[];
-  stage: OpportunityStageValue;
-  status: "active" | "on_hold" | "nurturing" | "stalled" | "expired";
-  priority: "low" | "medium" | "high" | "critical";
-  description: string;
-  estimated_close_date: string;
-  actual_close_date?: string;
-  created_at: string;
-  created_by?: Identifier;
-  updated_at: string;
-  version: number;
-  stage_changed_at?: string;
-  deleted_at?: string;
-  opportunity_owner_id?: Identifier;
-  account_manager_id?: Identifier;
-  lead_source?: LeadSource;
-  founding_interaction_id?: Identifier;
-  stage_manual: boolean;
-  status_manual: boolean;
-  next_action?: string;
-  next_action_date?: string;
-  competition?: string;
-  decision_criteria?: string;
-  tags?: string[];
-  campaign?: string; // Campaign name for grouping related opportunities (e.g., "Winter Fancy Food Show 2025")
-  related_opportunity_id?: Identifier; // Parent opportunity ID for follow-up tracking
-  notes?: string; // General notes about the opportunity (separate from activity log)
-
-  // Computed fields from opportunities_summary view (read-only)
-  nb_interactions?: number;
-  last_interaction_date?: string;
-  days_in_stage?: number;
-  customer_organization_name?: string;
-  principal_organization_name?: string;
-  distributor_organization_name?: string;
-  products?: Array<{
-    id: Identifier;
-    product_id_reference: Identifier;
-    product_name: string;
-    product_category?: string;
-    principal_name?: string;
-    notes?: string;
-  }>;
-
-  // Visual cue computed fields for Kanban cards (from opportunities_summary view)
-  days_since_last_activity?: number | null;
-  pending_task_count?: number;
-  overdue_task_count?: number;
-
-  // Next task computed fields for "<2 second answer" UX goal (from opportunities_summary view)
-  next_task_id?: number | null;
-  next_task_title?: string | null;
-  next_task_due_date?: string | null;
-  next_task_priority?: "low" | "medium" | "high" | "critical" | null;
-
-  // Close outcome tracking (for closed_won/closed_lost stages)
-  win_reason?: string;
-  loss_reason?: string;
-  close_reason_notes?: string;
-}
+// Opportunity type is now exported from validation/opportunities (P2 consolidation)
+// The schema includes all core fields plus:
+// - Organization relationships (customer, principal, distributor)
+// - Ownership pattern (opportunity_owner_id, account_manager_id, created_by)
+// - Stage workflow (stage, status, stage_manual, status_manual)
+// - Close tracking (win_reason, loss_reason, close_reason_notes)
+// - Computed view fields (days_in_stage, task counts, etc.)
+//
+// See validation/opportunities/opportunities-core.ts for complete field list
 
 // DealNote type removed - use OpportunityNote instead
 
@@ -325,7 +232,7 @@ export interface ActivityOpportunityCreated {
   type: typeof OPPORTUNITY_CREATED;
   customer_organization_id: Identifier;
   opportunity_owner_id?: Identifier;
-  opportunity: Opportunity;
+  opportunity: OpportunityBase;
   date: string;
 }
 
