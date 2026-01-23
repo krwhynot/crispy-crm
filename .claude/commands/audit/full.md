@@ -686,6 +686,23 @@ Save to: `docs/audits/YYYY-MM-DD-full-audit.md`
 
 ## Executive Summary
 
+### Layer Health Overview
+
+Findings grouped by architectural layer (fix from bottom up):
+
+| Layer | Name | Critical | High | Status | Primary Concerns |
+|-------|------|----------|------|--------|------------------|
+| L1 | Database | X | Y | OK/WARN/CRITICAL | RLS, indexes, constraints |
+| L2 | Domain | X | Y | OK/WARN/CRITICAL | Types, Zod schemas |
+| L3 | Provider | X | Y | OK/WARN/CRITICAL | Handlers, services |
+| L4 | UI Foundation | X | Y | OK/WARN/CRITICAL | Tier 1/2 components |
+| L5 | Features | X | Y | OK/WARN/CRITICAL | Business modules |
+| **TOTAL** | - | **X** | **Y** | - | - |
+
+**Fix Order:** L1 → L2 → L3 → L4 → L5 (foundation issues cascade upward)
+
+### Category Summary
+
 | Category | Critical | High | Medium | Total |
 |----------|----------|------|--------|-------|
 | Security | X | Y | Z | N |
@@ -741,30 +758,107 @@ Save to: `docs/audits/YYYY-MM-DD-full-audit.md`
 
 ---
 
-## All Critical Issues
+## Findings by Layer
+
+### L1 - Database Layer [STATUS]
+
+**Scope:** RLS policies, indexes, constraints, soft delete enforcement
+**Audits:** db-hardening, data-integrity (soft deletes)
+
+| # | Severity | Check | Location | Description | Fix |
+|---|----------|-------|----------|-------------|-----|
+| 1 | Critical | Missing RLS | table:users | No RLS policies | Add policies |
+| ... | ... | ... | ... | ... | ... |
+
+**L1 Issues:** X critical, Y high
+**Status:** [OK/WARN/CRITICAL]
+
+---
+
+### L2 - Domain Layer [STATUS]
+
+**Scope:** TypeScript types, Zod schemas, validation rules
+**Audits:** typescript, security (validation)
+
+| # | Severity | Check | Location | Description | Fix |
+|---|----------|-------|----------|-------------|-----|
+| 1 | High | any usage | src/file.ts:23 | Parameter typed as any | Use proper type |
+| ... | ... | ... | ... | ... | ... |
+
+**L2 Issues:** X critical, Y high
+**Status:** [OK/WARN/CRITICAL]
+
+---
+
+### L3 - Provider Layer [STATUS]
+
+**Scope:** Data handlers, services, error transformation
+**Audits:** architecture (handlers), error-handling, data-integrity (Strangler Fig)
+
+| # | Severity | Check | Location | Description | Fix |
+|---|----------|-------|----------|-------------|-----|
+| 1 | Critical | Direct Supabase | src/atomic-crm/file.ts:10 | Bypasses provider | Use useDataProvider |
+| ... | ... | ... | ... | ... | ... |
+
+**L3 Issues:** X critical, Y high
+**Status:** [OK/WARN/CRITICAL]
+
+---
+
+### L4 - UI Foundation Layer [STATUS]
+
+**Scope:** Tier 1/2 components, systemic accessibility
+**Audits:** accessibility (systemic), performance (wrappers)
+
+| # | Severity | Check | Location | Description | Fix |
+|---|----------|-------|----------|-------------|-----|
+| 1 | Critical | Missing aria-invalid | src/components/ui/input.tsx:25 | Foundation violation | Add attribute |
+| ... | ... | ... | ... | ... | ... |
+
+**L4 Issues:** X critical, Y high
+**Status:** [OK/WARN/CRITICAL]
+
+---
+
+### L5 - Features Layer [STATUS]
+
+**Scope:** Business modules, feature-specific code
+**Audits:** forms, code-quality, stale-state, workflow-gaps, accessibility (feature)
+
+| # | Severity | Check | Location | Description | Fix |
+|---|----------|-------|----------|-------------|-----|
+| 1 | High | onChange mode | src/atomic-crm/contacts/ContactEdit.tsx:15 | Re-render on keystroke | Use onSubmit |
+| ... | ... | ... | ... | ... | ... |
+
+**L5 Issues:** X critical, Y high
+**Status:** [OK/WARN/CRITICAL]
+
+---
+
+## All Critical Issues (Quick Reference)
 
 **These MUST be fixed before deployment.**
 
-| # | Category | Check | Location | Description | Fix |
-|---|----------|-------|----------|-------------|-----|
-| 1 | security | Missing RLS | table:users | No RLS policies defined | Add SELECT/INSERT/UPDATE/DELETE policies |
-| 2 | data-integrity | Hard DELETE | src/file.ts:42 | DELETE FROM statement | Use soft delete with deleted_at |
-| 3 | error-handling | Retry Logic | src/lib/api.ts:15 | MAX_RETRIES = 3 | Remove retry logic, fail fast |
-| ... | ... | ... | ... | ... | ... |
+| # | Layer | Category | Check | Location | Description | Fix |
+|---|-------|----------|-------|----------|-------------|-----|
+| 1 | L1 | security | Missing RLS | table:users | No RLS policies defined | Add SELECT/INSERT/UPDATE/DELETE policies |
+| 2 | L1 | data-integrity | Hard DELETE | src/file.ts:42 | DELETE FROM statement | Use soft delete with deleted_at |
+| 3 | L3 | error-handling | Retry Logic | src/lib/api.ts:15 | MAX_RETRIES = 3 | Remove retry logic, fail fast |
+| ... | ... | ... | ... | ... | ... | ... |
 
 ---
 
-## All High Issues
+## All High Issues (Quick Reference)
 
-| # | Category | Check | Location | Description | Fix |
-|---|----------|-------|----------|-------------|-----|
-| 1 | typescript | any usage | src/file.ts:23 | Parameter typed as any | Use proper type |
-| 2 | accessibility | Hardcoded color | src/file.tsx:45 | #3B82F6 used | Use semantic token |
-| ... | ... | ... | ... | ... | ... |
+| # | Layer | Category | Check | Location | Description | Fix |
+|---|-------|----------|-------|----------|-------------|-----|
+| 1 | L2 | typescript | any usage | src/file.ts:23 | Parameter typed as any | Use proper type |
+| 2 | L5 | accessibility | Hardcoded color | src/file.tsx:45 | #3B82F6 used | Use semantic token |
+| ... | ... | ... | ... | ... | ... | ... |
 
 ---
 
-## Category Summaries
+## Appendix: Category Summaries (Legacy View)
 
 ### 1. Security
 
@@ -978,6 +1072,33 @@ Write updated baseline to: `docs/audits/.baseline/full-audit.json`
     "high": [TOTAL_HIGH],
     "medium": [TOTAL_MEDIUM]
   },
+  "by_layer": {
+    "L1_database": {
+      "critical": [X],
+      "high": [Y],
+      "status": "OK|WARN|CRITICAL"
+    },
+    "L2_domain": {
+      "critical": [X],
+      "high": [Y],
+      "status": "OK|WARN|CRITICAL"
+    },
+    "L3_provider": {
+      "critical": [X],
+      "high": [Y],
+      "status": "OK|WARN|CRITICAL"
+    },
+    "L4_ui_foundation": {
+      "critical": [X],
+      "high": [Y],
+      "status": "OK|WARN|CRITICAL"
+    },
+    "L5_features": {
+      "critical": [X],
+      "high": [Y],
+      "status": "OK|WARN|CRITICAL"
+    }
+  },
   "by_category": {
     "security": {
       "critical": [X],
@@ -1000,6 +1121,7 @@ Write updated baseline to: `docs/audits/.baseline/full-audit.json`
       "source_audit": "[category]",
       "id": "[id]",
       "severity": "[critical|high|medium]",
+      "layer": "[L1|L2|L3|L4|L5]",
       "check": "[check name]",
       "location": "[file:line]",
       "description": "[description]",
@@ -1082,7 +1204,20 @@ After completing all phases, display:
 **Report:** docs/audits/[AUDIT_DATE]-full-audit.md
 **Baseline:** docs/audits/.baseline/full-audit.json (updated)
 
-### Results by Category
+### Results by Layer (Primary View)
+
+| Layer | Name | Critical | High | Status |
+|-------|------|----------|------|--------|
+| L1 | Database | X | Y | OK/WARN/CRITICAL |
+| L2 | Domain | X | Y | OK/WARN/CRITICAL |
+| L3 | Provider | X | Y | OK/WARN/CRITICAL |
+| L4 | UI Foundation | X | Y | OK/WARN/CRITICAL |
+| L5 | Features | X | Y | OK/WARN/CRITICAL |
+| **TOTAL** | - | **X** | **Y** | - |
+
+**Fix Order:** L1 → L2 → L3 → L4 → L5
+
+### Results by Category (Legacy View)
 
 | Category | Critical | High | Medium |
 |----------|----------|------|--------|

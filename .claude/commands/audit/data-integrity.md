@@ -234,12 +234,12 @@ date +%Y-%m-%d
 ### New Issues
 | ID | Severity | File:Line | Description |
 |----|----------|-----------|-------------|
-| C001-1 | Critical | src/foo.ts:42 | Hard DELETE found |
+| DB-C001-1 | Critical | src/foo.ts:42 | Hard DELETE found |
 
 ### Fixed Issues
 | ID | Severity | File:Line | Description |
 |----|----------|-----------|-------------|
-| H002-3 | High | src/bar.ts:15 | company_id removed |
+| ARCH-H001-3 | High | src/bar.ts:15 | company_id removed |
 
 ---
 
@@ -328,15 +328,15 @@ Create todos for Critical and High severity findings:
 
 ```typescript
 TodoWrite([
-  // Critical issues
+  // Database Integrity (Layer 1) Critical issues
   {
-    content: "[Critical] C001: Remove hard DELETE in src/foo.ts:42",
+    content: "[Critical] DB-C001: Remove hard DELETE in src/foo.ts:42",
     status: "pending",
     activeForm: "Removing hard DELETE statement"
   },
-  // High issues
+  // Architecture Integrity (Layer 3) High issues
   {
-    content: "[High] H002: Remove deprecated company_id in src/bar.ts:15",
+    content: "[High] ARCH-H001: Remove deprecated company_id in src/bar.ts:15",
     status: "pending",
     activeForm: "Removing deprecated company_id"
   }

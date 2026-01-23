@@ -524,6 +524,7 @@ catch (e) { console.error(e); }
 | C3 | Circuit breakers | `CircuitBreaker` | Critical | Pre-launch over-engineering |
 | C4 | Exponential backoff | `exponentialBackoff\|backoff` | Critical | Pre-launch complexity |
 | C5-8 | Graceful fallbacks | `catch.*return.*\[\]\|null\|cache\|default` | Critical | Silent failures |
+| C9 | Raw Supabase outside providers | `supabase\.` (outside providers) | Critical | Bypasses error transformation |
 | H1 | Empty catch | `catch\s*\([^)]*\)\s*\{\s*\}` | High | Complete error swallowing |
 | H2 | Comment-only catch | `catch.*\{.*//.*\}` | High | Ignored with excuse |
 | H3 | Log without throw | `catch.*console\.error` (no throw) | High | Logged but hidden |

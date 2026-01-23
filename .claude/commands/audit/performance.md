@@ -485,6 +485,31 @@ import _ from 'lodash';
 import moment from 'moment';
 \`\`\`
 
+### Lazy Loading (HIGH)
+\`\`\`tsx
+// CORRECT: Lazy load Resource components for code splitting
+const ContactList = lazy(() => import('./contacts/ContactList'));
+const ContactEdit = lazy(() => import('./contacts/ContactEdit'));
+const ContactCreate = lazy(() => import('./contacts/ContactCreate'));
+
+<Resource
+  name="contacts"
+  list={ContactList}
+  edit={ContactEdit}
+  create={ContactCreate}
+/>
+
+// WRONG: Direct imports load everything upfront
+import { ContactList, ContactEdit, ContactCreate } from './contacts';
+
+<Resource
+  name="contacts"
+  list={ContactList}
+  edit={ContactEdit}
+  create={ContactCreate}
+/>
+\`\`\`
+
 ### List Optimization (MEDIUM)
 \`\`\`tsx
 // CORRECT: Memoized list item

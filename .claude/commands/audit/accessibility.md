@@ -180,6 +180,7 @@ Read: docs/audits/.baseline/accessibility.json
         "file": "src/atomic-crm/contacts/ContactEdit.tsx",
         "line": 45,
         "description": "Missing aria-invalid on email input",
+        "tier": "feature",
         "firstSeen": "2025-01-08",
         "status": "open"
       }
@@ -191,6 +192,11 @@ Read: docs/audits/.baseline/accessibility.json
     "critical": 1,
     "high": 0,
     "medium": 0
+  },
+  "byTier": {
+    "tier1": { "critical": 0, "high": 0, "medium": 0 },
+    "tier2": { "critical": 0, "high": 0, "medium": 0 },
+    "feature": { "critical": 1, "high": 0, "medium": 0 }
   }
 }
 ```
@@ -233,6 +239,14 @@ Save to: `docs/audits/YYYY-MM-DD-accessibility.md`
 | High | X | Y | +Z/-W |
 | Medium | X | Y | +Z/-W |
 | **Total** | X | Y | +Z/-W |
+
+### Findings by Tier (Layer 4 Architecture)
+
+| Tier | Scope | Issues | Severity | Blast Radius |
+|------|-------|--------|----------|--------------|
+| **Tier 1** | `src/components/ui/` | X | Critical | All components |
+| **Tier 2** | `src/components/ra-wrappers/` | Y | High | All features |
+| **Features** | `src/atomic-crm/` | Z | High | Local only |
 
 ### What This Means for Users
 
