@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNotify, useUpdate, useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
+import { taskKeys } from "@/atomic-crm/queryKeys";
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
   DropdownMenu,
@@ -83,7 +84,7 @@ export function TaskActionMenu({
         previousData: task,
       });
 
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
 
       notify(`Task snoozed until ${days === 1 ? "tomorrow" : "next week"}`, {
         type: "success",
@@ -102,7 +103,7 @@ export function TaskActionMenu({
     setIsDeleting(true);
     try {
       await deleteOne("tasks", { id: taskId, previousData: task });
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
       notify("Task deleted", { type: "success" });
     } catch {
       notify("Failed to delete task", { type: "error" });

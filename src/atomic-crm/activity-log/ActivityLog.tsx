@@ -8,6 +8,7 @@ import { useDataProvider } from "ra-core";
 import { ActivitiesService } from "../services";
 import { ActivityLogContext } from "./ActivityLogContext";
 import { ActivityLogIterator } from "./ActivityLogIterator";
+import { activityLogKeys } from "../queryKeys";
 
 interface ActivityLogProps {
   organizationId?: Identifier;

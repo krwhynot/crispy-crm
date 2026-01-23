@@ -54,6 +54,32 @@ export const digestKeys = {
   preference: () => ["digestPreference"] as const,
 };
 
+// Dashboard Keys
+export const dashboardKeys = {
+  all: ["dashboard"] as const,
+  widgets: () => ["dashboard", "widgets"] as const,
+  stats: (period?: string) => ["dashboard", "stats", period] as const,
+};
+
+// Activity Log Keys (polymorphic by organization)
+export const activityLogKeys = {
+  all: ["activityLog"] as const,
+  byOrganization: (orgId?: number | string) => ["activityLog", orgId] as const,
+};
+
+// Notification Keys
+export const notificationKeys = {
+  all: ["notifications"] as const,
+  unread: (userId?: string) => ["notifications", "unread", userId] as const,
+  count: (userId?: string) => ["notifications", "count", userId] as const,
+};
+
+// Report Keys
+export const reportKeys = {
+  all: ["reports"] as const,
+  campaignStats: (campaign?: string) => ["campaign-report-stats", campaign] as const,
+};
+
 // Aggregate export for convenience
 export const queryKeys = {
   contacts: contactKeys,
@@ -73,4 +99,8 @@ export const queryKeys = {
   userFavorites: userFavoriteKeys,
   orgDescendants: orgDescendantKeys,
   digest: digestKeys,
+  dashboard: dashboardKeys,
+  activityLog: activityLogKeys,
+  notifications: notificationKeys,
+  reports: reportKeys,
 } as const;

@@ -21,6 +21,10 @@ export const NotificationBell = () => {
     {
       enabled: !!identity?.user_id && !isLoading,
       refetchInterval: 30000,
+      // staleTime < refetchInterval prevents double-fetching
+      staleTime: 25000,
+      // Don't poll when tab is in background
+      refetchIntervalInBackground: false,
     }
   );
 
