@@ -28,16 +28,13 @@ export function useFavorites(): UseFavoritesReturn {
   const notify = useNotify();
   const [create] = useCreate();
   const [update] = useUpdate();
+  const queryClient = useQueryClient();
 
   const [optimisticState, setOptimisticState] = useState<Map<string, boolean>>(new Map());
 
   const userId = identity?.user_id;
 
-  const {
-    data: favoritesData = [],
-    isLoading,
-    refetch,
-  } = useGetList<Favorite>(
+  const { data: favoritesData = [], isLoading } = useGetList<Favorite>(
     "user_favorites",
     {
       pagination: { page: 1, perPage: MAX_FAVORITES },
@@ -110,7 +107,7 @@ export function useFavorites(): UseFavoritesReturn {
                     next.delete(key);
                     return next;
                   });
-                  refetch();
+                  queryClient.invalidateQueries({ queryKey: userFavoriteKeys.all });
                 },
                 onError: (error: unknown) => {
                   setOptimisticState((prev) => {
@@ -143,7 +140,7 @@ export function useFavorites(): UseFavoritesReturn {
                   next.delete(key);
                   return next;
                 });
-                refetch();
+                queryClient.invalidateQueries({ queryKey: userFavoriteKeys.all });
               },
               onError: (error: unknown) => {
                 setOptimisticState((prev) => {
@@ -167,7 +164,7 @@ export function useFavorites(): UseFavoritesReturn {
         notify("An unexpected error occurred", { type: "error" });
       }
     },
-    [userId, isFavorite, canAddMore, favorites, create, update, notify, refetch]
+    [userId, isFavorite, canAddMore, favorites, create, update, notify, queryClient]
   );
 
   return {

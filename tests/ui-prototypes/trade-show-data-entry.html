@@ -890,14 +890,29 @@
           statGrid.appendChild(todayStat);
           statGrid.appendChild(weekStat);
           contextInfo.appendChild(statGrid);
-          tipsContent.innerHTML = `
-                    <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: var(--text-muted);">
-                        <li>Complete all fields for accurate pipeline tracking</li>
-                        <li>Set realistic close dates based on customer timeline</li>
-                        <li>Link to existing contacts and organizations</li>
-                        <li>Add detailed notes for team collaboration</li>
-                    </ul>
-                `;
+
+          // Create tips list
+          tipsContent.replaceChildren();
+          const tipsList = document.createElement("ul");
+          tipsList.style.paddingLeft = "20px";
+          tipsList.style.margin = "0";
+          tipsList.style.fontSize = "14px";
+          tipsList.style.color = "var(--text-muted)";
+
+          const tips = [
+            "Complete all fields for accurate pipeline tracking",
+            "Set realistic close dates based on customer timeline",
+            "Link to existing contacts and organizations",
+            "Add detailed notes for team collaboration",
+          ];
+
+          tips.forEach((tipText) => {
+            const li = document.createElement("li");
+            li.textContent = tipText;
+            tipsList.appendChild(li);
+          });
+
+          tipsContent.appendChild(tipsList);
           relatedCard.style.display = "none";
         }
       }

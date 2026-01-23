@@ -87,7 +87,7 @@ export function TaskSlideOverDetailsTab({
           data: { completed: false, completed_at: null },
           previousData: record,
         });
-        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        queryClient.invalidateQueries({ queryKey: taskKeys.all });
         notify("Task marked incomplete", { type: "success" });
       } catch (error: unknown) {
         notify("Error updating task", { type: "error" });
@@ -103,7 +103,7 @@ export function TaskSlideOverDetailsTab({
         data: { completed: true, completed_at: new Date().toISOString() },
         previousData: record,
       });
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
       notify("Task marked complete", { type: "success" });
       setShowCompletionDialog(false);
     } catch (error: unknown) {
