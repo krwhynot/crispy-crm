@@ -61,7 +61,10 @@ export {
   mockUseDeleteReturn,
   mockUseGetIdentity,
   mockUseGetIdentityReturn,
+  mockUseListContext,
+  mockUseListContextReturn,
   type MockIdentity,
+  type MockListContextValue,
   type GetListParams,
 } from "./typed-mocks";
 

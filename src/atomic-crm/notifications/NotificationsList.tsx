@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { Bell, Check, Eye, ExternalLink } from "lucide-react";
-import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
+import { useListContext, useUpdate, useNotify } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { List } from "@/components/ra-wrappers/list";
@@ -121,7 +122,7 @@ const NotificationsListContent = () => {
 const NotificationRow = ({ notification }: { notification: Notification }) => {
   const [update] = useUpdate();
   const notify = useNotify();
-  const refresh = useRefresh();
+  const queryClient = useQueryClient();
 
   const markAsRead = async () => {
     await update(
@@ -130,7 +131,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
       {
         onSuccess: () => {
           notify("Notification marked as read", { type: "success" });
-          refresh();
+          queryClient.invalidateQueries({ queryKey: ["notifications"] });
         },
         onError: () => {
           notify("Error marking notification as read", { type: "error" });

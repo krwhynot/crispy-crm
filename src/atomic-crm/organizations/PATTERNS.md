@@ -35,6 +35,7 @@ Organizations Module (index.tsx, resource.tsx)
 │   ├── AuthorizationsTab [Pattern D] (distributor only)
 │   ├── OrganizationContactsTab
 │   ├── OrganizationOpportunitiesTab
+│   ├── ActivitiesTab
 │   └── OrganizationNotesTab
 │
 └── Inline Creation

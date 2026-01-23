@@ -392,8 +392,8 @@ describe("OrganizationList", () => {
     mockToggleMode.mockClear();
     sortableColumns.length = 0;
 
-    (useListContext as any).mockReturnValue(defaultListContext);
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue(defaultListContext);
+    vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,

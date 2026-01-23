@@ -208,3 +208,90 @@ export function mockUseGetIdentity(options?: Parameters<typeof mockUseGetIdentit
  * Avoids `params?: any` in test mock implementations
  */
 export type { GetListParams };
+
+/**
+ * Partial type for useListContext mock to allow flexible overrides
+ * While maintaining type safety for consumers
+ */
+export interface MockListContextValue<RecordType extends RaRecord = RaRecord> {
+  data?: RecordType[];
+  total?: number;
+  isPending?: boolean;
+  isLoading?: boolean;
+  isFetching?: boolean;
+  error?: Error | null;
+  sort?: SortPayload;
+  filterValues?: FilterPayload;
+  displayedFilters?: Record<string, boolean>;
+  setFilters?: Mock;
+  setSort?: Mock;
+  setPage?: Mock;
+  setPerPage?: Mock;
+  page?: number;
+  perPage?: number;
+  resource?: string;
+  selectedIds?: RecordType["id"][];
+  onSelect?: Mock;
+  onSelectAll?: Mock;
+  onToggleItem?: Mock;
+  onUnselectItems?: Mock;
+  showFilter?: Mock;
+  hideFilter?: Mock;
+  refetch?: Mock;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+}
+
+/**
+ * Create a mock return value for useListContext hook
+ * @param overrides - Partial values to override defaults
+ *
+ * @example
+ * ```tsx
+ * vi.mocked(useListContext).mockReturnValue(
+ *   mockUseListContextReturn({ data: [mockContact], total: 1 })
+ * );
+ * ```
+ */
+export function mockUseListContextReturn<RecordType extends RaRecord = RaRecord>(
+  overrides?: MockListContextValue<RecordType>
+): ListControllerResult<RecordType> {
+  return {
+    data: (overrides?.data ?? []) as RecordType[],
+    total: overrides?.total ?? 0,
+    isPending: overrides?.isPending ?? false,
+    isLoading: overrides?.isLoading ?? false,
+    isFetching: overrides?.isFetching ?? false,
+    error: overrides?.error ?? null,
+    sort: overrides?.sort ?? { field: "id", order: "ASC" },
+    filterValues: overrides?.filterValues ?? {},
+    displayedFilters: overrides?.displayedFilters ?? {},
+    setFilters: overrides?.setFilters ?? vi.fn(),
+    setSort: overrides?.setSort ?? vi.fn(),
+    setPage: overrides?.setPage ?? vi.fn(),
+    setPerPage: overrides?.setPerPage ?? vi.fn(),
+    page: overrides?.page ?? 1,
+    perPage: overrides?.perPage ?? 25,
+    resource: overrides?.resource ?? "test",
+    selectedIds: overrides?.selectedIds ?? [],
+    onSelect: overrides?.onSelect ?? vi.fn(),
+    onSelectAll: overrides?.onSelectAll ?? vi.fn(),
+    onToggleItem: overrides?.onToggleItem ?? vi.fn(),
+    onUnselectItems: overrides?.onUnselectItems ?? vi.fn(),
+    showFilter: overrides?.showFilter ?? vi.fn(),
+    hideFilter: overrides?.hideFilter ?? vi.fn(),
+    refetch: overrides?.refetch ?? vi.fn(),
+    hasNextPage: overrides?.hasNextPage ?? false,
+    hasPreviousPage: overrides?.hasPreviousPage ?? false,
+  } as ListControllerResult<RecordType>;
+}
+
+/**
+ * Create a mock implementation for useListContext that returns typed values
+ * @param returnValue - Partial values to return from the mock
+ */
+export function mockUseListContext<RecordType extends RaRecord = RaRecord>(
+  returnValue: MockListContextValue<RecordType>
+): Mock {
+  return vi.fn().mockReturnValue(mockUseListContextReturn(returnValue));
+}
