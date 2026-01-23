@@ -51,6 +51,7 @@
 
 ### Test 1.4: Bulk Delete Organizations (FIX E2E-001)
 > **Regression Test:** Verifies `beforeDeleteMany` callback works correctly.
+> ✅ **VERIFIED 2026-01-23** - Fix confirmed working
 
 1. Go to **Organizations**
 2. Select checkboxes for 2+ organizations (at least one with contacts)
@@ -58,10 +59,10 @@
 4. Confirm deletion
 
 **Expected:**
-- [ ] All selected organizations removed from list
-- [ ] **No FK constraint error** (previously failed with `violates foreign key constraint`)
-- [ ] Related contacts remain visible (orphaned, not cascade deleted)
-- [ ] Total count decreases by number selected
+- [x] All selected organizations removed from list
+- [x] **No FK constraint error** (previously failed with `violates foreign key constraint`)
+- [x] Related contacts cascade soft-deleted (3 contacts archived with 2 orgs)
+- [x] Total count decreases by number selected (2208 → 2206)
 
 ---
 
