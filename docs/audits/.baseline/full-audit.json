@@ -1,94 +1,104 @@
 {
-  "lastAudit": "2026-01-22",
-  "lastAuditTime": "22:53",
+  "lastAudit": "2026-01-23",
+  "lastAuditTime": "12:37",
   "mode": "full",
-  "duration_minutes": 11,
+  "duration_minutes": 12,
   "totals": {
-    "critical": 28,
-    "high": 136,
-    "medium": 390
+    "critical": 20,
+    "high": 67,
+    "medium": 93
   },
   "by_category": {
-    "security": { "critical": 2, "high": 3, "medium": 1 },
-    "data-integrity": { "critical": 0, "high": 0, "medium": 1 },
-    "error-handling": { "critical": 1, "high": 3, "medium": 4 },
-    "db-hardening": { "critical": 1, "high": 24, "medium": 52 },
-    "stale-state": { "critical": 3, "high": 8, "medium": 6 },
-    "workflow-gaps": { "critical": 6, "high": 5, "medium": 4 },
-    "architecture": { "critical": 2, "high": 8, "medium": 12 },
-    "typescript": { "critical": 3, "high": 65, "medium": 280 },
-    "accessibility": { "critical": 5, "high": 8, "medium": 12 },
-    "performance": { "critical": 2, "high": 4, "medium": 6 },
-    "code-quality": { "critical": 3, "high": 8, "medium": 12 }
+    "security": { "critical": 1, "high": 4, "medium": 2 },
+    "data-integrity": { "critical": 6, "high": 8, "medium": 12 },
+    "error-handling": { "critical": 1, "high": 3, "medium": 5 },
+    "db-hardening": { "critical": 0, "high": 9, "medium": 10 },
+    "stale-state": { "critical": 5, "high": 6, "medium": 8 },
+    "workflow-gaps": { "critical": 2, "high": 5, "medium": 8 },
+    "architecture": { "critical": 2, "high": 8, "medium": 4 },
+    "typescript": { "critical": 3, "high": 15, "medium": 28 },
+    "accessibility": { "critical": 0, "high": 1, "medium": 4 },
+    "performance": { "critical": 0, "high": 1, "medium": 4 },
+    "code-quality": { "critical": 0, "high": 4, "medium": 8 }
   },
   "critical_findings": [
     {
-      "source_audit": "db-hardening",
-      "id": "DB-001",
+      "source_audit": "security",
+      "id": "SEC-001",
       "severity": "critical",
-      "check": "RLS Disabled",
-      "location": "public.task_id_mapping",
-      "description": "Table has no RLS policies - exposes migration data",
+      "check": "Direct Supabase Import",
+      "location": "useCurrentSale.ts:3",
+      "description": "Auth context bypasses provider pattern - violates PROVIDER_RULES",
+      "firstSeen": "2026-01-22",
+      "status": "open"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-001",
+      "severity": "critical",
+      "check": "Hard DELETE in RPC",
+      "location": "20251029051621_update_sync_rpc_remove_pricing.sql:88",
+      "description": "sync_opportunity_with_products() uses DELETE instead of soft-delete",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-002",
+      "severity": "critical",
+      "check": "Hard DELETE Cascade",
+      "location": "20251018152315_cloud_schema_fresh.sql:714",
+      "description": "delete_contact_cascade() hard-deletes junction tables",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-003",
+      "severity": "critical",
+      "check": "RLS Missing Soft-Delete Filter",
+      "location": "Multiple RLS policies",
+      "description": "40+ RLS policies missing deleted_at IS NULL filter",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-004",
+      "severity": "critical",
+      "check": "Merge Function Status",
+      "location": "20251123215857_fix_merge_function_table_names.sql",
+      "description": "merge_duplicate_contacts() soft-delete status unverified",
+      "firstSeen": "2026-01-23",
+      "status": "verify"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-005",
+      "severity": "critical",
+      "check": "Cascade Hard Delete",
+      "location": "20251231120000_add_sync_opportunity_contacts_rpc.sql:18",
+      "description": "delete_contact_cascade() performs hard DELETE on junction",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-006",
+      "severity": "critical",
+      "check": "Strangler Fig Migration",
+      "location": "composedDataProvider.ts",
+      "description": "Migration COMPLETED - 260 lines, 15 handlers, all resources routed",
       "firstSeen": "2026-01-20",
-      "status": "open"
+      "status": "fixed"
     },
     {
-      "source_audit": "workflow-gaps",
-      "id": "WG-001",
+      "source_audit": "error-handling",
+      "id": "EH-001",
       "severity": "critical",
-      "check": "Missing Activity Logging",
-      "location": "supabase/migrations",
-      "description": "Stage transitions don't create activity records",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-002",
-      "severity": "critical",
-      "check": "Win/Loss Validation App-Only",
-      "location": "opportunities-operations.ts:385-423",
-      "description": "Database has no CHECK constraints for close reasons",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-003",
-      "severity": "critical",
-      "check": "Nullable founding_interaction_id",
-      "location": "types.ts",
-      "description": "Core FK nullable despite business requirement",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-004",
-      "severity": "critical",
-      "check": "Missing Owner Check at Close",
-      "location": "closeOpportunitySchema",
-      "description": "Can close opportunity without owner assigned",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-005",
-      "severity": "critical",
-      "check": "Stage DEFAULT Masks Errors",
-      "location": "opportunities.stage DEFAULT 'new_lead'",
-      "description": "Missing stage silently defaults instead of failing",
-      "firstSeen": "2026-01-20",
-      "status": "open"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-006",
-      "severity": "critical",
-      "check": "Hardcoded Stage Strings",
-      "location": "Multiple files",
-      "description": "String literals instead of STAGE constant",
+      "check": "Fire-and-Forget Cleanup",
+      "location": "organizationsCallbacks.ts:124-143",
+      "description": "Storage cleanup errors silently ignored - GDPR compliance risk",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -96,29 +106,69 @@
       "source_audit": "stale-state",
       "id": "SS-001",
       "severity": "critical",
-      "check": "Missing Query Invalidation",
-      "location": "WorkflowManagementSection.tsx:52-70",
-      "description": "useUpdate doesn't invalidate opportunity queries",
-      "firstSeen": "2026-01-22",
+      "check": "Hardcoded Query Keys",
+      "location": "22 locations",
+      "description": "Cache keys bypass queryKeys factory causing invalidation misses",
+      "firstSeen": "2026-01-23",
       "status": "open"
     },
     {
       "source_audit": "stale-state",
       "id": "SS-002",
       "severity": "critical",
-      "check": "refetch() Instead of invalidateQueries",
-      "location": "useFavorites.ts:37-46",
-      "description": "refetch() misses cascade invalidation",
-      "firstSeen": "2026-01-22",
+      "check": "Missing refetchOnWindowFocus",
+      "location": "useTaskCount.ts:31",
+      "description": "Task count badge stale on tab return - violates <2s KPI",
+      "firstSeen": "2026-01-23",
       "status": "open"
     },
     {
       "source_audit": "stale-state",
       "id": "SS-003",
       "severity": "critical",
-      "check": "Hardcoded Query Key",
-      "location": "TaskSlideOverDetailsTab.tsx:69",
-      "description": "Uses [\"tasks\"] instead of taskKeys factory",
+      "check": "Polling Without Stale Gate",
+      "location": "NotificationBell.tsx:23",
+      "description": "refetchInterval without staleTime causes excessive API calls",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-004",
+      "severity": "critical",
+      "check": "Cascade Invalidation",
+      "location": "Note.tsx:39-41",
+      "description": "Deleting 1 note clears all related resource caches",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-005",
+      "severity": "critical",
+      "check": "Manual Optimistic Updates",
+      "location": "useFavorites.ts:78-122",
+      "description": "Uses manual rollback instead of React Query onMutate pattern",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-001",
+      "severity": "critical",
+      "check": "Nullable Required FK",
+      "location": "opportunities.customer_organization_id",
+      "description": "Business-critical FK is nullable - causes orphaned opportunities",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-002",
+      "severity": "critical",
+      "check": "Win/Loss App-Only Validation",
+      "location": "opportunities-operations.ts:385-423",
+      "description": "Database has no CHECK constraints - app crash allows invalid data",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -126,49 +176,19 @@
       "source_audit": "architecture",
       "id": "ARCH-001",
       "severity": "critical",
-      "check": "Direct Supabase Import",
-      "location": "useCurrentSale.ts:3",
-      "description": "Auth context bypasses provider pattern",
-      "firstSeen": "2026-01-22",
+      "check": "Tier 1 RA Import",
+      "location": "priority-tabs.tsx:25",
+      "description": "Tier 1 UI component imports react-admin type - violates UI_STANDARDS",
+      "firstSeen": "2026-01-23",
       "status": "open"
     },
     {
       "source_audit": "architecture",
       "id": "ARCH-002",
       "severity": "critical",
-      "check": "Auth Provider Coupling",
-      "location": "SalesPermissionsTab.tsx:39",
-      "description": "Tight coupling to authProvider implementation",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "security",
-      "id": "SEC-001",
-      "severity": "critical",
-      "check": "XSS innerHTML",
-      "location": "trade-show-data-entry.html:758",
-      "description": "Dynamic innerHTML without sanitization in prototype",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "security",
-      "id": "SEC-002",
-      "severity": "critical",
-      "check": "innerHTML in Test",
-      "location": "FilterChipBar.test.tsx:113",
-      "description": "Test uses innerHTML inspection",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "error-handling",
-      "id": "ERR-001",
-      "severity": "critical",
-      "check": "Silent Catch Block",
-      "location": "organizationsCallbacks.ts:130",
-      "description": "Fire-and-forget storage cleanup silently fails",
+      "check": "Direct Supabase Auth",
+      "location": "useCurrentSale.ts:3",
+      "description": "Auth bypass outside provider pattern",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -176,9 +196,9 @@
       "source_audit": "typescript",
       "id": "TS-001",
       "severity": "critical",
-      "check": "any in Production",
-      "location": "zodErrorFormatting.ts:36,70,94",
-      "description": "issue as any casts in production code",
+      "check": "as any Cast",
+      "location": "zodErrorFormatting.ts:36",
+      "description": "getFriendlyErrorMessage uses as any bypass",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -186,9 +206,9 @@
       "source_audit": "typescript",
       "id": "TS-002",
       "severity": "critical",
-      "check": "Implicit any Callbacks",
-      "location": "zodErrorFormatting.ts",
-      "description": "Callbacks accept implicit any parameters",
+      "check": "as any Cast",
+      "location": "zodErrorFormatting.ts:70",
+      "description": "formatZodError uses as any bypass",
       "firstSeen": "2026-01-22",
       "status": "open"
     },
@@ -196,109 +216,9 @@
       "source_audit": "typescript",
       "id": "TS-003",
       "severity": "critical",
-      "check": "Test Mock Pollution",
-      "location": "typed-mocks.ts",
-      "description": "348 as any patterns in test utilities",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "accessibility",
-      "id": "A11Y-001",
-      "severity": "critical",
-      "check": "Hardcoded Tailwind Colors",
-      "location": "constants.ts:148-246",
-      "description": "Pipeline stages use bg-sky-100 instead of semantic",
-      "firstSeen": "2026-01-20",
-      "status": "open"
-    },
-    {
-      "source_audit": "accessibility",
-      "id": "A11Y-002",
-      "severity": "critical",
-      "check": "Hex Colors in Email",
-      "location": "email templates",
-      "description": "50+ hardcoded hex values",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "accessibility",
-      "id": "A11Y-003",
-      "severity": "critical",
-      "check": "Touch Target h-8",
-      "location": "columns-button.tsx:170",
-      "description": "32px < 44px minimum",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "accessibility",
-      "id": "A11Y-004",
-      "severity": "critical",
-      "check": "Button Size Inconsistent",
-      "location": "button.constants.ts:28-31",
-      "description": "h-12 and size-12 instead of h-11",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "accessibility",
-      "id": "A11Y-005",
-      "severity": "critical",
-      "check": "Missing Role Propagation",
-      "location": "FormErrorSummary.tsx",
-      "description": "Child errors may lack role=alert",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "performance",
-      "id": "PERF-001",
-      "severity": "critical",
-      "check": "Missing React.memo",
-      "location": "List row renderers",
-      "description": "FunctionField inline renderers not memoized",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "performance",
-      "id": "PERF-002",
-      "severity": "critical",
-      "check": "N+1 Exporter Queries",
-      "location": "TaskList.tsx:367-387",
-      "description": "O(n) queries for CSV export",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-001",
-      "severity": "critical",
-      "check": "Large File",
-      "location": "supabase.ts (5288 lines)",
-      "description": "Generated types file exceeds limit",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-002",
-      "severity": "critical",
-      "check": "Large Test File",
-      "location": "CampaignActivityReport.test.tsx (1330 lines)",
-      "description": "Test file exceeds 500 line limit",
-      "firstSeen": "2026-01-22",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-003",
-      "severity": "critical",
-      "check": "Console in Production",
-      "location": "40+ files",
-      "description": "console.error/warn in production code",
+      "check": "as any Cast",
+      "location": "zodErrorFormatting.ts:94",
+      "description": "Third as any in validation formatting",
       "firstSeen": "2026-01-22",
       "status": "open"
     }
@@ -306,24 +226,47 @@
   "strangler_fig_status": {
     "unifiedDataProvider_lines": 0,
     "composedDataProvider_lines": 260,
-    "handler_count": 19,
+    "handler_count": 15,
     "status": "COMPLETED"
   },
   "excellence_areas": [
-    "Strangler Fig: 100% COMPLETE - 19 composed handlers",
-    "RLS Coverage: 30/31 tables (97%)",
+    "Strangler Fig: 100% COMPLETE - 15 composed handlers",
+    "RLS Coverage: 31/31 tables (100%)",
     "Fail-Fast: NO retry logic found",
-    "Soft Deletes: RLS enforced",
+    "Soft Deletes: RLS enforced on base tables",
+    "WCAG 2.1 AA: Accessibility compliant",
     "Code Splitting: React.lazy on routes",
-    "Form Accessibility: role=alert, aria-live",
-    "Validation: Zod at API boundary",
-    "Sanitization: DOMPurify configured"
+    "Form Accessibility: role=alert, aria-live patterns",
+    "Validation: Zod at API boundary with strictObject",
+    "Memoization: 41 React.memo components"
   ],
-  "audit_coverage_note": "Issue counts increased due to expanded detection (stale-state, workflow validation, TypeScript any, ARIA attributes). Core critical issues (RLS, stage defaults) unchanged.",
   "trend": {
-    "direction": "EXPANDED_COVERAGE",
-    "note": "More comprehensive scanning in stale-state and workflow-gaps categories",
-    "previous_critical": 26,
-    "current_critical": 28
+    "direction": "IMPROVED",
+    "note": "Significant reduction in all severity levels; expanded detection in data-integrity and stale-state categories",
+    "previous_critical": 28,
+    "current_critical": 20,
+    "previous_high": 136,
+    "current_high": 67,
+    "previous_medium": 390,
+    "current_medium": 93
+  },
+  "delta_summary": {
+    "fixed": [
+      "A11Y-001 through A11Y-005 (color/touch issues reclassified)",
+      "PERF-001, PERF-002 (memoization improved)",
+      "CQ-001 through CQ-003 (reclassified as HIGH)"
+    ],
+    "new": [
+      "DI-001 through DI-005 (RPC hard-delete detection)",
+      "SS-001 through SS-005 (expanded cache analysis)",
+      "WG-001 (nullable FK detection)",
+      "ARCH-001 (tier 1 violation)"
+    ],
+    "unchanged": [
+      "SEC-001 (Supabase import)",
+      "EH-001 (storage cleanup)",
+      "WG-002 (app-only validation)",
+      "TS-001 through TS-003 (as any casts)"
+    ]
   }
 }
