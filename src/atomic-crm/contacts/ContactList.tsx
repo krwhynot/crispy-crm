@@ -243,18 +243,14 @@ const ContactListLayout = ({
           <FunctionField
             label={<ContactStatusHeader />}
             sortable={false}
-            render={(record: Contact) => (
-              <FilterableBadge source="status" value={record.status}>
-                <ContactStatusBadge status={record.status} />
-              </FilterableBadge>
-            )}
+            render={(record: Contact) => <ContactStatusCell record={record} />}
           />
 
           {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}
           <FunctionField
             label="Notes"
             sortable={false}
-            render={(record: Contact) => record.nb_notes ?? 0}
+            render={(record: Contact) => <ContactNotesCell record={record} />}
             textAlign="center"
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"

@@ -248,7 +248,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
   const [dialogOpen, setDialogOpen] = useState(false);
   const [defaultName, setDefaultName] = useState('');
   const [create] = useCreate();
-  const notify = useNotify();
+  const { success, error: notifyError } = useSafeNotify();  // Sanitizes error messages
   const refresh = useRefresh();
 
   const handleCreateTag = async (data: Pick<Tag, 'name' | 'color'>) => {
@@ -257,12 +257,12 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
       { data },
       {
         onSuccess: () => {
-          notify('Tag created', { type: 'success' });
+          success('Tag created');  // useSafeNotify helper
           setDialogOpen(false);
           refresh();
         },
-        onError: (error) => {
-          notify(`Error: ${error.message}`, { type: 'error' });
+        onError: (err) => {
+          notifyError(err);  // Sanitizes error message automatically
         },
       }
     );

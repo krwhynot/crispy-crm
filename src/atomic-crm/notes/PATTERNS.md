@@ -477,7 +477,9 @@ export const Note = ({
   const [isHover, setHover] = useState(false);
   const [isEditing, setEditing] = useState(false);
   const resource = useResourceContext();  // Polymorphic key
-  const notify = useNotify();
+  // Note: Prefer useSafeNotify for error messages (sanitizes user data)
+  // import { useSafeNotify } from '@/atomic-crm/hooks/useSafeNotify';
+  const notify = useNotify();  // Legacy - see useSafeNotify for error handling
 
   // Avatar rendering based on resource type (camelCase from useResourceContext)
   return (
