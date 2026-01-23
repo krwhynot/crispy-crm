@@ -75,6 +75,8 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | H4 | Untyped catch clause | `rg "catch\s*\(\w+\)\s*\{" --type ts -n $SCOPE` | Unsafe error handling (use unknown) |
 | H5 | Non-null assertion abuse | `rg "!\." --type ts -n $SCOPE` | Runtime null errors |
 | H6 | Non-null assertion on optional chain | `rg "\?\.\w+!" --type ts -n $SCOPE` | Contradictory assertions |
+| H7 | Database type in features | `rg "Database\['public'\]" --type ts -n src/atomic-crm/` | L1→L5 coupling (bypasses Domain layer) |
+| H8 | Manual interface in types/ | `rg "export interface" --type ts -n src/atomic-crm/types/` | Schema drift (use z.infer instead) |
 
 ### Medium Severity Checks
 
@@ -472,6 +474,8 @@ function parse(data: unknown): ParsedResult {
 | H4 | Untyped catch clause | `catch\s*\(\w+\)\s*\{` | High |
 | H5 | Non-null assertion abuse | `!\.` | High |
 | H6 | Non-null assertion on optional chain | `\?\.\w+!` | High |
+| H7 | Database type in features | `Database\['public'\]` | High |
+| H8 | Manual interface in types/ | `export interface` (in types/) | High |
 | M1 | useState without type | `useState\(\)` | Medium |
 | M2 | useRef without type | `useRef\(\)` | Medium |
 | M3 | Loose equality | `==[^=]\|!=[^=]` | Medium |

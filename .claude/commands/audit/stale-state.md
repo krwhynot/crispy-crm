@@ -89,6 +89,19 @@ rg "onMutate|optimistic" --type tsx -A 15
 
 **Risk:** Failed mutation shows wrong data until refetch
 
+#### 1.5 Hardcoded Query Keys (Layer 5 → Layer 3 Bypass)
+```bash
+# Find string literal query keys instead of constants
+rg "useQuery\(\[['\"]" --type tsx -n src/atomic-crm/
+```
+
+**What to look for:**
+- `useQuery(['contacts', id])` using string literals
+- Query keys not imported from a central constants file
+- Features defining their own query key patterns
+
+**Risk:** Query key drift from Provider - if L3 Provider changes a key, L5 Feature won't know → stale data
+
 ### Medium Severity
 
 #### 1.5 Long staleTime Values
@@ -115,6 +128,19 @@ rg "useState.*useEffect" --type tsx
 - Should often be replaced with react-query or derived state
 
 **Risk:** Complex state management, race conditions, sync bugs
+
+#### 1.7 Direct Cache Manipulation (Layer 5 Cache Surgery)
+```bash
+# Find direct cache mutations instead of invalidation
+rg "setQueryData\(" --type tsx -n src/atomic-crm/
+```
+
+**What to look for:**
+- `queryClient.setQueryData()` calls outside of optimistic update patterns
+- Manual cache surgery without corresponding `invalidateQueries`
+- Features directly manipulating cache instead of letting Provider handle it
+
+**Risk:** Cache/DB desync - manual cache changes create fragile state that drifts from Database (L1)
 
 ---
 
