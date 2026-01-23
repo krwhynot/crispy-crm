@@ -570,6 +570,139 @@ const defaults: SmartDefaults = {
 
 ---
 
+## Pattern I: Safe Notification Hook
+
+Wraps React Admin's `useNotify` to automatically sanitize errors and provide consistent notification patterns.
+
+```tsx
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
+
+function ContactEdit() {
+  const notify = useSafeNotify();
+
+  const handleSave = async () => {
+    try {
+      await saveContact(data);
+      notify.success("Contact saved successfully");
+    } catch (error) {
+      // Automatically converts technical errors to user-friendly messages
+      notify.error(error, "Failed to save contact");
+    }
+  };
+
+  // Action-specific error handling
+  const handleDelete = async () => {
+    try {
+      await deleteContact(id);
+    } catch (error) {
+      notify.actionError(error, "delete", "contact");
+      // Displays: "Failed to delete contact. Please try again."
+    }
+  };
+
+  return <button onClick={handleSave}>Save</button>;
+}
+```
+
+**When to use**: Any component that needs to display notifications, especially error messages from API calls.
+
+### Interface
+
+```tsx
+// useSafeNotify.ts:14-26
+export interface SafeNotifyReturn {
+  success: (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => void;
+  error: (error: unknown, fallbackOrOptions?: string | SafeNotifyOptions) => void;
+  warning: (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => void;
+  info: (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => void;
+  actionError: (
+    error: unknown,
+    action: "create" | "update" | "delete" | "save" | "load",
+    resource?: string
+  ) => void;
+}
+```
+
+### Implementation
+
+```tsx
+// useSafeNotify.ts:28-90
+export function useSafeNotify(): SafeNotifyReturn {
+  const notify = useNotify();
+
+  const success = useCallback(
+    (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => {
+      notify(message, {
+        type: "success",
+        autoHideDuration: 3000,
+        ...options,
+      });
+    },
+    [notify]
+  );
+
+  const error = useCallback(
+    (err: unknown, fallbackOrOptions?: string | SafeNotifyOptions) => {
+      const { fallback, ...options } =
+        typeof fallbackOrOptions === "string"
+          ? { fallback: fallbackOrOptions }
+          : fallbackOrOptions || {};
+
+      const message = fallback ?? mapErrorToUserMessage(err);
+      notify(message, {
+        type: "error",
+        autoHideDuration: 5000,
+        ...options,
+      });
+    },
+    [notify]
+  );
+
+  const actionError = useCallback(
+    (error: unknown, action: string, resource?: string) => {
+      const message = getActionErrorMessage(error, action, resource);
+      notify(message, { type: "error", autoHideDuration: 5000 });
+    },
+    [notify]
+  );
+
+  // ... warning, info methods
+}
+```
+
+### Key Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Wraps `useNotify` | Maintains React Admin compatibility while adding safety |
+| `mapErrorToUserMessage` | Converts database/technical errors to user-friendly text |
+| All methods use `useCallback` | Ensures stable references for downstream deps |
+| `actionError` helper | Provides consistent error messages for CRUD operations |
+| Default durations (3s/5s) | Success messages auto-hide faster than errors |
+
+### Error Sanitization
+
+```tsx
+// Example: Database error transformation
+try {
+  await supabase.from('contacts').insert(data);
+} catch (error) {
+  notify.error(error);
+  // Raw error: "duplicate key value violates unique constraint..."
+  // User sees: "This action could not be completed. Please try again."
+}
+
+// With custom fallback
+try {
+  await complexOperation();
+} catch (error) {
+  notify.error(error, "Unable to complete operation");
+  // User sees custom message instead of sanitized default
+}
+```
+
+---
+
 ## Hook Comparison Table
 
 | Hook | Storage | Validation | React Admin | Use Case |
@@ -581,6 +714,7 @@ const defaults: SmartDefaults = {
 | `useRecentItems` | useStore (localStorage) | None | `useStore` | Cross-resource recent records |
 | `useRecentSearches` | localStorage | Zod | None | Global search recents |
 | `useRelatedRecordCounts` | None | None | `useDataProvider` | Cascade delete warnings |
+| `useSafeNotify` | None | None | `useNotify` | Safe error notifications |
 
 ### Decision Tree
 
@@ -605,6 +739,9 @@ Need synchronized recent searches across components?
 
 Need to show cascade impact before delete?
 └── Yes → useRelatedRecordCounts
+
+Need safe, user-friendly error notifications?
+└── Yes → useSafeNotify
 ```
 
 ---
