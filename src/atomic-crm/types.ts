@@ -118,19 +118,8 @@ export interface Contact extends Pick<RaRecord, "id"> {
 // OpportunityParticipant type is now exported from validation/opportunities (P2 consolidation)
 // Defined in validation/opportunities/opportunities-junctions.ts
 
-/**
- * Opportunity Contact Junction Table Record
- * Links opportunities to contacts with additional metadata
- */
-export interface OpportunityContact extends Pick<RaRecord, "id"> {
-  id: Identifier;
-  opportunity_id: Identifier;
-  contact_id: Identifier;
-  role?: string | null;
-  is_primary: boolean;
-  notes?: string | null;
-  created_at: string;
-}
+// OpportunityContact type is now exported from validation/opportunities (P2 consolidation)
+// Defined in validation/opportunities/opportunities-junctions.ts
 
 // SampleStatus type removed - now imported from validation/activities.ts (P2 consolidation)
 
@@ -293,30 +282,12 @@ export interface OrganizationNote extends Pick<RaRecord, "id"> {
   status?: undefined;
 }
 
-export interface Tag extends Pick<RaRecord, "id"> {
-  name: string;
-  color: string;
-}
+// Tag type is now exported from validation/tags.ts (P2 consolidation)
 
-export interface Task extends Pick<RaRecord, "id"> {
-  title: string;
-  description?: string | null;
-  contact_id?: Identifier;
-  organization_id?: Identifier;
-  type: Database["public"]["Enums"]["task_type"];
-  due_date: string;
-  reminder_date?: string | null;
-  completed?: boolean;
-  completed_at?: string | null;
-  priority?: Database["public"]["Enums"]["priority_level"];
-  opportunity_id?: Identifier;
-  sales_id?: Identifier;
-  opportunity_owner_id?: Identifier;
-  /** Snooze date - task is hidden from active list until this date */
-  snooze_until?: string | null;
-  created_at?: string;
-  updated_at?: string;
-}
+// Task type is now exported from validation/task.ts (P2 consolidation)
+// The schema includes: id, title, description, due_date, reminder_date, completed,
+// completed_at, priority, type, contact_id, opportunity_id, organization_id,
+// sales_id, snooze_until, created_by, created_at, updated_at, deleted_at
 
 export interface DashboardSnapshot extends Pick<RaRecord, "id"> {
   snapshot_date: string; // ISO date string (YYYY-MM-DD)
@@ -382,13 +353,12 @@ export type Activity = RaRecord &
     | ActivityOpportunityNoteCreated
   );
 
-export interface RAFile {
-  src: string;
-  title: string;
+// RAFile type is now exported from validation/shared/ra-file.ts (P2 consolidation)
+// Extended RAFile type with legacy fields for backward compatibility
+export type RAFileView = RAFile & {
   path?: string;
-  rawFile: File;
   type?: string;
-}
+};
 
 export type AttachmentNote = RAFile;
 // DealStage interface removed - use OpportunityStage instead
