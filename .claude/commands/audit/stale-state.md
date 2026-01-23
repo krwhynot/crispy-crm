@@ -462,8 +462,8 @@ After all phases complete, display:
 | Severity | Definition | Example |
 |----------|------------|---------|
 | **Critical** | Data correctness issues - user sees wrong data | Missing invalidateQueries after mutation |
-| **High** | UX impact - stale data causes confusion | Missing refetchOnWindowFocus on dashboard |
-| **Medium** | Anti-patterns or subtle bugs | Manual state sync instead of react-query |
+| **High** | UX impact - stale data causes confusion, layer violations | Missing refetchOnWindowFocus, hardcoded query keys (L5→L3 bypass) |
+| **Medium** | Anti-patterns or subtle bugs | Manual state sync, direct cache manipulation (L5 cache surgery) |
 
 ---
 

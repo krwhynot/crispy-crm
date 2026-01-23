@@ -140,6 +140,7 @@ rg "\.name\s*\|\|" --type ts -n $SCOPE
 | WF-H2 | Missing activity logging | `rg "useCreate|useUpdate|useDelete" --type tsx -n src/atomic-crm/` then check for activity creation | Audit trail gaps |
 | WF-H3 | Incomplete state transitions | `rg "setStage|updateStage|stage\s*=" --type ts -n $SCOPE` | Status changes without required fields |
 | WF-H4 | Missing required relationships | `rg "opportunity.*create|createOpportunity" --type ts -n $SCOPE` | Opportunities created without principal |
+| WF-H5 | Local status definitions | `rg "const [A-Z_]+_STATUS\s*=" --type tsx -n src/atomic-crm/` | UI/Domain drift (L5↔L2 mismatch) |
 
 **High Check Details:**
 
@@ -175,6 +176,7 @@ Check if these operations log to activities table.
 | WF-M2 | Direct status assignments | `rg "\.stage\s*=" --type ts -n $SCOPE` | Bypasses state machine |
 | WF-M3 | Missing close reasons | `rg "closed_won|closed_lost" --type ts -n $SCOPE` then check for reason field | Lost context on why deals closed |
 | WF-M4 | Optional activity type | `rg "activity_type.*\?" --type ts -n $SCOPE` | Activity records without type |
+| WF-M5 | Nullable critical fields | `rg "\.(stage|status|type)\?\." --type tsx -n src/atomic-crm/` | Data model confusion (defensive coding against impossible states) |
 
 ---
 
@@ -558,6 +560,7 @@ Valid pipeline stages for Crispy CRM:
 | WF-H2 | Missing Activity Log | CUD without activity | Audit trail gaps |
 | WF-H3 | Incomplete Transitions | State change without validation | Process gaps |
 | WF-H4 | Missing Relationships | Create without required FK | Orphaned records |
+| WF-H5 | Local Status Definitions | `const STATUS =` in UI | UI/Domain drift |
 
 ### Medium Checks
 
@@ -567,6 +570,7 @@ Valid pipeline stages for Crispy CRM:
 | WF-M2 | Direct Assignments | `.stage =` | Bypasses state machine |
 | WF-M3 | Missing Close Reason | Closed without reason | Lost context |
 | WF-M4 | Optional Activity Type | `activity_type?` | Classification gaps |
+| WF-M5 | Nullable Critical Fields | `.stage?.` optional chain | Data model confusion |
 
 ---
 
@@ -625,6 +629,8 @@ Valid pipeline stages for Crispy CRM:
 - `WF-M2-{seq}` - Direct status assignment
 - `WF-M3-{seq}` - Missing close reason
 - `WF-M4-{seq}` - Optional activity type
+- `WF-H5-{seq}` - Local status definition (UI/Domain drift)
+- `WF-M5-{seq}` - Nullable critical field
 
 ---
 
