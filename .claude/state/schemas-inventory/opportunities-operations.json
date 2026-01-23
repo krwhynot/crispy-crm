@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-22T23:55:38.639Z",
+  "generated_at": "2026-01-23T13:52:46.200Z",
   "item_count": 6,
   "items": [
     {
@@ -44,7 +44,7 @@
       "name": "opportunityProductSyncHandlerSchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
       "line": 49,
-      "schemaType": "object",
+      "schemaType": "strictObject",
       "fields": [
         {
           "name": "id",
@@ -115,6 +115,9 @@
         "opportunityStageSchema",
         "opportunityPrioritySchema",
         "opportunityProductSchema",
+        "opportunityParticipantRoleSchema",
+        "opportunityParticipantSchema",
+        "opportunityContactSchema",
         "opportunityProductSyncInputSchema",
         "opportunityProductSyncHandlerSchema",
         "quickCreateOpportunitySchema",
@@ -241,6 +244,9 @@
         "opportunityStageSchema",
         "opportunityPrioritySchema",
         "opportunityProductSchema",
+        "opportunityParticipantRoleSchema",
+        "opportunityParticipantSchema",
+        "opportunityContactSchema",
         "opportunityProductSyncInputSchema",
         "opportunityProductSyncHandlerSchema",
         "createOpportunitySchema",

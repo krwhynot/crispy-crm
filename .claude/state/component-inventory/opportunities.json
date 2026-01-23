@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-22T23:55:24.908Z",
+  "generated_at": "2026-01-23T13:52:37.629Z",
   "item_count": 74,
   "items": [
     {
@@ -1458,7 +1458,7 @@
     {
       "name": "PrincipalGroupedList",
       "file": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx",
-      "line": 123,
+      "line": 116,
       "type": "presentational",
       "hooks": [
         "useListContext",
@@ -1478,7 +1478,8 @@
       "childComponents": [
         "Opportunity",
         "StageStatus",
-        "STAGE"
+        "STAGE",
+        "STAGE_ORDER"
       ],
       "contextDependencies": [
         "useListContext"
@@ -1627,16 +1628,18 @@
     {
       "name": "WorkflowManagementSection",
       "file": "src/atomic-crm/opportunities/WorkflowManagementSection.tsx",
-      "line": 28,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useNavigate",
         "useNotify",
+        "useQueryClient",
         "useShowContext",
         "useState",
         "useUpdate"
       ],
       "imports": [
+        "../queryKeys",
         "../types",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/controlled-date-picker",
@@ -1645,6 +1648,7 @@
         "@/components/ui/collapsible",
         "@/components/ui/input",
         "@/components/ui/textarea",
+        "@tanstack/react-query",
         "date-fns",
         "lucide-react",
         "ra-core",
@@ -1877,10 +1881,11 @@
     {
       "name": "QuickAddOpportunity",
       "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-      "line": 16,
+      "line": 23,
       "type": "presentational",
       "hooks": [
         "useCreate",
+        "useDataProvider",
         "useEffect",
         "useGetIdentity",
         "useGetList",
@@ -1905,7 +1910,9 @@
         "Organization",
         "Opportunity"
       ],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "wrapper"
     },
     {

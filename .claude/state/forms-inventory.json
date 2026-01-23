@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-22T23:55:39.437Z",
+  "generated_at": "2026-01-23T13:52:46.850Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:300027510a157055",
+  "checksum": "sha256:85fb2f3fc48d1405",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "98682150ee67",
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
@@ -38,7 +38,7 @@
     "src/atomic-crm/opportunities/OpportunityCreateSaveButton.tsx": "83818b422465",
     "src/atomic-crm/opportunities/OpportunityEdit.tsx": "96f67bf0a804",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "cbfd56f63ef9",
-    "src/atomic-crm/opportunities/QuickAddForm.tsx": "9744bea3129f",
+    "src/atomic-crm/opportunities/QuickAddForm.tsx": "f316f7217815",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "f2603be715b4",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "ebb98786e021",
     "src/atomic-crm/organizations/OrganizationCreate.tsx": "1c4bb32a6be6",
@@ -61,7 +61,7 @@
     "src/atomic-crm/tags/TagCreateModal.tsx": "0f6d4e2f2e1d",
     "src/atomic-crm/tags/TagEdit.tsx": "332dd009f717",
     "src/atomic-crm/tags/TagEditModal.tsx": "da8202cbdc29",
-    "src/atomic-crm/tags/TagInputs.tsx": "10c6d4bd63e9",
+    "src/atomic-crm/tags/TagInputs.tsx": "f5adeb1846e5",
     "src/atomic-crm/tags/TagSelectWithCreate.tsx": "97e24bfd3b83",
     "src/atomic-crm/tasks/TaskCompactForm.tsx": "39309698a061",
     "src/atomic-crm/tasks/TaskCreate.tsx": "5eab0e7fbc9a",
@@ -1268,11 +1268,13 @@
     {
       "componentName": "TagInputs",
       "file": "src/atomic-crm/tags/TagInputs.tsx",
-      "line": 12,
+      "line": 13,
       "formType": "unknown",
       "formPatterns": {
         "primary": "useFormContext",
-        "secondary": []
+        "secondary": [
+          "useWatch"
+        ]
       },
       "inputComponents": [
         "TextInput"

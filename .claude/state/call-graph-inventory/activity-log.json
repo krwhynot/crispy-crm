@@ -1,13 +1,13 @@
 {
   "chunk_name": "activity-log",
-  "generated_at": "2026-01-22T23:55:44.567Z",
+  "generated_at": "2026-01-23T13:52:49.495Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "id": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "name": "ActivityLog",
         "file": "src/atomic-crm/activity-log/ActivityLog.tsx",
-        "line": 18,
+        "line": 19,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -105,79 +105,79 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
         "edgeType": "hook",
-        "line": 19,
+        "line": 20,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "useQuery",
         "targetName": "useQuery",
         "edgeType": "hook",
-        "line": 24,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
-        "target": "getActivityLog",
-        "targetName": "getActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
+        "target": "byOrganization",
+        "targetName": "byOrganization",
         "edgeType": "call",
         "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
+        "target": "getActivityLog",
+        "targetName": "getActivityLog",
+        "edgeType": "call",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 32,
+        "line": 33,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 32,
+        "line": 33,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "Alert",
         "targetName": "Alert",
         "edgeType": "render",
-        "line": 47,
+        "line": 48,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "ActivityLogContext.Provider",
         "targetName": "ActivityLogContext.Provider",
         "edgeType": "render",
-        "line": 52,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -186,29 +186,38 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 38,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
-        "target": "Separator",
-        "targetName": "Separator",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
         "edgeType": "render",
         "line": 39,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:18:ActivityLog",
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
+        "target": "Separator",
+        "targetName": "Separator",
+        "edgeType": "render",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activity-log/ActivityLog.tsx:19:ActivityLog",
         "target": "ActivityLogIterator",
         "targetName": "ActivityLogIterator",
         "edgeType": "render",
-        "line": 53,
+        "line": 54,
         "conditional": false,
         "inLoop": false
       },

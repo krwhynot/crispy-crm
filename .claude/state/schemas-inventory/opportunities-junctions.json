@@ -1,0 +1,236 @@
+{
+  "chunk_name": "opportunities-junctions",
+  "generated_at": "2026-01-23T13:52:46.200Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "opportunityParticipantRoleSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "line": 23,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "customer",
+        "principal",
+        "distributor",
+        "competitor"
+      ],
+      "relatedSchemas": [
+        "opportunityParticipantSchema",
+        "createOpportunitySchema",
+        "updateOpportunitySchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "opportunityParticipantSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "line": 38,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "opportunity_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "role",
+          "zodType": "ref:opportunityParticipantRoleSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "is_primary",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "notes",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(1000, \"Notes too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_by",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "opportunityParticipantRoleSchema",
+        "createOpportunitySchema",
+        "updateOpportunitySchema"
+      ],
+      "validationFunctions": [
+        "validateOpportunityParticipant"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "opportunityContactSchema",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "line": 87,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "opportunity_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "contact_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "role",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(100, \"Role too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "is_primary",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "notes",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "max(1000, \"Notes too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "createContactSchema",
+        "importContactSchema",
+        "createOpportunitySchema",
+        "updateOpportunitySchema"
+      ],
+      "validationFunctions": [
+        "validateOpportunityContact"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

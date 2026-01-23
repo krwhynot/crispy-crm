@@ -1,12 +1,12 @@
 {
   "chunk_name": "_root",
-  "generated_at": "2026-01-22T23:55:38.877Z",
-  "item_count": 30,
+  "generated_at": "2026-01-23T13:52:46.442Z",
+  "item_count": 18,
   "items": [
     {
       "name": "SalesFormData",
       "file": "src/atomic-crm/types.ts",
-      "line": 31,
+      "line": 63,
       "kind": "interface",
       "properties": [
         {
@@ -56,88 +56,9 @@
       "isExported": true
     },
     {
-      "name": "Sale",
-      "file": "src/atomic-crm/types.ts",
-      "line": 41,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "first_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "last_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "role",
-          "type": "\"admin\" | \"manager\" | \"rep\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "administrator",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "avatar",
-          "type": "RAFile",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "disabled",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "user_id",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "digest_opt_in",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "timezone",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "email",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "password",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
       "name": "OrganizationWithHierarchy",
       "file": "src/atomic-crm/types.ts",
-      "line": 75,
+      "line": 86,
       "kind": "interface",
       "properties": [
         {
@@ -174,7 +95,7 @@
     {
       "name": "EmailAndType",
       "file": "src/atomic-crm/types.ts",
-      "line": 82,
+      "line": 93,
       "kind": "interface",
       "properties": [
         {
@@ -196,7 +117,7 @@
     {
       "name": "PhoneNumberAndType",
       "file": "src/atomic-crm/types.ts",
-      "line": 87,
+      "line": 98,
       "kind": "interface",
       "properties": [
         {
@@ -216,445 +137,9 @@
       "isExported": true
     },
     {
-      "name": "Contact",
-      "file": "src/atomic-crm/types.ts",
-      "line": 92,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "first_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "last_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "title",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "email",
-          "type": "EmailAndType[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "avatar",
-          "type": "Partial<RAFile>",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "linkedin_url",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "first_seen",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "last_seen",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "has_newsletter",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "tags",
-          "type": "Identifier[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "gender",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_owner_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "status",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "background",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "phone",
-          "type": "PhoneNumberAndType[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "organization_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "department",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "deleted_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "nb_notes",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "nb_tasks",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "nb_activities",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "company_name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "OpportunityParticipant",
-      "file": "src/atomic-crm/types.ts",
-      "line": 127,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "organization_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "role",
-          "type": "\"customer\" | \"principal\" | \"distributor\" | \"competitor\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "is_primary",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_by",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "deleted_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "OpportunityContact",
-      "file": "src/atomic-crm/types.ts",
-      "line": 145,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "contact_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "role",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "is_primary",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "ActivityRecord",
-      "file": "src/atomic-crm/types.ts",
-      "line": 157,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "activity_type",
-          "type": "\"engagement\" | \"interaction\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "\"email\" | \"note\" | \"call\" | \"meeting\" | \"demo\" | \"proposal\" | \"follow_up\" | \"trade_show\" | \"site_visit\" | \"contract_review\" | \"check_in\" | \"social\" | \"sample\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "subject",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "activity_date",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "duration_minutes",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "contact_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "organization_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "follow_up_required",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "follow_up_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "follow_up_notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "outcome",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sentiment",
-          "type": "\"positive\" | \"neutral\" | \"negative\"",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "attachments",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "location",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "attendees",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "tags",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sample_status",
-          "type": "\"sent\" | \"received\" | \"feedback_pending\" | \"feedback_received\"",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_by",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "deleted_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
       "name": "InteractionParticipant",
       "file": "src/atomic-crm/types.ts",
-      "line": 185,
+      "line": 131,
       "kind": "interface",
       "properties": [
         {
@@ -707,621 +192,9 @@
       "isExported": true
     },
     {
-      "name": "ContactNote",
-      "file": "src/atomic-crm/types.ts",
-      "line": 195,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "contact_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "text",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "status",
-          "type": "undefined",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "attachments",
-          "type": "RAFile[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "Opportunity",
-      "file": "src/atomic-crm/types.ts",
-      "line": 222,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "customer_organization_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "principal_organization_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "distributor_organization_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "contact_ids",
-          "type": "Identifier[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "stage",
-          "type": "\"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "status",
-          "type": "\"active\" | \"on_hold\" | \"nurturing\" | \"stalled\" | \"expired\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "priority",
-          "type": "\"medium\" | \"critical\" | \"high\" | \"low\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "estimated_close_date",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "actual_close_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "created_by",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "version",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "stage_changed_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "deleted_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_owner_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "account_manager_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "lead_source",
-          "type": "\"website\" | \"trade_show\" | \"referral\" | \"cold_call\" | \"email_campaign\" | \"social_media\" | \"partner\" | \"existing_customer\"",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "founding_interaction_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "stage_manual",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "status_manual",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "next_action",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "next_action_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "competition",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "decision_criteria",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "tags",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "campaign",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "related_opportunity_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "nb_interactions",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "last_interaction_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "days_in_stage",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "customer_organization_name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "principal_organization_name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "distributor_organization_name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "products",
-          "type": "{ id: Identifier; product_id_reference: Identifier; product_name: string; product_category?: string; principal_name?: string; notes?: string; }[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "days_since_last_activity",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "pending_task_count",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "overdue_task_count",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "next_task_id",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "next_task_title",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "next_task_due_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "next_task_priority",
-          "type": "\"medium\" | \"critical\" | \"high\" | \"low\"",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "win_reason",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "loss_reason",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "close_reason_notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "OpportunityNote",
-      "file": "src/atomic-crm/types.ts",
-      "line": 290,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "opportunity_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "text",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_owner_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "attachments",
-          "type": "RAFile[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "status",
-          "type": "undefined",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "OrganizationNote",
-      "file": "src/atomic-crm/types.ts",
-      "line": 303,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "organization_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "text",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "date",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "attachments",
-          "type": "RAFile[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "status",
-          "type": "undefined",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "Tag",
-      "file": "src/atomic-crm/types.ts",
-      "line": 316,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "color",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "Task",
-      "file": "src/atomic-crm/types.ts",
-      "line": 321,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "title",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "contact_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "organization_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "\"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\" | \"Other\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "due_date",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "reminder_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "completed",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "completed_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "priority",
-          "type": "\"medium\" | \"critical\" | \"high\" | \"low\"",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_owner_id",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "snooze_until",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
       "name": "DashboardSnapshot",
       "file": "src/atomic-crm/types.ts",
-      "line": 341,
+      "line": 172,
       "kind": "interface",
       "properties": [
         {
@@ -1400,7 +273,7 @@
     {
       "name": "ActivityOrganizationCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 358,
+      "line": 189,
       "kind": "interface",
       "properties": [
         {
@@ -1443,7 +316,7 @@
     {
       "name": "ActivityContactCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 366,
+      "line": 197,
       "kind": "interface",
       "properties": [
         {
@@ -1466,7 +339,7 @@
         },
         {
           "name": "contact",
-          "type": "Contact",
+          "type": "Record<string, unknown>",
           "optional": false,
           "readonly": false
         },
@@ -1486,7 +359,7 @@
     {
       "name": "ActivityContactNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 374,
+      "line": 205,
       "kind": "interface",
       "properties": [
         {
@@ -1503,7 +376,7 @@
         },
         {
           "name": "contactNote",
-          "type": "ContactNote",
+          "type": "{ date: Date; text?: string; sales_id?: string | number; attachments?: { src: string; title: string; type?: string; size?: number; }[]; id?: string | number; created_at?: string; updated_at?: string; contact_id?: string | number; }",
           "optional": false,
           "readonly": false
         },
@@ -1523,7 +396,7 @@
     {
       "name": "ActivityOpportunityCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 381,
+      "line": 212,
       "kind": "interface",
       "properties": [
         {
@@ -1546,7 +419,7 @@
         },
         {
           "name": "opportunity",
-          "type": "Opportunity",
+          "type": "{ name: string; estimated_close_date: Date; stage: \"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\"; priority: \"medium\" | \"critical\" | \"high\" | \"low\"; contact_ids: number[]; tags: string[]; id?: string | number; created_at?: string; updated_at?: string; version?: number; deleted_at?: string; description?: string; lead_source?: \"website\" | \"referral\" | \"trade_show\" | \"cold_call\" | \"email_campaign\" | \"social_media\" | \"partner\" | \"existing_customer\"; customer_organization_id?: string | number; principal_organization_id?: string | number; distributor_organization_id?: string | number; account_manager_id?: string | number; campaign?: string; related_opportunity_id?: string | number; notes?: string; next_action?: string; next_action_date?: Date; decision_criteria?: string; win_reason?: \"other\" | \"relationship\" | \"product_quality\" | \"price_competitive\" | \"timing\"; loss_reason?: \"other\" | \"timing\" | \"price_too_high\" | \"no_authorization\" | \"competitor_relationship\" | \"product_fit\" | \"no_response\"; close_reason_notes?: string; status?: \"active\" | \"on_hold\" | \"nurturing\" | \"stalled\" | \"expired\"; index?: number; actual_close_date?: Date; stage_manual?: boolean; status_manual?: boolean; competition?: string; founding_interaction_id?: string | number; probability?: number; opportunity_owner_id?: string | number; created_by?: string | number; updated_by?: string | number; search_tsv?: string; stage_changed_at?: string; customer_organization_name?: string; principal_organization_name?: string; distributor_organization_name?: string; days_in_stage?: number; last_activity_date?: string; days_since_last_activity?: number; pending_task_count?: number; overdue_task_count?: number; next_task_id?: string | number; next_task_title?: string; next_task_due_date?: string; next_task_priority?: string; products?: { [x: string]: unknown; id: number; product_id_reference?: number; product_name?: string; product_category?: string; principal_name?: string; notes?: string; }[]; }",
           "optional": false,
           "readonly": false
         },
@@ -1563,7 +436,7 @@
     {
       "name": "ActivityOpportunityNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 389,
+      "line": 220,
       "kind": "interface",
       "properties": [
         {
@@ -1580,7 +453,7 @@
         },
         {
           "name": "opportunityNote",
-          "type": "OpportunityNote",
+          "type": "{ date: Date; text?: string; sales_id?: string | number; attachments?: { src: string; title: string; type?: string; size?: number; }[]; id?: string | number; created_at?: string; updated_at?: string; opportunity_id?: string | number; }",
           "optional": false,
           "readonly": false
         },
@@ -1595,49 +468,9 @@
       "isExported": true
     },
     {
-      "name": "RAFile",
-      "file": "src/atomic-crm/types.ts",
-      "line": 405,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "src",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "title",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "path",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "rawFile",
-          "type": "File",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
       "name": "NoteStatus",
       "file": "src/atomic-crm/types.ts",
-      "line": 416,
+      "line": 246,
       "kind": "interface",
       "properties": [
         {
@@ -1665,7 +498,7 @@
     {
       "name": "ContactGender",
       "file": "src/atomic-crm/types.ts",
-      "line": 422,
+      "line": 252,
       "kind": "interface",
       "properties": [
         {
@@ -1691,151 +524,9 @@
       "isExported": true
     },
     {
-      "name": "Product",
-      "file": "src/atomic-crm/types.ts",
-      "line": 432,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "principal_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "category",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "status",
-          "type": "\"active\" | \"discontinued\" | \"seasonal\" | \"coming_soon\" | \"limited_availability\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "certifications",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "allergens",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "ingredients",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "nutritional_info",
-          "type": "Record<string, unknown>",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "marketing_description",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "manufacturer_part_number",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "list_price",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "currency_code",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "unit_of_measure",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "created_by",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "updated_by",
-          "type": "Identifier",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "deleted_at",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "principal_name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Pick<RaRecord, \"id\">"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "InteractionType",
-      "file": "src/atomic-crm/types.ts",
-      "line": 27,
-      "kind": "type_alias",
-      "typeExpression": "Database[\"public\"][\"Enums\"][\"interaction_type\"]",
-      "isComplex": false,
-      "isExported": false
-    },
-    {
       "name": "Company",
       "file": "src/atomic-crm/types.ts",
-      "line": 69,
+      "line": 80,
       "kind": "type_alias",
       "typeExpression": "Organization",
       "isComplex": false,
@@ -1844,19 +535,37 @@
     {
       "name": "Activity",
       "file": "src/atomic-crm/types.ts",
-      "line": 396,
+      "line": 227,
       "kind": "type_alias",
       "typeExpression": "RaRecord &\n  (\n    | ActivityOrganizationCreated\n    | ActivityContactCreated\n    | ActivityContactNoteCreated\n    | ActivityOpportunityCreated\n    | ActivityOpportunityNoteCreated\n  )",
       "isComplex": true,
       "isExported": true
     },
     {
+      "name": "RAFileView",
+      "file": "src/atomic-crm/types.ts",
+      "line": 238,
+      "kind": "type_alias",
+      "typeExpression": "RAFileBase & {\n  path?: string;\n  type?: string;\n}",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
       "name": "AttachmentNote",
       "file": "src/atomic-crm/types.ts",
-      "line": 413,
+      "line": 243,
       "kind": "type_alias",
-      "typeExpression": "RAFile",
+      "typeExpression": "RAFileBase",
       "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "Product",
+      "file": "src/atomic-crm/types.ts",
+      "line": 265,
+      "kind": "type_alias",
+      "typeExpression": "ProductBase & {\n  id?: Identifier;\n  // Database columns not in the form schema\n  manufacturer_part_number?: string | null;\n  list_price?: number | null;\n  currency_code?: string | null;\n  unit_of_measure?: string | null;\n  created_at?: string;\n  updated_at?: string;\n  deleted_at?: string;\n  // Computed fields from products_summary view (read-only)\n  principal_name?: string;\n}",
+      "isComplex": true,
       "isExported": true
     }
   ]

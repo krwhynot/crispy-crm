@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-22T23:55:24.913Z",
+  "generated_at": "2026-01-23T13:52:37.630Z",
   "item_count": 76,
   "items": [
     {
@@ -1032,7 +1032,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 249,
+      "line": 293,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1067,6 +1067,7 @@
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": false,
@@ -1097,7 +1098,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 249,
+      "line": 293,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1132,6 +1133,7 @@
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": true,
@@ -1588,7 +1590,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 249,
+      "line": 293,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1979,6 +1981,7 @@
       "isDefaultExport": false,
       "childComponents": [
         "OrganizationWithHierarchy",
+        "STAGE",
         "MAX_RELATED_ITEMS"
       ],
       "contextDependencies": [],

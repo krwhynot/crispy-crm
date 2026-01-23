@@ -1,6 +1,6 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2026-01-22T23:55:38.014Z",
+  "generated_at": "2026-01-23T13:52:45.639Z",
   "item_count": 23,
   "items": [
     {
@@ -138,7 +138,7 @@
     {
       "name": "useFavorites",
       "file": "src/hooks/useFavorites.ts",
-      "line": 24,
+      "line": 26,
       "parameters": [],
       "returnType": "UseFavoritesReturn",
       "dependencies": [
@@ -147,6 +147,7 @@
         "useGetIdentity",
         "useMemo",
         "useNotify",
+        "useQueryClient",
         "useUpdate"
       ],
       "isReact19Action": false

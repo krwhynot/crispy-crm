@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-22T23:55:44.707Z",
+  "generated_at": "2026-01-23T13:52:49.598Z",
   "items": {
     "nodes": [
       {
@@ -157,28 +157,28 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:140:validateDistributorAuthorization",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
         "name": "validateDistributorAuthorization",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 140,
+        "line": 127,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:160:validateCreateDistributorAuthorization",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
         "name": "validateCreateDistributorAuthorization",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 160,
+        "line": 147,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:302:validateProductDistributorAuthorization",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
         "name": "validateProductDistributorAuthorization",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 302,
+        "line": 278,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -470,6 +470,24 @@
         "nodeType": "function",
         "exported": true,
         "async": true
+      },
+      {
+        "id": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts:129:validateOpportunityParticipant",
+        "name": "validateOpportunityParticipant",
+        "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+        "line": 129,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts:137:validateOpportunityContact",
+        "name": "validateOpportunityContact",
+        "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+        "line": 137,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
       },
       {
         "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:488:validateCreateOpportunity",
@@ -1617,83 +1635,83 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:140:validateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 141,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:140:validateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 145,
+        "line": 132,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:140:validateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 146,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:160:validateCreateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 161,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:160:validateCreateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 165,
+        "line": 152,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:160:validateCreateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 166,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:302:validateProductDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 303,
+        "line": 279,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:302:validateProductDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 307,
+        "line": 283,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:302:validateProductDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 308,
+        "line": 284,
         "conditional": false,
         "inLoop": false
       },
@@ -2054,6 +2072,24 @@
         "targetName": "checkExactDuplicate",
         "edgeType": "call",
         "line": 168,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts:129:validateOpportunityParticipant",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts:137:validateOpportunityContact",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },

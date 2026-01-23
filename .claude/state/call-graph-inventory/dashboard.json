@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-22T23:55:44.590Z",
+  "generated_at": "2026-01-23T13:52:49.507Z",
   "items": {
     "nodes": [
       {
@@ -301,10 +301,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "id": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "name": "PrincipalDashboardV3",
         "file": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx",
-        "line": 25,
+        "line": 26,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -4821,146 +4821,146 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "useQueryClient",
         "targetName": "useQueryClient",
         "edgeType": "hook",
-        "line": 26,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 28,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
         "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 36,
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
-        "target": "setIsTaskSheetOpen",
-        "targetName": "setIsTaskSheetOpen",
-        "edgeType": "call",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
         "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
+        "target": "setIsTaskSheetOpen",
+        "targetName": "setIsTaskSheetOpen",
+        "edgeType": "call",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "KPISummaryRow",
         "targetName": "KPISummaryRow",
         "edgeType": "render",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "DashboardTabPanel",
         "targetName": "DashboardTabPanel",
         "edgeType": "render",
-        "line": 55,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "LogActivityFAB",
         "targetName": "LogActivityFAB",
         "edgeType": "render",
-        "line": 58,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "handleRefresh",
         "targetName": "handleRefresh",
         "edgeType": "callback",
-        "line": 58,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "MobileQuickActionBar",
         "targetName": "MobileQuickActionBar",
         "edgeType": "render",
-        "line": 61,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "handleRefresh",
         "targetName": "handleRefresh",
         "edgeType": "callback",
-        "line": 61,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "handleCompleteTask",
         "targetName": "handleCompleteTask",
         "edgeType": "callback",
-        "line": 61,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "TaskCompleteSheet",
         "targetName": "TaskCompleteSheet",
         "edgeType": "render",
-        "line": 64,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "handleRefresh",
         "targetName": "handleRefresh",
         "edgeType": "callback",
-        "line": 67,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:25:PrincipalDashboardV3",
+        "source": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx:26:PrincipalDashboardV3",
         "target": "DashboardTutorial",
         "targetName": "DashboardTutorial",
         "edgeType": "render",
-        "line": 71,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },

@@ -1,6 +1,6 @@
 {
   "chunk_name": "quickAdd",
-  "generated_at": "2026-01-22T23:55:38.644Z",
+  "generated_at": "2026-01-23T13:52:46.214Z",
   "item_count": 1,
   "items": [
     {
@@ -116,14 +116,20 @@
         },
         {
           "name": "campaign",
-          "zodType": "string",
+          "zodType": "unknown",
           "constraints": [
-            "max(255)"
+            "max(255)",
+            "trim()",
+            "trim()"
           ],
           "optional": true,
           "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "trim",
+            "isSecurity": false
+          }
         },
         {
           "name": "product_ids",
@@ -148,7 +154,7 @@
       ],
       "relatedSchemas": [],
       "validationFunctions": [],
-      "hasTransforms": false,
+      "hasTransforms": true,
       "hasSuperRefine": false
     }
   ]

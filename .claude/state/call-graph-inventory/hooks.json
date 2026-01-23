@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-22T23:55:44.609Z",
+  "generated_at": "2026-01-23T13:52:49.518Z",
   "items": {
     "nodes": [
       {
@@ -175,19 +175,19 @@
         "async": false
       },
       {
-        "id": "src/hooks/useFavorites.ts:20:createFavoriteKey",
+        "id": "src/hooks/useFavorites.ts:22:createFavoriteKey",
         "name": "createFavoriteKey",
         "file": "src/hooks/useFavorites.ts",
-        "line": 20,
+        "line": 22,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/hooks/useFavorites.ts:24:useFavorites",
+        "id": "src/hooks/useFavorites.ts:26:useFavorites",
         "name": "useFavorites",
         "file": "src/hooks/useFavorites.ts",
-        "line": 24,
+        "line": 26,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -1725,335 +1725,344 @@
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 25,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "useNotify",
-        "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 26,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "useCreate",
-        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "useUpdate",
-        "targetName": "useUpdate",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 28,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "useCreate",
+        "targetName": "useCreate",
+        "edgeType": "hook",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
         "edgeType": "hook",
         "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 38,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 48,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 53,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "createFavoriteKey",
         "targetName": "createFavoriteKey",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "get",
+        "targetName": "get",
         "edgeType": "call",
         "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 62,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 67,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 74,
+        "line": 73,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "createFavoriteKey",
         "targetName": "createFavoriteKey",
+        "edgeType": "call",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "isFavorite",
+        "targetName": "isFavorite",
         "edgeType": "call",
         "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "isFavorite",
-        "targetName": "isFavorite",
-        "edgeType": "call",
-        "line": 79,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 82,
+        "line": 81,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 88,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 88,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 92,
+        "line": 91,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 97,
+        "line": 96,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 101,
+        "line": 100,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 106,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 108,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "refetch",
-        "targetName": "refetch",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 111,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 114,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 116,
+        "line": 115,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 121,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 127,
+        "line": 126,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 139,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 141,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
-        "target": "refetch",
-        "targetName": "refetch",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 144,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 147,
+        "line": 146,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 149,
+        "line": 148,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 154,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 160,
+        "line": 159,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 162,
+        "line": 161,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:24:useFavorites",
+        "source": "src/hooks/useFavorites.ts:26:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 165,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },

@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-22T23:55:24.901Z",
+  "generated_at": "2026-01-23T13:52:37.626Z",
   "item_count": 33,
   "items": [
     {
@@ -472,7 +472,7 @@
     {
       "name": "PrincipalDashboardV3",
       "file": "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx",
-      "line": 25,
+      "line": 26,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -480,6 +480,7 @@
         "useState"
       ],
       "imports": [
+        "../queryKeys",
         "./DashboardTabPanel",
         "./DashboardTutorial",
         "./KPISummaryRow",

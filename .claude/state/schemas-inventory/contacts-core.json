@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-22T23:55:38.632Z",
+  "generated_at": "2026-01-23T13:52:46.184Z",
   "item_count": 3,
   "items": [
     {
@@ -446,6 +446,7 @@
         "quickCreateContactSchema",
         "contactOrganizationSchema",
         "contactNoteSchema",
+        "opportunityContactSchema",
         "contactListLayoutPropsSchema"
       ],
       "validationFunctions": [],
@@ -467,6 +468,7 @@
         "quickCreateContactSchema",
         "contactOrganizationSchema",
         "contactNoteSchema",
+        "opportunityContactSchema",
         "contactListLayoutPropsSchema"
       ],
       "validationFunctions": [],

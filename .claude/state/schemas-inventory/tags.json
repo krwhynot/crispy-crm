@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-22T23:55:38.646Z",
+  "generated_at": "2026-01-23T13:52:46.216Z",
   "item_count": 4,
   "items": [
     {
@@ -88,7 +88,7 @@
       "name": "deleteTagSchema",
       "file": "src/atomic-crm/validation/tags.ts",
       "line": 104,
-      "schemaType": "object",
+      "schemaType": "strictObject",
       "fields": [
         {
           "name": "id",

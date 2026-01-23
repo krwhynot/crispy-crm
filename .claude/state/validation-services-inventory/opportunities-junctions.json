@@ -1,0 +1,19 @@
+{
+  "chunk_name": "opportunities-junctions",
+  "generated_at": "2026-01-23T13:52:46.880Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "validateOpportunityParticipant",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "line": 129,
+      "pattern": "date"
+    },
+    {
+      "name": "validateOpportunityContact",
+      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "line": 137,
+      "pattern": "date"
+    }
+  ]
+}

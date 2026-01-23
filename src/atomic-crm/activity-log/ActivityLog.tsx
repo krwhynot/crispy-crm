@@ -23,7 +23,7 @@ export function ActivityLog({ organizationId, pageSize = 20, context = "all" }: 
   const activitiesService = new ActivitiesService(dataProvider);
 
   const { data, isPending, error } = useQuery({
-    queryKey: ["activityLog", organizationId],
+    queryKey: activityLogKeys.byOrganization(organizationId),
     queryFn: () => activitiesService.getActivityLog(organizationId),
   });
 

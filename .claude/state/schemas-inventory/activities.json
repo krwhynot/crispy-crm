@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-22T23:55:38.629Z",
+  "generated_at": "2026-01-23T13:52:46.183Z",
   "item_count": 13,
   "items": [
     {
@@ -559,7 +559,7 @@
       "name": "quickLogFormBaseSchema",
       "file": "src/atomic-crm/validation/activities.ts",
       "line": 726,
-      "schemaType": "object",
+      "schemaType": "strictObject",
       "fields": [
         {
           "name": "activityType",

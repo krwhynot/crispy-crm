@@ -1,12 +1,12 @@
 {
   "chunk_name": "distributorAuthorizations",
-  "generated_at": "2026-01-22T23:55:38.634Z",
-  "item_count": 2,
+  "generated_at": "2026-01-23T13:52:46.197Z",
+  "item_count": 1,
   "items": [
     {
       "name": "specialPricingSchema",
       "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-      "line": 185,
+      "line": 172,
       "schemaType": "object",
       "fields": [
         {
@@ -62,151 +62,6 @@
       ],
       "relatedSchemas": [],
       "validationFunctions": [],
-      "hasTransforms": false,
-      "hasSuperRefine": false
-    },
-    {
-      "name": "productDistributorAuthorizationSchema",
-      "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-      "line": 206,
-      "schemaType": "strictObject",
-      "fields": [
-        {
-          "name": "id",
-          "zodType": "union",
-          "constraints": [],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "product_id",
-          "zodType": "coerce.number",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "distributor_id",
-          "zodType": "coerce.number",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "is_authorized",
-          "zodType": "coerce.boolean",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": true
-        },
-        {
-          "name": "authorization_date",
-          "zodType": "coerce.date",
-          "constraints": [],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "expiration_date",
-          "zodType": "coerce.date",
-          "constraints": [],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "special_pricing",
-          "zodType": "ref:specialPricingSchema",
-          "constraints": [],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "territory_restrictions",
-          "zodType": "array",
-          "constraints": [
-            "max(255)",
-            "max(50)"
-          ],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "notes",
-          "zodType": "string",
-          "constraints": [
-            "max(2000)"
-          ],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "created_by",
-          "zodType": "coerce.number",
-          "constraints": [],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "created_at",
-          "zodType": "string",
-          "constraints": [
-            "max(50)"
-          ],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "updated_at",
-          "zodType": "string",
-          "constraints": [
-            "max(50)"
-          ],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "deleted_at",
-          "zodType": "string",
-          "constraints": [
-            "max(50)"
-          ],
-          "optional": true,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        }
-      ],
-      "relatedSchemas": [
-        "productDistributorSchema",
-        "productSchema"
-      ],
-      "validationFunctions": [
-        "validateProductDistributorAuthorization"
-      ],
       "hasTransforms": false,
       "hasSuperRefine": false
     }

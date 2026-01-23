@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-22T23:55:44.695Z",
+  "generated_at": "2026-01-23T13:52:49.579Z",
   "items": {
     "nodes": [
       {
@@ -76,10 +76,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
+        "id": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
         "name": "TagInputs",
         "file": "src/atomic-crm/tags/TagInputs.tsx",
-        "line": 12,
+        "line": 13,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -960,65 +960,65 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
+        "source": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
         "target": "useFormContext",
         "targetName": "useFormContext",
         "edgeType": "hook",
-        "line": 13,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
-        "target": "watch",
-        "targetName": "watch",
-        "edgeType": "call",
         "line": 14,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
+        "source": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
+        "target": "useWatch",
+        "targetName": "useWatch",
+        "edgeType": "hook",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 30,
+        "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
+        "source": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
         "target": "setValue",
         "targetName": "setValue",
         "edgeType": "call",
-        "line": 36,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
+        "source": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 28,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
+        "source": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 19,
+        "line": 20,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagInputs.tsx:12:TagInputs",
+        "source": "src/atomic-crm/tags/TagInputs.tsx:13:TagInputs",
         "target": "RoundButton",
         "targetName": "RoundButton",
         "edgeType": "render",
-        "line": 32,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },

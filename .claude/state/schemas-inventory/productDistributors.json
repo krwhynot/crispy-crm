@@ -1,6 +1,6 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-22T23:55:38.640Z",
+  "generated_at": "2026-01-23T13:52:46.202Z",
   "item_count": 2,
   "items": [
     {
@@ -115,7 +115,6 @@
         }
       ],
       "relatedSchemas": [
-        "productDistributorAuthorizationSchema",
         "productDistributorStatusSchema",
         "productSchema"
       ],

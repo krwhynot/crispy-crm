@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-22T23:55:38.892Z",
+  "generated_at": "2026-01-23T13:52:46.454Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:af6b9a12e5d3fb04",
+  "checksum": "sha256:276ed6a48fe39c6c",
   "source_hashes": {
     "src/atomic-crm/dashboard/types.ts": "a7616a1f8934",
     "src/atomic-crm/filters/types.ts": "3879550007ba",
@@ -18,38 +18,38 @@
     "src/atomic-crm/reports/types.ts": "f28725d85208",
     "src/atomic-crm/tags/types.ts": "9cd98db1ff7b",
     "src/atomic-crm/tutorial/types.ts": "b66ec8c41b6f",
-    "src/atomic-crm/types.ts": "dc0e9c40acea",
+    "src/atomic-crm/types.ts": "0c1b5abc19fa",
     "src/types/database.types.ts": "4266e0dc2ebe",
     "src/types/diacritic.d.ts": "a0363d5aebaa",
     "src/types/supabase.ts": "20e0b342ad5f"
   },
   "summary": {
-    "total_items": 110,
+    "total_items": 98,
     "total_chunks": 10,
-    "interfaces": 68,
-    "type_aliases": 42,
+    "interfaces": 55,
+    "type_aliases": 43,
     "zod_derived": 2,
-    "exported": 105,
-    "complex": 62
+    "exported": 94,
+    "complex": 52
   },
   "chunks": [
     {
       "name": "_root",
       "file": "_root.json",
-      "item_count": 30,
-      "checksum": "sha256:21f48fe445833ce0",
+      "item_count": 18,
+      "checksum": "sha256:f34a51172ed6a714",
       "source_files": [
         "src/atomic-crm/types.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/types.ts": "dc0e9c40acea"
+        "src/atomic-crm/types.ts": "0c1b5abc19fa"
       }
     },
     {
       "name": "dashboard",
       "file": "dashboard.json",
       "item_count": 13,
-      "checksum": "sha256:3ed5eaaaff0219b2",
+      "checksum": "sha256:05cc48cfeee9746f",
       "source_files": [
         "src/atomic-crm/dashboard/types.ts"
       ],
@@ -61,7 +61,7 @@
       "name": "database",
       "file": "database.json",
       "item_count": 9,
-      "checksum": "sha256:32e3dc46a409b41c",
+      "checksum": "sha256:8350e66a419df6a3",
       "source_files": [
         "src/types/database.types.ts"
       ],
@@ -73,7 +73,7 @@
       "name": "filters",
       "file": "filters.json",
       "item_count": 13,
-      "checksum": "sha256:139b8e20df95a8c5",
+      "checksum": "sha256:46ac38ca199321f2",
       "source_files": [
         "src/atomic-crm/filters/types.ts"
       ],
@@ -85,7 +85,7 @@
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 17,
-      "checksum": "sha256:85c3f41320bd0d14",
+      "checksum": "sha256:e77857964bdb1856",
       "source_files": [
         "src/atomic-crm/organizations/types.ts"
       ],
@@ -97,7 +97,7 @@
       "name": "providers",
       "file": "providers.json",
       "item_count": 7,
-      "checksum": "sha256:086d735831492144",
+      "checksum": "sha256:3b07ab433f0c8785",
       "source_files": [
         "src/atomic-crm/providers/supabase/extensions/types.ts",
         "src/atomic-crm/providers/supabase/types.ts",
@@ -113,7 +113,7 @@
       "name": "reports",
       "file": "reports.json",
       "item_count": 3,
-      "checksum": "sha256:1b111f83ea69fb80",
+      "checksum": "sha256:6cc2184d13c51910",
       "source_files": [
         "src/atomic-crm/reports/types.ts"
       ],
@@ -125,7 +125,7 @@
       "name": "supabase",
       "file": "supabase.json",
       "item_count": 9,
-      "checksum": "sha256:0f14c16899d34a78",
+      "checksum": "sha256:c5981ac425ba10aa",
       "source_files": [
         "src/types/supabase.ts"
       ],
@@ -137,7 +137,7 @@
       "name": "tags",
       "file": "tags.json",
       "item_count": 6,
-      "checksum": "sha256:18821898274a41df",
+      "checksum": "sha256:8c0063f5063199ad",
       "source_files": [
         "src/atomic-crm/tags/types.ts"
       ],
@@ -149,7 +149,7 @@
       "name": "tutorial",
       "file": "tutorial.json",
       "item_count": 3,
-      "checksum": "sha256:aca190da355f7a57",
+      "checksum": "sha256:3e7af372541efe8a",
       "source_files": [
         "src/atomic-crm/tutorial/types.ts"
       ],

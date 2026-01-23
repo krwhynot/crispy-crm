@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-22T23:55:38.008Z",
+  "generated_at": "2026-01-23T13:52:45.630Z",
   "item_count": 12,
   "items": [
     {
@@ -120,7 +120,7 @@
       "parameters": [
         "contactIds"
       ],
-      "returnType": "{ contacts: Contact[]; primaryContact: Contact; isLoading: boolean; error: Error; }",
+      "returnType": "{ contacts: Record<string, unknown>[]; primaryContact: Record<string, unknown>; isLoading: boolean; error: Error; }",
       "dependencies": [
         "useMemo"
       ],

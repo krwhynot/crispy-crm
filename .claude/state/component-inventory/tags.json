@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-22T23:55:24.935Z",
+  "generated_at": "2026-01-23T13:52:37.637Z",
   "item_count": 22,
   "items": [
     {
@@ -220,10 +220,11 @@
     {
       "name": "TagInputs",
       "file": "src/atomic-crm/tags/TagInputs.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
-        "useFormContext"
+        "useFormContext",
+        "useWatch"
       ],
       "imports": [
         "./RoundButton",
@@ -238,7 +239,8 @@
         "RoundButton"
       ],
       "contextDependencies": [
-        "useFormContext"
+        "useFormContext",
+        "useWatch"
       ],
       "componentRole": "wrapper"
     },
@@ -372,16 +374,18 @@
     {
       "name": "TagInputs",
       "file": "src/atomic-crm/tags/index.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
-        "useFormContext"
+        "useFormContext",
+        "useWatch"
       ],
       "imports": [],
       "isDefaultExport": false,
       "childComponents": [],
       "contextDependencies": [
-        "useFormContext"
+        "useFormContext",
+        "useWatch"
       ],
       "componentRole": "entry"
     },

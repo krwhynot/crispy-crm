@@ -1,18 +1,19 @@
 {
   "chunk_name": "activity-log",
-  "generated_at": "2026-01-22T23:55:24.886Z",
+  "generated_at": "2026-01-23T13:52:37.624Z",
   "item_count": 10,
   "items": [
     {
       "name": "ActivityLog",
       "file": "src/atomic-crm/activity-log/ActivityLog.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
         "useQuery"
       ],
       "imports": [
+        "../queryKeys",
         "../services",
         "./ActivityLogContext",
         "./ActivityLogIterator",

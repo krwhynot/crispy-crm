@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useGetList, useDataProvider } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import { useReportData } from "@/atomic-crm/reports/hooks";
+import { reportKeys } from "@/atomic-crm/queryKeys";
 import type { Sale } from "../types";
 import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
 import type { GetCampaignReportStatsResponse } from "../../validation/rpc";
@@ -40,7 +41,7 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
   const dataProvider = useDataProvider() as ExtendedDataProvider;
 
   const { data: reportStats, isPending: reportStatsPending } = useQuery({
-    queryKey: ["campaign-report-stats", selectedCampaign],
+    queryKey: reportKeys.campaignStats(selectedCampaign),
     queryFn: () =>
       dataProvider.rpc<GetCampaignReportStatsResponse>("get_campaign_report_stats", {
         p_campaign: selectedCampaign || null,

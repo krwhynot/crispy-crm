@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-22T23:55:24.882Z",
+  "generated_at": "2026-01-23T13:52:37.622Z",
   "item_count": 34,
   "items": [
     {
@@ -132,7 +132,7 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/ActivityList.tsx",
-      "line": 52,
+      "line": 101,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -169,6 +169,7 @@
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": true,
@@ -425,7 +426,7 @@
     {
       "name": "ActivityList",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 52,
+      "line": 101,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",

@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { dashboardKeys } from "../queryKeys";
 import { DashboardTabPanel } from "./DashboardTabPanel";
 import { LogActivityFAB } from "./LogActivityFAB";
 import { MobileQuickActionBar } from "./MobileQuickActionBar";
@@ -29,7 +30,7 @@ export function PrincipalDashboardV3() {
 
   // Invalidate dashboard queries to trigger refetch without remounting components
   const handleRefresh = useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
   }, [queryClient]);
 
   // Open task completion sheet (from mobile quick action bar)

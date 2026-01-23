@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-22T23:55:24.936Z",
+  "generated_at": "2026-01-23T13:52:37.638Z",
   "item_count": 28,
   "items": [
     {
@@ -87,7 +87,7 @@
     {
       "name": "TaskActionMenu",
       "file": "src/atomic-crm/tasks/TaskActionMenu.tsx",
-      "line": 52,
+      "line": 53,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -97,6 +97,7 @@
         "useUpdate"
       ],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
         "@/components/ui/dropdown-menu",
         "@tanstack/react-query",
@@ -311,7 +312,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 67,
+      "line": 126,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -476,7 +477,7 @@
     {
       "name": "TaskSlideOverDetailsTab",
       "file": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
-      "line": 49,
+      "line": 50,
       "type": "presentational",
       "hooks": [
         "useFormOptions",
@@ -487,6 +488,7 @@
       ],
       "imports": [
         "../contacts/ContactOption",
+        "../queryKeys",
         "../root/ConfigurationContext",
         "../sales/SaleName",
         "../types",

@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-22T23:55:44.572Z",
+  "generated_at": "2026-01-23T13:52:49.498Z",
   "items": {
     "nodes": [
       {
@@ -274,28 +274,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "id": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "name": "ContactList",
         "file": "src/atomic-crm/contacts/ContactList.tsx",
-        "line": 35,
+        "line": 79,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "id": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "name": "ContactListLayout",
         "file": "src/atomic-crm/contacts/ContactList.tsx",
-        "line": 77,
+        "line": 121,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/contacts/ContactList.tsx:245:ContactListActions",
+        "id": "src/atomic-crm/contacts/ContactList.tsx:275:ContactListActions",
         "name": "ContactListActions",
         "file": "src/atomic-crm/contacts/ContactList.tsx",
-        "line": 245,
+        "line": 275,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -6693,479 +6693,488 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 36,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "useSlideOverState",
         "targetName": "useSlideOverState",
         "edgeType": "hook",
-        "line": 38,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "useFilterCleanup",
         "targetName": "useFilterCleanup",
         "edgeType": "hook",
-        "line": 42,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "List",
         "targetName": "List",
         "edgeType": "render",
-        "line": 54,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "ContactListSkeleton",
         "targetName": "ContactListSkeleton",
         "edgeType": "render",
-        "line": 45,
+        "line": 89,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "ContactListActions",
         "targetName": "ContactListActions",
         "edgeType": "render",
-        "line": 56,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "ContactListLayout",
         "targetName": "ContactListLayout",
         "edgeType": "render",
-        "line": 61,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "FloatingCreateButton",
         "targetName": "FloatingCreateButton",
         "edgeType": "render",
-        "line": 62,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "ContactSlideOver",
         "targetName": "ContactSlideOver",
         "edgeType": "render",
-        "line": 65,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:35:ContactList",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:79:ContactList",
         "target": "PageTutorialTrigger",
         "targetName": "PageTutorialTrigger",
         "edgeType": "render",
-        "line": 72,
+        "line": 116,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 84,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "useListKeyboardNavigation",
         "targetName": "useListKeyboardNavigation",
         "edgeType": "hook",
-        "line": 88,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 89,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 89,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 93,
+        "line": 137,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 131,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 131,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "formatFullName",
-        "targetName": "formatFullName",
-        "edgeType": "call",
-        "line": 149,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "formatRoleAndDept",
-        "targetName": "formatRoleAndDept",
-        "edgeType": "call",
-        "line": 192,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "StandardListLayout",
         "targetName": "StandardListLayout",
         "edgeType": "render",
-        "line": 98,
+        "line": 142,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "StandardListLayout",
         "targetName": "StandardListLayout",
-        "edgeType": "render",
-        "line": 111,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "StandardListLayout",
-        "targetName": "StandardListLayout",
-        "edgeType": "render",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "PremiumDatagrid",
-        "targetName": "PremiumDatagrid",
-        "edgeType": "render",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "TruncatedText",
-        "targetName": "TruncatedText",
-        "edgeType": "render",
-        "line": 148,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 198,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "FilterableBadge",
-        "targetName": "FilterableBadge",
-        "edgeType": "render",
-        "line": 213,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactListFilter",
-        "targetName": "ContactListFilter",
-        "edgeType": "render",
-        "line": 98,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactListSkeleton",
-        "targetName": "ContactListSkeleton",
-        "edgeType": "render",
-        "line": 99,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactEmpty",
-        "targetName": "ContactEmpty",
-        "edgeType": "render",
-        "line": 105,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactListFilter",
-        "targetName": "ContactListFilter",
-        "edgeType": "render",
-        "line": 111,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ListSearchBar",
-        "targetName": "ListSearchBar",
-        "edgeType": "render",
-        "line": 112,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ListNoResults",
-        "targetName": "ListNoResults",
-        "edgeType": "render",
-        "line": 117,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactListFilter",
-        "targetName": "ContactListFilter",
-        "edgeType": "render",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ListSearchBar",
-        "targetName": "ListSearchBar",
-        "edgeType": "render",
-        "line": 125,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
-        "edgeType": "render",
-        "line": 135,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "Avatar",
-        "targetName": "Avatar",
-        "edgeType": "render",
-        "line": 138,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
-        "edgeType": "render",
-        "line": 144,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactNameHeader",
-        "targetName": "ContactNameHeader",
-        "edgeType": "render",
-        "line": 145,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
         "edgeType": "render",
         "line": 155,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "StandardListLayout",
+        "targetName": "StandardListLayout",
         "edgeType": "render",
         "line": 168,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "TextField",
-        "targetName": "TextField",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "PremiumDatagrid",
+        "targetName": "PremiumDatagrid",
         "edgeType": "render",
-        "line": 181,
+        "line": 174,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 232,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactListFilter",
+        "targetName": "ContactListFilter",
+        "edgeType": "render",
+        "line": 142,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactListSkeleton",
+        "targetName": "ContactListSkeleton",
+        "edgeType": "render",
+        "line": 143,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactEmpty",
+        "targetName": "ContactEmpty",
+        "edgeType": "render",
+        "line": 149,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactListFilter",
+        "targetName": "ContactListFilter",
+        "edgeType": "render",
+        "line": 155,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ListSearchBar",
+        "targetName": "ListSearchBar",
+        "edgeType": "render",
+        "line": 156,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ListNoResults",
+        "targetName": "ListNoResults",
+        "edgeType": "render",
+        "line": 161,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactListFilter",
+        "targetName": "ContactListFilter",
+        "edgeType": "render",
+        "line": 168,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ListSearchBar",
+        "targetName": "ListSearchBar",
+        "edgeType": "render",
+        "line": 169,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "FunctionField",
         "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 179,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactAvatarCell",
+        "targetName": "ContactAvatarCell",
+        "edgeType": "render",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 188,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactNameHeader",
+        "targetName": "ContactNameHeader",
         "edgeType": "render",
         "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "TextField",
-        "targetName": "TextField",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactNameCell",
+        "targetName": "ContactNameCell",
+        "edgeType": "render",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactEmailCell",
+        "targetName": "ContactEmailCell",
+        "edgeType": "render",
+        "line": 199,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
         "edgeType": "render",
         "line": 205,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "FunctionField",
-        "targetName": "FunctionField",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactPhoneCell",
+        "targetName": "ContactPhoneCell",
         "edgeType": "render",
         "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactStatusHeader",
-        "targetName": "ContactStatusHeader",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "TextField",
+        "targetName": "TextField",
         "edgeType": "render",
-        "line": 210,
+        "line": 215,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactStatusBadge",
-        "targetName": "ContactStatusBadge",
-        "edgeType": "render",
-        "line": 214,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 220,
+        "line": 223,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "DateField",
-        "targetName": "DateField",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactRoleCell",
+        "targetName": "ContactRoleCell",
         "edgeType": "render",
-        "line": 230,
+        "line": 226,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:77:ContactListLayout",
-        "target": "ContactBulkActionsToolbar",
-        "targetName": "ContactBulkActionsToolbar",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "TextField",
+        "targetName": "TextField",
         "edgeType": "render",
-        "line": 240,
+        "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:245:ContactListActions",
-        "target": "useListContext",
-        "targetName": "useListContext",
-        "edgeType": "hook",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 243,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactStatusHeader",
+        "targetName": "ContactStatusHeader",
+        "edgeType": "render",
+        "line": 244,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactStatusCell",
+        "targetName": "ContactStatusCell",
+        "edgeType": "render",
         "line": 246,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:245:ContactListActions",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "FunctionField",
+        "targetName": "FunctionField",
+        "edgeType": "render",
+        "line": 250,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactNotesCell",
+        "targetName": "ContactNotesCell",
+        "edgeType": "render",
+        "line": 253,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "DateField",
+        "targetName": "DateField",
+        "edgeType": "render",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:121:ContactListLayout",
+        "target": "ContactBulkActionsToolbar",
+        "targetName": "ContactBulkActionsToolbar",
+        "edgeType": "render",
+        "line": 270,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:275:ContactListActions",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 276,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/ContactList.tsx:275:ContactListActions",
         "target": "TopToolbar",
         "targetName": "TopToolbar",
         "edgeType": "render",
-        "line": 248,
+        "line": 278,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:245:ContactListActions",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:275:ContactListActions",
         "target": "SortButton",
         "targetName": "SortButton",
         "edgeType": "render",
-        "line": 249,
+        "line": 279,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/contacts/ContactList.tsx:245:ContactListActions",
+        "source": "src/atomic-crm/contacts/ContactList.tsx:275:ContactListActions",
         "target": "ExportButton",
         "targetName": "ExportButton",
         "edgeType": "render",
-        "line": 250,
+        "line": 280,
         "conditional": false,
         "inLoop": false
       },
