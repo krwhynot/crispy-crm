@@ -24,6 +24,7 @@
 /**
  * Zod issue type for error handling
  * Uses a simplified interface compatible with both Zod v3 and v4
+ * This interface captures the minimal properties needed for error formatting
  */
 export interface ZodIssueBase {
   code: string;
@@ -32,16 +33,22 @@ export interface ZodIssueBase {
 }
 
 /**
+ * Type that accepts both ZodIssueBase and Zod's native ZodIssue
+ * ZodIssue extends ZodIssueBase structurally, so this allows both types
+ */
+type ZodIssueCompatible = ZodIssueBase;
+
+/**
  * Maps Zod validation errors to user-friendly messages
  * Handles common form validation scenarios including type mismatches,
  * enum violations, length constraints, and custom refinements.
  *
  * Compatible with Zod v3 and v4.
  *
- * @param issue - The Zod validation issue to map
+ * @param issue - The Zod validation issue to map (accepts ZodIssue or ZodIssueBase)
  * @returns A user-friendly error message string
  */
-export function getFriendlyErrorMessage(issue: ZodIssueBase): string {
+export function getFriendlyErrorMessage(issue: ZodIssueCompatible): string {
   const code = issue.code;
 
   // Handle type mismatches

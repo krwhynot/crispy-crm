@@ -15,6 +15,14 @@ import { supabase } from "../supabase";
 import { devLog } from "@/lib/devLogger";
 
 /**
+ * Type guard to check if a value is an array
+ * Used to safely narrow Supabase Json type to unknown[] for extractAttachmentPaths
+ */
+function isArray(value: unknown): value is unknown[] {
+  return Array.isArray(value);
+}
+
+/**
  * The Supabase storage bucket name used for all attachments
  */
 export const STORAGE_BUCKET = "attachments";
@@ -151,7 +159,9 @@ export async function collectContactFilePaths(contactId: number): Promise<string
 
     if (activities) {
       for (const activity of activities) {
-        paths.push(...extractAttachmentPaths(activity.attachments as unknown[]));
+        if (isArray(activity.attachments)) {
+          paths.push(...extractAttachmentPaths(activity.attachments));
+        }
       }
     }
 
