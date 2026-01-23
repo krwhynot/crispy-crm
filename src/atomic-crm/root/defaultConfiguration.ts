@@ -26,13 +26,13 @@ export const defaultDealCategories = [
 ];
 
 export const defaultOpportunityStages = [
-  { value: "new_lead", label: "New Lead" },
-  { value: "initial_outreach", label: "Initial Outreach" },
-  { value: "sample_visit_offered", label: "Sample Visit Offered" },
-  { value: "feedback_logged", label: "Feedback Logged" },
-  { value: "demo_scheduled", label: "Demo Scheduled" },
-  { value: "closed_won", label: "Closed Won" },
-  { value: "closed_lost", label: "Closed Lost" },
+  { value: STAGE.NEW_LEAD, label: "New Lead" },
+  { value: STAGE.INITIAL_OUTREACH, label: "Initial Outreach" },
+  { value: STAGE.SAMPLE_VISIT_OFFERED, label: "Sample Visit Offered" },
+  { value: STAGE.FEEDBACK_LOGGED, label: "Feedback Logged" },
+  { value: STAGE.DEMO_SCHEDULED, label: "Demo Scheduled" },
+  { value: STAGE.CLOSED_WON, label: "Closed Won" },
+  { value: STAGE.CLOSED_LOST, label: "Closed Lost" },
 ];
 
 export const defaultOpportunityCategories = [

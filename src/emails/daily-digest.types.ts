@@ -126,13 +126,13 @@ export interface DailyDigestData {
 
 /** Stage configuration for badge styling */
 export const STAGE_COLORS: Record<string, { bg: string; text: string; label: string }> = {
-  new_lead: { bg: "#E0F2FE", text: "#0369A1", label: "New Lead" },
-  initial_outreach: { bg: "#F3E8FF", text: "#7C3AED", label: "Outreach" },
-  sample_visit_offered: { bg: "#FEF3E2", text: "#B8640A", label: "Sample" },
-  feedback_logged: { bg: "#FEF9C3", text: "#A16207", label: "Feedback" },
-  demo_scheduled: { bg: "#DBEAFE", text: "#1D4ED8", label: "Demo" },
-  closed_won: { bg: "#DCFCE7", text: "#166534", label: "Won" },
-  closed_lost: { bg: "#FEE2E2", text: "#991B1B", label: "Lost" },
+  [STAGE.NEW_LEAD]: { bg: "#E0F2FE", text: "#0369A1", label: "New Lead" },
+  [STAGE.INITIAL_OUTREACH]: { bg: "#F3E8FF", text: "#7C3AED", label: "Outreach" },
+  [STAGE.SAMPLE_VISIT_OFFERED]: { bg: "#FEF3E2", text: "#B8640A", label: "Sample" },
+  [STAGE.FEEDBACK_LOGGED]: { bg: "#FEF9C3", text: "#A16207", label: "Feedback" },
+  [STAGE.DEMO_SCHEDULED]: { bg: "#DBEAFE", text: "#1D4ED8", label: "Demo" },
+  [STAGE.CLOSED_WON]: { bg: "#DCFCE7", text: "#166534", label: "Won" },
+  [STAGE.CLOSED_LOST]: { bg: "#FEE2E2", text: "#991B1B", label: "Lost" },
 };
 
 /** Stale thresholds by stage (days without activity) */

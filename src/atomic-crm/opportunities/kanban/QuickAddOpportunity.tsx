@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useCreate, useRefresh, useGetIdentity, useGetList, useNotify } from "react-admin";
+import { useCreate, useRefresh, useGetIdentity, useGetList, useNotify, useDataProvider } from "react-admin";
 import { X } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
