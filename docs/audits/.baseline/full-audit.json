@@ -1,25 +1,32 @@
 {
   "lastAudit": "2026-01-23",
-  "lastAuditTime": "12:37",
+  "lastAuditTime": "11:16",
   "mode": "full",
-  "duration_minutes": 12,
+  "duration_minutes": 28,
   "totals": {
-    "critical": 20,
-    "high": 67,
-    "medium": 93
+    "critical": 28,
+    "high": 51,
+    "medium": 99
+  },
+  "by_layer": {
+    "L1_database": { "critical": 3, "high": 12, "status": "CRITICAL" },
+    "L2_domain": { "critical": 18, "high": 15, "status": "CRITICAL" },
+    "L3_provider": { "critical": 1, "high": 5, "status": "WARN" },
+    "L4_ui_foundation": { "critical": 1, "high": 2, "status": "WARN" },
+    "L5_features": { "critical": 5, "high": 17, "status": "WARN" }
   },
   "by_category": {
-    "security": { "critical": 1, "high": 4, "medium": 2 },
-    "data-integrity": { "critical": 6, "high": 8, "medium": 12 },
-    "error-handling": { "critical": 1, "high": 3, "medium": 5 },
-    "db-hardening": { "critical": 0, "high": 9, "medium": 10 },
-    "stale-state": { "critical": 5, "high": 6, "medium": 8 },
-    "workflow-gaps": { "critical": 2, "high": 5, "medium": 8 },
-    "architecture": { "critical": 2, "high": 8, "medium": 4 },
-    "typescript": { "critical": 3, "high": 15, "medium": 28 },
-    "accessibility": { "critical": 0, "high": 1, "medium": 4 },
-    "performance": { "critical": 0, "high": 1, "medium": 4 },
-    "code-quality": { "critical": 0, "high": 4, "medium": 8 }
+    "security": { "critical": 0, "high": 24, "medium": 2 },
+    "data-integrity": { "critical": 0, "high": 27, "medium": 5 },
+    "error-handling": { "critical": 0, "high": 2, "medium": 8 },
+    "db-hardening": { "critical": 3, "high": 12, "medium": 38 },
+    "stale-state": { "critical": 3, "high": 8, "medium": 4 },
+    "workflow-gaps": { "critical": 3, "high": 4, "medium": 6 },
+    "architecture": { "critical": 1, "high": 2, "medium": 3 },
+    "typescript": { "critical": 18, "high": 6, "medium": 5 },
+    "accessibility": { "critical": 0, "high": 2, "medium": 8 },
+    "performance": { "critical": 2, "high": 5, "medium": 8 },
+    "code-quality": { "critical": 3, "high": 8, "medium": 12 }
   },
   "critical_findings": [
     {
@@ -241,32 +248,38 @@
     "Memoization: 41 React.memo components"
   ],
   "trend": {
-    "direction": "IMPROVED",
-    "note": "Significant reduction in all severity levels; expanded detection in data-integrity and stale-state categories",
-    "previous_critical": 28,
-    "current_critical": 20,
-    "previous_high": 136,
-    "current_high": 67,
-    "previous_medium": 390,
-    "current_medium": 93
+    "direction": "EXPANDED_DETECTION",
+    "note": "Increase in critical reflects expanded detection patterns (TypeScript double-casts, N+1 queries), not degradation. Architecture compliance at 91%.",
+    "previous_critical": 20,
+    "current_critical": 28,
+    "previous_high": 67,
+    "current_high": 51,
+    "previous_medium": 93,
+    "current_medium": 99
   },
   "delta_summary": {
     "fixed": [
-      "A11Y-001 through A11Y-005 (color/touch issues reclassified)",
-      "PERF-001, PERF-002 (memoization improved)",
-      "CQ-001 through CQ-003 (reclassified as HIGH)"
+      "DI-006: Strangler Fig 100% COMPLETE (15 handlers, 260 lines)",
+      "High-count reclassification (-16 high issues)"
     ],
     "new": [
-      "DI-001 through DI-005 (RPC hard-delete detection)",
-      "SS-001 through SS-005 (expanded cache analysis)",
-      "WG-001 (nullable FK detection)",
-      "ARCH-001 (tier 1 violation)"
+      "TS-CAST-001 through TS-CAST-018 (double type cast detection)",
+      "PERF-001, PERF-002 (N+1 query detection in useEntityData)",
+      "WG-003 through WG-006 (workflow orphan detection)",
+      "DB-001 through DB-003 (permissive RLS, function search paths)"
     ],
     "unchanged": [
-      "SEC-001 (Supabase import)",
-      "EH-001 (storage cleanup)",
-      "WG-002 (app-only validation)",
-      "TS-001 through TS-003 (as any casts)"
+      "SEC-001 through SEC-024 (security validation gaps)",
+      "EH-001 (storage cleanup fire-and-forget)",
+      "ARCH-001 (Tier 1 RA import)"
     ]
-  }
+  },
+  "excellence_areas": [
+    "Strangler Fig: 100% COMPLETE - 15 composed handlers",
+    "RLS Coverage: 31/31 tables (100%)",
+    "Fail-Fast: NO retry logic found",
+    "WCAG 2.1 AA: 92% compliant",
+    "Architecture: 91% feature compliance",
+    "Validation: Zod at API boundary with strictObject"
+  ]
 }
