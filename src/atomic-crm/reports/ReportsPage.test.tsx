@@ -18,7 +18,7 @@ const mockSalesReps = [
 describe("ReportsPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useGetList as any).mockReturnValue({ data: mockSalesReps, isPending: false });
+    vi.mocked(useGetList).mockReturnValue({ data: mockSalesReps, isPending: false });
   });
 
   it("renders page title", () => {

@@ -405,7 +405,7 @@ describe("ProductList", () => {
     mockToggleMode.mockClear();
     sortableColumns.length = 0;
 
-    (useListContext as any).mockReturnValue(defaultListContext);
+    vi.mocked(useListContext).mockReturnValue(defaultListContext);
     (useGetList as any).mockReturnValue({
       data: [],
       total: 0,
@@ -467,7 +467,7 @@ describe("ProductList", () => {
       filterValues: {},
     };
 
-    (useListContext as any).mockReturnValue(emptyContext);
+    vi.mocked(useListContext).mockReturnValue(emptyContext);
 
     renderWithAdminContext(<ProductList />);
 
@@ -485,7 +485,7 @@ describe("ProductList", () => {
       filterValues: { category: "oils" },
     };
 
-    (useListContext as any).mockReturnValue(emptyWithFiltersContext);
+    vi.mocked(useListContext).mockReturnValue(emptyWithFiltersContext);
 
     renderWithAdminContext(<ProductList />);
 
@@ -516,7 +516,7 @@ describe("ProductList 5-column structure", () => {
       isPending: false,
     });
 
-    (useListContext as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue({
       data: [
         {
           id: 1,
@@ -592,7 +592,7 @@ describe("ProductList column sorting configuration", () => {
       isPending: false,
     });
 
-    (useListContext as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue({
       data: [
         {
           id: 1,
@@ -696,7 +696,7 @@ describe("ProductList badge components", () => {
       isPending: false,
     });
 
-    (useListContext as any).mockReturnValue({
+    vi.mocked(useListContext).mockReturnValue({
       data: [
         {
           id: 1,

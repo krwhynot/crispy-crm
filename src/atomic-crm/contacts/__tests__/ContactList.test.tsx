@@ -394,7 +394,7 @@ describe("ContactList", () => {
 
     // Setup default mocks
     vi.mocked(useListContext).mockReturnValue(defaultListContext);
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
       total: mockTags.length,
       isPending: false,
@@ -514,7 +514,7 @@ describe("ContactList 7-column structure", () => {
     vi.clearAllMocks();
 
     // Mock useGetList for tags (used by ContactListFilter)
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
       total: mockTags.length,
       isPending: false,
@@ -616,7 +616,7 @@ describe("ContactListFilter", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    (useGetList as any).mockReturnValue({
+    vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
       total: mockTags.length,
       isPending: false,
