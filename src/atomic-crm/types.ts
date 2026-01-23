@@ -33,9 +33,20 @@ export type { Tag } from "./validation/tags";
 export type { Task, TaskType, PriorityLevel } from "./validation/task";
 export type { RAFile } from "./validation/shared/ra-file";
 import type { RAFile as RAFileBase } from "./validation/shared/ra-file";
-export type { OpportunityParticipant, OpportunityContact } from "./validation/opportunities";
+export type {
+  OpportunityParticipant,
+  OpportunityContact,
+  Opportunity,
+} from "./validation/opportunities";
+import type { Opportunity as OpportunityBase } from "./validation/opportunities";
 export type { ProductFormData } from "./validation/products";
 import type { ProductFormData as ProductBase } from "./validation/products";
+
+// Contact and ActivityRecord types (P2 consolidation)
+export type { Contact } from "./validation/contacts/contacts-core";
+import type { Contact as ContactBase } from "./validation/contacts/contacts-core";
+export type { ActivityRecord } from "./validation/activities";
+import type { ActivityRecord as ActivityRecordBase } from "./validation/activities";
 
 // Use generated enum as single source of truth for interaction types
 // Note: This comes from database.generated.ts, validation schema mirrors it
@@ -378,31 +389,23 @@ export interface ContactGender {
   icon: ComponentType<{ className?: string }>;
 }
 
+// Product base type from validation/products.ts (P2 consolidation)
+// ProductFormData is re-exported above
 /**
- * Product entity - represents a product in the catalog.
- * Links to principal organizations and can be associated with opportunities.
+ * Product type - combines Zod schema base with view/database fields
+ * Base: ProductFormData from validation schema
+ * Extended: Fields from database columns and products_summary view
  */
-export interface Product extends Pick<RaRecord, "id"> {
-  name: string;
-  principal_id: Identifier;
-  category: string;
-  status: "active" | "discontinued" | "seasonal" | "coming_soon" | "limited_availability";
-  description?: string | null;
-  certifications?: string[] | null;
-  allergens?: string[] | null;
-  ingredients?: string | null;
-  nutritional_info?: Record<string, unknown> | null;
-  marketing_description?: string | null;
+export type Product = ProductBase & {
+  id?: Identifier;
+  // Database columns not in the form schema
   manufacturer_part_number?: string | null;
   list_price?: number | null;
   currency_code?: string | null;
   unit_of_measure?: string | null;
   created_at?: string;
   updated_at?: string;
-  created_by?: Identifier;
-  updated_by?: Identifier;
   deleted_at?: string;
-
   // Computed fields from products_summary view (read-only)
   principal_name?: string;
-}
+};
