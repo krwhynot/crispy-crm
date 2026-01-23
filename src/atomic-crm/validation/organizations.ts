@@ -154,7 +154,7 @@ export const organizationSchema = z.strictObject({
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
-  context_links: z.array(isValidUrl).nullish(),
+  context_links: z.array(isValidUrl).max(20, "Maximum 20 context links").nullish(),
   tags: z.string().trim().max(1000, "Tags too long").optional(), // Comma-separated tag names for CSV import
 
   // Business fields (DB columns added for completeness)

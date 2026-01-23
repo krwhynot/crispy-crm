@@ -31,7 +31,10 @@ export const productWithDistributorsSchema = z.strictObject({
   manufacturer_part_number: z.string().max(100).nullable().optional(),
 
   // Distributor associations array
-  distributors: z.array(distributorAssociationSchema).default([]),
+  distributors: z
+    .array(distributorAssociationSchema)
+    .max(100, "Maximum 100 distributors")
+    .default([]),
 
   // System fields (handled automatically)
   created_by: z.number().int().nullish(),

@@ -38,7 +38,7 @@ export const quickAddBaseSchema = z.strictObject({
     .max(255)
     .transform((val) => (val?.trim() === "" ? undefined : val?.trim()))
     .optional(),
-  product_ids: z.array(z.number()).optional().default([]),
+  product_ids: z.array(z.number()).max(100, "Maximum 100 products").optional().default([]),
   quick_note: z.string().max(2000).optional(),
 });
 

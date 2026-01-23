@@ -41,7 +41,7 @@ export const baseNoteSchema = z.strictObject({
   ]),
 
   // Optional fields
-  attachments: z.array(attachmentSchema).optional(),
+  attachments: z.array(attachmentSchema).max(20, "Maximum 20 attachments").optional(),
 
   // ID only present on updates
   id: z.union([z.string(), z.number()]).optional(),

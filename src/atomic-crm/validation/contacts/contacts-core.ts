@@ -143,7 +143,7 @@ export const contactBaseSchema = z.strictObject({
   twitter_handle: z.string().trim().max(100, "Twitter handle too long").optional().nullable(),
 
   // Classification fields - exist in DB
-  tags: z.array(z.string().trim().max(100)).default([]),
+  tags: z.array(z.string().trim().max(100)).max(50, "Maximum 50 tags").default([]),
   status: z.string().trim().max(50, "Status too long").optional().nullable(),
 
   // System fields (readonly, set by triggers)

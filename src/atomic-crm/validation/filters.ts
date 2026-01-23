@@ -40,7 +40,9 @@ export type ListParams = z.infer<typeof listParamsSchema>;
  */
 export const urlFilterSchema = z
   .object({
-    stage: z.union([z.string(), z.array(z.string())]).optional(),
+    stage: z
+      .union([z.string(), z.array(z.string()).max(20, "Maximum 20 stage filters")])
+      .optional(),
   })
   .passthrough();
 
