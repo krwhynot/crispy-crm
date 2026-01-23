@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { TextInput } from "react-admin";
 import { Label } from "@/components/ui/label";
 import { colors } from "./colors";
@@ -8,10 +8,11 @@ import type { TagColorName } from "@/lib/color-types";
 /**
  * Shared tag form inputs for Create and Edit forms
  * Uses existing RoundButton color picker from TagDialog
+ * P5: useWatch for isolated re-renders (only re-renders when color changes, not on every keystroke)
  */
 export const TagInputs = () => {
-  const { setValue, watch } = useFormContext();
-  const selectedColor = watch("color") as TagColorName;
+  const { setValue } = useFormContext();
+  const selectedColor = useWatch({ name: "color" }) as TagColorName;
 
   return (
     <div className="flex flex-col gap-6">

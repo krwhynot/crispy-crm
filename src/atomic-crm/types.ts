@@ -159,18 +159,8 @@ export interface InteractionParticipant extends Pick<RaRecord, "id"> {
 // OpportunityNote type is now exported from validation/notes.ts (P2 consolidation)
 // The schema includes: id, opportunity_id, text, date, sales_id, attachments, created_at, updated_at
 
-export interface OrganizationNote extends Pick<RaRecord, "id"> {
-  organization_id: Identifier;
-  text: string;
-  date: string;
-  created_at: string;
-  updated_at: string;
-  sales_id: Identifier;
-  attachments?: AttachmentNote[];
-
-  // This is defined for compatibility with `ContactNote`
-  status?: undefined;
-}
+// OrganizationNote type is now exported from validation/notes.ts (P2 consolidation)
+// The schema includes: id, organization_id, text, date, sales_id, attachments, created_at, updated_at
 
 // Tag type is now exported from validation/tags.ts (P2 consolidation)
 
