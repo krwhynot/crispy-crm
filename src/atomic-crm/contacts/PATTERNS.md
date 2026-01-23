@@ -673,75 +673,37 @@ export function normalizeColorToSemantic(color: string): TagColorName {
 
 ## Pattern F: Activity Tab Integration
 
-Activity timeline with quick-log dialog for contact slide-overs.
+Activity timeline delegated to UnifiedTimeline component.
 
-**When to use**: Displaying and logging activities for a specific contact.
+**When to use**: Displaying and logging activities for a specific contact in slide-overs or tabbed views.
 
 ### ActivitiesTab Component
 
 ```tsx
 // src/atomic-crm/contacts/ActivitiesTab.tsx
+import { UnifiedTimeline } from "../timeline";
 
 interface ActivitiesTabProps {
   contactId: string | number;
 }
 
 export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  // Fetch activities for this contact
-  const { data, isPending, error, refetch } = useGetList<ActivityRecord>("activities", {
-    filter: { contact_id: contactId },
-    sort: { field: "created_at", order: "DESC" },
-    pagination: { page: 1, perPage: ACTIVITY_PAGE_SIZE },
-  });
-
+  // Convert contactId to number (handles both string and number)
   const numericContactId = typeof contactId === "string" ? parseInt(contactId, 10) : contactId;
 
-  return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3>Activities</h3>
-        <Button onClick={() => setIsDialogOpen(true)}>
-          <Plus className="h-4 w-4 mr-1" />
-          Log Activity
-        </Button>
-      </div>
-
-      {isPending ? (
-        <LoadingSkeleton />
-      ) : activities.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          No activities recorded yet
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {activities.map((activity) => (
-            <ActivityTimelineEntry key={activity.id} activity={activity} />
-          ))}
-        </div>
-      )}
-
-      <QuickLogActivityDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        entityContext={{ contactId: numericContactId }}
-        config={{
-          enableDraftPersistence: false,  // No drafts in slide-over
-          showSaveAndNew: false,
-        }}
-        onSuccess={() => refetch()}  // Refresh timeline
-      />
-    </div>
-  );
+  return <UnifiedTimeline contactId={numericContactId} />;
 };
 ```
 
 **Key points:**
-- `useGetList` with contact filter retrieves only relevant activities
-- `refetch()` on dialog success keeps timeline current
-- `entityContext` pre-populates contact in the activity form
-- Disable draft persistence in slide-over context (ephemeral UI)
+- Delegates all timeline logic to `UnifiedTimeline` component (DRY principle)
+- `UnifiedTimeline` handles activity fetching, display, quick-log dialog, and refetching
+- Handles both string and number contactId types for flexibility
+- Simple wrapper enables easy customization if needed in the future
+
+**Related components:**
+- `UnifiedTimeline` (`src/atomic-crm/timeline/UnifiedTimeline.tsx`) - Shared timeline component
+- Used in both `ContactEdit` slide-over and potentially other entity views
 
 **Example:** `src/atomic-crm/contacts/ActivitiesTab.tsx`
 

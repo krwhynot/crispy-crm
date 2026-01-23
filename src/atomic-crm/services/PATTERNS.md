@@ -732,8 +732,8 @@ Quick reference for all services (✅ registered in ServiceContainer, 🚧 imple
 | **ActivitiesService** | ✅ | Activity log aggregation via RPC | `getActivityLog()` |
 | **JunctionsService** | ✅ | Many-to-many relationship management | `getContactOrganizations()`, `addOpportunityParticipant()`, `setPrimaryOrganization()` |
 | **SegmentsService** | ✅ | Get-or-create pattern for segment tagging | `getOrCreateSegment()` |
-| **ProductsService** | ✅ | Product CRUD with distributor relationships, soft delete via RPC | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |
-| **ProductDistributorsService** | ✅ | Composite key junction table operations | `getOne()`, `create()`, `update()`, `delete()`, `getDistributorsForProduct()` |
+| **ProductsService** | 🚧 | Product CRUD with distributor relationships, soft delete via RPC (not yet registered) | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |
+| **ProductDistributorsService** | 🚧 | Composite key junction table operations (not yet registered) | `getOne()`, `create()`, `update()`, `delete()`, `getDistributorsForProduct()` |
 | **DigestService** | 🚧 | Overdue tasks and digest notifications (not yet registered) | `getOverdueTasksForUser()` |
 
 ### ProductsService
