@@ -1,0 +1,145 @@
+{
+  "audit": "data-integrity",
+  "mode": "full",
+  "timestamp": "2026-01-22",
+  "strangler_fig": {
+    "composedDataProvider_lines": 260,
+    "handler_count": 14,
+    "status": "COMPLETED",
+    "handlers": [
+      "activitiesHandler",
+      "contactsHandler",
+      "junctionHandlers",
+      "notesHandler",
+      "notificationsHandler",
+      "opportunitiesHandler",
+      "organizationsHandler",
+      "productDistributorsHandler",
+      "productsHandler",
+      "salesHandler",
+      "segmentsHandler",
+      "tagsHandler",
+      "tasksHandler",
+      "timelineHandler"
+    ]
+  },
+  "critical_findings": [
+    {
+      "severity": "CRITICAL",
+      "category": "Hard DELETE Statements",
+      "count": 28,
+      "issue": "28 DELETE FROM statements found in migrations - violates soft-delete architecture",
+      "locations": [
+        {
+          "file": "supabase/migrations/20251116210019_fix_sales_schema_consistency.sql",
+          "count": 3,
+          "tables": ["sales"],
+          "recommendation": "Migrate to soft deletes (UPDATE ... SET deleted_at = NOW())"
+        },
+        {
+          "file": "supabase/migrations/20251129225719_replace_segments_with_playbook_categories.sql",
+          "count": 1,
+          "tables": ["segments"],
+          "note": "May be acceptable for data migration cleanup"
+        },
+        {
+          "file": "supabase/migrations/20251117032253_fix_referential_integrity.sql",
+          "count": 1,
+          "tables": ["opportunities"],
+          "note": "Referential integrity cleanup - consider soft delete equivalent"
+        },
+        {
+          "file": "supabase/migrations/20251105001240_add_notifications_table.sql",
+          "count": 1,
+          "tables": ["notifications"],
+          "note": "Cleanup function for expired notifications"
+        },
+        {
+          "file": "supabase/migrations/20251123215857_fix_merge_function_table_names.sql",
+          "count": 1,
+          "tables": ["contacts"],
+          "context": "In merge_duplicates() function"
+        }
+      ],
+      "impact": "Data loss, audit trail gaps, GDPR compliance risk"
+    },
+    {
+      "severity": "CRITICAL",
+      "category": "Opportunity_Products DELETE Pattern",
+      "count": 7,
+      "issue": "7 DELETE FROM opportunity_products found in RPC/sync functions",
+      "locations": [
+        "supabase/migrations/20251029051621_update_sync_rpc_remove_pricing.sql",
+        "supabase/migrations/20251108051154_fix_opportunity_products_soft_delete.sql (marked as OLD)",
+        "supabase/migrations/20251030130720_fix_sync_opportunity_schema_mismatch.sql",
+        "supabase/migrations/20251030131117_fix_rpc_array_parsing.sql",
+        "supabase/migrations/20251030145417_fix_sync_opportunity_id_handling.sql",
+        "supabase/migrations/20251030201606_fix_sync_rpc_response_format.sql",
+        "supabase/migrations/20251231120000_add_sync_opportunity_contacts_rpc.sql"
+      ],
+      "recommendation": "All should use soft delete wrapper: UPDATE opportunity_products SET deleted_at = NOW()"
+    }
+  ],
+  "high_findings": [
+    {
+      "severity": "HIGH",
+      "category": "Deprecated Field: company_id",
+      "issue": "company_id referenced in migrations as 'future' plan but never implemented",
+      "locations": [
+        "supabase/migrations/20251029024045_fix_rls_policies_company_isolation.sql",
+        "supabase/migrations/20251108172640_document_rls_security_model.sql"
+      ],
+      "evidence": "Function get_current_user_company_id() exists but column never added to sales table",
+      "recommendation": "Remove dead code or implement multi-tenant isolation properly"
+    },
+    {
+      "severity": "HIGH",
+      "category": "View/Table Duality - Write Violations",
+      "issue": "No direct INSERT/UPDATE to _summary views detected (GOOD), but risk assessment needed",
+      "recommendation": "Verify that all creates/updates explicitly target base tables, not views"
+    },
+    {
+      "severity": "HIGH",
+      "category": "Soft Delete Filter Coverage",
+      "issue": "deleted_at IS NULL filter present in migrations but application layer validation needed",
+      "locations_good": [
+        "supabase/migrations/20260119000002_update_tasks_visibility_rls.sql",
+        "supabase/migrations/20251127055705_enhance_rls_security_activities_and_indexes.sql"
+      ],
+      "locations_coverage": "All summary views include deleted_at IS NULL in WHERE clause"
+    }
+  ],
+  "medium_findings": [
+    {
+      "severity": "MEDIUM",
+      "category": "archived_at Field Usage",
+      "issue": "No archived_at fields found in use - properly migrated to deleted_at",
+      "status": "RESOLVED"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Data Cleanup Functions",
+      "issue": "Hard DELETEs in cleanup functions not critical if isolated to maintenance",
+      "locations": [
+        "soft_delete_cascade_functions (20251028032131) - CASCADE delete soft-deleted records",
+        "opportunity_products cleanup"
+      ],
+      "recommendation": "Document cleanup windows and audit trail retention policy"
+    }
+  ],
+  "architecture_status": {
+    "monolith_eliminated": true,
+    "composition_complete": true,
+    "handler_coverage": "25 handlers registered for 18 resources + 5 support resources",
+    "validation_layer": "Zod schemas enforced at API boundary",
+    "soft_delete_support": [
+      "organizations", "contacts", "opportunities", "activities", "products", "sales", "tasks",
+      "segments", "contact_notes", "opportunity_notes", "organization_notes", "tags",
+      "opportunity_contacts", "opportunity_participants", "interaction_participants",
+      "notifications", "distributor_principal_authorizations", "organization_distributors",
+      "user_favorites"
+    ],
+    "soft_delete_count": 19
+  },
+  "summary": "Strangler Fig migration COMPLETED - 14 dedicated handlers, 260-line composed router, 19 resources with soft delete. CRITICAL RISK: 28 hard DELETE statements in migrations (especially opportunity_products RPC functions) violate soft-delete architecture. deprecated company_id planning code present but not implemented. All summary views properly exclude deleted records via RLS/WHERE. Immediate action: audit opportunity_products RPC sync logic for hard delete conversion."
+}

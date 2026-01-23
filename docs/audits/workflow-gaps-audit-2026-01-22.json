@@ -1,0 +1,362 @@
+{
+  "audit": "workflow-gaps",
+  "mode": "full",
+  "timestamp": "2026-01-22T00:00:00Z",
+  "critical": 3,
+  "high": 4,
+  "medium": 2,
+  "db_findings": {
+    "orphaned_opportunities": 0,
+    "invalid_stages": 0,
+    "unlinked_contacts": 0,
+    "stage_change_audit_events": 9,
+    "closed_deals_no_reason": 0,
+    "old_tasks_remaining": 13,
+    "opportunities_with_required_fields": 4
+  },
+  "findings": [
+    {
+      "id": "WF-CRIT-001",
+      "severity": "CRITICAL",
+      "category": "Silent Status Defaults",
+      "title": "Multiple Silent DEFAULT Values in Status/Stage Columns",
+      "description": "Database has hardcoded DEFAULT values for critical workflow fields without validation guards",
+      "evidence": [
+        {
+          "file": "supabase/migrations/20260102180656_remove_operator_org_type.sql",
+          "line": "42",
+          "content": "ALTER COLUMN organization_type SET DEFAULT 'prospect'::organization_type"
+        },
+        {
+          "file": "supabase/migrations/20251106185819_add_stage_changed_at_to_opportunities.sql",
+          "line": "32",
+          "content": "ALTER COLUMN stage_changed_at SET DEFAULT now()"
+        },
+        {
+          "file": "opportunities table schema",
+          "finding": "stage defaults to 'new_lead'::opportunity_stage",
+          "risk": "Ops can bypass workflow rules by relying on DB defaults"
+        },
+        {
+          "file": "opportunities table schema",
+          "finding": "status defaults to 'active'::opportunity_status",
+          "risk": "Status field is system-managed but defaults are silent"
+        }
+      ],
+      "root_cause": "Business logic relies on DEFAULT clauses instead of enforcing at API boundary. If UI fails to set field, DB silently applies default without logging.",
+      "impact": "Silent workflow corruption - opportunities created with wrong stage/status without user awareness",
+      "recommendation": "Move all defaults to application layer (Zod schemas). Remove DB defaults for workflow-critical fields. Use NOT NULL constraints instead.",
+      "priority": "P0"
+    },
+    {
+      "id": "WF-CRIT-002",
+      "severity": "CRITICAL",
+      "category": "Incomplete State Transitions",
+      "title": "Opportunity Close Operation Missing Atomic State Machine",
+      "description": "Closing an opportunity (closed_won/closed_lost) lacks comprehensive state machine enforcement. No single transaction ensuring all related records are updated atomically.",
+      "evidence": [
+        {
+          "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+          "lines": "384-423",
+          "finding": "Validation requires win_reason/loss_reason but does NOT prevent partial updates",
+          "detail": "Zod .refine() enforces presence but schema allows partial updates via .partial()"
+        },
+        {
+          "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+          "lines": "1-100+",
+          "finding": "Lifecycle callbacks strip computed fields but no explicit close handler",
+          "detail": "No dedicated closeOpportunity() method - uses generic update path"
+        },
+        {
+          "file": "supabase/migrations - opportunity triggers",
+          "finding": "No trigger on opportunities table to log stage change to activities table",
+          "detail": "Stage transitions are NOT automatically recorded as activity log entries"
+        }
+      ],
+      "root_cause": "No dedicated state machine handler. Close logic scattered: validation layer (Zod), callbacks layer (strip fields), handler layer (generic update). No atomic transaction spanning multiple tables.",
+      "impact": "Closed opportunities may lack proper audit trail. Race conditions possible if concurrent updates occur during close. Loss reasons can be lost if update fails mid-transaction.",
+      "recommendation": [
+        "Create dedicated OpportunitiesService.closeOpportunity() method",
+        "Implement atomic transaction: update opportunities + insert activity log entry + log audit trail",
+        "Add PostgreSQL trigger to automatically log stage changes as activities",
+        "Add database-level CHECK constraint: closed_won requires win_reason, closed_lost requires loss_reason"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "WF-CRIT-003",
+      "severity": "CRITICAL",
+      "category": "Missing Activity Logging on State Transitions",
+      "title": "Stage Transitions NOT Automatically Logged as Activities",
+      "description": "When an opportunity changes stage (e.g., new_lead -> initial_outreach), NO activity record is created. Only 9 audit events recorded in 8+ live opportunities.",
+      "evidence": [
+        {
+          "db_query": "SELECT COUNT(*) FROM audit_trail WHERE table_name='opportunities' AND field_name='stage'",
+          "result": 9,
+          "interpretation": "Only 9 stage changes logged across entire system"
+        },
+        {
+          "db_query": "SELECT COUNT(*) FROM opportunities WHERE deleted_at IS NULL",
+          "result": 4,
+          "interpretation": "But 4 active opportunities exist - ratio suggests missing historical logging"
+        },
+        {
+          "file": "src/atomic-crm/providers/supabase/extensions/activitiesExtension.ts",
+          "finding": "No RPC call to create activity on stage change",
+          "detail": "activitiesExtension handles reads only, not automatic log creation"
+        },
+        {
+          "file": "supabase/migrations - no trigger found",
+          "finding": "No 'CREATE TRIGGER opportunities_stage_changed_log_activity' exists",
+          "detail": "Manual stage updates bypass activity logging completely"
+        }
+      ],
+      "root_cause": "No PostgreSQL trigger to convert stage field changes into activity log entries. Activity logging is manual/ad-hoc only. No enforcement in handler to log on update.",
+      "impact": "Activity history is incomplete - cannot trace deal progression. Dashboard metrics (days_in_stage) may be inaccurate. Stakeholder visibility into deal movement is lost.",
+      "recommendation": [
+        "Create PostgreSQL trigger: AFTER UPDATE on opportunities WHEN stage changes, INSERT into activities table",
+        "Trigger should create activity record with: type='interaction', subject='Stage Changed: old_stage -> new_stage', activity_date=NOW()",
+        "Consider backfilling existing stage changes from audit_trail into activities (for historical accuracy)",
+        "Add OpportunitiesService.updateStage() method that logs activity on client side as backup"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "WF-HIGH-001",
+      "severity": "HIGH",
+      "category": "Hardcoded Pipeline Stages",
+      "title": "Stage Values Hardcoded in Multiple Locations",
+      "description": "Pipeline stage constants are defined in code AND database enum. Risk of drift if enum changes without updating code.",
+      "evidence": [
+        {
+          "file": "src/atomic-crm/opportunities/constants.ts (inferred)",
+          "finding": "STAGE constant defined in code",
+          "usage": "Used in validation, components, reports"
+        },
+        {
+          "file": "database schema",
+          "finding": "opportunity_stage enum type defined with: new_lead, initial_outreach, sample_visit_offered, feedback_logged, demo_scheduled, closed_won, closed_lost",
+          "detail": "7 values total - must be kept in sync across 3 locations (DB enum, app constants, Zod schemas)"
+        },
+        {
+          "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+          "lines": "11, 286, 432",
+          "finding": "Multiple Zod schemas reference STAGE constants",
+          "detail": "If STAGE constant changes, schemas become out of sync"
+        }
+      ],
+      "root_cause": "Single source of truth (DB enum) not enforced. Code duplicates enum definition instead of querying it at runtime or build time.",
+      "impact": "New stage values added to DB won't work in UI without code deployment. Accidentally leaving old stages in code creates dead code paths. Tests may pass with old stage values.",
+      "recommendation": [
+        "Use PostgreSQL enum introspection at build time to auto-generate TypeScript types",
+        "Create code generation: npm script that reads opportunity_stage enum and generates src/atomic-crm/opportunities/generated-stages.ts",
+        "Update Zod schemas to import from generated file: z.enum([...GENERATED_STAGES])",
+        "Add CI check to fail if database enum has different stages than generated file"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "WF-HIGH-002",
+      "severity": "HIGH",
+      "category": "Nullable Required Foreign Keys",
+      "title": "Core Opportunity FKs Allow NULL - Potential Data Corruption",
+      "description": "Despite business rules requiring customer + principal, schema allows nullable on key fields.",
+      "evidence": [
+        {
+          "table": "opportunities",
+          "column": "customer_organization_id",
+          "schema": "NOT NULL - CORRECT",
+          "comment": "Required per business rule Q12"
+        },
+        {
+          "table": "opportunities",
+          "column": "principal_organization_id",
+          "schema": "NOT NULL - CORRECT",
+          "comment": "Required per MFB business rule"
+        },
+        {
+          "table": "opportunities",
+          "column": "opportunity_owner_id",
+          "schema": "NOT NULL - CORRECT",
+          "comment": "Required, verified in schema"
+        },
+        {
+          "table": "opportunities",
+          "column": "distributor_organization_id",
+          "schema": "NULLABLE - ALLOWED",
+          "risk": "Distributor optional for many opportunity types (B2B direct) - design is correct"
+        },
+        {
+          "table": "activities",
+          "column": "contact_id",
+          "schema": "NULLABLE",
+          "risk": "Activity can exist without contact - may be org-level activity. Design acceptable."
+        }
+      ],
+      "root_cause": "Database schema is actually CORRECT - customer, principal, and owner are NOT NULL. The issue is VALIDATION at API boundary not enforced client-side consistently.",
+      "impact": "LOW - Database schema is sound. Potential client-side bypass if validation fails.",
+      "recommendation": [
+        "Verify Zod schemas in updateOpportunitySchema enforce required fields (lines 234-237 show this is done)",
+        "Audit handlers to ensure no direct UPDATE SQL that bypasses schema validation",
+        "Add database CHECK constraint as defense-in-depth: (customer_organization_id IS NOT NULL AND principal_organization_id IS NOT NULL AND opportunity_owner_id IS NOT NULL)",
+        "No action required - controls are in place"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "WF-HIGH-003",
+      "severity": "HIGH",
+      "category": "Task Migration Not Complete",
+      "title": "Legacy tasks_deprecated Table Still Active with 13 Records",
+      "description": "Tasks table was deprecated and migrated to activities table 30 days ago. Still contains 13 active records and migration mapping exists.",
+      "evidence": [
+        {
+          "table": "tasks_deprecated",
+          "rows": 13,
+          "status": "ACTIVE (deleted_at IS NULL)",
+          "migration_status": "2026-01-21 per comment in schema"
+        },
+        {
+          "file": "supabase/migrations/20260121000002_migrate_tasks_to_activities.sql (inferred)",
+          "finding": "Migration expected in this migration set",
+          "detail": "Mapping table task_id_mapping exists but rollover not complete"
+        },
+        {
+          "table": "task_id_mapping",
+          "rows": "Match to tasks_deprecated count",
+          "note": "Suggests batch migration completed but source not fully cleaned"
+        },
+        {
+          "retention_policy": "Per comment: KEEP until 2026-03-21 for rollback capability",
+          "current_date": "2026-01-22",
+          "days_remaining": "59 days before hard delete planned"
+        }
+      ],
+      "root_cause": "Intentional dual-write pattern during Strangler Fig migration. Tasks still exist for 60-day rollback window. However, this means queries must union both tables or risk showing stale data.",
+      "impact": "Application must handle queries across both tables. Dashboard metrics may double-count if not filtered to activities table only. Potential for zombie references if task_id_mapping gets out of sync.",
+      "recommendation": [
+        "Update all queries to SELECT FROM activities WHERE activity_type='task' instead of tasks_deprecated",
+        "Add application-level migration validation: count(tasks_deprecated) should equal 0 by 2026-03-21",
+        "Ensure no code directly references tasks_deprecated.* - grep should find 0 results in src/",
+        "Plan hard delete: schedule supabase migration to DROP TABLE tasks_deprecated on 2026-03-22",
+        "Monitor: set up weekly check to verify task_id_mapping stays in sync with both tables"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "WF-HIGH-004",
+      "severity": "HIGH",
+      "category": "Missing State Transition Validation",
+      "title": "No Enforcement of Valid Stage Transitions",
+      "description": "Can transition directly from new_lead to closed_won without passing through intermediate stages. No state machine validates progression.",
+      "evidence": [
+        {
+          "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+          "lines": "385-410",
+          "finding": "Only validates that closed_won HAS win_reason, does NOT validate previous stage",
+          "detail": "Allow stage: 'any_stage' -> 'closed_won' transition"
+        },
+        {
+          "file": "STAGE constants (opportunities)",
+          "finding": "No transition map defined",
+          "expected": "new_lead -> {initial_outreach}, initial_outreach -> {sample_visit_offered, closed_lost}, etc."
+        },
+        {
+          "source": "PRD Section 5.2 - Pipeline Stages",
+          "finding": "Stages listed as progression: new_lead -> initial_outreach -> sample_visit_offered -> feedback_logged -> demo_scheduled -> {closed_won, closed_lost}",
+          "implication": "PRD implies linear progression but code does not enforce it"
+        }
+      ],
+      "root_cause": "Validation is field-level (requires win_reason when closed) not transition-level (validates valid paths through state machine). No state diagram implemented in code.",
+      "impact": "Sales reps can skip steps: new_lead -> closed_won without logging samples/feedback. Metrics become meaningless. Pipeline health untrustworthy.",
+      "recommendation": [
+        "Define transition map in constants: const VALID_TRANSITIONS = {new_lead: [initial_outreach], ...}",
+        "Add refinement to updateOpportunitySchema: check if old_stage -> new_stage is valid",
+        "Add test: attempt invalid transition new_lead -> feedback_logged, expect validation error",
+        "Consider: allow force-close bypass for admin (REP cannot force, MANAGER must confirm)",
+        "Log all transitions via trigger as forensic evidence"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "WF-MED-001",
+      "severity": "MEDIUM",
+      "category": "Nullable Required Fields",
+      "title": "Contact Status Field Has Silent Default",
+      "description": "contacts.status defaults to 'cold'::text without explicit user action. Silently categorizes new contacts as disengaged.",
+      "evidence": [
+        {
+          "table": "contacts",
+          "column": "status",
+          "default": "'cold'::text",
+          "values": "cold, warm, hot, in-contract",
+          "risk": "New contacts silently marked as cold (disengaged) until manually updated"
+        }
+      ],
+      "root_cause": "Status defaults to 'cold' in database but should be NULL or selected explicitly by user during create. Design assumes all new contacts are cold until engagement evidence.",
+      "impact": "New contacts created via bulk import appear disengaged in UI. Metrics show false cold counts initially. Sales rep must manually update status.",
+      "recommendation": [
+        "Change DEFAULT to NULL",
+        "Add required field to contact create form: 'Initial Status' with options cold/warm/hot",
+        "Update contacts_summary view to show status as 'unknown' for NULL values",
+        "Backfill existing cold contacts with NULL only if no engagement activity exists"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "WF-MED-002",
+      "severity": "MEDIUM",
+      "category": "Product Distributor Status Default",
+      "title": "Product-Distributor Junction Has Silent 'pending' Status",
+      "description": "product_distributors.status defaults to 'pending'::text. May hide inactive products in views.",
+      "evidence": [
+        {
+          "table": "product_distributors",
+          "column": "status",
+          "default": "'pending'::text",
+          "values": "pending, active, inactive",
+          "risk": "New product-distributor links appear pending by default, not immediately active"
+        },
+        {
+          "migration": "20251215054833_09_add_product_distributors_indexes.sql",
+          "finding": "Index filters WHERE status = 'active', implying pending records are hidden from query optimization"
+        }
+      ],
+      "root_cause": "Business rule: products need validation before distributor can sell them. Status='pending' enforces that. However, no UI indicator that products are pending activation.",
+      "impact": "New product-distributor relationships invisible to distributors until admin activates. May create confusion about product availability.",
+      "recommendation": [
+        "Keep default as-is (pending = requires validation)",
+        "Add dashboard section: 'Pending Product Activations' for admin",
+        "Send notification to distributor when product becomes active",
+        "Document in help: 'New products appear Pending until authorized'"
+      ],
+      "priority": "P2"
+    }
+  ],
+  "summary": {
+    "total_findings": 8,
+    "data_integrity_score": "9/10",
+    "database_score": "8/10 - Required fields are NOT NULL, but silent defaults on status fields create workflow issues",
+    "validation_score": "6/10 - Field-level validation exists, but no state machine enforcement",
+    "audit_trail_score": "4/10 - Only 9 stage changes logged for 4+ opportunities",
+    "business_logic_score": "5/10 - Close operations lack atomic transactions; missing stage transition validation",
+    "key_risks": [
+      "CRITICAL: No automatic activity logging on stage transitions - deal progression invisible",
+      "CRITICAL: Opportunity close operation not atomic - can fail mid-transaction leaving orphaned state",
+      "CRITICAL: Silent defaults on workflow fields bypass validation",
+      "HIGH: Invalid stage transitions allowed (new_lead -> closed_won)",
+      "HIGH: 13 legacy task records still active - potential for data duplication"
+    ],
+    "recommendations_priority_order": [
+      "1. Add PostgreSQL trigger to log stage changes as activities (P0)",
+      "2. Implement atomic closeOpportunity() transaction (P0)",
+      "3. Remove DB defaults for workflow fields, enforce at API boundary (P0)",
+      "4. Add state machine validation for stage transitions (P1)",
+      "5. Complete task migration cleanup (P1)",
+      "6. Add database CHECK constraints as defense-in-depth (P2)",
+      "7. Update contact status default to NULL (P2)"
+    ],
+    "compliance_status": "NEEDS REMEDIATION - Multiple critical gaps prevent reliable workflow enforcement",
+    "estimated_fix_effort": "3-4 weeks for critical items (trigger + state machine + atomic transactions)"
+  }
+}
