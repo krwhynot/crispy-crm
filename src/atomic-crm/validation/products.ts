@@ -115,7 +115,10 @@ export type ProductFormData = z.infer<typeof productSchema>;
  * - product_distributors: Record<number, { vendor_item_number: string | null }>
  */
 const distributorFieldsSchema = {
-  distributor_ids: z.array(z.coerce.number().int().positive()).max(100, "Maximum 100 distributors").optional(),
+  distributor_ids: z
+    .array(z.coerce.number().int().positive())
+    .max(100, "Maximum 100 distributors")
+    .optional(),
   // Zod v4: z.record(keySchema, valueSchema) - keys are strings in JS objects
   product_distributors: z
     .record(z.string(), z.strictObject({ vendor_item_number: z.string().max(50).nullable() }))

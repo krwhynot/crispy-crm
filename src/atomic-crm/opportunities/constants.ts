@@ -347,6 +347,22 @@ export function isClosedStage(stageValue: string): boolean {
 }
 
 /**
+ * Check if stage is specifically closed_won
+ * Use this instead of direct string comparison: stage === "closed_won"
+ */
+export function isWonStage(stageValue: string): boolean {
+  return stageValue === STAGE.CLOSED_WON;
+}
+
+/**
+ * Check if stage is specifically closed_lost
+ * Use this instead of direct string comparison: stage === "closed_lost"
+ */
+export function isLostStage(stageValue: string): boolean {
+  return stageValue === STAGE.CLOSED_LOST;
+}
+
+/**
  * Get badge variant for a pipeline stage
  * Used for consistent stage badge styling across the application
  *
