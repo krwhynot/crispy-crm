@@ -161,8 +161,9 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
             // Now move to the next step - element should be ready
             driverRef.current.moveNext();
           } else {
-            // Element not found - skip this step and try the next
-            console.warn(`Skipping step ${nextIndex}: element not ready`);
+            logger.warn(`Skipping step ${nextIndex}: element not ready`, {
+              feature: "TutorialProvider",
+            });
             currentStepIndexRef.current = nextIndex;
             if (driverRef.current) {
               driverRef.current.moveNext();
@@ -234,13 +235,12 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         },
       };
 
-      // Create and start driver
       try {
         driverRef.current = driver(config);
         setIsActive(true);
         driverRef.current.drive();
       } catch (error: unknown) {
-        console.error("Failed to initialize tutorial:", error);
+        logger.error("Failed to initialize tutorial", error, { feature: "TutorialProvider" });
         setIsActive(false);
         driverRef.current = null;
       }

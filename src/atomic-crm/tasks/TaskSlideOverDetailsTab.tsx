@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
+import { logger } from "@/lib/logger";
 import { taskKeys } from "../queryKeys";
 import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { SnoozeIndicator } from "@/components/ui/snooze-badge";
@@ -72,7 +73,7 @@ export function TaskSlideOverDetailsTab({
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
-      console.error("Error updating task:", error instanceof Error ? error.message : String(error));
+      logger.error("Error updating task", error, { feature: "TaskSlideOverDetailsTab", taskId: record.id });
     }
   };
 
