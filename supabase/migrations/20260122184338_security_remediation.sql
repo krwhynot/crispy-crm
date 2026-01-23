@@ -42,24 +42,24 @@ TO authenticated
 USING (is_admin() OR created_by = current_sales_id())
 WITH CHECK (is_admin() OR created_by = current_sales_id());
 
--- 1.4 Fix tags DELETE policy - add ownership check
--- Rollback: DROP POLICY delete_tags_owned; CREATE POLICY authenticated_delete_tags... USING(true)
+-- 1.4 Fix tags DELETE policy - admin only (tags are shared resources, no created_by column)
+-- Rollback: DROP POLICY delete_tags_admin; CREATE POLICY authenticated_delete_tags... USING(true)
 DROP POLICY IF EXISTS authenticated_delete_tags ON tags;
 
-CREATE POLICY "delete_tags_owned"
+CREATE POLICY "delete_tags_admin"
 ON tags FOR DELETE
 TO authenticated
-USING (is_admin() OR created_by = current_sales_id());
+USING (is_admin());
 
--- 1.5 Fix tags UPDATE policy - add ownership check
--- Rollback: DROP POLICY update_tags_owned; CREATE POLICY authenticated_update_tags... USING(true)
+-- 1.5 Fix tags UPDATE policy - admin only (tags are shared resources, no created_by column)
+-- Rollback: DROP POLICY update_tags_admin; CREATE POLICY authenticated_update_tags... USING(true)
 DROP POLICY IF EXISTS authenticated_update_tags ON tags;
 
-CREATE POLICY "update_tags_owned"
+CREATE POLICY "update_tags_admin"
 ON tags FOR UPDATE
 TO authenticated
-USING (is_admin() OR created_by = current_sales_id())
-WITH CHECK (true);
+USING (is_admin())
+WITH CHECK (is_admin());
 
 -- ============================================================
 -- PHASE 2: HIGH - Missing updated_at Triggers (11 tables)

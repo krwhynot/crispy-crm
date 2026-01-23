@@ -1,52 +1,50 @@
-This is the "Brain" of your application. It defines what a "Contact" or "Opportunity" actually is. If this layer is messy, your TypeScript types will lie to you, and your forms will break silently.
+# Domain Layer: Schemas & Types
 
-Why this layer next?
-You just enforced "Zod at the Boundary" in the Data Provider. Now you must ensure that every part of the app uses those same definitions, fulfilling Rule #2: Single Source of Truth.
+Defines what entities (Contact, Opportunity, Task) actually are. If this layer is messy, TypeScript types lie and forms break silently.
 
-The Cleanup Plan
-1. Audit src/atomic-crm/validation/
-The Rule: Every entity (Contact, Task, Opportunity) must have a dedicated schema file here.
+## Schema Rules
 
-What to check:
+DO:
+- `src/atomic-crm/validation/[entity].ts` - one file per entity
+- `export type Contact = z.infer<typeof contactSchema>` - derive types from schemas
+- `contactSchema.strict()` - prevent illegal fields reaching Supabase
+- `z.coerce.number()` - handle form inputs that return strings
+- Match DB columns exactly (e.g., `linkedin_url` in schema if in DB)
 
-Are there orphan schemas hiding in utils/ or component files?
+DON'T:
+- `export interface Contact { ... }` - manual interfaces drift from schemas
+- Orphan schemas in `utils/` or component files
+- Skip `.strict()` - allows invalid data through
 
-Do the schemas match the database columns exactly? (e.g., is linkedin_url in the schema if it's in the DB?)
+## Constants
 
-2. Enforce Type Inference (The "Don't Repeat Yourself" Fix)
-The Problem: Developers often write a Zod schema and then manually write a TypeScript interface. They inevitably get out of sync.
+DO:
+- `src/atomic-crm/[module]/constants.ts` - centralize magic strings
+- `<SelectItem value={OPPORTUNITY_STAGES.WON}>` - use constants
+- Define status colors in constants, not scattered CSS
 
-The Fix: Export the type directly from the schema.
+DON'T:
+- `<SelectItem value="closed_won">` - hardcoded strings
 
-TypeScript
-// src/atomic-crm/validation/contact.ts
+## Type Export Pattern
+
+WRONG:
+```typescript
 export const contactSchema = z.object({ ... });
+export interface Contact { id: string; name: string; ... }
+```
 
-// ✅ GOOD: Derived type (Single Source of Truth)
-export type Contact = z.infer<typeof contactSchema>;
+RIGHT:
+```typescript
+export const contactSchema = z.object({ ... });
+export type Contact = z.infer<typeof contactSchema>; // Single Source of Truth
+```
 
-// ❌ BAD: Manual interface (Will drift out of sync)
-// export interface Contact { id: string; name: string; ... }
-3. Centralize Constants
-Location: src/atomic-crm/[module]/constants.ts or src/constants/
+Manual interfaces inevitably drift from schemas. Derive types to maintain sync.
 
-The Rule: No "Magic Strings" in code.
+## Checklist
 
-What to check:
-
-Are Select inputs using hardcoded options?
-
-Bad: <SelectItem value="closed_won">
-
-Good: <SelectItem value={OPPORTUNITY_STAGES.WON}>
-
-Are status colors defined in the schema/constants logic, or scattered in CSS classes?
-
-Checklist for this Layer
-Schema Completeness: Does every table in supabase/migrations have a matching z.object in validation/?
-
-Type Export: Are we exporting z.infer<...> types?
-
-Strictness: Are schemas using .strict() to prevent passing illegal fields to Supabase?
-
-Coercion: Are we handling form inputs correctly? (e.g., z.coerce.number() for inputs that return strings).
+- [ ] Every table in `supabase/migrations/` has matching `z.object` in `validation/`
+- [ ] Exporting `z.infer<...>` types (not manual interfaces)
+- [ ] Schemas use `.strict()` to block illegal fields
+- [ ] Form inputs use `z.coerce` for type conversion

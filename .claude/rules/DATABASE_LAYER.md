@@ -1,72 +1,85 @@
-The final structural layer is The Database Layer (RLS, Views, & Triggers).
+# Database Layer: RLS, Views & Triggers
 
-You’ve fixed the TypeScript side of the bridge; now you must secure the SQL side. This is the "Border Control" that enforces your Soft Delete and Performance rules if the frontend fails.
+Border control that enforces soft deletes and performance rules when frontend fails.
 
-📋 Database Layer Standardization Checklist
-Scope: supabase/migrations/ Goal: Enforce Rule #1 (Performance) & Rule #10 (Soft Deletes).
+## View Duality (Performance)
 
-1. The "View Duality" Audit (Performance)
-Ensure reads are fast and writes are safe.
+DO:
+- `contacts_summary`, `opportunities_summary` - SQL views for reads
+- Pre-calculate expensive operations (counts, joins, computed fields)
+- `SELECT * FROM contacts_summary` - read from views
+- `INSERT INTO contacts` - write to base tables
 
-[ ] View Existence: Does every major list view (Contacts, Opportunities) read from a SQL View (e.g., contacts_summary)?
+DON'T:
+- Fetch base tables for list views
+- Calculate aggregates in JavaScript
+- Mix read/write destinations
 
-Why: We agreed in the Data Provider to read from Views. If the View doesn't exist, the Provider is lying.
+## Soft Delete Enforcement (Security)
 
-[ ] View Logic: Do these views pre-calculate expensive things?
+DO:
+- RLS policies with `deleted_at IS NULL` - enforce at row level
+- Cascade soft deletes via triggers/policies
+- Test: manually querying Supabase should hide deleted records
 
-Check: Counts (e.g., opportunity_count), joined names (principal_name), and status colors.
+DON'T:
+- Rely only on frontend filtering `deleted_at`
+- Skip RLS policies - attackers can bypass frontend
 
-2. The "Soft Delete" Enforcement (Security)
-Ensure "deleted" data is actually invisible.
+## Immutable Fields (Data Integrity)
 
-[ ] RLS Policies: Check your SELECT policies.
+DO:
+- SQL triggers for `created_at` and `updated_at`
+- Generated columns for computed values (search vectors)
 
-Rule: deleted_at IS NULL must be enforcing visibility at the row level.
+DON'T:
+- Allow frontend to set timestamps manually
 
-Critical: If I manually query Supabase, do I see deleted records? (I shouldn't).
+## Violation Fixes
 
-[ ] Cascade Rules: If I soft-delete an Organization, do the Contacts disappear too?
+### Leaky Delete
 
-Check: Triggers or RLS policies that handle cascading soft-deletes.
+WRONG:
+```javascript
+// Frontend only - hackers can bypass
+supabase.from('contacts').select().is('deleted_at', null)
+```
 
-3. The "Immutable" Audit (Data Integrity)
-Prevent frontend mistakes from corrupting data.
-
-[ ] Triggers: Are created_at and updated_at managed by SQL triggers?
-
-Rule: The frontend should never manually set these timestamps.
-
-[ ] Generated Columns: Are computed values (like search vectors) generated automatically?
-
-🛠️ Migration Guide: How to Fix Common Violations
-Scenario A: The "Leaky Delete" Violation
-The Data Provider filters deleted_at, but the API doesn't.
-
-❌ Bad (Frontend Only): Frontend: supabase.from('contacts').select().is('deleted_at', null) Risk: A hacker (or a bug) can just remove the filter and see everything.
-
-✅ Good (RLS Enforced):
-
-SQL
--- supabase/migrations/20250101_security.sql
+RIGHT:
+```sql
+-- RLS enforced at database level
 CREATE POLICY "Hide deleted contacts"
-ON contacts
-FOR SELECT
+ON contacts FOR SELECT
 USING (deleted_at IS NULL);
-Scenario B: The "Slow Dashboard" Violation
-The Dashboard is calculating logic in JS.
+```
 
-❌ Bad (JS Calculation): Fetching 1000 opportunities and looping through them to find "Stale" ones (> 14 days).
+### Slow Dashboard
 
-✅ Good (SQL View):
+WRONG:
+```javascript
+// Fetching 1000 rows to filter in JS
+opportunities.filter(o => o.updated_at < Date.now() - 14*24*60*60*1000)
+```
 
-SQL
+RIGHT:
+```sql
 CREATE VIEW opportunities_summary AS
 SELECT *,
-  CASE WHEN updated_at < NOW() - INTERVAL '14 days' THEN true ELSE false END as is_stale
+  CASE WHEN updated_at < NOW() - INTERVAL '14 days'
+    THEN true ELSE false END as is_stale
 FROM opportunities;
-Recommended Audit Command
-Use this to check your current migrations for RLS policies:
+```
 
-Bash
-# Check if policies exist in your migration files
+## Audit Command
+
+```bash
 grep -r "CREATE POLICY" supabase/migrations/
+```
+
+## Checklist
+
+- [ ] List views have `_summary` SQL views with pre-calculated fields
+- [ ] SELECT policies enforce `deleted_at IS NULL`
+- [ ] Soft-delete cascades handled by triggers/policies
+- [ ] `created_at`/`updated_at` managed by triggers (not frontend)
+- [ ] Computed columns auto-generated
