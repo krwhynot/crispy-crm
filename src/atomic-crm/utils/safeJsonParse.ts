@@ -1,4 +1,5 @@
 import type { ZodSchema } from "zod";
+import { logger } from "@/lib/logger";
 
 /**
  * Safely parse JSON with Zod validation.

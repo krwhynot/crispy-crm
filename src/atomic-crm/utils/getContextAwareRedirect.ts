@@ -1,4 +1,5 @@
 import type { RaRecord, RedirectTo } from "ra-core";
+import { logger } from "@/lib/logger";
 
 /**
  * Interface for the JSON-encoded source context param

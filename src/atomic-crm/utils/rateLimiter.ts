@@ -13,6 +13,7 @@
  */
 
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 import { safeJsonParse } from "./safeJsonParse";
 
 interface RateLimitConfig {

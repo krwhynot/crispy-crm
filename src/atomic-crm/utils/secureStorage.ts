@@ -14,6 +14,7 @@
  */
 
 import type { ZodSchema } from "zod";
+import { logger } from "@/lib/logger";
 
 export type StorageType = "session" | "local";
 

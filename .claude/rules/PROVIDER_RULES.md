@@ -190,3 +190,6 @@ Order matters: Validate → Strip → Log (inside to outside).
 - [ ] Zod schema registered in `ValidationService`
 - [ ] `supportsSoftDelete: true` enabled
 - [ ] `withErrorLogging` is outermost wrapper
+- [ ] External side-effects wrapped in try/catch with logging
+- [ ] Non-critical side-effects don't block critical transactions
+- [ ] All async operations properly awaited or explicitly voided with error handlers
