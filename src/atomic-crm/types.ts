@@ -156,18 +156,8 @@ export interface InteractionParticipant extends Pick<RaRecord, "id"> {
 
 // DealNote type removed - use OpportunityNote instead
 
-export interface OpportunityNote extends Pick<RaRecord, "id"> {
-  opportunity_id: Identifier;
-  text: string;
-  created_at: string;
-  updated_at: string;
-  opportunity_owner_id: Identifier;
-  attachments?: AttachmentNote[];
-  sales_id?: Identifier; // Note author (matches database schema)
-
-  // This is defined for compatibility with `ContactNote`
-  status?: undefined;
-}
+// OpportunityNote type is now exported from validation/notes.ts (P2 consolidation)
+// The schema includes: id, opportunity_id, text, date, sales_id, attachments, created_at, updated_at
 
 export interface OrganizationNote extends Pick<RaRecord, "id"> {
   organization_id: Identifier;
@@ -225,7 +215,7 @@ export interface ActivityContactCreated extends Pick<RaRecord, "id"> {
 export interface ActivityContactNoteCreated extends Pick<RaRecord, "id"> {
   type: typeof CONTACT_NOTE_CREATED;
   opportunity_owner_id?: Identifier;
-  contactNote: ContactNote;
+  contactNote: ContactNoteBase;
   date: string;
 }
 
@@ -240,7 +230,7 @@ export interface ActivityOpportunityCreated {
 export interface ActivityOpportunityNoteCreated {
   type: typeof OPPORTUNITY_NOTE_CREATED;
   opportunity_owner_id?: Identifier;
-  opportunityNote: OpportunityNote;
+  opportunityNote: OpportunityNoteBase;
   date: string;
 }
 
