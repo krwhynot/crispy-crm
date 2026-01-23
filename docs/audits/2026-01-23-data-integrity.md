@@ -25,21 +25,22 @@
 | Severity | Previous | Current | Change |
 |----------|----------|---------|--------|
 | Critical | 0 | 0 | ✅ Stable |
-| High | 7 | 7 | ➡️ No change (verification pending) |
-| Medium | 1 | 1 | ➡️ No change |
+| High | 7 | 0 | ✅ **All Resolved/Verified** |
+| Medium | 1 | 1 | ➡️ No change (acknowledged) |
 
 ### What This Means for Users
 
 | Severity | User Impact |
 |----------|-------------|
 | **Critical (0)** | ✅ No data loss risk. Users cannot accidentally or maliciously delete records permanently. Views are read-only as designed. |
-| **High (7)** | ⚠️ Potential issue: If storage cleanup queries are incorrect, deleted records could leak to cleanup processes. However, these may be **intentionally unfiltered** for GDPR compliance (cleaning up deleted user data). Requires case-by-case verification. |
-| **Medium (1)** | 📝 No user impact. Handlers may rely on lifecycle callbacks rather than explicit TransformService imports - works correctly but less explicit. |
+| **High (0)** | ✅ All queries verified. Soft-delete filters present where needed. GDPR cleanup queries intentionally omit filters (documented). |
+| **Medium (1)** | 📝 No user impact. Handlers rely on lifecycle callbacks for field stripping - works correctly. |
 
 ### Changes Since Last Audit
 
-**No New Issues** - All findings carried over from previous audit
-**No Fixed Issues** - Pending verification items remain in "needs_verification" status
+**7 Issues Resolved/Verified:**
+- **H001-1:** authProvider.ts:167 already has `deleted_at` filter ✅
+- **H001-2 to H001-7:** storageCleanup.ts queries verified as intentional GDPR exception (documented at lines 134-136) ✅
 
 ---
 

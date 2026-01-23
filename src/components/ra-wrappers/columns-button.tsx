@@ -224,7 +224,7 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
           size="sm"
           onClick={showAll}
           disabled={allVisible}
-          className="h-8 px-2 text-sm text-muted-foreground hover:text-foreground"
+          className="h-11 px-2 text-sm text-muted-foreground hover:text-foreground"
         >
           Show All
         </Button>
