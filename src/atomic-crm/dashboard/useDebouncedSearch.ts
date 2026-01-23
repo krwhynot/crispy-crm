@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-// Debounce delay for search
-const DEFAULT_DEBOUNCE_MS = 300;
+import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
 /**
  * Custom hook for debounced search state
@@ -9,7 +8,7 @@ const DEFAULT_DEBOUNCE_MS = 300;
  * Provides immediate search term for display and debounced term for API calls.
  * Includes clearSearch callback for resetting state on popover close.
  */
-export function useDebouncedSearch(delay: number = DEFAULT_DEBOUNCE_MS) {
+export function useDebouncedSearch(delay: number = SEARCH_DEBOUNCE_MS) {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState("");
 

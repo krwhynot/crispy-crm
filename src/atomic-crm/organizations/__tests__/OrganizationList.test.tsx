@@ -454,7 +454,7 @@ describe("OrganizationList", () => {
       filterValues: {},
     };
 
-    (useListContext as any).mockReturnValue(emptyContext);
+    vi.mocked(useListContext).mockReturnValue(emptyContext);
 
     renderWithAdminContext(<OrganizationList />);
 
@@ -472,7 +472,7 @@ describe("OrganizationList", () => {
       filterValues: { priority: "A" },
     };
 
-    (useListContext as any).mockReturnValue(emptyWithFiltersContext);
+    vi.mocked(useListContext).mockReturnValue(emptyWithFiltersContext);
 
     renderWithAdminContext(<OrganizationList />);
 

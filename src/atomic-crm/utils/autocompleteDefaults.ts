@@ -7,8 +7,13 @@
  * @see https://marmelab.com/react-admin/AutocompleteInput.html
  */
 
-export const AUTOCOMPLETE_DEBOUNCE_MS = 300;
-export const AUTOCOMPLETE_MIN_CHARS = 2;
+import {
+  SEARCH_DEBOUNCE_MS,
+  AUTOCOMPLETE_MIN_CHARS as APP_AUTOCOMPLETE_MIN_CHARS,
+} from "@/atomic-crm/constants";
+
+export const AUTOCOMPLETE_DEBOUNCE_MS = SEARCH_DEBOUNCE_MS;
+export const AUTOCOMPLETE_MIN_CHARS = APP_AUTOCOMPLETE_MIN_CHARS;
 
 /**
  * ReferenceInput prop to prevent API calls until minimum chars typed.

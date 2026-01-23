@@ -208,7 +208,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
 const NotificationsBulkActions = () => {
   const [update] = useUpdate();
   const notify = useNotify();
-  const refresh = useRefresh();
+  const queryClient = useQueryClient();
   const { selectedIds } = useListContext();
 
   const markAllAsRead = async () => {
@@ -232,7 +232,7 @@ const NotificationsBulkActions = () => {
         notify("Failed to mark notifications as read", { type: "error" });
       }
 
-      refresh();
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
     } catch {
       notify("Error marking notifications as read", { type: "error" });
     }

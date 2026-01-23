@@ -144,34 +144,60 @@ Row-Level Security patterns for access control.
 
 For collaborative data (contacts, organizations, opportunities).
 
-**Example:** `20251018203500_update_rls_for_shared_team_access.sql`
+**Recommended:** `auth.uid() IS NOT NULL` (Explicit Authentication Check)
+
+**Example:** `20251207211946_add_organization_distributors.sql`
 
 ```sql
 -- Architecture: Small team shares all customer data
--- Pattern: USING (true) with explicit documentation
+-- Pattern: auth.uid() IS NOT NULL - explicit authentication verification
 
-ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE organization_distributors ENABLE ROW LEVEL SECURITY;
 
+-- SELECT: All authenticated users can view distributor relationships
+CREATE POLICY authenticated_select_organization_distributors
+    ON public.organization_distributors
+    FOR SELECT
+    TO authenticated
+    USING (auth.uid() IS NOT NULL);  -- Explicit: user must be authenticated
+
+-- INSERT: All authenticated users can create distributor relationships
+CREATE POLICY authenticated_insert_organization_distributors
+    ON public.organization_distributors
+    FOR INSERT
+    TO authenticated
+    WITH CHECK (auth.uid() IS NOT NULL);  -- Explicit: user must be authenticated
+
+-- UPDATE: All authenticated users can update distributor relationships
+CREATE POLICY authenticated_update_organization_distributors
+    ON public.organization_distributors
+    FOR UPDATE
+    TO authenticated
+    USING (auth.uid() IS NOT NULL);
+
+-- DELETE: All authenticated users can delete distributor relationships
+CREATE POLICY authenticated_delete_organization_distributors
+    ON public.organization_distributors
+    FOR DELETE
+    TO authenticated
+    USING (auth.uid() IS NOT NULL);
+```
+
+**Legacy Pattern:** `USING (true)` (still valid, but less explicit)
+
+```sql
+-- Older approach - functionally equivalent but less clear about authentication requirement
 CREATE POLICY authenticated_select_contacts ON contacts
   FOR SELECT
   TO authenticated
-  USING (true);  -- Everyone can see all contacts
-
-CREATE POLICY authenticated_insert_contacts ON contacts
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (true);  -- Anyone can create contacts
-
-CREATE POLICY authenticated_update_contacts ON contacts
-  FOR UPDATE
-  TO authenticated
-  USING (true);  -- Anyone can update any contact
-
-CREATE POLICY authenticated_delete_contacts ON contacts
-  FOR DELETE
-  TO authenticated
-  USING (true);  -- Anyone can delete any contact
+  USING (true);  -- Works, but auth check is implicit via "TO authenticated"
 ```
+
+**Pattern Evolution:**
+- **Before (2024)**: `USING (true)` relied on `TO authenticated` clause for auth check
+- **After (2025)**: `auth.uid() IS NOT NULL` makes authentication requirement explicit
+- **Why change?**: Security auditors can immediately see the auth requirement in the USING clause
+- **Both work**: The old pattern still functions correctly, but new tables should use the explicit pattern
 
 ### Personal Access Pattern
 
@@ -248,8 +274,10 @@ CREATE POLICY "Users can view opportunity_contacts through opportunities"
 
 ### Key Points
 
-- **Always document `USING (true)`**: Never leave open policies undocumented
-- **Use helper functions**: `get_current_sales_id()` simplifies policies
+- **Prefer `auth.uid() IS NOT NULL`**: More explicit than `USING (true)` for shared team access
+- **Legacy `USING (true)` still valid**: Older tables may use this pattern - both work correctly
+- **Always document shared access**: Comment why all authenticated users have access
+- **Use helper functions**: `get_current_sales_id()` simplifies personal access policies
 - **Four operations**: Each table needs SELECT, INSERT, UPDATE, DELETE policies
 - **GRANT required**: RLS policies need corresponding GRANT statements
 
