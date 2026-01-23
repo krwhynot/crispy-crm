@@ -120,7 +120,7 @@ export function QuickCreatePopover({
         onCreated(result.data as { id: number; name: string });
         setOpen(false);
       } catch (error) {
-        console.warn("[QuickCreatePopover] Organization creation failed:", error);
+        logger.warn("Organization creation failed", { feature: "QuickCreatePopover", error });
         notify("Failed to create organization", { type: "error" });
       } finally {
         setIsPending(false);
@@ -151,7 +151,7 @@ export function QuickCreatePopover({
       onCreated(result.data as { id: number; name: string });
       setOpen(false);
     } catch (error) {
-      console.warn("[QuickCreatePopover] Quick organization creation failed:", error);
+      logger.warn("Quick organization creation failed", { feature: "QuickCreatePopover", error });
       notify("Failed to create organization", { type: "error" });
     } finally {
       setIsPending(false);

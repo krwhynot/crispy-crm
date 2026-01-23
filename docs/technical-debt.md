@@ -48,12 +48,19 @@
 | ERR-02 | Silent Catch | Filter storage errors silently ignored | `src/atomic-crm/filters/filterPrecedence.ts:70-72,191-193` | Open |
 | ERR-03 | Error Propagation | QuickCreatePopover catches but doesn't log for debugging | `src/atomic-crm/organizations/QuickCreatePopover.tsx:72,101` | Open |
 
+### Feature Incomplete
+
+| ID | Category | Issue | File(s) | Status |
+|----|----------|-------|---------|--------|
+| FEAT-01 | Missing RPC | Stale leads feature requires server-side RPC (get_stale_opportunities). Previous client-side implementation used perPage: 1000 which was a performance risk. | `src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:148` | Open |
+
 ### P1 Dependencies
 - **ASYNC-01**: Blocks nothing | Blocked by: None | Related: useEffect cleanup patterns
 - **ASYNC-02**: Blocks nothing | Blocked by: None | Related: Save indicator UX
 - **ERR-01**: Blocks ERR-02, ERR-03 (establish logging pattern first) | Blocked by: None | Related: Silent catch pattern
 - **ERR-02**: Blocks nothing | Blocked by: ERR-01 (fix together) | Related: Silent catch pattern
 - **ERR-03**: Blocks nothing | Blocked by: ERR-01 (fix together) | Related: Silent catch pattern
+- **FEAT-01**: Blocks stale leads dashboard feature | Blocked by: None | Related: Database RPC implementation
 
 ---
 
@@ -96,6 +103,21 @@
 | FORM-03 | Touch Target | FormErrorSummary error item button < 44px | `src/components/admin/FormErrorSummary.tsx:168` | Open |
 | FORM-04 | Mobile-First | SimpleFormIterator uses sm: instead of md: breakpoint | `src/components/admin/simple-form-iterator.tsx:324` | Open |
 
+### Code Quality (from TODO scan)
+
+| ID | Category | Issue | File(s) | Status |
+|----|----------|-------|---------|--------|
+| CQ-01 | Naming | Validation function naming inconsistent across modules (3 patterns: validateForm, validateCreate, validateForSubmission) | `src/atomic-crm/validation/index.ts:12` | Open |
+| CQ-02 | Registration | ProductsService implemented but not registered in ServiceContainer | `src/atomic-crm/services/PATTERNS.md:419` | Open |
+| CQ-03 | Registration | ProductDistributorsService implemented but not registered in ServiceContainer | `src/atomic-crm/services/PATTERNS.md:424` | Open |
+| CQ-04 | Registration | DigestService implemented but not registered in ServiceContainer | `src/atomic-crm/services/PATTERNS.md:429` | Open |
+
+### Feature Incomplete (from TODO scan)
+
+| ID | Category | Issue | File(s) | Status |
+|----|----------|-------|---------|--------|
+| FEAT-02 | UI Feature | Task slide-over panel not implemented - onClick handler is empty | `src/atomic-crm/opportunities/OpportunityRowListView.tsx:237` | Open |
+
 ### P2 Dependencies
 - **IMP-01**: Blocks nothing | Blocked by: None | Related: IMP-02 (deep import audit)
 - **IMP-02**: Blocks nothing | Blocked by: None | Related: IMP-01 (fix together as import cleanup batch)
@@ -109,6 +131,9 @@
 - **FORM-02**: Blocks nothing | Blocked by: None | Related: FORM-03 (fix together - same file)
 - **FORM-03**: Blocks nothing | Blocked by: None | Related: FORM-02 (fix together - same file)
 - **FORM-04**: Blocks nothing | Blocked by: None | Related: Mobile-first breakpoints (independent)
+- **CQ-01**: Blocks nothing | Blocked by: None | Related: Validation refactor (gradual migration)
+- **CQ-02/03/04**: Blocks nothing | Blocked by: None | Related: Service registration (batch fix)
+- **FEAT-02**: Blocks nothing | Blocked by: Task slide-over component | Related: Task management UX
 
 ---
 

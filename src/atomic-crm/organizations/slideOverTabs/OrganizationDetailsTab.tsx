@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { useFormContext } from "react-hook-form";
+import { logger } from "@/lib/logger";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { BooleanInput } from "@/components/ra-wrappers/boolean-input";
