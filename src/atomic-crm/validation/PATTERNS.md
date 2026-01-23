@@ -84,6 +84,39 @@ import { opportunitySchema } from "@/atomic-crm/validation/opportunities";
 import { contactSchema } from "@/atomic-crm/validation/contacts";
 ```
 
+### Export Strategy (Public vs Internal)
+
+Not all validation files are exported from the main barrel (`index.ts`). This is intentional:
+
+**Exported via barrel (Public API):**
+- `opportunities/` - Core entity, heavily used
+- `organizations.ts` - Core entity
+- `contacts/` - Core entity, heavily used
+- `tags.ts`, `notes.ts`, `segments.ts` - Supporting entities
+- `activities.ts`, `distributorAuthorizations.ts`, `productDistributors.ts` - Business logic
+- `constants.ts`, `utils.ts`, `filters.ts` - Shared utilities
+
+**Require direct import (Internal/Specialized):**
+```tsx
+// These files are NOT exported from index.ts - import directly
+import { productSchema } from "@/atomic-crm/validation/products";
+import { salesSchema } from "@/atomic-crm/validation/sales";
+import { taskSchema } from "@/atomic-crm/validation/task";
+import { operatorSegmentSchema } from "@/atomic-crm/validation/operatorSegments";
+import { organizationDistributorSchema } from "@/atomic-crm/validation/organizationDistributors";
+import { favoriteSchema } from "@/atomic-crm/validation/favorites";
+import { categorySchema } from "@/atomic-crm/validation/categories";
+import { productWithDistributorsSchema } from "@/atomic-crm/validation/productWithDistributors";
+import { quickAddSchema } from "@/atomic-crm/validation/quickAdd";
+```
+
+**Rationale:** Internal schemas are:
+1. Used only within their feature module (products, sales, tasks)
+2. Specialized for specific operations (quickAdd, productWithDistributors)
+3. Not part of the stable public API (subject to change)
+
+> **Note:** To add a file to the public API, add `export * from "./filename";` to `index.ts`.
+
 **Modularization Rule:** When a validation file exceeds 500 lines, split by concern:
 1. Create a subdirectory named after the entity
 2. Split into `-core.ts`, `-operations.ts`, and domain-specific files

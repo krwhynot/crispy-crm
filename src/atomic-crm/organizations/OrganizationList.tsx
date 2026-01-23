@@ -34,6 +34,55 @@ import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 import type { OrganizationExportRow, OrganizationRecord } from "./types";
 
+/**
+ * Memoized cell components for OrganizationList datagrid
+ * Following SampleStatusBadge pattern with named functions for React DevTools
+ */
+
+/** OrganizationTypeCell - Renders organization type badge with FilterableBadge wrapper */
+const OrganizationTypeCell = memo(function OrganizationTypeCell({
+  record,
+}: {
+  record: OrganizationRecord;
+}) {
+  return (
+    <FilterableBadge source="organization_type" value={record.organization_type}>
+      <OrganizationTypeBadge type={record.organization_type} />
+    </FilterableBadge>
+  );
+});
+
+/** OrganizationPriorityCell - Renders priority badge with FilterableBadge wrapper */
+const OrganizationPriorityCell = memo(function OrganizationPriorityCell({
+  record,
+}: {
+  record: OrganizationRecord;
+}) {
+  return (
+    <FilterableBadge source="priority" value={record.priority}>
+      <PriorityBadge priority={record.priority} />
+    </FilterableBadge>
+  );
+});
+
+/** OrganizationContactsCell - Renders contact count metric */
+const OrganizationContactsCell = memo(function OrganizationContactsCell({
+  record,
+}: {
+  record: OrganizationRecord;
+}) {
+  return <>{record.nb_contacts || 0}</>;
+});
+
+/** OrganizationOpportunitiesCell - Renders opportunities count metric */
+const OrganizationOpportunitiesCell = memo(function OrganizationOpportunitiesCell({
+  record,
+}: {
+  record: OrganizationRecord;
+}) {
+  return <>{record.nb_opportunities || 0}</>;
+});
+
 const OrganizationListActions = () => (
   <TopToolbar>
     <SortButton
@@ -180,22 +229,14 @@ const OrganizationListLayout = ({
           <FunctionField
             label={<OrganizationTypeHeader />}
             sortBy="organization_type"
-            render={(record: OrganizationRecord) => (
-              <FilterableBadge source="organization_type" value={record.organization_type}>
-                <OrganizationTypeBadge type={record.organization_type} />
-              </FilterableBadge>
-            )}
+            render={(record: OrganizationRecord) => <OrganizationTypeCell record={record} />}
           />
 
           {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
           <FunctionField
             label={<OrganizationPriorityHeader />}
             sortBy="priority"
-            render={(record: OrganizationRecord) => (
-              <FilterableBadge source="priority" value={record.priority}>
-                <PriorityBadge priority={record.priority} />
-              </FilterableBadge>
-            )}
+            render={(record: OrganizationRecord) => <OrganizationPriorityCell record={record} />}
           />
 
           {/* Column 4: State - US state code (sortable, filterable) - hidden on tablet */}
@@ -225,7 +266,7 @@ const OrganizationListLayout = ({
           <FunctionField
             label="Contacts"
             sortable={false}
-            render={(record: OrganizationRecord) => record.nb_contacts || 0}
+            render={(record: OrganizationRecord) => <OrganizationContactsCell record={record} />}
             textAlign="center"
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"

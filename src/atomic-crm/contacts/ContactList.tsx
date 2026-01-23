@@ -33,6 +33,49 @@ import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 
+/**
+ * Memoized cell components for ContactList datagrid
+ * These prevent unnecessary re-renders when other rows update
+ */
+
+const ContactAvatarCell = React.memo(function ContactAvatarCell({ record }: { record: Contact }) {
+  return <Avatar record={record} width={40} height={40} />;
+});
+
+const ContactNameCell = React.memo(function ContactNameCell({ record }: { record: Contact }) {
+  return (
+    <TruncatedText className="max-w-[200px]">
+      {formatFullName(record.first_name, record.last_name)}
+    </TruncatedText>
+  );
+});
+
+const ContactEmailCell = React.memo(function ContactEmailCell({ record }: { record: Contact }) {
+  const emails = record?.email as Array<{ value: string; type: string }> | undefined;
+  return <span className="text-muted-foreground">{emails?.[0]?.value || "—"}</span>;
+});
+
+const ContactPhoneCell = React.memo(function ContactPhoneCell({ record }: { record: Contact }) {
+  const phones = record?.phone as Array<{ value: string; type: string }> | undefined;
+  return <span className="text-muted-foreground">{phones?.[0]?.value || "—"}</span>;
+});
+
+const ContactRoleCell = React.memo(function ContactRoleCell({ record }: { record: Contact }) {
+  return <>{formatRoleAndDept(record.title, record.department)}</>;
+});
+
+const ContactStatusCell = React.memo(function ContactStatusCell({ record }: { record: Contact }) {
+  return (
+    <FilterableBadge source="status" value={record.status}>
+      <ContactStatusBadge status={record.status} />
+    </FilterableBadge>
+  );
+});
+
+const ContactNotesCell = React.memo(function ContactNotesCell({ record }: { record: Contact }) {
+  return <>{record.nb_notes ?? 0}</>;
+});
+
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
@@ -136,7 +179,7 @@ const ContactListLayout = ({
           <FunctionField
             label=""
             sortable={false}
-            render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
+            render={(record: Contact) => <ContactAvatarCell record={record} />}
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"
           />

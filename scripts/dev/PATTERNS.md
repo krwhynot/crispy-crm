@@ -617,7 +617,7 @@ fi
 | **Destructive** | No | No (upsert) | YES | No | YES (cloud data) |
 | **Requires confirm** | No | No | Yes | No | Yes (unless --force) |
 | **Language** | Bash | Bash | Bash | Node.js | Bash |
-| **Uses .env** | .env.cloud | Arguments | .env.production | Hardcoded | .env.cloud |
+| **Uses .env** | .env.cloud | Arguments | .env.production | Hardcoded | .env.production |
 | **Docker aware** | No | Yes | No | N/A | Yes |
 | **Creates backup** | No | No | No | No | Yes (timestamped) |
 | **Atomicity** | N/A | Transaction | Transaction | N/A | Transaction |
