@@ -1,130 +1,116 @@
-Here is the **Module Standardization Checklist** for your Feature Layer (Tier 3). This checklist enforces the **Three-Tier Component** architecture and ensures your frontend code matches the new Data Provider standards.
+# Feature Module Standards
 
-You can save this as `MODULE_CHECKLIST.md` or paste it into a PR template.
+Ensures `contacts`, `opportunities`, and feature modules follow 3-Tier Architecture and Data Provider rules.
 
----
+## File Structure (Rule #6)
 
-# 🧹 Feature Module Standardization Checklist
+DO:
+- `index.tsx` - exports Resource definition
+- `[Entity]List.tsx`, `[Entity]Create.tsx`, `[Entity]Edit.tsx`, `[Entity]Show.tsx`
+- `[Entity]Inputs.tsx` - shared form inputs
+- Move helpers to `src/lib/` or `src/utils/` (keep features flat)
+- Small sub-components in same file, generic ones in `src/components/`
 
-> **Goal:** Ensure `contacts`, `opportunities`, and other feature modules follow the 3-Tier Architecture and Data Provider rules.
+DON'T:
+- Create `utils/` or `components/` folders inside feature modules
 
-### 1. File Structure (Rule #6)
+## Data Access (Rule #5)
 
-*Enforces consistent navigation for developers.*
+DO:
+- `useDataProvider()`, `useGetList()`, `useGetOne()` - React Admin hooks only
+- Read from `_summary` views for computed stats
+- Write to base tables (resource name routes correctly)
 
-* [ ] **Standard Filenames:** Does the folder match this exact structure?
-* `index.tsx` (Exports the Resource definition)
-* `[Entity]List.tsx`
-* `[Entity]Create.tsx`
-* `[Entity]Edit.tsx`
-* `[Entity]Show.tsx`
-* `[Entity]Inputs.tsx` (Shared form inputs)
+DON'T:
+- `import ... from '@supabase/...'` - DELETE IT
+- Direct Supabase calls
 
+## Forms
 
-* [ ] **No "Utils" Folder:** Are helper functions moved to `src/lib/` or `src/utils/`? (Keep features flat).
-* [ ] **No "Components" Folder:** Are sub-components defined in the same file (if small) or moved to `src/components/` (if generic)?
+DO:
+- `mode="onSubmit"` or `mode="onBlur"` - prevent aggressive errors
+- Rely on `ValidationService` in provider layer
+- Separate inputs into `[Entity]Inputs.tsx` for reuse
 
-### 2. Data Access (Rule #5)
+DON'T:
+- Extensive `validate={...}` functions inline
 
-*Enforces the "Single Source of Truth" bridge.*
+## Component Tiers (Rule #4)
 
-* [ ] **No Direct Supabase:** Search for `import ... from '@supabase/...'`. **Delete it.**
-* *Fix:* Use `useDataProvider()`, `useGetList()`, or `useGetOne()` from React Admin.
+DO:
+- Import Tier 2 Admin wrappers (`SaveButton`, `TextInput`)
+- Use standard React Admin inputs (`DateInput`, `ReferenceInput`)
+- Move business logic to custom hooks (e.g., `useOpportunityDecay`)
 
+DON'T:
+- Import raw shadcn components and wire manually
+- Put logic in components
 
-* [ ] **Read from Views:** Does the `List` component fetch from the `_summary` view (if applicable) to get computed stats?
-* [ ] **Write to Base:** Do `Create`/`Edit` components target the base table resource? (Handled by the Data Provider Router automatically, but verify the resource name passes correctly).
+## Styling (Rule #8)
 
-### 3. Form Architecture
+DO:
+- `text-destructive`, `text-primary`, `bg-muted` - semantic classes
+- `h-11` minimum (44px touch targets)
 
-*Enforces the "Zod at Boundary" rule.*
+DON'T:
+- Hex codes (`#...`)
+- Hardcoded colors (`red-500`, `blue-600`)
 
-* [ ] **Validation Mode:** Is the form set to `mode="onSubmit"` or `mode="onBlur"`?
-* *Why:* Prevents aggressive validation errors while typing; lets Zod handle it at the end.
+## Safety
 
+DO:
+- Standard `DeleteButton` (provider handles soft delete)
+- Organize imports to remove clutter
 
-* [ ] **No Inline Validation:** Are extensive `validate={...}` functions removed from inputs?
-* *Fix:* Rely on the `ValidationService` in the Data Provider layer.
+DON'T:
+- Custom archive logic in UI (unless special action)
 
+## Transformation Example
 
-* [ ] **Input Separation:** Are form inputs defined in `[Entity]Inputs.tsx`?
-* *Why:* Allows reuse between `Create` and `Edit` forms without code duplication.
-
-
-
-### 4. Component Tiers (Rule #4)
-
-*Enforces the standard UI hierarchy.*
-
-* [ ] **Tier 1 Check (Base):** Does this module import *raw* shadcn components (e.g., `Button`) and manually wire them?
-* *Fix:* It should import Tier 2 Admin wrappers (e.g., `SaveButton`, `TextInput`) whenever possible.
-
-
-* [ ] **Tier 2 Check (Admin):** Are we using standard React Admin inputs (`TextInput`, `DateInput`, `ReferenceInput`)?
-* [ ] **Tier 3 Check (Logic):** Does the component contain business logic (e.g., "Calculate decay color")?
-* *Fix:* Move logic to a custom hook (e.g., `useOpportunityDecay`) or a utility function.
-
-
-
-### 5. Styling & UX (Rule #8)
-
-*Enforces the "Semantic Colors" system.*
-
-* [ ] **No Hex Codes:** Search for `#` color codes. **Delete them.**
-* [ ] **No Hardcoded Colors:** Search for `red-500`, `blue-600`.
-* *Fix:* Use `text-destructive`, `text-primary`, `bg-muted`.
-
-
-* [ ] **Touch Targets:** Are buttons and inputs at least `h-11` (44px)?
-
-### 6. Safety & Cleanup
-
-*Enforces data integrity.*
-
-* [ ] **Soft Deletes:** Ensure the `DeleteButton` is standard. (The Data Provider handles the conversion to `deleted_at`, so no custom "Archive" logic is needed in the UI unless it's a special action).
-* [ ] **Unused Imports:** Run "Organize Imports" to remove clutter.
-
----
-
-### Example: transforming a "Bad" Component
-
-**Before (Violates Rules):**
-
+WRONG:
 ```tsx
-// ❌ BAD: Mixed concerns, direct Supabase, hex colors
-import { supabase } from '@/lib/supabase'; // Rule #5 Violation
-import { Button } from '@/components/ui/button'; // Tier 1 mixing
+import { supabase } from '@/lib/supabase';        // Rule #5 violation
+import { Button } from '@/components/ui/button';  // Tier 1 mixing
 
 export const ContactList = () => {
   const deleteContact = async (id) => {
-    await supabase.from('contacts').delete().eq('id', id); // Logic in View
+    await supabase.from('contacts').delete().eq('id', id);  // Logic in view
   };
 
   return (
-    <div className="bg-[#f0f0f0]"> {/* Rule #8 Violation */}
+    <div className="bg-[#f0f0f0]">              {/* Rule #8 violation */}
       <Button onClick={deleteContact} className="bg-red-500">Delete</Button>
     </div>
   );
 };
-
 ```
 
-**After (Standardized):**
-
+RIGHT:
 ```tsx
-// ✅ GOOD: Standard imports, semantic colors, Tier 2 components
 import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
 
 export const ContactList = () => (
-  // Rule #4: Uses Tier 2 (React Admin) components
   <List>
     <Datagrid rowClick="show">
       <TextField source="first_name" />
       <TextField source="last_name" />
-      {/* Rule #6: Standard Soft Delete handled by Provider */}
-      <DeleteButton /> 
+      <DeleteButton />  {/* Soft delete handled by provider */}
     </Datagrid>
   </List>
 );
-
 ```
+
+## Checklist
+
+- [ ] Standard file structure (`index.tsx`, `[Entity]List.tsx`, etc.)
+- [ ] No direct Supabase imports
+- [ ] Read from `_summary` views
+- [ ] Form `mode="onSubmit"` or `onBlur`
+- [ ] No inline `validate` functions
+- [ ] Inputs in `[Entity]Inputs.tsx`
+- [ ] Using Tier 2 Admin components
+- [ ] Business logic in hooks/utils
+- [ ] Semantic colors (no hex codes)
+- [ ] Touch targets ≥ `h-11`
+- [ ] Standard `DeleteButton`
+- [ ] Unused imports removed
