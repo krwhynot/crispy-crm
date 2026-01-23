@@ -32,10 +32,7 @@ export type { SalesRole, Sale } from "./validation/sales";
 export type { Tag } from "./validation/tags";
 export type { Task, TaskType, PriorityLevel } from "./validation/task";
 export type { RAFile } from "./validation/shared/ra-file";
-export type {
-  OpportunityParticipant,
-  OpportunityContact,
-} from "./validation/opportunities";
+export type { OpportunityParticipant, OpportunityContact } from "./validation/opportunities";
 
 // Use generated enum as single source of truth for interaction types
 // Note: This comes from database.generated.ts, validation schema mirrors it
@@ -53,30 +50,9 @@ export interface SalesFormData {
   disabled: boolean;
 }
 
-export interface Sale extends Pick<RaRecord, "id"> {
-  first_name: string;
-  last_name: string;
-  role: "admin" | "manager" | "rep"; // Primary field (single source of truth)
-  administrator?: boolean; // Computed column (backward compatibility)
-  avatar?: RAFile;
-  disabled?: boolean;
-  user_id: string;
-  digest_opt_in?: boolean; // Email digest preference (default true)
-  timezone?: string; // IANA timezone (e.g., 'America/New_York')
-
-  /**
-   * This is a copy of the user's email, to make it easier to handle by react admin
-   * DO NOT UPDATE this field directly, it should be updated by the backend
-   */
-  email: string;
-
-  /**
-   * This is used by the fake rest provider to store the password
-   * DO NOT USE this field in your code besides the fake rest provider
-   * @deprecated
-   */
-  password?: string;
-}
+// Sale type is now exported from validation/sales.ts (P2 consolidation)
+// The schema includes: id, first_name, last_name, email, avatar_url, role, user_id,
+// administrator, disabled, digest_opt_in, timezone, etc.
 
 // Organization type (imported from validation)
 export type { Organization } from "./validation/organizations";
@@ -139,19 +115,8 @@ export interface Contact extends Pick<RaRecord, "id"> {
 // ContactOrganization interface removed - junction table was deprecated.
 // Contacts now use a direct organization_id FK (single org per contact).
 
-export interface OpportunityParticipant extends Pick<RaRecord, "id"> {
-  id: Identifier;
-  opportunity_id: Identifier;
-  organization_id: Identifier;
-  role: "customer" | "principal" | "distributor" | "competitor";
-  is_primary: boolean;
-  notes?: string;
-  created_at: string;
-  updated_at?: string;
-  created_by?: Identifier;
-  deleted_at?: string;
-  // Note: commission_rate removed - Phase 3 feature per PRD
-}
+// OpportunityParticipant type is now exported from validation/opportunities (P2 consolidation)
+// Defined in validation/opportunities/opportunities-junctions.ts
 
 /**
  * Opportunity Contact Junction Table Record

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import type { FieldErrors } from "react-hook-form";
+import type { FieldErrors, Resolver } from "react-hook-form";
 import { quickAddBaseSchema, quickAddSchema } from "@/atomic-crm/validation/quickAdd";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuickAdd } from "./useQuickAdd";
@@ -274,9 +274,8 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
   // React Admin Form component provides FormProvider context
   // mode="onBlur" per Engineering Constitution - no onChange validation
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Zod resolver type mismatch with RA Form
   return (
-    <Form defaultValues={defaultValues} mode="onBlur" resolver={zodResolver(quickAddSchema) as any}>
+    <Form defaultValues={defaultValues} mode="onBlur" resolver={zodResolver(quickAddSchema) as Resolver<QuickAddFormValues>}>
       <QuickAddFormContent
         onSuccess={onSuccess}
         identityId={identity?.id}

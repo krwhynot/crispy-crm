@@ -43,7 +43,9 @@ export type Resource =
 /**
  * Parameters for access control checks
  */
-export interface CanAccessParams<RecordType extends Record<string, any> = Record<string, any>> {
+export interface CanAccessParams<
+  RecordType extends Record<string, unknown> = Record<string, unknown>,
+> {
   action: Action | string;
   resource: Resource | string;
   record?: RecordType;
