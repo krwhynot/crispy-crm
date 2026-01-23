@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { logger } from "@/lib/logger";
 import { parseDateSafely } from "@/lib/date-utils";
 import { isOpportunityStale, getStaleThreshold } from "@/atomic-crm/utils/stalenessCalculation";
 
@@ -124,10 +125,10 @@ export function useCampaignActivityMetrics(
     return opportunitiesForCampaign
       .filter((opp) => {
         if (!opp.stage) {
-          console.error(
-            `[DATA INTEGRITY] Opportunity ID ${opp.id} has no stage. ` +
-              `Excluding from metrics calculation. ` +
-              `This indicates database corruption or a bug in the data layer.`
+          logger.error(
+            `[DATA INTEGRITY] Opportunity ID ${opp.id} has no stage. Excluding from metrics calculation.`,
+            undefined,
+            { feature: "CampaignActivityMetrics", opportunityId: opp.id }
           );
           return false;
         }

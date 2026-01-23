@@ -118,7 +118,7 @@ export function useCampaignActivityExport(selectedCampaign: string, salesMap: Ma
 
       jsonExport(exportData, (err, csv) => {
         if (err) {
-          console.error("Export error:", err);
+          logger.error("Export activities error", err, { feature: "CampaignActivityExport" });
           notify("Export failed. Please try again.", { type: "error" });
           return;
         }

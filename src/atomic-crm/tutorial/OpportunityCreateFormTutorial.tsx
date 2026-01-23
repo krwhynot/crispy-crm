@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { HelpCircle } from "lucide-react";
 import { driver, type Driver, type Config } from "driver.js";
 import "driver.js/dist/driver.css";
+import { logger } from "@/lib/logger";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { opportunityCreateFormSteps } from "./steps/opportunityCreateFormSteps";

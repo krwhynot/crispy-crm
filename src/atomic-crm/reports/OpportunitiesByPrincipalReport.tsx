@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
 import jsonExport from "jsonexport/dist";
 import { format } from "date-fns";
+import { logger } from "@/lib/logger";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -322,7 +323,7 @@ export default function OpportunitiesByPrincipalReport() {
 
     jsonExport(exportData, (err, csv) => {
       if (err) {
-        console.error("Export error:", err);
+        logger.error("Export error", err, { feature: "OpportunitiesByPrincipalReport" });
         notify("Export failed. Please try again.", { type: "error" });
         return;
       }
