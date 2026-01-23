@@ -47,6 +47,14 @@ import type { Contact as ContactBase } from "./validation/contacts/contacts-core
 export type { ActivityRecord } from "./validation/activities";
 import type { ActivityRecord as ActivityRecordBase } from "./validation/activities";
 
+// Note types (P2 consolidation)
+export type { ContactNote, OpportunityNote, OrganizationNote } from "./validation/notes";
+import type {
+  ContactNote as ContactNoteBase,
+  OpportunityNote as OpportunityNoteBase,
+  OrganizationNote as OrganizationNoteBase,
+} from "./validation/notes";
+
 // InteractionType is now derived from ActivityRecord schema
 // (exported from validation/activities.ts as part of P2 consolidation)
 
@@ -130,15 +138,8 @@ export interface InteractionParticipant extends Pick<RaRecord, "id"> {
   created_at: string;
 }
 
-export interface ContactNote extends Pick<RaRecord, "id"> {
-  contact_id: Identifier;
-  text: string;
-  created_at: string;
-  updated_at: string;
-  status?: undefined;
-  attachments?: AttachmentNote[];
-  sales_id?: Identifier; // Note author (matches database schema)
-}
+// ContactNote type is now exported from validation/notes.ts (P2 consolidation)
+// The schema includes: id, contact_id, text, date, sales_id, attachments, created_at, updated_at
 
 // Deal type removed - use Opportunity instead
 // LeadSource type removed - now imported from validation/opportunities.ts (P1 consolidation)
