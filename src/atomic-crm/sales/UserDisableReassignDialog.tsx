@@ -17,6 +17,7 @@ import { useState, useEffect, useRef } from "react";
 import { useUpdate, useNotify, useRefresh, useDataProvider, useGetList } from "react-admin";
 import type { DataProvider, Identifier, RaRecord } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
+import { logger } from "@/lib/logger";
 import { opportunityKeys, contactKeys, organizationKeys, taskKeys, saleKeys } from "../queryKeys";
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
@@ -80,7 +81,10 @@ async function batchReassign<T extends RaRecord>(
         success++;
       } else {
         failed++;
-        console.error(`[batchReassign] Failed to reassign ${resource}:`, result.reason);
+        logger.error(`Failed to reassign ${resource}`, result.reason, {
+          feature: "batchReassign",
+          resource,
+        });
       }
     });
   }
@@ -199,7 +203,10 @@ export function UserDisableReassignDialog({
 
         setStep(totalRecords === 0 ? "noRecords" : "reassign");
       } catch (error: unknown) {
-        console.error("[UserDisableReassign] Failed to fetch counts:", error);
+        logger.error("Failed to fetch counts", error, {
+          feature: "UserDisableReassign",
+          userId: user.id,
+        });
         notify("Failed to check user records", { type: "error" });
         onClose();
       }

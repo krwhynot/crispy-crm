@@ -143,26 +143,36 @@
 |----|----------|-------|---------|--------|
 | UI-24 | A11y | Dialog/Sheet missing aria-describedby auto-linking | `src/components/ui/dialog.tsx`, `src/components/ui/sheet.tsx` | Open |
 | UI-25 | Spacing | gap-1 usage should be gap-2 (19 files) - some may be intentional | Multiple files in src/components | Open |
+| UI-26 | A11y | Select combobox missing aria-controls linking to popover | `src/components/ui/select-ui.tsx:159`, `src/components/ui/filter-select-ui.tsx:151` | Open |
 | ASYNC-04 | Unsaved Changes | Extend useInAppUnsavedChanges to all slide-over edit forms | All slide-over edit tabs | Open |
 | ASYNC-05 | Retry Option | Add explicit retry button on fetch errors | List components | Open |
 | ASYNC-06 | Optimistic Lock | Implement updated_at version check for opportunities | Data provider, opportunity forms | Open |
 | ASYNC-07 | AbortController | Add to EntityCombobox search | `src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx` | Open |
 | EC-01 | i18n | RTL text support missing (dir="auto") - only textarea.tsx | `src/components/ui/textarea.tsx` (input.tsx already fixed) | Open |
+| CFG-01 | Config | DEFAULT_SEGMENT_ID hardcoded - consider environment variable | `src/atomic-crm/constants.ts:4` | Open |
 
 ### P3 Dependencies
 - **UI-24**: Blocks nothing | Blocked by: None | Related: A11y improvements (independent)
 - **UI-25**: Blocks nothing | Blocked by: None | Related: Spacing audit (bulk fix, verify intentional gaps first)
+- **UI-26**: Blocks nothing | Blocked by: None | Related: A11y improvements (fix with UI-24)
 - **ASYNC-04**: Blocks nothing | Blocked by: None | Related: Unsaved changes UX (extension task)
 - **ASYNC-05**: Blocks nothing | Blocked by: None | Related: Error recovery UX (independent)
 - **ASYNC-06**: Blocks nothing | Blocked by: None | Related: Optimistic locking (requires DB + provider changes)
 - **ASYNC-07**: Blocks nothing | Blocked by: None | Related: ASYNC-01 (AbortController pattern)
 - **EC-01**: Blocks nothing | Blocked by: None | Related: i18n improvements (quick win)
+- **CFG-01**: Blocks nothing | Blocked by: None | Related: Config externalization (low priority)
 
 ---
 
 ## Resolved Items Summary
 
-**Total Resolved: 116 items**
+**Total Resolved: 117 items**
+
+### TODO/FIXME Scan (Jan 23, 2026)
+
+**Resolved (1 item):**
+- TS-01: NoInfer custom type removed - TypeScript 5.4+ has native NoInfer (TS version: 5.9.3)
+  - File: `src/components/ra-wrappers/record-field.tsx:80`
 
 ### Verification Batch (Dec 26, 2025)
 
@@ -225,8 +235,10 @@
 | FORM-02/03 | Add min-h-11 to FormErrorSummary buttons | 5 min |
 | EC-01 | Add dir="auto" to textarea.tsx | 2 min |
 | ERR-01/02/03 | Add console.error logging to catch blocks | 15 min |
+| UI-26 | Add aria-controls to select-ui.tsx and filter-select-ui.tsx | 10 min |
+| CFG-01 | Move DEFAULT_SEGMENT_ID to env variable | 5 min |
 
-**Quick wins batch: ~40 minutes for 7+ items fixed**
+**Quick wins batch: ~55 minutes for 9+ items fixed**
 
 ---
 
@@ -240,8 +252,23 @@ Historical audit files (pre-January 2026) have been consolidated into this track
 
 ## Maintenance Notes
 
-- This file verified against codebase on 2025-12-26
+- This file verified against codebase on 2026-01-23
 - Run `/deep-audit` to regenerate full audit reports if needed
 - P0 items should block deployment
 - P1 items should be addressed within current sprint
 - P2/P3 items can be batched into cleanup sprints
+
+## TODO/FIXME Comments Left in Place (Informational)
+
+The following comments were intentionally left in the codebase as they explain "why" rather than "what to do":
+
+| File | Line | Reason |
+|------|------|--------|
+| `src/components/ra-wrappers/select-input.tsx` | 236 | Links to Radix bug tracker, explains workaround |
+| `src/atomic-crm/validation/opportunities/opportunities-core.ts` | 34,201 | Feature ticket reference (TODO-004a) |
+| `src/atomic-crm/validation/opportunities/opportunities-operations.ts` | 151,401,459,568 | Feature ticket reference (TODO-004a) |
+| `src/atomic-crm/providers/supabase/README.md` | 230 | Documentation cross-reference |
+| `src/atomic-crm/reports/CampaignActivity/__tests__/*.test.tsx` | multiple | Test stubs awaiting RPC implementation |
+| `src/atomic-crm/contacts/__tests__/OpportunitiesTab.test.tsx` | 28 | Test stub awaiting implementation |
+| `src/atomic-crm/opportunities/slideOverTabs/__tests__/*.test.tsx` | multiple | Test stubs awaiting implementation |
+| `src/tests/.quarantine/auth-flow.test.ts.legacy` | 163,191 | Quarantined test explaining mock limitation |

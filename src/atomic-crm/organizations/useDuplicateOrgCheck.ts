@@ -25,6 +25,7 @@
  */
 import { useState, useCallback, useRef } from "react";
 import { useDataProvider, useNotify } from "ra-core";
+import { logger } from "@/lib/logger";
 import type { Company } from "../types";
 
 interface DuplicateOrgInfo {
@@ -99,11 +100,14 @@ export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
 
         return null;
       } catch (error: unknown) {
-        console.error("Failed to check for duplicate organization:", error);
+        logger.error("Failed to check for duplicate organization", error, {
+          feature: "useDuplicateOrgCheck",
+          name,
+          currentOrgId,
+        });
         notify("Unable to check for duplicate organizations. Please try again.", {
           type: "warning",
         });
-        // Don't block on check errors - let the DB constraint handle it
         return null;
       } finally {
         setIsChecking(false);

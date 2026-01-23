@@ -95,10 +95,10 @@ export function OrganizationDetailsTab({
       onModeToggle?.();
     } catch (error: unknown) {
       notify("Error updating organization", { type: "error" });
-      console.error(
-        "Error updating organization:",
-        error instanceof Error ? error.message : String(error)
-      );
+      logger.error("Error updating organization", error, {
+        feature: "OrganizationDetailsTab",
+        organizationId: record.id,
+      });
     }
   };
 
