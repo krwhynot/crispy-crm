@@ -62,7 +62,7 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | C1 | Missing Zod .max() | `rg "z\.string\(\)" --type ts src/atomic-crm/validation/ -n` then filter lines without `.max(` | DoS via unbounded strings |
 | C2 | Direct Supabase imports | `rg "from ['\"]@supabase/supabase-js['\"]" --type ts src/atomic-crm/ src/components/ -n` | Auth bypass risk |
 | C3 | XSS vulnerabilities | `rg "dangerouslySetInnerHTML" --type tsx src/ -n` | XSS attack vector |
-| C4 | z.object instead of strictObject | `rg "z\.object\(" --type ts src/atomic-crm/validation/ -n` | Mass assignment vulnerability |
+| C4 | z.object without .strict() | Step 1: `rg "z\.object\(" --type ts src/atomic-crm/validation/ -n` Step 2: Filter lines lacking `.strict()` method chain or `z.strictObject` | Mass assignment vulnerability |
 | C5 | Hardcoded secrets | `rg "sk_live\|pk_live\|password\s*=\s*['\"][^'\"]+['\"]" --type ts src/ -n` | Credential leak |
 | C6 | eval() usage | `rg "eval\(" --type ts src/ -n` | Code injection |
 | C7 | Exposed API keys | `rg "api_key\s*=\s*['\"][^'\"]+['\"]" --type ts src/ -n` | Credential leak |
