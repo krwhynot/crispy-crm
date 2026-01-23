@@ -276,7 +276,9 @@ const OrganizationListLayout = ({
           <FunctionField
             label="Opportunities"
             sortable={false}
-            render={(record: OrganizationRecord) => record.nb_opportunities || 0}
+            render={(record: OrganizationRecord) => (
+              <OrganizationOpportunitiesCell record={record} />
+            )}
             textAlign="center"
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"

@@ -47,7 +47,8 @@ For fast tag creation when no existing tag matches the search term.
 ```tsx
 // src/atomic-crm/tags/TagQuickInput.tsx
 import { useState } from 'react';
-import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
+import { ReferenceInput, useCreate, useRefresh } from 'react-admin';
+import { useSafeNotify } from '@/atomic-crm/hooks/useSafeNotify';  // Preferred over useNotify
 import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
 
 interface TagQuickInputProps {
@@ -58,7 +59,7 @@ interface TagQuickInputProps {
 export function TagQuickInput({ source, label }: TagQuickInputProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [create, { isLoading: isCreating }] = useCreate();
-  const notify = useNotify();
+  const { success, error: notifyError } = useSafeNotify();  // Sanitizes error messages
   const refresh = useRefresh();
 
   const handleQuickCreate = async (name: string) => {
@@ -69,11 +70,11 @@ export function TagQuickInput({ source, label }: TagQuickInputProps) {
       { data: { name: name.trim(), color: 'warm' } },  // Default color
       {
         onSuccess: () => {
-          notify('Tag created', { type: 'success' });
+          success('Tag created');  // useSafeNotify helper
           refresh();  // Triggers ReferenceInput to refetch
         },
-        onError: (error) => {
-          notify(`Error: ${error.message}`, { type: 'error' });
+        onError: (err) => {
+          notifyError(err);  // Sanitizes error message automatically
         },
       }
     );
@@ -230,7 +231,8 @@ For tag selection with the option to create new tags with full control.
 ```tsx
 // src/atomic-crm/tags/TagSelectWithCreate.tsx
 import { useState } from 'react';
-import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
+import { ReferenceInput, useCreate, useRefresh } from 'react-admin';
+import { useSafeNotify } from '@/atomic-crm/hooks/useSafeNotify';
 import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';

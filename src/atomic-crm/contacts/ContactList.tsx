@@ -188,11 +188,7 @@ const ContactListLayout = ({
           <FunctionField
             label={<ContactNameHeader />}
             sortBy="first_name"
-            render={(record: Contact) => (
-              <TruncatedText className="max-w-[200px]">
-                {formatFullName(record.first_name, record.last_name)}
-              </TruncatedText>
-            )}
+            render={(record: Contact) => <ContactNameCell record={record} />}
           />
 
           {/* Column 3: Email - Primary email from JSONB array - visible on md+ */}
@@ -200,10 +196,7 @@ const ContactListLayout = ({
             source="email"
             label="Email"
             sortable={false}
-            render={(record: Contact) => {
-              const emails = record?.email as Array<{ value: string; type: string }> | undefined;
-              return <span className="text-muted-foreground">{emails?.[0]?.value || "—"}</span>;
-            }}
+            render={(record: Contact) => <ContactEmailCell record={record} />}
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
           />
@@ -213,10 +206,7 @@ const ContactListLayout = ({
             source="phone"
             label="Phone"
             sortable={false}
-            render={(record: Contact) => {
-              const phones = record?.phone as Array<{ value: string; type: string }> | undefined;
-              return <span className="text-muted-foreground">{phones?.[0]?.value || "—"}</span>;
-            }}
+            render={(record: Contact) => <ContactPhoneCell record={record} />}
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"
           />
@@ -233,7 +223,7 @@ const ContactListLayout = ({
           <FunctionField
             label="Role"
             sortBy="title"
-            render={(record: Contact) => formatRoleAndDept(record.title, record.department)}
+            render={(record: Contact) => <ContactRoleCell record={record} />}
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"
           />
