@@ -1,3 +1,4 @@
+import { memo } from "react";
 import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";

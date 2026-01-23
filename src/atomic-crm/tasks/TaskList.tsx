@@ -282,13 +282,7 @@ const TaskListLayout = ({
           <FunctionField
             label={<TaskTypeHeader />}
             sortBy="type"
-            render={(record: Task) =>
-              record.type && (
-                <FilterableBadge source="type" value={record.type}>
-                  <Badge variant="outline">{record.type}</Badge>
-                </FilterableBadge>
-              )
-            }
+            render={(record: Task) => <TaskTypeCell record={record} />}
             {...COLUMN_VISIBILITY.desktopOnly}
           />
 
@@ -314,9 +308,9 @@ const TaskListLayout = ({
             {...COLUMN_VISIBILITY.largeDesktopOnly}
           >
             <FunctionField
-              render={(record: { first_name?: string; last_name?: string }) =>
-                [record?.first_name, record?.last_name].filter(Boolean).join(" ") || "—"
-              }
+              render={(record: { first_name?: string; last_name?: string }) => (
+                <TaskContactNameCell record={record} />
+              )}
             />
           </ReferenceField>
 
@@ -338,12 +332,7 @@ const TaskListLayout = ({
             sortable={false}
             cellClassName="w-16 text-right"
             render={(record: Task) => (
-              <TaskActionMenu
-                task={record}
-                onView={(id) => openSlideOver(id, "view")}
-                onEdit={(id) => openSlideOver(id, "edit")}
-                useInternalHandlers
-              />
+              <TaskActionsCell record={record} openSlideOver={openSlideOver} />
             )}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />

@@ -218,12 +218,7 @@ const ActivityListLayout = ({
           <FunctionField
             label="Sample Status"
             sortable={false}
-            render={(record: ActivityRecord) => {
-              if (record.type !== "sample" || !record.sample_status) {
-                return <span className="text-muted-foreground">—</span>;
-              }
-              return <SampleStatusBadge status={record.sample_status} />;
-            }}
+            render={(record: ActivityRecord) => <ActivitySampleStatusCell record={record} />}
             {...COLUMN_VISIBILITY.desktopOnly}
           />
 
@@ -231,21 +226,7 @@ const ActivityListLayout = ({
           <FunctionField
             label="Sentiment"
             sortable={false}
-            render={(record: ActivityRecord) => {
-              if (!record.sentiment) {
-                return <span className="text-muted-foreground">—</span>;
-              }
-              const sentimentColors: Record<string, string> = {
-                positive: "bg-success/10 text-success",
-                neutral: "bg-muted text-muted-foreground",
-                negative: "bg-destructive/10 text-destructive",
-              };
-              return (
-                <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">
-                  {ucFirst(record.sentiment)}
-                </Badge>
-              );
-            }}
+            render={(record: ActivityRecord) => <ActivitySentimentCell record={record} />}
             {...COLUMN_VISIBILITY.desktopOnly}
           />
 

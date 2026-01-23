@@ -1,3 +1,4 @@
+import React from "react";
 import { useGetIdentity, useListContext } from "ra-core";
 
 import { ContactBulkActionsToolbar } from "./ContactBulkActionsToolbar";
