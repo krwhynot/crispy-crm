@@ -19,6 +19,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useGetList, useRefresh, useDelete, useNotify } from "react-admin";
 
+import { logger } from "@/lib/logger";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -118,11 +119,10 @@ export function AuthorizationsTab({
         }
       );
     } catch (error: unknown) {
-      // ERR-002 FIX: Log error with context before notifying user
-      console.error(
-        "[AuthorizationsTab] Failed to remove authorization:",
-        error instanceof Error ? error.message : String(error)
-      );
+      logger.error("Failed to remove authorization", error, {
+        feature: "AuthorizationsTab",
+        operation: "removeAuthorization",
+      });
       notify("Failed to remove authorization. Please try again.", { type: "error" });
     }
   };

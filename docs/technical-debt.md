@@ -1,8 +1,8 @@
 # Technical Debt Tracker
 
 **Generated:** 2025-12-26
-**Last Verified:** 2025-12-26
-**Source:** Consolidated from 40+ audit reports
+**Last Verified:** 2026-01-23
+**Source:** Consolidated from 40+ audit reports + TODO/FIXME scan
 
 ---
 
@@ -11,10 +11,10 @@
 | Priority | Open Items | Resolved |
 |----------|------------|----------|
 | P0 - Critical | 1 | 12 |
-| P1 - High | 5 | 33 |
-| P2 - Medium | 12 | 39 |
-| P3 - Low | 7 | 32 |
-| **Total** | **25** | **116** |
+| P1 - High | 6 | 33 |
+| P2 - Medium | 16 | 40 |
+| P3 - Low | 9 | 32 |
+| **Total** | **32** | **117** |
 
 ---
 
