@@ -36,17 +36,21 @@ export const WorkflowManagementSection: React.FC = () => {
 
   // Local state for inline editing (use ?? null to preserve NULL vs empty string distinction)
   const [nextAction, setNextAction] = useState<string | null>(record?.next_action ?? null);
-  const [nextActionDate, setNextActionDate] = useState<string | null>(record?.next_action_date ?? null);
-  const [decisionCriteria, setDecisionCriteria] = useState<string | null>(record?.decision_criteria ?? null);
+  const [nextActionDate, setNextActionDate] = useState<string | null>(
+    record?.next_action_date ?? null
+  );
+  const [decisionCriteria, setDecisionCriteria] = useState<string | null>(
+    record?.decision_criteria ?? null
+  );
   const [newTag, setNewTag] = useState("");
   const [isDecisionCriteriaOpen, setIsDecisionCriteriaOpen] = useState(false);
 
-  // Sync local state when record changes
+  // Sync local state when record changes (use ?? null to preserve NULL vs empty string distinction)
   React.useEffect(() => {
     if (record) {
-      setNextAction(record.next_action || "");
-      setNextActionDate(record.next_action_date || "");
-      setDecisionCriteria(record.decision_criteria || "");
+      setNextAction(record.next_action ?? null);
+      setNextActionDate(record.next_action_date ?? null);
+      setDecisionCriteria(record.decision_criteria ?? null);
     }
   }, [record]);
 
