@@ -39,7 +39,7 @@
 - [ ] Opportunity removed from list
 - [ ] No errors in UI
 
-### Test 1.3: Delete Organization
+### Test 1.3: Delete Organization (Single)
 1. Go to **Organizations**
 2. Open an organization
 3. Click **Delete**
@@ -48,6 +48,20 @@
 **Expected:**
 - [ ] Organization removed from list
 - [ ] Related contacts still visible (not deleted)
+
+### Test 1.4: Bulk Delete Organizations (FIX E2E-001)
+> **Regression Test:** Verifies `beforeDeleteMany` callback works correctly.
+
+1. Go to **Organizations**
+2. Select checkboxes for 2+ organizations (at least one with contacts)
+3. Click **Delete** in the bulk actions toolbar
+4. Confirm deletion
+
+**Expected:**
+- [ ] All selected organizations removed from list
+- [ ] **No FK constraint error** (previously failed with `violates foreign key constraint`)
+- [ ] Related contacts remain visible (orphaned, not cascade deleted)
+- [ ] Total count decreases by number selected
 
 ---
 

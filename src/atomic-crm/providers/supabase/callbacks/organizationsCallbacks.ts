@@ -27,7 +27,13 @@
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { RaRecord, GetListParams, DataProvider, DeleteParams } from "ra-core";
+import type {
+  RaRecord,
+  GetListParams,
+  DataProvider,
+  DeleteParams,
+  DeleteManyParams,
+} from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 import { createQToIlikeTransformer } from "./commonTransforms";
 import { supabase } from "../supabase";
@@ -150,6 +156,66 @@ async function organizationsBeforeDelete(
 }
 
 /**
+ * Custom beforeDeleteMany: Use archive RPC for cascading soft delete of multiple orgs
+ *
+ * FIX [E2E-001]: Bulk delete from list view was bypassing cascade soft delete.
+ * The `useDeleteMany` hook calls `dataProvider.deleteMany()`, not `delete()` multiple times.
+ * Without this callback, bulk delete attempts a hard DELETE that violates FK constraints.
+ *
+ * This iterates through each organization ID and calls the archive RPC for atomic
+ * cascade soft delete. Each call is independent - if one fails, others already
+ * processed remain archived (acceptable for bulk operations).
+ *
+ * @param params - DeleteManyParams with `ids` array
+ * @param _dataProvider - DataProvider (unused - we call RPC directly)
+ * @returns Modified params with skipDelete flag to prevent actual deleteMany
+ */
+async function organizationsBeforeDeleteMany(
+  params: DeleteManyParams,
+  _dataProvider: DataProvider
+): Promise<DeleteManyParams & { meta?: { skipDelete?: boolean } }> {
+  // Archive each organization via RPC (atomic cascade soft delete per org)
+  for (const id of params.ids) {
+    const numericId = Number(id);
+    if (!Number.isInteger(numericId) || numericId <= 0) {
+      throw new Error(`Invalid organization ID: ${id}`);
+    }
+
+    // Collect file paths before archiving (same pattern as single delete)
+    const filePaths = await collectOrganizationFilePaths(numericId);
+
+    const { error: rpcError } = await supabase.rpc("archive_organization_with_relations", {
+      org_id: numericId,
+    });
+
+    if (rpcError) {
+      throw new Error(`Archive organization ${id} failed: ${rpcError.message}`);
+    }
+
+    // Fire-and-forget storage cleanup (same pattern as single delete)
+    if (filePaths.length > 0) {
+      void deleteStorageFiles(filePaths).catch((err: unknown) => {
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        logger.warn(`Storage cleanup failed after bulk organization archive`, {
+          organizationId: id,
+          fileCount: filePaths.length,
+          files: filePaths.slice(0, 5),
+          error: errorMessage,
+          operation: "organizationsBeforeDeleteMany",
+          note: "Archive succeeded - orphaned files can be cleaned up later",
+        });
+      });
+    }
+  }
+
+  // Skip actual deleteMany - RPC already archived all records
+  return {
+    ...params,
+    meta: { ...params.meta, skipDelete: true },
+  };
+}
+
+/**
  * Base callbacks from factory (computed fields, transforms)
  * We DON'T use soft delete from factory because we need custom RPC cascade delete
  */
@@ -205,7 +271,8 @@ async function organizationsBeforeGetList(
  */
 export const organizationsCallbacks: ResourceCallbacks = {
   ...baseCallbacks,
-  beforeDelete: organizationsBeforeDelete, // FIX [WF-C02]: Cascade via RPC
+  beforeDelete: organizationsBeforeDelete, // FIX [WF-C02]: Cascade via RPC (single)
+  beforeDeleteMany: organizationsBeforeDeleteMany, // FIX [E2E-001]: Cascade via RPC (bulk)
   beforeGetList: organizationsBeforeGetList,
 };
 
