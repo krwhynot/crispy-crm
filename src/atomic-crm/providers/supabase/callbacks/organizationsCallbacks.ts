@@ -32,6 +32,7 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
 import { createQToIlikeTransformer } from "./commonTransforms";
 import { supabase } from "../supabase";
 import { collectOrganizationFilePaths, deleteStorageFiles } from "../utils/storageCleanup";
+import { logger } from "@/lib/logger";
 
 /**
  * Computed fields that should be stripped before saving to database

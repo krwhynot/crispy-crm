@@ -755,23 +755,61 @@
         const relatedCard = document.getElementById("related-card");
 
         if (type === "tradeshow") {
-          contextInfo.innerHTML = `
-                    <div style="margin-bottom: 12px;">
-                        <strong>Event:</strong> NRA Show 2025<br>
-                        <strong>Location:</strong> Booth #1247<br>
-                        <strong>User:</strong> Sarah Johnson
-                    </div>
-                    <div class="stat-grid">
-                        <div class="stat">
-                            <div class="value">47</div>
-                            <div class="label">Today</div>
-                        </div>
-                        <div class="stat">
-                            <div class="value">132</div>
-                            <div class="label">Total</div>
-                        </div>
-                    </div>
-                `;
+          // Clear existing content
+          contextInfo.replaceChildren();
+
+          // Create info div
+          const infoDiv = document.createElement('div');
+          infoDiv.style.marginBottom = '12px';
+
+          const eventLabel = document.createElement('strong');
+          eventLabel.textContent = 'Event:';
+          infoDiv.appendChild(eventLabel);
+          infoDiv.appendChild(document.createTextNode(' NRA Show 2025'));
+          infoDiv.appendChild(document.createElement('br'));
+
+          const locationLabel = document.createElement('strong');
+          locationLabel.textContent = 'Location:';
+          infoDiv.appendChild(locationLabel);
+          infoDiv.appendChild(document.createTextNode(' Booth #1247'));
+          infoDiv.appendChild(document.createElement('br'));
+
+          const userLabel = document.createElement('strong');
+          userLabel.textContent = 'User:';
+          infoDiv.appendChild(userLabel);
+          infoDiv.appendChild(document.createTextNode(' Sarah Johnson'));
+
+          contextInfo.appendChild(infoDiv);
+
+          // Create stat grid
+          const statGrid = document.createElement('div');
+          statGrid.className = 'stat-grid';
+
+          const todayStat = document.createElement('div');
+          todayStat.className = 'stat';
+          const todayValue = document.createElement('div');
+          todayValue.className = 'value';
+          todayValue.textContent = '47';
+          const todayLabel = document.createElement('div');
+          todayLabel.className = 'label';
+          todayLabel.textContent = 'Today';
+          todayStat.appendChild(todayValue);
+          todayStat.appendChild(todayLabel);
+
+          const totalStat = document.createElement('div');
+          totalStat.className = 'stat';
+          const totalValue = document.createElement('div');
+          totalValue.className = 'value';
+          totalValue.textContent = '132';
+          const totalLabel = document.createElement('div');
+          totalLabel.className = 'label';
+          totalLabel.textContent = 'Total';
+          totalStat.appendChild(totalValue);
+          totalStat.appendChild(totalLabel);
+
+          statGrid.appendChild(todayStat);
+          statGrid.appendChild(totalStat);
+          contextInfo.appendChild(statGrid);
           tipsContent.innerHTML = `
                     <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: var(--text-muted);">
                         <li>Use badge scanner for quick contact entry</li>

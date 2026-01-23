@@ -110,7 +110,7 @@ describe("FilterChipBar", () => {
 
       // Should not render the toolbar when no filters
       expect(screen.queryByRole("toolbar")).not.toBeInTheDocument();
-      expect(container.innerHTML).toBe("");
+      expect(container).toBeEmptyDOMElement();
     });
 
     test("renders chip bar when filters are active", () => {

@@ -1,42 +1,9 @@
 {
-  "lastAudit": "2026-01-19T17:48:00Z",
+  "lastAudit": "2026-01-23T00:00:00Z",
   "findings": {
     "critical": [],
     "high": [],
-    "medium": [
-      {
-        "id": "STALE-001",
-        "check": "refresh-instead-of-invalidate",
-        "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
-        "line": 34,
-        "description": "ArchiveButton uses global refresh() instead of targeted query invalidation",
-        "status": "new"
-      },
-      {
-        "id": "STALE-002",
-        "check": "refresh-instead-of-invalidate",
-        "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
-        "line": 76,
-        "description": "UnarchiveButton uses global refresh() instead of targeted query invalidation",
-        "status": "new"
-      },
-      {
-        "id": "STALE-003",
-        "check": "missing-invalidate",
-        "file": "src/atomic-crm/sales/SalesCreate.tsx",
-        "line": 56,
-        "description": "SalesCreate missing cache invalidation after user creation",
-        "status": "new"
-      },
-      {
-        "id": "STALE-004",
-        "check": "missing-invalidate",
-        "file": "src/atomic-crm/settings/hooks/useSalesUpdate.ts",
-        "line": 50,
-        "description": "useSalesUpdate missing centralized cache invalidation",
-        "status": "new"
-      }
-    ],
+    "medium": [],
     "low": [
       {
         "id": "INFO-001",
@@ -51,19 +18,50 @@
   "totals": {
     "critical": 0,
     "high": 0,
-    "medium": 4,
+    "medium": 0,
     "low": 1
   },
   "healthScore": {
-    "cacheInvalidation": 90,
+    "cacheInvalidation": 100,
     "optimisticUpdates": 95,
     "staleClosurePrevention": 100,
     "refetchOnWindowFocus": 85,
-    "overall": 92
+    "overall": 95
   },
   "filesScanned": {
-    "useMutation": 9,
-    "optimisticUpdates": 14,
+    "totalTsxFiles": 466,
+    "totalLines": 46685,
+    "useMutation": 79,
+    "optimisticUpdates": 0,
     "useEffect": 0
-  }
+  },
+  "fixesSinceLastAudit": [
+    {
+      "id": "STALE-001",
+      "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
+      "line": 34,
+      "description": "ArchiveButton now uses queryClient.invalidateQueries instead of refresh()",
+      "fixedDate": "2026-01-23"
+    },
+    {
+      "id": "STALE-002",
+      "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
+      "line": 81,
+      "description": "UnarchiveButton now uses queryClient.invalidateQueries instead of refresh()",
+      "fixedDate": "2026-01-23"
+    },
+    {
+      "id": "STALE-003",
+      "file": "src/atomic-crm/sales/SalesCreate.tsx",
+      "line": 59,
+      "description": "SalesCreate now properly invalidates cache after user creation",
+      "fixedDate": "2026-01-23"
+    },
+    {
+      "id": "STALE-004",
+      "file": "src/atomic-crm/settings/hooks/useSalesUpdate.ts",
+      "description": "File removed or refactored - no longer exists",
+      "fixedDate": "2026-01-23"
+    }
+  ]
 }
