@@ -3,7 +3,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { CircleX, Edit, Save, Trash2 } from "lucide-react";
 import { Form, useDelete, useNotify, useResourceContext, useUpdate, WithRecord } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -13,6 +13,14 @@ import { RelativeDate } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import type { ContactNote, OpportunityNote, OrganizationNote } from "../types";
 import { NoteInputs } from "./NoteInputs";
+import {
+  contactKeys,
+  opportunityKeys,
+  organizationKeys,
+  contactNoteKeys,
+  opportunityNoteKeys,
+  organizationNoteKeys,
+} from "../queryKeys";
 
 export const Note = ({
   note,
@@ -28,6 +36,40 @@ export const Note = ({
 
   const [update, { isPending }] = useUpdate();
 
+  /**
+   * Targeted cache invalidation - only invalidates the specific parent entity
+   * that contains this note, rather than ALL entities of all types.
+   *
+   * This prevents unnecessary refetches across the entire app when a single note changes.
+   */
+  const invalidateParentCache = useCallback(() => {
+    switch (resource) {
+      case "contactNotes": {
+        const contactNote = note as ContactNote;
+        // Invalidate this specific contact's detail and notes
+        queryClient.invalidateQueries({ queryKey: contactKeys.detail(contactNote.contact_id) });
+        queryClient.invalidateQueries({ queryKey: contactNoteKeys.all });
+        break;
+      }
+      case "opportunityNotes": {
+        const oppNote = note as OpportunityNote;
+        // Invalidate this specific opportunity's detail and notes
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(oppNote.opportunity_id) });
+        queryClient.invalidateQueries({ queryKey: opportunityNoteKeys.all });
+        break;
+      }
+      case "organizationNotes": {
+        const orgNote = note as OrganizationNote;
+        // Invalidate this specific organization's detail and notes
+        queryClient.invalidateQueries({
+          queryKey: organizationKeys.detail(orgNote.organization_id),
+        });
+        queryClient.invalidateQueries({ queryKey: organizationNoteKeys.all });
+        break;
+      }
+    }
+  }, [resource, note, queryClient]);
+
   const [deleteNote] = useDelete(
     resource,
     { id: note.id, previousData: note },
@@ -35,10 +77,8 @@ export const Note = ({
       mutationMode: "undoable",
       onSuccess: () => {
         notify("Note deleted", { type: "info", undoable: true });
-        // Invalidate parent resources to refresh note counts
-        queryClient.invalidateQueries({ queryKey: ["contacts"] });
-        queryClient.invalidateQueries({ queryKey: ["opportunities"] });
-        queryClient.invalidateQueries({ queryKey: ["organizations"] });
+        // Targeted invalidation - only invalidates the specific parent entity
+        invalidateParentCache();
       },
     }
   );
@@ -64,10 +104,8 @@ export const Note = ({
         onSuccess: () => {
           setEditing(false);
           setHover(false);
-          // Invalidate parent resources to refresh note counts
-          queryClient.invalidateQueries({ queryKey: ["contacts"] });
-          queryClient.invalidateQueries({ queryKey: ["opportunities"] });
-          queryClient.invalidateQueries({ queryKey: ["organizations"] });
+          // Targeted invalidation - only invalidates the specific parent entity
+          invalidateParentCache();
         },
       }
     );

@@ -18,7 +18,7 @@
  */
 
 import type { ZodError, ZodIssue } from "zod";
-import { getFriendlyErrorMessage } from "@/atomic-crm/validation/utils";
+import { getFriendlyErrorMessage, type ZodIssueBase } from "@/atomic-crm/validation/utils";
 
 /**
  * Transform a Zod error into a flat record of field paths to error messages.
@@ -33,7 +33,8 @@ export function zodErrorToFormErrors(error: ZodError): Record<string, string> {
   error.issues.forEach((issue: ZodIssue) => {
     const path = issue.path.join(".");
     if (!errors[path]) {
-      errors[path] = getFriendlyErrorMessage(issue as any);
+      // ZodIssue is structurally compatible with ZodIssueBase
+      errors[path] = getFriendlyErrorMessage(issue as ZodIssueBase);
     }
   });
 
