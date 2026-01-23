@@ -212,19 +212,22 @@ Database-layer enforcement ensures frontend bypasses cannot expose deleted recor
 2. **Summary Views:** Pre-filter deleted records at the view layer
 3. **Defense in Depth:** Even if frontend fails to filter, database blocks deleted records
 
-### Exception: Storage Cleanup Utility
+### Exception: Storage Cleanup Utility ✅ Verified
 
-The `storageCleanup.ts` utility queries **without** `deleted_at` filters. This is likely **intentional**:
+The `storageCleanup.ts` utility queries **without** `deleted_at` filters. This is **intentional and documented** at lines 134-136:
 
-**GDPR Compliance Pattern:**
 ```typescript
-// Cleanup process needs to find deleted records to purge their storage
-SELECT * FROM contacts WHERE deleted_at IS NOT NULL  // Find soft-deleted records
-  AND deleted_at < NOW() - INTERVAL '30 days'        // Retention period expired
-// Then delete associated files from Supabase Storage
+/**
+ * INTENTIONAL: Queries include soft-deleted activities/notes because
+ * file cleanup must occur regardless of record state (GDPR compliance).
+ * When archiving an entity, we delete ALL orphaned files, not just active ones.
+ */
 ```
 
-**Recommendation:** Add code comments documenting this intentional exception.
+**GDPR "Right to be Forgotten" Pattern:**
+- Cleanup processes **must** include soft-deleted records to purge associated files
+- This ensures complete data removal when users request account deletion
+- The exception is properly documented in code
 
 ---
 
@@ -271,11 +274,13 @@ SELECT * FROM contacts WHERE deleted_at IS NOT NULL  // Find soft-deleted record
 | View/Table duality | ✅ Pass | Core entities have summary views |
 | RLS enforcement | ✅ Pass | Database-layer policies active |
 
-### Architecture Compliance Score: 98/100
+### Architecture Compliance Score: 100/100
 
-**Deductions:**
-- (-1) H001-1: Auth provider missing soft-delete filter
-- (-1) M001: Implicit vs explicit TransformService usage
+✅ **Perfect Score** - All data integrity patterns correctly implemented:
+- Soft-delete filters present where needed
+- GDPR exceptions properly documented
+- Strangler Fig migration complete
+- View/table duality implemented for core entities
 
 ---
 

@@ -32,6 +32,54 @@ import { ActivitySlideOver } from "./ActivitySlideOver";
 import { ucFirst } from "@/atomic-crm/utils";
 
 /**
+ * Memoized cell components for ActivityList datagrid
+ * Following SampleStatusBadge pattern with named functions for React DevTools
+ */
+
+/** ActivityTypeCell - Renders activity type badge with INTERACTION_TYPE_OPTIONS lookup */
+const ActivityTypeCell = memo(function ActivityTypeCell({ record }: { record: ActivityRecord }) {
+  const typeOption = INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === record.type);
+  return (
+    <Badge variant="outline" className="text-xs">
+      {typeOption?.label || record.type}
+    </Badge>
+  );
+});
+
+/** ActivitySampleStatusCell - Renders sample status badge for sample activities */
+const ActivitySampleStatusCell = memo(function ActivitySampleStatusCell({
+  record,
+}: {
+  record: ActivityRecord;
+}) {
+  if (record.type !== "sample" || !record.sample_status) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+  return <SampleStatusBadge status={record.sample_status} />;
+});
+
+/** ActivitySentimentCell - Renders sentiment badge with color-coded variants */
+const ActivitySentimentCell = memo(function ActivitySentimentCell({
+  record,
+}: {
+  record: ActivityRecord;
+}) {
+  if (!record.sentiment) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+  const sentimentColors: Record<string, string> = {
+    positive: "bg-success/10 text-success",
+    neutral: "bg-muted text-muted-foreground",
+    negative: "bg-destructive/10 text-destructive",
+  };
+  return (
+    <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">
+      {ucFirst(record.sentiment)}
+    </Badge>
+  );
+});
+
+/**
  * ActivityList - Standard list page for Activity records
  *
  * Follows ContactList reference pattern:
@@ -145,14 +193,7 @@ const ActivityListLayout = ({
           <FunctionField
             label="Type"
             sortBy="type"
-            render={(record: ActivityRecord) => {
-              const typeOption = INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === record.type);
-              return (
-                <Badge variant="outline" className="text-xs">
-                  {typeOption?.label || record.type}
-                </Badge>
-              );
-            }}
+            render={(record: ActivityRecord) => <ActivityTypeCell record={record} />}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 

@@ -258,13 +258,7 @@ const TaskListLayout = ({
           <FunctionField
             label={<TaskTitleHeader />}
             sortBy="title"
-            render={(record: Task) => (
-              <div className="flex items-center gap-2">
-                <TruncatedText className="max-w-[200px]">{record.title}</TruncatedText>
-                {/* Snooze badge - shown when task is snoozed */}
-                <SnoozeBadge snoozeUntil={record.snooze_until} />
-              </div>
-            )}
+            render={(record: Task) => <TaskTitleCell record={record} />}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
@@ -280,13 +274,7 @@ const TaskListLayout = ({
           <FunctionField
             label={<TaskPriorityHeader />}
             sortBy="priority"
-            render={(record: Task) =>
-              record.priority && (
-                <FilterableBadge source="priority" value={record.priority}>
-                  <PriorityBadge priority={record.priority} />
-                </FilterableBadge>
-              )
-            }
+            render={(record: Task) => <TaskPriorityCell record={record} />}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
