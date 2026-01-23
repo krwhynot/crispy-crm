@@ -94,6 +94,22 @@ Real Supabase connections with proper cleanup for testing RLS policies, auth flo
 
 **When to use**: Testing RLS policies, auth flows, data validation with real database
 
+### ⚠️ CRITICAL: RLS Policy Security Findings
+
+**Status**: As of 2025-11-16, RLS policies DO NOT match CLAUDE.md requirements
+
+**Root Cause**: Migration `20251111121526_add_role_based_permissions.sql` created permissive UPDATE policies with `USING (true)` that override earlier admin-only policies. PostgreSQL RLS combines multiple policies with OR logic - if ANY policy allows access, the operation succeeds.
+
+**Current Impact**:
+- ❌ **Contacts**: Non-admin users CAN update (should be admin-only)
+- ❌ **Organizations**: Non-admin users CAN update (should be admin-only)
+- ❌ **Opportunities**: Non-admin users CAN update (should be admin-only)
+- ❌ **Tasks**: SELECT shows all tasks (should only show user's own tasks)
+
+**Required Action**: Drop permissive policies from migration `20251111121526` or update CLAUDE.md if new behavior is intentional.
+
+See `tests/integration/RLS-TEST-FINDINGS.md` for full analysis and remediation SQL.
+
 ### Test Harness Structure
 
 ```typescript
