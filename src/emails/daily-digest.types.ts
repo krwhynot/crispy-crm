@@ -137,11 +137,11 @@ export const STAGE_COLORS: Record<string, { bg: string; text: string; label: str
 
 /** Stale thresholds by stage (days without activity) */
 export const STALE_THRESHOLDS: Record<string, number> = {
-  new_lead: 3,
-  initial_outreach: 5,
-  sample_visit_offered: 7,
-  feedback_logged: 5,
-  demo_scheduled: 3,
+  [STAGE.NEW_LEAD]: 3,
+  [STAGE.INITIAL_OUTREACH]: 5,
+  [STAGE.SAMPLE_VISIT_OFFERED]: 7,
+  [STAGE.FEEDBACK_LOGGED]: 5,
+  [STAGE.DEMO_SCHEDULED]: 3,
 };
 
 /** MFB brand colors for email templates */

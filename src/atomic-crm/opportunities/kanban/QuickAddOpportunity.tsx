@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { useCreate, useRefresh, useGetIdentity, useGetList, useNotify, useDataProvider } from "react-admin";
+import {
+  useCreate,
+  useRefresh,
+  useGetIdentity,
+  useGetList,
+  useNotify,
+  useDataProvider,
+} from "react-admin";
 import { X } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
@@ -25,6 +32,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
     customerId?: string;
   }>({});
   const [create, { isLoading }] = useCreate();
+  const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
   const { identity } = useGetIdentity();
@@ -156,7 +164,36 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
         onOpportunityCreated(newOpportunity);
       }
 
-      notify("Opportunity created! Add details via the card menu.", { type: "success" });
+      // FIX [WF-H2-001]: Log activity when opportunity is created via QuickAdd
+      // Fire-and-forget pattern: don't block main flow if activity creation fails
+      let activityLogFailed = false;
+      try {
+        await dataProvider.create("activities", {
+          data: {
+            activity_type: "interaction", // Required when opportunity_id is set
+            type: "note",
+            subject: "Opportunity created",
+            description: `Created via Quick Add in stage: ${stageLabel}. Principal: ${principalOrgName}, Customer: ${customerOrgName}.`,
+            activity_date: new Date().toISOString(),
+            opportunity_id: result.id,
+            organization_id: Number(customerId), // Customer org satisfies "at least one entity" rule
+          },
+        });
+      } catch (activityError) {
+        // WF-H2-001: Log error but continue - activity is secondary to opportunity creation
+        console.error("[QuickAdd] Failed to create activity log:", activityError);
+        activityLogFailed = true;
+      }
+
+      // Single notification for cleaner UX - different message based on activity success
+      if (activityLogFailed) {
+        notify("Opportunity created, but activity log failed. Please add a note manually.", {
+          type: "warning",
+          autoHideDuration: 8000,
+        });
+      } else {
+        notify("Opportunity created! Add details via the card menu.", { type: "success" });
+      }
       setIsOpen(false);
       setName("");
       setPrincipalId("");

@@ -252,7 +252,7 @@ export default function OverviewTab() {
 
     // Stale Leads - uses STAGE_STALE_THRESHOLDS.new_lead (7 days) per PRD Section 6.3
     const staleLeads = opps.filter((opp) => {
-      const isLead = opp.stage === "Lead" || opp.stage === STAGE.NEW_LEAD;
+      const isLead = opp.stage === STAGE.NEW_LEAD;
       if (!isLead) return false;
       return isOpportunityStale(opp.stage, opp.last_activity_at ?? null, now);
     }).length;

@@ -7,6 +7,7 @@
 
 import type { DailyDigestData, OverdueTask, AtRiskDeal, TodayTask } from "./daily-digest.types";
 import { STAGE_COLORS, STALE_THRESHOLDS, ROW_COLORS } from "./daily-digest.types";
+import { STAGE } from "@/atomic-crm/opportunities/constants";
 
 // Import the template at build time (Vite handles this)
 import templateHtml from "./daily-digest.template.html?raw";
@@ -285,7 +286,7 @@ export function createSampleDigestData(): DailyDigestData {
         opportunity_name: "McCRUM Fries Launch",
         principal_name: "McCRUM",
         customer_name: "Portillo's Hot Dogs",
-        stage: "sample_visit_offered",
+        stage: STAGE.SAMPLE_VISIT_OFFERED,
         stage_label: "Sample",
         stage_bg_color: "#FEF3E2",
         stage_text_color: "#B8640A",
@@ -298,7 +299,7 @@ export function createSampleDigestData(): DailyDigestData {
         opportunity_name: "Rapid Rasoi Expansion",
         principal_name: "Rapid Rasoi",
         customer_name: "The Chopping Block",
-        stage: "demo_scheduled",
+        stage: STAGE.DEMO_SCHEDULED,
         stage_label: "Demo",
         stage_bg_color: "#DBEAFE",
         stage_text_color: "#1D4ED8",
