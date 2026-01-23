@@ -3,6 +3,7 @@ import { useDataProvider, useNotify } from "ra-core";
 import { sanitizeCsvValue } from "../utils/csvUploadValidator";
 import { formatName } from "../utils/formatName";
 import { devLog, devWarn } from "@/lib/devLogger";
+import { logger } from "@/lib/logger";
 import type { RawCSVRow, MappedCSVRow } from "./types";
 
 interface MapperState {
@@ -218,7 +219,14 @@ export function useOrganizationImportMapper(): MapperState {
           Array.from(salesLookupCache.current.entries())
         );
       } catch (error: unknown) {
-        devWarn("OrgImport", "Unexpected error resolving account managers:", error);
+        // EH-001 FIX: Proper error logging with Sentry integration
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logger.error("Unexpected error resolving account managers", error, {
+          operation: "resolveAccountManagers",
+          feature: "organization-import",
+        });
+        notify(`Failed to resolve account managers: ${errorMessage}`, { type: "error" });
+        throw error; // Fail-fast: surface error to caller
       }
     },
     [dataProvider, notify]
@@ -330,7 +338,14 @@ export function useOrganizationImportMapper(): MapperState {
           Array.from(segmentsLookupCache.current.entries())
         );
       } catch (error: unknown) {
-        devWarn("OrgImport", "Unexpected error resolving segments:", error);
+        // EH-001 FIX: Proper error logging with Sentry integration
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logger.error("Unexpected error resolving segments", error, {
+          operation: "resolveSegments",
+          feature: "organization-import",
+        });
+        notify(`Failed to resolve segments: ${errorMessage}`, { type: "error" });
+        throw error; // Fail-fast: surface error to caller
       }
     },
     [dataProvider, notify]
