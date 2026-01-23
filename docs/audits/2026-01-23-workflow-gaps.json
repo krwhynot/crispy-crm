@@ -1,0 +1,342 @@
+{
+  "audit": "workflow-gaps",
+  "mode": "full",
+  "timestamp": "2026-01-23T00:00:00Z",
+  "critical": 2,
+  "high": 5,
+  "medium": 8,
+  "low": 4,
+  "findings": [
+    {
+      "id": "CRITICAL-001",
+      "severity": "CRITICAL",
+      "category": "Nullable Required ForeignKeys",
+      "title": "Opportunities Missing Required Customer Organization",
+      "description": "customer_organization_id and principal_organization_id are nullable in opportunities table despite being business-critical required fields (per Salesforce standard + business rule Q12)",
+      "evidence": [
+        "supabase/migrations/20251018152315_cloud_schema_fresh.sql line 1477: 'customer_organization_id' bigint (NO NOT NULL)",
+        "supabase/migrations/20251018152315_cloud_schema_fresh.sql line 1478: 'principal_organization_id' bigint (NO NOT NULL)",
+        "Historical issue: 20251221074508 migration shows NULL principal_organization_id values that had to be backfilled"
+      ],
+      "risk": "Orphaned opportunities can exist with no customer or principal, corrupting pipeline analytics and violating data integrity",
+      "impact": "Dashboard shows invalid data; manual cleanup required; audit trail incomplete",
+      "fix": "Add NOT NULL constraints to customer_organization_id and principal_organization_id (requires backfill of existing NULLs first)"
+    },
+    {
+      "id": "CRITICAL-002",
+      "severity": "CRITICAL",
+      "category": "Incomplete State Transitions - Win/Loss Validation",
+      "title": "Win/Loss Validation Only at App Layer - No Enforcement at DB",
+      "description": "Database lacks CHECK constraints for win/loss requirements, forcing entire validation onto app layer. If app fails to submit reason, DB silently accepts closed_won/closed_lost without reason.",
+      "evidence": [
+        "20260122235000_add_win_loss_check_constraints.sql shows migration WAS created BUT likely not applied - need to verify execution status",
+        "Zod validation in opportunities-operations.ts has .refine() for win_reason/loss_reason",
+        "No CHECK constraint in base schema (20251018152315_cloud_schema_fresh.sql)"
+      ],
+      "risk": "App crashes or network timeout during close operation → DB records opportunity as won/lost with NULL reason → Silent data corruption",
+      "impact": "Reports cannot trust close_reason_notes; win/loss analysis invalid; compliance audit fails",
+      "confidence": "95% (migration exists but status unknown)"
+    },
+    {
+      "id": "HIGH-001",
+      "severity": "HIGH",
+      "category": "Silent Status Defaults",
+      "title": "Opportunity Stage Has Silent Default 'new_lead'",
+      "description": "Opportunities table has DEFAULT 'new_lead' on stage column. Forms might skip explicit stage selection, allowing silent defaults to mask missing user input.",
+      "evidence": [
+        "20251018152315_cloud_schema_fresh.sql line 1476: 'stage' DEFAULT 'new_lead'",
+        "opportunities-operations.ts line 97: stage is REQUIRED (no .optional()), preventing silent defaults in Zod",
+        "But validation only happens if form calls schema.parse() - if bypassed, DB default applies"
+      ],
+      "risk": "Quick-create buttons bypass full validation; opportunities start with wrong stage; pipeline metrics incorrect",
+      "impact": "New leads appear in pipeline; sales reps confused about stage assignments; forecasting wrong",
+      "mitigation": "Zod validation enforces stage requirement in app; still vulnerable if Zod bypassed or API called directly"
+    },
+    {
+      "id": "HIGH-002",
+      "severity": "HIGH",
+      "category": "Missing Activity Logging",
+      "title": "Stage Changes Logged, But No Logging for Close Reason Updates",
+      "description": "20260122000000 trigger logs stage changes as activities, but win_reason/loss_reason updates are NOT logged separately. If user changes close reason after initial close, no audit trail recorded.",
+      "evidence": [
+        "20260122000000_log_opportunity_stage_change_trigger.sql creates activity on stage change only",
+        "win_reason/loss_reason can be updated independently without triggering new activity record",
+        "Activity table has activity_type='interaction' but no specific logging for close reason changes"
+      ],
+      "risk": "User corrects close reason 3 days later to explain real loss; audit trail shows original reason; compliance issue",
+      "impact": "Post-mortem analysis cannot trust close_reason_notes; loss analysis unreliable",
+      "fix": "Create second trigger on win_reason/loss_reason column changes to log separate activity"
+    },
+    {
+      "id": "HIGH-003",
+      "severity": "HIGH",
+      "category": "Hardcoded Pipeline Stages",
+      "title": "Stage Strings Duplicated in Multiple Files - No DRY Enforcement",
+      "description": "Stage constants duplicated in multiple locations: opportunities-core.ts enum, constants.ts STAGE object, useColumnPreferences.ts enum, tests. Future stage additions require manual sync across 4+ files.",
+      "evidence": [
+        "src/atomic-crm/validation/opportunities/opportunities-core.ts lines 10-18: enum definition",
+        "src/atomic-crm/opportunities/constants.ts lines 80-88: STAGE object",
+        "src/atomic-crm/opportunities/useColumnPreferences.ts: inline enum in z.enum()",
+        "Multiple test files duplicate stage arrays"
+      ],
+      "risk": "Add new stage 'qualification' → forget to update useColumnPreferences → feature partially broken → silent bug",
+      "impact": "Stage enhancements stalled; technical debt accumulates; refactoring risky",
+      "mitigation": "Constants.ts imports from validation schema (line 18: import OpportunityStageValue); but duplicated in useColumnPreferences still exists"
+    },
+    {
+      "id": "HIGH-004",
+      "severity": "HIGH",
+      "category": "Incomplete State Transitions",
+      "title": "Contact-Only Updates Can Bypass Close Validation",
+      "description": "opportunities-operations.ts refine() has logic to allow 'stage-only updates' for Kanban drag, but contact-only updates might slip through without triggering close reason validation.",
+      "evidence": [
+        "opportunities-operations.ts lines 340-365: Complex logic to distinguish stage-only vs contacts-only updates",
+        "Line 359-360: 'if (isStageOnlyUpdate && data.stage && !closedStagesArray.includes(data.stage)) { return true; }'",
+        "Heuristic at line 372: 'if (providedFields.length >= 5)' to skip validation - could be manipulated"
+      ],
+      "risk": "Malformed partial update with few fields + stage=closed_won but no win_reason → validation bypassed if heuristic fails",
+      "impact": "Closed deals missing reasons; compliance gap; analytics unreliable",
+      "confidence": "75% (requires specific payload structure to trigger; usually prevented by app)"
+    },
+    {
+      "id": "HIGH-005",
+      "severity": "HIGH",
+      "category": "Required Field Fallbacks",
+      "title": "Contact IDs Uses Empty Array Default - Silent Loss of Data",
+      "description": "contact_ids defaults to empty array [] in schema, masking incomplete forms. If user creates opportunity without selecting contacts, form silently saves with [].",
+      "evidence": [
+        "opportunities-core.ts line 156: contact_ids has .optional().default([])",
+        "opportunities-operations.ts lines 217, 322: createOpportunitySchema has .optional() on contact_ids",
+        "updateOpportunitySchema line 322 has NO .default() (intentionally omitted for partial updates)",
+        "Validation only enforces >=1 contact if contact_ids is explicitly provided"
+      ],
+      "risk": "Quick-create button → user forgets to add contacts → opportunity saved with [] → user discovers later that no contacts exist",
+      "impact": "Follow-up tasks have no contact info; activity cannot be logged; pipeline stalled",
+      "note": "By design - quick creates intentionally allow empty contacts to be enriched later via slide-over"
+    },
+    {
+      "id": "MEDIUM-001",
+      "severity": "MEDIUM",
+      "category": "Silent Status Defaults",
+      "title": "Priority Defaults to 'medium' - Could Hide Low-Priority Leads",
+      "description": "Priority column has DEFAULT 'medium' in DB. If form doesn't enforce priority selection, low-priority leads might be created as medium by default.",
+      "evidence": [
+        "20251018152315_cloud_schema_fresh.sql line 1480: 'priority' DEFAULT 'medium'",
+        "opportunities-core.ts line 144: priority is opportunityPrioritySchema (required in create)",
+        "Quick create schema line 294: priority is opportunityPrioritySchema (required)"
+      ],
+      "risk": "Low severity - but quick creates REQUIRE priority so default never applies in practice",
+      "impact": "Minimal - validation layer prevents silent default"
+    },
+    {
+      "id": "MEDIUM-002",
+      "severity": "MEDIUM",
+      "category": "Silent Status Defaults",
+      "title": "Opportunity Status Defaults to 'active' Without Explicit Business Logic",
+      "description": "Status column has DEFAULT 'active' but status field is not shown in OpportunityInputs.tsx. Status is set by quick create schema (line 292: z.literal('active')). If direct API calls bypass this, wrong status could be applied.",
+      "evidence": [
+        "20251018152315_cloud_schema_fresh.sql line 1479: 'status' DEFAULT 'active'",
+        "createOpportunitySchema line 243: status: z.literal('active').optional() - OPTIONAL not REQUIRED",
+        "quickCreateOpportunitySchema line 292: status: z.literal('active') - REQUIRED"
+      ],
+      "risk": "API bypass scenario: POST /opportunities without status field → DB applies 'active' → should have been 'on_hold'",
+      "impact": "Status fields out of sync; reporting incorrect"
+    },
+    {
+      "id": "MEDIUM-003",
+      "severity": "MEDIUM",
+      "category": "Nullable Required ForeignKeys",
+      "title": "Opportunity Owner (opportunity_owner_id) is Nullable",
+      "description": "opportunity_owner_id is nullable but represents the sales rep responsible for the deal. Missing owner causes reporting and RLS filtering issues.",
+      "evidence": [
+        "opportunities-core.ts line 216: opportunity_owner_id is optional.nullable()",
+        "Quick create schema line 297: opportunity_owner_id is optional.nullable()",
+        "No NOT NULL constraint in migrations; no trigger to auto-populate from auth.user"
+      ],
+      "risk": "Opportunity created without assignment → no one owns it → falls through cracks; reporting shows 'orphaned deals'",
+      "impact": "Sales rep confusion about responsibilities; pipeline metrics wrong; RLS filtering fails if owner is NULL"
+    },
+    {
+      "id": "MEDIUM-004",
+      "severity": "MEDIUM",
+      "category": "Missing Validation",
+      "title": "Loss Reasons Only Validated for closed_lost - No Validation for active Opportunities",
+      "description": "loss_reason field can be set on any opportunity at any stage, not just closed_lost. App doesn't prevent setting loss_reason on active opportunities (confusing signal).",
+      "evidence": [
+        "opportunities-core.ts line 197: loss_reason is optional.nullable() on ANY stage",
+        "opportunities-operations.ts lines 398-410: Only validates loss_reason when stage IS closed_lost",
+        "UI doesn't prevent setting loss_reason on non-closed stages"
+      ],
+      "risk": "User accidentally sets loss_reason on active opportunity → confusion about real status; later changes to won without updating reason",
+      "impact": "Data quality issue; end-user confusion; compliance gap"
+    },
+    {
+      "id": "MEDIUM-005",
+      "severity": "MEDIUM",
+      "category": "Incomplete State Transitions",
+      "title": "No Validation That Related Opportunity Has Same Principal",
+      "description": "related_opportunity_id field allows linking opportunities but doesn't validate that both opportunities share the same principal. Could link unrelated deals.",
+      "evidence": [
+        "opportunities-core.ts line 165: related_opportunity_id is optional.nullable() with NO validation",
+        "DB has no CHECK constraint; UI does not validate",
+        "No business logic prevents circular references (opp1 → opp2 → opp1)"
+      ],
+      "risk": "User links unrelated deals → pipeline analytics confused; campaign tracking unreliable",
+      "impact": "Data integrity issue; reporting inaccurate"
+    },
+    {
+      "id": "MEDIUM-006",
+      "severity": "MEDIUM",
+      "category": "Incomplete State Transitions",
+      "title": "Account Manager Can Be Changed Without Approval Workflow",
+      "description": "account_manager_id can be changed on any opportunity at any time without notification or approval. No audit trail for manager changes.",
+      "evidence": [
+        "opportunities-core.ts line 151: account_manager_id is optional.nullable()",
+        "No trigger to log account_manager_id changes to activities",
+        "20260122000000 trigger only logs stage changes, not manager changes"
+      ],
+      "risk": "Manager accidentally reassigned; original manager unaware; deal falls through cracks; compliance gap",
+      "impact": "Operational confusion; accountability unclear; audit trail incomplete"
+    },
+    {
+      "id": "MEDIUM-007",
+      "severity": "MEDIUM",
+      "category": "Missing Validation",
+      "title": "Close Reason Notes Not Required When Reason is 'other'",
+      "description": "Zod validation enforces close_reason_notes when reason='other', but DB has no CHECK constraint. App bypass → reason='other' without notes → silent data corruption.",
+      "evidence": [
+        "opportunities-operations.ts lines 411-423: .refine() enforces close_reason_notes if reason='other'",
+        "20260122235000 has NO CHECK constraint for 'other' + NULL notes scenario",
+        "DB has no enforcement layer"
+      ],
+      "risk": "User selects 'other' but forgets notes → app shows error → user closes modal → data not saved OR bypass attempts to force save → NULL notes recorded",
+      "impact": "Close reason incomplete; compliance audit fails; follow-up analysis impossible"
+    },
+    {
+      "id": "MEDIUM-008",
+      "severity": "MEDIUM",
+      "category": "Hardcoded Pipeline Stages",
+      "title": "STAGE Constants Not Used Consistently - Literal Strings in Tests",
+      "description": "Tests use literal stage strings instead of STAGE constants. If stage names change, tests could silently fail to catch breaking changes.",
+      "evidence": [
+        "src/atomic-crm/opportunities/__tests__/opportunityUtils.test.ts: uses literal 'closed_won', 'closed_lost'",
+        "src/atomic-crm/opportunities/__tests__/useColumnPreferences.test.ts: uses literal strings in arrays",
+        "Constants.ts defines STAGE object but tests don't import it"
+      ],
+      "risk": "Rename STAGE.CLOSED_WON → STAGE.WON → tests still check 'closed_won' → tests pass but code broken",
+      "impact": "Silent test failures; refactoring risky; technical debt"
+    },
+    {
+      "id": "LOW-001",
+      "severity": "LOW",
+      "category": "Silent Status Defaults",
+      "title": "Estimated Close Date Defaults to +90 Days in DB But Forms Default to +30 Days",
+      "description": "DB DEFAULT CURRENT_DATE + 90 days but app schema defaults to +30 days (line 133-137 in opportunities-core.ts). Mismatch could cause confusion if form skipped.",
+      "evidence": [
+        "20251018152315_cloud_schema_fresh.sql line 1480: DEFAULT (CURRENT_DATE + '90 days'::interval)",
+        "opportunities-core.ts lines 133-137: .default(() => { date.setDate(date.getDate() + 30) })",
+        "Mismatch: 90 days vs 30 days"
+      ],
+      "risk": "Low - forms always provide explicit date; DB default only applies if form bypassed",
+      "impact": "If direct DB insert without form, date would be 90 days instead of 30; minor discrepancy"
+    },
+    {
+      "id": "LOW-002",
+      "severity": "LOW",
+      "category": "Required Field Fallbacks",
+      "title": "Notes Array Uses Empty JSONB Default - Could Hide Null Notes",
+      "description": "organization_notes has DEFAULT '[]'::jsonb. If note creation fails silently, empty array hides fact that no notes exist.",
+      "evidence": [
+        "20251124225546_add_organization_notes.sql line 24: 'attachments' DEFAULT '[]'::jsonb",
+        "Different from opportunities.notes which is TEXT nullable"
+      ],
+      "risk": "Low - array defaults are intentional for schema completeness; app validates before save",
+      "impact": "Minimal - tests would catch missing notes"
+    },
+    {
+      "id": "LOW-003",
+      "severity": "LOW",
+      "category": "Incomplete State Transitions",
+      "title": "stage_manual Flag Has No Validation Logic",
+      "description": "stage_manual and status_manual columns exist but are not validated or enforced. Manual flag could be set without actual manual intervention.",
+      "evidence": [
+        "opportunities-core.ts line 211: stage_manual is optional.nullable()",
+        "20251018152315_cloud_schema_fresh.sql line 1488: 'stage_manual' DEFAULT false",
+        "No trigger or validation enforces this flag"
+      ],
+      "risk": "Low - flag is informational; misuse would only affect dashboard display",
+      "impact": "Reporting could show wrong 'manual override' indicator; low impact on operations"
+    },
+    {
+      "id": "LOW-004",
+      "severity": "LOW",
+      "category": "Missing Validation",
+      "title": "Campaign Field Has No Validation Against Real Campaign List",
+      "description": "campaign field (line 159 opportunities-core.ts) is free-text max 100 chars. No enum validation; users could typo campaign name; no deduplication.",
+      "evidence": [
+        "opportunities-core.ts line 159: campaign is z.string().trim().max(100, ...).optional().nullable()",
+        "No reference to campaigns table or constants",
+        "UI likely has autocomplete but form doesn't enforce it"
+      ],
+      "risk": "Low - free-text campaigns are intentional for flexibility; typos would be caught in reporting",
+      "impact": "Campaign analytics might be slightly off due to typos (e.g., 'Grand Rapids' vs 'grand_rapids')"
+    }
+  ],
+  "db_findings": {
+    "orphaned_opportunities": "LIKELY - customer_organization_id and principal_organization_id are nullable; historical migration (20251221074508) shows NULLs were present and had to be backfilled",
+    "invalid_stages": "0 (Zod validation prevents invalid stages; DB enums restrict to valid values)",
+    "unlinked_contacts": "0 (contact_ids defaults to empty array intentionally; not unlinked, just not yet assigned)"
+  },
+  "summary": "Crispy CRM has STRONG validation at the app layer (Zod schemas, .refine() rules) but CRITICAL gaps in database-level enforcement. Two urgent issues: (1) Customer/principal organization IDs should be NOT NULL (currently nullable despite being required business fields), (2) Win/loss validation should have CHECK constraints in DB (currently app-only, vulnerable to crashes). Missing activity logging for close reason updates means audit trail incomplete. Stage constants duplicated across 4+ files creates refactoring risk. Contact-only updates have complex heuristics that could allow close validation bypass. Overall data integrity is GOOD for happy-path scenarios but VULNERABLE to edge cases, API bypasses, and direct DB manipulation. Defense-in-depth is partially implemented but DB layer needs hardening.",
+  "confidence": "92%",
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "action": "Add NOT NULL constraints to opportunities.customer_organization_id and opportunities.principal_organization_id. First backfill any remaining NULLs, then add constraints.",
+      "effort": "2-3 hours",
+      "impact": "Eliminates orphaned opportunities; fixes pipeline integrity"
+    },
+    {
+      "priority": "CRITICAL",
+      "action": "Verify that 20260122235000_add_win_loss_check_constraints.sql migration was applied. If not applied, run it. If already applied, verify constraints exist: SELECT constraint_name FROM information_schema.constraint_column_usage WHERE table_name='opportunities' AND constraint_name LIKE 'opportunities_closed%'",
+      "effort": "15 minutes",
+      "impact": "Adds database-level defense for win/loss validation"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Create second trigger on win_reason/loss_reason column changes to log activity record when close reason is updated (separate from stage change logging)",
+      "effort": "1-2 hours",
+      "impact": "Completes audit trail for close reason updates"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Consolidate stage constant definitions: export from opportunities-core.ts only; update useColumnPreferences.ts to import from constants.ts instead of inline enum",
+      "effort": "1 hour",
+      "impact": "Reduces refactoring risk; ensures stage changes propagate everywhere"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Add CHECK constraint to opportunities table: CHECK (loss_reason IS NULL OR stage='closed_lost') to prevent loss_reason on non-closed stages",
+      "effort": "30 minutes",
+      "impact": "Improves data quality; prevents user confusion"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Add validation that related_opportunity_id references opportunity with same principal_organization_id; add CHECK constraint to prevent circular references",
+      "effort": "2 hours",
+      "impact": "Improves campaign tracking accuracy"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Create trigger to log activity when account_manager_id changes on opportunity (similar to stage_changed_at tracking)",
+      "effort": "1.5 hours",
+      "impact": "Improves accountability; complete audit trail"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Add CHECK constraint: CHECK (win_reason != 'other' OR (close_reason_notes IS NOT NULL AND length(trim(close_reason_notes)) > 0))",
+      "effort": "30 minutes",
+      "impact": "Prevents incomplete close reasons"
+    }
+  ]
+}
