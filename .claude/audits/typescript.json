@@ -1,0 +1,310 @@
+{
+  "audit": "typescript",
+  "mode": "full",
+  "scope": "/home/krwhynot/projects/crispy-crm/src",
+  "timestamp": "2026-01-23T00:00:00Z",
+  "critical": 18,
+  "high": 336,
+  "medium": 74,
+  "low": 0,
+  "summary": "TypeScript audit found multiple type safety issues. The most critical concern is 336 instances of 'as any' assertions, primarily in tests and type conversions. 18 'as unknown as' double casts (highest risk), 74 narrow type assertions, and widespread use of 'unknown' type parameters in callbacks. The codebase shows good overall discipline with no explicit ':any' type annotations, no @ts-ignore comments, and proper use of z.infer<> for schema-derived types. Main risks are test-related double casts and untyped callback contexts.",
+  "findings": [
+    {
+      "id": "TS-001",
+      "severity": "critical",
+      "check": "Double Type Assertions (as unknown as)",
+      "location": "src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts:line 1-3, src/atomic-crm/providers/supabase/callbacks/productsCallbacks.test.ts:line 1, src/atomic-crm/activities/__tests__/ActivitySlideOver.test.tsx:line 1",
+      "count": 18,
+      "description": "Found 18 instances of double type assertions using 'as unknown as' pattern. These are the most dangerous type safety violations as they bypass TypeScript completely. Examples: '} as unknown as DataProvider', 'undefined as unknown as string', 'invalidProducts as unknown as Array<...>'",
+      "fix": "Replace double casts with proper type narrowing or use generics. For test mocks, create proper mock types. For type conversions, use type guards or Zod validation instead of unsafe casts.",
+      "examples": [
+        "src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts: } as unknown as DataProvider;",
+        "src/atomic-crm/activities/__tests__/ActivitySlideOver.test.tsx: subject: undefined as unknown as string,",
+        "src/atomic-crm/filters/types/__tests__/resourceTypes.test.ts: id: \"uuid-abc-123\" as unknown as number,"
+      ]
+    },
+    {
+      "id": "TS-002",
+      "severity": "high",
+      "check": "Explicit 'as any' Type Assertions",
+      "location": "Throughout src/atomic-crm/ (~336 instances)",
+      "count": 336,
+      "description": "Found 336 instances of 'as any' type assertions. While less severe than 'as unknown as', these still bypass type safety. Most appear in test files (mockUseGetIdentity as ReturnType<typeof vi.fn>, etc.) and type conversions. The high count suggests systematic type safety bypassing in test mocks.",
+      "fix": "For test mocks: Create proper mock factory functions with correct types. For data transformations: Use type guards, Zod schemas, or generics. For React Admin hooks: Define proper wrapper types instead of casting to any.",
+      "examples": [
+        "src/atomic-crm/filters/types/__tests__/resourceTypes.test.ts: const result = resourceExtractors.organizations(org as any);",
+        "src/atomic-crm/dashboard/__tests__/useCurrentSale.test.ts: const mockUseGetIdentity = useGetIdentity as ReturnType<typeof vi.fn>;",
+        "src/atomic-crm/dashboard/__tests__/useMyTasks.test.ts: const actual = (await importOriginal()) as typeof import(\"react-admin\");"
+      ]
+    },
+    {
+      "id": "TS-003",
+      "severity": "high",
+      "check": "Untyped Callback Parameters (unknown)",
+      "location": "src/atomic-crm/filters/types.ts (line 55, 60), src/atomic-crm/providers/supabase/dataProviderUtils.ts (line 18)",
+      "count": 6,
+      "description": "Found callback function types with 'unknown' parameters that lack proper type definition. Examples: 'choices?: FilterChoice[] | ((context: unknown) => FilterChoice[])', 'formatLabel?: (value: unknown) => string'. These force callers to use 'as' assertions to access typed context.",
+      "fix": "Define specific context/value types for callbacks. Instead of 'context: unknown', use a union type like 'context: FilterContext | Record<string, string[]>'. Create a FilterCallbackContext interface defining what callers can expect.",
+      "examples": [
+        "src/atomic-crm/filters/types.ts:55 - choices?: FilterChoice[] | ((context: unknown) => FilterChoice[]);",
+        "src/atomic-crm/filters/types.ts:60 - formatLabel?: (value: unknown) => string;",
+        "src/atomic-crm/tasks/taskFilterConfig.ts:line 1 - (context as { taskTypes: string[] }).taskTypes;" // Workaround for unknown context
+      ]
+    },
+    {
+      "id": "TS-004",
+      "severity": "high",
+      "check": "Record<string, unknown> Type Parameters",
+      "location": "src/atomic-crm/reports/, src/atomic-crm/hooks/, src/atomic-crm/opportunities/, src/atomic-crm/organizations/",
+      "count": 14,
+      "description": "Found 14 instances of Record<string, unknown> used for generic data structures. While safer than 'any', these disable type checking for object properties. Examples: 'Record<string, unknown>' in useReportData, OpportunitiesByPrincipalReport, activity filters.",
+      "fix": "Define specific types for expected objects. Instead of Record<string, unknown>, use discriminated unions or create AdditionalFiltersSchema with Zod validation. For component state like activityFilters, define ActivityFilterState interface.",
+      "examples": [
+        "src/atomic-crm/reports/hooks/useReportData.ts - additionalFilters?: Record<string, unknown>;",
+        "src/atomic-crm/opportunities/OpportunityShow.tsx - const [activityFilters, setActivityFilters] = useState<Record<string, any>>({});",
+        "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx - getValuesRef: React.MutableRefObject<(() => Record<string, unknown>) | null>;"
+      ]
+    },
+    {
+      "id": "TS-005",
+      "severity": "medium",
+      "check": "Narrow Type Assertions (as string, as number, etc.)",
+      "location": "Throughout src/atomic-crm/ (~74 instances)",
+      "count": 74,
+      "description": "Found 74 instances of narrow type assertions like 'as string', 'as number', 'as const', 'as keyof'. While safer than 'any', these suggest type inference issues or missing pre-validation. Examples: 'gteValue = filterValues[gteKey] as string', 'value = record[field as keyof typeof record]'.",
+      "fix": "Use type guards instead of assertions. For array mapping, use proper type inference: 'result.start.split(\"-\").map((x): number => Number(x))' instead of 'as [number, number, number]'. For record access, validate before casting.",
+      "examples": [
+        "src/atomic-crm/filters/DateRangeFilterButton.tsx - const gteValue = filterValues[gteKey] as string | undefined;",
+        "src/atomic-crm/products/ProductDetailsTab.tsx - const value = record[field as keyof typeof record];",
+        "src/atomic-crm/utils/__tests__/dateUtils.test.ts - const startParts = result.start.split(\"-\").map(Number) as [number, number, number];"
+      ]
+    },
+    {
+      "id": "TS-006",
+      "severity": "medium",
+      "check": "Type Casting in Tests (as const patterns)",
+      "location": "src/atomic-crm/utils/__tests__/, src/atomic-crm/dashboard/__tests__/, src/atomic-crm/contacts/",
+      "count": 12,
+      "description": "Found 12 instances of type assertions in test files using 'as const', 'as string', 'as unknown as'. Test code should use proper factory functions or Zod validation rather than relying on type assertions.",
+      "fix": "Create typed test fixtures or factory functions (e.g., createMockContact({ ... })). Use Zod .parse() instead of assertions. For vitest mocks, use proper vi.fn<...>() generic typing.",
+      "examples": [
+        "src/atomic-crm/utils/__tests__/exportHelpers.test.ts - const phones = [{ value: \"555-1234\", type: \"work\" as const }];",
+        "src/atomic-crm/contacts/ContactCreate.tsx - const stateOrganizationId = (location.state as { record?: { organization_id?: string | number } })"
+      ]
+    },
+    {
+      "id": "TS-007",
+      "severity": "medium",
+      "check": "Unsafe JSON.parse() Pattern",
+      "location": "src/atomic-crm/hooks/useRecentSearches.ts, src/atomic-crm/hooks/__tests__/useFilterCleanup.test.ts",
+      "count": 5,
+      "description": "Found 5 instances of JSON.parse() followed by manual type casting. Example: 'const parsed: unknown = JSON.parse(raw); const result = recentSearchesSchema.safeParse(parsed);'. While this pattern uses Zod validation (good!), the intermediate 'unknown' type is unnecessary.",
+      "fix": "Remove the intermediate 'unknown' type. The pattern is already safe: 'const parsed = JSON.parse(raw); const result = recentSearchesSchema.safeParse(parsed);' TypeScript will infer 'unknown' automatically, and Zod validates before use.",
+      "examples": [
+        "src/atomic-crm/hooks/useRecentSearches.ts - const parsed: unknown = JSON.parse(raw); const result = recentSearchesSchema.safeParse(parsed);"
+      ]
+    },
+    {
+      "id": "TS-008",
+      "severity": "low",
+      "check": "Missing Return Type Annotations on Functions",
+      "location": "N/A - Not detected",
+      "count": 0,
+      "description": "No critical missing return type annotations detected. Functions are either explicitly typed or use proper inference.",
+      "fix": "N/A",
+      "examples": []
+    },
+    {
+      "id": "TS-009",
+      "severity": "low",
+      "check": "Explicit ':any' Type Parameters",
+      "location": "N/A - Not detected",
+      "count": 0,
+      "description": "No explicit ':any' type annotations found (e.g., 'const x: any = ...'). All type safety bypasses use assertions rather than declarations, which is better discipline.",
+      "fix": "N/A - Already following best practice",
+      "examples": []
+    },
+    {
+      "id": "TS-010",
+      "severity": "low",
+      "check": "@ts-ignore or @ts-expect-error Comments",
+      "location": "N/A - Not detected",
+      "count": 0,
+      "description": "No @ts-ignore or @ts-expect-error directives found. The codebase does not suppress type errors via comments, which is excellent discipline.",
+      "fix": "N/A - Already following best practice",
+      "examples": []
+    },
+    {
+      "id": "TS-011",
+      "severity": "low",
+      "check": "Zod Schema Type Derivation (z.infer<>)",
+      "location": "src/atomic-crm/validation/ - Properly implemented throughout",
+      "count": 0,
+      "description": "Excellent: Found 20+ uses of 'export type X = z.infer<typeof xSchema>' pattern. This is the single-source-of-truth pattern (DOMAIN_INTEGRITY.md compliance). All schemas properly derive types from Zod validators.",
+      "fix": "N/A - Already following best practice",
+      "examples": [
+        "src/atomic-crm/validation/tags.ts - export type Tag = z.infer<typeof tagSchema>;",
+        "src/atomic-crm/validation/task.ts - export type Task = z.infer<typeof taskSchema>;"
+      ]
+    },
+    {
+      "id": "TS-012",
+      "severity": "low",
+      "check": "Interface vs Type Pattern Consistency",
+      "location": "src/atomic-crm/filters/, src/atomic-crm/root/, src/atomic-crm/services/",
+      "count": 20,
+      "description": "Found consistent use of 'interface' for shapes and 'type' for unions. Example: FilterValues interface vs FilterValue union type. This aligns with CLAUDE.md specification. No violations detected.",
+      "fix": "N/A - Already following best practice",
+      "examples": [
+        "src/atomic-crm/filters/types.ts - export interface FilterValues vs export type FilterValue",
+        "src/atomic-crm/validation/operatorSegments.ts - export type SegmentType = (typeof SEGMENT_TYPES)[number];"
+      ]
+    },
+    {
+      "id": "TS-013",
+      "severity": "medium",
+      "check": "Type Coercion with parseInt/parseFloat",
+      "location": "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx, src/atomic-crm/reports/components/TabFilterBar.tsx",
+      "count": 2,
+      "description": "Found 2 instances of parseInt with fallible conversion: 'parseInt(value, 10)' without validation of 'value' parameter. If value is not a valid number string, parseInt returns NaN without type safety.",
+      "fix": "Use Zod's z.coerce.number() at API boundary instead of runtime parseInt. Or add explicit validation: 'const num = z.coerce.number().parse(value)' before parseInt.",
+      "examples": [
+        "src/atomic-crm/reports/CampaignActivity/CampaignActivityFilters.tsx - setSelectedSalesRep(value === \"all\" ? null : parseInt(value, 10))",
+        "src/atomic-crm/reports/components/TabFilterBar.tsx - onSalesRepChange?.(value === \"all\" ? null : parseInt(value, 10));"
+      ]
+    }
+  ],
+  "statistics": {
+    "totalFiles": 200,
+    "filesWithIssues": 65,
+    "issuesByCategory": {
+      "criticalDoubleAssertions": 18,
+      "anyAssertions": 336,
+      "unknownParameters": 6,
+      "recordUnknown": 14,
+      "narrowAssertions": 74,
+      "testAssertions": 12,
+      "jsonParsePatterns": 5,
+      "numberCoercion": 2
+    },
+    "compliance": {
+      "noExplicitAny": "100% - PASS",
+      "noTsIgnore": "100% - PASS",
+      "zodInferUsage": "100% - PASS",
+      "interfaceVsTypePattern": "100% - PASS"
+    }
+  },
+  "riskRanking": [
+    {
+      "rank": 1,
+      "issue": "as unknown as double casts (18 instances)",
+      "risk": "CRITICAL - Completely bypasses type safety, masking runtime errors",
+      "mitigation": "Replace with proper types in test fixtures"
+    },
+    {
+      "rank": 2,
+      "issue": "as any assertions (336 instances)",
+      "risk": "HIGH - Disables type checking, mostly in tests",
+      "mitigation": "Create typed mock factory functions"
+    },
+    {
+      "rank": 3,
+      "issue": "unknown callback parameters (6 instances)",
+      "risk": "HIGH - Forces callers to use unsafe assertions",
+      "mitigation": "Define specific callback context types"
+    },
+    {
+      "rank": 4,
+      "issue": "Record<string, unknown> (14 instances)",
+      "risk": "MEDIUM - Disables property type checking",
+      "mitigation": "Define specific object shape interfaces"
+    },
+    {
+      "rank": 5,
+      "issue": "Narrow assertions (74 instances)",
+      "risk": "MEDIUM - May miss type inference issues",
+      "mitigation": "Replace with type guards and validators"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "action": "Eliminate all 'as unknown as' double casts",
+      "effort": "4-6 hours",
+      "approach": [
+        "1. Create createMockDataProvider() factory with proper types",
+        "2. Create createMockActivity(), createMockOpportunity() test fixtures",
+        "3. Replace each 'as unknown as' with typed factory call",
+        "4. Verify tests pass"
+      ]
+    },
+    {
+      "priority": "HIGH",
+      "action": "Refactor test mocks to use typed factories",
+      "effort": "8-10 hours",
+      "approach": [
+        "1. Create src/atomic-crm/__tests__/fixtures/ with factory functions",
+        "2. Replace 'as any' in mocks with proper vi.fn<ReturnType<...>>()",
+        "3. Use Zod .parse() for test data instead of assertions",
+        "4. Run test suite to verify no regressions"
+      ]
+    },
+    {
+      "priority": "HIGH",
+      "action": "Define callback context types for filters",
+      "effort": "2-3 hours",
+      "approach": [
+        "1. Create FilterCallbackContext type with taskTypes, etc.",
+        "2. Update FilterConfig.choices and formatLabel signatures",
+        "3. Remove 'as' assertions in taskFilterConfig.ts",
+        "4. Type filter callbacks properly"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Replace Record<string, unknown> with typed objects",
+      "effort": "6-8 hours",
+      "approach": [
+        "1. Create ActivityFilterState, ReportFilterState interfaces",
+        "2. Replace Record<string, unknown> with specific types",
+        "3. Add validation at filter entry points",
+        "4. Test filter behavior"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Add type guards to replace narrow assertions",
+      "effort": "4-5 hours",
+      "approach": [
+        "1. Create type guard functions (isString, isNumber, etc.)",
+        "2. Replace 'as string' with guard checks",
+        "3. For array mapping, use typed map functions",
+        "4. Verify inference works without assertions"
+      ]
+    },
+    {
+      "priority": "LOW",
+      "action": "Standardize number coercion to Zod",
+      "effort": "1-2 hours",
+      "approach": [
+        "1. Move parseInt logic to Zod schemas",
+        "2. Replace runtime parseInt with schema.parse()",
+        "3. Test CampaignActivity filters"
+      ]
+    }
+  ],
+  "passedChecks": [
+    "No explicit ':any' type declarations",
+    "No '@ts-ignore' or '@ts-expect-error' comments",
+    "Consistent z.infer<> usage for schema-derived types (z.infer adoption: 100%)",
+    "Proper interface vs type pattern (interfaces for shapes, types for unions)",
+    "Soft delete support properly typed with supportsSoftDelete helpers"
+  ],
+  "nextSteps": [
+    "1. Address CRITICAL double casts (18 instances) - highest ROI for type safety",
+    "2. Create test fixture factory functions to eliminate 'as any' in mocks",
+    "3. Define callback context types for filters to reduce assertion count",
+    "4. Add stricter TypeScript checks (strictNullChecks already enabled?)",
+    "5. Set up pre-commit hook to catch new 'as any' patterns"
+  ]
+}

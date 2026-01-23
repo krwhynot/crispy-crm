@@ -1,0 +1,273 @@
+{
+  "audit": "stale-state",
+  "mode": "full",
+  "timestamp": "2026-01-23",
+  "scope": "/home/krwhynot/projects/crispy-crm",
+  "critical": 3,
+  "high": 8,
+  "medium": 12,
+  "findings": [
+    {
+      "id": "SS-001",
+      "severity": "CRITICAL",
+      "title": "Missing invalidateQueries in CreateBase (ProductCreate, TagCreate, ActivityCreate)",
+      "description": "Multiple Create forms lack explicit query invalidation on success. These components use CreateBase without mutationOptions, relying on default React Admin behavior which may not invalidate related caches.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCreate.tsx",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/tags/TagCreate.tsx",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/activities/ActivityCreate.tsx"
+      ],
+      "pattern": "CreateBase without mutationOptions",
+      "evidence": "Products, Tags, and Activities created successfully but list views may show stale data until page refresh or window focus.",
+      "impact": "Users see stale lists after creation. Related aggregate counts (nb_products, nb_tags, etc.) don't update automatically.",
+      "recommendation": "Add mutationOptions with invalidateQueries to CreateBase in ProductCreate, TagCreate, ActivityCreate. Use CreateFormFooter with query invalidation.",
+      "effort": "30 minutes",
+      "confidence": "95%"
+    },
+    {
+      "id": "SS-002",
+      "severity": "CRITICAL",
+      "title": "Missing onError rollback in AddTask.handleSuccess optimistic update",
+      "description": "AddTask performs manual dataProvider.getOne() and update() calls in handleSuccess without rollback on error. If contact update fails, the UI shows success but database transaction partially completed.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/tasks/AddTask.tsx"],
+      "pattern": "Optimistic update without rollback in onSuccess callback (lines 53-80)",
+      "evidence": "Code catches error and notifies user but doesn't rollback task creation. Task exists without updated contact.last_seen.",
+      "impact": "Data consistency issue: task created but contact.last_seen not updated. Contact appears stale.",
+      "recommendation": "Wrap update() in try/catch with explicit rollback via queryClient.setQueryData() if contact update fails. Or defer both operations to mutation handler.",
+      "effort": "20 minutes",
+      "confidence": "90%"
+    },
+    {
+      "id": "SS-003",
+      "severity": "CRITICAL",
+      "title": "Missing refetchOnWindowFocus in ProductsDatagridHeader (5min staleTime without refresh on tab return)",
+      "description": "ProductsDatagridHeader uses staleTime: 5*60*1000 (5 minutes) without refetchOnWindowFocus. If user switches tabs for 6+ minutes and returns, data will be stale but won't auto-refresh.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductsDatagridHeader.tsx"
+      ],
+      "pattern": "useGetList with staleTime but NO refetchOnWindowFocus",
+      "evidence": "Component defines staleTime: 5 * 60 * 1000 without refetchOnWindowFocus: true (line ~100+)",
+      "impact": "Users viewing product data after returning from another tab see data older than 5 minutes without realizing it.",
+      "recommendation": "Add refetchOnWindowFocus: true to all list views with staleTime. Global default set in CRM.tsx (30s staleTime + refetchOnWindowFocus: true) but not consistently applied.",
+      "effort": "10 minutes",
+      "confidence": "85%"
+    },
+    {
+      "id": "SS-004",
+      "severity": "HIGH",
+      "title": "Overly broad cache invalidation (ContactEdit invalidates activities + opportunities)",
+      "description": "ContactEdit invalidates contactKeys.all, activityKeys.all, AND opportunityKeys.all. This is correct for contacts but may be overkill—only contact_activities and contact_opportunities should invalidate.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactEdit.tsx"],
+      "pattern": "Multiple unrelated invalidateQueries calls (lines 27-29)",
+      "evidence": "queryClient.invalidateQueries({ queryKey: contactKeys.all }); queryClient.invalidateQueries({ queryKey: activityKeys.all }); queryClient.invalidateQueries({ queryKey: opportunityKeys.all });",
+      "impact": "Unnecessary cache flush. If user edits a contact, ALL activities and ALL opportunities get refetched (not just those related to the contact). Can cause performance issues at scale.",
+      "recommendation": "Refine to invalidate only specific queries: activityKeys.list({ contact_id }), opportunityKeys.list({ contact_id: ... }).",
+      "effort": "30 minutes",
+      "confidence": "75%"
+    },
+    {
+      "id": "SS-005",
+      "severity": "HIGH",
+      "title": "NoteCreate uses refetch() from useListContext without querying relationshiptype",
+      "description": "NoteCreate calls refetch() to refresh notes list after successful creation. Works for inline notes but doesn't explicitly invalidate parent entity caches (contact/opportunity/organization) that may display note counts.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/notes/NoteCreate.tsx"],
+      "pattern": "refetch() call on line 96 without queryClient invalidation of parent entity",
+      "evidence": "handleSuccess updates contact.last_seen but relies on refetch() to update notes list. Parent entity (contact_summary, organization_summary) may have stale nb_notes.",
+      "impact": "Note counts in parent entity details may not update after creation. User adds note, count doesn't increment.",
+      "recommendation": "Add invalidateQueries for contactKeys.all / opportunityKeys.all / organizationKeys.all depending on reference type.",
+      "effort": "15 minutes",
+      "confidence": "80%"
+    },
+    {
+      "id": "SS-006",
+      "severity": "HIGH",
+      "title": "OrganizationEdit invalidates contactKeys.all + opportunityKeys.all (overly broad)",
+      "description": "Similar to ContactEdit—invalidating ALL contacts and opportunities when editing an organization is too broad. Only contact_organizations and opportunity_organizations relationships matter.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationEdit.tsx"
+      ],
+      "pattern": "queryClient.invalidateQueries({ queryKey: contactKeys.all }); ... opportunityKeys.all",
+      "evidence": "Lines 23-25 invalidate entire contact and opportunity caches.",
+      "impact": "Every contact and opportunity list refetches when a single organization is updated (e.g., name change). Performance hit.",
+      "recommendation": "Scope to: contactKeys.list({ organization_id }), opportunityKeys.list({ principal_organization_id | customer_organization_id | distributor_organization_id }).",
+      "effort": "30 minutes",
+      "confidence": "80%"
+    },
+    {
+      "id": "SS-007",
+      "severity": "HIGH",
+      "title": "CreateFormFooter has no explicit invalidation strategy",
+      "description": "CreateFormFooter (shared button for Products, Tags, Activities) doesn't invalidate queries on success. It notifies user and redirects but doesn't refresh list caches.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/components/CreateFormFooter.tsx"
+      ],
+      "pattern": "onSuccess callback notifies + redirects but no queryClient.invalidateQueries()",
+      "evidence": "Lines ~30-40: notify() and redirectFn() but no cache invalidation.",
+      "impact": "After creating product/tag/activity via CreateFormFooter, redirected list may show stale data until refetchOnWindowFocus or explicit refresh.",
+      "recommendation": "Add useQueryClient() hook and invalidate appropriate keys in onSuccess (productKeys.all, tagKeys.all, activityKeys.all).",
+      "effort": "20 minutes",
+      "confidence": "85%"
+    },
+    {
+      "id": "SS-008",
+      "severity": "HIGH",
+      "title": "Tasks created with AddTask don't invalidate taskKeys cache",
+      "description": "AddTask component with inline task creation doesn't invalidate taskKeys after successful creation. New task appears on dashboard only via refetchOnWindowFocus.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/tasks/AddTask.tsx"],
+      "pattern": "CreateBase with mutationOptions={{ onSuccess: handleSuccess }} (line 127) but handleSuccess doesn't call queryClient.invalidateQueries(taskKeys.all)",
+      "evidence": "handleSuccess updates contact, calls getOne(), update() but never touches task cache.",
+      "impact": "User creates task, dialog closes, new task doesn't appear in task list until page refresh or 30s stale timer expires.",
+      "recommendation": "Add queryClient.invalidateQueries({ queryKey: taskKeys.all }) to handleSuccess callback.",
+      "effort": "10 minutes",
+      "confidence": "90%"
+    },
+    {
+      "id": "SS-009",
+      "severity": "MEDIUM",
+      "title": "useRelatedRecordCounts doesn't disable during stale window",
+      "description": "useRelatedRecordCounts fetches cascade delete counts with 5s per-query timeout but doesn't check if data is stale before showing counts. Could display outdated counts in delete confirmation dialog.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/hooks/useRelatedRecordCounts.ts"
+      ],
+      "pattern": "Promise.race with timeout; no cache freshness check",
+      "evidence": "Lines 36-40: withTimeout() doesn't validate if underlying query is within acceptable staleness window.",
+      "impact": "Delete confirmation shows counts older than staleTime. User sees 5 related items but only 3 exist now (some deleted by another user).",
+      "recommendation": "Add enabled guard or check if lastFetch > staleTime before displaying counts.",
+      "effort": "20 minutes",
+      "confidence": "65%"
+    },
+    {
+      "id": "SS-010",
+      "severity": "MEDIUM",
+      "title": "UnifiedTimeline has different staleTime (5min) than global default (30s)",
+      "description": "UnifiedTimeline defines staleTime: 5 * 60 * 1000 (5 minutes) with refetchOnWindowFocus: true, but global CRM default is 30 seconds. Timeline data feels stale when switching tabs.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/timeline/UnifiedTimeline.tsx"],
+      "pattern": "staleTime: 5 * 60 * 1000 (line ~147) vs global 30s",
+      "evidence": "Inconsistent cache strategy: timeline reuses 5min cache, all other views use 30s.",
+      "impact": "User views contact timeline, switches tabs for 2 mins, returns—timeline won't refetch (within 5min window). Misses recent activities.",
+      "recommendation": "Align to global staleTime (30s) or document why timeline needs 5min window (e.g., heavy calculation).",
+      "effort": "10 minutes",
+      "confidence": "70%"
+    },
+    {
+      "id": "SS-011",
+      "severity": "MEDIUM",
+      "title": "Dashboard hooks (useMyTasks, usePrincipalOpportunities) use 5min staleTime + refetchOnWindowFocus",
+      "description": "Dashboard performance hooks have staleTime: 5*60*1000 (5 minutes). This is reasonable for dashboard, but if user leaves dashboard for 6 mins and returns, data is stale without user awareness.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/useMyTasks.ts",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/usePrincipalOpportunities.ts",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/useTaskCount.ts"
+      ],
+      "pattern": "staleTime: 5 * 60 * 1000 with refetchOnWindowFocus: true",
+      "evidence": "Lines ~50-55 in each dashboard hook file",
+      "impact": "Dashboard metrics are eventually consistent within 5min window. If user opens dashboard, leaves, returns after 6 mins—data is stale. Low-impact since dashboard is not critical path.",
+      "recommendation": "Document the 5min SLA for dashboard. Consider reducing to 2min if stakeholders complain about freshness.",
+      "effort": "10 minutes",
+      "confidence": "60%"
+    },
+    {
+      "id": "SS-012",
+      "severity": "MEDIUM",
+      "title": "ContactEdit calls refresh() on error but doesn't rollback invalidateQueries",
+      "description": "ContactEdit's onError callback calls refresh() to reset form, but invalidateQueries() was already called on success. If mutation fails after invalidation, cache is cleared with no data to roll back to.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactEdit.tsx"],
+      "pattern": "onError: (err) => { ... refresh(); } without resetting invalidateQueries",
+      "evidence": "Lines 32-37: refreshes form but cache was already invalidated in onSuccess",
+      "impact": "On error, user sees 'Refreshing' spinner but the refreshed data is whatever the network returns—may be stale or missing.",
+      "recommendation": "Use mutationMode='optimistic' with proper onError rollback, or defer invalidateQueries to onSuccess only (not before).",
+      "effort": "30 minutes",
+      "confidence": "70%"
+    },
+    {
+      "id": "SS-013",
+      "severity": "MEDIUM",
+      "title": "Missing staleTime configuration in some custom hooks (useTeamMembers, useOrganizationDescendants)",
+      "description": "Custom hooks like useTeamMembers and useOrganizationDescendants don't define staleTime or refetchOnWindowFocus, relying on global default. May lead to unexpected stale data if global changes.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/hooks/useTeamMembers.ts",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/hooks/useOrganizationDescendants.ts"
+      ],
+      "pattern": "useGetList without explicit queryOptions parameter",
+      "evidence": "Hooks don't define staleTime or refetchOnWindowFocus explicitly",
+      "impact": "If global default changes (or inconsistency between hooks), some data may be unexpectedly stale.",
+      "recommendation": "Explicitly define staleTime and refetchOnWindowFocus in all custom hooks for clarity and maintainability.",
+      "effort": "30 minutes",
+      "confidence": "60%"
+    },
+    {
+      "id": "SS-014",
+      "severity": "MEDIUM",
+      "title": "DigestPreferences uses mutate() without explicit error rollback",
+      "description": "DigestPreferences settings page calls dataProvider.customMethods.updateDigestPreference() and handles onError, but doesn't implement optimistic rollback if setting fails.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/settings/DigestPreferences.tsx"],
+      "pattern": "useMutation with onSuccess/onError but no optimistic update or rollback",
+      "evidence": "Lines ~70-85: notifies user on error but doesn't restore previous preference state",
+      "impact": "If user toggles digest preference and mutation fails, UI shows new value but server has old value. User thinks preference changed when it didn't.",
+      "recommendation": "Add optimistic update with setQueryData and rollback in onError callback.",
+      "effort": "20 minutes",
+      "confidence": "75%"
+    },
+    {
+      "id": "SS-015",
+      "severity": "MEDIUM",
+      "title": "useRecentSelections writes to localStorage without versioning",
+      "description": "useRecentSelections caches recent selections in localStorage but doesn't version the schema. If Zod schema changes, old data won't validate and silently resets.",
+      "files": ["/home/krwhynot/projects/crispy-crm/src/atomic-crm/hooks/useRecentSelections.ts"],
+      "pattern": "localStorage schema without version key",
+      "evidence": "Lines 18-23: recentItemsSchema.max(5) but no version field to handle migrations",
+      "impact": "After code update, user's recent selections disappear. Low-impact UX issue.",
+      "recommendation": "Add version field to schema and implement migration logic (e.g., v: 1).",
+      "effort": "15 minutes",
+      "confidence": "65%"
+    }
+  ],
+  "summary": {
+    "overall_confidence": "80%",
+    "audit_coverage": "Full codebase scanned for refetch, invalidation, staleTime, refetchOnWindowFocus patterns",
+    "highest_risk": "SS-001, SS-002, SS-003",
+    "quick_wins": "Add refetchOnWindowFocus: true to ProductsDatagridHeader; add invalidateQueries to ProductCreate/TagCreate/ActivityCreate",
+    "major_patterns_found": [
+      "Global staleTime: 30s + refetchOnWindowFocus: true in CRM.tsx (GOOD baseline)",
+      "Edit forms have proper invalidateQueries callbacks (ContactEdit, OpportunityEdit, TaskEdit)",
+      "Create forms missing explicit invalidation (ProductCreate, TagCreate, ActivityCreate)",
+      "Dashboard hooks intentionally use 5min staleTime for performance (documented)",
+      "Custom notes creation uses refetch() but may miss parent entity invalidation",
+      "Overly broad invalidation in ContactEdit/OrganizationEdit (all activities/contacts)"
+    ],
+    "tech_stack": "React Admin + TanStack Query v5 + Supabase",
+    "validation_approach": "Manual code analysis + pattern matching for cache invalidation, refetch guards, staleTime/refetchOnWindowFocus consistency"
+  },
+  "recommendations_by_priority": [
+    {
+      "priority": 1,
+      "action": "Add mutationOptions with invalidateQueries to ProductCreate, TagCreate, ActivityCreate (SS-001)",
+      "effort": "30 minutes",
+      "impact": "Eliminates stale list views after creation"
+    },
+    {
+      "priority": 2,
+      "action": "Implement rollback mechanism in AddTask.handleSuccess for contact update failure (SS-002)",
+      "effort": "20 minutes",
+      "impact": "Prevents partial data updates"
+    },
+    {
+      "priority": 3,
+      "action": "Add refetchOnWindowFocus: true to ProductsDatagridHeader query options (SS-003)",
+      "effort": "10 minutes",
+      "impact": "Auto-refreshes data when user tabs back after 5+ minutes"
+    },
+    {
+      "priority": 4,
+      "action": "Refine cache invalidation scope: ContactEdit and OrganizationEdit should use filtered queries (SS-004, SS-006)",
+      "effort": "60 minutes",
+      "impact": "Improves performance by avoiding unnecessary cache flushes"
+    },
+    {
+      "priority": 5,
+      "action": "Standardize staleTime and refetchOnWindowFocus across all custom hooks (SS-010, SS-013)",
+      "effort": "45 minutes",
+      "impact": "Predictable cache behavior across app"
+    }
+  ]
+}
