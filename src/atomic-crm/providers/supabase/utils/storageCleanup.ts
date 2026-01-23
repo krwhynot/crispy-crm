@@ -180,7 +180,16 @@ export async function collectContactFilePaths(contactId: number): Promise<string
       }
     }
   } catch (error: unknown) {
-    console.warn("[StorageCleanup] Error collecting contact files:", error);
+    // INTENTIONAL SILENT: File collection failure should not block archive operation.
+    // Orphaned files are acceptable technical debt - cleaned up via scheduled job.
+    // Structured logging for debugging without blocking the caller.
+    console.warn("[StorageCleanup] Error collecting contact files", {
+      contactId,
+      collectedSoFar: paths.length,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      note: "Partial collection may have succeeded - returning collected paths",
+    });
   }
 
   return paths;

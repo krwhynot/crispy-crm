@@ -491,7 +491,7 @@ export const QuickAddDialog = ({ open, onOpenChange }: Props) => (
 ```
 
 ```tsx
-// src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx
+// src/atomic-crm/opportunities/QuickAddForm.tsx
 export const QuickAddForm = ({ onSuccess }: Props) => {
   const { mutate, isPending } = useQuickAdd();
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -580,7 +580,7 @@ export const QuickAddForm = ({ onSuccess }: Props) => {
   - Conditional hint text with `aria-live="polite"` for phone/email requirement
 - **Dependent field clearing:** `useEffect` clears phone validation error when either phone or email is populated
 
-**See also:** `quick-add/QuickAddForm.tsx` for the complete implementation with all accessibility patterns.
+**See also:** `QuickAddForm.tsx` for the complete implementation with all accessibility patterns.
 
 ---
 
@@ -1060,7 +1060,7 @@ Persisted column collapsed/visible state with Zod validation of localStorage.
 **When to use:** Kanban boards where users customize column visibility and collapsed state.
 
 ```tsx
-// src/atomic-crm/opportunities/hooks/useColumnPreferences.ts
+// src/atomic-crm/opportunities/useColumnPreferences.ts
 import { useState, useEffect } from "react";
 import { z } from "zod";
 import { getStorageItem, setStorageItem } from "../../utils/secureStorage";

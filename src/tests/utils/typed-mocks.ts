@@ -20,6 +20,9 @@ import type {
   UseDeleteResult,
   GetListParams,
   RaRecord,
+  ListControllerResult,
+  SortPayload,
+  FilterPayload,
 } from "ra-core";
 
 /**

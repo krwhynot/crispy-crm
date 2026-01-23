@@ -183,13 +183,24 @@ async function contactsBeforeDelete(
     throw new Error(`Archive contact failed: ${rpcError.message}`);
   }
 
-  // FIX [SF-C10]: Clean up storage files after successful archive
-  // Cleanup is best-effort - log failures but don't block the archive
+  // FIX [SF-C10]: Storage cleanup is intentionally fire-and-forget
+  // INTENTIONAL SILENT: Archive operation already succeeded; storage cleanup failure
+  // should not block user or cause rollback. Orphaned files are acceptable
+  // technical debt that can be cleaned up via scheduled job.
   if (filePaths.length > 0) {
     try {
       await deleteStorageFiles(filePaths);
     } catch (error: unknown) {
-      console.error("[ContactsCallbacks] Storage cleanup failed:", { id: numericId, error });
+      // Structured logging with context for debugging (non-blocking)
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.warn("[ContactsCallbacks] Storage cleanup failed after contact archive", {
+        contactId: numericId,
+        fileCount: filePaths.length,
+        files: filePaths.slice(0, 5), // First 5 for debugging, avoid huge logs
+        error: errorMessage,
+        operation: "contactsBeforeDelete",
+        note: "Archive succeeded - orphaned files can be cleaned up later",
+      });
     }
   }
 
