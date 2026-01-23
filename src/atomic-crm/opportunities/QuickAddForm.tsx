@@ -262,8 +262,9 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const defaultValues = useMemo(
     () => ({
       ...schemaDefaults,
-      campaign:
-        getStorageItem<string>("last_campaign", { type: "local" }) ?? schemaDefaults.campaign ?? "",
+      // Campaign: use localStorage value if non-empty, otherwise let schema handle it
+      // Removed triple-fallback ?? "" that masked missing data (WF-C2-003)
+      campaign: getStorageItem<string>("last_campaign", { type: "local" }) || undefined,
       principal_id:
         Number(getStorageItem<string>("last_principal", { type: "local" }) ?? "") || undefined,
       account_manager_id: identity?.id ? Number(identity.id) : undefined,
@@ -376,7 +377,8 @@ const QuickAddFormContent = ({
           reset({
             principal_id: data.principal_id,
             account_manager_id: data.account_manager_id,
-            campaign: data.campaign || "",
+            // Preserve campaign from previous submission, undefined if empty (WF-C2-003)
+            campaign: data.campaign || undefined,
             product_ids: [],
             organization_id: undefined,
             org_name: "",

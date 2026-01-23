@@ -184,8 +184,8 @@ export const WorkflowManagementSection: React.FC = () => {
             <span>Next Action</span>
           </div>
           <Input
-            value={nextAction}
-            onChange={(e) => setNextAction(e.target.value)}
+            value={nextAction ?? ""}
+            onChange={(e) => setNextAction(e.target.value || null)}
             onBlur={handleNextActionBlur}
             placeholder="What needs to happen next?"
             className="text-sm"
@@ -204,8 +204,8 @@ export const WorkflowManagementSection: React.FC = () => {
             )}
           </div>
           <ControlledDatePicker
-            value={nextActionDate}
-            onChange={(date) => setNextActionDate(date || "")}
+            value={nextActionDate ?? ""}
+            onChange={(date) => setNextActionDate(date || null)}
             onBlur={handleNextActionDateBlur}
             clearable
             className={isNextActionOverdue ? "border-destructive" : ""}

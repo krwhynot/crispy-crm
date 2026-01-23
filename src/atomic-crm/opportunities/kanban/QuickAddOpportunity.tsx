@@ -117,6 +117,11 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
         return;
       }
 
+      // Extract validated names - TypeScript narrowing ensures these are non-empty strings
+      // after the guard clause above (no fallback needed)
+      const customerOrgName = selectedCustomer.name;
+      const principalOrgName = selectedPrincipal.name;
+
       // Create returns the new record - use it for optimistic updates
       // NOTE: returnPromise: true is REQUIRED to get the created record back
       console.log("[QuickAdd] Calling create() with data:", validatedData);
@@ -142,8 +147,9 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
         const newOpportunity: Opportunity = {
           ...result,
           // Add computed fields that the summary view would provide
-          customer_organization_name: selectedCustomer?.name || "",
-          principal_organization_name: selectedPrincipal?.name || "",
+          // Uses validated names from guard clause - no fallback needed
+          customer_organization_name: customerOrgName,
+          principal_organization_name: principalOrgName,
           distributor_organization_name: null,
           days_in_stage: 0,
         } as Opportunity;
