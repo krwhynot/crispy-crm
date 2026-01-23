@@ -1,8 +1,9 @@
-# Manual E2E Test Plan - Crispy CRM
+# Manual E2E Test Plan - Crispy CRM (Localhost)
 
 **Generated:** 2026-01-23
 **Stack:** React 19 + TypeScript + React Admin 5 + Supabase
 **Framework:** Manual E2E Testing with optional Claude Chrome automation
+**Environment:** LOCAL DEVELOPMENT ONLY
 **Confidence:** 92%
 
 ---
@@ -10,6 +11,8 @@
 ## Executive Summary
 
 This document provides comprehensive manual E2E test suites covering all critical audit findings from the 2026-01-23 full codebase audit. Tests are organized by category with clear steps, expected results, and verification commands.
+
+> ⚠️ **LOCALHOST ONLY**: These tests are configured for local development environment. Do NOT run against production.
 
 ### Test Coverage Matrix
 
@@ -30,39 +33,94 @@ This document provides comprehensive manual E2E test suites covering all critica
 
 ## Prerequisites
 
+### Localhost URLs & Ports
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| **App** | http://localhost:5173 | React Admin frontend |
+| **Supabase Studio** | http://localhost:54323 | Database management UI |
+| **Supabase API** | http://localhost:54321 | REST/GraphQL API |
+| **Supabase Auth** | http://localhost:54321/auth/v1 | Authentication endpoints |
+| **Inbucket (Email)** | http://localhost:54324 | Email testing (magic links) |
+| **PostgreSQL** | localhost:54322 | Direct DB connection |
+
 ### Environment Setup
 
 ```bash
-# 1. Start Supabase local instance
+# 1. Ensure you're in the project directory
+cd /home/krwhynot/projects/crispy-crm
+
+# 2. Start Supabase local instance
 supabase start
 
-# 2. Reset and seed database with E2E data
+# Expected output:
+#   API URL: http://localhost:54321
+#   GraphQL URL: http://localhost:54321/graphql/v1
+#   DB URL: postgresql://postgres:postgres@localhost:54322/postgres
+#   Studio URL: http://localhost:54323
+#   Inbucket URL: http://localhost:54324
+#   anon key: eyJh...
+#   service_role key: eyJh...
+
+# 3. Reset and seed database with E2E test data
 just seed-e2e
 
-# 3. Start development server
+# 4. Start development server
 npm run dev
 
-# 4. Verify environment
-curl http://localhost:5173/health
+# 5. Verify environment is running
+curl -s http://localhost:5173 | head -5
+# Should return HTML content
+
+# 6. Verify Supabase is running
+curl -s http://localhost:54321/rest/v1/ -H "apikey: $(supabase status --output json | jq -r '.API.AnonKey')"
+# Should return empty JSON or error about missing table
 ```
 
-### Test User Accounts
+### Local Environment Variables
 
-| User | Email | Role | Sales ID | Purpose |
-|------|-------|------|----------|---------|
-| Admin | admin@test.com | admin | 1 | Full access testing |
-| Brent | brent@mfbroker.com | admin | 2 | Owner role testing |
-| Michelle | michelle@mfbroker.com | manager | 3 | Manager role testing |
-| Gary | gary@mfbroker.com | rep | 4 | Rep ownership testing |
-| Dale | dale@mfbroker.com | rep | 5 | Cross-rep isolation |
-| Sue | sue@mfbroker.com | rep | 6 | Cross-rep isolation |
+Ensure `.env.local` contains:
+```env
+VITE_SUPABASE_URL=http://localhost:54321
+VITE_SUPABASE_ANON_KEY=<your-local-anon-key>
+```
+
+Get keys from: `supabase status`
+
+### Test User Accounts (Local Only)
+
+| User | Email | Password | Role | Sales ID | Purpose |
+|------|-------|----------|------|----------|---------|
+| Admin | admin@test.com | `test123!` | admin | 1 | Full access testing |
+| Brent | brent@mfbroker.com | `test123!` | admin | 2 | Owner role testing |
+| Michelle | michelle@mfbroker.com | `test123!` | manager | 3 | Manager role testing |
+| Gary | gary@mfbroker.com | `test123!` | rep | 4 | Rep ownership testing |
+| Dale | dale@mfbroker.com | `test123!` | rep | 5 | Cross-rep isolation |
+| Sue | sue@mfbroker.com | `test123!` | rep | 6 | Cross-rep isolation |
+
+> 🔑 Default test password for all users: `test123!`
 
 ### Browser Setup
 
-1. Use Chrome DevTools with Network tab open
-2. Enable "Preserve log" in Network tab
-3. Open Console tab to monitor errors
-4. Consider using incognito for each role switch
+1. Open Chrome and navigate to **http://localhost:5173**
+2. Open DevTools (`F12` or `Cmd+Option+I`)
+3. **Network tab**: Enable "Preserve log" checkbox
+4. **Console tab**: Set filter to "Error" to spot issues
+5. **Application tab**: View localStorage/cookies if needed
+6. Use **Incognito** windows for role switching (avoids logout/login cycles)
+
+### Quick Access Bookmarks
+
+```
+App Home:        http://localhost:5173
+Contacts:        http://localhost:5173/contacts
+Organizations:   http://localhost:5173/organizations
+Opportunities:   http://localhost:5173/opportunities
+Tasks:           http://localhost:5173/tasks
+Supabase Studio: http://localhost:54323
+SQL Editor:      http://localhost:54323/project/default/sql
+Table Editor:    http://localhost:54323/project/default/editor
+```
 
 ---
 
