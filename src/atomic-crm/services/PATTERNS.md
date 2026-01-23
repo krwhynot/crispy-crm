@@ -719,18 +719,18 @@ async getOpportunityParticipants(opportunityId: Identifier) {
 
 ## Service Reference
 
-Quick reference for all registered services and their key methods.
+Quick reference for all services (✅ registered in ServiceContainer, 🚧 implemented but not registered).
 
-| Service | Purpose | Key Methods |
-|---------|---------|-------------|
-| **SalesService** | Account manager CRUD via Edge Functions | `salesCreate()`, `salesUpdate()`, `salesDelete()` |
-| **OpportunitiesService** | Product sync, archive/unarchive workflows | `archiveOpportunity()`, `syncOpportunityWithProducts()` |
-| **ActivitiesService** | Activity log aggregation via RPC | `getActivityLog()` |
-| **JunctionsService** | Many-to-many relationship management | `getContactOrganizations()`, `addOpportunityParticipant()`, `setPrimaryOrganization()` |
-| **SegmentsService** | Get-or-create pattern for segment tagging | `getOrCreateSegment()` |
-| **DigestService** | Overdue tasks and digest notifications | `getOverdueTasksForUser()` |
-| **ProductsService** | Product CRUD with distributor relationships, soft delete via RPC | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |
-| **ProductDistributorsService** | Composite key junction table operations | `getOne()`, `create()`, `update()`, `delete()`, `getDistributorsForProduct()` |
+| Service | Status | Purpose | Key Methods |
+|---------|--------|---------|-------------|
+| **SalesService** | ✅ | Account manager CRUD via Edge Functions | `salesCreate()`, `salesUpdate()`, `salesDelete()` |
+| **OpportunitiesService** | ✅ | Product sync, archive/unarchive workflows | `archiveOpportunity()`, `syncOpportunityWithProducts()` |
+| **ActivitiesService** | ✅ | Activity log aggregation via RPC | `getActivityLog()` |
+| **JunctionsService** | ✅ | Many-to-many relationship management | `getContactOrganizations()`, `addOpportunityParticipant()`, `setPrimaryOrganization()` |
+| **SegmentsService** | ✅ | Get-or-create pattern for segment tagging | `getOrCreateSegment()` |
+| **ProductsService** | ✅ | Product CRUD with distributor relationships, soft delete via RPC | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |
+| **ProductDistributorsService** | ✅ | Composite key junction table operations | `getOne()`, `create()`, `update()`, `delete()`, `getDistributorsForProduct()` |
+| **DigestService** | 🚧 | Overdue tasks and digest notifications (not yet registered) | `getOverdueTasksForUser()` |
 
 ### ProductsService
 

@@ -12,8 +12,10 @@ scripts/dev/
 │   └── optimize-memory.sh        → Node.js memory tuning
 │
 ├── Database Seeding
-│   ├── create-test-users.sh      → 3 role-based test users
-│   └── sync-local-to-cloud.sh    → Push local → cloud
+│   └── create-test-users.sh      → 3 role-based test users
+│
+├── Cloud Synchronization
+│   └── sync-local-to-cloud.sh    → Push local data → cloud
 │
 ├── JWT Utilities
 │   ├── generate-jwt.mjs          → Generate service_role/anon tokens
@@ -405,16 +407,220 @@ function base64url(str) {
 
 ---
 
+## Pattern E: Cloud Synchronization Workflow
+
+Push local database state to cloud with atomic backup/restore strategy and confirmation safety.
+
+**When to use**: After local development, sharing test data, restoring cloud from local backup
+
+### Force Flag for Non-Interactive Execution
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+FORCE=false
+
+# Parse command-line arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --force)
+      FORCE=true
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      echo "Usage: $0 [--force]"
+      exit 1
+      ;;
+  esac
+done
+```
+
+### Backup Strategy (pg_dump --data-only)
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+BACKUP_DIR="./backups"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_FILE="${BACKUP_DIR}/cloud_backup_${TIMESTAMP}.sql"
+
+mkdir -p "$BACKUP_DIR"
+
+echo -e "${BLUE}📦 Creating cloud backup before sync...${NC}"
+pg_dump "$CLOUD_DB" \
+  --data-only \
+  --no-owner \
+  --no-privileges \
+  --file="$BACKUP_FILE" \
+  2>/dev/null
+
+if [ $? -eq 0 ]; then
+  success_msg "Backup created: $BACKUP_FILE"
+else
+  error_exit "Failed to create cloud backup"
+fi
+```
+
+### Table Truncation Pattern
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+# Step 4: Truncate cloud data (preserves schema)
+echo -e "${YELLOW}🗑️  Truncating cloud data...${NC}"
+$PSQL_CLOUD << 'EOF'
+TRUNCATE TABLE
+  public.activities,
+  public."contactNotes",
+  public.contacts,
+  public.opportunities,
+  public.organizations,
+  public.products,
+  public.tags,
+  public.tasks
+CASCADE;
+EOF
+
+if [ $? -eq 0 ]; then
+  success_msg "Cloud data truncated"
+else
+  error_exit "Failed to truncate cloud data"
+fi
+```
+
+### Data Export via pg_dump
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+# Step 5: Export local data
+echo -e "${BLUE}📤 Exporting local data...${NC}"
+TEMP_DUMP="/tmp/local_data_${TIMESTAMP}.sql"
+
+pg_dump "$LOCAL_DB" \
+  --data-only \
+  --no-owner \
+  --no-privileges \
+  --file="$TEMP_DUMP"
+
+if [ $? -ne 0 ]; then
+  error_exit "Failed to export local data"
+fi
+```
+
+### Atomic Import with Transaction
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+# Step 6: Import to cloud
+echo -e "${GREEN}📥 Importing to cloud...${NC}"
+$PSQL_CLOUD < "$TEMP_DUMP"
+
+if [ $? -eq 0 ]; then
+  success_msg "Data imported to cloud"
+  rm -f "$TEMP_DUMP"
+else
+  error_exit "Failed to import data to cloud"
+fi
+```
+
+### Auth User Synchronization via JSON
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+# Step 7: Sync auth users
+echo -e "${BLUE}👥 Syncing auth users...${NC}"
+TEMP_AUTH="/tmp/auth_users_${TIMESTAMP}.json"
+
+# Export auth users to JSON
+$PSQL_LOCAL -t -A -F',' << 'EOF' > "$TEMP_AUTH"
+SELECT json_agg(row_to_json(t))
+FROM (
+  SELECT id, email, encrypted_password, email_confirmed_at,
+         created_at, updated_at, raw_user_meta_data, role, aud
+  FROM auth.users
+  WHERE email LIKE '%@test.local'
+) t;
+EOF
+
+# Import auth users from JSON
+$PSQL_CLOUD << EOSQL
+WITH auth_data AS (
+  SELECT * FROM json_populate_recordset(null::auth.users, '$(cat $TEMP_AUTH)')
+)
+INSERT INTO auth.users
+SELECT * FROM auth_data
+ON CONFLICT (id) DO UPDATE SET
+  encrypted_password = EXCLUDED.encrypted_password,
+  email_confirmed_at = EXCLUDED.email_confirmed_at,
+  updated_at = EXCLUDED.updated_at;
+EOSQL
+
+rm -f "$TEMP_AUTH"
+```
+
+### Post-Sync Verification
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+# Step 8: Verify sync
+echo -e "${BLUE}🔍 Verifying sync...${NC}"
+if [ -f "$SCRIPT_DIR/verify-environment.sh" ]; then
+  "$SCRIPT_DIR/verify-environment.sh"
+else
+  warning_msg "verify-environment.sh not found, skipping verification"
+fi
+```
+
+### Confirmation Safety (Interactive Mode)
+
+```bash
+# scripts/dev/sync-local-to-cloud.sh
+
+if [ "$FORCE" = false ]; then
+  echo -e "${YELLOW}⚠️  CLOUD SYNC WARNING${NC}"
+  echo "   This will REPLACE all cloud data with local data."
+  echo "   A backup will be created before sync."
+  echo ""
+  echo "   Local:  $LOCAL_DB"
+  echo "   Cloud:  $CLOUD_DB"
+  echo ""
+  read -p "Type 'SYNC' to confirm: " CONFIRM
+
+  if [[ "$CONFIRM" != "SYNC" ]]; then
+    echo -e "${RED}❌ Sync cancelled${NC}"
+    exit 1
+  fi
+fi
+```
+
+**Key points:**
+- Always create timestamped backup before sync (rollback capability)
+- Use `--data-only` to preserve schema structure
+- Truncate before import (cleaner than delete, resets sequences)
+- Sync auth.users separately via JSON (auth schema has special permissions)
+- Verify sync success with environment verification script
+- Support `--force` flag for automated workflows (CI, scripts)
+- Clean up temporary files after operations
+
+---
+
 ## Pattern Comparison Table
 
-| Aspect | Verification | Seeding | Reset | JWT |
-|--------|--------------|---------|-------|-----|
-| **Purpose** | Compare envs | Create users | Full cleanup | Generate tokens |
-| **Destructive** | No | No (upsert) | YES | No |
-| **Requires confirm** | No | No | Yes | No |
-| **Language** | Bash | Bash | Bash | Node.js |
-| **Uses .env** | .env.cloud | Arguments | .env.production | Hardcoded |
-| **Docker aware** | No | Yes | No | N/A |
+| Aspect | Verification | Seeding | Reset | JWT | Sync (Pattern E) |
+|--------|--------------|---------|-------|-----|------------------|
+| **Purpose** | Compare envs | Create users | Full cleanup | Generate tokens | Push local → cloud |
+| **Destructive** | No | No (upsert) | YES | No | YES (cloud data) |
+| **Requires confirm** | No | No | Yes | No | Yes (unless --force) |
+| **Language** | Bash | Bash | Bash | Node.js | Bash |
+| **Uses .env** | .env.cloud | Arguments | .env.production | Hardcoded | .env.cloud |
+| **Docker aware** | No | Yes | No | N/A | Yes |
+| **Creates backup** | No | No | No | No | Yes (timestamped) |
+| **Atomicity** | N/A | Transaction | Transaction | N/A | Transaction |
 
 ---
 
@@ -495,7 +701,8 @@ When creating new development scripts:
 | Pattern | Primary Files |
 |---------|---------------|
 | **A: Environment Verification** | `verify-environment.sh` |
-| **B: Database Seeding** | `create-test-users.sh`, `sync-local-to-cloud.sh` |
+| **B: Database Seeding** | `create-test-users.sh` |
 | **C: Cleanup/Reset** | `reset-environment.sh` |
 | **D: JWT/Auth Utilities** | `generate-jwt.mjs`, `test-fetch.mjs` |
+| **E: Cloud Synchronization** | `sync-local-to-cloud.sh` |
 | **Monitoring** | `monitor-resources.sh`, `optimize-memory.sh` |
