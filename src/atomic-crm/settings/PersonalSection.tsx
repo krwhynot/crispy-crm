@@ -6,7 +6,7 @@ import { CircleX, Loader2, Pencil, Save } from "lucide-react";
 import { useGetIdentity, useRecordContext } from "ra-core";
 import { useState } from "react";
 import { useFormState } from "react-hook-form";
-import { ImageEditorField } from "@/components/ui";
+import ImageEditorField from "@/components/ra-wrappers/image-editor-field";
 import type { Sale, SalesFormData } from "../../types";
 import { useSalesUpdate } from "./useSalesUpdate";
 import { TimeZoneSelect } from "./TimeZoneSelect";

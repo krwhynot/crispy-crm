@@ -31,7 +31,5 @@ export const phoneNumberAndTypeSchema = z.strictObject({
 });
 
 // Email entry type for iteration - matches database JSONB format
-export interface EmailEntry {
-  value: string;
-  type?: "work" | "home" | "other";
-}
+// Derived from schema for single source of truth (DOMAIN_INTEGRITY.md)
+export type EmailEntry = z.infer<typeof emailAndTypeSchema>;

@@ -3,22 +3,13 @@ import { z } from "zod";
 import type { OpportunityStageValue } from "../types";
 import { OPPORTUNITY_STAGES } from "./constants";
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
+import { opportunityStageSchema } from "@/atomic-crm/validation/opportunities/opportunities-core";
 
 const COLLAPSED_KEY = "opportunity.kanban.collapsed_stages";
 const VISIBLE_KEY = "opportunity.kanban.visible_stages";
 
-// Schema for validating stored stage preferences
-const opportunityStageArraySchema = z.array(
-  z.enum([
-    "new_lead",
-    "initial_outreach",
-    "sample_visit_offered",
-    "feedback_logged",
-    "demo_scheduled",
-    "closed_won",
-    "closed_lost",
-  ])
-);
+// Schema for validating stored stage preferences - uses canonical stage schema
+const opportunityStageArraySchema = z.array(opportunityStageSchema);
 
 export function useColumnPreferences() {
   const allStages = OPPORTUNITY_STAGES.map((s) => s.value);
