@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
-import { getOpportunityStageLabel } from "../../opportunities/constants";
+import { getOpportunityStageLabel, STAGE } from "../../opportunities/constants";
 import { MAX_RELATED_ITEMS } from "../constants";
 import { parseDateSafely } from "@/lib/date-utils";
 
@@ -157,13 +157,13 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
 function StageBadge({ stage }: { stage: string }) {
   // Map PRD's 8 official stages to Badge variants
   const stageColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-    new_lead: "outline",
-    initial_outreach: "secondary",
-    sample_visit_offered: "secondary",
-    feedback_logged: "secondary",
-    demo_scheduled: "default",
-    closed_won: "default",
-    closed_lost: "destructive",
+    [STAGE.NEW_LEAD]: "outline",
+    [STAGE.INITIAL_OUTREACH]: "secondary",
+    [STAGE.SAMPLE_VISIT_OFFERED]: "secondary",
+    [STAGE.FEEDBACK_LOGGED]: "secondary",
+    [STAGE.DEMO_SCHEDULED]: "default",
+    [STAGE.CLOSED_WON]: "default",
+    [STAGE.CLOSED_LOST]: "destructive",
   };
 
   const variant = stageColors[stage] || "outline";

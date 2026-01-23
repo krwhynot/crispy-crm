@@ -5,6 +5,8 @@
  * Used by the email generator to ensure type-safe template data.
  */
 
+import { STAGE } from "@/atomic-crm/opportunities/constants";
+
 /** Individual overdue task for the digest */
 export interface OverdueTask {
   /** Task ID for linking */

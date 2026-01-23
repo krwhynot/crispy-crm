@@ -4,7 +4,13 @@ import { Factory, TrendingUp, TrendingDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { Opportunity } from "../types";
-import { getStageStatus, type StageStatus, getOpportunityStageLabel, STAGE, STAGE_ORDER } from "./constants";
+import {
+  getStageStatus,
+  type StageStatus,
+  getOpportunityStageLabel,
+  STAGE,
+  STAGE_ORDER,
+} from "./constants";
 import { parseDateSafely } from "@/lib/date-utils";
 
 /**
@@ -79,19 +85,6 @@ function getStatusPriority(status: StageStatus): number {
       return 4;
   }
 }
-
-/**
- * Stage order for secondary sort
- */
-const STAGE_ORDER: Record<string, number> = {
-  new_lead: 0,
-  initial_outreach: 1,
-  sample_visit_offered: 2,
-  feedback_logged: 3,
-  demo_scheduled: 4,
-  closed_won: 5,
-  closed_lost: 6,
-};
 
 /**
  * Sort opportunities: Red status first → Earlier stages → Most days since activity
