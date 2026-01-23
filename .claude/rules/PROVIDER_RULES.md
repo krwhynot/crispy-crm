@@ -58,14 +58,104 @@ DO:
 DON'T:
 - Use hard DELETE (except exempted resources like Tags)
 
-## Error Handling
+## Error Handling & Side-Effects
 
 DO:
 - Wrap all handlers with `withErrorLogging` (outermost)
 - Return success if record already deleted (idempotency)
+- Try/catch external side-effects (storage, notifications, webhooks)
+- Log side-effect failures but decide if they should block main transaction
+- Await or explicitly void unawaited promises with error handling
 
 DON'T:
 - Use `console.log` or `console.error` - wrapper handles Sentry
+- Fire-and-forget without error handling (`void deleteFiles()` with no catch)
+- Let non-critical side-effects crash critical transactions
+- Silent catches that hide errors (`catch { }`)
+
+### Side-Effect Error Handling
+
+WRONG:
+```typescript
+// Fire-and-forget - errors go into void, no logging
+if (filePaths.length > 0) {
+  void deleteStorageFiles(filePaths);
+}
+
+// Unawaited promise - may cause race conditions or silent failures
+async function beforeDelete(params: DeleteParams) {
+  deleteStorageFiles(params.id); // Missing await - caller doesn't know it failed
+  return params;
+}
+```
+
+RIGHT:
+```typescript
+// Explicit error handling with structured logging
+if (filePaths.length > 0) {
+  void deleteStorageFiles(filePaths).catch((err: unknown) => {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    logger.warn('Storage cleanup failed after organization archive', {
+      organizationId: params.id,
+      fileCount: filePaths.length,
+      error: errorMessage,
+      operation: 'organizationsBeforeDelete',
+      note: 'Archive succeeded - orphaned files can be cleaned up later',
+    });
+  });
+}
+
+// Await critical operations, fire-and-forget only for cleanup
+async function beforeDelete(params: DeleteParams) {
+  // Critical: Must succeed before returning
+  await supabase.rpc('archive_organization_with_relations', { org_id: params.id });
+
+  // Non-critical cleanup: Log failures but don't block
+  void cleanupStorage(params.id).catch(logError);
+
+  return params;
+}
+```
+
+Side-effects should fail gracefully. Storage cleanup failure shouldn't rollback a successful archive.
+
+### Transaction Boundaries
+
+WRONG:
+```typescript
+// External API call in critical path - network errors crash transactions
+async function beforeCreate(params: CreateParams) {
+  await sendWelcomeEmail(params.data.email); // BLOCKS CREATE if email service is down
+  return params;
+}
+```
+
+RIGHT:
+```typescript
+// Separate critical path from non-critical side-effects
+async function beforeCreate(params: CreateParams) {
+  // Critical validation first
+  if (!params.data.email) {
+    throw new Error('Email required');
+  }
+  return params;
+}
+
+async function afterCreate(record: RaRecord, dataProvider: DataProvider) {
+  // Non-critical: Send email in background, log failures
+  void sendWelcomeEmail(record.email).catch((err: unknown) => {
+    logger.warn('Welcome email failed', {
+      userId: record.id,
+      email: record.email,
+      error: err instanceof Error ? err.message : String(err),
+      note: 'User created successfully - email can be resent manually',
+    });
+  });
+  return record;
+}
+```
+
+Critical operations (database) should never depend on external services (email, storage).
 
 ## Wrapper Composition Order
 

@@ -1,4 +1,5 @@
 import type { DataProvider, Identifier } from "ra-core";
+import { logger } from "@/lib/logger";
 import { getActivityLog } from "../providers/commons/activity";
 
 /**

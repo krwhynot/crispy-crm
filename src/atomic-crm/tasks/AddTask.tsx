@@ -4,6 +4,7 @@ import { TextInput } from "@/components/ra-wrappers/text-input";
 import { DateInput } from "@/components/ra-wrappers/date-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { SaveButton } from "@/components/ra-wrappers/form";
+import { logger } from "@/lib/logger";
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
   Dialog,
@@ -72,9 +73,7 @@ export const AddTask = ({
 
       notify("Task added");
     } catch (error: unknown) {
-      // Task was created successfully, but contact update failed
-      // This is non-critical - notify user but don't fail the operation
-      console.error("Failed to update contact last_seen:", error);
+      logger.warn("Failed to update contact last_seen", { feature: "AddTask", error });
       notify("Task created, but couldn't update contact", { type: "warning" });
     }
   };

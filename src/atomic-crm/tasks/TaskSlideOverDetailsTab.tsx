@@ -73,7 +73,10 @@ export function TaskSlideOverDetailsTab({
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
-      logger.error("Error updating task", error, { feature: "TaskSlideOverDetailsTab", taskId: record.id });
+      logger.error("Error updating task", error, {
+        feature: "TaskSlideOverDetailsTab",
+        taskId: record.id,
+      });
     }
   };
 
@@ -92,7 +95,10 @@ export function TaskSlideOverDetailsTab({
         notify("Task marked incomplete", { type: "success" });
       } catch (error: unknown) {
         notify("Error updating task", { type: "error" });
-        console.error("Completion toggle error:", error);
+        logger.error("Completion toggle error", error, {
+          feature: "TaskSlideOverDetailsTab",
+          taskId: record.id,
+        });
       }
     }
   };
@@ -109,7 +115,10 @@ export function TaskSlideOverDetailsTab({
       setShowCompletionDialog(false);
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
-      console.error("Completion toggle error:", error);
+      logger.error("Completion toggle error", error, {
+        feature: "TaskSlideOverDetailsTab",
+        taskId: record.id,
+      });
       setShowCompletionDialog(false);
     }
   };
