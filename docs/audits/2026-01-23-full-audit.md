@@ -1,24 +1,39 @@
 # Full Codebase Audit Report - Crispy CRM
 
-**Audit Date:** 2026-01-23
+**Audit Date:** 2026-01-23 11:16
 **Stack:** React 19 + TypeScript + React Admin + Supabase
-**Overall Confidence:** 87%
+**Mode:** Full (All MCP checks enabled)
+**Duration:** 28 minutes
+**Overall Confidence:** 88%
 
 ---
 
 ## Executive Summary
 
-This comprehensive audit ran 11 parallel agents across all quality dimensions. Compared to the previous baseline (2026-01-22), we see **improvement in several areas** with expanded detection capabilities.
+This comprehensive audit ran 11 parallel agents across all quality dimensions with **expanded detection patterns** for TypeScript safety, performance bottlenecks, and stale state issues.
+
+### Layer Health Overview
+
+| Layer | Name | Critical | High | Status | Primary Concerns |
+|-------|------|----------|------|--------|------------------|
+| L1 | Database | 3 | 12 | 🔴 CRITICAL | Permissive RLS, function search paths |
+| L2 | Domain | 18 | 15 | 🔴 CRITICAL | `as any` casts, type safety |
+| L3 | Provider | 1 | 5 | 🟡 WARN | Silent error handling |
+| L4 | UI Foundation | 1 | 2 | 🟡 WARN | Tier 1 RA import |
+| L5 | Features | 5 | 17 | 🟡 WARN | Stale state, N+1 queries |
+| **TOTAL** | - | **28** | **51** | 🔴 CRITICAL | - |
+
+**Fix Order:** L1 → L2 → L3 → L4 → L5 (foundation issues cascade upward)
 
 ### Totals
 
-| Severity | Previous (2026-01-22) | Current (2026-01-23) | Delta |
-|----------|----------------------|---------------------|-------|
-| **Critical** | 28 | 20 | ▼ -8 |
-| **High** | 136 | 67 | ▼ -69 |
-| **Medium** | 390 | 93 | ▼ -297 |
+| Severity | Previous (Earlier Today) | Current | Delta |
+|----------|-------------------------|---------|-------|
+| **Critical** | 20 | 28 | ⬆️ +8 (expanded detection) |
+| **High** | 67 | 51 | ⬇️ -16 (reclassified) |
+| **Medium** | 93 | 99 | ⬆️ +6 |
 
-**Overall Trend: ▼ IMPROVED** - Significant reduction across all severity levels.
+**Note:** Increase in critical reflects expanded TypeScript double-cast detection (18 new) and performance N+1 patterns (2 new), not codebase degradation.
 
 ---
 
