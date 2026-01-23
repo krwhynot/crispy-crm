@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDataProvider, type RaRecord } from "react-admin";
+import { logger } from "@/lib/logger";
 
 interface DateRange {
   start: Date | null;
@@ -114,10 +115,10 @@ export function useReportData<T extends RaRecord>(
       })
       .then((result) => {
         if (!cancelled) {
-          // Warn if data is at limit (indicates potential truncation)
           if (result.data.length >= 1000) {
-            console.warn(
-              `[useReportData] ${resource}: Retrieved ${result.data.length} records (at pagination limit). Data may be truncated. Consider implementing server-side aggregation.`
+            logger.warn(
+              `${resource}: Retrieved ${result.data.length} records (at pagination limit). Data may be truncated.`,
+              { feature: "useReportData", resource }
             );
           }
           setData(result.data);
@@ -126,11 +127,9 @@ export function useReportData<T extends RaRecord>(
       })
       .catch((err: Error) => {
         if (!cancelled) {
-          // Fail-fast: surface error immediately, no retry logic
-          // This aligns with CLAUDE.md principle: errors should be visible, not hidden
           setError(err);
           setIsLoading(false);
-          console.error(`[useReportData] Failed to fetch ${resource}:`, err);
+          logger.error(`Failed to fetch ${resource}`, err, { feature: "useReportData", resource });
         }
       });
 

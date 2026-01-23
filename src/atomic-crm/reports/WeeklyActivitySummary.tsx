@@ -3,6 +3,7 @@ import { useGetList, useGetIdentity, downloadCSV, useNotify } from "ra-core";
 import { getWeekRange } from "@/atomic-crm/utils";
 import jsonExport from "jsonexport/dist";
 import { Activity } from "lucide-react";
+import { logger } from "@/lib/logger";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -189,7 +190,7 @@ export default function WeeklyActivitySummary() {
 
     jsonExport(exportData, (err, csv) => {
       if (err) {
-        console.error("Export error:", err);
+        logger.error("Export error", err, { feature: "WeeklyActivitySummary" });
         notify("Export failed. Please try again.", { type: "error" });
         return;
       }

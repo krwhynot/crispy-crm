@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useNotify, downloadCSV } from "ra-core";
 import jsonExport from "jsonexport/dist";
 import { format } from "date-fns";
+import { logger } from "@/lib/logger";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { parseDateSafely } from "@/lib/date-utils";
 
@@ -68,7 +69,7 @@ export function useCampaignActivityExport(selectedCampaign: string, salesMap: Ma
 
       jsonExport(exportData, (err, csv) => {
         if (err) {
-          console.error("Export error:", err);
+          logger.error("Export stale leads error", err, { feature: "CampaignActivityExport" });
           notify("Export failed. Please try again.", { type: "error" });
           return;
         }
