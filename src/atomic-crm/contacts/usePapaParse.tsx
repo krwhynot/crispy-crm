@@ -65,7 +65,8 @@ export function usePapaParse<T = Record<string, unknown>>({
       });
 
       const importId = importIdRef.current;
-      Papa.parse<T>(file, {
+      // When header: false, PapaParse returns string[][] (array of row arrays)
+      Papa.parse<string[]>(file, {
         header: false, // We'll manually handle headers after skipping rows
         skipEmptyLines: true, // This auto-skips line 3 (empty row)
         preview: previewRowCount ? previewRowCount + 2 : undefined, // Add 2 for skipped rows
@@ -78,8 +79,9 @@ export function usePapaParse<T = Record<string, unknown>>({
           let headers: string[];
           try {
             // REFACTORED: Use the single source of truth to process raw CSV data.
-            // This replaces ~40 lines of duplicated logic.
-            const parseResult = parseRawCsvData(results.data as unknown[][]);
+            // results.data is string[][] when header: false
+            const rawData = results.data as unknown[][];
+            const parseResult = parseRawCsvData(rawData);
             transformedData = parseResult.contacts as T[];
             headers = parseResult.headers;
           } catch (error: unknown) {
@@ -93,7 +95,8 @@ export function usePapaParse<T = Record<string, unknown>>({
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
             // Pass raw data rows (skip first 3 rows: instructions, empty, headers)
-            const rawDataRows = (results.data as unknown[][]).slice(3);
+            const rawData = results.data as unknown[][];
+            const rawDataRows = rawData.slice(3);
             onPreview({ rows: transformedData, headers, rawDataRows });
             setImporter({
               state: "idle",

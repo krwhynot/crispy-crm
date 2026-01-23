@@ -59,7 +59,9 @@ export function ActivityTypeSection({ control, activityType }: ActivityTypeSecti
   useEffect(() => {
     const currentOutcome = getValues("outcome");
     if (currentOutcome && !outcomeOptions.includes(currentOutcome)) {
-      setValue("outcome", undefined as unknown as typeof currentOutcome);
+      // Reset outcome to first valid option for the new activity type
+      // Type assertion is safe because outcomeOptions always has at least one element
+      setValue("outcome", outcomeOptions[0] as typeof currentOutcome);
     }
   }, [activityType, outcomeOptions, setValue, getValues]);
 

@@ -17,7 +17,9 @@
  * ```
  */
 
-import type { ZodError, ZodIssue } from "zod";
+import type { ZodError, ZodIssue, ZodSchema } from "zod";
+import type { FieldValues, Resolver } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { getFriendlyErrorMessage } from "@/atomic-crm/validation/utils";
 
 /**

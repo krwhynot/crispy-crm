@@ -174,7 +174,9 @@ export async function collectContactFilePaths(contactId: number): Promise<string
 
     if (notes) {
       for (const note of notes) {
-        paths.push(...extractAttachmentPaths(note.attachments as unknown[]));
+        if (isArray(note.attachments)) {
+          paths.push(...extractAttachmentPaths(note.attachments));
+        }
       }
     }
   } catch (error: unknown) {
@@ -221,7 +223,9 @@ export async function collectOrganizationFilePaths(orgId: number): Promise<strin
 
     if (orgNotes) {
       for (const note of orgNotes) {
-        paths.push(...extractAttachmentPaths(note.attachments as unknown[]));
+        if (isArray(note.attachments)) {
+          paths.push(...extractAttachmentPaths(note.attachments));
+        }
       }
     }
 
@@ -258,7 +262,9 @@ export async function collectOrganizationFilePaths(orgId: number): Promise<strin
 
         if (oppNotes) {
           for (const note of oppNotes) {
-            paths.push(...extractAttachmentPaths(note.attachments as unknown[]));
+            if (isArray(note.attachments)) {
+              paths.push(...extractAttachmentPaths(note.attachments));
+            }
           }
         }
       }
