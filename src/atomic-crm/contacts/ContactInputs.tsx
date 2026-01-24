@@ -58,7 +58,11 @@ const CONTACT_FIELD_LABELS: Record<string, string> = {
   avatar: "Profile Photo",
 };
 
-export const ContactInputs = () => {
+interface ContactInputsProps {
+  disabled?: boolean;
+}
+
+export const ContactInputs = ({ disabled = false }: ContactInputsProps) => {
   const { errors } = useFormState();
   const hasErrors = Object.keys(errors || {}).length > 0;
 
@@ -71,7 +75,7 @@ export const ContactInputs = () => {
           defaultExpanded={Object.keys(errors).length <= 3}
         />
       )}
-      <ContactCompactForm />
+      <ContactCompactForm disabled={disabled} />
     </div>
   );
 };

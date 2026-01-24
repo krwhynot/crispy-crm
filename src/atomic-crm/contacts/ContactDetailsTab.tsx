@@ -84,7 +84,7 @@ export function ContactDetailsTab({
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <FormProgressProvider>
             <div className="space-y-6">
-              <ContactInputs />
+              <ContactInputs disabled={isLoading} />
             </div>
           </FormProgressProvider>
         </Form>

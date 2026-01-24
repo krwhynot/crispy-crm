@@ -12,12 +12,13 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { DataProvider, RaRecord } from "ra-core";
+import type { DataProvider, RaRecord, GetListParams } from "ra-core";
 import {
   contactsCallbacks,
   transformQToIlikeSearch,
   CONTACTS_SEARCH_FIELDS,
 } from "./contactsCallbacks";
+import type { DeleteParamsWithMeta } from "@/tests/utils";
 
 // Mock supabase for RPC cascade delete tests
 vi.mock("../supabase", () => ({
@@ -74,7 +75,8 @@ describe("contactsCallbacks", () => {
 
       // Should return modified params that prevent actual delete
       expect(result).toHaveProperty("meta");
-      expect((result as any).meta.skipDelete).toBe(true);
+      const resultWithMeta = result as DeleteParamsWithMeta;
+      expect(resultWithMeta.meta?.skipDelete).toBe(true);
     });
 
     it("should not call dataProvider.update (uses RPC instead)", async () => {
@@ -308,10 +310,11 @@ describe("contactsCallbacks", () => {
     });
 
     it("should return params unchanged when filter is undefined", () => {
-      const params = {
+      const params: GetListParams = {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "id", order: "ASC" as const },
-        filter: undefined as any,
+        // Intentional: testing undefined filter handling
+        filter: undefined as unknown as Record<string, unknown>,
       };
 
       const result = transformQToIlikeSearch(params);
