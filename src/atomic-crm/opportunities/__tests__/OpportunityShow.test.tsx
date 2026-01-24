@@ -400,11 +400,13 @@ describe("OpportunityShow", () => {
       description: "This is a detailed description of the opportunity.",
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -431,11 +433,13 @@ describe("OpportunityShow", () => {
       deleted_at: "2024-01-01T00:00:00Z",
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -469,11 +473,13 @@ describe("OpportunityShow", () => {
         priority,
       });
 
-      (useShowContext as any).mockReturnValue({
-        record: mockOpp,
-        isPending: false,
-        error: null,
-      });
+      vi.mocked(useShowContext).mockReturnValue(
+        mockUseShowContextReturn<Opportunity>({
+          record: mockOpp,
+          isPending: false,
+          error: null,
+        })
+      );
 
       const { unmount } = renderWithAdminContext(
         <Routes>

@@ -390,11 +390,13 @@ describe("OrganizationShow", () => {
       nb_opportunities: 2,
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOrg,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext<Organization>).mockReturnValue(
+      mockUseShowContextReturn<Organization>({
+        record: mockOrg,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>

@@ -296,7 +296,7 @@ describe("processOrganizationLogo", () => {
       const orgData: Partial<Organization> = {
         name: "Test Corp",
         website: "https://www.example.com/",
-        logo: { rawFile: new File([""], "logo.png") } as any,
+        logo: { rawFile: new File([""], "logo.png") } as unknown as Organization["logo"],
       };
 
       const result = await processOrganizationLogo(orgData);
@@ -308,7 +308,7 @@ describe("processOrganizationLogo", () => {
       const orgData: Partial<Organization> = {
         name: "Legacy Corp",
         website: "http://legacy-site.com",
-        logo: { rawFile: new File([""], "logo.png") } as any,
+        logo: { rawFile: new File([""], "logo.png") } as unknown as Organization["logo"],
       };
 
       const result = await processOrganizationLogo(orgData);
@@ -323,7 +323,7 @@ describe("processOrganizationLogo", () => {
         logo: {
           rawFile: new File(["content"], "custom-logo.png"),
           // Additional properties should be preserved
-        } as any,
+        } as unknown as Organization["logo"],
       };
 
       const result = await processOrganizationLogo(orgData);

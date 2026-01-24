@@ -1,34 +1,45 @@
 {
   "lastAudit": "2026-01-23",
-  "lastAuditTime": "16:10",
-  "mode": "quick",
-  "duration_minutes": 12,
+  "lastAuditTime": "21:29",
+  "mode": "full",
+  "duration_minutes": 21,
   "totals": {
-    "critical": 9,
-    "high": 87,
-    "medium": 19
+    "critical": 36,
+    "high": 153,
+    "medium": 78
   },
   "by_layer": {
-    "L1_database": { "critical": 3, "high": 5, "status": "CRITICAL" },
-    "L2_domain": { "critical": 1, "high": 69, "status": "CRITICAL" },
-    "L3_provider": { "critical": 1, "high": 6, "status": "CRITICAL" },
-    "L4_ui_foundation": { "critical": 0, "high": 0, "status": "OK" },
-    "L5_features": { "critical": 4, "high": 7, "status": "CRITICAL" }
+    "L1_database": { "critical": 5, "high": 13, "status": "CRITICAL" },
+    "L2_domain": { "critical": 1, "high": 81, "status": "CRITICAL" },
+    "L3_provider": { "critical": 5, "high": 10, "status": "CRITICAL" },
+    "L4_ui_foundation": { "critical": 2, "high": 5, "status": "WARN" },
+    "L5_features": { "critical": 14, "high": 45, "status": "CRITICAL" }
   },
   "by_category": {
-    "security": { "critical": 0, "high": 0, "medium": 0 },
-    "data-integrity": { "critical": 1, "high": 3, "medium": 3 },
-    "error-handling": { "critical": 1, "high": 3, "medium": 2 },
-    "db-hardening": { "critical": 3, "high": 5, "medium": 2 },
-    "stale-state": { "critical": 0, "high": 1, "medium": 2 },
-    "workflow-gaps": { "critical": 1, "high": 3, "medium": 2 },
-    "architecture": { "critical": 0, "high": 0, "medium": 0 },
-    "typescript": { "critical": 1, "high": 69, "medium": 0 },
-    "accessibility": { "critical": 0, "high": 0, "medium": 0 },
-    "performance": { "critical": 0, "high": 3, "medium": 4 },
-    "code-quality": { "critical": 3, "high": 8, "medium": 4 }
+    "security": { "critical": 2, "high": 8, "medium": 6 },
+    "data-integrity": { "critical": 5, "high": 8, "medium": 12 },
+    "error-handling": { "critical": 4, "high": 7, "medium": 3 },
+    "db-hardening": { "critical": 3, "high": 5, "medium": 4 },
+    "stale-state": { "critical": 5, "high": 8, "medium": 6 },
+    "workflow-gaps": { "critical": 3, "high": 5, "medium": 4 },
+    "architecture": { "critical": 0, "high": 0, "medium": 1 },
+    "typescript": { "critical": 1, "high": 81, "medium": 8 },
+    "accessibility": { "critical": 2, "high": 5, "medium": 8 },
+    "performance": { "critical": 5, "high": 12, "medium": 8 },
+    "code-quality": { "critical": 6, "high": 14, "medium": 18 }
   },
   "critical_findings": [
+    {
+      "source_audit": "performance",
+      "id": "PERF-001",
+      "severity": "critical",
+      "layer": "L5",
+      "check": "Build failure - export syntax error",
+      "location": "src/components/ra-wrappers/record-field.tsx:80",
+      "description": "Export syntax error blocks all production builds",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
     {
       "source_audit": "db-hardening",
       "id": "DB-CRIT-001",
@@ -41,36 +52,25 @@
       "status": "open"
     },
     {
-      "source_audit": "db-hardening",
-      "id": "DB-CRIT-002",
-      "severity": "critical",
-      "layer": "L1",
-      "check": "Missing RLS access control",
-      "location": "20260122231125_enable_rls_task_id_mapping.sql:22-26",
-      "description": "task_id_mapping SELECT policy uses USING (true)",
-      "firstSeen": "2026-01-23",
-      "status": "open"
-    },
-    {
       "source_audit": "data-integrity",
-      "id": "DI-001",
+      "id": "DI-002",
       "severity": "critical",
       "layer": "L1",
-      "check": "Segments RLS gap",
-      "location": "20251018152315_cloud_schema_fresh.sql:2804",
-      "description": "Segments table SELECT policy leaks deleted records",
+      "check": "Missing deleted_at in SELECT policies",
+      "location": "23 tables in migrations",
+      "description": "23 SELECT policies use auth.uid() without deleted_at filter",
       "firstSeen": "2026-01-23",
       "status": "open"
     },
     {
-      "source_audit": "typescript",
-      "id": "TS-DOUBLE-CAST-001",
+      "source_audit": "security",
+      "id": "SEC-002",
       "severity": "critical",
-      "layer": "L2",
-      "check": "Double-cast pattern documented as debt",
-      "location": "zodErrorFormatting.ts:137",
-      "description": "69 as unknown as casts in test utilities",
-      "firstSeen": "2026-01-22",
+      "layer": "L1",
+      "check": "Junction table authorization gaps",
+      "location": "opportunity_contacts, interaction_participants",
+      "description": "INSERT policies check parent but not related entity authorization",
+      "firstSeen": "2026-01-23",
       "status": "open"
     },
     {
@@ -78,10 +78,54 @@
       "id": "EH-001",
       "severity": "critical",
       "layer": "L3",
-      "check": "Fire-and-forget cleanup",
-      "location": "organizationsCallbacks.ts:124-143",
-      "description": "Storage cleanup errors silently ignored - GDPR compliance risk",
-      "firstSeen": "2026-01-22",
+      "check": "console.error in production",
+      "location": "rpcExtension.ts, edgeFunctionsExtension.ts, storageExtension.ts, specializedExtension.ts",
+      "description": "Direct console.error instead of logger.error breaks error monitoring",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-001",
+      "severity": "critical",
+      "layer": "L5",
+      "check": "Tag mutation cache hole",
+      "location": "TagEditModal.tsx",
+      "description": "Tag edits dont invalidate cache - users see stale names/colors",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "typescript",
+      "id": "TS-001",
+      "severity": "critical",
+      "layer": "L2",
+      "check": "Test infrastructure any usage",
+      "location": "299 instances across test files",
+      "description": "as any bypasses type checking in test infrastructure",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "workflow-gaps",
+      "id": "WG-002",
+      "severity": "critical",
+      "layer": "L5",
+      "check": "Nullable required FK",
+      "location": "opportunities.principal_organization_id",
+      "description": "principal_organization_id can be NULL despite business requirement",
+      "firstSeen": "2026-01-23",
+      "status": "open"
+    },
+    {
+      "source_audit": "accessibility",
+      "id": "A11Y-002",
+      "severity": "critical",
+      "layer": "L4",
+      "check": "Small touch targets",
+      "location": "OrganizationAside.tsx, ResourceSlideOver.tsx",
+      "description": "min-h-[24px] falls below 44px iPad guideline",
+      "firstSeen": "2026-01-23",
       "status": "open"
     },
     {
@@ -89,82 +133,36 @@
       "id": "CQ-001",
       "severity": "critical",
       "layer": "L5",
-      "check": "Dead code",
-      "location": "src/atomic-crm/admin/index.tsx:1-13",
-      "description": "Admin module marked DEPRECATED but not removed",
+      "check": "Oversized files",
+      "location": "src/atomic-crm/validation/activities.ts (785 lines)",
+      "description": "Monolithic file exceeds 500-line limit",
       "firstSeen": "2026-01-23",
       "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-003",
-      "severity": "critical",
-      "layer": "L5",
-      "check": "Unused dependency",
-      "location": "package.json",
-      "description": "@nivo/bar installed but never imported",
-      "firstSeen": "2026-01-23",
-      "status": "open"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-001",
-      "severity": "critical",
-      "layer": "L5",
-      "check": "Nullable Required FK",
-      "location": "opportunities.principal_organization_id",
-      "description": "principal_organization_id may lack NOT NULL constraint",
-      "firstSeen": "2026-01-23",
-      "status": "verify"
-    },
-    {
-      "source_audit": "workflow-gaps",
-      "id": "WG-002",
-      "severity": "critical",
-      "layer": "L5",
-      "check": "Win/Loss DB validation",
-      "location": "opportunities table CHECK constraints",
-      "description": "Win/loss CHECK constraints need verification",
-      "firstSeen": "2026-01-23",
-      "status": "verify"
     }
   ],
   "strangler_fig_status": {
     "unifiedDataProvider_lines": 0,
     "composedDataProvider_lines": 260,
-    "handler_count": 15,
+    "handler_count": 13,
     "status": "COMPLETED"
   },
   "excellence_areas": [
-    "Security: ZERO issues - fully clean",
-    "Architecture: FULLY COMPLIANT - three-tier separation perfect",
-    "Accessibility: WCAG 2.1 AA compliant - zero issues",
-    "Strangler Fig: 100% COMPLETE - 15 composed handlers",
-    "RLS Coverage: 31/31 tables (100%)",
+    "Architecture: 100% feature module compliance - ZERO violations",
+    "Strangler Fig: 100% COMPLETE - 13 composed handlers",
+    "RLS Coverage: 22/22 tables (100%)",
     "Fail-Fast: NO retry logic found",
-    "Form Validation: onSubmit/onBlur mode (not onChange)"
+    "Form Validation: onSubmit/onBlur mode enforced",
+    "WCAG 2.1 AA: Implementation correct"
   ],
   "trend": {
-    "direction": "IMPROVING",
-    "note": "Critical reduced from 28 to 9 (-68%). Security, Architecture, Accessibility all clean. Quick mode may understate some DB issues.",
-    "previous_critical": 28,
-    "current_critical": 9,
-    "previous_high": 51,
-    "current_high": 87,
-    "previous_medium": 99,
-    "current_medium": 19
-  },
-  "delta_summary": {
-    "fixed": [
-      "Security: 26 issues resolved (100%)",
-      "Architecture: 6 issues resolved (100%)",
-      "Accessibility: 10 issues resolved (100%)"
-    ],
-    "new": ["CQ-001: Dead admin module", "CQ-003: Unused @nivo/bar dependency"],
-    "unchanged": [
-      "EH-001: Fire-and-forget storage cleanup",
-      "TS-DOUBLE-CAST-001: TypeScript cast patterns",
-      "DB-CRIT-001: product_distributors RLS"
-    ]
+    "direction": "DETAILED",
+    "note": "Full mode audit detected 267 total issues vs 115 in quick mode. More thorough analysis revealed TypeScript (90 issues) and Performance (25 issues) as major areas.",
+    "previous_critical": 9,
+    "current_critical": 36,
+    "previous_high": 87,
+    "current_high": 153,
+    "previous_medium": 19,
+    "current_medium": 78,
+    "mode_difference": "Full mode vs Quick mode - deeper analysis"
   }
 }

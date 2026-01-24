@@ -227,15 +227,31 @@ describe("authProvider", () => {
 
     it("should throw error when user has no sales record", async () => {
       // Mock valid session but no sales record
+      const orphanUser: User = {
+        id: "user-orphan",
+        email: "orphan@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const orphanSession: AuthSession = {
+        user: orphanUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "user-orphan", email: "orphan@example.com" },
-            access_token: "valid-token",
-          },
+          session: orphanSession,
         },
         error: null,
-      } as any);
+      });
 
       // Mock no sales record found with .is() for soft-delete filter
       vi.mocked(supabase.from).mockReturnValue({
@@ -256,15 +272,31 @@ describe("authProvider", () => {
 
     it("should throw error when sales query fails", async () => {
       // Mock valid session
+      const errorUser: User = {
+        id: "user-error",
+        email: "error@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const errorSession: AuthSession = {
+        user: errorUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "user-error", email: "error@example.com" },
-            access_token: "valid-token",
-          },
+          session: errorSession,
         },
         error: null,
-      } as any);
+      });
 
       // Mock database error with .is() for soft-delete filter
       vi.mocked(supabase.from).mockReturnValue({
@@ -287,15 +319,31 @@ describe("authProvider", () => {
   describe("canAccess", () => {
     it("should grant admin access to all resources", async () => {
       // Mock admin user
+      const adminUser: User = {
+        id: "admin-user",
+        email: "admin@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const adminSession: AuthSession = {
+        user: adminUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "admin-user", email: "admin@example.com" },
-            access_token: "valid-token",
-          },
+          session: adminSession,
         },
         error: null,
-      } as any);
+      });
 
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({

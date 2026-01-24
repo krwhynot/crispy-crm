@@ -621,10 +621,10 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const mockFiles = [{ name: "file1.png" }, { name: "file2.png" }];
 
-      const mockList = vi.fn().mockResolvedValue({ data: mockFiles, error: null });
-      vi.mocked(mockSupabaseClient.storage.from as any).mockReturnValue({
+      const mockList = vi.fn().mockResolvedValue(mockSupabaseStorageResponse(mockFiles));
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
         list: mockList,
-      });
+      } as any);
 
       const result = await extendedProvider.storage.list("avatars", "subfolder");
 
@@ -638,10 +638,9 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const mockData = { success: true, id: 123 };
 
-      vi.mocked(mockSupabaseClient.functions.invoke as any).mockResolvedValue({
-        data: mockData,
-        error: null,
-      });
+      vi.mocked(mockSupabaseClient.functions.invoke).mockResolvedValue(
+        mockSupabaseEdgeFunctionResponse(mockData)
+      );
 
       const result = await extendedProvider.invoke("create-sales", {
         method: "POST",
@@ -660,10 +659,9 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const mockData = { result: "success" };
 
-      vi.mocked(mockSupabaseClient.functions.invoke as any).mockResolvedValue({
-        data: mockData,
-        error: null,
-      });
+      vi.mocked(mockSupabaseClient.functions.invoke).mockResolvedValue(
+        mockSupabaseEdgeFunctionResponse(mockData)
+      );
 
       await extendedProvider.invoke("test-function", { body: { param: "value" } });
 
