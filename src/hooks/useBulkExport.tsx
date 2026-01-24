@@ -7,6 +7,7 @@ import {
   useResourceContext,
 } from "ra-core";
 import { useCallback, useMemo } from "react";
+import { logger } from "@/lib/logger";
 
 /**
  * This fill will be backported to 'ra-core' in the future.
@@ -32,10 +33,11 @@ export function useBulkExport<ResourceInformationsType extends Partial<{ resourc
           exporter(data, fetchRelatedRecords(dataProvider), dataProvider, resource)
         )
         .catch((error) => {
-          console.error(
-            "Bulk export failed:",
-            error instanceof Error ? error.message : String(error)
-          );
+          logger.error("Bulk export failed", error, {
+            feature: "useBulkExport",
+            resource: resource ?? "unknown",
+            selectedCount: selectedIds?.length ?? 0,
+          });
           notify("ra.notification.http_error", {
             type: "error",
           });

@@ -129,7 +129,10 @@ export function OpportunitiesTab() {
               });
               queryClient.invalidateQueries({ queryKey: activityKeys.all });
             } catch (activityError) {
-              logger.error("Failed to log contact link activity", activityError, { feature: "OpportunitiesTab", opportunityId: opportunity.id });
+              logger.error("Failed to log contact link activity", activityError, {
+                feature: "OpportunitiesTab",
+                opportunityId: opportunity.id,
+              });
               notify("Contact linked, but failed to log activity", { type: "warning" });
             }
           },

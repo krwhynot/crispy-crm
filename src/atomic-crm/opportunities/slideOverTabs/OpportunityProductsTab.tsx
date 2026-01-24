@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useGetList, Form, useUpdate, ReferenceArrayInput, useDataProvider } from "react-admin";
+import { logger } from "@/lib/logger";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import type { Identifier } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";

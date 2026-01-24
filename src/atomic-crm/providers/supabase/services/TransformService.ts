@@ -10,6 +10,7 @@ import type {
 } from "../../../types";
 import { processContactAvatar, processOrganizationLogo } from "../../../utils/avatar.utils";
 import type { StorageService } from "./StorageService";
+import { logger } from "@/lib/logger";
 
 // Union type for all transformable data types
 type TransformableData =
@@ -105,7 +106,10 @@ export class TransformService {
           try {
             await Promise.all(uploadPromises);
           } catch (error: unknown) {
-            console.error("Contact note attachment upload failed:", error);
+            logger.error("Contact note attachment upload failed", error, {
+              feature: "TransformService",
+              resource: "contactNotes",
+            });
             throw error; // Fail-fast: re-throw for caller to handle
           }
         }

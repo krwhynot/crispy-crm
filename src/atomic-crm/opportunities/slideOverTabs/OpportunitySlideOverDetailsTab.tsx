@@ -78,7 +78,9 @@ export function OpportunitySlideOverDetailsTab({
 
                 queryClient.invalidateQueries({ queryKey: activityKeys.all });
               } catch (error: unknown) {
-                console.error("Failed to create update activity:", error);
+                logger.error("Failed to create update activity", error, {
+                  feature: "OpportunitySlideOverDetailsTab",
+                });
                 notify("Failed to log activity. Please manually add a note for this update.", {
                   type: "error",
                   autoHideDuration: 10000,

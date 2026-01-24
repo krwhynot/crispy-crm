@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { getAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 import { activityKeys, opportunityKeys, contactKeys } from "@/atomic-crm/queryKeys";
+import { logger } from "@/lib/logger";
 import {
   Dialog,
   DialogContent,
@@ -88,7 +89,7 @@ export function LinkOpportunityModal({
               queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
               queryClient.invalidateQueries({ queryKey: contactKeys.all });
             } catch (activityError) {
-              console.error("Failed to log contact link activity:", activityError);
+              logger.error("Failed to log contact link activity", activityError, { feature: "LinkOpportunityModal", opportunityId: data.opportunity_id });
               // Don't notify user since the link itself succeeded
             }
           },

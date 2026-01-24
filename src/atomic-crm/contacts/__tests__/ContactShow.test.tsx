@@ -41,19 +41,23 @@ vi.mock("ra-core", async () => {
 
 // Mock ReferenceField to simplify testing
 vi.mock("@/components/ra-wrappers/reference-field", () => ({
-  ReferenceField: ({ children }: any) => <div data-testid="reference-field">{children}</div>,
+  ReferenceField: ({ children }: { children: ReactNode }) => (
+    <div data-testid="reference-field">{children}</div>
+  ),
 }));
 
 // Mock ReferenceManyField (for notes)
 vi.mock("@/components/ra-wrappers/reference-many-field", () => ({
-  ReferenceManyField: ({ children }: any) => (
+  ReferenceManyField: ({ children }: { children: ReactNode }) => (
     <div data-testid="reference-many-field">{children}</div>
   ),
 }));
 
 // Mock TextField
 vi.mock("@/components/ra-wrappers/text-field", () => ({
-  TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
+  TextField: ({ source }: { source: string }) => (
+    <span data-testid={`text-field-${source}`}>{source}</span>
+  ),
 }));
 
 // Mock Avatar components
@@ -95,11 +99,7 @@ describe("ContactShow", () => {
   });
 
   test("renders loading state", () => {
-    (useShowContext as any).mockReturnValue({
-      record: undefined,
-      isPending: true,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ isPending: true }));
 
     renderWithAdminContext(
       <Routes>
