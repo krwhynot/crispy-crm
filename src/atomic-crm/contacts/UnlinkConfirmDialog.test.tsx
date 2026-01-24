@@ -1,5 +1,6 @@
 // src/atomic-crm/contacts/UnlinkConfirmDialog.test.tsx
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { vi } from "vitest";
 import type * as ReactAdmin from "react-admin";
