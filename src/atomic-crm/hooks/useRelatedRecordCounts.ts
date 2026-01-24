@@ -30,19 +30,6 @@ import { logger } from "@/lib/logger";
 const QUERY_TIMEOUT_MS = 5000;
 
 /**
- * Wrap a promise with a timeout that resolves to a fallback value
- *
- * Uses Promise.race pattern (https://javascript.info/promise-api#promise-race)
- * Instead of rejecting on timeout, resolves with fallback for graceful degradation.
- */
-function withTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
-  ]);
-}
-
-/**
  * Relationship definitions for cascade counting
  *
  * Maps parent resource → child resources with their FK fields
@@ -139,53 +126,21 @@ export function useRelatedRecordCounts({
         // FIX [WF-C06]: Each query wrapped with timeout to prevent infinite hang
         const promises = relationships.flatMap((rel) =>
           ids.map((id) => {
-            const queryPromise = (async () => {
-              try {
-                // Use getManyReference to get count of related records
-                const result = await dataProvider.getManyReference(rel.resource, {
-                  target: rel.field,
-                  id,
-                  pagination: { page: 1, perPage: 1 }, // Only need count, not data
-                  sort: { field: "id", order: "ASC" },
-                  filter: {},
-                });
-                return { label: rel.label, count: result.total ?? 0 };
-              } catch (error: unknown) {
-                // EH-001 FIX: Structured logging with error categorization
-                const errorMessage = error instanceof Error ? error.message : String(error);
-                const isPermissionError =
-                  errorMessage.toLowerCase().includes("permission") ||
-                  errorMessage.includes("403") ||
-                  errorMessage.includes("RLS");
-
-                if (isPermissionError) {
-                  // Expected case: user doesn't have access to this resource type
-                  devLog(
-                    "useRelatedRecordCounts",
-                    `Permission denied for ${rel.resource}: ${errorMessage}`
-                  );
-                } else {
-                  // Unexpected error: log as warning for visibility
-                  logger.warn("Failed to fetch count for related resource", {
-                    feature: "useRelatedRecordCounts",
-                    resource: rel.resource,
-                    resourceId: String(id),
-                    relationship: rel.field,
-                    error: errorMessage,
-                  });
-                }
-
-                return { label: rel.label, count: 0 };
-              }
-            })();
-
-            // Wrap with timeout - resolves to 0 count on timeout (graceful degradation)
-            return withTimeout(queryPromise, QUERY_TIMEOUT_MS, { label: rel.label, count: 0 });
+            // Use getManyReference to get count of related records
+            return dataProvider
+              .getManyReference(rel.resource, {
+                target: rel.field,
+                id,
+                pagination: { page: 1, perPage: 1 }, // Only need count, not data
+                sort: { field: "id", order: "ASC" },
+                filter: {},
+              })
+              .then((result) => ({ label: rel.label, count: result.total ?? 0 }));
           })
         );
 
         // Use Promise.allSettled for extra safety - ensures we get all available results
-        // even if some promises reject unexpectedly (belt-and-suspenders with try/catch above)
+        // FIX: Fail-fast - if all queries fail, propagate the error instead of silently returning 0
         const settledResults = await Promise.allSettled(promises);
         const results = settledResults
           .filter(
@@ -193,6 +148,17 @@ export function useRelatedRecordCounts({
               r.status === "fulfilled"
           )
           .map((r) => r.value);
+
+        // Fail-fast: If no queries succeeded, throw to trigger error state
+        if (results.length === 0 && promises.length > 0) {
+          const rejectedReasons = settledResults
+            .filter((r): r is PromiseRejectedResult => r.status === "rejected")
+            .map((r) => (r.reason instanceof Error ? r.reason.message : String(r.reason)));
+
+          throw new Error(
+            `Failed to fetch related record counts: ${rejectedReasons[0] || "unknown error"}`
+          );
+        }
 
         if (cancelled) return;
 
