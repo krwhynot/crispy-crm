@@ -15,9 +15,12 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { FileObject } from "@supabase/storage-js";
+import { logger } from "@/lib/logger";
 
 /**
  * Error logging helper matching unifiedDataProvider pattern
+ *
+ * Uses centralized logger for Sentry integration and structured output.
  *
  * @param method - The method name (e.g., "storage.upload")
  * @param resource - Resource or bucket name being accessed
@@ -30,9 +33,10 @@ function logError(
   params: Record<string, unknown>,
   error: unknown
 ): void {
-  console.error(`[DataProvider ${method}] Error in ${resource}:`, {
+  logger.error(`[DataProvider ${method}] Error in ${resource}`, error, {
+    method,
+    resource,
     params,
-    error: error instanceof Error ? error.message : String(error),
   });
 }
 
