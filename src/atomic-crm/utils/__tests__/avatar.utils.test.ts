@@ -49,10 +49,6 @@ describe("isValidEmailForAvatar", () => {
 
 describe("processContactAvatar", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  afterEach(() => {
     vi.resetAllMocks();
   });
 

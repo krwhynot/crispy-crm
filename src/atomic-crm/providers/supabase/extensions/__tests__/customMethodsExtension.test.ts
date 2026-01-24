@@ -535,10 +535,7 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const mockError = { message: "Permission denied", code: "42501" };
 
-      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue({
-        data: null,
-        error: mockError,
-      } as any);
+      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue(mockSupabaseRpcResponse(null, mockError));
 
       await expect(extendedProvider.rpc("test_function", { param: "value" })).rejects.toThrow(
         "RPC test_function failed: Permission denied"
@@ -565,10 +562,10 @@ describe("extendWithCustomMethods", () => {
       const mockFile = new File(["content"], "test.png", { type: "image/png" });
       const mockData = { path: "avatars/test.png" };
 
-      const mockUpload = vi.fn().mockResolvedValue({ data: mockData, error: null });
-      vi.mocked(mockSupabaseClient.storage.from as any).mockReturnValue({
+      const mockUpload = vi.fn().mockResolvedValue(mockSupabaseStorageResponse(mockData));
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
         upload: mockUpload,
-      });
+      } as any);
 
       const result = await extendedProvider.storage.upload("avatars", "test.png", mockFile);
 

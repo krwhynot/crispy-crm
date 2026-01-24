@@ -272,11 +272,13 @@ describe("OrganizationShow", () => {
       nb_opportunities: 1,
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOrg,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext<Organization>).mockReturnValue(
+      mockUseShowContextReturn<Organization>({
+        record: mockOrg,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -301,11 +303,13 @@ describe("OrganizationShow", () => {
       name: "Avatar Test Org",
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOrg,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext<Organization>).mockReturnValue(
+      mockUseShowContextReturn<Organization>({
+        record: mockOrg,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -324,11 +328,13 @@ describe("OrganizationShow", () => {
   });
 
   test("handles missing record gracefully", () => {
-    (useShowContext as any).mockReturnValue({
-      record: null,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext<Organization>).mockReturnValue(
+      mockUseShowContextReturn<Organization>({
+        record: undefined,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>

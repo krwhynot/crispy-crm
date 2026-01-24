@@ -246,11 +246,13 @@ describe("OpportunityShow", () => {
       stage: "lead",
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -281,11 +283,13 @@ describe("OpportunityShow", () => {
       ],
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>

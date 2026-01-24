@@ -56,25 +56,39 @@ describe("authProvider", () => {
   describe("checkAuth", () => {
     it("should allow access when valid session exists", async () => {
       // Mock valid session
+      const testUser: User = {
+        id: "user-123",
+        email: "test@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const testSession: AuthSession = {
+        user: testUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "user-123", email: "test@example.com", aud: "authenticated" },
-            access_token: "valid-token",
-            refresh_token: "refresh-token",
-            expires_at: Date.now() + 3600000, // 1 hour from now
-          },
+          session: testSession,
         },
         error: null,
-      } as any);
+      });
 
       // Mock getUser for ra-supabase-core base provider
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: {
-          user: { id: "user-123", email: "test@example.com", aud: "authenticated" },
+          user: testUser,
         },
         error: null,
-      } as any);
+      });
 
       // Set up full window.location mock with hash (ra-supabase-core uses it)
       Object.defineProperty(window, "location", {
@@ -95,7 +109,7 @@ describe("authProvider", () => {
       vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
         data: { session: null },
         error: null,
-      } as any);
+      });
 
       Object.defineProperty(window, "location", {
         value: { pathname: "/dashboard" },
@@ -116,7 +130,7 @@ describe("authProvider", () => {
         vi.mocked(supabase.auth.getSession).mockResolvedValue({
           data: { session: null },
           error: null,
-        } as any);
+        });
 
         Object.defineProperty(window, "location", {
           value: { pathname: path },
