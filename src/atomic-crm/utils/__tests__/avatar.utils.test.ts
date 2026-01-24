@@ -295,6 +295,7 @@ describe("processOrganizationLogo", () => {
     });
 
     it("should strip protocol and trailing slash from website URL", async () => {
+      // Simulating React Admin file upload state before processing
       const orgData: Partial<Organization> = {
         name: "Test Corp",
         website: "https://www.example.com/",
@@ -307,6 +308,7 @@ describe("processOrganizationLogo", () => {
     });
 
     it("should handle http:// protocol correctly", async () => {
+      // Simulating React Admin file upload state before processing
       const orgData: Partial<Organization> = {
         name: "Legacy Corp",
         website: "http://legacy-site.com",

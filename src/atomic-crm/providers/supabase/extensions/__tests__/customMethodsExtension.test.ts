@@ -47,8 +47,8 @@ describe("extendWithCustomMethods", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    // Mock composed provider with all 9 CRUD methods
-    mockComposedProvider = {
+    // Mock composed provider with all 9 CRUD methods using typed factory
+    mockComposedProvider = createMockDataProvider({
       getList: vi.fn(),
       getOne: vi.fn(),
       getMany: vi.fn(),
@@ -58,9 +58,10 @@ describe("extendWithCustomMethods", () => {
       updateMany: vi.fn(),
       delete: vi.fn(),
       deleteMany: vi.fn(),
-    } as unknown as DataProvider;
+    });
 
-    // Mock service container with all 5 services
+    // Partial mock: Only methods tested in this suite are mocked.
+    // Full ServiceContainer would include additional methods not under test.
     mockServices = {
       sales: {
         salesCreate: vi.fn(),
@@ -92,7 +93,7 @@ describe("extendWithCustomMethods", () => {
       segments: {
         getOrCreateSegment: vi.fn(),
       },
-    } as unknown as ServiceContainer;
+    } as ServiceContainer;
 
     // Mock Supabase client
     mockSupabaseClient = {

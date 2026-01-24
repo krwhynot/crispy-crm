@@ -2,10 +2,10 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import type { DataProvider } from "ra-core";
 import { useBulkActionsState } from "../useBulkActionsState";
 import type { Opportunity } from "@/atomic-crm/types";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
+import { createMockDataProvider } from "@/tests/utils/typed-mocks";
 
 // Mock React Admin hooks
 vi.mock("ra-core", () => ({

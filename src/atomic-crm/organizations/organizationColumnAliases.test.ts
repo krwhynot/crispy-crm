@@ -75,6 +75,7 @@ describe("findCanonicalField", () => {
   });
 
   it("should handle null/undefined gracefully", () => {
+    // Intentionally testing null/undefined handling for defensive coding
     expect(findCanonicalField(null as unknown as string)).toBe(null);
     expect(findCanonicalField(undefined as unknown as string)).toBe(null);
   });

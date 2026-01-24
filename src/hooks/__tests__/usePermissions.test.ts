@@ -43,12 +43,12 @@ describe("usePermissions", () => {
 
   describe("role booleans for admin user", () => {
     beforeEach(() => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 1, role: "admin", fullName: "Admin User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 1, role: "admin", fullName: "Admin User" },
+          isLoading: false,
+        })
+      );
     });
 
     it("should return isAdmin as true", () => {
@@ -79,12 +79,12 @@ describe("usePermissions", () => {
 
   describe("role booleans for manager user", () => {
     beforeEach(() => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 2, role: "manager", fullName: "Manager User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 2, role: "manager", fullName: "Manager User" },
+          isLoading: false,
+        })
+      );
     });
 
     it("should return isAdmin as false", () => {
