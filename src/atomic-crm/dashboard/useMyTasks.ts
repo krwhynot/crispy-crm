@@ -140,53 +140,67 @@ export function useMyTasks() {
   const error = fetchError ? (fetchError as Error) : null;
 
   /**
-   * Complete a task
-   * OPTIMISTIC UPDATE (Kanban Audit): Uses optimistic UI with rollback
-   * Previously waited for API response before updating UI
+   * Complete a task with proper optimistic updates
+   * RACE CONDITION FIX: Uses React Query's optimistic update pattern
+   * - Cancels outgoing refetches before mutating cache (prevents stale data races)
+   * - Snapshots previous value for rollback on error
+   * - Optimistically updates cache immediately
+   * - Rolls back on error, refetches on settle
    */
-  const completeTask = useCallback(
-    async (taskId: number) => {
+  const completeTaskMutation = useMutation({
+    mutationFn: async (taskId: number) => {
       const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) return;
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
 
-      // Optimistic UI update - mark as deleted immediately
+      await dataProvider.update("tasks", {
+        id: taskId,
+        data: { completed: true, completed_at: new Date().toISOString() },
+        previousData: task,
+      });
+
+      return taskId;
+    },
+    onMutate: async (taskId: number) => {
+      // CRITICAL: Cancel outgoing refetches to prevent race conditions
+      await queryClient.cancelQueries({ queryKey: taskKeys.all });
+
+      // Snapshot previous optimistic updates for rollback
+      const previousOptimisticState = new Map(optimisticUpdates);
+
+      // Optimistically mark task as deleted (completed tasks are hidden)
       setOptimisticUpdates((prev) => {
         const next = new Map(prev);
         next.set(taskId, { deleted: true });
         return next;
       });
 
-      try {
-        await dataProvider.update("tasks", {
-          id: taskId,
-          data: { completed: true, completed_at: new Date().toISOString() },
-          previousData: task,
-        });
+      // Return context for rollback
+      return { previousOptimisticState };
+    },
+    onError: (error: unknown, taskId: number, context) => {
+      logger.error("Failed to complete task", error, { feature: "useMyTasks", taskId });
 
-        // Clear optimistic update on success (task stays hidden as it's now completed on server)
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-
-        // Invalidate tasks query to ensure fresh data on next fetch
-        queryClient.invalidateQueries({ queryKey: taskKeys.all });
-        // Invalidate dashboard KPIs that depend on task/activity data
-        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-        queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      } catch (error: unknown) {
-        logger.error("Failed to complete task", error, { feature: "useMyTasks", taskId });
-        // Rollback optimistic update on failure
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-        throw error;
+      // Rollback optimistic update to snapshot
+      if (context?.previousOptimisticState) {
+        setOptimisticUpdates(context.previousOptimisticState);
       }
     },
-    [dataProvider, queryClient]
+    onSettled: () => {
+      // Refetch to ensure consistency after mutation settles (success or error)
+      // No race condition because we cancelled all previous refetches in onMutate
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+    },
+  });
+
+  const completeTask = useCallback(
+    async (taskId: number) => {
+      await completeTaskMutation.mutateAsync(taskId);
+    },
+    [completeTaskMutation]
   );
 
   /**
@@ -213,60 +227,69 @@ export function useMyTasks() {
   }, []);
 
   /**
-   * Snooze a task by setting snooze_until to end of following day
-   * Uses optimistic UI update for immediate feedback
-   * Uses tasksRef pattern to avoid callback recreation on task changes
+   * Snooze a task with proper optimistic updates
+   * RACE CONDITION FIX: Uses React Query's optimistic update pattern
    *
    * NOTE: Snoozing sets snooze_until (NOT due_date) - the task's due date remains unchanged.
    * The task will be hidden from the active task list until snooze_until has passed.
    */
-  const snoozeTask = useCallback(
-    async (taskId: number) => {
+  const snoozeTaskMutation = useMutation({
+    mutationFn: async (taskId: number) => {
       const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) return;
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
 
       // Calculate snooze date: end of the following day (timezone-aware)
       const snoozeUntil = endOfDay(addDays(new Date(), 1));
 
-      // Optimistic UI update - hide task immediately (snoozed tasks are filtered out)
+      await dataProvider.update("tasks", {
+        id: taskId,
+        data: { snooze_until: snoozeUntil.toISOString() },
+        previousData: task,
+      });
+
+      return taskId;
+    },
+    onMutate: async (taskId: number) => {
+      // CRITICAL: Cancel outgoing refetches to prevent race conditions
+      await queryClient.cancelQueries({ queryKey: taskKeys.all });
+
+      // Snapshot previous optimistic updates for rollback
+      const previousOptimisticState = new Map(optimisticUpdates);
+
+      // Optimistically mark task as deleted (snoozed tasks are hidden)
       setOptimisticUpdates((prev) => {
         const next = new Map(prev);
         next.set(taskId, { deleted: true });
         return next;
       });
 
-      try {
-        await dataProvider.update("tasks", {
-          id: taskId,
-          data: { snooze_until: snoozeUntil.toISOString() },
-          previousData: task,
-        });
+      // Return context for rollback
+      return { previousOptimisticState };
+    },
+    onError: (error: unknown, taskId: number, context) => {
+      logger.error("Failed to snooze task", error, { feature: "useMyTasks", taskId });
 
-        // Clear optimistic update on success
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-
-        // Invalidate tasks query to ensure fresh data on next fetch
-        // This ensures the UI stays in sync when optimistic update is cleared
-        queryClient.invalidateQueries({ queryKey: taskKeys.all });
-        // Invalidate dashboard KPIs that depend on task/activity data
-        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-        queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      } catch (error: unknown) {
-        logger.error("Failed to snooze task", error, { feature: "useMyTasks", taskId });
-        // Rollback optimistic update on failure
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-        throw error;
+      // Rollback optimistic update to snapshot
+      if (context?.previousOptimisticState) {
+        setOptimisticUpdates(context.previousOptimisticState);
       }
     },
-    [dataProvider, queryClient]
+    onSettled: () => {
+      // Refetch to ensure consistency after mutation settles (success or error)
+      // No race condition because we cancelled all previous refetches in onMutate
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+    },
+  });
+
+  const snoozeTask = useCallback(
+    async (taskId: number) => {
+      await snoozeTaskMutation.mutateAsync(taskId);
+    },
+    [snoozeTaskMutation]
   );
 
   /**

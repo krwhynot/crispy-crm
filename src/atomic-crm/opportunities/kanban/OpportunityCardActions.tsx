@@ -22,6 +22,7 @@ import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dia
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
+import { opportunityKeys } from "@/atomic-crm/queryKeys";
 
 interface OpportunityCardActionsProps {
   opportunityId: number;
@@ -35,6 +36,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
+  const queryClient = useQueryClient();
   const record = useRecordContext<Opportunity>();
 
   // State for CloseOpportunityModal
@@ -90,6 +92,9 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
             organization_id: record?.customer_organization_id,
           },
         });
+
+        // Invalidate opportunity caches to update dashboard stats (Won/Lost counters)
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
 
         notify(
           closeTargetStage === STAGE.CLOSED_WON
