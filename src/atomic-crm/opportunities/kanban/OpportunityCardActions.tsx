@@ -8,6 +8,7 @@ import {
   useRecordContext,
   useDataProvider,
 } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { MoreVertical, Eye, Pencil, Trophy, XCircle, Trash2 } from "lucide-react";
 import {
   DropdownMenu,

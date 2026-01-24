@@ -21,6 +21,7 @@
 
 import { useState, useCallback, memo } from "react";
 import { useUpdate, useNotify } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -197,6 +198,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
   // React Admin update hook for PATCH operations
   const [update, { isPending: isUpdating }] = useUpdate();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   /**
    * Handle status progression to next workflow state
