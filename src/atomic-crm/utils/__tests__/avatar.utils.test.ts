@@ -321,6 +321,7 @@ describe("processOrganizationLogo", () => {
     });
 
     it("should preserve existing logo properties when adding src", async () => {
+      // Simulating React Admin file upload: rawFile present, src to be generated
       const orgData: Partial<Organization> = {
         name: "Acme Corp",
         website: "https://acme.com",
@@ -338,6 +339,7 @@ describe("processOrganizationLogo", () => {
     });
 
     it("should not generate logo when website is missing", async () => {
+      // Simulating React Admin file upload state before processing
       const orgData: Partial<Organization> = {
         name: "No Website Corp",
         logo: { rawFile: new File([""], "logo.png") } as unknown as Organization["logo"],

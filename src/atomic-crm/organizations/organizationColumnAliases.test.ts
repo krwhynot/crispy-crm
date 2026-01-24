@@ -104,6 +104,7 @@ describe("mapHeadersToFields", () => {
   });
 
   it("should skip empty/null headers", () => {
+    // Intentionally testing null in headers array for defensive coding
     const headers = ["Organizations", "", null as unknown as string, "PHONE"];
     const mappings = mapHeadersToFields(headers);
 
@@ -113,6 +114,7 @@ describe("mapHeadersToFields", () => {
   });
 
   it("should handle non-array input gracefully", () => {
+    // Intentionally testing null/undefined array input for defensive coding
     expect(mapHeadersToFields(null as unknown as string[])).toEqual({});
     expect(mapHeadersToFields(undefined as unknown as string[])).toEqual({});
   });

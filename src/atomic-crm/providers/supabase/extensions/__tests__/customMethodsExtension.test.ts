@@ -95,7 +95,8 @@ describe("extendWithCustomMethods", () => {
       },
     } as ServiceContainer;
 
-    // Mock Supabase client
+    // Partial mock: Only rpc, storage, and functions APIs are mocked.
+    // Full SupabaseClient includes auth, realtime, etc. not under test.
     mockSupabaseClient = {
       rpc: vi.fn(),
       storage: {
@@ -109,7 +110,7 @@ describe("extendWithCustomMethods", () => {
       functions: {
         invoke: vi.fn(),
       },
-    } as unknown as SupabaseClient;
+    } as SupabaseClient;
 
     config = {
       composedProvider: mockComposedProvider,

@@ -31,7 +31,7 @@ import { useQueryClient } from "@tanstack/react-query";
  * Typed mock data provider for bulk actions tests
  * Only includes methods used by useBulkActionsState hook
  */
-interface MockBulkActionsDataProvider extends Pick<DataProvider, "update" | "deleteMany"> {
+interface MockBulkActionsDataProvider {
   update: ReturnType<typeof vi.fn>;
   deleteMany: ReturnType<typeof vi.fn>;
 }
@@ -63,7 +63,12 @@ describe("useBulkActionsState - Parallel Execution", () => {
       deleteMany: vi.fn(),
     };
 
-    vi.mocked(useDataProvider).mockReturnValue(mockDataProvider as unknown as DataProvider);
+    vi.mocked(useDataProvider).mockReturnValue(
+      createMockDataProvider({
+        update: mockDataProvider.update,
+        deleteMany: mockDataProvider.deleteMany,
+      })
+    );
     vi.mocked(useNotify).mockReturnValue(mockNotify);
     vi.mocked(useRefresh).mockReturnValue(mockRefresh);
 
@@ -252,7 +257,12 @@ describe("useBulkActionsState - Parallel Execution", () => {
     });
 
     vi.resetAllMocks();
-    vi.mocked(useDataProvider).mockReturnValue(mockDataProvider as unknown as DataProvider);
+    vi.mocked(useDataProvider).mockReturnValue(
+      createMockDataProvider({
+        update: mockDataProvider.update,
+        deleteMany: mockDataProvider.deleteMany,
+      })
+    );
     vi.mocked(useNotify).mockReturnValue(mockNotify);
     vi.mocked(useRefresh).mockReturnValue(mockRefresh);
     vi.mocked(useQueryClient).mockReturnValue(queryClient);
@@ -285,7 +295,12 @@ describe("useBulkActionsState - Parallel Execution", () => {
     });
 
     vi.resetAllMocks();
-    vi.mocked(useDataProvider).mockReturnValue(mockDataProvider as unknown as DataProvider);
+    vi.mocked(useDataProvider).mockReturnValue(
+      createMockDataProvider({
+        update: mockDataProvider.update,
+        deleteMany: mockDataProvider.deleteMany,
+      })
+    );
     vi.mocked(useNotify).mockReturnValue(mockNotify);
     vi.mocked(useRefresh).mockReturnValue(mockRefresh);
     vi.mocked(useQueryClient).mockReturnValue(queryClient);

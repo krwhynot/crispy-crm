@@ -115,12 +115,12 @@ describe("usePermissions", () => {
 
   describe("role booleans for rep user", () => {
     beforeEach(() => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 3, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 3, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
     });
 
     it("should return isAdmin as false", () => {
@@ -151,24 +151,24 @@ describe("usePermissions", () => {
 
   describe("can() method delegates to canAccess", () => {
     it("should allow admin to delete contacts", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 1, role: "admin", fullName: "Admin User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 1, role: "admin", fullName: "Admin User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.can("delete", "contacts")).toBe(true);
     });
 
     it("should allow admin to access sales resource", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 1, role: "admin", fullName: "Admin User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 1, role: "admin", fullName: "Admin User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.can("list", "sales")).toBe(true);
@@ -176,12 +176,12 @@ describe("usePermissions", () => {
     });
 
     it("should deny manager access to sales resource", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 2, role: "manager", fullName: "Manager User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 2, role: "manager", fullName: "Manager User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.can("list", "sales")).toBe(false);
@@ -189,24 +189,24 @@ describe("usePermissions", () => {
     });
 
     it("should deny rep access to sales resource", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 3, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 3, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.can("list", "sales")).toBe(false);
     });
 
     it("should allow rep to create contacts", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 3, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 3, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.can("create", "contacts")).toBe(true);
@@ -214,12 +214,12 @@ describe("usePermissions", () => {
 
     it("should allow rep to edit owned records", () => {
       const salesId = 123;
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: salesId, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: salesId, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       const ownedRecord = { id: 1, sales_id: salesId, name: "Test Contact" };
@@ -228,12 +228,12 @@ describe("usePermissions", () => {
 
     it("should deny rep edit access to non-owned records", () => {
       const salesId = 123;
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: salesId, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: salesId, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       const otherRecord = { id: 1, sales_id: 999, name: "Other Contact" };
@@ -242,12 +242,12 @@ describe("usePermissions", () => {
 
     it("should allow rep delete access via created_by ownership", () => {
       const salesId = 456;
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: salesId, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: salesId, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       const createdRecord = { id: 1, sales_id: 999, created_by: salesId };
@@ -256,12 +256,12 @@ describe("usePermissions", () => {
 
     it("should allow rep edit via opportunity_owner_id ownership", () => {
       const salesId = 789;
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: salesId, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: salesId, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       const opportunity = { id: 1, sales_id: 999, opportunity_owner_id: salesId };
@@ -270,12 +270,12 @@ describe("usePermissions", () => {
 
     it("should allow rep edit via account_manager_id ownership", () => {
       const salesId = 101;
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: salesId, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: salesId, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       const organization = { id: 1, sales_id: 999, account_manager_id: salesId };

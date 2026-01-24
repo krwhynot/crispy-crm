@@ -51,18 +51,19 @@ describe("useFormShortcuts", () => {
     const onCancel = vi.fn();
     const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
-    const event = {
+    const preventDefault = vi.fn();
+    const event = createMockKeyboardEvent({
       key: "Escape",
       metaKey: false,
       shiftKey: false,
-      preventDefault: vi.fn(),
+      preventDefault,
       target: document.createElement("input"),
-    } as unknown as React.KeyboardEvent;
+    });
 
     result.current.handleKeyDown(event);
 
     expect(onCancel).toHaveBeenCalledTimes(1);
-    expect(event.preventDefault).toHaveBeenCalled();
+    expect(preventDefault).toHaveBeenCalled();
   });
 
   it("does NOT call onCancel when Escape is pressed in textarea", () => {
@@ -71,18 +72,19 @@ describe("useFormShortcuts", () => {
     const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const textarea = document.createElement("textarea");
-    const event = {
+    const preventDefault = vi.fn();
+    const event = createMockKeyboardEvent({
       key: "Escape",
       metaKey: false,
       shiftKey: false,
-      preventDefault: vi.fn(),
+      preventDefault,
       target: textarea,
-    } as unknown as React.KeyboardEvent;
+    });
 
     result.current.handleKeyDown(event);
 
     expect(onCancel).not.toHaveBeenCalled();
-    expect(event.preventDefault).not.toHaveBeenCalled();
+    expect(preventDefault).not.toHaveBeenCalled();
   });
 
   it("does NOT call onCancel when Escape is pressed in contentEditable", () => {
