@@ -66,7 +66,7 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
         </div>
       )}
       {record.linkedin_url && (
-        <div className="flex flex-row items-center gap-1 min-h-[24px]">
+        <div className="flex flex-row items-center gap-1 min-h-11">
           <Linkedin className="w-4 h-4" />
           <a
             className="underline hover:no-underline"
@@ -80,7 +80,7 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
         </div>
       )}
       {record.phone && (
-        <div className="flex flex-row items-center gap-1 min-h-[24px]">
+        <div className="flex flex-row items-center gap-1 min-h-11">
           <Phone className="w-4 h-4" />
           <a href={`tel:${record.phone}`} className="underline hover:no-underline">
             {record.phone}

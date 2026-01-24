@@ -6,21 +6,23 @@ import type { AuthProvider, DataProvider } from "ra-core";
 import { CustomRoutes, localStorageStore, Resource } from "ra-core";
 import React, { useEffect } from "react";
 import { Navigate, Route, useParams } from "react-router-dom";
-import organizations from "../organizations";
-import contacts from "../contacts";
+// Import from resource.tsx directly to avoid bundling all barrel exports
+// This leverages the existing lazy loading in each resource.tsx file
+import organizations from "../organizations/resource";
+import contacts from "../contacts/resource";
 import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard";
-import opportunities from "../opportunities";
-import products from "../products";
-import productDistributors from "../productDistributors";
-import tasks from "../tasks";
-import notifications from "../notifications";
-import activities from "../activities";
+import opportunities from "../opportunities/resource";
+import products from "../products/resource";
+import productDistributors from "../productDistributors/resource";
+import tasks from "../tasks/resource";
+import notifications from "../notifications/resource";
+import activities from "../activities/resource";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
   dataProvider as supabaseDataProvider,
 } from "../providers/supabase";
-import sales from "../sales";
+import sales from "../sales/resource";
 import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
 import { ConfigurationProvider } from "./ConfigurationContext";

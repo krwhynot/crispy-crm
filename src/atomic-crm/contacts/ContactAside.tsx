@@ -152,7 +152,7 @@ const PersonalInfoRow = ({
   primary: ReactNode;
   showType?: boolean;
 }) => (
-  <div className="flex flex-row items-center gap-2 min-h-6">
+  <div className="flex flex-row items-center gap-2 min-h-11">
     {icon}
     <div className="flex flex-wrap gap-x-2 gap-y-0">
       {primary}
