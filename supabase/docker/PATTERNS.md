@@ -44,7 +44,7 @@ Reduces exposed ports from 28+ to 3 by overriding the base Supabase configuratio
 # supabase/docker/docker-compose.override.yml
 # NOTE: The `version` field is obsolete in Docker Compose v2+ and may show warnings.
 # It's retained for compatibility but can be safely removed.
-version: '3.8'
+version: "3.8"
 
 services:
   # --- EXPOSED SERVICES ---
@@ -52,29 +52,30 @@ services:
   # Kong: API Gateway (primary entry point for your application)
   kong:
     ports:
-      - "54321:8000"  # REST API, GraphQL, Auth endpoints
+      - "54321:8000" # REST API, GraphQL, Auth endpoints
 
   # Studio: Database management UI
   studio:
     ports:
-      - "54323:3000"  # Supabase Studio web interface
+      - "54323:3000" # Supabase Studio web interface
 
   # --- INTERNAL SERVICES (no host exposure) ---
   # By defining these services with empty ports lists, we override
   # the base docker-compose.yml and keep them internal to Docker network.
 
   db:
-    ports: []  # PostgreSQL - accessed via Kong API
+    ports: [] # PostgreSQL - accessed via Kong API
 
   auth:
-    ports: []  # GoTrue auth service
+    ports: [] # GoTrue auth service
 
   rest:
-    ports: []  # PostgREST
+    ports: [] # PostgREST
   # ... repeat for all internal services
 ```
 
 **Key points:**
+
 - Empty `ports: []` overrides base docker-compose.yml to remove host exposure
 - Kong acts as single entry point for all API requests
 - Internal services communicate via Docker DNS (service names)
@@ -121,6 +122,7 @@ max_connections = 100
 ```
 
 **Key points:**
+
 - `shared_buffers` at 25% is PostgreSQL best practice
 - `effective_cache_size` helps query planner but allocates nothing
 - `work_mem` is per-operation, not per-connection - keep low to prevent OOM
@@ -166,6 +168,7 @@ track_functions = all
 ```
 
 **Key points:**
+
 - `log_min_duration_statement = 1000` catches queries over 1 second
 - `log_temp_files = 0` logs ALL temp file usage (helps identify queries needing more work_mem)
 - `log_statement = 'mod'` logs INSERT/UPDATE/DELETE but not SELECT (reduces noise)
@@ -188,43 +191,44 @@ Docker network isolation pattern where internal services (PostgreSQL, Auth, Post
 
 # All internal services have ports removed
 db:
-  ports: []       # Access via Kong or docker exec
+  ports: [] # Access via Kong or docker exec
 
 auth:
-  ports: []       # Access via Kong at /auth/v1/
+  ports: [] # Access via Kong at /auth/v1/
 
 rest:
-  ports: []       # Access via Kong at /rest/v1/
+  ports: [] # Access via Kong at /rest/v1/
 
 realtime:
-  ports: []       # Access via Kong WebSocket
+  ports: [] # Access via Kong WebSocket
 
 storage:
-  ports: []       # Access via Kong at /storage/v1/
+  ports: [] # Access via Kong at /storage/v1/
 
 functions:
-  ports: []       # Access via Kong at /functions/v1/
+  ports: [] # Access via Kong at /functions/v1/
 
 imgproxy:
-  ports: []       # Image optimization
+  ports: [] # Image optimization
 
 meta:
-  ports: []       # Metadata service
+  ports: [] # Metadata service
 
 analytics:
-  ports: []       # Analytics service
+  ports: [] # Analytics service
 
 inbucket:
-  ports: []       # Email testing (uncomment to expose)
+  ports: [] # Email testing (uncomment to expose)
 
 vector:
-  ports: []       # Logging service
+  ports: [] # Logging service
 
 logflare:
-  ports: []       # Log aggregation
+  ports: [] # Log aggregation
 ```
 
 **Key points:**
+
 - All services accessible via Kong gateway at port 54321
 - Use `docker exec` for direct database access when needed
 - Service-to-service communication uses Docker DNS names
@@ -236,12 +240,12 @@ logflare:
 
 ## Pattern Comparison Table
 
-| Aspect | Port Consolidation | Memory Tuning | Dev Logging | Service Isolation |
-|--------|-------------------|---------------|-------------|-------------------|
-| **Purpose** | Reduce host port exposure | Optimize for 2GB container | Debug queries | Security boundary |
-| **When to use** | Always | Always | Development only | Always |
-| **Key file** | docker-compose.override.yml | postgres-dev.conf | postgres-dev.conf | docker-compose.override.yml |
-| **Complexity** | Low | Medium | Low | Low |
+| Aspect          | Port Consolidation          | Memory Tuning              | Dev Logging       | Service Isolation           |
+| --------------- | --------------------------- | -------------------------- | ----------------- | --------------------------- |
+| **Purpose**     | Reduce host port exposure   | Optimize for 2GB container | Debug queries     | Security boundary           |
+| **When to use** | Always                      | Always                     | Development only  | Always                      |
+| **Key file**    | docker-compose.override.yml | postgres-dev.conf          | postgres-dev.conf | docker-compose.override.yml |
+| **Complexity**  | Low                         | Medium                     | Low               | Low                         |
 
 ---
 
@@ -316,12 +320,12 @@ When modifying Supabase Docker configuration:
 
 ## File Reference
 
-| Pattern | Primary Files |
-|---------|---------------|
+| Pattern                   | Primary Files                 |
+| ------------------------- | ----------------------------- |
 | **A: Port Consolidation** | `docker-compose.override.yml` |
-| **B: Memory Tuning** | `postgres-dev.conf` |
-| **C: Dev Logging** | `postgres-dev.conf` |
-| **D: Service Isolation** | `docker-compose.override.yml` |
+| **B: Memory Tuning**      | `postgres-dev.conf`           |
+| **C: Dev Logging**        | `postgres-dev.conf`           |
+| **D: Service Isolation**  | `docker-compose.override.yml` |
 
 ---
 

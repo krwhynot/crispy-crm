@@ -30,19 +30,19 @@ Canonical patterns for PostgreSQL migrations in Crispy CRM. All examples are fro
 
 ## Quick Reference
 
-| Pattern | Use When |
-|---------|----------|
-| A: Table Structure | Creating new tables |
-| B: RLS Policies | Controlling row-level access |
-| C: View Creation | Creating denormalized views |
-| D: Soft Delete | Implementing recoverable delete |
-| E: Audit Trail | Tracking who changed what |
-| F: RPC Functions | Atomic multi-table operations |
-| G: Enum Types | Constraining column values |
-| H: Foreign Keys | Referential integrity |
-| I: Indexes | Query optimization |
-| J: Multi-Tenant | Team isolation patterns |
-| K: JSONB RPC Functions | Complex RPC with flexible inputs |
+| Pattern                   | Use When                                           |
+| ------------------------- | -------------------------------------------------- |
+| A: Table Structure        | Creating new tables                                |
+| B: RLS Policies           | Controlling row-level access                       |
+| C: View Creation          | Creating denormalized views                        |
+| D: Soft Delete            | Implementing recoverable delete                    |
+| E: Audit Trail            | Tracking who changed what                          |
+| F: RPC Functions          | Atomic multi-table operations                      |
+| G: Enum Types             | Constraining column values                         |
+| H: Foreign Keys           | Referential integrity                              |
+| I: Indexes                | Query optimization                                 |
+| J: Multi-Tenant           | Team isolation patterns                            |
+| K: JSONB RPC Functions    | Complex RPC with flexible inputs                   |
 | L: Unified Timeline Views | Aggregating multiple entities into sortable stream |
 
 ---
@@ -116,13 +116,13 @@ CREATE TABLE IF NOT EXISTS distributor_principal_authorizations (
 
 ### Column Order Convention
 
-| Order | Category | Examples |
-|-------|----------|----------|
-| 1 | Primary Key | `id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY` |
-| 2 | Foreign Keys | `organization_id BIGINT NOT NULL REFERENCES organizations(id)` |
-| 3 | Business Columns | `name TEXT NOT NULL`, `status TEXT`, `is_active BOOLEAN` |
-| 4 | Audit Columns | `created_at`, `updated_at`, `created_by`, `deleted_at` |
-| 5 | Constraints | `CONSTRAINT`, `UNIQUE`, `CHECK` |
+| Order | Category         | Examples                                                       |
+| ----- | ---------------- | -------------------------------------------------------------- |
+| 1     | Primary Key      | `id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY`           |
+| 2     | Foreign Keys     | `organization_id BIGINT NOT NULL REFERENCES organizations(id)` |
+| 3     | Business Columns | `name TEXT NOT NULL`, `status TEXT`, `is_active BOOLEAN`       |
+| 4     | Audit Columns    | `created_at`, `updated_at`, `created_by`, `deleted_at`         |
+| 5     | Constraints      | `CONSTRAINT`, `UNIQUE`, `CHECK`                                |
 
 ### Key Points
 
@@ -194,6 +194,7 @@ CREATE POLICY authenticated_select_contacts ON contacts
 ```
 
 **Pattern Evolution:**
+
 - **Before (2024)**: `USING (true)` relied on `TO authenticated` clause for auth check
 - **After (2025)**: `auth.uid() IS NOT NULL` makes authentication requirement explicit
 - **Why change?**: Security auditors can immediately see the auth requirement in the USING clause
@@ -264,11 +265,11 @@ CREATE POLICY "Users can view opportunity_contacts through opportunities"
 
 ### RLS Access Pattern Comparison
 
-| Pattern | Use When | Example Tables |
-|---------|----------|----------------|
-| **Shared Team** | All team members collaborate on same data | contacts, organizations, opportunities |
-| **Personal** | Each user has their own private data | tasks, user_preferences |
-| **Complex** | Access derived from parent relationship | opportunity_contacts, opportunity_products |
+| Pattern         | Use When                                  | Example Tables                             |
+| --------------- | ----------------------------------------- | ------------------------------------------ |
+| **Shared Team** | All team members collaborate on same data | contacts, organizations, opportunities     |
+| **Personal**    | Each user has their own private data      | tasks, user_preferences                    |
+| **Complex**     | Access derived from parent relationship   | opportunity_contacts, opportunity_products |
 
 > **Note:** The `opportunity_participants` junction table shown in the Complex pattern example above is a legacy approach. For most use cases, the **Shared Team** pattern (where all authenticated users in the organization can access records) is simpler and preferred. Use `opportunity_participants` only when you need fine-grained per-opportunity access control beyond ownership.
 
@@ -334,12 +335,12 @@ COMMENT ON VIEW organizations_summary IS
 
 ### View Security Comparison
 
-| Attribute | `security_invoker = true` | `security_invoker = false` (default) |
-|-----------|---------------------------|--------------------------------------|
-| **RLS Enforcement** | Respects underlying table RLS | Bypasses RLS (runs as owner) |
-| **Use For** | User-facing data | Admin-only system views |
-| **PostgreSQL Version** | 15+ required | All versions |
-| **Security Risk** | Low | High - potential data leak |
+| Attribute              | `security_invoker = true`     | `security_invoker = false` (default) |
+| ---------------------- | ----------------------------- | ------------------------------------ |
+| **RLS Enforcement**    | Respects underlying table RLS | Bypasses RLS (runs as owner)         |
+| **Use For**            | User-facing data              | Admin-only system views              |
+| **PostgreSQL Version** | 15+ required                  | All versions                         |
+| **Security Risk**      | Low                           | High - potential data leak           |
 
 ### Key Points
 
@@ -448,15 +449,15 @@ $$;
 
 ### Hard Delete vs Soft Delete Comparison
 
-| Aspect | Hard Delete | Soft Delete |
-|--------|-------------|-------------|
-| **SQL Command** | `DELETE FROM table WHERE id = X` | `UPDATE table SET deleted_at = NOW() WHERE id = X` |
-| **Recovery** | Impossible without backup | `SET deleted_at = NULL` |
-| **Foreign Keys** | Cascades automatically | Must cascade manually (function) |
-| **Query Complexity** | Simple | Requires `WHERE deleted_at IS NULL` everywhere |
-| **Storage** | Data removed | Data preserved |
-| **Audit Trail** | Lost | Preserved |
-| **Use When** | Test data, GDPR right-to-delete | Business data, audit requirements |
+| Aspect               | Hard Delete                      | Soft Delete                                        |
+| -------------------- | -------------------------------- | -------------------------------------------------- |
+| **SQL Command**      | `DELETE FROM table WHERE id = X` | `UPDATE table SET deleted_at = NOW() WHERE id = X` |
+| **Recovery**         | Impossible without backup        | `SET deleted_at = NULL`                            |
+| **Foreign Keys**     | Cascades automatically           | Must cascade manually (function)                   |
+| **Query Complexity** | Simple                           | Requires `WHERE deleted_at IS NULL` everywhere     |
+| **Storage**          | Data removed                     | Data preserved                                     |
+| **Audit Trail**      | Lost                             | Preserved                                          |
+| **Use When**         | Test data, GDPR right-to-delete  | Business data, audit requirements                  |
 
 ### Key Points
 
@@ -542,13 +543,13 @@ CREATE TRIGGER set_updated_by_contacts
 
 ### Audit Column Reference
 
-| Column | Type | Auto-Population | Purpose |
-|--------|------|-----------------|---------|
-| `created_at` | `TIMESTAMPTZ` | `DEFAULT NOW()` | When record was created |
-| `updated_at` | `TIMESTAMPTZ` | Trigger | When record was last modified |
-| `created_by` | `BIGINT` | `DEFAULT get_current_sales_id()` | Who created the record |
-| `updated_by` | `BIGINT` | Trigger | Who last modified the record |
-| `deleted_at` | `TIMESTAMPTZ` | Manual | When record was soft-deleted |
+| Column       | Type          | Auto-Population                  | Purpose                       |
+| ------------ | ------------- | -------------------------------- | ----------------------------- |
+| `created_at` | `TIMESTAMPTZ` | `DEFAULT NOW()`                  | When record was created       |
+| `updated_at` | `TIMESTAMPTZ` | Trigger                          | When record was last modified |
+| `created_by` | `BIGINT`      | `DEFAULT get_current_sales_id()` | Who created the record        |
+| `updated_by` | `BIGINT`      | Trigger                          | Who last modified the record  |
+| `deleted_at` | `TIMESTAMPTZ` | Manual                           | When record was soft-deleted  |
 
 ### Key Points
 
@@ -658,13 +659,13 @@ GRANT EXECUTE ON FUNCTION public.sync_opportunity_with_products(...) TO authenti
 
 ### SECURITY DEFINER vs INVOKER Comparison
 
-| Aspect | SECURITY DEFINER | SECURITY INVOKER |
-|--------|------------------|------------------|
-| **Permissions** | Runs as function owner | Runs as calling user |
-| **RLS Enforcement** | Bypasses RLS | Respects RLS |
-| **Use When** | System operations, helper functions | User operations |
-| **Risk Level** | Higher (privilege escalation) | Lower |
-| **`search_path` Required** | Yes, always set explicitly | Optional |
+| Aspect                     | SECURITY DEFINER                    | SECURITY INVOKER     |
+| -------------------------- | ----------------------------------- | -------------------- |
+| **Permissions**            | Runs as function owner              | Runs as calling user |
+| **RLS Enforcement**        | Bypasses RLS                        | Respects RLS         |
+| **Use When**               | System operations, helper functions | User operations      |
+| **Risk Level**             | Higher (privilege escalation)       | Lower                |
+| **`search_path` Required** | Yes, always set explicitly          | Optional             |
 
 ### Key Points
 
@@ -729,11 +730,11 @@ END $$;
 
 ### Enum Naming Convention
 
-| Convention | Example |
-|------------|---------|
+| Convention    | Example                                                     |
+| ------------- | ----------------------------------------------------------- |
 | **Type name** | `snake_case`, singular: `sample_status`, `interaction_type` |
-| **Values** | `snake_case`: `feedback_pending`, `closed_won` |
-| **Prefix** | Optional, for disambiguation: `opportunity_stage` |
+| **Values**    | `snake_case`: `feedback_pending`, `closed_won`              |
+| **Prefix**    | Optional, for disambiguation: `opportunity_stage`           |
 
 ### Key Points
 
@@ -791,12 +792,12 @@ CREATE INDEX IF NOT EXISTS idx_opportunities_related_opportunity_id
 
 ### Foreign Key Cascading Comparison
 
-| Strategy | SQL | Use When |
-|----------|-----|----------|
-| **CASCADE** | `ON DELETE CASCADE` | Child meaningless without parent (junction tables) |
-| **SET NULL** | `ON DELETE SET NULL` | Preserve data, clear reference (audit columns) |
-| **RESTRICT** | `ON DELETE RESTRICT` | Prevent deletion if children exist |
-| **NO ACTION** | Default | Same as RESTRICT, checks deferred |
+| Strategy      | SQL                  | Use When                                           |
+| ------------- | -------------------- | -------------------------------------------------- |
+| **CASCADE**   | `ON DELETE CASCADE`  | Child meaningless without parent (junction tables) |
+| **SET NULL**  | `ON DELETE SET NULL` | Preserve data, clear reference (audit columns)     |
+| **RESTRICT**  | `ON DELETE RESTRICT` | Prevent deletion if children exist                 |
+| **NO ACTION** | Default              | Same as RESTRICT, checks deferred                  |
 
 ### Key Points
 
@@ -878,12 +879,12 @@ Examples:
 
 ### Index Strategy Reference
 
-| Index Type | Pattern | Use When |
-|------------|---------|----------|
-| **Partial** | `WHERE deleted_at IS NULL` | Most queries filter soft deletes |
-| **Composite** | `(col1, col2)` | Multi-column WHERE clauses |
-| **Covering** | `(id, name)` | Avoid table lookup in JOINs |
-| **FK Index** | `(foreign_key_id)` | Every foreign key column |
+| Index Type    | Pattern                    | Use When                         |
+| ------------- | -------------------------- | -------------------------------- |
+| **Partial**   | `WHERE deleted_at IS NULL` | Most queries filter soft deletes |
+| **Composite** | `(col1, col2)`             | Multi-column WHERE clauses       |
+| **Covering**  | `(id, name)`               | Avoid table lookup in JOINs      |
+| **FK Index**  | `(foreign_key_id)`         | Every foreign key column         |
 
 ### Key Points
 
@@ -1112,14 +1113,14 @@ END;
 
 ### JSONB Input Validation Checklist
 
-| Validation Type | Pattern | Example |
-|-----------------|---------|---------|
-| **Required Object** | `IF p_data IS NULL THEN RAISE` | `IF p_activity IS NULL THEN RAISE EXCEPTION 'Activity data is required'` |
-| **Required Field** | `IF p_data->>'field' IS NULL` | `IF p_activity->>'subject' IS NULL THEN RAISE EXCEPTION 'Subject required'` |
-| **Empty String** | `trim(p_data->>'field') = ''` | `IF trim(p_activity->>'subject') = '' THEN RAISE EXCEPTION 'Subject empty'` |
-| **Key Exists** | `p_data ? 'key'` | `IF opportunity_data ? 'contact_ids' THEN ...` |
-| **Array Length** | `jsonb_array_length(p_data->'arr')` | `IF jsonb_array_length(products) = 0 THEN RAISE EXCEPTION 'Products required'` |
-| **OR Condition** | Multiple field checks | `IF field1 IS NULL AND field2 IS NULL THEN RAISE EXCEPTION 'Need at least one'` |
+| Validation Type     | Pattern                             | Example                                                                         |
+| ------------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
+| **Required Object** | `IF p_data IS NULL THEN RAISE`      | `IF p_activity IS NULL THEN RAISE EXCEPTION 'Activity data is required'`        |
+| **Required Field**  | `IF p_data->>'field' IS NULL`       | `IF p_activity->>'subject' IS NULL THEN RAISE EXCEPTION 'Subject required'`     |
+| **Empty String**    | `trim(p_data->>'field') = ''`       | `IF trim(p_activity->>'subject') = '' THEN RAISE EXCEPTION 'Subject empty'`     |
+| **Key Exists**      | `p_data ? 'key'`                    | `IF opportunity_data ? 'contact_ids' THEN ...`                                  |
+| **Array Length**    | `jsonb_array_length(p_data->'arr')` | `IF jsonb_array_length(products) = 0 THEN RAISE EXCEPTION 'Products required'`  |
+| **OR Condition**    | Multiple field checks               | `IF field1 IS NULL AND field2 IS NULL THEN RAISE EXCEPTION 'Need at least one'` |
 
 ### Key Points
 
@@ -1217,14 +1218,14 @@ COMMENT ON VIEW entity_timeline IS
 
 ### Timeline View Design Requirements
 
-| Requirement | Implementation |
-|-------------|----------------|
-| **Discriminator** | Add `entry_type` column to identify source table |
-| **Subtype** | Add `subtype` column for specific classification |
-| **Unified Date** | Alias different date columns to single `entry_date` |
-| **NULL Placeholders** | Use `NULL::type AS column_name` for missing columns |
-| **Soft Delete Filter** | Every branch needs `WHERE deleted_at IS NULL` |
-| **Business Rules** | Apply per-branch filters (e.g., snooze logic) |
+| Requirement            | Implementation                                      |
+| ---------------------- | --------------------------------------------------- |
+| **Discriminator**      | Add `entry_type` column to identify source table    |
+| **Subtype**            | Add `subtype` column for specific classification    |
+| **Unified Date**       | Alias different date columns to single `entry_date` |
+| **NULL Placeholders**  | Use `NULL::type AS column_name` for missing columns |
+| **Soft Delete Filter** | Every branch needs `WHERE deleted_at IS NULL`       |
+| **Business Rules**     | Apply per-branch filters (e.g., snooze logic)       |
 
 ### Performance Optimization
 
@@ -1519,6 +1520,7 @@ Examples:
 ```
 
 **Naming Guidelines:**
+
 - Use descriptive, action-oriented names
 - Prefix with action: `create_`, `add_`, `fix_`, `update_`, `remove_`
 - Include affected table/feature

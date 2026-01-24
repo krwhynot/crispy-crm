@@ -54,9 +54,10 @@ export function getSupabaseAdmin(): SupabaseClient {
     // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
     // (Supabase CLI blocks SUPABASE_* prefixed vars in .env files for security)
     const url = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
-    const serviceKey = Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
-                       Deno.env.get("SERVICE_ROLE_KEY") ||
-                       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const serviceKey =
+      Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
+      Deno.env.get("SERVICE_ROLE_KEY") ||
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
     if (!url || !serviceKey) {
       throw new Error("Missing required environment variables for Supabase admin client");
@@ -86,6 +87,7 @@ export const supabaseAdmin: SupabaseClient = new Proxy({} as SupabaseClient, {
 **When to use**: Any Edge Function that needs to bypass RLS (admin operations, cron jobs, cross-user queries).
 
 **Key points:**
+
 - Lazy singleton prevents initialization errors when env vars aren't ready
 - `LOCAL_` prefix enables Docker/local development (Supabase CLI blocks `SUPABASE_*` in .env)
 - Proxy pattern maintains backward compatibility with direct `supabaseAdmin` imports
@@ -112,10 +114,7 @@ const DEVELOPMENT_ORIGINS = [
   "http://127.0.0.1:3000",
 ];
 
-const PRODUCTION_ORIGINS = [
-  "https://crispy-crm.vercel.app",
-  "https://www.crispy-crm.vercel.app",
-];
+const PRODUCTION_ORIGINS = ["https://crispy-crm.vercel.app", "https://www.crispy-crm.vercel.app"];
 
 function getAllAllowedOrigins(): string[] {
   const envOrigins = Deno.env.get("ALLOWED_ORIGINS");
@@ -177,6 +176,7 @@ Deno.serve(async (req: Request) => {
 **When to use**: User-facing APIs called from the browser (not cron jobs or internal functions).
 
 **Key points:**
+
 - Echo back the request origin if it's in the allowlist (required for credentialed requests)
 - `ALLOWED_ORIGINS` env var extends the allowlist at runtime
 - Always handle OPTIONS preflight with 204 No Content
@@ -203,15 +203,17 @@ function isOriginAllowed(origin: string | null, allowedOrigins: string[]): boole
  * Combines DEVELOPMENT_ORIGINS, PRODUCTION_ORIGINS, and ALLOWED_ORIGINS env var.
  */
 export function getAllowedOrigins(): string[] {
-  return getAllAllowedOrigins();  // Internal function that builds the list
+  return getAllAllowedOrigins(); // Internal function that builds the list
 }
 ```
 
 **When to use**:
+
 - `getAllowedOrigins()`: Debugging CORS issues, logging which origins are configured
 - `isOriginAllowed()`: Custom validation logic outside of `createCorsHeaders()`
 
 **Example: Debugging CORS configuration**:
+
 ```ts
 import { getAllowedOrigins, createCorsHeaders } from "../_shared/cors-config.ts";
 
@@ -238,6 +240,7 @@ Three distinct types with different auth and response patterns.
 Scheduled tasks triggered by pg_cron. No CORS, secret-based auth.
 
 **Daily Digest (v3.0)** - Reference implementation for cron functions:
+
 - **Fail-Fast Per User**: Uses `Promise.allSettled` for parallel processing with isolated failures
 - **Opt-In Preference**: Respects `digest_opt_in` user preference (skips opted-out users)
 - **Empty Skip**: Skips users with no actionable items (tasks due, overdue, stale deals)
@@ -250,8 +253,8 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
 const CRON_SECRET = Deno.env.get("CRON_SECRET");
-const SERVICE_ROLE_KEY = Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
-                         Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const SERVICE_ROLE_KEY =
+  Deno.env.get("LOCAL_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 Deno.serve(async (req) => {
   try {
@@ -261,24 +264,24 @@ Deno.serve(async (req) => {
 
     if (!token || (token !== CRON_SECRET && token !== SERVICE_ROLE_KEY)) {
       console.warn("Unauthorized access attempt");
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 401, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // ... cron logic using supabaseAdmin ...
 
-    return new Response(
-      JSON.stringify({ success: true, count: 42 }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ success: true, count: 42 }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Unexpected error:", error);
-    return new Response(
-      JSON.stringify({ error: "Internal server error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 });
 ```
@@ -314,10 +317,10 @@ Deno.serve(async (req: Request) => {
   // Validate JWT
   const authHeader = req.headers.get("Authorization");
   if (!authHeader?.startsWith("Bearer ")) {
-    return new Response(
-      JSON.stringify({ error: "Missing Authorization header" }),
-      { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Missing Authorization header" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 
   // Create user-context client
@@ -329,10 +332,10 @@ Deno.serve(async (req: Request) => {
 
   const { data, error } = await supabaseClient.auth.getUser();
   if (error || !data?.user) {
-    return new Response(
-      JSON.stringify({ error: "Invalid token" }),
-      { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Invalid token" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 
   // ... validated user logic ...
@@ -371,8 +374,13 @@ Deno.serve(async (req) => {
   return htmlResponse("Success", "Unsubscribed", "...", true, 200);
 });
 
-function htmlResponse(title: string, heading: string, message: string,
-                      isSuccess: boolean, status: number): Response {
+function htmlResponse(
+  title: string,
+  heading: string,
+  message: string,
+  isSuccess: boolean,
+  status: number
+): Response {
   return new Response(`<!DOCTYPE html>...`, {
     status,
     headers: {
@@ -410,9 +418,10 @@ import { z } from "npm:zod@3.22.4";
 ```ts
 // Always use fallback pattern for local dev compatibility
 const supabaseUrl = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
-const serviceKey = Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
-                   Deno.env.get("SERVICE_ROLE_KEY") ||
-                   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const serviceKey =
+  Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
+  Deno.env.get("SERVICE_ROLE_KEY") ||
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 // Fail-fast if required vars missing
 if (!supabaseUrl || !serviceKey) {
@@ -434,15 +443,16 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     // Fail-fast: log and return error
     console.error("Error:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 });
 ```
 
 **Key differences from Node.js:**
+
 - `Deno.serve()` instead of Express/Fastify
 - `Deno.env.get()` instead of `process.env`
 - JSR (`jsr:`) and npm (`npm:`) URL imports instead of `node_modules`
@@ -452,15 +462,15 @@ Deno.serve(async (req: Request) => {
 
 ## Comparison Table
 
-| Aspect | Cron Function | User-Facing API | Public Endpoint |
-|--------|---------------|-----------------|-----------------|
-| **Auth** | CRON_SECRET / SERVICE_ROLE_KEY | JWT (Bearer token) | Token in URL params |
-| **CORS** | Not needed | Required (createCorsHeaders) | Not needed |
-| **Client** | supabaseAdmin only | Both admin + user client | supabaseAdmin only |
-| **Response** | JSON | JSON with CORS headers | HTML or JSON |
-| **Trigger** | pg_cron schedule | Browser fetch | Email link click |
-| **Validation** | Minimal | Zod at boundary | Token validation |
-| **Example** | daily-digest (v3.0) | users | digest-opt-out |
+| Aspect         | Cron Function                  | User-Facing API              | Public Endpoint     |
+| -------------- | ------------------------------ | ---------------------------- | ------------------- |
+| **Auth**       | CRON_SECRET / SERVICE_ROLE_KEY | JWT (Bearer token)           | Token in URL params |
+| **CORS**       | Not needed                     | Required (createCorsHeaders) | Not needed          |
+| **Client**     | supabaseAdmin only             | Both admin + user client     | supabaseAdmin only  |
+| **Response**   | JSON                           | JSON with CORS headers       | HTML or JSON        |
+| **Trigger**    | pg_cron schedule               | Browser fetch                | Email link click    |
+| **Validation** | Minimal                        | Zod at boundary              | Token validation    |
+| **Example**    | daily-digest (v3.0)            | users                        | digest-opt-out      |
 
 ---
 
@@ -471,7 +481,7 @@ Deno.serve(async (req: Request) => {
 ```ts
 // ❌ WRONG - utils.ts (deprecated)
 export const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",  // Allows ANY origin
+  "Access-Control-Allow-Origin": "*", // Allows ANY origin
   "Access-Control-Allow-Headers": "...",
 };
 
@@ -579,6 +589,7 @@ import { z } from "npm:zod@3.22.4";
 ### 4. Configure Environment
 
 Add to `.env.local` (local dev):
+
 ```bash
 LOCAL_SUPABASE_URL=http://host.docker.internal:54321
 LOCAL_SERVICE_ROLE_KEY=your-local-key
@@ -588,6 +599,7 @@ LOCAL_SUPABASE_ANON_KEY=your-local-anon-key
 ### 5. Schedule (If Cron)
 
 Create migration for pg_cron:
+
 ```sql
 SELECT cron.schedule(
   'my-function-daily',
