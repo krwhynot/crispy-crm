@@ -93,9 +93,10 @@ COMMENT ON POLICY delete_activities ON activities IS
 -- ====================
 -- Note: Notes tables use sales_id instead of created_by for ownership
 
--- contactNotes
-DROP POLICY IF EXISTS delete_contactNotes ON "contactNotes";
-CREATE POLICY delete_contactNotes ON "contactNotes"
+-- contact_notes (snake_case - actual table)
+-- Note: contactNotes (camelCase) is a compatibility view
+DROP POLICY IF EXISTS delete_contact_notes ON contact_notes;
+CREATE POLICY delete_contact_notes ON contact_notes
   FOR DELETE TO authenticated
   USING (
     public.is_admin() OR
@@ -103,12 +104,13 @@ CREATE POLICY delete_contactNotes ON "contactNotes"
     sales_id = public.current_sales_id()
   );
 
-COMMENT ON POLICY delete_contactNotes ON "contactNotes" IS
+COMMENT ON POLICY delete_contact_notes ON contact_notes IS
 'Batch 1 Q1+Q5: Managers can delete any contact note. Note creators (sales_id) can delete their own notes. Admins have full access.';
 
--- opportunityNotes
-DROP POLICY IF EXISTS delete_opportunityNotes ON "opportunityNotes";
-CREATE POLICY delete_opportunityNotes ON "opportunityNotes"
+-- opportunity_notes (snake_case - actual table)
+-- Note: opportunityNotes (camelCase) is a compatibility view
+DROP POLICY IF EXISTS delete_opportunity_notes ON opportunity_notes;
+CREATE POLICY delete_opportunity_notes ON opportunity_notes
   FOR DELETE TO authenticated
   USING (
     public.is_admin() OR
@@ -116,12 +118,13 @@ CREATE POLICY delete_opportunityNotes ON "opportunityNotes"
     sales_id = public.current_sales_id()
   );
 
-COMMENT ON POLICY delete_opportunityNotes ON "opportunityNotes" IS
+COMMENT ON POLICY delete_opportunity_notes ON opportunity_notes IS
 'Batch 1 Q1+Q5: Managers can delete any opportunity note. Note creators (sales_id) can delete their own notes. Admins have full access.';
 
--- organizationNotes
-DROP POLICY IF EXISTS delete_organizationNotes ON "organizationNotes";
-CREATE POLICY delete_organizationNotes ON "organizationNotes"
+-- organization_notes (snake_case - actual table)
+-- Note: organizationNotes (camelCase) is a compatibility view
+DROP POLICY IF EXISTS delete_organization_notes ON organization_notes;
+CREATE POLICY delete_organization_notes ON organization_notes
   FOR DELETE TO authenticated
   USING (
     public.is_admin() OR
@@ -129,7 +132,7 @@ CREATE POLICY delete_organizationNotes ON "organizationNotes"
     sales_id = public.current_sales_id()
   );
 
-COMMENT ON POLICY delete_organizationNotes ON "organizationNotes" IS
+COMMENT ON POLICY delete_organization_notes ON organization_notes IS
 'Batch 1 Q1+Q5: Managers can delete any organization note. Note creators (sales_id) can delete their own notes. Admins have full access.';
 
 -- ====================

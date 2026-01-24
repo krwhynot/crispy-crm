@@ -234,7 +234,7 @@ export const CRM = ({
         </CustomRoutes>
 
         <CustomRoutes>
-          <Route path={SettingsPage.path} element={<SettingsPage />} />
+          <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/admin/health" element={<HealthDashboard />} />
           {/* CONSOLIDATED: /admin/users now redirects to /sales */}
