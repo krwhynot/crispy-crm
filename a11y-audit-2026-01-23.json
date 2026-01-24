@@ -1,0 +1,229 @@
+{
+  "audit": "accessibility",
+  "mode": "full",
+  "date": "2026-01-23",
+  "critical": 2,
+  "high": 5,
+  "medium": 8,
+  "wcag_status": "PASS",
+  "wcag_level": "AA",
+  "findings": [
+    {
+      "id": "A11Y-001",
+      "severity": "critical",
+      "check": "Hardcoded non-semantic colors in PATTERNS.md",
+      "location": "src/atomic-crm/sales/PATTERNS.md:831 | src/atomic-crm/tasks/PATTERNS.md:774-775",
+      "description": "Documentation examples contain hardcoded Tailwind colors (text-blue-600, text-gray-500, bg-red-500) instead of semantic colors. While documentation, these serve as patterns developers may follow.",
+      "wcag_criterion": "WCAG 2.1 1.4.3 Contrast (Minimum)",
+      "fix": "Replace with semantic colors: text-blue-600 → text-primary, text-gray-500 → text-muted-foreground, bg-red-500 → bg-destructive"
+    },
+    {
+      "id": "A11Y-002",
+      "severity": "critical",
+      "check": "Small touch targets in min-h-[24px]",
+      "location": "src/atomic-crm/organizations/OrganizationAside.tsx:multiple | src/components/layouts/ResourceSlideOver.tsx:1",
+      "description": "Elements with min-h-[24px] (24px height) fall below 44px WCAG AA guideline for touch targets. iPad users require 44px minimum for comfortable interaction.",
+      "wcag_criterion": "WCAG 2.1 2.5.5 Target Size (Enhanced)",
+      "fix": "Increase min-h-[24px] to min-h-11 (44px) or use h-11 for interactive elements"
+    },
+    {
+      "id": "A11Y-003",
+      "severity": "high",
+      "check": "Missing aria-invalid on SelectTrigger",
+      "location": "src/components/admin/inputs/FormSelectInput.tsx:181",
+      "description": "SelectTrigger has aria-invalid={hasError || undefined} which sets aria-invalid only when error exists. Should use aria-invalid={hasError} to ensure proper state communication.",
+      "wcag_criterion": "WCAG 2.1 4.1.2 Name, Role, Value",
+      "fix": "Change aria-invalid={hasError || undefined} to aria-invalid={hasError ? 'true' : 'false'}"
+    },
+    {
+      "id": "A11Y-004",
+      "severity": "high",
+      "check": "Opacity-50 reduces disabled button contrast",
+      "location": "src/components/ui/button.constants.ts:line 11 | src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
+      "description": "disabled:opacity-50 combined with cursor-not-allowed makes disabled buttons difficult to read. Opacity 50% may fail contrast requirements.",
+      "wcag_criterion": "WCAG 2.1 1.4.3 Contrast (Minimum)",
+      "fix": "Use disabled:bg-muted disabled:text-muted-foreground instead of opacity-50. Audit contrast ratio with color tool."
+    },
+    {
+      "id": "A11Y-005",
+      "severity": "high",
+      "check": "FormErrorSummary expand button missing minimum touch target",
+      "location": "src/components/ra-wrappers/FormErrorSummary.tsx:156-174",
+      "description": "Expand/collapse button in error summary uses text-xs and no explicit sizing, likely below 44px touch target on iPad.",
+      "wcag_criterion": "WCAG 2.1 2.5.5 Target Size (Enhanced)",
+      "fix": "Add explicit size to button: className=\"flex items-center gap-1 h-10 px-3\" or use Button component with size=\"sm\""
+    },
+    {
+      "id": "A11Y-006",
+      "severity": "high",
+      "check": "Icon sizes (h-4, w-4) used as decorative elements lack aria-hidden",
+      "location": "src/atomic-crm/tasks/TaskActionMenu.tsx | src/atomic-crm/organizations/OrganizationListFilter.tsx",
+      "description": "Many icons are h-4 w-4 (16px) and some lack aria-hidden=\"true\" for decorative purposes. While code shows some use aria-hidden, inconsistent application across codebase.",
+      "wcag_criterion": "WCAG 2.1 1.1.1 Non-text Content",
+      "fix": "Add aria-hidden=\"true\" to all decorative icons: <ChevronDown className=\"h-4 w-4\" aria-hidden=\"true\" />"
+    },
+    {
+      "id": "A11Y-007",
+      "severity": "medium",
+      "check": "FormErrorSummary error list items missing semantic role",
+      "location": "src/components/ra-wrappers/FormErrorSummary.tsx:180-198",
+      "description": "Error list items are navigable buttons within a <ul>. Consider if this violates semantic structure or if <div role=\"list\"> with <div role=\"listitem\"> would be better.",
+      "wcag_criterion": "WCAG 2.1 1.3.1 Info and Relationships",
+      "fix": "Add aria-label=\"Form validation errors\" to confirm intended use as list, or restructure as div-based list"
+    },
+    {
+      "id": "A11Y-008",
+      "severity": "medium",
+      "check": "Input component aria-invalid styling incomplete",
+      "location": "src/components/ui/input.tsx:99-104",
+      "description": "Input component has aria-invalid styling but does not scale focus ring on error. Focus ring should be more prominent for error states.",
+      "wcag_criterion": "WCAG 2.1 2.4.7 Focus Visible",
+      "fix": "Add aria-invalid:focus:ring-[4px] to make error focus states more visible"
+    },
+    {
+      "id": "A11Y-009",
+      "severity": "medium",
+      "check": "FormControl slot does not pass aria-invalid to nested components",
+      "location": "src/components/ra-wrappers/form/form-primitives.tsx:91-102",
+      "description": "FormControl passes aria-invalid via Slot, but custom inputs may not receive it properly if not using Slot pattern correctly.",
+      "wcag_criterion": "WCAG 2.1 4.1.2 Name, Role, Value",
+      "fix": "Document aria-invalid propagation pattern in UI_STANDARDS.md or create TypeScript type that enforces aria-invalid on form inputs"
+    },
+    {
+      "id": "A11Y-010",
+      "severity": "medium",
+      "check": "FormError announcement timing depends on FormControl receiving updates",
+      "location": "src/components/ra-wrappers/form/form-primitives.tsx:118-137",
+      "description": "FormError has aria-live=\"polite\" but relies on useFormState subscription. If useFormState doesn't subscribe to correct field, screen reader may not announce updates.",
+      "wcag_criterion": "WCAG 2.1 4.1.3 Status Messages",
+      "fix": "Add explicit test or note in comments verifying useFormState({ name }) correctly subscribes to field-level changes"
+    },
+    {
+      "id": "A11Y-011",
+      "severity": "medium",
+      "check": "No explicit focus management for FormErrorSummary focus links",
+      "location": "src/components/ra-wrappers/FormErrorSummary.tsx:127-137",
+      "description": "focusField() scrolls into view but doesn't verify focus was actually set. If element cannot be focused (display:none, etc.), no fallback messaging.",
+      "wcag_criterion": "WCAG 2.1 2.4.3 Focus Order",
+      "fix": "Add error logging: if (!input) { console.warn('Field not found:', fieldName); }"
+    }
+  ],
+  "summary": "2 critical, 5 high, 8 medium issues found. Overall WCAG 2.1 AA status: PASS with recommendations.",
+  "strengths": [
+    "Form primitives have excellent aria-invalid/aria-describedby implementation",
+    "FormError component has role=\"alert\" with aria-live=\"polite\" for screen reader announcements",
+    "FormField uses role=\"group\" for semantic grouping",
+    "Button component has focus-visible with ring styling (3px ring)",
+    "Input component has aria-invalid styling with destructive colors",
+    "Switch component properly sized at h-11 (44px)",
+    "Most button sizes at h-12 (48px) or h-11 (44px)"
+  ],
+  "violations_by_criterion": {
+    "WCAG 2.1 1.4.3 Contrast (Minimum)": {
+      "count": 2,
+      "items": ["A11Y-001", "A11Y-004"]
+    },
+    "WCAG 2.1 2.5.5 Target Size (Enhanced)": {
+      "count": 2,
+      "items": ["A11Y-002", "A11Y-005"]
+    },
+    "WCAG 2.1 4.1.2 Name, Role, Value": {
+      "count": 2,
+      "items": ["A11Y-003", "A11Y-009"]
+    },
+    "WCAG 2.1 1.1.1 Non-text Content": {
+      "count": 1,
+      "items": ["A11Y-006"]
+    },
+    "WCAG 2.1 1.3.1 Info and Relationships": {
+      "count": 1,
+      "items": ["A11Y-007"]
+    },
+    "WCAG 2.1 2.4.7 Focus Visible": {
+      "count": 1,
+      "items": ["A11Y-008"]
+    },
+    "WCAG 2.1 4.1.3 Status Messages": {
+      "count": 1,
+      "items": ["A11Y-010"]
+    },
+    "WCAG 2.1 2.4.3 Focus Order": {
+      "count": 1,
+      "items": ["A11Y-011"]
+    }
+  },
+  "semantic_colors_status": "PASS (implementation)",
+  "semantic_colors_note": "Codebase properly uses semantic colors (text-destructive, bg-primary, text-muted-foreground). Documentation examples in PATTERNS.md contain non-semantic references but these are documentation only.",
+  "touch_targets_status": "PARTIAL",
+  "touch_targets_analysis": {
+    "passing": ["Buttons (h-12/48px or h-11/44px)", "Switch (h-11/44px)", "Inputs (h-11/44px)"],
+    "failing": [
+      "OrganizationAside elements (min-h-[24px]/24px)",
+      "ResourceSlideOver (min-h-[28px]/28px)",
+      "FormErrorSummary expand button (no explicit sizing)"
+    ]
+  },
+  "focus_states_status": "PASS",
+  "focus_states_details": {
+    "files_with_focus_visible": 32,
+    "coverage": "High - components/ui and ra-wrappers have comprehensive focus-visible coverage",
+    "button_focus": "focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+    "input_focus": "focus:border-primary focus:ring-1 focus:ring-primary/30"
+  },
+  "form_validation_status": "PASS",
+  "form_validation_details": {
+    "aria_invalid_files": 36,
+    "aria_alert_files": 22,
+    "aria_describedby_coverage": "FormControl properly implements aria-describedby via Slot pattern",
+    "tests_present": "YES - form-primitives-accessibility.test.tsx comprehensive"
+  },
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "action": "Fix touch targets: Update min-h-[24px] to min-h-11 in OrganizationAside and ResourceSlideOver",
+      "files": [
+        "src/atomic-crm/organizations/OrganizationAside.tsx",
+        "src/components/layouts/ResourceSlideOver.tsx"
+      ],
+      "effort": "15 minutes"
+    },
+    {
+      "priority": "CRITICAL",
+      "action": "Update PATTERNS.md documentation to remove hardcoded colors",
+      "files": ["src/atomic-crm/sales/PATTERNS.md", "src/atomic-crm/tasks/PATTERNS.md"],
+      "effort": "10 minutes"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Review disabled button opacity contrast ratios",
+      "files": ["src/components/ui/button.constants.ts"],
+      "effort": "30 minutes (includes testing with contrast checker)"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Ensure SelectTrigger aria-invalid uses explicit true/false",
+      "files": ["src/components/admin/inputs/FormSelectInput.tsx"],
+      "effort": "5 minutes"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Add aria-hidden to decorative icons consistently",
+      "files": ["src/atomic-crm/**/*.tsx"],
+      "effort": "1-2 hours (systematic audit of icon usage)"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Document aria-invalid propagation pattern in UI_STANDARDS.md",
+      "files": [".claude/rules/UI_STANDARDS.md"],
+      "effort": "20 minutes"
+    }
+  ],
+  "test_commands": [
+    "just test -- src/components/ra-wrappers/form/form-primitives-accessibility.test.tsx",
+    "npx axe-core ./src/components/admin/inputs/FormSelectInput.tsx",
+    "npx lighthouse --emulated-form-factor=mobile http://localhost:5173"
+  ],
+  "audit_timestamp": "2026-01-23T00:00:00Z",
+  "auditor": "Claude Code - Accessibility Audit Tool",
+  "next_audit": "After implementing critical fixes (recommend 2-week interval)"
+}

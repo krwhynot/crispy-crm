@@ -593,9 +593,9 @@ describe("extendWithCustomMethods", () => {
       const mockUrl = "https://supabase.co/storage/avatars/test.png";
 
       const mockGetPublicUrl = vi.fn().mockReturnValue({ data: { publicUrl: mockUrl } });
-      vi.mocked(mockSupabaseClient.storage.from as any).mockReturnValue({
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
         getPublicUrl: mockGetPublicUrl,
-      });
+      } as any);
 
       const result = extendedProvider.storage.getPublicUrl("avatars", "test.png");
 
@@ -607,10 +607,10 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const paths = ["old1.png", "old2.png"];
 
-      const mockRemove = vi.fn().mockResolvedValue({ error: null });
-      vi.mocked(mockSupabaseClient.storage.from as any).mockReturnValue({
+      const mockRemove = vi.fn().mockResolvedValue(mockSupabaseStorageResponse(null));
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
         remove: mockRemove,
-      });
+      } as any);
 
       await extendedProvider.storage.remove("avatars", paths);
 

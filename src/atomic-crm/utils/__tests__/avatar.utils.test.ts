@@ -237,7 +237,7 @@ describe("processContactAvatar", () => {
 
 describe("processOrganizationLogo", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("when logo has existing src", () => {
@@ -283,7 +283,7 @@ describe("processOrganizationLogo", () => {
       const orgData: Partial<Organization> = {
         name: "Acme Corp",
         website: "https://acme.com",
-        logo: newlyUploadedLogo as any,
+        logo: newlyUploadedLogo as unknown as Organization["logo"],
       };
 
       const result = await processOrganizationLogo(orgData);
@@ -377,7 +377,7 @@ describe("processOrganizationLogo", () => {
 
 describe("getContactAvatar", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should return null when no email provided", async () => {

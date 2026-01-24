@@ -145,8 +145,8 @@ describe("authProvider", () => {
       // Mock session with error
       vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
         data: { session: null },
-        error: { message: "Session expired" },
-      } as any);
+        error: { message: "Session expired" } as never,
+      });
 
       Object.defineProperty(window, "location", {
         value: { pathname: "/dashboard" },
@@ -160,23 +160,39 @@ describe("authProvider", () => {
   describe("getIdentity", () => {
     it("should return user identity from cached sale", async () => {
       // Mock valid session
+      const janeUser: User = {
+        id: "user-456",
+        email: "jane@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const janeSession: AuthSession = {
+        user: janeUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "user-456", email: "jane@example.com", aud: "authenticated" },
-            access_token: "valid-token",
-          },
+          session: janeSession,
         },
         error: null,
-      } as any);
+      });
 
       // Mock getUser for ra-supabase-core
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: {
-          user: { id: "user-456", email: "jane@example.com", aud: "authenticated" },
+          user: janeUser,
         },
         error: null,
-      } as any);
+      });
 
       // Mock sales record lookup with .is() for soft-delete filter
       vi.mocked(supabase.from).mockReturnValue({

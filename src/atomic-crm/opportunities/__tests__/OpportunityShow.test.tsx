@@ -333,11 +333,13 @@ describe("OpportunityShow", () => {
       contact_ids: [1, 2, 3],
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -366,11 +368,13 @@ describe("OpportunityShow", () => {
       contact_ids: [],
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
