@@ -98,7 +98,9 @@ export function OrganizationDetailsTab({
       logger.error("Error updating organization", error, {
         feature: "OrganizationDetailsTab",
         organizationId: record.id,
+        operation: "handleSave",
       });
+      throw error;
     }
   };
 

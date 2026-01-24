@@ -148,7 +148,7 @@ const RoleBadgeField = ({
   cellClassName?: string;
   headerClassName?: string;
 }) => {
-  const record = useRecordContext();
+  const record = useRecordContext<Sale>();
   if (!record) return null;
 
   let badge = null;

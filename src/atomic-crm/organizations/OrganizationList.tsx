@@ -32,6 +32,7 @@ import {
 import { PageTutorialTrigger } from "../tutorial";
 import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
+import { SORT_BY_UPDATED_DESC } from "@/atomic-crm/constants/listDefaults";
 import type { OrganizationExportRow, OrganizationRecord } from "./types";
 
 /**
@@ -309,7 +310,7 @@ export const OrganizationList = () => {
           title={false}
           actions={<OrganizationListActions />}
           perPage={DEFAULT_LIST_PAGE_SIZE}
-          sort={{ field: "updated_at", order: "DESC" }}
+          sort={SORT_BY_UPDATED_DESC}
           exporter={exporter}
         >
           <OrganizationListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />

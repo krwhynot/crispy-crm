@@ -31,7 +31,9 @@ export const NoteCreate = ({
   reference: "contacts" | "opportunities" | "organizations";
 }) => {
   const resource = useResourceContext();
-  const record = useRecordContext();
+  // NoteCreate handles multiple parent types: Contact | Opportunity | Organization
+  // Using RaRecord as the union type since we only need the id field
+  const record = useRecordContext<RaRecord>();
   const { data: identity } = useGetIdentity();
 
   if (!record || !identity) return null;

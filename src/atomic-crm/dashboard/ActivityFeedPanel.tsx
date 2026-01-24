@@ -41,6 +41,15 @@ function formatActivityType(type: string): string {
 }
 
 /**
+ * Module-level DateTimeFormat instance for performance.
+ * Created once at module load instead of on every render.
+ */
+const shortDateFormatter = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+});
+
+/**
  * Format relative time from activity date
  * Returns human-readable strings like "2 hours ago", "Yesterday", "3 days ago"
  */
@@ -65,11 +74,8 @@ function formatRelativeTime(dateString: string): string {
   } else if (diffDays < 7) {
     return `${diffDays} days ago`;
   } else {
-    // Format as short date for older activities
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
+    // Format as short date for older activities using module-level formatter
+    return shortDateFormatter.format(date);
   }
 }
 

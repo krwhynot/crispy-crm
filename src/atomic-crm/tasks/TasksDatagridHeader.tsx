@@ -47,7 +47,7 @@ export function TaskTitleHeader() {
       label="Title"
       filterType="text"
       placeholder="Search tasks..."
-      debounceMs={300}
+      debounceMs={SEARCH_DEBOUNCE_MS}
     />
   );
 }
