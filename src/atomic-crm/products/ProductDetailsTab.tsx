@@ -126,7 +126,10 @@ export function ProductDetailsTab({
       onModeToggle?.();
     } catch (error: unknown) {
       notify("Error updating product", { type: "error" });
-      console.error("Save error:", error);
+      logger.error("Failed to save product", error, {
+        feature: "ProductDetailsTab",
+        productId: record.id,
+      });
     }
   };
 

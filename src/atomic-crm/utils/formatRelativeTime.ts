@@ -1,4 +1,5 @@
 import { parseDateSafely } from "@/lib/date-utils";
+import { logger } from "@/lib/logger";
 
 /**
  * Get the user's locale, falling back to 'en' if not available
@@ -63,9 +64,10 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
     return targetDate.toLocaleDateString(locale, { month: "short", day: "numeric" });
   } catch (error) {
     // Date formatting errors - return fallback but log for debugging
-    console.debug("[formatRelativeTime] Date formatting failed", {
+    logger.warn("Date formatting failed", {
+      feature: "formatRelativeTime",
       date: String(date),
-      error: error instanceof Error ? error.message : String(error),
+      errorMessage: error instanceof Error ? error.message : String(error),
     });
     return "unknown";
   }

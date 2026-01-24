@@ -32,6 +32,7 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
 import { normalizeJsonbArrays, createQToIlikeTransformer } from "./commonTransforms";
 import { supabase } from "../supabase";
 import { collectContactFilePaths, deleteStorageFiles } from "../utils/storageCleanup";
+import { logger } from "@/lib/logger";
 
 /**
  * Computed fields that should be stripped before saving to database
@@ -130,10 +131,14 @@ export function computeNameField(data: RaRecord): RaRecord {
   // For creates or when name is missing/empty: use fallback
   // FIX [DATA-001]: Prevent empty or email-like names in database
   if (!data.name || (typeof data.name === "string" && data.name.trim() === "")) {
-    console.warn(
-      "[ContactsCallbacks] Contact created without proper name - using fallback. " +
-        "This indicates a data quality issue that should be investigated.",
-      { id: data.id, first_name: data.first_name, last_name: data.last_name }
+    logger.warn(
+      "Contact created without proper name - using fallback. This indicates a data quality issue.",
+      {
+        feature: "ContactsCallbacks",
+        contactId: data.id,
+        firstName: data.first_name,
+        lastName: data.last_name,
+      }
     );
     return {
       ...data,
@@ -192,12 +197,12 @@ async function contactsBeforeDelete(
       await deleteStorageFiles(filePaths);
     } catch (error: unknown) {
       // Structured logging with context for debugging (non-blocking)
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      console.warn("[ContactsCallbacks] Storage cleanup failed after contact archive", {
+      logger.warn("Storage cleanup failed after contact archive", {
+        feature: "ContactsCallbacks",
         contactId: numericId,
         fileCount: filePaths.length,
         files: filePaths.slice(0, 5), // First 5 for debugging, avoid huge logs
-        error: errorMessage,
+        errorMessage: error instanceof Error ? error.message : String(error),
         operation: "contactsBeforeDelete",
         note: "Archive succeeded - orphaned files can be cleaned up later",
       });

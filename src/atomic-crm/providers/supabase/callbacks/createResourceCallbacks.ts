@@ -13,6 +13,7 @@
  */
 
 import type { DataProvider, RaRecord, GetListParams, DeleteParams } from "ra-core";
+import { logger } from "@/lib/logger";
 
 /**
  * Lifecycle callback interface for React Admin withLifecycleCallbacks
@@ -246,7 +247,7 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
       case "throw":
         throw new Error(message);
       case "log":
-        console.error(message, error);
+        logger.error(message, error, { feature: "ResourceCallbacks", transformName: name });
         break;
     }
   };
