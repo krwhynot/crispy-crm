@@ -66,7 +66,7 @@ describe("CSV Import Integration", () => {
     const csvContent = fs.readFileSync(csvPath, "utf-8");
 
     const parsed = Papa.parse(csvContent, { header: true });
-    const rows = parsed.data as any[];
+    const rows = typedCsvData(parsed.data);
 
     // Test first row (=cmd formula)
     const row1 = rows[0];
@@ -107,7 +107,7 @@ describe("CSV Import Integration", () => {
 
     // Parse the CSV to check data quality
     const parsed = Papa.parse(csvContent, { header: true });
-    const rows = parsed.data as any[];
+    const rows = typedCsvData(parsed.data);
 
     // Row 1: Missing email
     expect(rows[0]["Email"]).toBeFalsy();

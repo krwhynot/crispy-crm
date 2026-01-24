@@ -1,3 +1,4 @@
+import React from "react";
 import { X } from "lucide-react";
 
 interface FilterChipProps {
@@ -6,7 +7,7 @@ interface FilterChipProps {
   onRemove: () => void;
 }
 
-export const FilterChip = ({ label, value, onRemove }: FilterChipProps) => {
+export const FilterChip = React.memo(({ label, value, onRemove }: FilterChipProps) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -32,4 +33,4 @@ export const FilterChip = ({ label, value, onRemove }: FilterChipProps) => {
       </button>
     </div>
   );
-};
+});

@@ -86,6 +86,70 @@ const normalizeSnoozeUntil: Transform = {
 };
 
 /**
+ * Customer-facing task types that should auto-create activities on completion
+ * Batch 2, Q6-7: Auto-create activity when completing customer-facing tasks
+ */
+const CUSTOMER_FACING_TYPES = ["Call", "Email", "Meeting", "Demo"];
+
+/**
+ * After-update handler: Auto-create activity when completing customer-facing tasks
+ *
+ * Batch 2, Q6-7: When a task linked to a customer entity (contact, opportunity, or organization)
+ * is marked as completed, automatically create a corresponding activity record.
+ *
+ * This ensures customer interactions are tracked even if logged as tasks rather than activities.
+ *
+ * @param params - Update parameters with data and previousData
+ * @param dataProvider - React Admin data provider for creating activity
+ * @returns Updated params (unchanged - side effect only)
+ *
+ * @example
+ * // Task: "Call John Doe about pricing" linked to opportunity #123, type "Call"
+ * // When marked completed → Activity "call" created with notes from task
+ */
+export const handleTaskCompletionActivity = async (
+  params: UpdateParams,
+  dataProvider: DataProvider
+): Promise<UpdateParams> => {
+  const { data, previousData } = params;
+
+  // Detect completion transition (false/undefined → true)
+  const wasIncomplete = !previousData?.completed;
+  const isNowComplete = data.completed === true;
+
+  if (!wasIncomplete || !isNowComplete) return params;
+
+  // Check if task is linked to customer entity
+  const hasCustomerLink = data.contact_id || data.opportunity_id || data.organization_id;
+  if (!hasCustomerLink) return params;
+
+  // Check if customer-facing type
+  const taskType = data.type as string;
+  if (!CUSTOMER_FACING_TYPES.includes(taskType)) return params;
+
+  try {
+    // Create activity record
+    await dataProvider.create("activities", {
+      data: {
+        interaction_type: taskType.toLowerCase(), // 'Call' → 'call'
+        contact_id: data.contact_id,
+        opportunity_id: data.opportunity_id,
+        organization_id: data.organization_id,
+        notes: `Completed task: ${data.title}\n\n${data.description || ""}`,
+        sales_id: data.sales_id,
+        interaction_date: new Date().toISOString(),
+      },
+    });
+  } catch (error) {
+    // Log but don't block task completion if activity creation fails
+    // Task completion is the primary action, activity is side effect
+    console.error("Failed to create activity from task completion:", error);
+  }
+
+  return params;
+};
+
+/**
  * Tasks lifecycle callbacks for React Admin withLifecycleCallbacks
  *
  * Features:
@@ -93,6 +157,9 @@ const normalizeSnoozeUntil: Transform = {
  * - Computed fields stripped before save
  * - Completion timestamp auto-managed
  * - Snooze date normalization
+ *
+ * Note: handleTaskCompletionActivity is exported separately for handler-level wiring
+ * (not yet integrated into this callback object - requires afterUpdate support)
  *
  * Usage:
  * ```typescript
