@@ -23,7 +23,7 @@ describe("UnlinkConfirmDialog", () => {
   };
 
   it("renders when opportunity is set", () => {
-    render(
+    renderWithAdminContext(
       <UnlinkConfirmDialog
         opportunity={mockOpportunity}
         contactName="Jane Doe"
@@ -38,7 +38,7 @@ describe("UnlinkConfirmDialog", () => {
   });
 
   it("does not render when opportunity is null", () => {
-    render(
+    renderWithAdminContext(
       <UnlinkConfirmDialog
         opportunity={null}
         contactName="Jane Doe"

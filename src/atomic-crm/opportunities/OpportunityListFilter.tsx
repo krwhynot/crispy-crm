@@ -31,19 +31,30 @@ export const OpportunityListFilter = () => {
   const { data: identity } = useGetIdentity();
   const { filterValues, setFilters } = useListContext();
 
-  // Fetch principals (organizations with type principal)
-  const { data: principalsData } = useGetList("organizations", {
-    pagination: { page: 1, perPage: 50 },
+  // PERF: Fetch all relevant organizations in a single query instead of two sequential calls
+  // Previously: 2 separate useGetList calls (principals + customers) = 2 network requests
+  // Now: 1 combined query + client-side filtering = 1 network request
+  const { data: organizationsData } = useGetList("organizations", {
+    pagination: { page: 1, perPage: 100 }, // Increased to accommodate both principals and customers
     sort: { field: "name", order: "ASC" },
-    filter: { organization_type: "principal", deleted_at: null },
+    filter: {
+      "organization_type@in": "(principal,prospect,customer)",
+      deleted_at: null
+    },
   });
 
-  // Fetch customers (organizations with type customer)
-  const { data: customersData } = useGetList("organizations", {
-    pagination: { page: 1, perPage: 50 },
-    sort: { field: "name", order: "ASC" },
-    filter: { "organization_type@in": "(prospect,customer)", deleted_at: null },
-  });
+  // Split organizations client-side to maintain same data shape for consuming components
+  const principalsData = React.useMemo(
+    () => organizationsData?.filter(org => org.organization_type === "principal") ?? [],
+    [organizationsData]
+  );
+
+  const customersData = React.useMemo(
+    () => organizationsData?.filter(org =>
+      org.organization_type === "prospect" || org.organization_type === "customer"
+    ) ?? [],
+    [organizationsData]
+  );
 
   // Handle principal filter change via Select dropdown
   const handlePrincipalChange = (value: string) => {
