@@ -486,12 +486,12 @@ describe("AuthorizationsTab", () => {
 
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: mockAuthorizations, isPending: false, error: null });
+          return mockUseGetListReturn({ data: mockAuthorizations, isPending: false, error: null });
         }
         if (resource === "organizations") {
-          return { data: mockPrincipals, isPending: false, error: null });
+          return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
         }
-        return { data: [], isPending: false, error: null });
+        return mockUseGetListReturn({ data: [], isPending: false, error: null });
       });
 
       renderWithAdminContext(
@@ -559,10 +559,10 @@ describe("AuthorizationsTab", () => {
             return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "product_distributor_authorizations") {
-            return { data: mockProductAuths, isPending: false, error: null });
+            return mockUseGetListReturn({ data: mockProductAuths, isPending: false, error: null });
           }
           if (resource === "products") {
-            return { data: mockProducts, isPending: false, error: null });
+            return mockUseGetListReturn({ data: mockProducts, isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
@@ -608,10 +608,10 @@ describe("AuthorizationsTab", () => {
             return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "product_distributor_authorizations") {
-            return { data: mockProductAuths, isPending: false, error: null });
+            return mockUseGetListReturn({ data: mockProductAuths, isPending: false, error: null });
           }
           if (resource === "products") {
-            return { data: mockProducts, isPending: false, error: null });
+            return mockUseGetListReturn({ data: mockProducts, isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
@@ -658,10 +658,10 @@ describe("AuthorizationsTab", () => {
             return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "product_distributor_authorizations") {
-            return { data: mockProductAuths, isPending: false, error: null });
+            return mockUseGetListReturn({ data: mockProductAuths, isPending: false, error: null });
           }
           if (resource === "products") {
-            return { data: mockProducts, isPending: false, error: null });
+            return mockUseGetListReturn({ data: mockProducts, isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
@@ -737,7 +737,7 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [expiredAuth], isPending: false, error: null });
+            return mockUseGetListReturn({ data: [expiredAuth], isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
@@ -773,7 +773,7 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [inactiveAuth], isPending: false, error: null });
+            return mockUseGetListReturn({ data: [inactiveAuth], isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
