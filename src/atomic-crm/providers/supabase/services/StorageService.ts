@@ -28,25 +28,18 @@ export class StorageService {
    */
   async uploadToBucket(fi: RAFile): Promise<RAFile> {
     if (!fi.src.startsWith("blob:") && !fi.src.startsWith("data:")) {
-      // Sign URL check if path exists in the bucket
+      // Check if file already exists in the bucket before re-uploading
       if (fi.path) {
-        try {
-          const { data } = supabase.storage.from("attachments").getPublicUrl(fi.path);
-
-          // If we can get a public URL, the file exists
-          if (data?.publicUrl) {
-            return fi;
-          }
-        } catch (error) {
-          // File doesn't exist or check failed - proceed with upload
-          // Debug level: expected flow when uploading new files
-          logger.debug("File existence check failed, proceeding with upload", {
-            feature: "StorageService",
-            method: "uploadToBucket",
-            path: fi.path,
-            errorMessage: error instanceof Error ? error.message : String(error),
-          });
+        const fileExists = await this.exists("attachments", fi.path);
+        if (fileExists) {
+          // File already exists - return with public URL
+          const publicUrl = this.getPublicUrl("attachments", fi.path);
+          return {
+            ...fi,
+            src: publicUrl,
+          };
         }
+        // File doesn't exist - proceed with upload
       }
     }
 

@@ -89,17 +89,20 @@ export function useRelatedRecordCounts({
   const [relatedCounts, setRelatedCounts] = useState<RelatedRecordCount[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const [hasPartialFailure, setHasPartialFailure] = useState(false);
 
   useEffect(() => {
     // Skip if disabled, no IDs, or no relationships defined
     if (!enabled || ids.length === 0) {
       setRelatedCounts([]);
+      setHasPartialFailure(false);
       return;
     }
 
     const relationships = RESOURCE_RELATIONSHIPS[resource];
     if (!relationships || relationships.length === 0) {
       setRelatedCounts([]);
+      setHasPartialFailure(false);
       return;
     }
 
@@ -109,6 +112,7 @@ export function useRelatedRecordCounts({
       if (isLoading) return; // Guard against redundant runs during rapid dependency changes
       setIsLoading(true);
       setError(null);
+      setHasPartialFailure(false);
 
       try {
         // Group counts by label (some resources have multiple FK fields)
@@ -134,18 +138,44 @@ export function useRelatedRecordCounts({
         // Use Promise.allSettled for extra safety - ensures we get all available results
         // FIX: Fail-fast - if all queries fail, propagate the error instead of silently returning 0
         const settledResults = await Promise.allSettled(promises);
-        const results = settledResults
-          .filter(
-            (r): r is PromiseFulfilledResult<{ label: string; count: number }> =>
-              r.status === "fulfilled"
-          )
-          .map((r) => r.value);
+
+        // Extract fulfilled and rejected results
+        const fulfilled = settledResults.filter(
+          (r): r is PromiseFulfilledResult<{ label: string; count: number }> =>
+            r.status === "fulfilled"
+        );
+        const rejected = settledResults.filter(
+          (r): r is PromiseRejectedResult => r.status === "rejected"
+        );
+
+        const results = fulfilled.map((r) => r.value);
+
+        // Log rejected promises with structured error details
+        if (rejected.length > 0) {
+          const rejectedReasons = rejected.map((r) =>
+            r.reason instanceof Error ? r.reason.message : String(r.reason)
+          );
+
+          console.error("[useRelatedRecordCounts] Partial failures detected:", {
+            resource,
+            totalQueries: promises.length,
+            succeeded: fulfilled.length,
+            failed: rejected.length,
+            errors: rejectedReasons,
+            note: "Showing partial results - some relationship counts may be missing",
+          });
+
+          // Set partial failure state for UI warning
+          if (!cancelled) {
+            setHasPartialFailure(true);
+          }
+        }
 
         // Fail-fast: If no queries succeeded, throw to trigger error state
         if (results.length === 0 && promises.length > 0) {
-          const rejectedReasons = settledResults
-            .filter((r): r is PromiseRejectedResult => r.status === "rejected")
-            .map((r) => (r.reason instanceof Error ? r.reason.message : String(r.reason)));
+          const rejectedReasons = rejected.map((r) =>
+            r.reason instanceof Error ? r.reason.message : String(r.reason)
+          );
 
           throw new Error(
             `Failed to fetch related record counts: ${rejectedReasons[0] || "unknown error"}`
@@ -185,7 +215,7 @@ export function useRelatedRecordCounts({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- dataProvider is referentially unstable but logically stable
   }, [resource, ids, enabled]);
 
-  return { relatedCounts, isLoading, error };
+  return { relatedCounts, isLoading, error, hasPartialFailure };
 }
 
 export default useRelatedRecordCounts;
