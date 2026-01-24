@@ -18,6 +18,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
+import type { DeleteParamsWithMeta } from "@/tests/utils/typed-mocks";
 
 // Must use vi.hoisted to define mock before vi.mock (hoisting issues)
 const { mockRpc } = vi.hoisted(() => ({
@@ -82,7 +83,8 @@ describe("Opportunity Delete Cascade", () => {
 
       // Assert - returns params with skipDelete meta flag
       expect(result).toHaveProperty("meta");
-      expect((result as any).meta.skipDelete).toBe(true);
+      const resultWithMeta = result as DeleteParamsWithMeta;
+      expect(resultWithMeta.meta?.skipDelete).toBe(true);
     });
 
     it("should work with string opportunity ID (coerce to number)", async () => {

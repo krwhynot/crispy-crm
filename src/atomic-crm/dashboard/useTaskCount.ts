@@ -29,7 +29,7 @@ export function useTaskCount(): UseTaskCountResult {
     },
     {
       enabled: !salesLoading && !!salesId,
-      staleTime: 30_000, // 30 seconds
+      staleTime: SHORT_STALE_TIME_MS, // 30 seconds
       refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );

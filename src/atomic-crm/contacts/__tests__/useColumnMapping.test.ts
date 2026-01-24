@@ -40,21 +40,24 @@ vi.mock("../columnAliases", () => ({
   }),
 }));
 
+// Type for dynamic property assignment in mock
+type ContactRecord = Record<string, unknown>;
+
 // Mock the CSV processor
 vi.mock("../csvProcessor", () => ({
   processCsvDataWithMappings: vi.fn(
     (
       headers: string[],
-      rawData: any[][],
+      rawData: unknown[][],
       mappings: Record<string, string | null>
     ): ContactImportSchema[] => {
       // Simple mock: create contacts from raw data using mappings
       return rawData.map((row) => {
-        const contact: Partial<ContactImportSchema> = {};
+        const contact: ContactRecord = {};
         headers.forEach((header, index) => {
           const field = mappings[header];
           if (field && row[index] !== undefined) {
-            (contact as any)[field] = row[index];
+            contact[field] = row[index];
           }
         });
         return contact as ContactImportSchema;

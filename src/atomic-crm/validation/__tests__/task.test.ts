@@ -317,8 +317,9 @@ describe("Task Validation Schemas (task.ts)", () => {
       });
 
       it("should accept undefined for deleted_at (active record)", () => {
-        const taskWithoutDeleted = { ...validTask };
-        delete (taskWithoutDeleted as any).deleted_at;
+        // Use Partial to allow property deletion for testing optional field behavior
+        const taskWithoutDeleted: Partial<Task> = { ...validTask };
+        delete taskWithoutDeleted.deleted_at;
         const result = taskSchema.safeParse(taskWithoutDeleted);
         expect(result.success).toBe(true);
       });

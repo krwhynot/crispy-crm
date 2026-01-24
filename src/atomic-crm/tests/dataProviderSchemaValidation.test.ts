@@ -111,8 +111,10 @@ describe("Data Provider Schema Validation", () => {
           let query = supabase.from(testCase.resource).select("*");
 
           // Apply filters
+          // Type for filter conditions object
+          type FilterConditions = Record<string, unknown>;
           for (const [field, conditions] of Object.entries(testCase.filter)) {
-            for (const [operator, value] of Object.entries(conditions as any)) {
+            for (const [operator, value] of Object.entries(conditions as FilterConditions)) {
               query = query.filter(field, operator, value);
             }
           }

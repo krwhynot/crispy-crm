@@ -22,6 +22,11 @@
 import { useCallback } from "react";
 import { useNotify } from "react-admin";
 import { mapErrorToUserMessage, getActionErrorMessage } from "../utils/errorMessages";
+import {
+  TOAST_SUCCESS_DURATION_MS,
+  TOAST_INFO_DURATION_MS,
+  TOAST_ERROR_DURATION_MS,
+} from "@/atomic-crm/constants";
 
 export interface SafeNotifyOptions {
   /** Custom fallback message if error sanitization fails */
