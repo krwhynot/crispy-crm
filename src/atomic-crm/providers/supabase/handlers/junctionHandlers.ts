@@ -18,12 +18,14 @@
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
 import { withErrorLogging, withValidation } from "../wrappers";
 import { createResourceCallbacks } from "../callbacks/createResourceCallbacks";
+import { logger } from "@/lib/logger";
 
 if (process.env.NODE_ENV === "development") {
-  console.warn(
-    "⚠️ Junction table handlers: getMany operations on composite-key tables " +
+  logger.warn(
+    "Junction table handlers: getMany operations on composite-key tables " +
       "(product_distributors, opportunity_products) require custom implementation. " +
-      "These simple handlers only support single-column primary keys."
+      "These simple handlers only support single-column primary keys.",
+    { feature: "JunctionHandlers" }
   );
 }
 

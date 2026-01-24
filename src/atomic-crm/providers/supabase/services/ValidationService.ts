@@ -309,10 +309,11 @@ export class ValidationService {
       // No filter config = allow all (backward compatible for unconfigured resources)
       // But log warning in dev to encourage adding filter registry
       if (DEV) {
-        console.warn(
-          `[ValidationService] No filterable fields defined for resource: "${resource}". ` +
-            `Allowing all filters. Consider adding this resource to filterRegistry.ts`
-        );
+        logger.warn("No filterable fields defined for resource", {
+          feature: "ValidationService",
+          resource,
+          note: "Allowing all filters. Consider adding this resource to filterRegistry.ts",
+        });
       }
       return filters;
     }
@@ -340,7 +341,8 @@ export class ValidationService {
         `If these fields should be filterable, add them to filterRegistry.ts`;
 
       if (DEV) {
-        console.error("[ValidationService] Filter validation failed:", {
+        logger.error("Filter validation failed", undefined, {
+          feature: "ValidationService",
           resource,
           invalidFilters,
           allowedFields,

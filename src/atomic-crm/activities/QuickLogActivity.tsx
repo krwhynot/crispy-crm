@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDataProvider, useNotify, useGetOne } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { AdminButton } from "@/components/admin/AdminButton";
+import { logger } from "@/lib/logger";
 import {
   Dialog,
   DialogContent,
@@ -153,7 +154,11 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
       notify("Activity logged successfully", { type: "success" });
       onClose();
     } catch (error: unknown) {
-      console.error("Error logging activity:", error);
+      logger.error("Failed to log activity", error, {
+        feature: "QuickLogActivity",
+        taskId: task.id,
+        activityType,
+      });
       notify("Failed to log activity", { type: "error" });
     } finally {
       setIsSubmitting(false);

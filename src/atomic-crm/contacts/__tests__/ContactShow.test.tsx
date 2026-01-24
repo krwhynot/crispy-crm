@@ -249,11 +249,7 @@ describe("ContactShow", () => {
   });
 
   test("handles missing record gracefully", () => {
-    (useShowContext as any).mockReturnValue({
-      record: null,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ record: undefined }));
 
     renderWithAdminContext(
       <Routes>
@@ -276,11 +272,7 @@ describe("ContactShow", () => {
       last_name: "Miller",
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockContact,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ record: mockContact }));
 
     renderWithAdminContext(
       <Routes>
@@ -307,11 +299,7 @@ describe("ContactShow", () => {
       last_name: "User",
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockContact,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ record: mockContact }));
 
     renderWithAdminContext(
       <Routes>

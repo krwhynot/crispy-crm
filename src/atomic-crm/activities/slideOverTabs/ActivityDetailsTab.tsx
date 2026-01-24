@@ -77,10 +77,10 @@ export function ActivityDetailsTab({
       onModeToggle?.();
     } catch (error: unknown) {
       notify("Error updating activity", { type: "error" });
-      console.error(
-        "Error updating activity:",
-        error instanceof Error ? error.message : String(error)
-      );
+      logger.error("Failed to update activity", error, {
+        feature: "ActivityDetailsTab",
+        activityId: record.id,
+      });
     }
   };
 

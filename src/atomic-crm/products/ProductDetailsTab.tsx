@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useFormContext } from "react-hook-form";
 import { Form } from "react-admin";
 import { productKeys } from "@/atomic-crm/queryKeys";
+import { logger } from "@/lib/logger";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { TextInput } from "@/components/ra-wrappers/text-input";
