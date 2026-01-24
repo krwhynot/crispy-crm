@@ -8,7 +8,7 @@ import { useQuickAdd } from "./useQuickAdd";
 import { useFilteredProducts } from "./useFilteredProducts";
 // React Admin Tier 2 imports - per MODULE_CHECKLIST.md Rule #4
 import { Form, useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -316,22 +316,33 @@ const QuickAddFormContent = ({
     reset,
   } = useFormContext<QuickAddFormValues>();
 
-  // Data fetching hooks
+  // Track whether user has interacted with Account Manager field
+  const [shouldLoadSales, setShouldLoadSales] = useState(false);
+
+  // Data fetching hooks - Organizations and Principals needed immediately
   const { data: principalsList, isLoading: principalsLoading } = useGetList("organizations", {
     filter: { organization_type: "principal" },
     pagination: { page: 1, perPage: 100 },
     sort: { field: "name", order: "ASC" },
+    meta: { staleTime: 5 * 60 * 1000 }, // Cache for 5 minutes
   });
 
   const { data: organizationsList, isLoading: organizationsLoading } = useGetList("organizations", {
     filter: { "organization_type@in": "(customer,prospect)" },
     pagination: { page: 1, perPage: 200 },
     sort: { field: "name", order: "ASC" },
+    meta: { staleTime: 5 * 60 * 1000 }, // Cache for 5 minutes
   });
 
+  // Defer sales list until user interacts with Account Manager field
+  // Most users never change this (auto-populated from identity)
   const { data: salesList, isLoading: salesLoading } = useGetList("sales", {
     pagination: { page: 1, perPage: 100 },
     sort: { field: "name", order: "ASC" },
+    meta: {
+      enabled: shouldLoadSales,
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    },
   });
 
   // Sync account_manager_id with identity when loaded
@@ -452,18 +463,20 @@ const QuickAddFormContent = ({
             disabled={principalsLoading}
           />
 
-          <FormSelectInput
-            source="account_manager_id"
-            label="Account Manager"
-            choices={
-              salesList?.map((sale) => ({
-                id: sale.id,
-                name: sale.name || sale.email || `Sales #${sale.id}`,
-              })) ?? []
-            }
-            placeholder={salesLoading ? "Loading..." : "Select account manager"}
-            disabled={salesLoading}
-          />
+          <div onFocus={() => setShouldLoadSales(true)}>
+            <FormSelectInput
+              source="account_manager_id"
+              label="Account Manager"
+              choices={
+                salesList?.map((sale) => ({
+                  id: sale.id,
+                  name: sale.name || sale.email || `Sales #${sale.id}`,
+                })) ?? []
+              }
+              placeholder={salesLoading ? "Loading..." : "Select account manager"}
+              disabled={salesLoading}
+            />
+          </div>
 
           <AccessibleField name="campaign" label="Campaign" error={errors.campaign?.message}>
             <Input

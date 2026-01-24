@@ -39,20 +39,21 @@ export const OpportunityListFilter = () => {
     sort: { field: "name", order: "ASC" },
     filter: {
       "organization_type@in": "(principal,prospect,customer)",
-      deleted_at: null
+      deleted_at: null,
     },
   });
 
   // Split organizations client-side to maintain same data shape for consuming components
   const principalsData = React.useMemo(
-    () => organizationsData?.filter(org => org.organization_type === "principal") ?? [],
+    () => organizationsData?.filter((org) => org.organization_type === "principal") ?? [],
     [organizationsData]
   );
 
   const customersData = React.useMemo(
-    () => organizationsData?.filter(org =>
-      org.organization_type === "prospect" || org.organization_type === "customer"
-    ) ?? [],
+    () =>
+      organizationsData?.filter(
+        (org) => org.organization_type === "prospect" || org.organization_type === "customer"
+      ) ?? [],
     [organizationsData]
   );
 
