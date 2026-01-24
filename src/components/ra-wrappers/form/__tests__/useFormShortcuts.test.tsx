@@ -156,17 +156,18 @@ describe("useFormShortcuts", () => {
     const onCancel = vi.fn();
     const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
-    const event = {
+    const preventDefault = vi.fn();
+    const event = createMockKeyboardEvent({
       key: "Enter",
       metaKey: true,
       shiftKey: true,
-      preventDefault: vi.fn(),
+      preventDefault,
       target: document.createElement("input"),
-    } as unknown as React.KeyboardEvent;
+    });
 
     result.current.handleKeyDown(event);
 
     expect(onSave).not.toHaveBeenCalled();
-    expect(event.preventDefault).not.toHaveBeenCalled();
+    expect(preventDefault).not.toHaveBeenCalled();
   });
 });

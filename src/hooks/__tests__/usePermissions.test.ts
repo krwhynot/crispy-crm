@@ -395,12 +395,12 @@ describe("usePermissions", () => {
 
   describe("can() with various actions and resources", () => {
     beforeEach(() => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 100, role: "manager", fullName: "Manager User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 100, role: "manager", fullName: "Manager User" },
+          isLoading: false,
+        })
+      );
     });
 
     it("should allow list on all shared resources for manager", () => {

@@ -16,6 +16,13 @@ import { renderHook, act, waitFor } from "@testing-library/react";
 import { useFavorites } from "../useFavorites";
 import { userFavoriteKeys } from "@/atomic-crm/queryKeys";
 import type { Favorite, FavoriteEntityType } from "@/atomic-crm/validation/favorites";
+import {
+  mockUseGetIdentityReturn,
+  mockUseGetListReturn,
+  mockUseCreateReturn,
+  mockUseUpdateReturn,
+  mockUseQueryClientReturn,
+} from "@/tests/utils/typed-mocks";
 
 // Mock react-admin hooks
 vi.mock("react-admin", () => ({

@@ -53,6 +53,7 @@ describe("resourceExtractors", () => {
     });
 
     it("should return last name only when first name is null", () => {
+      // Intentionally testing null first_name for defensive edge case handling
       const sales = createSalesRecord({
         first_name: null as unknown as string,
         last_name: "Doe",
@@ -64,6 +65,8 @@ describe("resourceExtractors", () => {
     });
 
     it("should return ID-based identifier when both names are null", () => {
+      // Intentionally testing both names null for data quality visibility
+      // Surfaces incomplete data rather than silently failing
       const sales = createSalesRecord({
         id: 42,
         first_name: null as unknown as string,

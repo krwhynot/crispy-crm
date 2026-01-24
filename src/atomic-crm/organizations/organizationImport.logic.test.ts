@@ -242,6 +242,7 @@ describe("validateTransformedOrganizations", () => {
   });
 
   it("should handle all failed validations", () => {
+    // Intentionally testing undefined name for defensive coding
     const orgs: OrganizationImportSchema[] = [
       { name: "" },
       { name: undefined as unknown as string },

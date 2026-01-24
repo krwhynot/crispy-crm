@@ -54,6 +54,7 @@ CREATE POLICY "Authenticated users can view product_features"
 -- INSERT: Admin only
 -- Rationale: Product features (specs, highlights) are managed by admins,
 -- not individual sales reps
+DROP POLICY IF EXISTS "Admins can insert product_features" ON product_features;
 CREATE POLICY "Admins can insert product_features"
   ON product_features
   FOR INSERT
@@ -61,6 +62,7 @@ CREATE POLICY "Admins can insert product_features"
 
 -- UPDATE: Admin only
 -- Rationale: Changing product specifications requires admin approval
+DROP POLICY IF EXISTS "Admins can update product_features" ON product_features;
 CREATE POLICY "Admins can update product_features"
   ON product_features
   FOR UPDATE
@@ -69,6 +71,7 @@ CREATE POLICY "Admins can update product_features"
 
 -- DELETE: Admin only (should use soft-delete via UPDATE, but policy still needed)
 -- Rationale: Hard deletes should be extremely rare, admin-only operation
+DROP POLICY IF EXISTS "Admins can delete product_features" ON product_features;
 CREATE POLICY "Admins can delete product_features"
   ON product_features
   FOR DELETE
