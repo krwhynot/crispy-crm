@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useGetList, useDataProvider } from "react-admin";
+import { logger } from "@/lib/logger";
 import { useQueryClient } from "@tanstack/react-query";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 

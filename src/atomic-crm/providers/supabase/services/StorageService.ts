@@ -1,6 +1,7 @@
 import { HttpError } from "react-admin";
 import { supabase } from "../supabase";
 import type { RAFile } from "../../../types";
+import { logger } from "@/lib/logger";
 
 // Type for file metadata returned by Supabase Storage
 interface StorageFileObject {
@@ -39,13 +40,12 @@ export class StorageService {
         } catch (error) {
           // File doesn't exist or check failed - proceed with upload
           // Debug level: expected flow when uploading new files
-          console.debug(
-            "[StorageService.uploadToBucket] File existence check failed, proceeding with upload",
-            {
-              path: fi.path,
-              error: error instanceof Error ? error.message : String(error),
-            }
-          );
+          logger.debug("File existence check failed, proceeding with upload", {
+            feature: "StorageService",
+            method: "uploadToBucket",
+            path: fi.path,
+            errorMessage: error instanceof Error ? error.message : String(error),
+          });
         }
       }
     }

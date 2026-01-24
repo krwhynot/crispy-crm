@@ -4,6 +4,7 @@ import { getStorageItem, setStorageItem, removeStorageItem } from "../utils/secu
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { filterValueSchema } from "../validation/filters";
 import { ACTIVE_STAGES } from "@/atomic-crm/opportunities/constants";
+import { logger } from "@/lib/logger";
 
 /**
  * Filter precedence utilities
@@ -36,11 +37,11 @@ export const parseUrlFilters = (search: string): FilterValues => {
           filters[key] = value;
         }
       } catch (error) {
-        console.warn(
-          "[filterPrecedence] Failed to parse filter value as JSON, treating as string:",
-          key,
-          error
-        );
+        logger.warn("Failed to parse filter value as JSON, treating as string", {
+          feature: "filterPrecedence",
+          filterKey: key,
+          error: error instanceof Error ? error.message : String(error),
+        });
         filters[key] = value;
       }
     }

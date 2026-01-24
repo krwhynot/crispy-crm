@@ -7,6 +7,8 @@ import {
   useNotify,
   useDataProvider,
 } from "react-admin";
+import { logger } from "@/lib/logger";
+import { devLog } from "@/lib/devLogger";
 import { X } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
@@ -59,7 +61,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("[QuickAdd] handleSubmit called");
+    devLog("QuickAddOpportunity", "handleSubmit called");
 
     // FIX [WF-E2E-001]: Collect all validation errors for inline display
     const newErrors: typeof errors = {};

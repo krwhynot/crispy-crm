@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
+import { logger } from "@/lib/logger";
 import { startOfWeek, endOfWeek, subWeeks, startOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
 import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";

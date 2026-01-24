@@ -3,6 +3,7 @@ import { useNotify, useRefresh, useDataProvider, useGetList, useListContext } fr
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { devLog } from "@/lib/devLogger";
+import { logger } from "@/lib/logger";
 import {
   Dialog,
   DialogContent,
@@ -124,7 +125,11 @@ export const BulkReassignButton = <T extends ResourceItem>({
             wasCancelled = true;
             break;
           }
-          console.error(`[BulkReassign] Failed to update ${resource} ${id}:`, error);
+          logger.error(`Failed to update ${resource} ${id}`, error, {
+            feature: "BulkReassignButton",
+            resource,
+            id: String(id),
+          });
           failureCount++;
         }
       }
