@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { contactKeys } from "@/atomic-crm/queryKeys";
+import { logger } from "@/lib/logger";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { ArrayField } from "@/components/ra-wrappers/array-field";
@@ -69,7 +70,10 @@ export function ContactDetailsTab({
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
       notify("Error updating contact", { type: "error" });
-      console.error("Save error:", error);
+      logger.error("Failed to save contact", error, {
+        feature: "ContactDetailsTab",
+        contactId: record.id,
+      });
     }
   };
 

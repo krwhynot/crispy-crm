@@ -64,6 +64,7 @@ import { validateCreateFavorite, validateUpdateFavorite } from "../../../validat
 import type { Favorite } from "../../../validation/favorites";
 import { filterableFields, isValidFilterField } from "../filterRegistry";
 import { DEV } from "@/lib/devLogger";
+import { logger } from "@/lib/logger";
 
 // Type for validation functions
 type ValidationFunction<T = unknown> = (data: T) => Promise<void> | void;

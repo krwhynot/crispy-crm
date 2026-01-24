@@ -127,11 +127,7 @@ describe("ContactShow", () => {
       organization_id: 1,
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockContact,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ record: mockContact }));
 
     renderWithAdminContext(
       <Routes>
@@ -172,11 +168,7 @@ describe("ContactShow", () => {
       organization_id: 10,
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockContact,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ record: mockContact }));
 
     renderWithAdminContext(
       <Routes>
@@ -207,11 +199,7 @@ describe("ContactShow", () => {
       organization_id: null,
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockContact,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ record: mockContact }));
 
     renderWithAdminContext(
       <Routes>
@@ -241,11 +229,7 @@ describe("ContactShow", () => {
       last_name: "Brown",
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockContact,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(mockUseShowContextReturn({ record: mockContact }));
 
     renderWithAdminContext(
       <Routes>

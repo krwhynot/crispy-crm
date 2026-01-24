@@ -128,7 +128,10 @@ export class TransformService {
           try {
             await Promise.all(uploadPromises);
           } catch (error: unknown) {
-            console.error("Opportunity note attachment upload failed:", error);
+            logger.error("Opportunity note attachment upload failed", error, {
+              feature: "TransformService",
+              resource: "opportunityNotes",
+            });
             throw error; // Fail-fast: re-throw for caller to handle
           }
         }
@@ -147,7 +150,10 @@ export class TransformService {
           try {
             await Promise.all(uploadPromises);
           } catch (error: unknown) {
-            console.error("Organization note attachment upload failed:", error);
+            logger.error("Organization note attachment upload failed", error, {
+              feature: "TransformService",
+              resource: "organizationNotes",
+            });
             throw error; // Fail-fast: re-throw for caller to handle
           }
         }

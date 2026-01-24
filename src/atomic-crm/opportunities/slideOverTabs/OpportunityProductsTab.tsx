@@ -125,7 +125,9 @@ export function OpportunityProductsTab({
 
               queryClient.invalidateQueries({ queryKey: activityKeys.all });
             } catch (error: unknown) {
-              console.error("Failed to create product update activity:", error);
+              logger.error("Failed to create product update activity", error, {
+                feature: "OpportunityProductsTab",
+              });
               notifyError(
                 error,
                 "Failed to log activity. Please manually add a note for this product change."

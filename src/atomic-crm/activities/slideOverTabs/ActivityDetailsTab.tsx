@@ -2,6 +2,7 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form, ReferenceField } from "react-admin";
 import { activityKeys } from "../../queryKeys";
+import { logger } from "@/lib/logger";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { DateInput } from "@/components/ra-wrappers/date-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";

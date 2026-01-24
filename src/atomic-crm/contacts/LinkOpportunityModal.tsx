@@ -89,7 +89,10 @@ export function LinkOpportunityModal({
               queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
               queryClient.invalidateQueries({ queryKey: contactKeys.all });
             } catch (activityError) {
-              logger.error("Failed to log contact link activity", activityError, { feature: "LinkOpportunityModal", opportunityId: data.opportunity_id });
+              logger.error("Failed to log contact link activity", activityError, {
+                feature: "LinkOpportunityModal",
+                opportunityId: data.opportunity_id,
+              });
               // Don't notify user since the link itself succeeded
             }
           },
