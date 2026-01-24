@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 
 /**
  * Filter type configuration
@@ -106,7 +107,10 @@ export function FilterableColumnHeader({
   // For checkbox filter, use the CheckboxColumnFilter directly (it has its own popover)
   if (filterType === "checkbox") {
     if (!choices || choices.length === 0) {
-      console.warn(`FilterableColumnHeader: choices required for checkbox filter on "${source}"`);
+      logger.warn(`Choices required for checkbox filter on "${source}"`, {
+        feature: "FilterableColumnHeader",
+        source,
+      });
       return (
         <div className={cn("flex items-center gap-1", className)}>
           <span className="font-medium">{label}</span>

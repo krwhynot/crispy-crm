@@ -48,7 +48,7 @@ export const ExportButton = (props: ExportButtonProps) => {
             exporter && exporter(data, fetchRelatedRecords(dataProvider), dataProvider, resource)
         )
         .catch((error) => {
-          console.error("Export failed:", error instanceof Error ? error.message : String(error));
+          logger.error("Export failed", error, { feature: "ExportButton", resource });
           notify("HTTP Error", { type: "error" });
         });
       if (typeof onClick === "function") {

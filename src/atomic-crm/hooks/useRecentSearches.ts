@@ -1,5 +1,6 @@
 import { useSyncExternalStore, useCallback } from "react";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 /**
  * Entity types that support recent searches
@@ -58,7 +59,10 @@ function loadFromStorage(): RecentSearchItem[] {
     const result = recentSearchesSchema.safeParse(parsed);
 
     if (!result.success) {
-      console.error("[RecentSearches] Validation failed:", result.error.flatten());
+      logger.error("Validation failed for recent searches", undefined, {
+        feature: "useRecentSearches",
+        validationErrors: result.error.flatten(),
+      });
       return [];
     }
 

@@ -305,10 +305,7 @@ export function useMyTasks() {
         queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
-        console.error(
-          "Failed to delete task:",
-          error instanceof Error ? error.message : String(error)
-        );
+        logger.error("Failed to delete task", error, { feature: "useMyTasks", taskId });
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);
@@ -374,10 +371,7 @@ export function useMyTasks() {
         queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
-        console.error(
-          "Failed to update task due date:",
-          error instanceof Error ? error.message : String(error)
-        );
+        logger.error("Failed to update task due date", error, { feature: "useMyTasks", taskId });
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);

@@ -18,6 +18,8 @@
 import { useEffect, useState } from "react";
 import { useDataProvider, type Identifier } from "react-admin";
 import type { RelatedRecordCount } from "@/components/ra-wrappers/delete-confirm-dialog";
+import { devLog } from "@/lib/devLogger";
+import { logger } from "@/lib/logger";
 
 /**
  * Per-query timeout in milliseconds
@@ -158,16 +160,19 @@ export function useRelatedRecordCounts({
 
                 if (isPermissionError) {
                   // Expected case: user doesn't have access to this resource type
-                  console.debug(
-                    `[useRelatedRecordCounts] Permission denied for ${rel.resource}:`,
-                    errorMessage
+                  devLog(
+                    "useRelatedRecordCounts",
+                    `Permission denied for ${rel.resource}: ${errorMessage}`
                   );
                 } else {
                   // Unexpected error: log as warning for visibility
-                  console.warn(
-                    `[useRelatedRecordCounts] Failed to fetch count for ${rel.resource}:`,
-                    { error: errorMessage, resourceId: id, relationship: rel }
-                  );
+                  logger.warn("Failed to fetch count for related resource", {
+                    feature: "useRelatedRecordCounts",
+                    resource: rel.resource,
+                    resourceId: String(id),
+                    relationship: rel.field,
+                    error: errorMessage,
+                  });
                 }
 
                 return { label: rel.label, count: 0 };

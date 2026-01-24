@@ -1,6 +1,7 @@
 // es-toolkit: Deep object equality comparison
 import { isEqual } from "es-toolkit";
 import { useListContext, useUpdate, useNotify, useRefresh, useDataProvider } from "ra-core";
+import { logger } from "@/lib/logger";
 import { useEffect, useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -249,7 +250,9 @@ export const OpportunityListContent = ({
               queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
             } catch (error: unknown) {
               // WG-002 FIX: Notify user that activity log failed (audit trail incomplete)
-              console.error("Failed to create stage change activity:", error);
+              logger.error("Failed to create stage change activity", error, {
+                feature: "OpportunityListContent",
+              });
               notify("Failed to log activity. Please manually add a note for this stage change.", {
                 type: "error",
                 autoHideDuration: 10000, // 10 seconds - longer for action items
@@ -362,7 +365,10 @@ export const OpportunityListContent = ({
       if (!stage || !prevState[stage]) {
         // If stage is invalid or not in our stages, don't add
         // (will be picked up on refresh)
-        console.warn(`[Kanban] New opportunity has invalid stage: ${stage}`);
+        logger.warn("New opportunity has invalid stage", {
+          feature: "OpportunityListContent",
+          stage,
+        });
         return prevState;
       }
 
