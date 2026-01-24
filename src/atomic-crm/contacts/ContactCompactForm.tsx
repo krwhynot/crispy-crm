@@ -60,6 +60,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
                 label="First Name"
                 helperText="First name is required"
                 autoComplete="given-name"
+                disabled={disabled}
               />
             </FormFieldWrapper>
           </div>
@@ -70,6 +71,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
                 label="Last Name"
                 helperText="Last name is required"
                 autoComplete="family-name"
+                disabled={disabled}
               />
             </FormFieldWrapper>
           </div>
@@ -87,7 +89,11 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         {/* Organization - full width row */}
         <div data-tutorial="contact-organization">
           <FormFieldWrapper name="organization_id" isRequired countDefaultAsFilled>
-            <OrganizationPicker label="Organization" helperText="Organization is required" />
+            <OrganizationPicker
+              label="Organization"
+              helperText="Organization is required"
+              disabled={disabled}
+            />
           </FormFieldWrapper>
         </div>
 
@@ -102,6 +108,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
                 "disabled@neq": true,
                 "user_id@not.is": null,
               }}
+              disabled={disabled}
             >
               <SelectInput
                 helperText="Account manager is required"
@@ -117,19 +124,23 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         {/* Email - full width row (optional) */}
         <div data-tutorial="contact-email">
           <FormFieldWrapper name="email">
-            <EmailArrayField onEmailPaste={handleEmailPaste} onEmailBlur={handleEmailBlur} />
+            <EmailArrayField
+              onEmailPaste={handleEmailPaste}
+              onEmailBlur={handleEmailBlur}
+              disabled={disabled}
+            />
           </FormFieldWrapper>
         </div>
 
         {/* Phone - full width row */}
         <div data-tutorial="contact-phone">
           <FormFieldWrapper name="phone">
-            <PhoneArrayField />
+            <PhoneArrayField disabled={disabled} />
           </FormFieldWrapper>
         </div>
       </FormSectionWithProgress>
 
-      <ContactAdditionalDetails />
+      <ContactAdditionalDetails disabled={disabled} />
     </div>
   );
 };

@@ -87,8 +87,10 @@ describe("authProvider", () => {
 
       // Mock window.location.pathname for public path
       const originalLocation = window.location;
-      delete (window as any).location;
-      (window as any).location = { ...originalLocation, pathname: "/login" };
+      // @ts-expect-error - intentionally deleting for test isolation
+      delete window.location;
+      // @ts-expect-error - intentionally reassigning for test
+      window.location = { ...originalLocation, pathname: "/login" } as Location;
 
       await expect(authProvider.checkAuth({})).resolves.toBeUndefined();
 
@@ -108,8 +110,10 @@ describe("authProvider", () => {
 
       // Mock window.location.pathname for protected path
       const originalLocation = window.location;
-      delete (window as any).location;
-      (window as any).location = { ...originalLocation, pathname: "/opportunities" };
+      // @ts-expect-error - intentionally deleting for test isolation
+      delete window.location;
+      // @ts-expect-error - intentionally reassigning for test
+      window.location = { ...originalLocation, pathname: "/opportunities" } as Location;
 
       await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
 
@@ -148,8 +152,10 @@ describe("authProvider", () => {
 
       // Mock window.location.pathname for protected path
       const originalLocation = window.location;
-      delete (window as any).location;
-      window.location = { ...originalLocation, pathname: "/dashboard" };
+      // @ts-expect-error - intentionally deleting for test isolation
+      delete window.location;
+      // @ts-expect-error - intentionally reassigning for test
+      window.location = { ...originalLocation, pathname: "/dashboard" } as Location;
 
       await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
 
@@ -169,8 +175,10 @@ describe("authProvider", () => {
       const originalLocation = window.location;
 
       for (const path of publicPaths) {
-        delete (window as any).location;
-        window.location = { ...originalLocation, pathname: path };
+        // @ts-expect-error - intentionally deleting for test isolation
+        delete window.location;
+        // @ts-expect-error - intentionally reassigning for test
+        window.location = { ...originalLocation, pathname: path } as Location;
 
         await expect(authProvider.checkAuth({})).resolves.toBeUndefined();
       }
@@ -502,14 +510,16 @@ describe("authProvider", () => {
 
       // Mock window.location.pathname
       const originalLocation = window.location;
-      delete (window as any).location;
-      (window as any).location = { ...originalLocation, pathname: "/dashboard" };
+      // @ts-expect-error - intentionally deleting for test isolation
+      delete window.location;
+      // @ts-expect-error - intentionally reassigning for test
+      window.location = { ...originalLocation, pathname: "/dashboard" } as Location;
 
       // Should propagate the network error (fail fast principle)
       await expect(authProvider.checkAuth({})).rejects.toThrow("Network timeout");
 
       // Restore window.location
-      (window as any).location = originalLocation;
+      window.location = originalLocation;
     });
 
     it("should handle database error when fetching sale", async () => {
