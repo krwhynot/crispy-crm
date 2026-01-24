@@ -80,9 +80,9 @@ describe("SalesService", () => {
     });
 
     test("should throw if dataProvider lacks invoke capability", async () => {
-      const serviceWithoutInvoke = new SalesService({
-        ...createMockDataProvider(),
-      } as any);
+      // DataProvider without invoke method - intentional to test error handling
+      const providerWithoutInvoke: DataProviderWithInvoke = createMockDataProvider();
+      const serviceWithoutInvoke = new SalesService(providerWithoutInvoke);
 
       await expect(serviceWithoutInvoke.salesCreate(mockSalesFormData)).rejects.toThrow(
         "DataProvider does not support Edge Function operations"

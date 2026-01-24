@@ -5,6 +5,7 @@ import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { Badge } from "@/components/ui/badge";
 import { SalesListSkeleton } from "@/components/ui/list-skeleton";
 import { useRecordContext, EmailField, TextField } from "react-admin";
+import type { Sale } from "../types";
 import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";

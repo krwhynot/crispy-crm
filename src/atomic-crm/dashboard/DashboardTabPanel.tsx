@@ -48,18 +48,22 @@ const RESOURCE_ICONS: Record<string, React.ComponentType<{ className?: string }>
 };
 
 /**
+ * Module-level RelativeTimeFormat instance for performance.
+ * Created once at module load instead of on every render.
+ */
+const relativeTimeFormatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+/**
  * Format a Unix timestamp as relative time using Intl.RelativeTimeFormat.
  */
 const formatRelativeTime = (timestamp: number): string => {
   const diffMs = Date.now() - timestamp;
   const diffMins = Math.floor(diffMs / 60000);
 
-  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-
   if (diffMins < 1) return "just now";
-  if (diffMins < 60) return rtf.format(-diffMins, "minute");
-  if (diffMins < 1440) return rtf.format(-Math.floor(diffMins / 60), "hour");
-  return rtf.format(-Math.floor(diffMins / 1440), "day");
+  if (diffMins < 60) return relativeTimeFormatter.format(-diffMins, "minute");
+  if (diffMins < 1440) return relativeTimeFormatter.format(-Math.floor(diffMins / 60), "hour");
+  return relativeTimeFormatter.format(-Math.floor(diffMins / 1440), "day");
 };
 
 /**

@@ -26,6 +26,7 @@ import {
   useRecordContext,
   useUpdate,
 } from "ra-core";
+import type { Contact } from "../types";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { useState } from "react";
 import { contactOptionText } from "../contacts/ContactOption";
