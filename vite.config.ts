@@ -180,52 +180,107 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         // Manual chunk splitting for optimal loading
-        manualChunks: {
-          // React ecosystem - high priority
-          "vendor-react": ["react", "react-dom", "react-router-dom"],
+        manualChunks(id) {
+          // Vendor chunks (libraries from node_modules)
+          if (id.includes("node_modules")) {
+            // React ecosystem
+            if (id.includes("react") || id.includes("react-dom") || id.includes("react-router")) {
+              return "vendor-react";
+            }
+            // React Admin core
+            if (id.includes("ra-core") || id.includes("ra-i18n") || id.includes("ra-language")) {
+              return "vendor-ra-core";
+            }
+            // React Admin UI components
+            if (id.includes("ra-ui") || id.includes("react-admin")) {
+              return "vendor-ra-ui";
+            }
+            // Supabase
+            if (id.includes("@supabase") || id.includes("ra-supabase")) {
+              return "vendor-supabase";
+            }
+            // Radix UI
+            if (id.includes("@radix-ui")) {
+              return "ui-radix";
+            }
+            // Forms
+            if (id.includes("react-hook-form") || id.includes("@hookform") || id.includes("zod")) {
+              return "forms";
+            }
+            // DnD Kit
+            if (id.includes("@dnd-kit")) {
+              return "dnd-kit";
+            }
+            // Charts
+            if (id.includes("chart.js") || id.includes("react-chartjs")) {
+              return "charts";
+            }
+            // Icons
+            if (id.includes("lucide-react")) {
+              return "icons";
+            }
+            // File handling
+            if (
+              id.includes("papaparse") ||
+              id.includes("jsonexport") ||
+              id.includes("react-dropzone") ||
+              id.includes("react-cropper")
+            ) {
+              return "file-utils";
+            }
+            // Utilities
+            if (
+              id.includes("date-fns") ||
+              id.includes("clsx") ||
+              id.includes("class-variance-authority") ||
+              id.includes("inflection")
+            ) {
+              return "utils";
+            }
+            // Query client
+            if (id.includes("@tanstack/react-query")) {
+              return "vendor-query";
+            }
+          }
 
-          // React Admin core - loaded on every page
-          "vendor-ra-core": ["ra-core", "ra-i18n-polyglot", "ra-language-english"],
+          // Application chunks (our code from src/)
+          // Split shared CRM code to reduce large chunks
+          if (id.includes("src/atomic-crm")) {
+            // Data providers
+            if (id.includes("/providers/")) {
+              return "crm-providers";
+            }
+            // Shared components (not feature-specific)
+            if (
+              id.includes("/components/") &&
+              !id.includes("atomic-crm/contacts") &&
+              !id.includes("atomic-crm/opportunities")
+            ) {
+              return "crm-components";
+            }
+            // Shared utilities and services
+            if (id.includes("/utils/") || id.includes("/services/")) {
+              return "crm-utils";
+            }
+            // Validation schemas
+            if (id.includes("/validation/")) {
+              return "crm-validation";
+            }
+            // Filters (shared across features)
+            if (id.includes("/filters/")) {
+              return "crm-filters";
+            }
+          }
 
-          // Supabase and data providers
-          "vendor-supabase": ["@supabase/supabase-js", "ra-supabase-core"],
+          // UI components (shadcn)
+          if (id.includes("src/components/ui/")) {
+            return "ui-components";
+          }
 
-          // UI component libraries - shared across pages
-          "ui-radix": [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-popover",
-            "@radix-ui/react-select",
-            "@radix-ui/react-avatar",
-            "@radix-ui/react-checkbox",
-            "@radix-ui/react-label",
-            "@radix-ui/react-separator",
-            "@radix-ui/react-slot",
-            "@radix-ui/react-switch",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-tooltip",
-            "@radix-ui/react-accordion",
-            "@radix-ui/react-progress",
-            "@radix-ui/react-radio-group",
-          ],
-
-          // Form handling libraries
-          forms: ["react-hook-form", "@hookform/resolvers", "zod"],
-
-          // Drag and drop - All Kanban boards (dnd-kit)
-          "dnd-kit": ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/utilities"],
-
-          // Chart libraries - Reports only
-          charts: ["chart.js", "react-chartjs-2"],
-
-          // Utilities that don't need to be in main bundle
-          utils: ["date-fns", "clsx", "class-variance-authority", "inflection"],
-
-          // File handling
-          "file-utils": ["papaparse", "jsonexport", "react-dropzone", "react-cropper"],
-
-          // Icons - frequently used but can be separate
-          icons: ["lucide-react"],
+          // React Admin wrappers
+          if (id.includes("src/components/ra-wrappers/")) {
+            return "ra-wrappers";
+          }
         },
         // Optimize chunk names and size warnings
         chunkFileNames: (chunkInfo) => {

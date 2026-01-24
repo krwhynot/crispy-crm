@@ -42,7 +42,11 @@ export const OrganizationBulkDeleteButton = () => {
     () => (selectedIds ?? []).filter((id): id is number => id !== undefined),
     [selectedIds]
   );
-  const { relatedCounts, isLoading: isLoadingRelated, error: relatedCountsError } = useRelatedRecordCounts({
+  const {
+    relatedCounts,
+    isLoading: isLoadingRelated,
+    error: relatedCountsError,
+  } = useRelatedRecordCounts({
     resource: "organizations",
     ids: validIds,
     enabled: showConfirm, // Only fetch when dialog is visible
@@ -121,6 +125,7 @@ export const OrganizationBulkDeleteButton = () => {
         onCancel={() => setShowConfirm(false)}
         relatedRecords={relatedCounts}
         isLoadingRelated={isLoadingRelated}
+        error={relatedCountsError}
       />
     </>
   );

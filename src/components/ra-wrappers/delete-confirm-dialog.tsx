@@ -36,6 +36,8 @@ interface DeleteConfirmDialogProps {
   relatedRecords?: RelatedRecordCount[];
   /** Loading state while fetching related counts */
   isLoadingRelated?: boolean;
+  /** Error fetching related record counts - fail-fast: shows instead of misleading "0 records" */
+  error?: Error | null;
 }
 
 export function DeleteConfirmDialog({
@@ -46,6 +48,7 @@ export function DeleteConfirmDialog({
   onCancel,
   relatedRecords,
   isLoadingRelated = false,
+  error,
 }: DeleteConfirmDialogProps) {
   const itemText = count === 1 ? "this item" : `these ${count} items`;
 
@@ -68,6 +71,20 @@ export function DeleteConfirmDialog({
               {/* FIX [WF-C06]: Show cascade warning with child counts */}
               {isLoadingRelated ? (
                 <p className="text-muted-foreground text-sm">Checking for related records...</p>
+              ) : error ? (
+                <div
+                  className="flex items-start gap-2 rounded-md border border-destructive bg-destructive/10 p-3 text-destructive-foreground"
+                  role="alert"
+                >
+                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                  <div className="space-y-1">
+                    <p className="font-medium">Cannot verify related records</p>
+                    <p className="text-sm">{error.message}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Proceed with caution or contact support if this persists.
+                    </p>
+                  </div>
+                </div>
               ) : hasAffectedRecords ? (
                 <div
                   className="flex items-start gap-2 rounded-md border border-warning bg-warning/10 p-3 text-warning-foreground"
@@ -95,8 +112,9 @@ export function DeleteConfirmDialog({
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            disabled={isLoadingRelated}
+            disabled={isLoadingRelated || !!error}
             className="h-11 bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            title={error ? "Cannot delete while cascade check failed" : undefined}
           >
             {hasAffectedRecords ? `Delete All (${count + totalAffected})` : "Delete"}
           </AlertDialogAction>
