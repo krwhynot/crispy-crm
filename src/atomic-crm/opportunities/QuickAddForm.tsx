@@ -323,11 +323,14 @@ const QuickAddFormContent = ({
   // PERFORMANCE OPTIMIZATION: Combine principals + customers/prospects into single query
   // Reduces initial mount from 2 queries → 1 query (both hit same table with different filters)
   // Trade-off: Fetch ~300 records total vs 100+200 in separate queries
-  const { data: allOrganizationsList, isLoading: organizationsLoading } = useGetList("organizations", {
-    filter: {}, // Fetch all organization types, filter client-side
-    pagination: { page: 1, perPage: 500 }, // Increased to accommodate all types
-    sort: { field: "name", order: "ASC" },
-  });
+  const { data: allOrganizationsList, isLoading: organizationsLoading } = useGetList(
+    "organizations",
+    {
+      filter: {}, // Fetch all organization types, filter client-side
+      pagination: { page: 1, perPage: 500 }, // Increased to accommodate all types
+      sort: { field: "name", order: "ASC" },
+    }
+  );
 
   // Client-side filtering - negligible performance impact for ~300 records
   const principalsList = useMemo(
