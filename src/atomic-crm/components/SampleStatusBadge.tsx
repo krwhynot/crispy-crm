@@ -218,9 +218,10 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
         },
         {
           onSuccess: () => {
-            // Invalidate activities cache to refresh timeline
+            // Invalidate activity cache to refresh timeline
+            // Use granular detail key for specific activity
             queryClient.invalidateQueries({
-              queryKey: ["activities", { recordId: activityId }],
+              queryKey: activityKeys.detail(activityId),
             });
             notify(`Sample status updated to ${SAMPLE_STATUS_CONFIG[nextStatus].label}`, {
               type: "success",
@@ -258,9 +259,10 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
           },
           {
             onSuccess: () => {
-              // Invalidate activities cache to refresh timeline
+              // Invalidate activity cache to refresh timeline
+              // Use granular detail key for specific activity
               queryClient.invalidateQueries({
-                queryKey: ["activities", { recordId: activityId }],
+                queryKey: activityKeys.detail(activityId),
               });
               notify(`Sample status updated to ${SAMPLE_STATUS_CONFIG[targetStatus].label}`, {
                 type: "success",

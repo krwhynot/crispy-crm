@@ -432,6 +432,47 @@ describe("useMyTasks", () => {
       });
     });
 
+    it("RACE CONDITION FIX: should handle rapid clicks without state loss", async () => {
+      // This test verifies the fix for the race condition bug where rapid clicks
+      // on "Complete" caused state loss due to concurrent mutations and refetches
+      const mockTask1 = createMockTask({ id: 1 });
+      const mockTask2 = createMockTask({ id: 2 });
+      const mockTask3 = createMockTask({ id: 3 });
+      baseTasksData = [mockTask1, mockTask2, mockTask3];
+
+      // Simulate API delays to expose race conditions
+      mockUpdate.mockImplementation(async (_resource: string, params: UpdateParams<RaRecord>) => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        return { data: { ...params.previousData, completed: true } };
+      });
+
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(3);
+      });
+
+      // Simulate rapid clicks - complete all 3 tasks quickly without awaiting
+      await act(async () => {
+        const promises = [
+          result.current.completeTask(1),
+          result.current.completeTask(2),
+          result.current.completeTask(3),
+        ];
+        await Promise.all(promises);
+      });
+
+      // All tasks should be completed and removed from state
+      // Without the race condition fix, some tasks might reappear due to
+      // stale data from concurrent refetches overwriting fresh data
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(0);
+      });
+
+      // Verify all 3 mutations were called
+      expect(mockUpdate).toHaveBeenCalledTimes(3);
+    });
+
     it("should re-throw error on failure", async () => {
       const mockTask = createMockTask({ id: 1 });
       baseTasksData = [mockTask];
@@ -552,8 +593,9 @@ describe("useMyTasks", () => {
       consoleErrorSpy.mockRestore();
     });
 
-    it("should handle non-existent task gracefully", async () => {
+    it("should throw error for non-existent task", async () => {
       // No tasks
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
       const { result } = renderHook(() => useMyTasks(), { wrapper });
 
@@ -561,12 +603,21 @@ describe("useMyTasks", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      // Should not throw for non-existent task
+      // Should throw for non-existent task
+      let error: Error | null = null;
       await act(async () => {
-        await result.current.snoozeTask(999);
+        try {
+          await result.current.snoozeTask(999);
+        } catch (e) {
+          error = e as Error;
+        }
       });
 
+      expect(error).toBeTruthy();
+      expect(error?.message).toContain("Task 999 not found");
       expect(mockUpdate).not.toHaveBeenCalled();
+
+      consoleErrorSpy.mockRestore();
     });
   });
 
