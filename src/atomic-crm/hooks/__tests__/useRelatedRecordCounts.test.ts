@@ -88,10 +88,13 @@ describe("useRelatedRecordCounts", () => {
       return Promise.reject(new Error(`Network timeout for query ${callCount}`));
     });
 
+    // Use stable array reference
+    const ids = [1];
+
     const { result } = renderHook(() =>
       useRelatedRecordCounts({
         resource: "organizations",
-        ids: [1],
+        ids,
         enabled: true,
       })
     );
@@ -126,10 +129,13 @@ describe("useRelatedRecordCounts", () => {
     // Mock all queries to fail
     mockGetManyReference.mockRejectedValue(new Error("Database connection lost"));
 
+    // Use stable array reference
+    const ids = [1];
+
     const { result } = renderHook(() =>
       useRelatedRecordCounts({
         resource: "organizations",
-        ids: [1],
+        ids,
         enabled: true,
       })
     );
@@ -149,10 +155,13 @@ describe("useRelatedRecordCounts", () => {
   });
 
   it("returns empty arrays when disabled", () => {
+    // Use stable array reference
+    const ids = [1];
+
     const { result } = renderHook(() =>
       useRelatedRecordCounts({
         resource: "organizations",
-        ids: [1],
+        ids,
         enabled: false, // Disabled
       })
     );
@@ -164,10 +173,13 @@ describe("useRelatedRecordCounts", () => {
   });
 
   it("returns empty arrays when no IDs provided", () => {
+    // Use stable empty array reference
+    const ids: number[] = [];
+
     const { result } = renderHook(() =>
       useRelatedRecordCounts({
         resource: "organizations",
-        ids: [], // No IDs
+        ids,
         enabled: true,
       })
     );
@@ -179,10 +191,13 @@ describe("useRelatedRecordCounts", () => {
   });
 
   it("returns empty arrays for resource with no relationships defined", () => {
+    // Use stable array reference
+    const ids = [1];
+
     const { result } = renderHook(() =>
       useRelatedRecordCounts({
         resource: "unknown_resource", // Not in RESOURCE_RELATIONSHIPS
-        ids: [1],
+        ids,
         enabled: true,
       })
     );

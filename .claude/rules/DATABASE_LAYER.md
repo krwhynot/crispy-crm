@@ -55,10 +55,9 @@ CREATE POLICY "Users can update product_distributors"
 
 CREATE POLICY "Users can delete product_distributors"
   ON product_distributors FOR DELETE USING (true);
-```
-
 RIGHT:
-```sql
+
+SQL
 -- Option 1: Multi-tenant isolation (most business tables)
 CREATE POLICY "Users can select own company product_distributors"
   ON product_distributors FOR SELECT
@@ -88,22 +87,19 @@ CREATE POLICY "Service role full access"
   TO service_role
   USING (true)
   WITH CHECK (true);
-```
+USING (true) means "allow everyone" - only acceptable for service_role or public reference data.
 
-`USING (true)` means "allow everyone" - only acceptable for service_role or public reference data.
-
-### Junction Table Security
-
+Junction Table Security
 WRONG:
-```sql
+
+SQL
 -- Missing authorization - users could link unauthorized records
 CREATE POLICY "Allow contact_organizations inserts"
   ON contact_organizations FOR INSERT
   USING (true);
-```
-
 RIGHT:
-```sql
+
+SQL
 -- Verify user can access BOTH sides of relationship
 CREATE POLICY "Users can link own company contacts and orgs"
   ON contact_organizations FOR INSERT
@@ -122,76 +118,72 @@ CREATE POLICY "Users can link own company contacts and orgs"
       AND company_id = (auth.jwt() ->> 'company_id')::int
     )
   );
-```
-
 Junction tables require authorization checks on both foreign keys.
 
-**Performance Note**: The double EXISTS checks require indexes on foreign keys. Verify indexes exist:
-```sql
+Performance Note: The double EXISTS checks require indexes on foreign keys. Verify indexes exist:
+
+SQL
 CREATE INDEX idx_[table]_[fk1] ON [table] ([fk_column_1]) WHERE (deleted_at IS NULL);
 CREATE INDEX idx_[table]_[fk2] ON [table] ([fk_column_2]) WHERE (deleted_at IS NULL);
-```
-
 Without indexes, EXISTS subqueries will cause full table scans and degrade write performance.
 
-## Immutable Fields (Data Integrity)
-
+Immutable Fields (Data Integrity)
 DO:
-- SQL triggers for `created_at` and `updated_at`
-- Generated columns for computed values (search vectors)
 
-DON'T:
-- Allow frontend to set timestamps manually
+SQL triggers for created_at and updated_at
 
-## Violation Fixes
+Generated columns for computed values (search vectors)
 
-### Leaky Delete
+DO NOT:
 
+Allow frontend to set timestamps manually
+
+Violation Fixes
+Leaky Delete
 WRONG:
-```javascript
+
+JavaScript
 // Frontend only - hackers can bypass
 supabase.from('contacts').select().is('deleted_at', null)
-```
-
 RIGHT:
-```sql
+
+SQL
 -- RLS enforced at database level
 CREATE POLICY "Hide deleted contacts"
 ON contacts FOR SELECT
 USING (deleted_at IS NULL);
-```
-
-### Slow Dashboard
-
+Slow Dashboard
 WRONG:
-```javascript
+
+JavaScript
 // Fetching 1000 rows to filter in JS
 opportunities.filter(o => o.updated_at < Date.now() - 14*24*60*60*1000)
-```
-
 RIGHT:
-```sql
+
+SQL
 CREATE VIEW opportunities_summary AS
 SELECT *,
   CASE WHEN updated_at < NOW() - INTERVAL '14 days'
     THEN true ELSE false END as is_stale
 FROM opportunities;
-```
-
-## Audit Command
-
-```bash
+Audit Command
+Bash
 grep -r "CREATE POLICY" supabase/migrations/
-```
+Checklist
+[ ] List views have _summary SQL views with pre-calculated fields
 
-## Checklist
+[ ] SELECT policies enforce deleted_at IS NULL
 
-- [ ] List views have `_summary` SQL views with pre-calculated fields
-- [ ] SELECT policies enforce `deleted_at IS NULL`
-- [ ] Soft-delete cascades handled by triggers/policies
-- [ ] `created_at`/`updated_at` managed by triggers (not frontend)
-- [ ] Computed columns auto-generated
-- [ ] No `USING (true)` policies except service_role
-- [ ] All policies verify auth.uid() or company_id
-- [ ] Junction table policies check both foreign key sides
-- [ ] Junction table foreign keys have indexes for EXISTS query performance
+[ ] Soft-delete cascades handled by triggers/policies
+
+[ ] created_at/updated_at managed by triggers (not frontend)
+
+[ ] Computed columns auto-generated
+
+[ ] No USING (true) policies except service_role
+
+[ ] All policies verify auth.uid() or company_id
+
+[ ] Junction table policies check both foreign key sides
+
+[ ] Junction table foreign keys have indexes for EXISTS query performance
