@@ -26,11 +26,16 @@ describe("useSlideOverState", () => {
       hash: "", // Default empty hash for hash-based routing
     } as Location;
 
+    const mockHistory = createMockHistory({
+      push: vi.fn(),
+      replace: vi.fn(),
+    });
+    // Assign native History methods with mock implementations
     window.history = {
       ...originalHistory,
-      pushState: vi.fn(),
-      replaceState: vi.fn(),
-    } as unknown as History;
+      pushState: mockHistory.push,
+      replaceState: mockHistory.replace,
+    } as History;
   });
 
   afterEach(() => {

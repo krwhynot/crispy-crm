@@ -128,6 +128,8 @@ describe("resourceExtractors", () => {
     });
 
     it("should work with string IDs", () => {
+      // Intentionally testing UUID string ID with null names
+      // Supabase may use UUIDs, testing fallback display handles both ID types
       const sales = createSalesRecord({
         id: "uuid-abc-123" as unknown as number,
         first_name: null as unknown as string,

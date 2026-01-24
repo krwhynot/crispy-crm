@@ -71,33 +71,45 @@ describe("useFavorites", () => {
 
     // Setup queryClient mock with invalidateQueries spy
     mockInvalidateQueries = vi.fn();
-    mockUseQueryClient.mockReturnValue({
-      invalidateQueries: mockInvalidateQueries,
-    } as unknown as ReturnType<typeof useQueryClient>);
+    mockUseQueryClient.mockReturnValue(
+      mockUseQueryClientReturn({
+        invalidateQueries: mockInvalidateQueries,
+      })
+    );
 
     // Setup identity mock
-    mockUseGetIdentity.mockReturnValue({
-      data: { user_id: TEST_USER_ID },
-      isLoading: false,
-    } as unknown as ReturnType<typeof useGetIdentity>);
+    mockUseGetIdentity.mockReturnValue(
+      mockUseGetIdentityReturn({
+        data: { id: TEST_USER_ID, user_id: TEST_USER_ID },
+        isLoading: false,
+      })
+    );
 
     // Setup useGetList mock for favorites
-    mockUseGetList.mockReturnValue({
-      data: [],
-      isLoading: false,
-    } as unknown as ReturnType<typeof useGetList>);
+    mockUseGetList.mockReturnValue(
+      mockUseGetListReturn({
+        data: [],
+        isLoading: false,
+      })
+    );
 
     // Setup create mutation mock
     mockCreate = vi.fn();
-    mockUseCreate.mockReturnValue([mockCreate, { isLoading: false }] as unknown as ReturnType<
-      typeof useCreate
-    >);
+    mockUseCreate.mockReturnValue(
+      mockUseCreateReturn({
+        mutate: mockCreate,
+        isPending: false,
+      })
+    );
 
     // Setup update mutation mock
     mockUpdate = vi.fn();
-    mockUseUpdate.mockReturnValue([mockUpdate, { isLoading: false }] as unknown as ReturnType<
-      typeof useUpdate
-    >);
+    mockUseUpdate.mockReturnValue(
+      mockUseUpdateReturn({
+        mutate: mockUpdate,
+        isPending: false,
+      })
+    );
 
     // Setup notify mock
     mockNotify = vi.fn();
@@ -121,10 +133,12 @@ describe("useFavorites", () => {
     });
 
     it("should return existing favorites from useGetList", () => {
-      mockUseGetList.mockReturnValue({
-        data: [mockFavorite],
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetList>);
+      mockUseGetList.mockReturnValue(
+        mockUseGetListReturn({
+          data: [mockFavorite],
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => useFavorites());
 
@@ -133,10 +147,12 @@ describe("useFavorites", () => {
     });
 
     it("should disable fetching when user is not logged in", () => {
-      mockUseGetIdentity.mockReturnValue({
-        data: undefined,
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          data: undefined,
+          isLoading: false,
+        })
+      );
 
       renderHook(() => useFavorites());
 
@@ -153,10 +169,12 @@ describe("useFavorites", () => {
 
   describe("isFavorite", () => {
     it("should return true for favorited entity", () => {
-      mockUseGetList.mockReturnValue({
-        data: [mockFavorite],
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetList>);
+      mockUseGetList.mockReturnValue(
+        mockUseGetListReturn({
+          data: [mockFavorite],
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => useFavorites());
 
@@ -164,10 +182,12 @@ describe("useFavorites", () => {
     });
 
     it("should return false for non-favorited entity", () => {
-      mockUseGetList.mockReturnValue({
-        data: [mockFavorite],
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetList>);
+      mockUseGetList.mockReturnValue(
+        mockUseGetListReturn({
+          data: [mockFavorite],
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => useFavorites());
 

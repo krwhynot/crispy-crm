@@ -52,14 +52,17 @@ vi.mock("react-admin", async () => {
             error: null,
           });
         } catch (e) {
-          // Extract error message to avoid double-wrapping "Error: Error: message"
-          // The actual hook does: new Error(String(queryError))
+          // Return error message as a string, NOT an Error object.
+          // Reason: The actual useTeamActivities hook does: new Error(String(queryError))
+          // If queryError is already an Error, String(Error) returns "Error: message"
+          // causing double-wrapping. By returning a string here, the hook's
+          // new Error(String("message")) produces new Error("message") as expected.
           const errorMessage = e instanceof Error ? e.message : "Failed to fetch activities";
           setState({
             data: [],
             isPending: false,
-            // Create proper Error object to match hook's error handling behavior
-            error: new Error(errorMessage),
+            // Intentional: Return string, not Error, to match useGetList behavior and avoid double-wrapping
+            error: errorMessage as unknown as Error,
           });
           console.error("[useTeamActivities] Failed to fetch activities:", e);
         }
