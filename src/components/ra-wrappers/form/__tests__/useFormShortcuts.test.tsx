@@ -135,19 +135,20 @@ describe("useFormShortcuts", () => {
     const onCancel = vi.fn();
     const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
-    const event = {
+    const preventDefault = vi.fn();
+    const event = createMockKeyboardEvent({
       key: "Enter",
       metaKey: false,
       ctrlKey: true,
       shiftKey: false,
-      preventDefault: vi.fn(),
+      preventDefault,
       target: document.createElement("input"),
-    } as unknown as React.KeyboardEvent;
+    });
 
     result.current.handleKeyDown(event);
 
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(event.preventDefault).toHaveBeenCalled();
+    expect(preventDefault).toHaveBeenCalled();
   });
 
   it("does nothing when onSaveAndNew is not provided and Shift is pressed", () => {

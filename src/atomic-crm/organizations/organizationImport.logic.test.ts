@@ -218,9 +218,7 @@ describe("validateTransformedOrganizations", () => {
   });
 
   it("should preserve original data in failed validations", () => {
-    const orgs: OrganizationImportSchema[] = [
-      { name: "", priority: "A" as unknown as OrganizationImportSchema["priority"] },
-    ];
+    const orgs: OrganizationImportSchema[] = [{ name: "", priority: "A" }];
 
     const result = validateTransformedOrganizations(orgs);
 

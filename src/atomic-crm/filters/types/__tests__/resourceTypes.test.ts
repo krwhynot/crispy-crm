@@ -40,6 +40,8 @@ describe("resourceExtractors", () => {
     });
 
     it("should return first name only when last name is null", () => {
+      // Intentionally testing null last_name for defensive edge case handling
+      // Database may return null for optional name fields
       const sales = createSalesRecord({
         first_name: "John",
         last_name: null as unknown as string,

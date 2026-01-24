@@ -339,24 +339,24 @@ describe("usePermissions", () => {
 
   describe("isLoading reflects identity loading state", () => {
     it("should return isLoading true when identity is loading", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: undefined,
-        isLoading: true,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: undefined,
+          isLoading: true,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.isLoading).toBe(true);
     });
 
     it("should return isLoading false when identity is loaded", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 1, role: "admin", fullName: "Admin User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 1, role: "admin", fullName: "Admin User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.isLoading).toBe(false);
@@ -365,12 +365,12 @@ describe("usePermissions", () => {
 
   describe("default role behavior", () => {
     it("should default to rep role when identity has no role", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 1, fullName: "User Without Role" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 1, fullName: "User Without Role" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.role).toBe("rep");
@@ -380,12 +380,12 @@ describe("usePermissions", () => {
     });
 
     it("should default to rep role when identity is undefined", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: undefined,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: undefined,
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.role).toBe("rep");
