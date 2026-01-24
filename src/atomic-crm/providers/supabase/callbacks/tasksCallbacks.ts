@@ -16,6 +16,7 @@ import {
   type ResourceCallbacks,
   type Transform,
 } from "./createResourceCallbacks";
+import type { DataProvider, UpdateParams } from "ra-core";
 
 /**
  * Computed fields from tasks view and priority_tasks view (must be stripped before save)

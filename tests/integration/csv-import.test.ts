@@ -6,6 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createTestHarness } from "./supabase-harness";
 import { validateCsvFile, sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
+import { typedCsvData } from "@/tests/utils/typed-mocks";
 import * as fs from "fs";
 import * as Papa from "papaparse";
 
@@ -32,7 +33,7 @@ describe("CSV Import Integration", () => {
     expect(parsed.data).toHaveLength(2);
 
     // Transform to contact format
-    const contacts = (parsed.data as any[]).map((row) => {
+    const contacts = typedCsvData(parsed.data).map((row) => {
       const first_name = sanitizeCsvValue(row["First Name"]);
       const last_name = sanitizeCsvValue(row["Last Name"]);
       const name = `${first_name} ${last_name}`.trim();

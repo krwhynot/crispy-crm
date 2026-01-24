@@ -793,3 +793,41 @@ export function createMockHistory(
     action: overrides?.action ?? "PUSH",
   };
 }
+
+// ============================================================================
+// CSV Import Mocks
+// ============================================================================
+
+/**
+ * Type for CSV row data with arbitrary string keys
+ * Represents a single row from a parsed CSV file
+ */
+export type CsvRow = Record<string, unknown>;
+
+/**
+ * Create a typed array of CSV rows
+ * Eliminates `as any[]` casts when working with Papa.parse results
+ * @param rows - Array of CSV row objects
+ * @returns Typed array of CSV rows
+ *
+ * @example
+ * ```tsx
+ * const parsed = Papa.parse(csvContent, { header: true });
+ * const typedRows = createMockCsvRows(parsed.data);
+ * // Now you can safely map over typedRows without 'as any' casts
+ * ```
+ */
+export function createMockCsvRows(rows: CsvRow[]): CsvRow[] {
+  return rows;
+}
+
+/**
+ * Type-safe wrapper for Papa.parse results
+ * Used when you have Papa.parse() result with generic parsing
+ * @param data - The data array from Papa.parse() result
+ * @returns Typed array of CSV rows
+ */
+export function typedCsvData(data: unknown[]): CsvRow[] {
+  // TypeScript now knows this is a typed CsvRow array
+  return data as CsvRow[];
+}
