@@ -469,9 +469,9 @@ describe("ActivityRelatedTab", () => {
     it("shows loading skeleton while fetching contact", () => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation((resource: string) => {
         if (resource === "contacts") {
-          return { data: undefined, isLoading: true } as any;
+          return mockUseGetOneReturn({ data: undefined, isLoading: true });
         }
-        return { data: undefined, isLoading: false } as any;
+        return mockUseGetOneReturn({ data: undefined, isLoading: false });
       });
 
       const activity = createMockActivity({ contact_id: 10 });
@@ -486,7 +486,7 @@ describe("ActivityRelatedTab", () => {
 
     it("does not render card when entity is not found", async () => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation(() => {
-        return { data: null, isLoading: false } as any;
+        return mockUseGetOneReturn({ data: null, isLoading: false });
       });
 
       const activity = createMockActivity({ contact_id: 10 });
@@ -506,7 +506,7 @@ describe("ActivityRelatedTab", () => {
   describe("Section Label", () => {
     it("shows Related Entities section label when relationships exist", async () => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation(() => {
-        return { data: mockContact, isLoading: false } as any;
+        return mockUseGetOneReturn<Contact>({ data: mockContactData, isLoading: false });
       });
 
       const activity = createMockActivity({ contact_id: 10 });

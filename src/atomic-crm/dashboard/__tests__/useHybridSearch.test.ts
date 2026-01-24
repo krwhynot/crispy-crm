@@ -16,15 +16,21 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type * as ReactAdmin from "react-admin";
 import { useHybridSearch } from "../useHybridSearch";
 
+// Type for test records
+interface MockRecord {
+  id: number;
+  name: string;
+}
+
 // Track mock state
 const mockInitialData = {
-  data: [] as any[],
+  data: [] as MockRecord[],
   isPending: false,
   error: null as Error | null,
 };
 
 const mockSearchData = {
-  data: [] as any[],
+  data: [] as MockRecord[],
   isPending: false,
   error: null as Error | null,
 };
@@ -74,7 +80,7 @@ vi.mock("react-admin", async (importOriginal) => {
 });
 
 // Helper to create mock records
-const createMockRecord = (id: number, name: string) => ({ id, name });
+const createMockRecord = (id: number, name: string): MockRecord => ({ id, name });
 
 describe("useHybridSearch", () => {
   beforeEach(() => {
@@ -308,18 +314,15 @@ describe("useHybridSearch", () => {
       expect(result.current.error).toEqual(testError);
     });
 
-    it("should report error from search query", () => {
+    it("should report error from search query", async () => {
       const testError = new Error("Search failed");
       mockSearchData.error = testError;
 
       const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
-      act(() => {
+      await act(async () => {
         result.current.setSearchTerm("test");
-      });
-
-      act(() => {
-        vi.runAllTimers();
+        await vi.runAllTimersAsync();
       });
 
       expect(result.current.error).toEqual(testError);
