@@ -54,7 +54,7 @@ export function TaskSlideOverDetailsTab({
   onModeToggle,
   onDirtyChange,
 }: TaskSlideOverDetailsTabProps) {
-  const [update] = useUpdate();
+  const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
   const queryClient = useQueryClient();
   const { taskTypes } = useFormOptions();
@@ -130,10 +130,10 @@ export function TaskSlideOverDetailsTab({
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
-              <TextInput source="title" label="Task Title" />
-              <TextInput source="description" label="Description" multiline rows={3} />
-              <DateInput source="due_date" label="Due Date" />
-              <DateInput source="reminder_date" label="Reminder Date" />
+              <TextInput source="title" label="Task Title" disabled={isLoading} />
+              <TextInput source="description" label="Description" multiline rows={3} disabled={isLoading} />
+              <DateInput source="due_date" label="Due Date" disabled={isLoading} />
+              <DateInput source="reminder_date" label="Reminder Date" disabled={isLoading} />
 
               <SelectInput
                 source="priority"
@@ -144,25 +144,27 @@ export function TaskSlideOverDetailsTab({
                   { id: "high", name: "High" },
                   { id: "critical", name: "Critical" },
                 ]}
+                disabled={isLoading}
               />
 
               <SelectInput
                 source="type"
                 label="Type"
                 choices={taskTypes.map((type) => ({ id: type, name: type }))}
+                disabled={isLoading}
               />
 
-              <BooleanInput source="completed" label="Completed" />
+              <BooleanInput source="completed" label="Completed" disabled={isLoading} />
 
-              <ReferenceInput source="sales_id" reference="sales">
+              <ReferenceInput source="sales_id" reference="sales" disabled={isLoading}>
                 <AutocompleteInput label="Assigned To" />
               </ReferenceInput>
 
-              <ReferenceInput source="contact_id" reference="contacts_summary">
+              <ReferenceInput source="contact_id" reference="contacts_summary" disabled={isLoading}>
                 <AutocompleteInput label="Contact" optionText={contactOptionText} />
               </ReferenceInput>
 
-              <ReferenceInput source="opportunity_id" reference="opportunities">
+              <ReferenceInput source="opportunity_id" reference="opportunities" disabled={isLoading}>
                 <AutocompleteInput label="Opportunity" optionText="name" />
               </ReferenceInput>
             </div>

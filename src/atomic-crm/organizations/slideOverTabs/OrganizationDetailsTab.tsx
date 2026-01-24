@@ -111,19 +111,30 @@ export function OrganizationDetailsTab({
           <FormValuesProvider getValuesRef={getValuesRef} onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
-              <TextInput source="name" label="Organization Name" />
+              <TextInput source="name" label="Organization Name" disabled={isLoading} />
 
               <SelectInput
                 source="organization_type"
                 label="Type"
                 choices={ORGANIZATION_TYPE_CHOICES}
+                disabled={isLoading}
               />
 
-              <SelectInput source="priority" label="Priority" choices={PRIORITY_CHOICES} />
+              <SelectInput
+                source="priority"
+                label="Priority"
+                choices={PRIORITY_CHOICES}
+                disabled={isLoading}
+              />
 
-              <SelectInput source="status" label="Status" choices={STATUS_CHOICES} />
+              <SelectInput
+                source="status"
+                label="Status"
+                choices={STATUS_CHOICES}
+                disabled={isLoading}
+              />
 
-              <SegmentComboboxInput source="segment_id" label="Segment" />
+              <SegmentComboboxInput source="segment_id" label="Segment" disabled={isLoading} />
 
               <ReferenceInput
                 reference="sales"
@@ -131,11 +142,15 @@ export function OrganizationDetailsTab({
                 sort={{ field: "last_name", order: "ASC" }}
                 filter={{ "disabled@neq": true, "user_id@not.is": null }}
               >
-                <SelectInput label="Account Manager" optionText={saleOptionRenderer} />
+                <SelectInput
+                  label="Account Manager"
+                  optionText={saleOptionRenderer}
+                  disabled={isLoading}
+                />
               </ReferenceInput>
 
               {/* Uses ParentOrganizationInput to exclude self AND all descendants */}
-              <ParentOrganizationInput />
+              <ParentOrganizationInput disabled={isLoading} />
 
               <SelectInput
                 source="org_scope"
@@ -144,31 +159,44 @@ export function OrganizationDetailsTab({
                 helperText="National = brand/HQ, Regional = operating company"
                 emptyText="Select scope"
                 parse={(v) => v || null}
+                disabled={isLoading}
               />
 
               <BooleanInput
                 source="is_operating_entity"
                 label="This location processes orders"
                 helperText={false}
+                disabled={isLoading}
               />
 
-              <TextInput source="email" label="Email" type="email" />
+              <TextInput source="email" label="Email" type="email" disabled={isLoading} />
 
-              <TextInput source="phone" label="Phone" maxLength={30} />
-              <TextInput source="website" label="Website" />
-              <TextInput source="linkedin_url" label="LinkedIn URL" type="url" />
-              <TextInput source="address" label="Street Address" />
-              <TextInput source="city" label="City" />
-              <TextInput source="state" label="State" />
-              <TextInput source="postal_code" label="ZIP Code" />
+              <TextInput source="phone" label="Phone" maxLength={30} disabled={isLoading} />
+              <TextInput source="website" label="Website" disabled={isLoading} />
+              <TextInput
+                source="linkedin_url"
+                label="LinkedIn URL"
+                type="url"
+                disabled={isLoading}
+              />
+              <TextInput source="address" label="Street Address" disabled={isLoading} />
+              <TextInput source="city" label="City" disabled={isLoading} />
+              <TextInput source="state" label="State" disabled={isLoading} />
+              <TextInput source="postal_code" label="ZIP Code" disabled={isLoading} />
 
-              <TextInput source="description" label="Description" multiline rows={3} />
+              <TextInput
+                source="description"
+                label="Description"
+                multiline
+                rows={3}
+                disabled={isLoading}
+              />
 
-              <ReferenceArrayInput source="tags" reference="tags" label="Tags">
+              <ReferenceArrayInput source="tags" reference="tags" label="Tags" disabled={isLoading}>
                 <AutocompleteArrayInput optionText="name" />
               </ReferenceArrayInput>
 
-              <ArrayInput source="context_links" label="Context Links">
+              <ArrayInput source="context_links" label="Context Links" disabled={isLoading}>
                 <SimpleFormIterator inline>
                   <TextInput source="name" label="Name" />
                   <TextInput source="url" label="URL" />
