@@ -146,7 +146,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       // With returnPromise: true, result IS the record (not wrapped in { data })
       if (!result) {
         // Create failed silently - show error and don't close dialog
-        console.log("[QuickAdd] No result from create, showing error");
+        devLog("QuickAddOpportunity", "No result from create, showing error");
         notify("Failed to create opportunity. Please try again.", { type: "error" });
         return;
       }
@@ -183,7 +183,9 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
         });
       } catch (activityError) {
         // WF-H2-001: Log error but continue - activity is secondary to opportunity creation
-        console.error("[QuickAdd] Failed to create activity log:", activityError);
+        logger.error("Failed to create activity log", activityError, {
+          feature: "QuickAddOpportunity",
+        });
         activityLogFailed = true;
       }
 
@@ -204,7 +206,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
     } catch (error: unknown) {
       // FIX [WF-E2E-001]: Handle both Error instances and React Admin validation errors
       // React Admin validation errors have shape: { message: string, body: { errors: {...} } }
-      console.log("[QuickAdd] create() threw error:", error);
+      devLog("QuickAddOpportunity", "create() threw error", error);
 
       // Handle Zod validation errors with specific field messages (fail-fast principle)
       if (error instanceof ZodError) {

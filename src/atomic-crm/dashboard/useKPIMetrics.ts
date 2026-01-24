@@ -252,10 +252,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
       } catch (error: unknown) {
         // Don't log or set error if aborted
         if (abortController.signal.aborted) return;
-        console.error(
-          "Failed to fetch KPI metrics:",
-          error instanceof Error ? error.message : String(error)
-        );
+        logger.error("Failed to fetch KPI metrics", error, { feature: "useKPIMetrics" });
         if (isMounted) setError(error instanceof Error ? error : new Error(String(error)));
       } finally {
         if (isMounted) setLoading(false);

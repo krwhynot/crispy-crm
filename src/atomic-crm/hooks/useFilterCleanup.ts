@@ -85,10 +85,12 @@ export const useFilterCleanup = (resource: string) => {
             cleanedFilter[filterKey] = params.filter[filterKey];
           } else {
             // Invalid filter - log and remove
-            console.warn(
-              `[useFilterCleanup] Resource "${resource}" found stale filter "${filterKey}" in localStorage. ` +
-                `This field no longer exists in the database schema. Removing it.`
-            );
+            logger.warn("Found stale filter in localStorage, removing it", {
+              feature: "useFilterCleanup",
+              resource,
+              filterKey,
+              reason: "Field no longer exists in database schema",
+            });
             modified = true;
           }
         }
@@ -99,10 +101,12 @@ export const useFilterCleanup = (resource: string) => {
       if (params.sort?.field) {
         const sortField = params.sort.field;
         if (!isValidFilterField(resource, sortField)) {
-          console.warn(
-            `[useFilterCleanup] Resource "${resource}" found stale sort field "${sortField}" in localStorage. ` +
-              `This field no longer exists in the database schema. Resetting to default.`
-          );
+          logger.warn("Found stale sort field in localStorage, resetting to default", {
+            feature: "useFilterCleanup",
+            resource,
+            sortField,
+            reason: "Field no longer exists in database schema",
+          });
           params.sort = {
             field: DEFAULT_SORT_FIELDS[resource] || "id",
             order: params.sort.order || "DESC",
@@ -123,10 +127,10 @@ export const useFilterCleanup = (resource: string) => {
         );
       }
     } catch (error: unknown) {
-      console.error(
-        `[useFilterCleanup] Error parsing localStorage for resource "${resource}":`,
-        error
-      );
+      logger.error("Error parsing localStorage for resource", error, {
+        feature: "useFilterCleanup",
+        resource,
+      });
       notify(`Filter state for ${resource} was corrupted and has been reset.`, {
         type: "warning",
       });

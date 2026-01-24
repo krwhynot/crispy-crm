@@ -15,6 +15,7 @@
 import { z } from "zod";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 import { STAGE_STALE_THRESHOLDS, type ActivePipelineStage } from "../utils/stalenessCalculation";
+import { logger } from "@/lib/logger";
 
 // =====================================================
 // Zod Schemas for Type Safety and Validation
@@ -169,7 +170,7 @@ export class DigestService {
 
       return parsed.data;
     } catch (error: unknown) {
-      console.error("[DigestService] Failed to get overdue tasks", { salesId, error });
+      logger.error("Failed to get overdue tasks", error, { feature: "DigestService", salesId });
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       throw new Error(`Failed to get overdue tasks: ${errorMessage}`);
     }
@@ -204,7 +205,7 @@ export class DigestService {
 
       return parsed.data;
     } catch (error: unknown) {
-      console.error("[DigestService] Failed to get tasks due today", { salesId, error });
+      logger.error("Failed to get tasks due today", error, { feature: "DigestService", salesId });
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       throw new Error(`Failed to get tasks due today: ${errorMessage}`);
     }

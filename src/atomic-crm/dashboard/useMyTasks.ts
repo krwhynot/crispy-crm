@@ -176,10 +176,7 @@ export function useMyTasks() {
         queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
-        console.error(
-          "Failed to complete task:",
-          error instanceof Error ? error.message : String(error)
-        );
+        logger.error("Failed to complete task", error, { feature: "useMyTasks", taskId });
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);
@@ -259,10 +256,7 @@ export function useMyTasks() {
         queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
         queryClient.invalidateQueries({ queryKey: activityKeys.all });
       } catch (error: unknown) {
-        console.error(
-          "Failed to snooze task:",
-          error instanceof Error ? error.message : String(error)
-        );
+        logger.error("Failed to snooze task", error, { feature: "useMyTasks", taskId });
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);

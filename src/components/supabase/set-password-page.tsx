@@ -5,6 +5,7 @@ import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { Layout } from "@/components/supabase/layout";
+import { logger } from "@/lib/logger";
 
 interface FormData {
   password: string;
@@ -24,9 +25,9 @@ export const SetPasswordPage = () => {
   const [, { mutateAsync: setPassword }] = useSetPassword();
 
   if (!access_token || !refresh_token) {
-    if (process.env.NODE_ENV === "development") {
-      console.error("Missing access_token or refresh_token for set password");
-    }
+    logger.warn("Missing access_token or refresh_token for set password", {
+      feature: "SetPasswordPage",
+    });
     return (
       <Layout>
         <p>{translate("ra-supabase.auth.missing_tokens")}</p>

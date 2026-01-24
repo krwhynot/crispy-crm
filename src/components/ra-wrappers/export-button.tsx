@@ -10,6 +10,7 @@ import {
   Translate,
 } from "ra-core";
 import { Button } from "@/components/ui/button";
+import { logger } from "@/lib/logger";
 
 export const ExportButton = (props: ExportButtonProps) => {
   const {
