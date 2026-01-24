@@ -5,7 +5,7 @@ import { formatName } from "../utils/formatName";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ContactOptionRender = () => {
-  const record: Contact | undefined = useRecordContext();
+  const record = useRecordContext<Contact>();
   if (!record) return null;
   return (
     <div className="flex flex-row gap-4 items-center justify-start">

@@ -63,9 +63,16 @@ export {
   mockUseGetIdentityReturn,
   mockUseListContext,
   mockUseListContextReturn,
+  mockUseUpdateReturn,
+  mockUseRecordContextReturn,
+  mockUseShowContextReturn,
+  createMockDataProviderWithRpc,
   type MockIdentity,
   type MockListContextValue,
   type GetListParams,
+  type DataProviderWithRpc,
+  type DeleteParamsWithMeta,
+  type ActivityLogEntry,
 } from "./typed-mocks";
 
 // Typed test helpers for eliminating `: any` patterns

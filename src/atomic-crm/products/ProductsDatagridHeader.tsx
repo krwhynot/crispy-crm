@@ -23,6 +23,7 @@
 
 import { useGetList } from "ra-core";
 import { FilterableColumnHeader, type FilterChoice } from "@/components/ra-wrappers/column-filters";
+import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
 /**
  * Product status choices - matches ProductListFilter.tsx
@@ -44,7 +45,7 @@ export function ProductNameHeader() {
       label="Product Name"
       filterType="text"
       placeholder="Search by name..."
-      debounceMs={300}
+      debounceMs={SEARCH_DEBOUNCE_MS}
     />
   );
 }

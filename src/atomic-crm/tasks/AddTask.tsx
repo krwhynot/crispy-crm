@@ -46,7 +46,7 @@ export const AddTask = ({
   const [update] = useUpdate();
   const notify = useNotify();
   const { taskTypes } = useFormOptions();
-  const contact = useRecordContext();
+  const contact = useRecordContext<Contact>();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);

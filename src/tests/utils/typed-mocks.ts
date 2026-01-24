@@ -25,6 +25,7 @@ import type {
   SortPayload,
   FilterPayload,
   ShowControllerResult,
+  DataProvider,
 } from "ra-core";
 
 /**
