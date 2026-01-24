@@ -129,6 +129,8 @@ describe("ActivitySlideOver", () => {
     });
 
     it("returns 'Activity #[id]' fallback when subject is undefined", () => {
+      // Intentionally testing undefined subject for defensive fallback handling
+      // This can occur when data comes from DB with null subject
       const activity = createMockActivity({
         id: 789,
         subject: undefined as unknown as string,

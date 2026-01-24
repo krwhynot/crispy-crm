@@ -67,6 +67,7 @@ describe("detectDuplicateOrganizations", () => {
   });
 
   it("should skip organizations without names", () => {
+    // Intentionally testing undefined name for defensive coding
     const orgs: OrganizationImportSchema[] = [
       { name: "Valid Company" },
       { name: "" }, // Empty name
@@ -110,6 +111,7 @@ describe("detectDuplicateOrganizations", () => {
   it("should throw error for unsupported strategy", () => {
     const orgs: OrganizationImportSchema[] = [{ name: "Test" }];
 
+    // Intentionally testing unsupported strategy for fail-fast behavior
     expect(() => {
       detectDuplicateOrganizations(orgs, "email" as unknown as "name");
     }).toThrow("Unsupported duplicate detection strategy: email");
@@ -179,6 +181,7 @@ describe("validateTransformedOrganizations", () => {
   });
 
   it("should separate successful and failed validations", () => {
+    // Intentionally testing undefined name for defensive coding
     const orgs: OrganizationImportSchema[] = [
       { name: "Valid Company" },
       { name: "" }, // Invalid - empty name

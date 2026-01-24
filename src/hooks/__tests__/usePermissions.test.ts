@@ -285,52 +285,52 @@ describe("usePermissions", () => {
 
   describe("salesId extraction from identity", () => {
     it("should extract salesId from identity.id when it is a number", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 42, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 42, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.salesId).toBe(42);
     });
 
     it("should return null for salesId when identity.id is a string", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: {
-          id: "uuid-string-id" as unknown as number,
-          role: "rep",
-          fullName: "Rep User",
-        } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: {
+            id: "uuid-string-id",
+            role: "rep",
+            fullName: "Rep User",
+          },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.salesId).toBe(null);
     });
 
     it("should return null for salesId when identity is undefined", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: undefined,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: undefined,
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.salesId).toBe(null);
     });
 
     it("should handle zero as valid salesId", () => {
-      mockUseGetIdentity.mockReturnValue({
-        identity: { id: 0, role: "rep", fullName: "Rep User" } as MockIdentity,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          identity: { id: 0, role: "rep", fullName: "Rep User" },
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => usePermissions());
       expect(result.current.salesId).toBe(0);

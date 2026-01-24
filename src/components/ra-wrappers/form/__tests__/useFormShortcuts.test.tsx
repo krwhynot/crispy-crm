@@ -94,18 +94,19 @@ describe("useFormShortcuts", () => {
 
     const div = document.createElement("div");
     div.contentEditable = "true";
-    const event = {
+    const preventDefault = vi.fn();
+    const event = createMockKeyboardEvent({
       key: "Escape",
       metaKey: false,
       shiftKey: false,
-      preventDefault: vi.fn(),
+      preventDefault,
       target: div,
-    } as unknown as React.KeyboardEvent;
+    });
 
     result.current.handleKeyDown(event);
 
     expect(onCancel).not.toHaveBeenCalled();
-    expect(event.preventDefault).not.toHaveBeenCalled();
+    expect(preventDefault).not.toHaveBeenCalled();
   });
 
   it("allows Cmd+Enter in textareas (calls onSave)", () => {
@@ -114,18 +115,19 @@ describe("useFormShortcuts", () => {
     const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const textarea = document.createElement("textarea");
-    const event = {
+    const preventDefault = vi.fn();
+    const event = createMockKeyboardEvent({
       key: "Enter",
       metaKey: true,
       shiftKey: false,
-      preventDefault: vi.fn(),
+      preventDefault,
       target: textarea,
-    } as unknown as React.KeyboardEvent;
+    });
 
     result.current.handleKeyDown(event);
 
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(event.preventDefault).toHaveBeenCalled();
+    expect(preventDefault).toHaveBeenCalled();
   });
 
   it("works with Ctrl+Enter on Windows/Linux", () => {

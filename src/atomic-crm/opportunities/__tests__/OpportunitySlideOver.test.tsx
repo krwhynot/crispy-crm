@@ -292,12 +292,24 @@ describe("OpportunitySlideOver", () => {
       // headerActions={(record) => <QuickAddTaskButton opportunityId={record.id} />}
       // QuickAddTaskButton supports: contactId, opportunityId, organizationId
       // OpportunitySlideOver only passes opportunityId
-      const mockRecord = {
+      const mockRecord: Opportunity = {
         id: 555,
         name: "Test Opportunity",
         customer_organization_id: 100,
         contact_ids: [1, 2, 3],
-      } as unknown as Opportunity;
+        stage: "new_lead",
+        status: "active",
+        priority: "medium",
+        probability: 50,
+        expected_closing_date: "2025-12-31",
+        opportunity_owner_id: 1,
+        account_manager_id: 1,
+        index: 0,
+        products: [],
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        deleted_at: null,
+      };
 
       const getQuickAddTaskButtonProps = (record: Opportunity) => ({
         opportunityId: record.id,

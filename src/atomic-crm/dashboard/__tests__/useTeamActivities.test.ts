@@ -52,15 +52,14 @@ vi.mock("react-admin", async () => {
             error: null,
           });
         } catch (e) {
-          // Return error message as string so the hook's String() conversion preserves it
-          // The hook does: new Error(String(queryError)) - if queryError is already an Error,
-          // String(Error) returns "Error: message" causing double-wrapping
+          // Extract error message to avoid double-wrapping "Error: Error: message"
+          // The actual hook does: new Error(String(queryError))
           const errorMessage = e instanceof Error ? e.message : "Failed to fetch activities";
           setState({
             data: [],
             isPending: false,
-            // Type assertion needed: hook converts string to Error internally
-            error: errorMessage as unknown as Error,
+            // Create proper Error object to match hook's error handling behavior
+            error: new Error(errorMessage),
           });
           console.error("[useTeamActivities] Failed to fetch activities:", e);
         }
