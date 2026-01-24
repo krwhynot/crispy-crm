@@ -26,7 +26,7 @@ Standard patterns for business logic services in Crispy CRM.
 │     │  🚧 Planned (not yet registered):                       │     │
 │     │     ProductsService - Product CRUD with distributors    │     │
 │     │     ProductDistributorsService - Composite key junctions│     │
-│     │     DigestService - Overdue tasks & notifications       │     │
+│     │     DigestService - Tasks, stale deals & digest queries │     │
 │     └─────────────────────────────────────────────────────────┘     │
 │                                                                      │
 │     ┌─────────────────────────────────────────────────────────┐     │
@@ -424,8 +424,9 @@ export function createServiceContainer(baseProvider: DataProvider): ServiceConta
     //   TODO: Add to ServiceContainer interface and factory
     //
     // - DigestService (src/atomic-crm/services/digest.service.ts)
-    //   Purpose: Overdue tasks and digest notifications
-    //   Methods: getOverdueTasksForUser()
+    //   Purpose: Digest queries for tasks, stale deals, and daily digests
+    //   Methods: getOverdueTasksForUser(), getTasksDueTodayForUser(), getStaleDealsForUser(),
+    //            getUserDigestSummary(), generateDailyDigests(), getStaleThreshold(), isDealStale()
     //   TODO: Add to ServiceContainer interface and factory
   };
 }
@@ -499,33 +500,61 @@ Zod validation at service boundaries for runtime type safety.
 // src/atomic-crm/services/digest.service.ts
 import { z } from "zod";
 
-// 1. Define strict schema
+// 1. Define strict schemas for all response types
 export const OverdueTaskSchema = z.strictObject({
   id: z.number(),
   title: z.string(),
   description: z.string().nullable(),
   due_date: z.string(), // ISO date string
   days_overdue: z.number().int().min(1),
+  priority: z.enum(["low", "medium", "high", "critical"]).nullable(),
   opportunity_id: z.number().nullable(),
   opportunity_name: z.string().nullable(),
   organization_id: z.number().nullable(),
   organization_name: z.string().nullable(),
 });
 
-// 2. Infer TypeScript type from schema
+export const StaleDealSchema = z.strictObject({
+  id: z.number(),
+  name: z.string(),
+  stage: z.string(),
+  stage_threshold_days: z.number().int().positive(),
+  days_since_activity: z.number().int().min(0),
+  days_over_threshold: z.number().int(),
+  last_activity_date: z.string().nullable(),
+  customer_name: z.string().nullable(),
+  principal_name: z.string().nullable(),
+});
+
+export const UserDigestSummarySchema = z.strictObject({
+  sales_id: z.number(),
+  user_id: z.string().uuid(),
+  tasks_due_today: z.number().int().min(0),
+  tasks_overdue: z.number().int().min(0),
+  stale_deals: z.number().int().min(0),
+  opportunities_updated_24h: z.number().int().min(0),
+  activities_logged_24h: z.number().int().min(0),
+  overdue_tasks: z.array(OverdueTaskSchema),
+  stale_deals_list: z.array(StaleDealSchema),
+});
+
+// 2. Infer TypeScript types from schemas
 export type OverdueTask = z.infer<typeof OverdueTaskSchema>;
+export type StaleDeal = z.infer<typeof StaleDealSchema>;
+export type UserDigestSummary = z.infer<typeof UserDigestSummarySchema>;
 
 export class DigestService {
   constructor(private dataProvider: ExtendedDataProvider) {}
 
-  // 3. Validate RPC response at service boundary
+  // 3. Core digest queries with validation at service boundary
+
+  /** Get overdue tasks (due_date < today, not completed) */
   async getOverdueTasksForUser(salesId: number): Promise<OverdueTask[]> {
     try {
       const data = await this.dataProvider.rpc("get_overdue_tasks_for_user", {
         p_sales_id: salesId,
       });
 
-      // Validate and parse response
       const parsed = z.array(OverdueTaskSchema).safeParse(data);
       if (!parsed.success) {
         const errorDetails = parsed.error.errors
@@ -536,10 +565,78 @@ export class DigestService {
 
       return parsed.data;
     } catch (error: unknown) {
-      console.error("[DigestService] Failed to get overdue tasks", { salesId, error });
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      throw new Error(`Failed to get overdue tasks: ${errorMessage}`);
+      logger.error("Failed to get overdue tasks", error, { feature: "DigestService", salesId });
+      throw new Error(`Failed to get overdue tasks: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
+  }
+
+  /** Get tasks due today (due_date = today, not completed) */
+  async getTasksDueTodayForUser(salesId: number): Promise<TodayTask[]> {
+    // Similar validation pattern...
+  }
+
+  /** Get stale deals using per-stage thresholds (7-21 days) */
+  async getStaleDealsForUser(salesId: number): Promise<StaleDeal[]> {
+    try {
+      const data = await this.dataProvider.rpc("get_stale_deals_for_user", {
+        p_sales_id: salesId,
+      });
+
+      const parsed = z.array(StaleDealSchema).safeParse(data);
+      if (!parsed.success) {
+        throw new Error(`Stale deals validation failed: ${parsed.error.errors.map(e => e.message).join(", ")}`);
+      }
+
+      return parsed.data;
+    } catch (error: unknown) {
+      logger.error("Failed to get stale deals", error, { feature: "DigestService", salesId });
+      throw new Error(`Failed to get stale deals: ${error instanceof Error ? error.message : "Unknown error"}`);
+    }
+  }
+
+  /** Get complete digest summary with counts and detail lists */
+  async getUserDigestSummary(salesId: number): Promise<UserDigestSummary | null> {
+    try {
+      const data = await this.dataProvider.rpc("get_user_digest_summary", { p_sales_id: salesId });
+
+      if (!data) return null; // User not found or disabled
+
+      const parsed = UserDigestSummarySchema.safeParse(data);
+      if (!parsed.success) {
+        throw new Error(`Digest summary validation failed: ${parsed.error.errors.map(e => e.message).join(", ")}`);
+      }
+
+      return parsed.data;
+    } catch (error: unknown) {
+      logger.error("Failed to get digest summary", error, { feature: "DigestService", salesId });
+      throw new Error(`Failed to get digest summary: ${error instanceof Error ? error.message : "Unknown error"}`);
+    }
+  }
+
+  /** Generate daily digests for all active users */
+  async generateDailyDigests(): Promise<DigestGenerationResult> {
+    // Calls generate_daily_digest_v2 RPC, returns { success, digestsGenerated, notificationsCreated }
+  }
+
+  // 4. Client-side utility methods
+
+  /** Get the stale threshold for a given pipeline stage (7-21 days) */
+  getStaleThreshold(stage: string): number | undefined {
+    if (stage in STAGE_STALE_THRESHOLDS) {
+      return STAGE_STALE_THRESHOLDS[stage as ActivePipelineStage];
+    }
+    return undefined;
+  }
+
+  /** Check if a deal is stale (client-side calculation) */
+  isDealStale(stage: string, lastActivityDate: string | null, referenceDate = new Date()): boolean {
+    const threshold = this.getStaleThreshold(stage);
+    if (threshold === undefined) return false; // Closed stages never stale
+
+    if (!lastActivityDate) return true; // No activity = stale
+
+    const daysSinceActivity = Math.floor((referenceDate.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24));
+    return daysSinceActivity > threshold;
   }
 }
 ```
@@ -734,7 +831,7 @@ Quick reference for all services (✅ registered in ServiceContainer, 🚧 imple
 | **SegmentsService** | ✅ | Get-or-create pattern for segment tagging | `getOrCreateSegment()` |
 | **ProductsService** | 🚧 | Product CRUD with distributor relationships, soft delete via RPC (not yet registered) | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |
 | **ProductDistributorsService** | 🚧 | Composite key junction table operations (not yet registered) | `getOne()`, `create()`, `update()`, `delete()`, `getDistributorsForProduct()` |
-| **DigestService** | 🚧 | Overdue tasks and digest notifications (not yet registered) | `getOverdueTasksForUser()` |
+| **DigestService** | 🚧 | Overdue tasks and digest notifications (not yet registered) | `getOverdueTasksForUser()`, `getTasksDueTodayForUser()`, `getStaleDealsForUser()`, `getUserDigestSummary()`, `generateDailyDigests()`, `getStaleThreshold()`, `isDealStale()` |
 
 ### ProductsService
 
