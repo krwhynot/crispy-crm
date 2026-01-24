@@ -36,8 +36,8 @@ describe("normalizeHeader", () => {
   });
 
   it("should handle null/undefined gracefully", () => {
-    expect(normalizeHeader(null as any)).toBe("");
-    expect(normalizeHeader(undefined as any)).toBe("");
+    expect(normalizeHeader(null as unknown as string)).toBe("");
+    expect(normalizeHeader(undefined as unknown as string)).toBe("");
   });
 });
 
