@@ -134,9 +134,14 @@ export function getStorageItem<T = unknown>(
       return parsed as T;
     }
   } catch (error: unknown) {
-    console.error(
-      `[Storage] Error reading key "${key}":`,
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      "Error reading storage key",
+      error instanceof Error ? error : new Error(String(error)),
+      {
+        feature: "secureStorage",
+        key,
+        operation: "read",
+      }
     );
     options.onError?.(error instanceof Error ? error : new Error(String(error)), key, "read");
   }
@@ -168,21 +173,30 @@ export function setStorageItem<T = any>(
     storage.setItem(key, JSON.stringify(value));
     return true;
   } catch (error: unknown) {
-    console.error(
-      `[Storage] Error writing key "${key}":`,
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      "Error writing storage key",
+      error instanceof Error ? error : new Error(String(error)),
+      {
+        feature: "secureStorage",
+        key,
+        operation: "write",
+      }
     );
 
-    // Try fallback storage if preferred fails (quota exceeded, etc.)
     try {
       const fallbackStorage = storageType === "session" ? localStorage : sessionStorage;
       fallbackStorage.setItem(key, JSON.stringify(value));
-      console.warn(`[Storage] Used fallback storage for key "${key}"`);
+      logger.warn("Used fallback storage", { feature: "secureStorage", key });
       return true;
     } catch (fallbackError: unknown) {
-      console.error(
-        `[Storage] Fallback storage also failed:`,
-        fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
+      logger.error(
+        "Fallback storage also failed",
+        fallbackError instanceof Error ? fallbackError : new Error(String(fallbackError)),
+        {
+          feature: "secureStorage",
+          key,
+          operation: "write",
+        }
       );
       options.onError?.(
         fallbackError instanceof Error ? fallbackError : new Error(String(fallbackError)),
@@ -210,9 +224,14 @@ export function removeStorageItem(key: string, options: StorageOptions = {}): vo
     sessionStorage.removeItem(key);
     localStorage.removeItem(key);
   } catch (error: unknown) {
-    console.error(
-      `[Storage] Error removing key "${key}":`,
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      "Error removing storage key",
+      error instanceof Error ? error : new Error(String(error)),
+      {
+        feature: "secureStorage",
+        key,
+        operation: "remove",
+      }
     );
     options.onError?.(error instanceof Error ? error : new Error(String(error)), key, "remove");
   }
@@ -246,9 +265,14 @@ export function clearStorageByPrefix(prefix: string): void {
     clearFromStorage(sessionStorage);
     clearFromStorage(localStorage);
   } catch (error: unknown) {
-    console.error(
-      `[Storage] Error clearing prefix "${prefix}":`,
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      "Error clearing storage prefix",
+      error instanceof Error ? error : new Error(String(error)),
+      {
+        feature: "secureStorage",
+        prefix,
+        operation: "clearPrefix",
+      }
     );
   }
 }
@@ -280,9 +304,14 @@ export function getKeysByPrefix(prefix: string): string[] {
     collectKeys(sessionStorage);
     collectKeys(localStorage);
   } catch (error: unknown) {
-    console.error(
-      `[Storage] Error getting keys for prefix "${prefix}":`,
-      error instanceof Error ? error.message : String(error)
+    logger.error(
+      "Error getting keys by prefix",
+      error instanceof Error ? error : new Error(String(error)),
+      {
+        feature: "secureStorage",
+        prefix,
+        operation: "getKeysByPrefix",
+      }
     );
   }
 
