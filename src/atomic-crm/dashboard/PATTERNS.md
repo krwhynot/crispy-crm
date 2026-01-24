@@ -715,7 +715,7 @@ export function MobileQuickActionBar({ onRefresh, onCompleteTask }: Props) {
 
 ---
 
-## Pattern J: Feature-Level Error Boundary
+## Pattern I: Feature-Level Error Boundary
 
 React class component error boundary with user recovery options.
 
@@ -1030,7 +1030,7 @@ When adding a new widget/panel to the dashboard:
 
 ---
 
-## Pattern K: Defensive Validation at Submission
+## Pattern J: Defensive Validation at Submission
 
 Pre-submission validation that verifies entity IDs still exist before database write.
 
@@ -1104,7 +1104,7 @@ const submitActivity = useCallback(
 
 ---
 
-## Pattern L: Atomic RPC for Transactional Operations
+## Pattern K: Atomic RPC for Transactional Operations
 
 Single database call for multi-table operations requiring transactional consistency.
 
@@ -1183,7 +1183,7 @@ $$ LANGUAGE plpgsql;
 
 ---
 
-## Pattern M: useEntityData Hook Abstraction
+## Pattern L: useEntityData Hook Abstraction
 
 Composable hook that encapsulates complex entity fetching with cascading filters.
 

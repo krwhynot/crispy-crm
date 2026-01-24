@@ -29,6 +29,14 @@ WCAG 2.1 Level AA is our compliance target. The four principles:
 
 iPad field sales users require generous touch targets. Our standards exceed WCAG 2.5.5.
 
+**See:** [Touch Target Standards](../design-system/touch-targets.md) for complete specifications including:
+- Form input heights (44px default)
+- Button sizing patterns
+- Table row touch areas
+- WCAG compliance mapping
+
+**Quick Rule:** Use `h-11 w-11 min-h-11 min-w-11` (44px) for all interactive elements.
+
 ### Size Requirements
 
 | Context | Minimum Size | Tailwind Classes | Usage |
@@ -168,6 +176,13 @@ const { register } = useForm({ mode: 'onBlur' });
 // Incorrect - causes excessive re-renders and announcements
 const { register } = useForm({ mode: 'onChange' });
 ```
+
+### Form Layout Patterns
+
+For form structure and layout implementation (compact sections, card-wrapped, wide container), see:
+- [Form Layout Patterns](../design-system/form-patterns.md) - Implementation details for create/edit forms
+
+This section focuses on accessibility requirements that apply to ALL form patterns.
 
 ## 5. Keyboard Navigation Requirements
 
