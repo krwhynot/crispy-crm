@@ -20,7 +20,7 @@ interface ColoredBadgeProps {
 }
 
 const ColoredBadge = (props: ColoredBadgeProps) => {
-  const record = useRecordContext();
+  const record = useRecordContext<Tag>();
   if (!record) return null;
 
   // Filter out React Admin props before spreading to Badge

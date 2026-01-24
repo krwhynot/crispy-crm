@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import type { RaRecord } from "react-admin";
 import { useRecordContext, useResourceContext, useGetRecordRepresentation } from "react-admin";
 import { useRecentItems } from "../hooks/useRecentItems";
 

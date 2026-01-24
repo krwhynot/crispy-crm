@@ -254,9 +254,11 @@ describe("withErrorLogging", () => {
         (mockProvider[method] as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
         const wrappedProvider = withErrorLogging(mockProvider);
-        await expect((wrappedProvider[method] as any)("resource", {})).rejects.toThrow(
-          `${method} failed`
-        );
+        const providerMethod = wrappedProvider[method] as (
+          resource: string,
+          params: Record<string, unknown>
+        ) => Promise<unknown>;
+        await expect(providerMethod("resource", {})).rejects.toThrow(`${method} failed`);
         expect(consoleErrorSpy).toHaveBeenCalled();
       });
     });

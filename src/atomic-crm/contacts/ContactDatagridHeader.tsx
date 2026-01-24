@@ -22,6 +22,7 @@
 
 import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 import { CONTACT_STATUS_CHOICES } from "./constants";
+import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
 /**
  * Filterable header for Contact Name column
@@ -34,7 +35,7 @@ export function ContactNameHeader() {
       label="Name"
       filterType="text"
       placeholder="Search by name..."
-      debounceMs={300}
+      debounceMs={SEARCH_DEBOUNCE_MS}
     />
   );
 }
