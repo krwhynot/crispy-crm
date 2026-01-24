@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useUpdate, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { taskKeys } from "@/atomic-crm/queryKeys";
+import { taskKeys, dashboardKeys } from "@/atomic-crm/queryKeys";
 import type { Task } from "@/atomic-crm/types";
 
 interface UseTaskCompletionOptions {
