@@ -68,8 +68,8 @@ describe("useQuickAdd", () => {
       createBoothVisitor: vi.fn(),
     };
 
-    (useDataProvider as any).mockReturnValue(mockDataProvider);
-    (useNotify as any).mockReturnValue(mockNotify);
+    vi.mocked(useDataProvider).mockReturnValue(mockDataProvider as ExtendedDataProvider);
+    vi.mocked(useNotify).mockReturnValue(mockNotify);
 
     // Create fresh query client for each test
     queryClient = new QueryClient({

@@ -54,15 +54,20 @@ vi.mock("ra-core", async () => {
 
 // Mock Sheet component
 vi.mock("@/components/ui/sheet", () => ({
-  Sheet: ({ children, open }: any) => (open ? <div data-testid="sheet">{children}</div> : null),
-  SheetContent: ({ children }: any) => (
+  Sheet: ({ children, open }: { children: ReactNode; open?: boolean }) =>
+    open ? <div data-testid="sheet">{children}</div> : null,
+  SheetContent: ({ children }: { children: ReactNode }) => (
     <div role="dialog" aria-modal="true">
       {children}
     </div>
   ),
-  SheetHeader: ({ children }: any) => <div data-testid="sheet-header">{children}</div>,
-  SheetTitle: ({ children }: any) => <h2 id="slide-over-title">{children}</h2>,
-  SheetFooter: ({ children }: any) => <div data-testid="sheet-footer">{children}</div>,
+  SheetHeader: ({ children }: { children: ReactNode }) => (
+    <div data-testid="sheet-header">{children}</div>
+  ),
+  SheetTitle: ({ children }: { children: ReactNode }) => <h2 id="slide-over-title">{children}</h2>,
+  SheetFooter: ({ children }: { children: ReactNode }) => (
+    <div data-testid="sheet-footer">{children}</div>
+  ),
 }));
 
 // Mock Tabs component

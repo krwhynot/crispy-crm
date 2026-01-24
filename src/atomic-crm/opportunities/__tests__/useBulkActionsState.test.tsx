@@ -285,10 +285,10 @@ describe("useBulkActionsState - Parallel Execution", () => {
     });
 
     vi.resetAllMocks();
-    (useDataProvider as any).mockReturnValue(mockDataProvider);
-    (useNotify as any).mockReturnValue(mockNotify);
-    (useRefresh as any).mockReturnValue(mockRefresh);
-    (useQueryClient as any).mockReturnValue(queryClient);
+    vi.mocked(useDataProvider).mockReturnValue(mockDataProvider as unknown as DataProvider);
+    vi.mocked(useNotify).mockReturnValue(mockNotify);
+    vi.mocked(useRefresh).mockReturnValue(mockRefresh);
+    vi.mocked(useQueryClient).mockReturnValue(queryClient);
     mockDataProvider.update.mockResolvedValue({ data: {} });
 
     // Test assign_owner

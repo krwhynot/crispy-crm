@@ -63,7 +63,7 @@ vi.mock("@/components/ra-wrappers/reference-field", () => ({
 
 // Mock ReferenceArrayField
 vi.mock("@/components/ra-wrappers/reference-array-field", () => ({
-  ReferenceArrayField: ({ children }: any) => (
+  ReferenceArrayField: ({ children }: { children: ReactNode }) => (
     <div data-testid="reference-array-field">{children}</div>
   ),
 }));

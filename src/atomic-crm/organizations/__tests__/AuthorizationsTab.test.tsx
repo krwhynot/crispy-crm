@@ -140,9 +140,13 @@ describe("AuthorizationsTab", () => {
     test("renders error message when fetch fails", () => {
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: undefined, isPending: false, error: new Error("Network error") } as any;
+          return mockUseGetListReturn({
+            data: undefined,
+            isPending: false,
+            error: new Error("Network error"),
+          });
         }
-        return { data: [], isPending: false, error: null } as any;
+        return mockUseGetListReturn({ data: [], isPending: false, error: null });
       });
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);

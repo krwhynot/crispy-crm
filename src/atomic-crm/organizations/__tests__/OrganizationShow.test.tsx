@@ -73,7 +73,9 @@ vi.mock("../contacts/TagsList", () => ({
 
 // Mock Status
 vi.mock("../misc/Status", () => ({
-  Status: ({ status }: any) => <span data-testid={`status-${status}`}>{status}</span>,
+  Status: ({ status }: { status: string }) => (
+    <span data-testid={`status-${status}`}>{status}</span>
+  ),
 }));
 
 // Mock ConfigurationContext
