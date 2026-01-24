@@ -518,3 +518,49 @@ export interface StorageBucketApi {
 export function mockStorageBucketApi(methods: StorageBucketApi): StorageBucketApi {
   return methods;
 }
+
+/**
+ * Extended DataProvider interface with RPC method for testing services that use Edge Functions
+ * This is a common pattern in Crispy CRM for services that call Supabase RPC functions
+ */
+export interface DataProviderWithRpc extends DataProvider {
+  rpc: Mock;
+}
+
+/**
+ * Create a mock DataProvider with RPC support
+ * @param baseMock - The base mock data provider (from createMockDataProvider)
+ * @returns DataProvider with typed rpc mock function
+ */
+export function createMockDataProviderWithRpc(baseMock: DataProvider): DataProviderWithRpc {
+  return {
+    ...baseMock,
+    rpc: vi.fn(),
+  };
+}
+
+/**
+ * Delete params with meta for skipDelete pattern
+ * Used by lifecycle callbacks that convert DELETE to soft-delete
+ */
+export interface DeleteParamsWithMeta {
+  id: RaRecord["id"];
+  previousData?: RaRecord;
+  meta?: {
+    skipDelete?: boolean;
+    [key: string]: unknown;
+  };
+}
+
+/**
+ * Activity log entry type for ActivitiesService tests
+ */
+export interface ActivityLogEntry {
+  id: number;
+  activity_type: string;
+  type?: string;
+  subject?: string;
+  activity_date: string;
+  source_table?: string;
+  [key: string]: unknown;
+}

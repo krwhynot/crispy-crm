@@ -28,6 +28,7 @@ import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { TopToolbar } from "../layout/TopToolbar";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
+import { SORT_BY_CREATED_DESC, FILTER_ACTIVE_RECORDS } from "@/atomic-crm/constants/listDefaults";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -106,11 +107,9 @@ const OpportunityList = () => {
       <div data-tutorial="opportunities-list">
         <List
           perPage={25}
-          filter={{
-            "deleted_at@is": null,
-          }}
+          filter={FILTER_ACTIVE_RECORDS}
           title={false}
-          sort={{ field: "created_at", order: "DESC" }}
+          sort={SORT_BY_CREATED_DESC}
           actions={<OpportunityListActions />}
           exporter={opportunityExporter}
           pagination={<ListPagination rowsPerPageOptions={[10, 25, 50]} />}

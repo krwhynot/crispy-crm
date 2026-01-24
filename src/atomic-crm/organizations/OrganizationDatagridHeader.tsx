@@ -36,7 +36,7 @@ export function OrganizationNameHeader() {
       label="Organization Name"
       filterType="text"
       placeholder="Search by name..."
-      debounceMs={300}
+      debounceMs={SEARCH_DEBOUNCE_MS}
     />
   );
 }

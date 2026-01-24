@@ -205,7 +205,7 @@ const StatusField = ({
   cellClassName?: string;
   headerClassName?: string;
 }) => {
-  const record = useRecordContext();
+  const record = useRecordContext<Sale>();
   if (!record) return null;
 
   return (
