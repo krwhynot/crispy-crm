@@ -5,7 +5,7 @@
  *
  * Usage:
  * ```tsx
- * const { relatedCounts, isLoading } = useRelatedRecordCounts({
+ * const { relatedCounts, isLoading, error } = useRelatedRecordCounts({
  *   resource: 'organizations',
  *   ids: selectedIds,
  *   enabled: showConfirmDialog,
@@ -18,16 +18,6 @@
 import { useEffect, useState } from "react";
 import { useDataProvider, type Identifier } from "react-admin";
 import type { RelatedRecordCount } from "@/components/ra-wrappers/delete-confirm-dialog";
-import { devLog } from "@/lib/devLogger";
-import { logger } from "@/lib/logger";
-
-/**
- * Per-query timeout in milliseconds
- *
- * FIX [WF-C06]: Prevents infinite hang when a single getManyReference query stalls.
- * 5 seconds balances user experience with allowing slow queries to complete.
- */
-const QUERY_TIMEOUT_MS = 5000;
 
 /**
  * Relationship definitions for cascade counting
@@ -123,7 +113,7 @@ export function useRelatedRecordCounts({
         const countsByLabel: Record<string, number> = {};
 
         // Fetch counts in parallel for all relationships and all parent IDs
-        // FIX [WF-C06]: Each query wrapped with timeout to prevent infinite hang
+        // FIX [WF-C06]: Queries run in parallel - failures propagate for fail-fast behavior
         const promises = relationships.flatMap((rel) =>
           ids.map((id) => {
             // Use getManyReference to get count of related records

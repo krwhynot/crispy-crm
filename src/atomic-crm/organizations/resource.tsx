@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { Organization } from "../types";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 /**
  * Organizations Resource Configuration
@@ -24,28 +25,36 @@ const OrganizationShowLazy = React.lazy(() =>
   import("./OrganizationShow").then((module) => ({ default: module.OrganizationShow }))
 );
 
-// Wrap lazy components with resource-specific error boundaries
+// Wrap lazy components with Suspense and resource-specific error boundaries
 export const OrganizationListView = () => (
   <ResourceErrorBoundary resource="organizations" page="list">
-    <OrganizationListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OrganizationListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const OrganizationCreateView = () => (
   <ResourceErrorBoundary resource="organizations" page="create">
-    <OrganizationCreateLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OrganizationCreateLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const OrganizationEditView = () => (
   <ResourceErrorBoundary resource="organizations" page="edit">
-    <OrganizationEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OrganizationEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const OrganizationShowView = () => (
   <ResourceErrorBoundary resource="organizations" page="show">
-    <OrganizationShowLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OrganizationShowLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 

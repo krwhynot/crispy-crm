@@ -2,6 +2,7 @@ import * as React from "react";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 const SalesListLazy = React.lazy(() => import("./SalesList"));
 const SalesEditLazy = React.lazy(() => import("./SalesEdit"));
@@ -10,25 +11,33 @@ const SalesShowLazy = React.lazy(() => import("./SalesShow"));
 
 const SalesListView = () => (
   <ResourceErrorBoundary resource="sales" page="list">
-    <SalesListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 const SalesEditView = () => (
   <ResourceErrorBoundary resource="sales" page="edit">
-    <SalesEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 const SalesCreateView = () => (
   <ResourceErrorBoundary resource="sales" page="create">
-    <SalesCreateLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesCreateLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 const SalesShowView = () => (
   <ResourceErrorBoundary resource="sales" page="show">
-    <SalesShowLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesShowLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 

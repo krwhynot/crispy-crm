@@ -2,6 +2,7 @@ import * as React from "react";
 import type { ActivityRecord } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 /**
  * Activities Resource Configuration
@@ -22,25 +23,33 @@ const ActivityShowLazy = React.lazy(() => import("./ActivityShow"));
 // Wrap lazy components with resource-specific error boundaries
 export const ActivityListView = () => (
   <ResourceErrorBoundary resource="activities" page="list">
-    <ActivityListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ActivityListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ActivityCreateView = () => (
   <ResourceErrorBoundary resource="activities" page="create">
-    <ActivityCreateLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ActivityCreateLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ActivityEditView = () => (
   <ResourceErrorBoundary resource="activities" page="edit">
-    <ActivityEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ActivityEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ActivityShowView = () => (
   <ResourceErrorBoundary resource="activities" page="show">
-    <ActivityShowLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ActivityShowLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 

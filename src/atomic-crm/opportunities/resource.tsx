@@ -2,6 +2,7 @@ import * as React from "react";
 import { useRedirect } from "ra-core";
 import type { Opportunity } from "../types";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 const OpportunityListLazy = React.lazy(() => import("./OpportunityList"));
 const OpportunityEditLazy = React.lazy(() => import("./OpportunityEdit"));
@@ -17,7 +18,9 @@ const OpportunityCreateRedirect = () => {
 
 export const OpportunityListView = () => (
   <ResourceErrorBoundary resource="opportunities" page="list">
-    <OpportunityListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OpportunityListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
@@ -25,7 +28,9 @@ export const OpportunityCreateView = () => <OpportunityCreateRedirect />;
 
 export const OpportunityEditView = () => (
   <ResourceErrorBoundary resource="opportunities" page="edit">
-    <OpportunityEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OpportunityEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 const ProductListLazy = React.lazy(() => import("./ProductList"));
 const ProductCreateLazy = React.lazy(() => import("./ProductCreate"));
@@ -9,25 +10,33 @@ const ProductShowLazy = React.lazy(() => import("./ProductShow"));
 // Wrap lazy components with resource-specific error boundaries
 export const ProductListView = () => (
   <ResourceErrorBoundary resource="products" page="list">
-    <ProductListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ProductCreateView = () => (
   <ResourceErrorBoundary resource="products" page="create">
-    <ProductCreateLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductCreateLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ProductEditView = () => (
   <ResourceErrorBoundary resource="products" page="edit">
-    <ProductEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ProductShowView = () => (
   <ResourceErrorBoundary resource="products" page="show">
-    <ProductShowLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductShowLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
