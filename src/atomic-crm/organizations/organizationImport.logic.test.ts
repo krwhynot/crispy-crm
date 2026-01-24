@@ -71,7 +71,7 @@ describe("detectDuplicateOrganizations", () => {
       { name: "Valid Company" },
       { name: "" }, // Empty name
       { name: "Valid Company" }, // Duplicate
-      { name: undefined as any }, // Missing name
+      { name: undefined as unknown as string }, // Missing name
     ];
 
     const result = detectDuplicateOrganizations(orgs, "name");
@@ -111,7 +111,7 @@ describe("detectDuplicateOrganizations", () => {
     const orgs: OrganizationImportSchema[] = [{ name: "Test" }];
 
     expect(() => {
-      detectDuplicateOrganizations(orgs, "email" as any);
+      detectDuplicateOrganizations(orgs, "email" as unknown as "name");
     }).toThrow("Unsupported duplicate detection strategy: email");
   });
 });
@@ -183,7 +183,7 @@ describe("validateTransformedOrganizations", () => {
       { name: "Valid Company" },
       { name: "" }, // Invalid - empty name
       { name: "Another Valid Company" },
-      { name: undefined as any }, // Invalid - missing name
+      { name: undefined as unknown as string }, // Invalid - missing name
     ];
 
     const result = validateTransformedOrganizations(orgs);
@@ -215,7 +215,9 @@ describe("validateTransformedOrganizations", () => {
   });
 
   it("should preserve original data in failed validations", () => {
-    const orgs: OrganizationImportSchema[] = [{ name: "", priority: "A" as any }];
+    const orgs: OrganizationImportSchema[] = [
+      { name: "", priority: "A" as unknown as OrganizationImportSchema["priority"] },
+    ];
 
     const result = validateTransformedOrganizations(orgs);
 

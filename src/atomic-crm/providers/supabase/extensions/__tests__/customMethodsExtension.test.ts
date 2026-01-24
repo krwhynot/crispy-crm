@@ -564,9 +564,9 @@ describe("extendWithCustomMethods", () => {
       const mockData = { path: "avatars/test.png" };
 
       const mockUpload = vi.fn().mockResolvedValue(mockSupabaseStorageResponse(mockData));
-      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
-        upload: mockUpload,
-      } as any);
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue(
+        mockStorageBucketApi({ upload: mockUpload })
+      );
 
       const result = await extendedProvider.storage.upload("avatars", "test.png", mockFile);
 
@@ -594,9 +594,9 @@ describe("extendWithCustomMethods", () => {
       const mockUrl = "https://supabase.co/storage/avatars/test.png";
 
       const mockGetPublicUrl = vi.fn().mockReturnValue({ data: { publicUrl: mockUrl } });
-      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
-        getPublicUrl: mockGetPublicUrl,
-      } as any);
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue(
+        mockStorageBucketApi({ getPublicUrl: mockGetPublicUrl })
+      );
 
       const result = extendedProvider.storage.getPublicUrl("avatars", "test.png");
 
@@ -609,9 +609,9 @@ describe("extendWithCustomMethods", () => {
       const paths = ["old1.png", "old2.png"];
 
       const mockRemove = vi.fn().mockResolvedValue(mockSupabaseStorageResponse(null));
-      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
-        remove: mockRemove,
-      } as any);
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue(
+        mockStorageBucketApi({ remove: mockRemove })
+      );
 
       await extendedProvider.storage.remove("avatars", paths);
 
@@ -623,9 +623,9 @@ describe("extendWithCustomMethods", () => {
       const mockFiles = [{ name: "file1.png" }, { name: "file2.png" }];
 
       const mockList = vi.fn().mockResolvedValue(mockSupabaseStorageResponse(mockFiles));
-      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue({
-        list: mockList,
-      } as any);
+      vi.mocked(mockSupabaseClient.storage.from).mockReturnValue(
+        mockStorageBucketApi({ list: mockList })
+      );
 
       const result = await extendedProvider.storage.list("avatars", "subfolder");
 

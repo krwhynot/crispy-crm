@@ -361,7 +361,7 @@ describe("authProvider", () => {
             }),
           }),
         }),
-      } as any);
+      } as never);
 
       const canAccessContacts = await authProvider.canAccess!({
         resource: "contacts",
@@ -415,7 +415,7 @@ describe("authProvider", () => {
             }),
           }),
         }),
-      } as any);
+      } as never);
 
       const canDelete = await authProvider.canAccess!({
         resource: "contacts",
@@ -466,7 +466,7 @@ describe("authProvider", () => {
             }),
           }),
         }),
-      } as any);
+      } as never);
 
       const canAccess = await authProvider.canAccess!({
         resource: "contacts",
@@ -549,7 +549,7 @@ describe("authProvider", () => {
             }),
           }),
         }),
-      } as any);
+      } as never);
 
       // First call
       const identity1 = await authProvider.getIdentity!();
