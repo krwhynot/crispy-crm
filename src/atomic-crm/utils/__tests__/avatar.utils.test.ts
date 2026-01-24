@@ -336,7 +336,7 @@ describe("processOrganizationLogo", () => {
     it("should not generate logo when website is missing", async () => {
       const orgData: Partial<Organization> = {
         name: "No Website Corp",
-        logo: { rawFile: new File([""], "logo.png") } as any,
+        logo: { rawFile: new File([""], "logo.png") } as unknown as Organization["logo"],
         // No website
       };
 

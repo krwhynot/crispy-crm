@@ -511,11 +511,13 @@ describe("OpportunityShow", () => {
       ],
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -535,11 +537,13 @@ describe("OpportunityShow", () => {
   });
 
   test("handles missing record gracefully", () => {
-    (useShowContext as any).mockReturnValue({
-      record: null,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: null,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -563,11 +567,13 @@ describe("OpportunityShow", () => {
       created_by: 5,
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>

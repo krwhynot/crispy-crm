@@ -373,15 +373,31 @@ describe("authProvider", () => {
 
     it("should deny regular user access to admin-only actions", async () => {
       // Mock regular user
+      const regularUser: User = {
+        id: "regular-user",
+        email: "user@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const regularSession: AuthSession = {
+        user: regularUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "regular-user", email: "user@example.com" },
-            access_token: "valid-token",
-          },
+          session: regularSession,
         },
         error: null,
-      } as any);
+      });
 
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
@@ -413,15 +429,31 @@ describe("authProvider", () => {
 
     it("should return false when user has no sales record", async () => {
       // Mock session but no sales record
+      const noSaleUser: User = {
+        id: "no-sale",
+        email: "nosale@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const noSaleSession: AuthSession = {
+        user: noSaleUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "no-sale", email: "nosale@example.com", aud: "authenticated" },
-            access_token: "valid-token",
-          },
+          session: noSaleSession,
         },
         error: null,
-      } as any);
+      });
 
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
@@ -464,23 +496,39 @@ describe("authProvider", () => {
       // and consistency rather than specific values
 
       // Mock valid session
+      const cacheTestUser: User = {
+        id: "cache-test-user",
+        email: "cache@example.com",
+        aud: "authenticated",
+        created_at: new Date().toISOString(),
+        user_metadata: {},
+        app_metadata: {},
+        identities: [],
+        updated_at: new Date().toISOString(),
+      };
+      const cacheTestSession: AuthSession = {
+        user: cacheTestUser,
+        access_token: "valid-token",
+        refresh_token: "refresh-token",
+        expires_at: Math.floor((Date.now() + 3600000) / 1000),
+        expires_in: 3600,
+        token_type: "bearer",
+      };
+
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
-          session: {
-            user: { id: "cache-test-user", email: "cache@example.com", aud: "authenticated" },
-            access_token: "valid-token",
-          },
+          session: cacheTestSession,
         },
         error: null,
-      } as any);
+      });
 
       // Mock getUser for ra-supabase-core
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: {
-          user: { id: "cache-test-user", email: "cache@example.com", aud: "authenticated" },
+          user: cacheTestUser,
         },
         error: null,
-      } as any);
+      });
 
       // Mock sales lookup (may not be called if value is already cached from previous test)
       vi.mocked(supabase.from).mockReturnValue({

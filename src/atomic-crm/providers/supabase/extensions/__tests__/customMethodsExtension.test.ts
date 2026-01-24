@@ -675,10 +675,9 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const mockError = { message: "Function timeout" };
 
-      vi.mocked(mockSupabaseClient.functions.invoke as any).mockResolvedValue({
-        data: null,
-        error: mockError,
-      });
+      vi.mocked(mockSupabaseClient.functions.invoke).mockResolvedValue(
+        mockSupabaseEdgeFunctionResponse(null, mockError)
+      );
 
       await expect(extendedProvider.invoke("test-function")).rejects.toThrow(
         "Edge function test-function failed: Function timeout"
@@ -690,10 +689,9 @@ describe("extendWithCustomMethods", () => {
     it("should throw error when Edge Function returns no data", async () => {
       const extendedProvider = extendWithCustomMethods(config);
 
-      vi.mocked(mockSupabaseClient.functions.invoke as any).mockResolvedValue({
-        data: null,
-        error: null,
-      });
+      vi.mocked(mockSupabaseClient.functions.invoke).mockResolvedValue(
+        mockSupabaseEdgeFunctionResponse(null)
+      );
 
       await expect(extendedProvider.invoke("test-function")).rejects.toThrow(
         "Edge function test-function returned no data"
@@ -717,10 +715,7 @@ describe("extendWithCustomMethods", () => {
         opportunity_id: 3,
       };
 
-      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue({
-        data: mockResult,
-        error: null,
-      } as any);
+      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue(mockSupabaseRpcResponse(mockResult));
 
       const result = await extendedProvider.createBoothVisitor(input);
 

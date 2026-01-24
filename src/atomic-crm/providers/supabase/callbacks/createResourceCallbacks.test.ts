@@ -291,7 +291,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
       await callbacks.beforeDelete!(params, mockDataProvider);
 
       // Should have called update with the transformed data
-      const updateCall = (mockDataProvider.update as any).mock.calls[0];
+      const updateCall = vi.mocked(mockDataProvider.update).mock.calls[0];
       expect(updateCall).toBeDefined();
       expect(updateCall[1]).toHaveProperty("previousData");
     });
