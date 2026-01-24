@@ -58,6 +58,17 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
   );
 
   /**
+   * Memoized callback for removing individual filters.
+   * Stable reference allows FilterChip React.memo to prevent unnecessary re-renders.
+   */
+  const handleRemoveFilter = useCallback(
+    (key: string, value: string) => {
+      removeFilter(key, value);
+    },
+    [removeFilter]
+  );
+
+  /**
    * Keyboard navigation handler for chip bar
    * Allows arrow key navigation between chips
    */
@@ -114,7 +125,10 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
       >
         {chips.map((chip) => (
           <div key={`${chip.key}-${chip.value}`} role="listitem">
-            <FilterChip label={chip.label} onRemove={() => removeFilter(chip.key, chip.value)} />
+            <FilterChip
+              label={chip.label}
+              onRemove={() => handleRemoveFilter(chip.key, chip.value)}
+            />
           </div>
         ))}
       </div>

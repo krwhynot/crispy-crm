@@ -112,5 +112,3 @@ export const SettingsPage = () => {
 
   return <SettingsLayout sections={sections} />;
 };
-
-SettingsPage.path = "/settings";

@@ -106,5 +106,3 @@ export const SetPasswordPage = () => {
     </Layout>
   );
 };
-
-SetPasswordPage.path = "set-password";

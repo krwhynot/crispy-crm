@@ -20,9 +20,9 @@
  * ```
  */
 
-import { FormControlLabel, Switch } from '@mui/material';
-import { useListContext } from 'react-admin';
-import { useUserRole } from '@/hooks/useUserRole';
+import { FormControlLabel, Switch } from "@mui/material";
+import { useListContext } from "react-admin";
+import { useUserRole } from "@/hooks/useUserRole";
 
 export const DeletedRecordsToggle = () => {
   const { filterValues, setFilters } = useListContext();
@@ -34,10 +34,14 @@ export const DeletedRecordsToggle = () => {
   const includeDeleted = filterValues?.includeDeleted || false;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({
-      ...filterValues,
-      includeDeleted: event.target.checked,
-    }, {}, false); // false = don't debounce
+    setFilters(
+      {
+        ...filterValues,
+        includeDeleted: event.target.checked,
+      },
+      {},
+      false
+    ); // false = don't debounce
   };
 
   return (

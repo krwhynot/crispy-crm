@@ -44,6 +44,7 @@ BEGIN;
 -- ============================================================
 
 DROP POLICY IF EXISTS "activities_insert_all" ON activities;
+DROP POLICY IF EXISTS "activities_insert_owner" ON activities;
 
 CREATE POLICY "activities_insert_owner"
 ON activities FOR INSERT

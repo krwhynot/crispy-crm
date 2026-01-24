@@ -124,7 +124,7 @@ describe("CSV Import Integration", () => {
 
     // Parse and sanitize
     const parsed = Papa.parse(csvContent, { header: true });
-    const contacts = (parsed.data as any[]).map((row) => {
+    const contacts = typedCsvData(parsed.data).map((row) => {
       const first_name = sanitizeCsvValue(row["First Name"]);
       const last_name = sanitizeCsvValue(row["Last Name"]);
       const name = `${first_name} ${last_name}`.trim();
