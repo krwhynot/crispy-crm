@@ -2,6 +2,7 @@ import { Bell } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { useGetIdentity, useGetList } from "ra-core";
 import { NotificationDropdown } from "./NotificationDropdown";
+import { NOTIFICATION_POLL_INTERVAL_MS } from "@/atomic-crm/constants";
 
 interface Notification {
   id: number;
@@ -20,9 +21,9 @@ export const NotificationBell = () => {
     },
     {
       enabled: !!identity?.user_id && !isLoading,
-      refetchInterval: 30000,
+      refetchInterval: NOTIFICATION_POLL_INTERVAL_MS,
       // staleTime < refetchInterval prevents double-fetching
-      staleTime: 25000,
+      staleTime: NOTIFICATION_POLL_INTERVAL_MS - 5000,
       // Don't poll when tab is in background
       refetchIntervalInBackground: false,
     }

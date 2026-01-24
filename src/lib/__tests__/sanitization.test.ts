@@ -36,8 +36,10 @@ describe('HTML Sanitization', () => {
 
     it('should handle empty or non-string input', () => {
       expect(sanitizeHtml('')).toBe('');
-      expect(sanitizeHtml(null as any)).toBe('');
-      expect(sanitizeHtml(undefined as any)).toBe('');
+      // Intentional: testing null input handling for runtime safety
+      expect(sanitizeHtml(null as unknown as string)).toBe('');
+      // Intentional: testing undefined input handling for runtime safety
+      expect(sanitizeHtml(undefined as unknown as string)).toBe('');
     });
   });
 

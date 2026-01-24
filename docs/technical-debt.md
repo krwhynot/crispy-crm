@@ -44,9 +44,9 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| ERR-01 | Silent Catch | Avatar utils silent catches need logging | `src/atomic-crm/utils/avatar.utils.ts:55-56,85-87` | Open |
-| ERR-02 | Silent Catch | Filter storage errors silently ignored | `src/atomic-crm/filters/filterPrecedence.ts:70-72,191-193` | Open |
-| ERR-03 | Error Propagation | QuickCreatePopover catches but doesn't log for debugging | `src/atomic-crm/organizations/QuickCreatePopover.tsx:72,101` | Open |
+| ERR-01 | Silent Catch | Avatar utils silent catches need logging | `src/atomic-crm/utils/avatar.utils.ts:55-56,85-87` | Resolved |
+| ERR-02 | Silent Catch | Filter storage errors silently ignored | `src/atomic-crm/filters/filterPrecedence.ts:70-72,191-193` | Resolved |
+| ERR-03 | Error Propagation | QuickCreatePopover catches but doesn't log for debugging | `src/atomic-crm/organizations/QuickCreatePopover.tsx:72,101` | Resolved |
 
 ### Feature Incomplete
 

@@ -8,10 +8,11 @@
  * 4. Error handling and graceful degradation
  */
 
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { describe, test, expect, vi, beforeEach, type Mock } from "vitest";
 import { ActivitiesService } from "../activities.service";
 import type { DataProvider } from "ra-core";
 import { createMockDataProvider } from "@/tests/utils/mock-providers";
+import type { ActivityLogEntry } from "@/tests/utils/typed-mocks";
 
 // Mock the activity provider module
 vi.mock("../../providers/commons/activity", () => ({
@@ -23,7 +24,13 @@ import { getActivityLog } from "../../providers/commons/activity";
 describe("ActivitiesService", () => {
   let service: ActivitiesService;
   let mockDataProvider: DataProvider;
-  let mockGetActivityLog: any;
+  let mockGetActivityLog: Mock<
+    (
+      dataProvider: DataProvider,
+      organizationId?: number | string,
+      salesId?: number | string
+    ) => Promise<ActivityLogEntry[] | null | undefined>
+  >;
 
   beforeEach(() => {
     mockDataProvider = createMockDataProvider();

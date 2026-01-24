@@ -71,7 +71,8 @@ describe("opportunitiesCallbacks", () => {
 
       // Should return modified params that prevent actual delete
       expect(result).toHaveProperty("meta");
-      expect((result as any).meta.skipDelete).toBe(true);
+      const resultWithMeta = result as DeleteParamsWithMeta;
+      expect(resultWithMeta.meta?.skipDelete).toBe(true);
     });
 
     it("should handle archive RPC errors gracefully", async () => {
