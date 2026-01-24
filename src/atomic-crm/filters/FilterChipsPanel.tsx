@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -22,6 +23,17 @@ interface FilterChipsPanelProps {
  */
 export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
   const { filterValues, removeFilterValue } = useFilterManagement();
+
+  /**
+   * Memoized callback for removing filters.
+   * Stable reference allows FilterChip React.memo to prevent unnecessary re-renders.
+   */
+  const handleRemoveFilter = useCallback(
+    (key: string, value: unknown) => {
+      removeFilterValue(key, value);
+    },
+    [removeFilterValue]
+  );
 
   // Extract customer organization IDs from filter values and convert to strings
   const customerOrgIds = filterValues?.customer_organization_id

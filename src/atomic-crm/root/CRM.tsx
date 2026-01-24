@@ -1,11 +1,11 @@
 import { Admin } from "@/components/ra-wrappers/admin";
-import { ForgotPasswordPage } from "@/components/supabase/forgot-password-page";
-import { SetPasswordPage } from "@/components/supabase/set-password-page";
 import { QueryClient } from "@tanstack/react-query";
 import type { AuthProvider, DataProvider } from "ra-core";
 import { CustomRoutes, localStorageStore, Resource } from "ra-core";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Navigate, Route, useParams } from "react-router-dom";
+import { AuthSkeleton } from "@/components/supabase/auth-skeleton";
+import { ROUTES } from "@/constants/routes";
 // Import from resource.tsx directly to avoid bundling all barrel exports
 // This leverages the existing lazy loading in each resource.tsx file
 import organizations from "../organizations/resource";

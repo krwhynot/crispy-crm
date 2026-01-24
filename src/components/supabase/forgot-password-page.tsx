@@ -75,5 +75,3 @@ export const ForgotPasswordPage = () => {
     </Layout>
   );
 };
-
-ForgotPasswordPage.path = "forgot-password";
