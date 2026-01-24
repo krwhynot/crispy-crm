@@ -8,8 +8,23 @@
  * - Form state management
  */
 
-import { describe, it, expect, vi } from "vitest";
-import { createMockOpportunity } from "@/tests/utils";
+import { describe, it, expect, vi, type Mock } from "vitest";
+import { createMockOpportunity } from "@/tests/utils/mock-providers";
+
+/**
+ * Typed interface for QueryClient invalidateQueries options
+ * Matches TanStack Query's InvalidateQueryFilters structure
+ */
+interface InvalidateQueryOptions {
+  queryKey: readonly unknown[];
+}
+
+/**
+ * Mock QueryClient interface for type-safe testing
+ */
+interface MockQueryClient {
+  invalidateQueries: Mock<[options: InvalidateQueryOptions], Promise<void>>;
+}
 
 describe("OpportunityEdit - Form Architecture", () => {
   it("should use compact form with CollapsibleSections", () => {

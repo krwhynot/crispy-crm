@@ -37,7 +37,7 @@ vi.mock("ra-core", async () => {
 
 // Mock ReferenceManyField
 vi.mock("@/components/ra-wrappers/reference-many-field", () => ({
-  ReferenceManyField: ({ children }: any) => (
+  ReferenceManyField: ({ children }: { children: ReactNode }) => (
     <div data-testid="reference-many-field">{children}</div>
   ),
 }));

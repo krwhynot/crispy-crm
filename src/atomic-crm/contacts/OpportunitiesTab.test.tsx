@@ -1,13 +1,22 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { ShowContextProvider } from "ra-core";
 import type * as ReactAdmin from "react-admin";
+import type { ReactNode } from "react";
+import type { Identifier } from "ra-core";
 import { OpportunitiesTab } from "./OpportunitiesTab";
+import { mockUseShowContextReturn } from "@/tests/utils/typed-mocks";
+import { createMockContact, createMockOpportunity } from "@/tests/utils/mock-providers";
 
-const mockContact = {
+// Create typed mock contact with organization field
+const mockContact = createMockContact({
   id: 1,
   first_name: "Jane",
   last_name: "Doe",
   organization_id: 100,
+});
+// Add organization property for display (not in base Contact type but used by component)
+const mockContactWithOrg = {
+  ...mockContact,
   organization: { name: "Acme Corp" },
 };
 
@@ -19,7 +28,7 @@ const mockNotify = vi.fn();
 
 // Mock StageBadgeWithHealth component
 vi.mock("./StageBadgeWithHealth", () => ({
-  StageBadgeWithHealth: ({ stage, health }: any) => (
+  StageBadgeWithHealth: ({ stage, health }: { stage: string; health?: string }) => (
     <div data-testid="stage-badge">
       {stage} - {health}
     </div>
@@ -28,7 +37,13 @@ vi.mock("./StageBadgeWithHealth", () => ({
 
 // Mock SuggestedOpportunityCard component
 vi.mock("./SuggestedOpportunityCard", () => ({
-  SuggestedOpportunityCard: ({ opportunity, onLink }: any) => (
+  SuggestedOpportunityCard: ({
+    opportunity,
+    onLink,
+  }: {
+    opportunity: { id: number; name: string };
+    onLink: () => void;
+  }) => (
     <div data-testid="suggested-opportunity-card">
       {opportunity.name}
       <button onClick={onLink}>Link</button>
@@ -38,7 +53,15 @@ vi.mock("./SuggestedOpportunityCard", () => ({
 
 // Mock LinkOpportunityModal component
 vi.mock("./LinkOpportunityModal", () => ({
-  LinkOpportunityModal: ({ open, contactName, onClose }: any) => {
+  LinkOpportunityModal: ({
+    open,
+    contactName,
+    onClose,
+  }: {
+    open: boolean;
+    contactName: string;
+    onClose: () => void;
+  }) => {
     if (!open) return null;
     return (
       <div data-testid="link-modal">
@@ -51,7 +74,15 @@ vi.mock("./LinkOpportunityModal", () => ({
 
 // Mock UnlinkConfirmDialog component
 vi.mock("./UnlinkConfirmDialog", () => ({
-  UnlinkConfirmDialog: ({ opportunity, contactName, onClose }: any) => {
+  UnlinkConfirmDialog: ({
+    opportunity,
+    contactName,
+    onClose,
+  }: {
+    opportunity: { id: number; name: string } | null;
+    contactName: string;
+    onClose: () => void;
+  }) => {
     if (!opportunity) return null;
     return (
       <div data-testid="unlink-dialog">
@@ -67,21 +98,31 @@ vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
-    Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
-    FunctionField: ({ label }: any) => <div data-testid={`field-${label}`}>function-field</div>,
-    ReferenceField: ({ children, label }: any) => (
+    Datagrid: ({ children }: { children: ReactNode }) => (
+      <div data-testid="datagrid">{children}</div>
+    ),
+    FunctionField: ({ label }: { label?: string }) => (
+      <div data-testid={`field-${label}`}>function-field</div>
+    ),
+    ReferenceField: ({ children, label }: { children: ReactNode; label?: string }) => (
       <div data-testid={`field-${label}`}>{children}</div>
     ),
     TextField: () => <div>text-field</div>,
     NumberField: () => <div>number-field</div>,
-    ListContextProvider: ({ children, value }: any) => {
+    ListContextProvider: ({
+      children,
+      value,
+    }: {
+      children: ReactNode;
+      value: { ids?: Identifier[]; data?: Record<Identifier, { id: Identifier; name: string }> };
+    }) => {
       // Render the data items for testing (data is object keyed by ID)
-      const items = value?.ids?.map((id: any) => value.data[id]) || [];
+      const items = value?.ids?.map((id: Identifier) => value.data?.[id]).filter(Boolean) || [];
       return (
         <div data-testid="list-context">
-          {items.map((item: any) => (
-            <div key={item.id} data-testid="opportunity-item">
-              {item.name}
+          {items.map((item) => (
+            <div key={item!.id} data-testid="opportunity-item">
+              {item!.name}
             </div>
           ))}
           {children}
@@ -135,7 +176,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
+      <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -154,7 +195,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
+      <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -171,22 +212,18 @@ describe("OpportunitiesTab", () => {
     ];
 
     const mockOpportunities = [
-      {
+      createMockOpportunity({
         id: 10,
         name: "Deal A",
         customer_organization_id: 100,
         stage: "qualified",
-        health_status: "active",
-        amount: 50000,
-      },
-      {
+      }),
+      createMockOpportunity({
         id: 11,
         name: "Deal B",
         customer_organization_id: 100,
         stage: "proposal",
-        health_status: "cooling",
-        amount: 75000,
-      },
+      }),
     ];
 
     mockUseGetList.mockReturnValue({
@@ -199,7 +236,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
+      <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -217,7 +254,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
+      <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -232,30 +269,24 @@ describe("OpportunitiesTab", () => {
 
   it("shows suggested opportunities when contact has organization with active deals", async () => {
     const mockSuggestedOpps = [
-      {
+      createMockOpportunity({
         id: 20,
         name: "Suggested Deal A",
         customer_organization_id: 100,
         stage: "qualified",
-        health_status: "active",
-        amount: 30000,
-      },
-      {
+      }),
+      createMockOpportunity({
         id: 21,
         name: "Suggested Deal B",
         customer_organization_id: 100,
         stage: "proposal",
-        health_status: "cooling",
-        amount: 45000,
-      },
-      {
+      }),
+      createMockOpportunity({
         id: 22,
         name: "Suggested Deal C",
         customer_organization_id: 100,
         stage: "negotiation",
-        health_status: "active",
-        amount: 60000,
-      },
+      }),
     ];
 
     // First call returns empty junction records (no linked opportunities)
@@ -278,7 +309,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
+      <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -295,30 +326,24 @@ describe("OpportunitiesTab", () => {
 
   it("filters out closed opportunities from suggestions", async () => {
     const mockAllOpps = [
-      {
+      createMockOpportunity({
         id: 20,
         name: "Active Deal",
         customer_organization_id: 100,
         stage: "qualified",
-        health_status: "active",
-        amount: 30000,
-      },
-      {
+      }),
+      createMockOpportunity({
         id: 21,
         name: "Closed Won",
         customer_organization_id: 100,
         stage: "closed_won",
-        health_status: "active",
-        amount: 45000,
-      },
-      {
+      }),
+      createMockOpportunity({
         id: 22,
         name: "Closed Lost",
         customer_organization_id: 100,
         stage: "closed_lost",
-        health_status: "active",
-        amount: 60000,
-      },
+      }),
     ];
 
     let callCount = 0;
@@ -337,7 +362,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
+      <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );
@@ -351,14 +376,14 @@ describe("OpportunitiesTab", () => {
   });
 
   it("limits suggestions to 5 opportunities max", async () => {
-    const mockManyOpps = Array.from({ length: 10 }, (_, i) => ({
-      id: 30 + i,
-      name: `Deal ${i + 1}`,
-      customer_organization_id: 100,
-      stage: "qualified",
-      health_status: "active",
-      amount: 10000 * (i + 1),
-    }));
+    const mockManyOpps = Array.from({ length: 10 }, (_, i) =>
+      createMockOpportunity({
+        id: 30 + i,
+        name: `Deal ${i + 1}`,
+        customer_organization_id: 100,
+        stage: "qualified",
+      })
+    );
 
     let callCount = 0;
     mockUseGetList.mockImplementation(() => {
@@ -376,7 +401,7 @@ describe("OpportunitiesTab", () => {
     });
 
     render(
-      <ShowContextProvider value={{ record: mockContact, isLoading: false } as any}>
+      <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
     );

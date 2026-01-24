@@ -56,7 +56,9 @@ vi.mock("@tanstack/react-query", async () => {
 
 // Mock ReferenceField
 vi.mock("@/components/ra-wrappers/reference-field", () => ({
-  ReferenceField: ({ children }: any) => <div data-testid="reference-field">{children}</div>,
+  ReferenceField: ({ children }: { children: ReactNode }) => (
+    <div data-testid="reference-field">{children}</div>
+  ),
 }));
 
 // Mock ReferenceArrayField

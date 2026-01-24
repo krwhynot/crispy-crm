@@ -56,22 +56,22 @@ describe("Pipeline Drill-Down Feature", () => {
     });
 
     it("should handle missing fields with defaults", () => {
-      const rawOpportunity = {
+      const rawOpportunity: RawOpportunityData = {
         id: 1,
-        // All other fields missing
+        // All other fields missing - typed as optional in RawOpportunityData
       };
 
       const mapped = {
         id: rawOpportunity.id,
-        name: (rawOpportunity as any).name || "Unnamed Opportunity",
-        stage: (rawOpportunity as any).stage || "Unknown",
-        amount: (rawOpportunity as any).amount || 0,
-        probability: (rawOpportunity as any).probability || 0,
-        lastActivityDate: (rawOpportunity as any).last_activity_date
-          ? new Date((rawOpportunity as any).last_activity_date)
+        name: rawOpportunity.name || "Unnamed Opportunity",
+        stage: rawOpportunity.stage || "Unknown",
+        amount: rawOpportunity.amount || 0,
+        probability: rawOpportunity.probability || 0,
+        lastActivityDate: rawOpportunity.last_activity_date
+          ? new Date(rawOpportunity.last_activity_date)
           : null,
-        expectedCloseDate: (rawOpportunity as any).estimated_close_date
-          ? new Date((rawOpportunity as any).estimated_close_date)
+        expectedCloseDate: rawOpportunity.estimated_close_date
+          ? new Date(rawOpportunity.estimated_close_date)
           : null,
       };
 

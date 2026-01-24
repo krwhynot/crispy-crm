@@ -109,12 +109,15 @@ describe("AuthorizationsTab", () => {
     // Default implementations for all hooks
     vi.mocked(reactAdmin.useRefresh).mockReturnValue(mockRefresh);
     vi.mocked(reactAdmin.useNotify).mockReturnValue(mockNotify);
-    vi.mocked(reactAdmin.useCreate).mockReturnValue([mockCreateFn, { isPending: false }] as any);
-    vi.mocked(reactAdmin.useDelete).mockReturnValue([mockDeleteFn, { isPending: false }] as any);
-    vi.mocked(reactAdmin.useGetIdentity).mockReturnValue({
-      data: { id: 1 },
-      isLoading: false,
-    } as any);
+    vi.mocked(reactAdmin.useCreate).mockReturnValue(
+      mockUseCreateReturn({ mutate: mockCreateFn, isPending: false })
+    );
+    vi.mocked(reactAdmin.useDelete).mockReturnValue(
+      mockUseDeleteReturn({ mutate: mockDeleteFn, isPending: false })
+    );
+    vi.mocked(reactAdmin.useGetIdentity).mockReturnValue(
+      mockUseGetIdentityReturn({ data: { id: 1 }, isLoading: false })
+    );
   });
 
   describe("Loading State", () => {

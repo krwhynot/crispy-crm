@@ -120,8 +120,8 @@ describe("BulkActionsToolbar", () => {
 
   describe("Bulk Update Data Preparation", () => {
     it("should prepare correct data structure for stage update", () => {
-      const updateData = {
-        stage: "demo_scheduled" as any,
+      const updateData: Pick<Opportunity, "stage" | "stage_manual"> = {
+        stage: "demo_scheduled",
         stage_manual: true,
       };
 

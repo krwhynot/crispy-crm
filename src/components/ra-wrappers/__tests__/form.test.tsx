@@ -716,8 +716,14 @@ describe("SaveButton", () => {
   test("aggregates multiple field errors from submission", async () => {
     const user = userEvent.setup();
 
+    interface ValidationFormValues {
+      email: string;
+      password: string;
+      confirmPassword: string;
+    }
+
     const TestFormWithComplexValidation = () => {
-      const form = useForm({
+      const form = useForm<ValidationFormValues>({
         defaultValues: {
           email: "",
           password: "",
@@ -726,7 +732,7 @@ describe("SaveButton", () => {
       });
 
       const handleSubmit = form.handleSubmit((data) => {
-        const errors: Record<string, string> = {};
+        const errors: Partial<Record<keyof ValidationFormValues, string>> = {};
 
         if (!data.email) {
           errors.email = "Email is required";
@@ -738,9 +744,10 @@ describe("SaveButton", () => {
           errors.confirmPassword = "Passwords do not match";
         }
 
-        if (Object.keys(errors).length > 0) {
-          Object.entries(errors).forEach(([field, message]) => {
-            form.setError(field as any, { message });
+        const errorEntries = Object.entries(errors) as [keyof ValidationFormValues, string][];
+        if (errorEntries.length > 0) {
+          errorEntries.forEach(([field, message]) => {
+            form.setError(field, { message });
           });
           return;
         }

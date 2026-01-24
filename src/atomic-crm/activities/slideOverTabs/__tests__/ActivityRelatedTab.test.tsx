@@ -46,8 +46,8 @@ vi.mock("react-router-dom", async () => {
 });
 
 describe("ActivityRelatedTab", () => {
-  // Mock data
-  const mockContact: Contact = {
+  // Mock data using typed factory functions
+  const mockContactData = createMockContact({
     id: 10,
     first_name: "John",
     last_name: "Doe",
@@ -56,22 +56,17 @@ describe("ActivityRelatedTab", () => {
     phone: [],
     first_seen: "2024-01-01",
     last_seen: "2024-01-15",
-    has_newsletter: false,
-    tags: [],
-    gender: "",
-    opportunity_owner_id: 1,
-    status: "active",
-    background: "",
-  };
+  }) as Contact;
 
-  // Use type assertion since we only need the fields used by the component
-  const mockOrganization = {
+  const mockOrganizationData = createMockOrganization({
     id: 20,
     name: "Acme Corp",
-    organization_type: "distributor",
-  } as Organization;
+  }) as Organization & { organization_type: string };
+  // Add organization_type for component display
+  (mockOrganizationData as Organization & { organization_type: string }).organization_type =
+    "distributor";
 
-  const mockOpportunity: Opportunity = {
+  const mockOpportunityData = createMockOpportunity({
     id: 30,
     name: "Big Deal",
     customer_organization_id: 1,
@@ -79,24 +74,18 @@ describe("ActivityRelatedTab", () => {
     stage: "demo_scheduled",
     status: "active",
     priority: "high",
-    description: "A big opportunity",
-    estimated_close_date: "2024-12-31",
-    created_at: "2024-01-01",
-    updated_at: "2024-01-01",
-    version: 1,
-    stage_manual: false,
-    status_manual: false,
-  };
+  }) as Opportunity;
 
-  const createMockActivity = (overrides: Partial<ActivityRecord> = {}): ActivityRecord => ({
-    id: 1,
-    activity_type: "interaction",
-    type: "call",
-    subject: "Test Activity",
-    activity_date: "2024-01-15",
-    created_at: "2024-01-15T10:00:00Z",
-    ...overrides,
-  });
+  const createTestActivity = (overrides: Partial<ActivityRecord> = {}): ActivityRecord =>
+    createMockActivity({
+      id: 1,
+      activity_type: "interaction",
+      type: "call",
+      subject: "Test Activity",
+      activity_date: "2024-01-15",
+      created_at: "2024-01-15T10:00:00Z",
+      ...overrides,
+    }) as ActivityRecord;
 
   beforeEach(() => {
     vi.clearAllMocks();
