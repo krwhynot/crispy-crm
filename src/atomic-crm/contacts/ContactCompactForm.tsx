@@ -15,7 +15,11 @@ import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
 import { ucFirst, extractEmailLocalPart } from "@/atomic-crm/utils";
 
-export const ContactCompactForm = () => {
+interface ContactCompactFormProps {
+  disabled?: boolean;
+}
+
+export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps) => {
   const { setValue, getValues } = useFormContext();
 
   const handleEmailChange = (email: string) => {

@@ -14,6 +14,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
 import { organizationsCallbacks } from "./organizationsCallbacks";
+import type { DeleteParamsWithMeta } from "@/tests/utils";
 
 // Mock supabase for RPC cascade delete tests
 vi.mock("../supabase", () => ({
@@ -70,7 +71,8 @@ describe("organizationsCallbacks", () => {
 
       // Should return modified params that prevent actual delete
       expect(result).toHaveProperty("meta");
-      expect((result as any).meta.skipDelete).toBe(true);
+      const resultWithMeta = result as DeleteParamsWithMeta;
+      expect(resultWithMeta.meta?.skipDelete).toBe(true);
     });
 
     it("should not call dataProvider.update (uses RPC instead)", async () => {

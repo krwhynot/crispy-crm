@@ -131,7 +131,13 @@ export function TaskSlideOverDetailsTab({
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
               <TextInput source="title" label="Task Title" disabled={isLoading} />
-              <TextInput source="description" label="Description" multiline rows={3} disabled={isLoading} />
+              <TextInput
+                source="description"
+                label="Description"
+                multiline
+                rows={3}
+                disabled={isLoading}
+              />
               <DateInput source="due_date" label="Due Date" disabled={isLoading} />
               <DateInput source="reminder_date" label="Reminder Date" disabled={isLoading} />
 
@@ -164,7 +170,11 @@ export function TaskSlideOverDetailsTab({
                 <AutocompleteInput label="Contact" optionText={contactOptionText} />
               </ReferenceInput>
 
-              <ReferenceInput source="opportunity_id" reference="opportunities" disabled={isLoading}>
+              <ReferenceInput
+                source="opportunity_id"
+                reference="opportunities"
+                disabled={isLoading}
+              >
                 <AutocompleteInput label="Opportunity" optionText="name" />
               </ReferenceInput>
             </div>
