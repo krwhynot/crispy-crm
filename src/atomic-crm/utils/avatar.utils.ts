@@ -54,7 +54,7 @@ export async function getFaviconUrl(domain: string): Promise<string | null> {
       return faviconUrl;
     }
   } catch (error) {
-    console.warn("[avatar.utils] Failed to fetch favicon for domain:", domain, error);
+    logger.warn("Failed to fetch favicon for domain", { feature: "avatar.utils", domain, error });
     return null;
   }
   return null;
@@ -85,7 +85,7 @@ export async function getContactAvatar(record: Partial<Contact>): Promise<string
         return gravatarUrl;
       }
     } catch (error) {
-      console.warn("[avatar.utils] Gravatar fetch failed for email:", email, error);
+      logger.warn("Gravatar fetch failed for email", { feature: "avatar.utils", email, error });
     }
 
     // Step 2: Try to get favicon from email domain

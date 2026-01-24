@@ -3,6 +3,7 @@ import { useNotify, useStoreContext } from "ra-core";
 import { isValidFilterField } from "../providers/supabase/filterRegistry";
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { devLog } from "@/lib/devLogger";
+import { logger } from "@/lib/logger";
 import { listParamsSchema } from "../validation/filters";
 
 /**

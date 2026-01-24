@@ -23,10 +23,10 @@ const parseSourceParam = (searchParams: URLSearchParams): SourceContext => {
   try {
     return JSON.parse(sourceJson) as SourceContext;
   } catch (error: unknown) {
-    console.warn(
-      "Failed to parse source param:",
-      error instanceof Error ? error.message : String(error)
-    );
+    logger.warn("Failed to parse source param", {
+      feature: "getContextAwareRedirect",
+      error: error instanceof Error ? error.message : String(error),
+    });
     return {};
   }
 };

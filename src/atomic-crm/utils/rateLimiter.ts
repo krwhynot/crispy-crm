@@ -153,9 +153,10 @@ export class ClientRateLimiter {
     try {
       sessionStorage.setItem(this.config.storageKey, JSON.stringify(state));
     } catch (error: unknown) {
-      console.error(
-        "[Rate Limiter] Failed to save state:",
-        error instanceof Error ? error.message : String(error)
+      logger.error(
+        "Failed to save rate limiter state",
+        error instanceof Error ? error : new Error(String(error)),
+        { feature: "rateLimiter", storageKey: this.config.storageKey }
       );
     }
   }
