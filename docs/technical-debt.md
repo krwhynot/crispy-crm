@@ -11,10 +11,10 @@
 | Priority | Open Items | Resolved |
 |----------|------------|----------|
 | P0 - Critical | 1 | 12 |
-| P1 - High | 6 | 33 |
+| P1 - High | 3 | 36 |
 | P2 - Medium | 16 | 40 |
 | P3 - Low | 9 | 32 |
-| **Total** | **32** | **117** |
+| **Total** | **29** | **120** |
 
 ---
 
@@ -57,9 +57,6 @@
 ### P1 Dependencies
 - **ASYNC-01**: Blocks nothing | Blocked by: None | Related: useEffect cleanup patterns
 - **ASYNC-02**: Blocks nothing | Blocked by: None | Related: Save indicator UX
-- **ERR-01**: Blocks ERR-02, ERR-03 (establish logging pattern first) | Blocked by: None | Related: Silent catch pattern
-- **ERR-02**: Blocks nothing | Blocked by: ERR-01 (fix together) | Related: Silent catch pattern
-- **ERR-03**: Blocks nothing | Blocked by: ERR-01 (fix together) | Related: Silent catch pattern
 - **FEAT-01**: Blocks stale leads dashboard feature | Blocked by: None | Related: Database RPC implementation
 
 ---

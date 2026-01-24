@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDataProvider } from "ra-core";
 
 import { orgDescendantKeys } from "@/atomic-crm/queryKeys";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants";
 
 /**
  * Hook to fetch all descendant organization IDs for hierarchy cycle prevention.
@@ -37,7 +38,7 @@ export function useOrganizationDescendants(
       return (result.data as number[]) || [];
     },
     enabled: !!orgId,
-    staleTime: 30000, // Cache for 30s - hierarchy doesn't change often
+    staleTime: SHORT_STALE_TIME_MS, // Cache for 30s - hierarchy doesn't change often
   });
 
   return { descendants, isLoading, isFetched };

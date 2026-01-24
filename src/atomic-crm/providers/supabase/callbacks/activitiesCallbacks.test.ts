@@ -8,8 +8,9 @@
  * 3. Computed field stripping (contact_name, organization_name from joins)
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
+import type { DeleteParamsWithMeta } from "@/tests/utils/typed-mocks";
 import { activitiesCallbacks, COMPUTED_FIELDS } from "./activitiesCallbacks";
 
 describe("activitiesCallbacks", () => {

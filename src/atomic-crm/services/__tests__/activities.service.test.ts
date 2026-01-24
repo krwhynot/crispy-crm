@@ -119,7 +119,7 @@ describe("ActivitiesService", () => {
 
       expect(result).toHaveLength(5);
       // Verify activities come from different sources (simulates UNION ALL)
-      const sources = result.map((a: any) => a.source_table);
+      const sources = result.map((a: ActivityLogEntry) => a.source_table);
       expect(new Set(sources).size).toBe(5); // 5 unique sources
     });
 

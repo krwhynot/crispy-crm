@@ -59,7 +59,8 @@ vi.mock("react-admin", async () => {
           setState({
             data: [],
             isPending: false,
-            error: errorMessage as any, // Will be converted to Error by the hook
+            // Type assertion needed: hook converts string to Error internally
+            error: errorMessage as unknown as Error,
           });
           console.error("[useTeamActivities] Failed to fetch activities:", e);
         }
