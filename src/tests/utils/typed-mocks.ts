@@ -209,31 +209,41 @@ export interface MockIdentity {
   id: string | number;
   fullName?: string;
   avatar?: string;
+  role?: string;
+  user_id?: string;
   [key: string]: unknown;
 }
 
 /**
  * Create a mock return value for useGetIdentity hook
+ * React Admin's useGetIdentity returns { identity, isLoading, error, refetch }
  * @param overrides - Partial values to override defaults
  */
 export function mockUseGetIdentityReturn(overrides?: {
+  identity?: MockIdentity;
+  /** @deprecated Use 'identity' instead */
   data?: MockIdentity;
   isPending?: boolean;
   isLoading?: boolean;
   error?: Error | null;
+  refetch?: Mock;
 }): {
+  identity: MockIdentity | undefined;
   data: MockIdentity | undefined;
   isPending: boolean;
   isLoading: boolean;
   error: Error | null;
   refetch: Mock;
 } {
+  // Support both 'identity' (correct) and 'data' (legacy) properties
+  const identityValue = overrides?.identity ?? overrides?.data;
   return {
-    data: overrides?.data,
+    identity: identityValue,
+    data: identityValue, // Keep data for backwards compatibility
     isPending: overrides?.isPending ?? false,
     isLoading: overrides?.isLoading ?? false,
     error: overrides?.error ?? null,
-    refetch: vi.fn(),
+    refetch: overrides?.refetch ?? vi.fn(),
   };
 }
 
