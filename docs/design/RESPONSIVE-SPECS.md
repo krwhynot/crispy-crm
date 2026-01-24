@@ -1,21 +1,21 @@
 # Responsive Design Specifications
 
-Crispy CRM is a **desktop-first** application optimized for 1440px+ displays, with critical iPad support for field sales representatives.
+Crispy CRM is designed for **Desktop (1440px+) and iPad (equal priority)**, optimized for account managers at their desks and field sales representatives on the go.
 
 ## Viewport Priority Table
 
 | Priority | Device | Viewport | Tailwind Prefix | Usage |
 |----------|--------|----------|-----------------|-------|
-| 1 (PRIMARY) | Desktop | 1440px+ | None (default) | Primary workspace for account managers |
-| 2 | iPad Landscape | 1024-1199px | `lg:` | Field sales - data entry |
-| 3 | iPad Portrait | 768-1023px | `md:` | Field sales - quick reference |
-| 4 | Mobile | < 768px | `sm:` | Emergency access only |
+| 1 (EQUAL) | Desktop | 1440px+ | None (default) | Primary workspace for account managers |
+| 1 (EQUAL) | iPad Landscape | 1024-1199px | `lg:` | Field sales - data entry |
+| 2 | iPad Portrait | 768-1023px | `md:` | Field sales - quick reference |
+| 3 | Mobile | < 768px | `sm:` | Emergency access only |
 
 ## Breakpoint Usage Rules
 
-### Desktop-First Methodology
+### Desktop & iPad Co-Primary Methodology
 
-Default styles target desktop (1440px+). Use responsive prefixes to override for smaller screens.
+Default styles target desktop (1440px+) with iPad as co-equal priority. Use responsive prefixes to optimize for iPad viewports without degrading desktop experience.
 
 ```tsx
 // CORRECT: Desktop-first

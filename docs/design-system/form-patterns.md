@@ -2,6 +2,14 @@
 
 Crispy CRM uses three distinct form layout patterns for create and edit forms. Each pattern serves different use cases and provides a structured approach to organizing form fields.
 
+**Accessibility Note:** All patterns must follow [Accessibility Guidelines](../design/ACCESSIBILITY.md#4-form-accessibility-checklist) including:
+- ARIA attributes (`aria-invalid`, `aria-describedby`, `role="alert"`)
+- Keyboard navigation support
+- Touch target minimums (44px)
+- Error announcements
+
+This document covers layout structure and implementation mechanics.
+
 ## Overview
 
 All form patterns share common characteristics:

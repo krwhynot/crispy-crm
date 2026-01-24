@@ -2,6 +2,10 @@
 
 This document defines touch target sizing standards for Crispy CRM, ensuring consistent accessibility across desktop and tablet devices.
 
+**Referenced By:**
+- [ACCESSIBILITY.md](../design/ACCESSIBILITY.md) - Section 2
+- [INDEX.md](../design/INDEX.md) - Quick Reference Table
+
 ## Project Standard
 
 **Minimum touch target size: 44x44px (`h-11 w-11`)**

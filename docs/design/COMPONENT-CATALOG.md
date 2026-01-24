@@ -434,3 +434,60 @@ Never use raw color values like `text-gray-500` or `bg-green-600`.
 - `aria-invalid={!!error}` on inputs with validation errors
 - `aria-describedby={errorId}` linking input to error message
 - `role="alert"` on error messages for screen reader announcements
+
+---
+
+## Deprecated Patterns & Banned Imports
+
+**CRITICAL:** These patterns are strictly banned. Using them will break data integrity and architectural principles.
+
+### Banned Database Patterns
+
+| Pattern | Status | Replacement |
+|---------|--------|-------------|
+| `Contact.company_id` | DEPRECATED | Use `contact_organizations` junction table |
+| `Opportunity.archived_at` | DEPRECATED | Use `deleted_at` for soft deletes |
+| Direct Supabase imports in features | BANNED | Use `unifiedDataProvider` from `src/atomic-crm/providers/supabase/` |
+
+**Why Banned:**
+- `Contact.company_id` - Violates many-to-many relationship (contacts can belong to multiple organizations)
+- `Opportunity.archived_at` - Inconsistent with project-wide soft delete standard (`deleted_at`)
+- Direct Supabase imports - Breaks data provider abstraction, violates architectural boundaries
+
+### Banned Form Patterns
+
+| Pattern | Status | Replacement |
+|---------|--------|-------------|
+| Form-level Zod validation | ANTI-PATTERN | Validation at API boundary only (provider layer) |
+| `mode="onChange"` | BANNED | Use `mode="onSubmit"` or `mode="onBlur"` |
+| `watch()` for subscriptions | ANTI-PATTERN | Use `useWatch()` for isolated subscriptions |
+
+**Why Banned:**
+- Form-level validation - Creates duplicate validation logic; validate once at API boundary
+- `onChange` mode - Causes re-render storms, excessive validation calls
+- `watch()` - Re-renders entire form; `useWatch()` isolates re-renders to specific fields
+
+### Banned Styling Patterns
+
+| Pattern | Status | Replacement |
+|---------|--------|-------------|
+| Raw hex colors | BANNED | Use semantic tokens (`bg-primary`, `text-muted-foreground`) |
+| Hardcoded OKLCH values | BANNED | Use semantic tokens |
+| Tailwind color utilities | BANNED | Use semantic tokens (not `text-gray-500`) |
+
+**Example - WRONG:**
+```tsx
+<div className="bg-[#E5E7EB] text-[#6B7280]">  {/* BANNED */}
+<div className="bg-gray-200 text-gray-500">    {/* BANNED */}
+```
+
+**Example - CORRECT:**
+```tsx
+<div className="bg-muted text-muted-foreground">  {/* CORRECT */}
+```
+
+### Architectural Rule Violations
+
+See [CLAUDE.md](../../CLAUDE.md) Strict Bans section for complete list.
+
+**Enforcement:** Code review will reject PRs containing these patterns.

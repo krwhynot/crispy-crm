@@ -354,7 +354,7 @@ export function SnoozePopover({ taskSubject, onSnooze, disabled }: SnoozePopover
 
 ---
 
-## Pattern F: KPI Metrics with Parallel Resilient Fetching
+## Pattern E: KPI Metrics with Parallel Resilient Fetching
 
 Parallel metric fetching with graceful degradation using Promise.allSettled.
 
@@ -448,7 +448,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
 
 ---
 
-## Pattern G: Task Kanban with Time-Horizon Columns
+## Pattern F: Task Kanban with Time-Horizon Columns
 
 Drag-and-drop kanban board with time-based column grouping using dnd-kit.
 
@@ -547,7 +547,7 @@ export function TasksKanbanPanel() {
 
 ---
 
-## Pattern H: Hybrid Search (Local + Server-Side)
+## Pattern G: Hybrid Search (Local + Server-Side)
 
 Dual-query pattern with initial cache and dynamic server search.
 
@@ -627,7 +627,7 @@ export function useHybridSearch<T>({
 
 ---
 
-## Pattern I: Mobile Quick Action Bar
+## Pattern H: Mobile Quick Action Bar
 
 Fixed bottom navigation with touch-optimized action buttons and lazy-loaded form.
 
