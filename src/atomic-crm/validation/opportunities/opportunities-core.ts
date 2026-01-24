@@ -163,6 +163,11 @@ const opportunityBaseSchema = z.strictObject({
     .optional()
     .default([]),
 
+  // Primary Contact field (added 2026-01-25 - Migration 20260125000003)
+  // Replaces opportunity_contacts junction table for 1:1 relationship
+  // Additional stakeholders should be tracked in activities/notes
+  primary_contact_id: z.coerce.number().int().positive().nullable().optional(),
+
   // Campaign & Workflow Tracking fields (added 2025-11-03)
   campaign: z
     .string()

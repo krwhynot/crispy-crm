@@ -35,13 +35,13 @@ Note: Tasks stored in activities table with activity_type = task';
 -- ====================
 -- MIGRATION SUMMARY
 -- ====================
--- This migration implements role-based task assignment:
--- 1. Managers/Admins - can create tasks for any user (team management)
--- 2. Reps - can only create tasks assigned to themselves (self-management)
+-- This migration implements role-based task/activity assignment:
+-- 1. Managers/Admins - can create activities/tasks for any user (team management)
+-- 2. Reps - can only create activities/tasks for themselves (self-management)
 --
--- Affected table: tasks (activities table with STI pattern)
+-- Affected table: activities (tasks stored with activity_type = 'task')
 --
--- Security note: This RESTRICTS rep task creation to self-only while allowing
+-- Security note: This RESTRICTS rep creation to self-only while allowing
 --                manager delegation. Previous policy may have been more permissive.
 -- Rollback: If needed, remove role check and allow all authenticated users to
---           create tasks with any sales_id
+--           create activities with any created_by/sales_id
