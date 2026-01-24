@@ -75,7 +75,7 @@ export const RecordField = <RecordType extends Record<string, any> = Record<stri
       ) : null}
     </div>
   );
-;
+};
 
 export interface RecordFieldProps<
   RecordType extends Record<string, any> = Record<string, any>,

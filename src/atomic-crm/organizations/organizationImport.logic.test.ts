@@ -243,7 +243,7 @@ describe("validateTransformedOrganizations", () => {
   it("should handle all failed validations", () => {
     const orgs: OrganizationImportSchema[] = [
       { name: "" },
-      { name: undefined as any },
+      { name: undefined as unknown as string },
       { name: "" },
     ];
 
