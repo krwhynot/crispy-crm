@@ -12,8 +12,10 @@ describe("useSlideOverState", () => {
     originalHistory = window.history;
 
     // Mock window.location and window.history
-    delete (window as any).location;
-    delete (window as any).history;
+    // @ts-expect-error - intentionally deleting readonly property for test isolation
+    delete window.location;
+    // @ts-expect-error - intentionally deleting readonly property for test isolation
+    delete window.history;
 
     // Hook uses hash-based routing, so we need to mock hash property
     window.location = {
@@ -27,7 +29,7 @@ describe("useSlideOverState", () => {
       ...originalHistory,
       pushState: vi.fn(),
       replaceState: vi.fn(),
-    } as any;
+    } as unknown as History;
   });
 
   afterEach(() => {

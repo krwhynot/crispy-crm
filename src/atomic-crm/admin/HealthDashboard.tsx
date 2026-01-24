@@ -27,6 +27,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { logger, type MetricEntry } from "@/lib/logger";
+import { NOTIFICATION_POLL_INTERVAL_MS, UI_FEEDBACK_DELAY_MS } from "@/atomic-crm/constants";
 
 /**
  * Health status thresholds

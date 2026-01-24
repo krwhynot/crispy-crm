@@ -8,8 +8,9 @@
  * 3. Computed fields from products_summary view (principal_name)
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
+import type { DeleteParamsWithMeta } from "@/tests/utils/typed-mocks";
 import {
   productsCallbacks,
   COMPUTED_FIELDS,

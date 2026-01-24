@@ -8,11 +8,11 @@
  * 4. Error handling and logging
  */
 
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { describe, test, expect, vi, beforeEach, type Mock } from "vitest";
 import { OpportunitiesService } from "../opportunities.service";
-import type { DataProvider } from "ra-core";
 import type { Opportunity } from "../../types";
 import { createMockDataProvider, createMockOpportunity } from "@/tests/utils/mock-providers";
+import { createMockDataProviderWithRpc, type DataProviderWithRpc } from "@/tests/utils/typed-mocks";
 
 // Mock supabase module
 vi.mock("../../providers/supabase/supabase", () => ({
@@ -23,12 +23,11 @@ vi.mock("../../providers/supabase/supabase", () => ({
 
 describe("OpportunitiesService", () => {
   let service: OpportunitiesService;
-  let mockDataProvider: DataProvider & { rpc?: any };
+  let mockDataProvider: DataProviderWithRpc;
   let mockOpportunity: Opportunity;
 
   beforeEach(() => {
-    mockDataProvider = createMockDataProvider() as any;
-    mockDataProvider.rpc = vi.fn();
+    mockDataProvider = createMockDataProviderWithRpc(createMockDataProvider());
     service = new OpportunitiesService(mockDataProvider);
 
     mockOpportunity = createMockOpportunity({
