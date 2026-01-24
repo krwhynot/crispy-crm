@@ -1,79 +1,63 @@
--- Migration: Fix Permissive RLS Policies on product_distributors
+-- Migration: Fix DELETE Policy Security Gap on product_distributors
 -- Date: 2026-01-24
--- Purpose: Replace USING (true) with role-based access control
+-- Purpose: Add admin/owner restriction to DELETE policy
 -- Reference: DATABASE_LAYER.md - "No USING (true) policies except service_role"
 --
 -- SECURITY ISSUE (P0):
--- The original migration (20251215054822_08_create_product_distributors.sql)
--- used permissive USING (true) policies, allowing ANY authenticated user to
--- UPDATE and DELETE product-distributor mappings.
+-- The current DELETE policy only checks `deleted_at IS NULL`, allowing ANY
+-- authenticated user to delete ANY product-distributor mapping.
+--
+-- Current State Analysis:
+-- - SELECT: ✅ Filters deleted_at IS NULL (correct)
+-- - INSERT: ✅ Owner-based with admin/manager bypass (correct)
+-- - UPDATE: ✅ Owner-or-privileged pattern (correct)
+-- - DELETE: ❌ Only checks deleted_at - NO authorization check!
 --
 -- FIX:
--- - SELECT: All authenticated users (team collaboration - shared catalog)
--- - INSERT: All authenticated users (team can add new mappings)
--- - UPDATE: Admin-only (prevent unauthorized DOT number changes)
--- - DELETE: Admin-only (prevent unauthorized unmapping)
---
--- This aligns with the established pattern for products table in
--- migration 20251108213039_fix_rls_policies_role_based_access.sql
+-- Replace DELETE policy to require owner OR admin/manager privilege,
+-- matching the pattern used for INSERT and UPDATE.
 
 -- ============================================================================
--- DROP PERMISSIVE POLICIES
+-- DROP INSECURE DELETE POLICY
 -- ============================================================================
+-- The current policy allows ANY authenticated user to delete ANY record
 
-DROP POLICY IF EXISTS "Users can view product_distributors" ON product_distributors;
-DROP POLICY IF EXISTS "Users can insert product_distributors" ON product_distributors;
-DROP POLICY IF EXISTS "Users can update product_distributors" ON product_distributors;
+DROP POLICY IF EXISTS "delete_product_distributors" ON product_distributors;
+
+-- Also drop legacy policy names in case they exist
 DROP POLICY IF EXISTS "Users can delete product_distributors" ON product_distributors;
+DROP POLICY IF EXISTS "authenticated_delete_product_distributors" ON product_distributors;
 
 -- ============================================================================
--- CREATE SECURED POLICIES
+-- CREATE SECURED DELETE POLICY
 -- ============================================================================
+-- Match the owner-or-privileged pattern used by UPDATE policy
 
--- SELECT: All authenticated team members can view product-distributor mappings
--- (Shared catalog model - required for UI dropdowns and references)
-CREATE POLICY authenticated_select_product_distributors ON product_distributors
-  FOR SELECT
-  TO authenticated
-  USING (true);  -- Shared team model: all authenticated users are trusted
-
--- INSERT: All authenticated team members can create new mappings
--- (Allows sales reps to map products to distributors during opportunity entry)
-CREATE POLICY authenticated_insert_product_distributors ON product_distributors
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (true);  -- Shared team model: collaborative data entry
-
--- UPDATE: Admin-only (prevents unauthorized DOT number or status changes)
-CREATE POLICY authenticated_update_product_distributors ON product_distributors
-  FOR UPDATE
-  TO authenticated
-  USING (
-    -- Only admins can modify product-distributor mappings
-    (SELECT is_admin FROM sales WHERE user_id = auth.uid()) = true
-  );
-
--- DELETE: Admin-only (prevents unauthorized removal of distributor relationships)
-CREATE POLICY authenticated_delete_product_distributors ON product_distributors
+CREATE POLICY delete_product_distributors_owner_or_privileged ON product_distributors
   FOR DELETE
   TO authenticated
   USING (
-    -- Only admins can remove product-distributor mappings
-    (SELECT is_admin FROM sales WHERE user_id = auth.uid()) = true
+    -- Must not be soft-deleted AND (owner OR admin/manager)
+    deleted_at IS NULL
+    AND (
+      created_by = current_sales_id()
+      OR private.is_admin_or_manager()
+    )
   );
 
 -- ============================================================================
 -- VERIFICATION
 -- ============================================================================
--- Run this query to verify policies are correctly applied:
+-- Run this query to verify the fix:
 --
--- SELECT tablename, policyname, permissive, roles, cmd, qual
+-- SELECT policyname, cmd, qual, with_check
 -- FROM pg_policies
 -- WHERE tablename = 'product_distributors'
 -- ORDER BY cmd;
 --
--- Expected results:
--- - authenticated_select_product_distributors: USING (true)
--- - authenticated_insert_product_distributors: WITH CHECK (true)
--- - authenticated_update_product_distributors: USING (is_admin check)
--- - authenticated_delete_product_distributors: USING (is_admin check)
+-- Expected DELETE policy:
+-- - policyname: delete_product_distributors_owner_or_privileged
+-- - qual: (deleted_at IS NULL) AND ((created_by = current_sales_id()) OR private.is_admin_or_manager())
+--
+-- Security test (should fail for non-owner, non-admin):
+-- DELETE FROM product_distributors WHERE product_id = 1 AND distributor_id = 2;

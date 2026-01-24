@@ -13,7 +13,7 @@ import contacts from "../contacts/resource";
 import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard";
 import opportunities from "../opportunities/resource";
 import products from "../products/resource";
-import productDistributors from "../productDistributors/resource";
+import productDistributors from "../productDistributors/productDistributorsConfig";
 import tasks from "../tasks/resource";
 import notifications from "../notifications/resource";
 import activities from "../activities/resource";
