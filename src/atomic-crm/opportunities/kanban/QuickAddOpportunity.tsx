@@ -110,7 +110,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       // FIX [WF-C2-002]: Fail-fast if organization names cannot be resolved
       // This guards against race conditions where IDs are valid but lists haven't loaded
       if (!selectedCustomer?.name || !selectedPrincipal?.name) {
-        console.log("[QuickAdd] Organization lookup failed:", {
+        devLog("QuickAddOpportunity", "Organization lookup failed", {
           customerId,
           principalId,
           selectedCustomer,
@@ -134,13 +134,13 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
 
       // Create returns the new record - use it for optimistic updates
       // NOTE: returnPromise: true is REQUIRED to get the created record back
-      console.log("[QuickAdd] Calling create() with data:", validatedData);
+      devLog("QuickAddOpportunity", "Calling create() with data", validatedData);
       const result = await create(
         "opportunities",
         { data: validatedData },
         { returnPromise: true }
       );
-      console.log("[QuickAdd] create() returned:", result);
+      devLog("QuickAddOpportunity", "create() returned", result);
 
       // FIX [WF-E2E-001]: Only show success when create actually succeeds
       // With returnPromise: true, result IS the record (not wrapped in { data })

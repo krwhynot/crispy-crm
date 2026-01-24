@@ -189,7 +189,10 @@ export const updateStagePreferences = (stages: string[]): void => {
       // SECURITY: Use sessionStorage instead of localStorage
       removeStorageItem("opportunity_hidden_stages");
     } catch (error) {
-      console.warn("[filterPrecedence] Failed to remove stage preferences from storage:", error);
+      logger.warn("Failed to remove stage preferences from storage", {
+        feature: "filterPrecedence",
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 };

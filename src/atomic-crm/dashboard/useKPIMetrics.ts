@@ -190,7 +190,9 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
               ? openCountResult.reason.message
               : String(openCountResult.reason);
           errors.push(`Open opportunities: ${reason}`);
-          logger.error("Failed to fetch open opportunities count", openCountResult.reason, { feature: "useKPIMetrics" });
+          logger.error("Failed to fetch open opportunities count", openCountResult.reason, {
+            feature: "useKPIMetrics",
+          });
         }
 
         // Calculate stale deals from potentially stale candidates
@@ -207,7 +209,9 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
               ? staleOpportunitiesResult.reason.message
               : String(staleOpportunitiesResult.reason);
           errors.push(`Stale opportunities: ${reason}`);
-          console.error("Failed to fetch stale opportunities:", staleOpportunitiesResult.reason);
+          logger.error("Failed to fetch stale opportunities", staleOpportunitiesResult.reason, {
+            feature: "useKPIMetrics",
+          });
         }
 
         if (tasksResult.status === "fulfilled") {
@@ -218,7 +222,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
               ? tasksResult.reason.message
               : String(tasksResult.reason);
           errors.push(`Overdue tasks: ${reason}`);
-          console.error("Failed to fetch tasks:", tasksResult.reason);
+          logger.error("Failed to fetch tasks", tasksResult.reason, { feature: "useKPIMetrics" });
         }
 
         if (activitiesResult.status === "fulfilled") {
@@ -229,7 +233,9 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
               ? activitiesResult.reason.message
               : String(activitiesResult.reason);
           errors.push(`Activities: ${reason}`);
-          console.error("Failed to fetch activities:", activitiesResult.reason);
+          logger.error("Failed to fetch activities", activitiesResult.reason, {
+            feature: "useKPIMetrics",
+          });
         }
 
         if (isMounted) {

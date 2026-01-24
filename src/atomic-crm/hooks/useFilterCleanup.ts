@@ -62,9 +62,10 @@ export const useFilterCleanup = (resource: string) => {
     const params = safeJsonParse(storedParams, listParamsSchema);
 
     if (!params) {
-      console.warn(
-        `[useFilterCleanup] Resource "${resource}" has corrupted localStorage. Skipping cleanup.`
-      );
+      logger.warn("Resource has corrupted localStorage, skipping cleanup", {
+        feature: "useFilterCleanup",
+        resource,
+      });
       return;
     }
 

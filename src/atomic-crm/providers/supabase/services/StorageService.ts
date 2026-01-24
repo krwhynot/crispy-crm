@@ -129,7 +129,12 @@ export class StorageService {
     const { error } = await supabase.storage.from(bucket).remove(paths);
 
     if (error) {
-      console.error(`[StorageService] Remove failed`, error);
+      logger.error("Remove failed", error, {
+        feature: "StorageService",
+        method: "remove",
+        bucket,
+        pathCount: paths.length,
+      });
       throw new HttpError(`Remove failed: ${error.message}`, 500);
     }
   }
@@ -144,7 +149,12 @@ export class StorageService {
     const { data, error } = await supabase.storage.from(bucket).list(path);
 
     if (error) {
-      console.error(`[StorageService] List failed`, error);
+      logger.error("List failed", error, {
+        feature: "StorageService",
+        method: "list",
+        bucket,
+        path,
+      });
       throw new HttpError(`List failed: ${error.message}`, 500);
     }
 
@@ -166,10 +176,12 @@ export class StorageService {
       return response.ok;
     } catch (error) {
       // Network or storage errors during existence check - file assumed not to exist
-      console.debug("[StorageService.exists] File existence check failed", {
+      logger.debug("File existence check failed", {
+        feature: "StorageService",
+        method: "exists",
         bucket,
         path,
-        error: error instanceof Error ? error.message : String(error),
+        errorMessage: error instanceof Error ? error.message : String(error),
       });
       return false;
     }

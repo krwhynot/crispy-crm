@@ -102,7 +102,10 @@ export function QuickCreateContactPopover({
       onCreated(result.data as { id: number; first_name: string; last_name: string });
       setOpen(false);
     } catch (error: unknown) {
-      console.error("[QuickCreateContact] Failed:", error);
+      logger.error("Failed to create contact", error, {
+        feature: "QuickCreateContactPopover",
+        organizationId,
+      });
       const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Failed to create contact: ${message}`, { type: "error" });
     } finally {
@@ -280,7 +283,10 @@ export function QuickCreateContactRA({
       notify("Contact created", { type: "success" });
       onCreate(result.data); // KEY FIX: Pass real record back to RA
     } catch (error: unknown) {
-      console.error("[QuickCreateContact] Failed:", error);
+      logger.error("Failed to create contact via autocomplete", error, {
+        feature: "QuickCreateContactPopover",
+        filter,
+      });
       const message = error instanceof Error ? error.message : "Unknown error";
       notify(`Failed to create contact: ${message}`, { type: "error" });
       // Don't re-throw in event handlers - toast is the error handling
