@@ -55,7 +55,7 @@ export function OpportunitiesTab() {
       pagination: { page: 1, perPage: 100 },
       sort: { field: "created_at", order: "DESC" },
     },
-    { enabled: !!contact?.id }
+    { enabled: !!contact?.id, refetchOnWindowFocus: true }
   );
 
   // Step 2: Extract opportunity IDs
