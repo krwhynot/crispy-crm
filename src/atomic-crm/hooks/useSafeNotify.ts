@@ -69,7 +69,7 @@ export function useSafeNotify(): SafeNotifyReturn {
     (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => {
       notify(message, {
         type: "success",
-        autoHideDuration: options?.autoHideDuration ?? 3000,
+        autoHideDuration: options?.autoHideDuration ?? TOAST_SUCCESS_DURATION_MS,
         undoable: options?.undoable,
         messageArgs: options?.messageArgs,
       });
@@ -94,7 +94,7 @@ export function useSafeNotify(): SafeNotifyReturn {
 
       notify(message, {
         type: "error",
-        autoHideDuration: options.autoHideDuration ?? 5000,
+        autoHideDuration: options.autoHideDuration ?? TOAST_ERROR_DURATION_MS,
         undoable: options.undoable,
         messageArgs: options.messageArgs,
       });
@@ -106,7 +106,7 @@ export function useSafeNotify(): SafeNotifyReturn {
     (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => {
       notify(message, {
         type: "warning",
-        autoHideDuration: options?.autoHideDuration ?? 4000,
+        autoHideDuration: options?.autoHideDuration ?? TOAST_INFO_DURATION_MS,
         undoable: options?.undoable,
         messageArgs: options?.messageArgs,
       });
@@ -118,7 +118,7 @@ export function useSafeNotify(): SafeNotifyReturn {
     (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => {
       notify(message, {
         type: "info",
-        autoHideDuration: options?.autoHideDuration ?? 4000,
+        autoHideDuration: options?.autoHideDuration ?? TOAST_INFO_DURATION_MS,
         undoable: options?.undoable,
         messageArgs: options?.messageArgs,
       });
@@ -137,7 +137,7 @@ export function useSafeNotify(): SafeNotifyReturn {
 
       notify(message, {
         type: "error",
-        autoHideDuration: 5000,
+        autoHideDuration: TOAST_ERROR_DURATION_MS,
       });
     },
     [notify]

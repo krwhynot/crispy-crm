@@ -69,7 +69,7 @@ export function OrganizationDetailsTab({
   onModeToggle,
   onDirtyChange,
 }: OrganizationDetailsTabProps) {
-  const [update] = useUpdate();
+  const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
   // Ref to access form's getValues() from outside the Form context
   const getValuesRef = useRef<(() => Record<string, unknown>) | null>(null);

@@ -145,7 +145,8 @@ describe("Opportunity Delete Cascade", () => {
       expect(mockRpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
         opp_id: opportunityId,
       });
-      expect((result as any).meta.skipDelete).toBe(true);
+      const resultWithMeta = result as DeleteParamsWithMeta;
+      expect(resultWithMeta.meta?.skipDelete).toBe(true);
     });
   });
 

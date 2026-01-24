@@ -49,7 +49,7 @@ export function ContactDetailsTab({
   onModeToggle,
   onDirtyChange,
 }: ContactDetailsTabProps) {
-  const [update] = useUpdate();
+  const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
   const queryClient = useQueryClient();
 
