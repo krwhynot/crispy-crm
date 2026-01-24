@@ -91,7 +91,7 @@ vi.mock("../root/ConfigurationContext", () => ({
 
 // Mock findOpportunityLabel
 vi.mock("../opportunities/opportunity", () => ({
-  findOpportunityLabel: (stages: any[], value: string) => {
+  findOpportunityLabel: (stages: Array<{ value: string; label: string }>, value: string) => {
     const stage = stages.find((s) => s.value === value);
     return stage?.label || value;
   },

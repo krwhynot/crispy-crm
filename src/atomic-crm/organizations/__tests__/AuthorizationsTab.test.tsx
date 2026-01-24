@@ -159,9 +159,9 @@ describe("AuthorizationsTab", () => {
     test("renders empty state when no authorizations exist", () => {
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
-        return { data: mockPrincipals, isPending: false, error: null } as any;
+        return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
       });
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
@@ -174,9 +174,9 @@ describe("AuthorizationsTab", () => {
     test("shows Add Principal button in empty state", () => {
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
-        return { data: mockPrincipals, isPending: false, error: null } as any;
+        return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
       });
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);

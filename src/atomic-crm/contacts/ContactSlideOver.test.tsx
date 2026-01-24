@@ -72,18 +72,34 @@ vi.mock("@/components/ui/sheet", () => ({
 
 // Mock Tabs component
 vi.mock("@/components/ui/tabs", () => ({
-  Tabs: ({ children, value, onValueChange }: any) => (
+  Tabs: ({
+    children,
+    value,
+    onValueChange,
+  }: {
+    children: ReactNode;
+    value?: string;
+    onValueChange?: (value: string) => void;
+  }) => (
     <div data-testid="tabs" data-value={value} data-onvaluechange={onValueChange}>
       {children}
     </div>
   ),
-  TabsList: ({ children }: any) => <div role="tablist">{children}</div>,
-  TabsTrigger: ({ children, value, onClick }: any) => (
+  TabsList: ({ children }: { children: ReactNode }) => <div role="tablist">{children}</div>,
+  TabsTrigger: ({
+    children,
+    value,
+    onClick,
+  }: {
+    children: ReactNode;
+    value?: string;
+    onClick?: () => void;
+  }) => (
     <button role="tab" data-value={value} onClick={onClick}>
       {children}
     </button>
   ),
-  TabsContent: ({ children, value }: any) => (
+  TabsContent: ({ children, value }: { children: ReactNode; value?: string }) => (
     <div role="tabpanel" data-value={value}>
       {children}
     </div>

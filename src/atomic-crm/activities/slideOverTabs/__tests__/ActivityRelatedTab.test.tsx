@@ -130,14 +130,14 @@ describe("ActivityRelatedTab", () => {
     beforeEach(() => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation((resource: string) => {
         if (resource === "contacts") {
-          return { data: mockContact, isLoading: false } as any;
+          return mockUseGetOneReturn<Contact>({ data: mockContactData, isLoading: false });
         }
-        return { data: undefined, isLoading: false } as any;
+        return mockUseGetOneReturn({ data: undefined, isLoading: false });
       });
     });
 
     it("renders contact card when contact_id is present", async () => {
-      const activity = createMockActivity({ contact_id: 10 });
+      const activity = createTestActivity({ contact_id: 10 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -149,7 +149,7 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("shows contact name correctly", async () => {
-      const activity = createMockActivity({ contact_id: 10 });
+      const activity = createTestActivity({ contact_id: 10 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -161,7 +161,7 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("shows contact title as subtitle", async () => {
-      const activity = createMockActivity({ contact_id: 10 });
+      const activity = createTestActivity({ contact_id: 10 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -174,7 +174,7 @@ describe("ActivityRelatedTab", () => {
 
     it("contact card is clickable and navigates correctly", async () => {
       const user = userEvent.setup();
-      const activity = createMockActivity({ contact_id: 10 });
+      const activity = createTestActivity({ contact_id: 10 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -191,17 +191,22 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("shows Unknown Contact when contact has no names", async () => {
+      const contactWithNoNames = createMockContact({
+        ...mockContactData,
+        first_name: "",
+        last_name: "",
+      }) as Contact;
       vi.mocked(reactAdmin.useGetOne).mockImplementation((resource: string) => {
         if (resource === "contacts") {
-          return {
-            data: { ...mockContact, first_name: "", last_name: "" },
+          return mockUseGetOneReturn<Contact>({
+            data: contactWithNoNames,
             isLoading: false,
-          } as any;
+          });
         }
-        return { data: undefined, isLoading: false } as any;
+        return mockUseGetOneReturn({ data: undefined, isLoading: false });
       });
 
-      const activity = createMockActivity({ contact_id: 10 });
+      const activity = createTestActivity({ contact_id: 10 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
