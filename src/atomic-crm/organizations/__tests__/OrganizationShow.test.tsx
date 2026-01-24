@@ -16,6 +16,7 @@ import { Route, Routes } from "react-router-dom";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { mockUseShowContextReturn } from "@/tests/utils/typed-mocks";
 import { createMockOrganization } from "@/tests/utils/mock-providers";
+import type { Organization } from "@/atomic-crm/validation/organizations";
 import OrganizationShow from "../OrganizationShow";
 
 // Mock dependencies
@@ -192,11 +193,13 @@ describe("OrganizationShow", () => {
         nb_opportunities: 0,
       });
 
-      (useShowContext as any).mockReturnValue({
-        record: mockOrg,
-        isPending: false,
-        error: null,
-      });
+      vi.mocked(useShowContext<Organization>).mockReturnValue(
+        mockUseShowContextReturn<Organization>({
+          record: mockOrg,
+          isPending: false,
+          error: null,
+        })
+      );
 
       const { unmount } = renderWithAdminContext(
         <Routes>
@@ -233,11 +236,13 @@ describe("OrganizationShow", () => {
         nb_opportunities,
       });
 
-      (useShowContext as any).mockReturnValue({
-        record: mockOrg,
-        isPending: false,
-        error: null,
-      });
+      vi.mocked(useShowContext<Organization>).mockReturnValue(
+        mockUseShowContextReturn<Organization>({
+          record: mockOrg,
+          isPending: false,
+          error: null,
+        })
+      );
 
       const { unmount } = renderWithAdminContext(
         <Routes>

@@ -432,3 +432,70 @@ export function mockUseRecordContext<RecordType extends RaRecord = RaRecord>(
 ): Mock {
   return vi.fn().mockReturnValue(mockUseRecordContextReturn(record));
 }
+
+/**
+ * Supabase RPC Response type
+ */
+export interface SupabaseRpcResponse<T> {
+  data: T | null;
+  error: {
+    message: string;
+    code?: string;
+  } | null;
+}
+
+/**
+ * Create a typed mock for Supabase RPC response
+ * @param data - The data to return
+ * @param error - Optional error to return
+ */
+export function mockSupabaseRpcResponse<T>(
+  data: T | null,
+  error: { message: string; code?: string } | null = null
+): SupabaseRpcResponse<T> {
+  return { data, error };
+}
+
+/**
+ * Supabase Storage Response type
+ */
+export interface SupabaseStorageResponse<T> {
+  data: T | null;
+  error: {
+    message: string;
+  } | null;
+}
+
+/**
+ * Create a typed mock for Supabase Storage response
+ * @param data - The data to return
+ * @param error - Optional error to return
+ */
+export function mockSupabaseStorageResponse<T>(
+  data: T | null,
+  error: { message: string } | null = null
+): SupabaseStorageResponse<T> {
+  return { data, error };
+}
+
+/**
+ * Supabase Edge Function Response type
+ */
+export interface SupabaseEdgeFunctionResponse<T> {
+  data: T | null;
+  error: {
+    message: string;
+  } | null;
+}
+
+/**
+ * Create a typed mock for Supabase Edge Function response
+ * @param data - The data to return
+ * @param error - Optional error to return
+ */
+export function mockSupabaseEdgeFunctionResponse<T>(
+  data: T | null,
+  error: { message: string } | null = null
+): SupabaseEdgeFunctionResponse<T> {
+  return { data, error };
+}

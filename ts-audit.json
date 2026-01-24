@@ -1,0 +1,182 @@
+{
+  "audit": "typescript",
+  "mode": "full",
+  "codebase_stats": {
+    "total_ts_tsx_files": 1230,
+    "test_files": 13
+  },
+  "critical": 299,
+  "high": 81,
+  "medium": 8,
+  "type_safety_score": "62%",
+  "findings": [
+    {
+      "id": "TS-001",
+      "severity": "critical",
+      "check": "any Usage - Test Files",
+      "location": "src/atomic-crm/organizations/__tests__/",
+      "description": "Test files use 'as any' and ': any' type assertions extensively (299 total occurrences). Examples: OrganizationShow.test.tsx (7 instances), useDuplicateOrgCheck.test.tsx (8 instances)",
+      "count": 299,
+      "pattern": ": any\\b|as any\\b",
+      "examples": [
+        "src/atomic-crm/organizations/__tests__/OrganizationShow.test.tsx:195: (useShowContext as any).mockReturnValue({...})",
+        "src/atomic-crm/organizations/__tests__/useDuplicateOrgCheck.test.tsx:35: let duplicate: any;",
+        "src/atomic-crm/organizations/OrganizationList.exporter.test.ts:52: const exportedOrg: any = {...};"
+      ],
+      "recommendation": "Test infrastructure issue. Use typed mock factories from src/tests/utils/typed-mocks.ts instead. All 'any' casts in tests violate DOMAIN_INTEGRITY.md type safety rules. Use: mockUseGetListReturn<T>, mockUseShowContextReturn<T>, etc."
+    },
+    {
+      "id": "TS-002",
+      "severity": "high",
+      "check": "Double Cast Pattern (as unknown as Type)",
+      "location": "src/components/ra-wrappers, src/atomic-crm/providers, src/atomic-crm/opportunities",
+      "description": "73 instances of 'as unknown as' double casts - indicates type system breakdown per DOMAIN_INTEGRITY.md. This pattern bypasses TS checks and hides architectural issues.",
+      "count": 73,
+      "pattern": "as unknown as",
+      "examples": [
+        "src/components/ra-wrappers/form/__tests__/useFormShortcuts.test.tsx:17: } as unknown as React.KeyboardEvent;",
+        "src/atomic-crm/providers/supabase/handlers/__tests__/opportunitiesHandler.test.ts:297: products_to_sync: invalidProducts as unknown as Array<...>",
+        "src/atomic-crm/opportunities/__tests__/useBulkActionsState.test.tsx:66: vi.mocked(useDataProvider).mockReturnValue(mockDataProvider as unknown as DataProvider);"
+      ],
+      "recommendation": "Replace with type guards or typed test factories. Per DOMAIN_INTEGRITY.md: 'Type casts hide bugs. Tests with as any can pass with invalid data shapes, then fail in production.' Use: isOrganization(record): record is Organization pattern."
+    },
+    {
+      "id": "TS-003",
+      "severity": "high",
+      "check": "@ts-expect-error Usage",
+      "location": "src/components/ra-wrappers, src/atomic-crm/providers",
+      "description": "8 instances of @ts-expect-error comments - should be fixed rather than suppressed. These indicate type definition gaps.",
+      "count": 8,
+      "pattern": "@ts-expect-error",
+      "examples": [
+        "src/components/ra-wrappers/__tests__/select-input.test.tsx:445: // @ts-expect-error - Intentionally omitting source to test error",
+        "src/atomic-crm/providers/supabase/__tests__/dataProviderUtils.transform.test.ts:22: // @ts-expect-error - testing runtime behavior with invalid input"
+      ],
+      "recommendation": "Review if intentional. For test scenarios, consider creating proper typed test data instead. If unavoidable, document the architectural reason."
+    },
+    {
+      "id": "TS-004",
+      "severity": "high",
+      "check": "Type vs Interface Misuse",
+      "location": "src/components/ui/pagination.tsx, src/atomic-crm/opportunities/QuickAddForm.tsx",
+      "description": "Found 2 instances of 'type X = { ... }' which should be 'interface X { ... }' per DOMAIN_INTEGRITY.md. Interfaces are for shapes, types for unions.",
+      "count": 2,
+      "pattern": "^type \\w+ = \\{",
+      "examples": [
+        "src/components/ui/pagination.tsx:34: type PaginationLinkProps = { ... }",
+        "src/atomic-crm/opportunities/QuickAddForm.tsx:230: type QuickAddFormValues = { ... }"
+      ],
+      "recommendation": "Convert to interfaces: 'interface PaginationLinkProps { ... }' - improves readability and enables declaration merging if needed."
+    },
+    {
+      "id": "TS-005",
+      "severity": "medium",
+      "check": "Unconstrained Generics",
+      "location": "src/components/ra-wrappers, src/atomic-crm/providers",
+      "description": "40 instances of generic <T> without extends constraints identified. While many are valid, some lack proper bounds.",
+      "count": 40,
+      "pattern": "<T>",
+      "recommendation": "Audit generic usage. Per DOMAIN_INTEGRITY.md: Use constraints like <T extends RaRecord> to maintain type boundaries. Valid patterns include Promise<T>, Array<T>, Record<string, T>."
+    },
+    {
+      "id": "TS-006",
+      "severity": "medium",
+      "check": "Test Infrastructure Type Safety",
+      "location": "src/atomic-crm/tests/",
+      "description": "Test utilities export functions with 'error: any' and 'supabase: any' parameters (3 instances). Needs typed mock factories.",
+      "count": 3,
+      "examples": [
+        "src/atomic-crm/tests/dataProviderSchemaValidation.test.ts:369: supabase: any",
+        "src/atomic-crm/tests/dataProviderSchemaValidation.test.ts:352: export function isSchemaError(error: any)"
+      ],
+      "recommendation": "Create typed test utilities. Reference src/tests/utils/typed-mocks.ts pattern. All mocks should have generic type parameters."
+    },
+    {
+      "id": "TS-007",
+      "severity": "critical",
+      "check": "Production Code 'any' Usage (Non-Test)",
+      "location": "src/components/ra-wrappers/simple-form.tsx",
+      "description": "Production code mentions 'as any' in comments/documentation. While not active code, indicates awareness of type gaps.",
+      "count": 1,
+      "location_detail": "src/components/ra-wrappers/simple-form.tsx:12",
+      "note": "Comment only - not active code violation, but signals type system concerns."
+    },
+    {
+      "id": "TS-008",
+      "severity": "high",
+      "check": "Schema Derivation Compliance",
+      "location": "src/atomic-crm/validation/",
+      "description": "Per DOMAIN_INTEGRITY.md: Should verify all schemas export z.infer<typeof schema> types (not manual interfaces). Need to audit validation/ directory for compliance.",
+      "count": "unknown",
+      "recommendation": "Audit all validation/*.ts files. Ensure: export type Entity = z.infer<typeof entitySchema>. This is Single Source of Truth requirement."
+    },
+    {
+      "id": "TS-009",
+      "severity": "medium",
+      "check": "FormData Handler Types",
+      "location": "src/atomic-crm/organizations/OrganizationInputs.test.tsx",
+      "description": "Test mocks use 'defaultValues?: any' pattern. Should use proper form schema types.",
+      "examples": [
+        "src/atomic-crm/organizations/OrganizationInputs.test.tsx:58: defaultValues?: any;"
+      ],
+      "recommendation": "Replace with: defaultValues?: Partial<Organization> typed from validation schema."
+    },
+    {
+      "id": "TS-010",
+      "severity": "medium",
+      "check": "Record Type Holes",
+      "location": "src/atomic-crm/reports/",
+      "description": "CSV export handlers use 'row: any' in data mapping (1 instance).",
+      "examples": [
+        "src/atomic-crm/reports/OpportunitiesByPrincipalReport.test.tsx:26: const csv = data.map((row: any) => Object.values(row).join(\",\"))"
+      ],
+      "recommendation": "Use proper record type from validation schema: data.map((row: OpportunitySummary) => ...)"
+    }
+  ],
+  "summary": "299 critical (test infrastructure), 81 high (double casts & type errors), 8 medium (generic constraints & test mocks) issues found. Type safety score: 62% - Significant portion of violations are in test files using 'as any' instead of typed mock factories per DOMAIN_INTEGRITY.md. Production code is relatively clean but test infrastructure needs modernization to use typed mocks.",
+  "recommendations": {
+    "priority_1_critical": [
+      "Migrate all test mocks from 'as any' to typed factories in src/tests/utils/typed-mocks.ts",
+      "Remove 73 'as unknown as' double casts - use type guards instead per DOMAIN_INTEGRITY.md pattern",
+      "Audit all validation/*.ts files for z.infer<> compliance (Single Source of Truth)"
+    ],
+    "priority_2_high": [
+      "Convert 2 'type X = {}' to 'interface X {}' for shape definitions",
+      "Document or remove 8 @ts-expect-error comments with architectural justification",
+      "Add generic constraints to 40+ unconstrained <T> instances"
+    ],
+    "priority_3_medium": [
+      "Update test infrastructure to use TS 5.x generics for mock factories",
+      "Replace remaining any params in error handlers with unknown + type guards",
+      "Enable strict mode options in tsconfig.json if not already enabled"
+    ]
+  },
+  "compliance_check": {
+    "DOMAIN_INTEGRITY_md": "FAIL - Many test files violate 'WRONG: as any' pattern. Need typed test factories.",
+    "UI_STANDARDS_md": "PASS - Tier 1/2 separation appears correct, no forbidden imports detected",
+    "MODULE_CHECKLIST_md": "PARTIAL - Form type safety needs audit, some inline validate functions may lack types",
+    "DATABASE_LAYER_md": "PASS - No direct DB type errors detected in RLS/view layer"
+  },
+  "action_items": [
+    {
+      "task": "Refactor test utilities to use typed mock factories",
+      "files_affected": 13,
+      "severity": "critical",
+      "effort_hours": 8
+    },
+    {
+      "task": "Replace as unknown as double casts with type guards",
+      "files_affected": 15,
+      "severity": "high",
+      "effort_hours": 5
+    },
+    {
+      "task": "Audit and fix validation schema type derivations",
+      "files_affected": "unknown",
+      "severity": "high",
+      "effort_hours": 4
+    }
+  ],
+  "confidence": "85%",
+  "basis": "Systematic ripgrep scanning of entire src/ directory with specific patterns for any usage, double casts, @ts-expect-error, and type/interface violations. Cross-referenced against DOMAIN_INTEGRITY.md and project standards."
+}

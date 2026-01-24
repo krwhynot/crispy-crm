@@ -74,8 +74,8 @@ describe("findCanonicalField", () => {
   });
 
   it("should handle null/undefined gracefully", () => {
-    expect(findCanonicalField(null as any)).toBe(null);
-    expect(findCanonicalField(undefined as any)).toBe(null);
+    expect(findCanonicalField(null as unknown as string)).toBe(null);
+    expect(findCanonicalField(undefined as unknown as string)).toBe(null);
   });
 });
 
@@ -102,7 +102,7 @@ describe("mapHeadersToFields", () => {
   });
 
   it("should skip empty/null headers", () => {
-    const headers = ["Organizations", "", null as any, "PHONE"];
+    const headers = ["Organizations", "", null as unknown as string, "PHONE"];
     const mappings = mapHeadersToFields(headers);
 
     expect(mappings["Organizations"]).toBe("name");
@@ -111,8 +111,8 @@ describe("mapHeadersToFields", () => {
   });
 
   it("should handle non-array input gracefully", () => {
-    expect(mapHeadersToFields(null as any)).toEqual({});
-    expect(mapHeadersToFields(undefined as any)).toEqual({});
+    expect(mapHeadersToFields(null as unknown as string[])).toEqual({});
+    expect(mapHeadersToFields(undefined as unknown as string[])).toEqual({});
   });
 });
 

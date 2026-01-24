@@ -30,6 +30,11 @@ import type {
   Activity,
 } from "../../../../types";
 import type { QuickAddInput } from "../../../../validation/quickAdd";
+import {
+  mockSupabaseRpcResponse,
+  mockSupabaseStorageResponse,
+  mockSupabaseEdgeFunctionResponse,
+} from "@/tests/utils/typed-mocks";
 
 describe("extendWithCustomMethods", () => {
   let mockComposedProvider: DataProvider;
@@ -509,10 +514,7 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const mockData = { id: 1, name: "Enterprise" };
 
-      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue({
-        data: mockData,
-        error: null,
-      } as any);
+      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue(mockSupabaseRpcResponse(mockData));
 
       const result = await extendedProvider.rpc<typeof mockData>("get_or_create_segment", {
         p_name: "Enterprise",

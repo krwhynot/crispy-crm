@@ -19,6 +19,7 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
 import { mockUseShowContextReturn } from "@/tests/utils/typed-mocks";
 import type { OpportunityStage } from "../constants";
+import type { Opportunity } from "@/atomic-crm/validation/opportunities/opportunities-core";
 import OpportunityShow from "../OpportunityShow";
 
 // Mock dependencies
@@ -166,11 +167,13 @@ describe("OpportunityShow", () => {
   });
 
   test("renders loading state", () => {
-    (useShowContext as any).mockReturnValue({
-      record: undefined,
-      isPending: true,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: undefined,
+        isPending: true,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>
@@ -203,11 +206,13 @@ describe("OpportunityShow", () => {
       created_by: 1,
     });
 
-    (useShowContext as any).mockReturnValue({
-      record: mockOpp,
-      isPending: false,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn<Opportunity>({
+        record: mockOpp,
+        isPending: false,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>

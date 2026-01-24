@@ -20,6 +20,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import type { AuthSession, User } from "@supabase/supabase-js";
 import { authProvider } from "../authProvider";
 
 // Mock the Supabase client
@@ -39,7 +40,7 @@ import { supabase } from "../supabase";
 
 describe("authProvider", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     // Reset any cached state between tests
     global.window = Object.create(window);
     Object.defineProperty(window, "location", {
