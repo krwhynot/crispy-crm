@@ -122,14 +122,15 @@ const stableDataProvider = {
 };
 
 // Mock @tanstack/react-query's useQueryClient
+// IMPORTANT: Return the real QueryClient from the test wrapper to support useMutation
 vi.mock("@tanstack/react-query", async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
   const actual = (await importOriginal()) as typeof import("@tanstack/react-query");
   return {
     ...actual,
-    useQueryClient: () => ({
-      invalidateQueries: vi.fn(),
-    }),
+    // Return the real query client instance from the wrapper
+    // This allows useMutation to work properly with cancelQueries, etc.
+    useQueryClient: () => queryClient,
   };
 });
 

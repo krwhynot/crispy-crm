@@ -293,52 +293,62 @@ export function useMyTasks() {
   );
 
   /**
-   * Delete a task
-   * Uses optimistic UI update for immediate feedback
-   * Uses tasksRef pattern to avoid callback recreation on task changes
+   * Delete a task with proper optimistic updates
+   * RACE CONDITION FIX: Uses React Query's optimistic update pattern
    */
-  const deleteTask = useCallback(
-    async (taskId: number) => {
+  const deleteTaskMutation = useMutation({
+    mutationFn: async (taskId: number) => {
       const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) return;
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
 
-      // Optimistic UI update - mark as deleted immediately
+      await dataProvider.delete("tasks", {
+        id: taskId,
+        previousData: task,
+      });
+
+      return taskId;
+    },
+    onMutate: async (taskId: number) => {
+      // CRITICAL: Cancel outgoing refetches to prevent race conditions
+      await queryClient.cancelQueries({ queryKey: taskKeys.all });
+
+      // Snapshot previous optimistic updates for rollback
+      const previousOptimisticState = new Map(optimisticUpdates);
+
+      // Optimistically mark task as deleted
       setOptimisticUpdates((prev) => {
         const next = new Map(prev);
         next.set(taskId, { deleted: true });
         return next;
       });
 
-      try {
-        await dataProvider.delete("tasks", {
-          id: taskId,
-          previousData: task,
-        });
+      // Return context for rollback
+      return { previousOptimisticState };
+    },
+    onError: (error: unknown, taskId: number, context) => {
+      logger.error("Failed to delete task", error, { feature: "useMyTasks", taskId });
 
-        // Clear optimistic update on success
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-
-        // Invalidate tasks query to ensure fresh data on next fetch
-        queryClient.invalidateQueries({ queryKey: taskKeys.all });
-        // Invalidate dashboard KPIs that depend on task/activity data
-        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-        queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      } catch (error: unknown) {
-        logger.error("Failed to delete task", error, { feature: "useMyTasks", taskId });
-        // Rollback optimistic update on failure
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-        throw error;
+      // Rollback optimistic update to snapshot
+      if (context?.previousOptimisticState) {
+        setOptimisticUpdates(context.previousOptimisticState);
       }
     },
-    [dataProvider, queryClient]
+    onSettled: () => {
+      // Refetch to ensure consistency after mutation settles (success or error)
+      // No race condition because we cancelled all previous refetches in onMutate
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+    },
+  });
+
+  const deleteTask = useCallback(
+    async (taskId: number) => {
+      await deleteTaskMutation.mutateAsync(taskId);
+    },
+    [deleteTaskMutation]
   );
 
   /**
@@ -352,59 +362,70 @@ export function useMyTasks() {
   }, []);
 
   /**
-   * Update task due date (for Kanban drag-drop)
-   * Uses optimistic UI update for immediate feedback
-   * Uses tasksRef pattern to avoid callback recreation on task changes
+   * Update task due date with proper optimistic updates
+   * RACE CONDITION FIX: Uses React Query's optimistic update pattern
    *
    * @param taskId - The task ID to update
    * @param newDueDate - The new due date
    * @returns Promise that resolves when update completes
    */
-  const updateTaskDueDate = useCallback(
-    async (taskId: number, newDueDate: Date) => {
+  const updateTaskDueDateMutation = useMutation({
+    mutationFn: async ({ taskId, newDueDate }: { taskId: number; newDueDate: Date }) => {
       const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) return;
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
 
+      await dataProvider.update("tasks", {
+        id: taskId,
+        data: { due_date: newDueDate.toISOString() },
+        previousData: task,
+      });
+
+      return { taskId, newDueDate };
+    },
+    onMutate: async ({ taskId, newDueDate }) => {
+      // CRITICAL: Cancel outgoing refetches to prevent race conditions
+      await queryClient.cancelQueries({ queryKey: taskKeys.all });
+
+      // Calculate new status based on new due date
       const newStatus = calculateStatus(newDueDate);
 
-      // Optimistic UI update - immediately move task to new column
+      // Snapshot previous optimistic updates for rollback
+      const previousOptimisticState = new Map(optimisticUpdates);
+
+      // Optimistically update task with new due date and status
       setOptimisticUpdates((prev) => {
         const next = new Map(prev);
         next.set(taskId, { dueDate: newDueDate, status: newStatus });
         return next;
       });
 
-      try {
-        await dataProvider.update("tasks", {
-          id: taskId,
-          data: { due_date: newDueDate.toISOString() },
-          previousData: task,
-        });
+      // Return context for rollback
+      return { previousOptimisticState };
+    },
+    onError: (error: unknown, { taskId }, context) => {
+      logger.error("Failed to update task due date", error, { feature: "useMyTasks", taskId });
 
-        // Clear optimistic update on success
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-
-        // Invalidate tasks query to ensure fresh data on next fetch
-        queryClient.invalidateQueries({ queryKey: taskKeys.all });
-        // Invalidate dashboard KPIs that depend on task/activity data
-        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-        queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      } catch (error: unknown) {
-        logger.error("Failed to update task due date", error, { feature: "useMyTasks", taskId });
-        // Rollback optimistic update on failure
-        setOptimisticUpdates((prev) => {
-          const next = new Map(prev);
-          next.delete(taskId);
-          return next;
-        });
-        throw error;
+      // Rollback optimistic update to snapshot
+      if (context?.previousOptimisticState) {
+        setOptimisticUpdates(context.previousOptimisticState);
       }
     },
-    [dataProvider, calculateStatus, queryClient]
+    onSettled: () => {
+      // Refetch to ensure consistency after mutation settles (success or error)
+      // No race condition because we cancelled all previous refetches in onMutate
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+    },
+  });
+
+  const updateTaskDueDate = useCallback(
+    async (taskId: number, newDueDate: Date) => {
+      await updateTaskDueDateMutation.mutateAsync({ taskId, newDueDate });
+    },
+    [updateTaskDueDateMutation]
   );
 
   /**

@@ -238,7 +238,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
     } catch {
       // Error handled by onError callback
     }
-  }, [activityId, nextStatus, status, update, notify, onStatusChange]);
+  }, [activityId, nextStatus, status, update, notify, onStatusChange, queryClient]);
 
   /**
    * Handle direct status selection (for non-linear jumps if needed)
@@ -279,7 +279,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
         // Error handled by onError callback
       }
     },
-    [activityId, status, update, notify, onStatusChange]
+    [activityId, status, update, notify, onStatusChange, queryClient]
   );
 
   // ============================================

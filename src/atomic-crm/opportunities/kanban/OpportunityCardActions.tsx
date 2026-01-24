@@ -116,7 +116,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         setIsClosing(false);
       }
     },
-    [opportunityId, closeTargetStage, update, dataProvider, notify, refresh, record]
+    [opportunityId, closeTargetStage, update, dataProvider, notify, refresh, queryClient, record]
   );
 
   /**
