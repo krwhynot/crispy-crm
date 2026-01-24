@@ -64,6 +64,7 @@ export function AddPrincipalDialog({
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Failed to add authorization";
       notify(errorMessage, { type: "error" });
+      throw error;
     }
   };
 

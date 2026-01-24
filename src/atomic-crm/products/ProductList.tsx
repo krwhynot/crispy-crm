@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useGetIdentity, useListContext } from "ra-core";
 import { FunctionField } from "react-admin";
 import { List } from "@/components/ra-wrappers/list";

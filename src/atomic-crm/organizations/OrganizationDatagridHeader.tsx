@@ -23,6 +23,7 @@
 
 import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
 import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, US_STATES } from "./constants";
+import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
 /**
  * Filterable header for Organization Name column
