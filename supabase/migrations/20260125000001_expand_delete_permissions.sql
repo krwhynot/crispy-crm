@@ -140,8 +140,10 @@ COMMENT ON POLICY delete_organizationNotes ON "organizationNotes" IS
 -- 2. Managers - can delete any record (NEW)
 -- 3. Record creators - can delete their own records (NEW)
 --
--- Affected tables: contacts, organizations, opportunities, products, tasks, activities,
+-- Affected tables: contacts, organizations, opportunities, products, activities,
 --                  contactNotes, opportunityNotes, organizationNotes
+--
+-- Note: Tasks are stored in activities table (no separate tasks table)
 --
 -- Security note: This is an ADDITIVE change (more permissive). No data access is restricted.
 -- Rollback: If needed, replace is_manager_or_admin() OR created_by checks with just is_admin()
