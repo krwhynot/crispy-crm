@@ -83,6 +83,8 @@ export function useTaskCompletion(options: UseTaskCompletionOptions = {}): UseTa
 
         // Invalidate task queries to refresh any lists/views
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        // STATE-1 FIX: Sync dashboard counters when tasks change
+        queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
 
         notify("Task completed", { type: "success" });
         options.onSuccess?.();

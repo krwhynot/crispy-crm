@@ -9,6 +9,9 @@ import {
   useResourceContext,
   useUpdate,
 } from "ra-core";
+import type { Contact } from "../types";
+import type { Organization } from "../types";
+import type { Opportunity } from "../types";
 import { useFormContext, useFormState } from "react-hook-form";
 
 import { SaveButton } from "@/components/ra-wrappers/form";

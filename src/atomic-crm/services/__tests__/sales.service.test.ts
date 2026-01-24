@@ -16,14 +16,32 @@ import { HttpError } from "react-admin";
 import type { SalesFormData, Sale } from "../../types";
 import { createMockDataProvider } from "@/tests/utils/mock-providers";
 
+/**
+ * Extended DataProvider type that includes the invoke method for Edge Functions
+ * Matches the constructor signature of SalesService
+ */
+interface DataProviderWithInvoke extends DataProvider {
+  invoke?: <T = unknown>(
+    functionName: string,
+    options?: {
+      method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+      body?: Record<string, unknown>;
+      headers?: Record<string, string>;
+    }
+  ) => Promise<T>;
+}
+
 describe("SalesService", () => {
   let service: SalesService;
-  let mockDataProvider: DataProvider & { invoke?: any };
+  let mockDataProvider: DataProviderWithInvoke;
   let mockSalesFormData: SalesFormData;
 
   beforeEach(() => {
-    mockDataProvider = createMockDataProvider() as any;
-    mockDataProvider.invoke = vi.fn();
+    const baseProvider = createMockDataProvider();
+    mockDataProvider = {
+      ...baseProvider,
+      invoke: vi.fn(),
+    };
     service = new SalesService(mockDataProvider);
 
     mockSalesFormData = {
