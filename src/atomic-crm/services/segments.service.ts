@@ -66,7 +66,7 @@ export class SegmentsService {
     const entry = Object.entries(PLAYBOOK_CATEGORY_IDS).find(([, uuid]) => uuid === id);
 
     if (!entry) {
-      console.warn(`[SegmentsService] Unknown category ID: ${id}`);
+      logger.warn("Unknown category ID", { feature: "SegmentsService", categoryId: id });
       return undefined;
     }
 
@@ -113,10 +113,11 @@ export class SegmentsService {
     const segment = this.getSegmentByName(name);
 
     if (!segment) {
-      console.warn(
-        `[SegmentsService] Category "${name}" not found, returning Unknown. ` +
-          `Valid categories: ${PLAYBOOK_CATEGORIES.join(", ")}`
-      );
+      logger.warn("Category not found, returning Unknown", {
+        feature: "SegmentsService",
+        categoryName: name,
+        validCategories: PLAYBOOK_CATEGORIES.join(", "),
+      });
       return this.getDefaultCategory();
     }
 

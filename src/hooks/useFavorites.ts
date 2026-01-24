@@ -158,11 +158,11 @@ export function useFavorites(): UseFavoritesReturn {
         }
       } catch (error) {
         // Log unexpected errors - React Admin's onError callbacks should handle most cases
-        console.error("[useFavorites] Unexpected error during toggleFavorite", {
+        logger.error("Unexpected error during toggleFavorite", error, {
+          feature: "useFavorites",
           entityType,
-          entityId,
+          entityId: String(entityId),
           currentlyFavorited,
-          error: error instanceof Error ? error.message : String(error),
         });
         setOptimisticState((prev) => {
           const next = new Map(prev);

@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { Form, useUpdate, useNotify, useDataProvider } from "react-admin";
+import { logger } from "@/lib/logger";
 import { useQueryClient } from "@tanstack/react-query";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";

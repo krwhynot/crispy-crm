@@ -101,7 +101,7 @@ export const useExportOpportunities = () => {
           }
         );
       } catch (error: unknown) {
-        console.error("Export failed:", error);
+        logger.error("Export failed", error, { feature: "useExportOpportunities" });
         const message = error instanceof Error ? error.message : "Unknown error";
         notify(`Failed to export opportunities: ${message}`, { type: "error" });
       }

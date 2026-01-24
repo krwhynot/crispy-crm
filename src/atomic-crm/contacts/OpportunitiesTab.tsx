@@ -11,6 +11,7 @@ import {
 import type { Identifier } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { activityKeys } from "../queryKeys";
+import { logger } from "@/lib/logger";
 import {
   Datagrid,
   FunctionField,
@@ -128,7 +129,7 @@ export function OpportunitiesTab() {
               });
               queryClient.invalidateQueries({ queryKey: activityKeys.all });
             } catch (activityError) {
-              console.error("Failed to log contact link activity:", activityError);
+              logger.error("Failed to log contact link activity", activityError, { feature: "OpportunitiesTab", opportunityId: opportunity.id });
               notify("Contact linked, but failed to log activity", { type: "warning" });
             }
           },

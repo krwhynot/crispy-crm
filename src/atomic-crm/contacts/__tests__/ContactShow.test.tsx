@@ -11,8 +11,10 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { Routes, Route } from "react-router-dom";
+import type { ReactNode } from "react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockContact } from "@/tests/utils/mock-providers";
+import { mockUseShowContextReturn } from "@/tests/utils/typed-mocks";
 import ContactShow from "../ContactShow";
 
 // Mock dependencies
