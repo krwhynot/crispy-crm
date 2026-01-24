@@ -6,25 +6,18 @@ import {
   PLAYBOOK_CATEGORY_CHOICES,
 } from "../../validation/segments";
 import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
+import { createMockDataProvider } from "@/tests/utils/mock-providers";
 
 describe("SegmentsService", () => {
   let service: SegmentsService;
   let mockDataProvider: ExtendedDataProvider;
 
   beforeEach(() => {
-    // Mock data provider (not used by most methods now)
+    const baseProvider = createMockDataProvider();
     mockDataProvider = {
-      getList: vi.fn(),
-      getOne: vi.fn(),
-      getMany: vi.fn(),
-      getManyReference: vi.fn(),
-      create: vi.fn(),
-      update: vi.fn(),
-      updateMany: vi.fn(),
-      delete: vi.fn(),
-      deleteMany: vi.fn(),
+      ...baseProvider,
       rpc: vi.fn(),
-    } as unknown as ExtendedDataProvider;
+    } as ExtendedDataProvider;
 
     service = new SegmentsService(mockDataProvider);
   });

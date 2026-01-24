@@ -36,6 +36,7 @@ describe("normalizeHeader", () => {
   });
 
   it("should handle null/undefined gracefully", () => {
+    // Intentionally testing null/undefined handling for defensive coding
     expect(normalizeHeader(null as unknown as string)).toBe("");
     expect(normalizeHeader(undefined as unknown as string)).toBe("");
   });

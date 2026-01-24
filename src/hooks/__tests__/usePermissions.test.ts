@@ -15,6 +15,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { usePermissions } from "../usePermissions";
 import type { UserRole } from "../useUserRole";
+import { mockUseGetIdentityReturn } from "@/tests/utils/typed-mocks";
 
 vi.mock("react-admin", () => ({
   useGetIdentity: vi.fn(),

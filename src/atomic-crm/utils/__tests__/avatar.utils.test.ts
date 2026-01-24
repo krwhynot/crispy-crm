@@ -276,6 +276,8 @@ describe("processOrganizationLogo", () => {
 
   describe("when logo exists but has no src (newly uploaded file)", () => {
     it("should generate favicon URL when website exists", async () => {
+      // Simulating React Admin file upload: rawFile present but no src yet
+      // Type assertion needed because RA file input adds rawFile before processing
       const newlyUploadedLogo = {
         rawFile: new File([""], "logo.png"),
         // No src yet - this triggers logo generation

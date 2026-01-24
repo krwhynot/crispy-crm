@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useFormShortcuts } from "../useFormShortcuts";
+import { createMockKeyboardEvent } from "@/tests/utils/typed-mocks";
 
 describe("useFormShortcuts", () => {
   it("calls onSave when Cmd+Enter is pressed", () => {

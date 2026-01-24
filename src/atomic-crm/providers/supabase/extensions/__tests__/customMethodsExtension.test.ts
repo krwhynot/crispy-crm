@@ -35,6 +35,7 @@ import {
   mockSupabaseStorageResponse,
   mockSupabaseEdgeFunctionResponse,
   mockStorageBucketApi,
+  createMockDataProvider,
 } from "@/tests/utils/typed-mocks";
 
 describe("extendWithCustomMethods", () => {

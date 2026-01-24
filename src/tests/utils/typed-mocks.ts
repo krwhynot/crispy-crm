@@ -614,3 +614,182 @@ export interface ActivityLogEntry {
   source_table?: string;
   [key: string]: unknown;
 }
+
+// ============================================================================
+// Keyboard Event Mocks
+// ============================================================================
+
+/**
+ * Create a mock React KeyboardEvent for testing keyboard shortcuts
+ * @param overrides - Properties to override on the event
+ *
+ * @example
+ * ```tsx
+ * const event = createMockKeyboardEvent({
+ *   key: 'Enter',
+ *   metaKey: true,
+ *   target: document.createElement('input'),
+ * });
+ * result.current.handleKeyDown(event);
+ * ```
+ */
+export function createMockKeyboardEvent(
+  overrides: Partial<{
+    key: string;
+    metaKey: boolean;
+    ctrlKey: boolean;
+    shiftKey: boolean;
+    altKey: boolean;
+    preventDefault: Mock;
+    stopPropagation: Mock;
+    target: EventTarget | null;
+  }> = {}
+): React.KeyboardEvent {
+  return {
+    key: overrides.key ?? "",
+    metaKey: overrides.metaKey ?? false,
+    ctrlKey: overrides.ctrlKey ?? false,
+    shiftKey: overrides.shiftKey ?? false,
+    altKey: overrides.altKey ?? false,
+    preventDefault: overrides.preventDefault ?? vi.fn(),
+    stopPropagation: overrides.stopPropagation ?? vi.fn(),
+    target: overrides.target ?? document.createElement("input"),
+    // Required event properties
+    nativeEvent: new KeyboardEvent("keydown"),
+    currentTarget: null as unknown as EventTarget & Element,
+    bubbles: true,
+    cancelable: true,
+    defaultPrevented: false,
+    eventPhase: 0,
+    isTrusted: true,
+    timeStamp: Date.now(),
+    type: "keydown",
+    isDefaultPrevented: () => false,
+    isPropagationStopped: () => false,
+    persist: () => {},
+    // KeyboardEvent specific
+    charCode: 0,
+    code: overrides.key ?? "",
+    keyCode: 0,
+    locale: "",
+    location: 0,
+    repeat: false,
+    which: 0,
+    getModifierState: () => false,
+  } as React.KeyboardEvent;
+}
+
+// ============================================================================
+// Query Client Mocks (@tanstack/react-query)
+// ============================================================================
+
+/**
+ * Mock QueryClient interface for testing hooks that use useQueryClient
+ */
+export interface MockQueryClient {
+  invalidateQueries: Mock;
+  setQueryData: Mock;
+  getQueryData: Mock;
+  removeQueries: Mock;
+  cancelQueries: Mock;
+  refetchQueries: Mock;
+  clear: Mock;
+}
+
+/**
+ * Create a mock return value for useQueryClient hook
+ * @param overrides - Methods to override on the mock client
+ *
+ * @example
+ * ```tsx
+ * const mockInvalidate = vi.fn();
+ * vi.mocked(useQueryClient).mockReturnValue(
+ *   mockUseQueryClientReturn({ invalidateQueries: mockInvalidate })
+ * );
+ * ```
+ */
+export function mockUseQueryClientReturn(overrides?: Partial<MockQueryClient>): MockQueryClient {
+  return {
+    invalidateQueries: overrides?.invalidateQueries ?? vi.fn(),
+    setQueryData: overrides?.setQueryData ?? vi.fn(),
+    getQueryData: overrides?.getQueryData ?? vi.fn(),
+    removeQueries: overrides?.removeQueries ?? vi.fn(),
+    cancelQueries: overrides?.cancelQueries ?? vi.fn(),
+    refetchQueries: overrides?.refetchQueries ?? vi.fn(),
+    clear: overrides?.clear ?? vi.fn(),
+  };
+}
+
+// ============================================================================
+// Base DataProvider Mock
+// ============================================================================
+
+/**
+ * Create a base mock DataProvider for testing
+ * @param overrides - Methods to override on the provider
+ *
+ * @example
+ * ```tsx
+ * const mockProvider = createMockDataProvider({
+ *   getList: vi.fn().mockResolvedValue({ data: [], total: 0 }),
+ * });
+ * ```
+ */
+export function createMockDataProvider(overrides?: Partial<DataProvider>): DataProvider {
+  return {
+    getList: overrides?.getList ?? vi.fn().mockResolvedValue({ data: [], total: 0 }),
+    getOne: overrides?.getOne ?? vi.fn().mockResolvedValue({ data: {} }),
+    getMany: overrides?.getMany ?? vi.fn().mockResolvedValue({ data: [] }),
+    getManyReference:
+      overrides?.getManyReference ?? vi.fn().mockResolvedValue({ data: [], total: 0 }),
+    create: overrides?.create ?? vi.fn().mockResolvedValue({ data: {} }),
+    update: overrides?.update ?? vi.fn().mockResolvedValue({ data: {} }),
+    updateMany: overrides?.updateMany ?? vi.fn().mockResolvedValue({ data: [] }),
+    delete: overrides?.delete ?? vi.fn().mockResolvedValue({ data: {} }),
+    deleteMany: overrides?.deleteMany ?? vi.fn().mockResolvedValue({ data: [] }),
+  };
+}
+
+// ============================================================================
+// History Mock (for router testing)
+// ============================================================================
+
+/**
+ * Create a mock History object for router testing
+ * @param overrides - Properties to override on the history object
+ */
+export function createMockHistory(
+  overrides?: Partial<{
+    push: Mock;
+    replace: Mock;
+    go: Mock;
+    goBack: Mock;
+    goForward: Mock;
+    listen: Mock;
+    location: { pathname: string; search: string; hash: string; state: unknown };
+    length: number;
+    action: string;
+  }>
+): {
+  push: Mock;
+  replace: Mock;
+  go: Mock;
+  goBack: Mock;
+  goForward: Mock;
+  listen: Mock;
+  location: { pathname: string; search: string; hash: string; state: unknown };
+  length: number;
+  action: string;
+} {
+  return {
+    push: overrides?.push ?? vi.fn(),
+    replace: overrides?.replace ?? vi.fn(),
+    go: overrides?.go ?? vi.fn(),
+    goBack: overrides?.goBack ?? vi.fn(),
+    goForward: overrides?.goForward ?? vi.fn(),
+    listen: overrides?.listen ?? vi.fn(() => vi.fn()),
+    location: overrides?.location ?? { pathname: "/", search: "", hash: "", state: null },
+    length: overrides?.length ?? 1,
+    action: overrides?.action ?? "PUSH",
+  };
+}
