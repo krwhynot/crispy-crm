@@ -287,6 +287,33 @@ interface MockTask {
 }
 
 /**
+ * Mock Activity type for test factories
+ * Matches the Activities schema from src/atomic-crm/validation/activities.ts
+ */
+interface MockActivity {
+  id: number;
+  activity_type: "engagement" | "interaction" | "task";
+  type: string; // interaction type: call, email, meeting, demo, sample, etc.
+  subject: string;
+  description: string | null;
+  activity_date: string;
+  duration_minutes: number | null;
+  contact_id: number | null;
+  organization_id: number | null;
+  opportunity_id: number | null;
+  follow_up_required: boolean;
+  follow_up_date: string | null;
+  follow_up_notes: string | null;
+  outcome: string | null;
+  sentiment: "positive" | "neutral" | "negative" | null;
+  sample_status: "sent" | "received" | "feedback_pending" | "feedback_received" | null;
+  created_by: number | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+/**
  * Create a mock opportunity record
  */
 export const createMockOpportunity = (overrides?: Partial<MockOpportunity>): MockOpportunity => ({
@@ -417,6 +444,66 @@ export const createMockTask = (overrides?: Partial<MockTask>): MockTask => ({
   opportunity_id: faker.number.int({ min: 1, max: 100 }),
   created_at: faker.date.past().toISOString(),
   updated_at: faker.date.recent().toISOString(),
+  ...overrides,
+});
+
+/**
+ * Create a mock activity record
+ * Matches the Activities schema for interaction/engagement/sample activities
+ */
+export const createMockActivity = (overrides?: Partial<MockActivity>): MockActivity => ({
+  id: faker.number.int({ min: 1, max: 10000 }),
+  activity_type: faker.helpers.arrayElement(["engagement", "interaction"] as const),
+  type: faker.helpers.arrayElement([
+    "call",
+    "email",
+    "meeting",
+    "demo",
+    "proposal",
+    "follow_up",
+    "trade_show",
+    "site_visit",
+    "sample",
+    "note",
+  ]),
+  subject: faker.company.catchPhrase(),
+  description: faker.lorem.paragraph(),
+  activity_date: faker.date.recent().toISOString().split("T")[0],
+  duration_minutes: faker.helpers.arrayElement([15, 30, 45, 60, 90, null]),
+  contact_id: faker.number.int({ min: 1, max: 100 }),
+  organization_id: faker.number.int({ min: 1, max: 100 }),
+  opportunity_id: faker.helpers.arrayElement([faker.number.int({ min: 1, max: 100 }), null]),
+  follow_up_required: faker.datatype.boolean(),
+  follow_up_date: faker.helpers.arrayElement([
+    faker.date.future().toISOString().split("T")[0],
+    null,
+  ]),
+  follow_up_notes: faker.helpers.arrayElement([faker.lorem.sentence(), null]),
+  outcome: faker.helpers.arrayElement([faker.lorem.sentence(), null]),
+  sentiment: faker.helpers.arrayElement(["positive", "neutral", "negative", null] as const),
+  sample_status: null, // Only set for sample activities
+  created_by: faker.number.int({ min: 1, max: 20 }),
+  created_at: faker.date.past().toISOString(),
+  updated_at: faker.date.recent().toISOString(),
+  deleted_at: null,
+  ...overrides,
+});
+
+/**
+ * Create a sample activity (special case with sample workflow fields)
+ */
+export const createMockSampleActivity = (overrides?: Partial<MockActivity>): MockActivity => ({
+  ...createMockActivity({
+    type: "sample",
+    sample_status: faker.helpers.arrayElement([
+      "sent",
+      "received",
+      "feedback_pending",
+      "feedback_received",
+    ] as const),
+    follow_up_required: true,
+    follow_up_date: faker.date.future().toISOString().split("T")[0],
+  }),
   ...overrides,
 });
 

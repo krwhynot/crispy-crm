@@ -3,6 +3,7 @@ import { useGetList, useCreate, useUpdate, useNotify, useGetIdentity } from "rea
 import { useQueryClient } from "@tanstack/react-query";
 import { userFavoriteKeys } from "@/atomic-crm/queryKeys";
 import type { Favorite, FavoriteEntityType } from "@/atomic-crm/validation/favorites";
+import { logger } from "@/lib/logger";
 
 const MAX_FAVORITES = 10;
 

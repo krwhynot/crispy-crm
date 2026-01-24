@@ -14,6 +14,7 @@ import {
 } from "../validation/operatorSegments";
 import type { OrganizationType } from "../validation/organizations";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
+import { logger } from "@/lib/logger";
 
 /**
  * Segments service handles business logic for Playbook category management
@@ -44,7 +45,7 @@ export class SegmentsService {
     );
 
     if (!matchedCategory) {
-      console.warn(`[SegmentsService] Unknown category: ${name}`);
+      logger.warn("Unknown category", { feature: "SegmentsService", categoryName: name });
       return undefined;
     }
 

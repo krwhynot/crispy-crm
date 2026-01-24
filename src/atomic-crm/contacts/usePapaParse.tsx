@@ -158,7 +158,10 @@ export function usePapaParse<T = Record<string, unknown>>({
                 return previous;
               });
             } catch (error: unknown) {
-              logger.error("Batch processing error", error, { feature: "usePapaParse", batchIndex: i });
+              logger.error("Batch processing error", error, {
+                feature: "usePapaParse",
+                batchIndex: i,
+              });
               setImporter((previous) =>
                 previous.state === "running"
                   ? {

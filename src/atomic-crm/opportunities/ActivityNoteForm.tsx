@@ -131,7 +131,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       reset();
       onSuccess?.();
     } catch (error: unknown) {
-      console.error("Activity creation failed:", error);
+      logger.error("Activity creation failed", error, { feature: "ActivityNoteForm" });
       actionError(error, "create", "activity");
     }
   };

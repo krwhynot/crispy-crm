@@ -16,6 +16,7 @@ import type {
   DisplayNameExtractor,
   ResourceNamesResult,
 } from "../types/resourceTypes";
+import { logger } from "@/lib/logger";
 
 /**
  * Base hook for resource name lookups with full type safety
@@ -78,7 +79,10 @@ export function useResourceNamesBase<T extends ResourceWithId>(
 
         setNamesMap((prev) => ({ ...prev, ...newMap }));
       } catch (error: unknown) {
-        console.error(`Failed to fetch ${resourceName} names:`, error);
+        logger.error("Failed to fetch resource names", error, {
+          feature: "useResourceNamesBase",
+          resource: resourceName,
+        });
       } finally {
         setLoading(false);
       }

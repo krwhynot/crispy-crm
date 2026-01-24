@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useNotify } from "ra-core";
+import { logger } from "@/lib/logger";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel } from "./constants";
 import { format } from "date-fns";

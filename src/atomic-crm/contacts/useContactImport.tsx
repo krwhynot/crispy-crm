@@ -3,6 +3,7 @@ import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Organization, Tag } from "../types";
 import { ZodError } from "zod";
+import { logger } from "@/lib/logger";
 import {
   applyDataQualityTransformations,
   validateTransformedContacts,
@@ -384,7 +385,10 @@ const fetchRecordsWithCache = async function <T extends RaRecord>(
       throw firstFailure.reason;
     }
   } catch (error: unknown) {
-    console.error(`Failed to create ${resource} records:`, error);
+    logger.error(`Failed to create ${resource} records`, error, {
+      feature: "useContactImport",
+      resource,
+    });
     throw error; // Re-throw for fail-fast behavior
   }
 
