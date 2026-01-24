@@ -62,7 +62,10 @@ export class StorageService {
       .upload(filePath, dataContent);
 
     if (uploadError) {
-      console.error("uploadError", uploadError);
+      logger.error("Upload error", uploadError, {
+        feature: "StorageService",
+        method: "uploadToBucket",
+      });
       throw new HttpError("Failed to upload attachment", 500);
     }
 
@@ -94,7 +97,12 @@ export class StorageService {
     });
 
     if (error) {
-      console.error(`[StorageService] Upload failed`, error);
+      logger.error("Upload failed", error, {
+        feature: "StorageService",
+        method: "upload",
+        bucket,
+        path,
+      });
       throw new HttpError(`Upload failed: ${error.message}`, 500);
     }
 

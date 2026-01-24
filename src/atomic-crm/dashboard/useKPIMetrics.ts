@@ -190,7 +190,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
               ? openCountResult.reason.message
               : String(openCountResult.reason);
           errors.push(`Open opportunities: ${reason}`);
-          console.error("Failed to fetch open opportunities count:", openCountResult.reason);
+          logger.error("Failed to fetch open opportunities count", openCountResult.reason, { feature: "useKPIMetrics" });
         }
 
         // Calculate stale deals from potentially stale candidates

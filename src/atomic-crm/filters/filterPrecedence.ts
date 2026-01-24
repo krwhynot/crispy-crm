@@ -48,7 +48,10 @@ export const parseUrlFilters = (search: string): FilterValues => {
 
     return filters;
   } catch (error: unknown) {
-    console.warn("Failed to parse URL filters:", error);
+    logger.warn("Failed to parse URL filters", {
+      feature: "filterPrecedence",
+      error: error instanceof Error ? error.message : String(error),
+    });
     return {};
   }
 };
@@ -66,7 +69,11 @@ export function getStoredFilterPreferences<T = FilterValue>(key: string): T | nu
     // SECURITY: Use sessionStorage instead of localStorage
     return getStorageItem<T>(key, { type: "session" });
   } catch (error) {
-    console.warn("[filterPrecedence] Failed to read filter preferences from storage:", key, error);
+    logger.warn("Failed to read filter preferences from storage", {
+      feature: "filterPrecedence",
+      storageKey: key,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return null;
   }
 }
@@ -84,7 +91,11 @@ export function saveFilterPreferences<T = FilterValue>(key: string, value: T): v
     // SECURITY: Use sessionStorage instead of localStorage
     setStorageItem(key, value, { type: "session" });
   } catch (error: unknown) {
-    console.warn("Failed to save filter preferences:", error);
+    logger.warn("Failed to save filter preferences", {
+      feature: "filterPrecedence",
+      storageKey: key,
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 }
 

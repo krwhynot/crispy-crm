@@ -174,7 +174,7 @@ export const BulkReassignButton = <T extends ResourceItem>({
         return;
       }
       notify("Bulk reassignment failed", { type: "error" });
-      console.error("[BulkReassign] Bulk action error:", error);
+      logger.error("Bulk reassignment failed", error, { feature: "BulkReassignButton", resource });
     } finally {
       setIsProcessing(false);
       abortControllerRef.current = null;

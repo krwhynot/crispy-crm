@@ -80,14 +80,14 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
 
     // If any errors, set state and show inline (no toast spam)
     if (Object.keys(newErrors).length > 0) {
-      console.log("[QuickAdd] Validation failed:", newErrors);
+      devLog("QuickAddOpportunity", "Validation failed", newErrors);
       setErrors(newErrors);
       return;
     }
 
     // Clear errors on successful validation
     setErrors({});
-    console.log("[QuickAdd] Validation passed, calling create()");
+    devLog("QuickAddOpportunity", "Validation passed, calling create()");
 
     try {
       // MFB business rule: Name + Principal + Customer + Stage required
