@@ -16,21 +16,15 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type * as ReactAdmin from "react-admin";
 import { useHybridSearch } from "../useHybridSearch";
 
-// Type for test records
-interface MockRecord {
-  id: number;
-  name: string;
-}
-
 // Track mock state
 const mockInitialData = {
-  data: [] as MockRecord[],
+  data: [] as any[],
   isPending: false,
   error: null as Error | null,
 };
 
 const mockSearchData = {
-  data: [] as MockRecord[],
+  data: [] as any[],
   isPending: false,
   error: null as Error | null,
 };
@@ -80,7 +74,7 @@ vi.mock("react-admin", async (importOriginal) => {
 });
 
 // Helper to create mock records
-const createMockRecord = (id: number, name: string): MockRecord => ({ id, name });
+const createMockRecord = (id: number, name: string) => ({ id, name });
 
 describe("useHybridSearch", () => {
   beforeEach(() => {
