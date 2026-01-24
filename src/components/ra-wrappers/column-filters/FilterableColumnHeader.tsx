@@ -31,7 +31,7 @@ export interface FilterableColumnHeaderProps {
   choices?: FilterChoice[];
   /** Placeholder for text filter */
   placeholder?: string;
-  /** Debounce delay for text filter (default: 300ms) */
+  /** Debounce delay for text filter (default: SEARCH_DEBOUNCE_MS) */
   debounceMs?: number;
   /** Additional CSS classes for the container */
   className?: string;

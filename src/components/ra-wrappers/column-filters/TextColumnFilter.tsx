@@ -26,7 +26,7 @@ export interface TextColumnFilterProps {
  * @pattern Pattern G - Column filter with debounced text input
  *
  * Features:
- * - Debounced input (300ms default) to prevent excessive API calls
+ * - Debounced input (SEARCH_DEBOUNCE_MS default) to prevent excessive API calls
  * - Clear button (X) to remove filter
  * - Syncs with useListContext for filter state management
  * - Touch target: 48px minimum height
@@ -37,7 +37,7 @@ export interface TextColumnFilterProps {
 export function TextColumnFilter({
   source,
   placeholder = "Filter...",
-  debounceMs = 300,
+  debounceMs = SEARCH_DEBOUNCE_MS,
   className,
 }: TextColumnFilterProps) {
   const { filterValues, setFilters } = useListContext();

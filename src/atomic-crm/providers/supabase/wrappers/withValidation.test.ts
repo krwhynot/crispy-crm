@@ -208,8 +208,10 @@ describe("withValidation", () => {
 
     it("should propagate errors when validateFilters throws (fail-fast)", async () => {
       // Configure mock to throw error on invalid filters
-      const validationError = new Error("Invalid filter field(s) for contacts: [invalid_field]");
-      (validationError as any).status = 400;
+      const validationError: Error & { status?: number } = new Error(
+        "Invalid filter field(s) for contacts: [invalid_field]"
+      );
+      validationError.status = 400;
       mockValidationService.validateFilters.mockImplementation(() => {
         throw validationError;
       });
@@ -432,8 +434,11 @@ describe("withValidation", () => {
 
       const wrappedProvider = withValidation(extendedProvider);
 
-      expect((wrappedProvider as any).customRpc).toBeDefined();
-      const result = await (wrappedProvider as any).customRpc("test");
+      const extendedWrappedProvider = wrappedProvider as typeof wrappedProvider & {
+        customRpc: (arg: string) => Promise<{ success: boolean }>;
+      };
+      expect(extendedWrappedProvider.customRpc).toBeDefined();
+      const result = await extendedWrappedProvider.customRpc("test");
       expect(result).toEqual({ success: true });
     });
   });
