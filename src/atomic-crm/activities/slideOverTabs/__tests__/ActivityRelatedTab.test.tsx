@@ -222,14 +222,17 @@ describe("ActivityRelatedTab", () => {
     beforeEach(() => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation((resource: string) => {
         if (resource === "organizations") {
-          return { data: mockOrganization, isLoading: false } as any;
+          return mockUseGetOneReturn<Organization>({
+            data: mockOrganizationData,
+            isLoading: false,
+          });
         }
-        return { data: undefined, isLoading: false } as any;
+        return mockUseGetOneReturn({ data: undefined, isLoading: false });
       });
     });
 
     it("renders organization card when organization_id is present", async () => {
-      const activity = createMockActivity({ organization_id: 20 });
+      const activity = createTestActivity({ organization_id: 20 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -241,7 +244,7 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("shows organization name correctly", async () => {
-      const activity = createMockActivity({ organization_id: 20 });
+      const activity = createTestActivity({ organization_id: 20 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -253,7 +256,7 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("shows organization type as subtitle", async () => {
-      const activity = createMockActivity({ organization_id: 20 });
+      const activity = createTestActivity({ organization_id: 20 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -266,7 +269,7 @@ describe("ActivityRelatedTab", () => {
 
     it("organization card is clickable and navigates correctly", async () => {
       const user = userEvent.setup();
-      const activity = createMockActivity({ organization_id: 20 });
+      const activity = createTestActivity({ organization_id: 20 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -287,14 +290,14 @@ describe("ActivityRelatedTab", () => {
     beforeEach(() => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation((resource: string) => {
         if (resource === "opportunities") {
-          return { data: mockOpportunity, isLoading: false } as any;
+          return mockUseGetOneReturn<Opportunity>({ data: mockOpportunityData, isLoading: false });
         }
-        return { data: undefined, isLoading: false } as any;
+        return mockUseGetOneReturn({ data: undefined, isLoading: false });
       });
     });
 
     it("renders opportunity card when opportunity_id is present", async () => {
-      const activity = createMockActivity({ opportunity_id: 30 });
+      const activity = createTestActivity({ opportunity_id: 30 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -306,7 +309,7 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("shows opportunity name correctly", async () => {
-      const activity = createMockActivity({ opportunity_id: 30 });
+      const activity = createTestActivity({ opportunity_id: 30 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
@@ -318,21 +321,20 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("shows opportunity stage badge", async () => {
-      const activity = createMockActivity({ opportunity_id: 30 });
+      const activity = createTestActivity({ opportunity_id: 30 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />
       );
 
       await waitFor(() => {
-        // "demo_scheduled" maps to "Demo Scheduled" label
         expect(screen.getByText("Demo Scheduled")).toBeInTheDocument();
       });
     });
 
     it("opportunity card is clickable and navigates correctly", async () => {
       const user = userEvent.setup();
-      const activity = createMockActivity({ opportunity_id: 30 });
+      const activity = createTestActivity({ opportunity_id: 30 });
 
       renderWithAdminContext(
         <ActivityRelatedTab record={activity} mode="view" isActiveTab={true} />

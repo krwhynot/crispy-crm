@@ -108,7 +108,19 @@ vi.mock("@/components/ui/tabs", () => ({
 
 // Mock Button component
 vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, onClick, disabled, type, ...props }: any) => (
+  Button: ({
+    children,
+    onClick,
+    disabled,
+    type,
+    ...props
+  }: {
+    children: ReactNode;
+    onClick?: () => void;
+    disabled?: boolean;
+    type?: "button" | "submit" | "reset";
+    "data-testid"?: string;
+  }) => (
     <button onClick={onClick} disabled={disabled} type={type} data-testid={props["data-testid"]}>
       {children}
     </button>
@@ -227,13 +239,15 @@ describe("ContactSlideOver", () => {
     vi.clearAllMocks();
 
     // Setup default mocks
-    (useGetOne as any).mockReturnValue({
-      data: mockContact,
-      isLoading: false,
-    });
+    vi.mocked(useGetOne).mockReturnValue(
+      mockUseGetOneReturn({
+        data: mockContact,
+        isLoading: false,
+      })
+    );
 
-    (useUpdate as any).mockReturnValue([mockUpdate]);
-    (useNotify as any).mockReturnValue(mockNotify);
+    vi.mocked(useUpdate).mockReturnValue(mockUseUpdateReturn({ mutate: mockUpdate }));
+    vi.mocked(useNotify).mockReturnValue(mockNotify);
   });
 
   afterEach(() => {

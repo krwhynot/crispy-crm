@@ -76,23 +76,17 @@ export function useHybridSearch<T extends { id: number | string }>({
   enabled = true,
 }: HybridSearchConfig): HybridSearchResult<T> {
   // Track user's search input
-  const [searchTerm, setSearchTermInternal] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
-  // Debounce search term updates
-  const setSearchTerm = useCallback(
-    (term: string) => {
-      setSearchTermInternal(term);
+  // Debounce search term updates using useEffect (proper pattern)
+  useState(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, debounceMs);
 
-      // Clear any pending debounce
-      const handler = setTimeout(() => {
-        setDebouncedSearchTerm(term);
-      }, debounceMs);
-
-      return () => clearTimeout(handler);
-    },
-    [debounceMs]
-  );
+    return () => clearTimeout(handler);
+  }, [searchTerm, debounceMs]);
 
   // Determine if we should search server-side
   const shouldSearch = debouncedSearchTerm.length >= minSearchLength;

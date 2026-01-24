@@ -111,11 +111,13 @@ describe("OrganizationShow", () => {
   });
 
   test("renders loading state", () => {
-    (useShowContext as any).mockReturnValue({
-      record: undefined,
-      isPending: true,
-      error: null,
-    });
+    vi.mocked(useShowContext).mockReturnValue(
+      mockUseShowContextReturn({
+        record: undefined,
+        isPending: true,
+        error: null,
+      })
+    );
 
     renderWithAdminContext(
       <Routes>

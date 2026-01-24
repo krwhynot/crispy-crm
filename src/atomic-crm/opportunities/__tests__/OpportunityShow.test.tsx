@@ -76,8 +76,12 @@ vi.mock("@/components/ra-wrappers/reference-many-field", () => ({
 }));
 
 // Mock OpportunityHeader
+interface OpportunityHeaderMockProps {
+  ArchiveButton?: React.ComponentType<{ record: { id: number; deleted_at: string | null } }>;
+  UnarchiveButton?: React.ComponentType<{ record: { id: number; deleted_at: string | null } }>;
+}
 vi.mock("../OpportunityHeader", () => ({
-  OpportunityHeader: ({ ArchiveButton, UnarchiveButton }: any) => (
+  OpportunityHeader: ({ ArchiveButton, UnarchiveButton }: OpportunityHeaderMockProps) => (
     <div data-testid="opportunity-header">
       Header
       {ArchiveButton && <ArchiveButton record={{ id: 1, deleted_at: null }} />}
