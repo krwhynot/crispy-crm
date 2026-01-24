@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TabFilterBar } from "./TabFilterBar";
+import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
 
 // Mock ra-core hooks
 vi.mock("ra-core", () => ({
@@ -9,7 +10,13 @@ vi.mock("ra-core", () => ({
 
 import { useGetList } from "ra-core";
 
-const mockSalesReps = [
+interface SalesRep {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
+const mockSalesReps: SalesRep[] = [
   { id: 1, first_name: "John", last_name: "Smith" },
   { id: 2, first_name: "Jane", last_name: "Doe" },
 ];
@@ -17,7 +24,9 @@ const mockSalesReps = [
 describe("TabFilterBar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useGetList as any).mockReturnValue({ data: mockSalesReps, isPending: false });
+    vi.mocked(useGetList<SalesRep>).mockReturnValue(
+      mockUseGetListReturn<SalesRep>({ data: mockSalesReps, isPending: false })
+    );
   });
   it("renders date range selector with presets", () => {
     const onChange = vi.fn();

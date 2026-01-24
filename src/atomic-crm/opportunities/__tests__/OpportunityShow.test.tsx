@@ -12,10 +12,13 @@
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
+import type { ReactNode } from "react";
 import { screen, waitFor } from "@testing-library/react";
 import { Route, Routes } from "react-router-dom";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
+import { mockUseShowContextReturn } from "@/tests/utils/typed-mocks";
+import type { OpportunityStage } from "../constants";
 import OpportunityShow from "../OpportunityShow";
 
 // Mock dependencies

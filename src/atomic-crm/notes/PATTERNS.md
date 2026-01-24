@@ -562,6 +562,86 @@ const [deleteNote] = useDelete(
 
 ---
 
+## Pattern G: Cache Invalidation After Note Operations
+
+Ensure related caches are refreshed after creating, updating, or deleting notes.
+
+```tsx
+// src/atomic-crm/notes/NoteCreate.tsx
+import { useQueryClient } from "@tanstack/react-query";
+import { noteKeys } from "../queryKeys";
+
+const handleSuccess = () => {
+  const queryClient = useQueryClient();
+
+  reset(baseNoteSchema.partial().parse({}), { keepValues: false });
+  refetch();
+
+  // Invalidate note caches for this resource
+  queryClient.invalidateQueries({ queryKey: noteKeys.all });
+
+  // Only update last_seen for contacts
+  if (reference === "contacts") {
+    update(reference, {
+      id: record.id,
+      data: { last_seen: new Date().toISOString() },
+      previousData: record,
+    });
+  }
+
+  notify("Note added");
+};
+```
+
+```tsx
+// src/atomic-crm/notes/Note.tsx - Delete with cache invalidation
+const [deleteNote] = useDelete(
+  resource,
+  { id: note.id, previousData: note },
+  {
+    mutationMode: "undoable",
+    onSuccess: () => {
+      // Invalidate caches after successful delete
+      queryClient.invalidateQueries({ queryKey: noteKeys.all });
+      notify("Note deleted", { type: "info", undoable: true });
+    },
+  }
+);
+```
+
+**Query Key Factory Pattern:**
+```tsx
+// src/atomic-crm/queryKeys.ts
+export const noteKeys = {
+  all: ["notes"] as const,
+  contactNotes: {
+    all: ["contact_notes"] as const,
+    list: (contactId: number) => ["contact_notes", "list", contactId] as const,
+  },
+  opportunityNotes: {
+    all: ["opportunity_notes"] as const,
+    list: (oppId: number) => ["opportunity_notes", "list", oppId] as const,
+  },
+  organizationNotes: {
+    all: ["organization_notes"] as const,
+    list: (orgId: number) => ["organization_notes", "list", orgId] as const,
+  },
+};
+```
+
+**When to use**: After any note create, update, or delete operation to ensure UI reflects current data.
+
+**Key points:**
+- `noteKeys.all` invalidates all note-related queries across all entity types
+- Specific keys like `noteKeys.contactNotes.list(contactId)` for targeted invalidation
+- Use `mutationOptions.onSuccess` for create/update operations
+- Use `useDelete` options `onSuccess` for delete operations
+- Prevents stale note counts and outdated note lists
+
+**Example:** `src/atomic-crm/notes/NoteCreate.tsx`, `src/atomic-crm/notes/Note.tsx`
+
+---
+
 ## Comparison Table
 
 | Aspect | Note | Activity | Task |

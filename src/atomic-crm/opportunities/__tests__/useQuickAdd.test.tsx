@@ -1,9 +1,10 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useQuickAdd } from "../useQuickAdd";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
+import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 
 // Mock React Admin hooks
 vi.mock("ra-core", async (importOriginal) => {

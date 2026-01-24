@@ -2,8 +2,10 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
+import type { DataProvider } from "ra-core";
 import { useBulkActionsState } from "../useBulkActionsState";
 import type { Opportunity } from "@/atomic-crm/types";
+import { createMockOpportunity } from "@/tests/utils/mock-providers";
 
 // Mock React Admin hooks
 vi.mock("ra-core", () => ({
@@ -25,19 +27,28 @@ vi.mock("@tanstack/react-query", async () => {
 import { useDataProvider, useNotify, useRefresh } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
+/**
+ * Typed mock data provider for bulk actions tests
+ * Only includes methods used by useBulkActionsState hook
+ */
+interface MockBulkActionsDataProvider extends Pick<DataProvider, "update" | "deleteMany"> {
+  update: ReturnType<typeof vi.fn>;
+  deleteMany: ReturnType<typeof vi.fn>;
+}
+
 describe("useBulkActionsState - Parallel Execution", () => {
-  let mockDataProvider: any;
+  let mockDataProvider: MockBulkActionsDataProvider;
   let mockNotify: ReturnType<typeof vi.fn>;
   let mockRefresh: ReturnType<typeof vi.fn>;
   let queryClient: QueryClient;
   let mockOnUnselectItems: ReturnType<typeof vi.fn>;
 
   const mockOpportunities: Opportunity[] = [
-    { id: 1, name: "Opp 1", stage: "new_lead" } as Opportunity,
-    { id: 2, name: "Opp 2", stage: "new_lead" } as Opportunity,
-    { id: 3, name: "Opp 3", stage: "new_lead" } as Opportunity,
-    { id: 4, name: "Opp 4", stage: "new_lead" } as Opportunity,
-    { id: 5, name: "Opp 5", stage: "new_lead" } as Opportunity,
+    createMockOpportunity({ id: 1, name: "Opp 1", stage: "new_lead" }) as Opportunity,
+    createMockOpportunity({ id: 2, name: "Opp 2", stage: "new_lead" }) as Opportunity,
+    createMockOpportunity({ id: 3, name: "Opp 3", stage: "new_lead" }) as Opportunity,
+    createMockOpportunity({ id: 4, name: "Opp 4", stage: "new_lead" }) as Opportunity,
+    createMockOpportunity({ id: 5, name: "Opp 5", stage: "new_lead" }) as Opportunity,
   ];
 
   beforeEach(() => {
@@ -52,9 +63,9 @@ describe("useBulkActionsState - Parallel Execution", () => {
       deleteMany: vi.fn(),
     };
 
-    (useDataProvider as any).mockReturnValue(mockDataProvider);
-    (useNotify as any).mockReturnValue(mockNotify);
-    (useRefresh as any).mockReturnValue(mockRefresh);
+    vi.mocked(useDataProvider).mockReturnValue(mockDataProvider as unknown as DataProvider);
+    vi.mocked(useNotify).mockReturnValue(mockNotify);
+    vi.mocked(useRefresh).mockReturnValue(mockRefresh);
 
     // Create fresh query client for each test
     queryClient = new QueryClient({
@@ -64,7 +75,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
       },
     });
 
-    (useQueryClient as any).mockReturnValue(queryClient);
+    vi.mocked(useQueryClient).mockReturnValue(queryClient);
   });
 
   afterEach(() => {

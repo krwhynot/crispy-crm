@@ -17,6 +17,12 @@ import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import type { GetListParams } from "react-admin";
 import * as reactAdmin from "react-admin";
+import {
+  mockUseGetListReturn,
+  mockUseCreateReturn,
+  mockUseDeleteReturn,
+  mockUseGetIdentityReturn,
+} from "@/tests/utils/typed-mocks";
 
 // Import component under test
 import { AuthorizationsTab } from "../AuthorizationsTab";

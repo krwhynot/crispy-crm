@@ -1,5 +1,19 @@
 import { describe, it, expect, vi } from "vitest";
 
+/**
+ * Raw opportunity data shape from database queries
+ * Used for testing data mapping logic in hook
+ */
+interface RawOpportunityData {
+  id: number;
+  name?: string;
+  stage?: string;
+  amount?: number;
+  probability?: number;
+  last_activity_date?: string;
+  estimated_close_date?: string;
+}
+
 // Unit tests for drill-down logic (no React components)
 describe("Pipeline Drill-Down Feature", () => {
   describe("usePrincipalOpportunities hook logic", () => {

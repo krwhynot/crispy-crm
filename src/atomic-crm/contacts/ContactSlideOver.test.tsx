@@ -15,8 +15,10 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactNode } from "react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockContact } from "@/tests/utils/mock-providers";
+import { mockUseGetOneReturn, mockUseUpdateReturn } from "@/tests/utils/typed-mocks";
 import { ContactSlideOver } from "./ContactSlideOver";
 
 // Mock dependencies

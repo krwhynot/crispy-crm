@@ -4,6 +4,49 @@ import userEvent from "@testing-library/user-event";
 import CampaignActivityReport from "../CampaignActivityReport";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
+
+/**
+ * Activity record type for test data
+ * Matches the shape returned by the activities API
+ */
+interface TestActivity {
+  id: number;
+  type: string;
+  subject: string;
+  created_at: string;
+  created_by: number;
+  organization_id: number | null;
+  contact_id: number | null;
+  opportunity_id?: number | null;
+  organization_name?: string;
+  contact_name?: string;
+}
+
+/**
+ * Opportunity record type for test data
+ */
+interface TestOpportunity {
+  id: number;
+  name: string;
+  campaign: string;
+  stage?: string | null;
+  customer_organization_name?: string;
+}
+
+/**
+ * Sales rep record type for test data
+ */
+interface TestSalesRep {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
+/**
+ * CSV row type for jsonexport mock
+ */
+type CsvRow = Record<string, unknown>;
 
 // Mock ra-core hooks
 vi.mock("ra-core", async () => {
@@ -18,8 +61,8 @@ vi.mock("ra-core", async () => {
 
 // Mock jsonexport
 vi.mock("jsonexport/dist", () => ({
-  default: vi.fn((data, callback) => {
-    const csv = data.map((row: any) => Object.values(row).join(",")).join("\n");
+  default: vi.fn((data: CsvRow[], callback: (err: Error | null, csv: string) => void) => {
+    const csv = data.map((row: CsvRow) => Object.values(row).join(",")).join("\n");
     callback(null, csv);
   }),
 }));
@@ -33,7 +76,10 @@ vi.mock("jsonexport/dist", () => ({
  *
  * This helper creates both getList and rpc mocks for complete test coverage.
  */
-const createMockDataProviderWithActivities = (activities: any[], opportunityCount: number = 1) => ({
+const createMockDataProviderWithActivities = (
+  activities: TestActivity[],
+  opportunityCount: number = 1
+) => ({
   getList: vi.fn().mockImplementation((resource: string) => {
     if (resource === "activities") {
       return Promise.resolve({
@@ -79,7 +125,7 @@ describe("CampaignActivityReport", () => {
     it("groups activities correctly by type", async () => {
       const { useGetList } = await import("ra-core");
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         {
           id: 1,
           type: "note",
@@ -112,14 +158,16 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: mockActivities,
-        total: 3,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: mockActivities,
+          total: 3,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       // Pass dataProvider to make useReportData return activities
       renderWithAdminContext(<CampaignActivityReport />, {
@@ -134,7 +182,7 @@ describe("CampaignActivityReport", () => {
     it("sorts groups by count in descending order", async () => {
       const { useGetList } = await import("ra-core");
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         // 1 call
         {
           id: 1,
@@ -200,14 +248,16 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: mockActivities,
-        total: 6,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: mockActivities,
+          total: 6,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />, {
         dataProvider: createMockDataProviderWithActivities(mockActivities),
@@ -221,7 +271,7 @@ describe("CampaignActivityReport", () => {
     it("calculates percentage correctly", async () => {
       const { useGetList } = await import("ra-core");
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         {
           id: 1,
           type: "note",
@@ -264,14 +314,16 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: mockActivities,
-        total: 4,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: mockActivities,
+          total: 4,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />, {
         dataProvider: createMockDataProviderWithActivities(mockActivities),
@@ -286,7 +338,7 @@ describe("CampaignActivityReport", () => {
     it("calculates unique organization count per group", async () => {
       const { useGetList } = await import("ra-core");
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         // 2 notes, but both for same org (uniqueOrgs = 1)
         {
           id: 1,
@@ -331,14 +383,16 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: mockActivities,
-        total: 4,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: mockActivities,
+          total: 4,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />, {
         dataProvider: createMockDataProviderWithActivities(mockActivities),
@@ -352,7 +406,7 @@ describe("CampaignActivityReport", () => {
     it("calculates most active organization correctly", async () => {
       const { useGetList } = await import("ra-core");
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         // Org 1: 3 notes (most active)
         {
           id: 1,
@@ -397,14 +451,16 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: mockActivities,
-        total: 4,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: mockActivities,
+          total: 4,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />, {
         dataProvider: createMockDataProviderWithActivities(mockActivities),
@@ -421,14 +477,16 @@ describe("CampaignActivityReport", () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />);
 
@@ -447,14 +505,16 @@ describe("CampaignActivityReport", () => {
     it("filters by date range (end date)", async () => {
       const { useGetList } = await import("ra-core");
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />);
 
@@ -477,14 +537,16 @@ describe("CampaignActivityReport", () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />);
 
@@ -504,14 +566,16 @@ describe("CampaignActivityReport", () => {
     it("filters by activity type multi-select", async () => {
       const { useGetList } = await import("ra-core");
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />);
 
@@ -523,14 +587,16 @@ describe("CampaignActivityReport", () => {
     it("filters by sales rep", async () => {
       const { useGetList } = await import("ra-core");
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />);
 
@@ -542,14 +608,16 @@ describe("CampaignActivityReport", () => {
     it("combines date and activity type filters", async () => {
       const { useGetList } = await import("ra-core");
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />);
 
@@ -563,14 +631,16 @@ describe("CampaignActivityReport", () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />);
 
@@ -607,7 +677,7 @@ describe("CampaignActivityReport", () => {
         const user = userEvent.setup();
         const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-        const mockOpportunities = [
+        const mockOpportunities: TestOpportunity[] = [
           {
             id: 1,
             name: "Valid Stage Opp",
@@ -633,23 +703,23 @@ describe("CampaignActivityReport", () => {
 
         vi.mocked(useGetList).mockImplementation((resource: string) => {
           if (resource === "opportunities") {
-            return {
+            return mockUseGetListReturn<TestOpportunity>({
               data: mockOpportunities,
               total: 3,
               isPending: false,
               isLoading: false,
               error: null,
               refetch: vi.fn(),
-            } as any;
+            });
           }
-          return {
+          return mockUseGetListReturn<TestActivity>({
             data: [],
             total: 0,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         });
 
         renderWithAdminContext(<CampaignActivityReport />);
@@ -683,7 +753,7 @@ describe("CampaignActivityReport", () => {
         const user = userEvent.setup();
         const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-        const mockOpportunities = [
+        const mockOpportunities: TestOpportunity[] = [
           {
             id: 1,
             name: "Valid Opp 1",
@@ -702,23 +772,23 @@ describe("CampaignActivityReport", () => {
 
         vi.mocked(useGetList).mockImplementation((resource: string) => {
           if (resource === "opportunities") {
-            return {
+            return mockUseGetListReturn<TestOpportunity>({
               data: mockOpportunities,
               total: 2,
               isPending: false,
               isLoading: false,
               error: null,
               refetch: vi.fn(),
-            } as any;
+            });
           }
-          return {
+          return mockUseGetListReturn<TestActivity>({
             data: [],
             total: 0,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         });
 
         renderWithAdminContext(<CampaignActivityReport />);
@@ -751,7 +821,7 @@ describe("CampaignActivityReport", () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
 
-      const mockOpportunities = [
+      const mockOpportunities: TestOpportunity[] = [
         {
           id: 1,
           name: "Stale Opp",
@@ -761,7 +831,7 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         {
           id: 1,
           type: "note",
@@ -777,32 +847,32 @@ describe("CampaignActivityReport", () => {
 
       vi.mocked(useGetList).mockImplementation((resource: string) => {
         if (resource === "opportunities") {
-          return {
+          return mockUseGetListReturn<TestOpportunity>({
             data: mockOpportunities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         } else if (resource === "activities") {
-          return {
+          return mockUseGetListReturn<TestActivity>({
             data: mockActivities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         }
-        return {
+        return mockUseGetListReturn<TestActivity>({
           data: [],
           total: 0,
           isPending: false,
           isLoading: false,
           error: null,
           refetch: vi.fn(),
-        } as any;
+        });
       });
 
       renderWithAdminContext(<CampaignActivityReport />);
@@ -827,7 +897,7 @@ describe("CampaignActivityReport", () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
 
-      const mockOpportunities = [
+      const mockOpportunities: TestOpportunity[] = [
         {
           id: 1,
           name: "Test Opp",
@@ -839,23 +909,23 @@ describe("CampaignActivityReport", () => {
 
       vi.mocked(useGetList).mockImplementation((resource: string) => {
         if (resource === "opportunities") {
-          return {
+          return mockUseGetListReturn<TestOpportunity>({
             data: mockOpportunities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         }
-        return {
+        return mockUseGetListReturn<TestActivity>({
           data: [],
           total: 0,
           isPending: false,
           isLoading: false,
           error: null,
           refetch: vi.fn(),
-        } as any;
+        });
       });
 
       renderWithAdminContext(<CampaignActivityReport />);
@@ -880,7 +950,7 @@ describe("CampaignActivityReport", () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
 
-      const mockOpportunities = [
+      const mockOpportunities: TestOpportunity[] = [
         {
           id: 1,
           name: "Never Contacted Opp",
@@ -892,23 +962,23 @@ describe("CampaignActivityReport", () => {
 
       vi.mocked(useGetList).mockImplementation((resource: string) => {
         if (resource === "opportunities") {
-          return {
+          return mockUseGetListReturn<TestOpportunity>({
             data: mockOpportunities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         }
-        return {
+        return mockUseGetListReturn<TestActivity>({
           data: [],
           total: 0,
           isPending: false,
           isLoading: false,
           error: null,
           refetch: vi.fn(),
-        } as any;
+        });
       });
 
       renderWithAdminContext(<CampaignActivityReport />);
@@ -932,7 +1002,7 @@ describe("CampaignActivityReport", () => {
     it("generates correct CSV columns for activity export", async () => {
       const { useGetList } = await import("ra-core");
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         {
           id: 1,
           type: "note",
@@ -947,7 +1017,7 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      const mockOpportunities = [
+      const mockOpportunities: TestOpportunity[] = [
         {
           id: 1,
           name: "Test Opportunity",
@@ -956,45 +1026,45 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      const mockSalesReps = [{ id: 1, first_name: "Jane", last_name: "Smith" }];
+      const mockSalesReps: TestSalesRep[] = [{ id: 1, first_name: "Jane", last_name: "Smith" }];
 
       vi.mocked(useGetList).mockImplementation((resource: string) => {
         if (resource === "activities") {
-          return {
+          return mockUseGetListReturn<TestActivity>({
             data: mockActivities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         } else if (resource === "opportunities") {
-          return {
+          return mockUseGetListReturn<TestOpportunity>({
             data: mockOpportunities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         } else if (resource === "sales") {
-          return {
+          return mockUseGetListReturn<TestSalesRep>({
             data: mockSalesReps,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         }
-        return {
+        return mockUseGetListReturn<TestActivity>({
           data: [],
           total: 0,
           isPending: false,
           isLoading: false,
           error: null,
           refetch: vi.fn(),
-        } as any;
+        });
       });
 
       renderWithAdminContext(<CampaignActivityReport />);
@@ -1027,14 +1097,16 @@ describe("CampaignActivityReport", () => {
     it("shows empty state when no activities found", async () => {
       const { useGetList } = await import("ra-core");
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />, {
         dataProvider: createMockDataProviderWithActivities([]),
@@ -1051,14 +1123,16 @@ describe("CampaignActivityReport", () => {
     it("shows empty state when campaign has no opportunities", async () => {
       const { useGetList } = await import("ra-core");
 
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />, {
         dataProvider: createMockDataProviderWithActivities([]),
@@ -1074,14 +1148,14 @@ describe("CampaignActivityReport", () => {
       const user = userEvent.setup();
 
       vi.mocked(useGetList).mockImplementation(() => {
-        return {
+        return mockUseGetListReturn<TestActivity>({
           data: [],
           total: 0,
           isPending: false,
           isLoading: false,
           error: null,
           refetch: vi.fn(),
-        } as any;
+        });
       });
 
       renderWithAdminContext(<CampaignActivityReport />, {
@@ -1108,7 +1182,7 @@ describe("CampaignActivityReport", () => {
       const { useGetList } = await import("ra-core");
       const user = userEvent.setup();
 
-      const mockOpportunities = [
+      const mockOpportunities: TestOpportunity[] = [
         {
           id: 1,
           name: "Active Opp",
@@ -1118,7 +1192,7 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         {
           id: 1,
           type: "note",
@@ -1134,32 +1208,32 @@ describe("CampaignActivityReport", () => {
 
       vi.mocked(useGetList).mockImplementation((resource: string) => {
         if (resource === "opportunities") {
-          return {
+          return mockUseGetListReturn<TestOpportunity>({
             data: mockOpportunities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         } else if (resource === "activities") {
-          return {
+          return mockUseGetListReturn<TestActivity>({
             data: mockActivities,
             total: 1,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         }
-        return {
+        return mockUseGetListReturn<TestActivity>({
           data: [],
           total: 0,
           isPending: false,
           isLoading: false,
           error: null,
           refetch: vi.fn(),
-        } as any;
+        });
       });
 
       renderWithAdminContext(<CampaignActivityReport />, {
@@ -1185,14 +1259,16 @@ describe("CampaignActivityReport", () => {
   describe("Rendering and UI", () => {
     it("renders report title and summary cards", async () => {
       const { useGetList } = await import("ra-core");
-      vi.mocked(useGetList).mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
-      } as any);
+      vi.mocked(useGetList).mockReturnValue(
+        mockUseGetListReturn<TestActivity>({
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        })
+      );
 
       renderWithAdminContext(<CampaignActivityReport />, {
         dataProvider: createMockDataProviderWithActivities([]),
@@ -1212,7 +1288,7 @@ describe("CampaignActivityReport", () => {
     it("calculates summary metrics correctly", async () => {
       const { useGetList } = await import("ra-core");
 
-      const mockActivities = [
+      const mockActivities: TestActivity[] = [
         {
           id: 1,
           type: "note",
@@ -1245,7 +1321,7 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      const mockOpportunities = [
+      const mockOpportunities: TestOpportunity[] = [
         {
           id: 1,
           name: "Test Opp 1",
@@ -1266,48 +1342,48 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      const mockSalesReps = [
+      const mockSalesReps: TestSalesRep[] = [
         { id: 1, first_name: "John", last_name: "Smith" },
         { id: 2, first_name: "Jane", last_name: "Doe" },
       ];
 
       vi.mocked(useGetList).mockImplementation((resource: string) => {
         if (resource === "activities") {
-          return {
+          return mockUseGetListReturn<TestActivity>({
             data: mockActivities,
             total: 3,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         } else if (resource === "opportunities") {
-          return {
+          return mockUseGetListReturn<TestOpportunity>({
             data: mockOpportunities,
             total: 3,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         } else if (resource === "sales") {
-          return {
+          return mockUseGetListReturn<TestSalesRep>({
             data: mockSalesReps,
             total: 2,
             isPending: false,
             isLoading: false,
             error: null,
             refetch: vi.fn(),
-          } as any;
+          });
         }
-        return {
+        return mockUseGetListReturn<TestActivity>({
           data: [],
           total: 0,
           isPending: false,
           isLoading: false,
           error: null,
           refetch: vi.fn(),
-        } as any;
+        });
       });
 
       renderWithAdminContext(<CampaignActivityReport />, {

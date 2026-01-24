@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { createMockDataProvider } from "@/tests/utils/mock-providers";
+import type { GetListParams } from "ra-core";
 import { OrganizationCreate } from "../OrganizationCreate";
 
 /**
@@ -10,10 +12,9 @@ import { OrganizationCreate } from "../OrganizationCreate";
  * and guards against rendering if it's not found.
  */
 const createOrgTestDataProvider = () =>
-  ({
-    getList: vi.fn(async (resource: string) => {
+  createMockDataProvider({
+    getList: vi.fn(async (resource: string, _params: GetListParams) => {
       if (resource === "segments") {
-        // Return "Unknown" segment - required for form to render
         return {
           data: [{ id: "uuid-unknown-segment", name: "Unknown" }],
           total: 1,
@@ -21,7 +22,6 @@ const createOrgTestDataProvider = () =>
         };
       }
       if (resource === "sales") {
-        // Return sales user for ReferenceInput
         return {
           data: [{ id: 1, first_name: "Test", last_name: "User" }],
           total: 1,
@@ -30,13 +30,12 @@ const createOrgTestDataProvider = () =>
       }
       return { data: [], total: 0, pageInfo: { hasNextPage: false, hasPreviousPage: false } };
     }),
-  }) as const;
+  });
 
 const renderOrganizationCreate = () => {
   return renderWithAdminContext(<OrganizationCreate />, {
     resource: "organizations",
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    dataProvider: createOrgTestDataProvider() as any,
+    dataProvider: createOrgTestDataProvider(),
   });
 };
 

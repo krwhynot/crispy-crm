@@ -19,6 +19,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type * as ReactHookForm from "react-hook-form";
 import type * as ReactAdmin from "react-admin";
+import type { ReactNode } from "react";
 import { QuickLogForm } from "../QuickLogForm";
 
 // ============================================================================

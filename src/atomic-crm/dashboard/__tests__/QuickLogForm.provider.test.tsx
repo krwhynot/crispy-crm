@@ -12,8 +12,21 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import type { DataProvider } from "ra-core";
 import { QuickLogForm } from "../QuickLogForm";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
+
+/**
+ * Extended DataProvider interface that includes custom logActivityWithTask method
+ * Used for type-safe assertions on the mock data provider
+ */
+interface ExtendedDataProvider extends DataProvider {
+  logActivityWithTask: (params: unknown) => Promise<{
+    success: boolean;
+    activity_id: number;
+    task_id: number | null;
+  }>;
+}
 
 // Use vi.hoisted to create mock functions that can be referenced in vi.mock
 const { mockSupabaseRpc } = vi.hoisted(() => ({

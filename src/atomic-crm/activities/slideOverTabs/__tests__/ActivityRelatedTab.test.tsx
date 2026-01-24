@@ -15,6 +15,13 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import * as reactAdmin from "react-admin";
+import { mockUseGetOneReturn } from "@/tests/utils/typed-mocks";
+import {
+  createMockActivity,
+  createMockContact,
+  createMockOrganization,
+  createMockOpportunity,
+} from "@/tests/utils/mock-providers";
 
 import { ActivityRelatedTab } from "../ActivityRelatedTab";
 import type { ActivityRecord, Contact, Organization, Opportunity } from "../../../types";
