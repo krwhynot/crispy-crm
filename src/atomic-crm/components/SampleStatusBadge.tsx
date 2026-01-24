@@ -26,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { activityKeys } from "@/atomic-crm/queryKeys";
 import {
   Check,
   ChevronRight,
