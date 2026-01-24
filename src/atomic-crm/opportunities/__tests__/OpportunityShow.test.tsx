@@ -163,7 +163,7 @@ import { useShowContext } from "ra-core";
 
 describe("OpportunityShow", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   test("renders loading state", () => {

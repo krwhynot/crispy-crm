@@ -212,7 +212,7 @@ describe("authProvider", () => {
             }),
           }),
         }),
-      } as any);
+      } as never);
 
       const identity = await authProvider.getIdentity!();
 
@@ -265,7 +265,7 @@ describe("authProvider", () => {
             }),
           }),
         }),
-      } as any);
+      } as never);
 
       await expect(authProvider.getIdentity!()).rejects.toThrow();
     });
@@ -305,12 +305,12 @@ describe("authProvider", () => {
             is: vi.fn().mockReturnValue({
               maybeSingle: vi.fn().mockResolvedValue({
                 data: null,
-                error: { message: "Database connection failed" },
+                error: { message: "Database connection failed" } as never,
               }),
             }),
           }),
         }),
-      } as any);
+      } as never);
 
       await expect(authProvider.getIdentity!()).rejects.toThrow();
     });

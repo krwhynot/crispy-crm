@@ -34,6 +34,7 @@ import {
   mockSupabaseRpcResponse,
   mockSupabaseStorageResponse,
   mockSupabaseEdgeFunctionResponse,
+  mockStorageBucketApi,
 } from "@/tests/utils/typed-mocks";
 
 describe("extendWithCustomMethods", () => {
@@ -730,10 +731,7 @@ describe("extendWithCustomMethods", () => {
       const input = { organization_name: "Test" } as QuickAddInput;
       const mockError = { message: "Validation failed" };
 
-      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue({
-        data: null,
-        error: mockError,
-      } as any);
+      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue(mockSupabaseRpcResponse(null, mockError));
 
       await expect(extendedProvider.createBoothVisitor(input)).rejects.toThrow(
         "Create booth visitor failed: Validation failed"
@@ -748,10 +746,7 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const mockError = { message: "Test error", code: "ERROR_CODE" };
 
-      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue({
-        data: null,
-        error: mockError,
-      } as any);
+      vi.mocked(mockSupabaseClient.rpc).mockResolvedValue(mockSupabaseRpcResponse(null, mockError));
 
       await expect(extendedProvider.rpc("test_function", { param: "value" })).rejects.toThrow();
 

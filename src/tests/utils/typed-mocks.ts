@@ -499,3 +499,22 @@ export function mockSupabaseEdgeFunctionResponse<T>(
 ): SupabaseEdgeFunctionResponse<T> {
   return { data, error };
 }
+
+/**
+ * Storage bucket API methods interface for mocking
+ */
+export interface StorageBucketApi {
+  upload?: Mock;
+  getPublicUrl?: Mock;
+  remove?: Mock;
+  list?: Mock;
+  [key: string]: Mock | undefined;
+}
+
+/**
+ * Create a typed mock for Supabase storage bucket operations
+ * @param methods - Storage API methods to mock (upload, getPublicUrl, remove, list, etc.)
+ */
+export function mockStorageBucketApi(methods: StorageBucketApi): StorageBucketApi {
+  return methods;
+}

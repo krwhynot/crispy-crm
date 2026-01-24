@@ -321,7 +321,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
       await callbacks.beforeDelete!(params, mockDataProvider);
 
       // Verify delete was intercepted
-      const updateCall = (mockDataProvider.update as any).mock.calls[0];
+      const updateCall = vi.mocked(mockDataProvider.update).mock.calls[0];
       expect(updateCall[0]).toBe("activities");
     });
   });
@@ -356,7 +356,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
 
       await callbacks.beforeDelete!(params, mockDataProvider);
 
-      const updateCall = (mockDataProvider.update as any).mock.calls[0];
+      const updateCall = vi.mocked(mockDataProvider.update).mock.calls[0];
       expect(updateCall[1].data).toHaveProperty("deleted_at");
     });
 
@@ -437,7 +437,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
       const record = { id: 1 };
       await callbacks.afterRead!(record, mockDataProvider);
 
-      const errorCall = (console.error as any).mock.calls[0];
+      const errorCall = vi.mocked(console.error).mock.calls[0];
       expect(errorCall[0]).toContain("my-transform");
     });
   });
@@ -472,7 +472,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
         createResourceCallbacks({
           resource: "contacts",
           readTransforms: [(r) => r],
-          compositionStrategy: "parallel" as any,
+          compositionStrategy: "parallel" as unknown as "sequential",
         });
       }).toThrow("Transform composition strategy");
     });
