@@ -55,7 +55,7 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
   return (
     <AsideSection title="Organization Info">
       {record.website && (
-        <div className="flex flex-row items-center gap-1 min-h-[24px]">
+        <div className="flex flex-row items-center gap-1 min-h-11">
           <Globe className="w-4 h-4" />
           <UrlField
             source="website"
