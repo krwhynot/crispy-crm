@@ -169,17 +169,14 @@ describe("useHybridSearch", () => {
       expect(result.current.data).toEqual(mockInitialData.data);
     });
 
-    it("should search when searchTerm meets minSearchLength (default 2)", () => {
+    it("should search when searchTerm meets minSearchLength (default 2)", async () => {
       mockSearchData.data = [createMockRecord(10, "Search Result")];
 
       const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
-      act(() => {
+      await act(async () => {
         result.current.setSearchTerm("ac");
-      });
-
-      act(() => {
-        vi.runAllTimers();
+        await vi.runAllTimersAsync();
       });
 
       // Should show search results
@@ -208,17 +205,14 @@ describe("useHybridSearch", () => {
       expect(result.current.searchTerm).toBe("acm");
     });
 
-    it("should include q parameter in search filter", () => {
+    it("should include q parameter in search filter", async () => {
       mockSearchData.data = [createMockRecord(1, "Acme")];
 
       const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
-      act(() => {
+      await act(async () => {
         result.current.setSearchTerm("acme");
-      });
-
-      act(() => {
-        vi.runAllTimers();
+        await vi.runAllTimersAsync();
       });
 
       // Find the search query call (with q parameter)
@@ -257,18 +251,15 @@ describe("useHybridSearch", () => {
   });
 
   describe("Clear Search", () => {
-    it("should clear search term and return to initial data", () => {
+    it("should clear search term and return to initial data", async () => {
       mockSearchData.data = [createMockRecord(10, "Search Result")];
 
       const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       // Perform search
-      act(() => {
+      await act(async () => {
         result.current.setSearchTerm("test");
-      });
-
-      act(() => {
-        vi.runAllTimers();
+        await vi.runAllTimersAsync();
       });
 
       expect(result.current.data).toEqual(mockSearchData.data);
@@ -293,17 +284,14 @@ describe("useHybridSearch", () => {
       expect(result.current.isInitialLoading).toBe(true);
     });
 
-    it("should report isSearching correctly", () => {
+    it("should report isSearching correctly", async () => {
       mockSearchData.isPending = true;
 
       const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
-      act(() => {
+      await act(async () => {
         result.current.setSearchTerm("test");
-      });
-
-      act(() => {
-        vi.runAllTimers();
+        await vi.runAllTimersAsync();
       });
 
       expect(result.current.isSearching).toBe(true);

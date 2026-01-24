@@ -452,7 +452,7 @@ describe("ActivityRelatedTab", () => {
 
     it("renders content when isActiveTab is true", () => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation(() => {
-        return { data: mockContact, isLoading: false } as any;
+        return mockUseGetOneReturn<Contact>({ data: mockContactData, isLoading: false });
       });
 
       const activity = createMockActivity({ contact_id: 10 });
