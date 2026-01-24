@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRefresh, useDelete, useNotify } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2, Check, X, Package } from "lucide-react";
 
 import { AdminButton } from "@/components/admin/AdminButton";
@@ -23,6 +24,7 @@ export function ProductExceptionsSection({
   const refresh = useRefresh();
   const [deleteOne, { isPending: isDeleting }] = useDelete();
   const notify = useNotify();
+  const queryClient = useQueryClient();
 
   const productAuthMap = new Map(productAuths.map((pa) => [pa.product_id, pa]));
 
@@ -44,6 +46,10 @@ export function ProductExceptionsSection({
         {
           onSuccess: () => {
             notify(`Removed exception for ${productName}`, { type: "success" });
+            // Invalidate React Query cache for authorization data
+            void queryClient.invalidateQueries({
+              queryKey: ["product_distributor_authorizations"],
+            });
             refresh();
             setRemoveException(null);
           },

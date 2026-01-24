@@ -1,6 +1,8 @@
 // src/atomic-crm/contacts/UnlinkConfirmDialog.tsx
 import { useDelete } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSafeNotify } from "../hooks/useSafeNotify";
+import { opportunityContactKeys } from "../queryKeys";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -27,6 +29,7 @@ export function UnlinkConfirmDialog({
 }: UnlinkConfirmDialogProps) {
   const [deleteOne, { isLoading }] = useDelete();
   const { success, error } = useSafeNotify();
+  const queryClient = useQueryClient();
 
   const handleConfirm = async () => {
     if (!opportunity) return;
