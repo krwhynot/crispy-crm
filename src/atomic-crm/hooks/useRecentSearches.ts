@@ -69,10 +69,9 @@ function loadFromStorage(): RecentSearchItem[] {
     // Sort by timestamp descending (most recent first)
     return result.data.sort((a, b) => b.timestamp - a.timestamp);
   } catch (error: unknown) {
-    console.error(
-      "[RecentSearches] Error reading from storage:",
-      error instanceof Error ? error.message : String(error)
-    );
+    logger.error("Error reading recent searches from storage", error, {
+      feature: "useRecentSearches",
+    });
     return [];
   }
 }

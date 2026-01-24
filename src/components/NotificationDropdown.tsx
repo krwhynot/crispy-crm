@@ -12,6 +12,7 @@ import { useGetIdentity, useGetList, useUpdate, useNotify } from "ra-core";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { parseDateSafely } from "@/lib/date-utils";
+import { logger } from "@/lib/logger";
 
 interface Notification {
   id: number;
@@ -88,10 +89,11 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
     // Fail-fast: surface any failures to the user
     const failures = results.filter((r): r is PromiseRejectedResult => r.status === "rejected");
     if (failures.length > 0) {
-      console.error(
-        "Notification updates failed:",
-        failures.map((f) => f.reason)
-      );
+      logger.error("Notification updates failed", new Error("Batch update failed"), {
+        feature: "NotificationDropdown",
+        failedCount: failures.length,
+        reasons: failures.map((f) => String(f.reason)),
+      });
       notify(`${failures.length} notification update(s) failed`, { type: "error" });
     }
 

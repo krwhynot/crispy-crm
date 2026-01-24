@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import * as React from "react";
 import type { RaRecord, UseListOptions, UseFieldValueOptions } from "ra-core";
 import { ListContextProvider, useList, useFieldValue } from "ra-core";
+import { logger } from "@/lib/logger";
 
 export const ArrayField = <RecordType extends RaRecord = RaRecord>(
   props: ArrayFieldProps<RecordType>
@@ -16,10 +17,14 @@ export const ArrayField = <RecordType extends RaRecord = RaRecord>(
       return emptyArray;
     }
     if (!Array.isArray(rawData)) {
-      console.error(
-        `[ArrayField] Expected array for source "${props.source}", but received:`,
-        rawData,
-        "\nThis may indicate missing data normalization in the data provider."
+      logger.error(
+        `Expected array for source "${props.source}", but received non-array`,
+        new Error("Invalid data type"),
+        {
+          feature: "ArrayField",
+          source: props.source,
+          receivedType: typeof rawData,
+        }
       );
       // Attempt to recover by wrapping in array or returning empty
       return typeof rawData === "object" ? [rawData] : emptyArray;

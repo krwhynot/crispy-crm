@@ -248,7 +248,7 @@ export function QuickLogForm({
       } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : "Failed to log activity";
         notify(errorMessage, { type: "error" });
-        console.error("Activity log error:", error);
+        logger.error("Activity log error", error, { feature: "QuickLogForm" });
       }
     },
     [salesId, notify, queryClient, dataProvider, form, onComplete, onRefresh, entityData]

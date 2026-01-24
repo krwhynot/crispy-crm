@@ -13,6 +13,7 @@
 
 import { supabase } from "../supabase";
 import { devLog } from "@/lib/devLogger";
+import { logger } from "@/lib/logger";
 
 /**
  * Type guard to check if a value is an array
@@ -111,11 +112,12 @@ export async function deleteStorageFiles(paths: string[]): Promise<void> {
 
     if (error) {
       // EH-003 FIX: Structured error with context
-      console.warn(`[StorageCleanup] Delete operation failed`, {
+      logger.warn("Delete operation failed", {
+        feature: "StorageCleanup",
         bucket: STORAGE_BUCKET,
         fileCount: paths.length,
         paths: paths.slice(0, 5), // First 5 for debugging
-        error: error.message,
+        errorMessage: error.message,
         errorCode: error.name,
       });
     } else {
@@ -123,10 +125,11 @@ export async function deleteStorageFiles(paths: string[]): Promise<void> {
     }
   } catch (error: unknown) {
     // EH-003 FIX: Catch unexpected errors with full context
-    console.warn(`[StorageCleanup] Unexpected error during cleanup`, {
+    logger.warn("Unexpected error during cleanup", {
+      feature: "StorageCleanup",
       bucket: STORAGE_BUCKET,
       fileCount: paths.length,
-      error: error instanceof Error ? error.message : String(error),
+      errorMessage: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
   }

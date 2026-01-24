@@ -2,6 +2,7 @@ import { OPPORTUNITY_STAGE_CHOICES, CLOSED_STAGES } from "../opportunities/const
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 import { safeJsonParse } from "../utils/safeJsonParse";
 import { urlFilterSchema } from "../validation/filters";
+import { logger } from "@/lib/logger";
 
 /**
  * Storage key for opportunity stage preferences

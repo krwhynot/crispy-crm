@@ -266,6 +266,7 @@ export function useMyPerformance(): UseMyPerformanceReturn {
         }
 
         // Log any failures for debugging
+        const metricNames = ["activities", "tasksCompleted", "dealsMoved", "openOpportunities"];
         [
           activitiesThisWeekResult,
           tasksCompletedThisWeekResult,
@@ -273,7 +274,14 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           openOpportunitiesResult,
         ].forEach((result, index) => {
           if (result.status === "rejected") {
-            console.error(`Failed to fetch metric ${index}:`, result.reason);
+            logger.error(
+              `Failed to fetch performance metric: ${metricNames[index]}`,
+              result.reason,
+              {
+                feature: "useMyPerformance",
+                metricIndex: index,
+              }
+            );
           }
         });
 
@@ -284,10 +292,7 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           openOpportunities: createMetric(openOpportunities, openOpportunitiesLastWeek),
         });
       } catch (error: unknown) {
-        console.error(
-          "Failed to fetch performance metrics:",
-          error instanceof Error ? error.message : String(error)
-        );
+        logger.error("Failed to fetch performance metrics", error, { feature: "useMyPerformance" });
         setError(error instanceof Error ? error : new Error(String(error)));
       } finally {
         setLoading(false);

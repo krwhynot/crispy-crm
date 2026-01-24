@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNotify, useRefresh, useDataProvider } from "ra-core";
+import { logger } from "@/lib/logger";
 import type { Opportunity, OpportunityStageValue } from "../types";
 import { opportunityKeys } from "@/atomic-crm/queryKeys";
 
@@ -96,10 +97,11 @@ export function useBulkActionsState({
         if (result.status === "fulfilled") {
           successCount++;
         } else {
-          console.error(
-            `Bulk update failed for ${resource} id=${selectedIds[index]}:`,
-            result.reason
-          );
+          logger.error("Bulk update failed", result.reason, {
+            feature: "useBulkActionsState",
+            resource,
+            id: selectedIds[index],
+          });
           failureCount++;
         }
       });
@@ -124,7 +126,7 @@ export function useBulkActionsState({
       handleCloseDialog();
     } catch (error: unknown) {
       notify("Bulk action failed", { type: "error" });
-      console.error("Bulk action error:", error);
+      logger.error("Bulk action error", error, { feature: "useBulkActionsState" });
     } finally {
       setIsProcessing(false);
     }
