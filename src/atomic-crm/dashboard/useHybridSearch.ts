@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useGetList } from "react-admin";
 
 import {
@@ -80,7 +80,7 @@ export function useHybridSearch<T extends { id: number | string }>({
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
   // Debounce search term updates using useEffect (proper pattern)
-  useState(() => {
+  useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, debounceMs);
@@ -151,7 +151,7 @@ export function useHybridSearch<T extends { id: number | string }>({
   }, [shouldSearch, searchData, initialData]);
 
   const clearSearch = useCallback(() => {
-    setSearchTermInternal("");
+    setSearchTerm("");
     setDebouncedSearchTerm("");
   }, []);
 

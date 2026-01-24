@@ -192,7 +192,11 @@ describe("AuthorizationsTab", () => {
       vi.mocked(reactAdmin.useGetList).mockImplementation(
         (resource: string, params?: GetListParams) => {
           if (resource === "distributor_principal_authorizations") {
-            return mockUseGetListReturn({ data: mockAuthorizations, isPending: false, error: null });
+            return mockUseGetListReturn({
+              data: mockAuthorizations,
+              isPending: false,
+              error: null,
+            });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
@@ -264,9 +268,9 @@ describe("AuthorizationsTab", () => {
 
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
-        return { data: mockPrincipals, isPending: false, error: null } as any;
+        return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
       });
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
@@ -286,9 +290,9 @@ describe("AuthorizationsTab", () => {
 
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
-        return { data: mockPrincipals, isPending: false, error: null } as any;
+        return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
       });
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
@@ -309,9 +313,9 @@ describe("AuthorizationsTab", () => {
 
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
-        return { data: mockPrincipals, isPending: false, error: null } as any;
+        return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
       });
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);

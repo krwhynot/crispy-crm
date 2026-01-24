@@ -355,15 +355,21 @@ describe("ActivityRelatedTab", () => {
     beforeEach(() => {
       vi.mocked(reactAdmin.useGetOne).mockImplementation((resource: string, _params: unknown) => {
         if (resource === "contacts") {
-          return { data: mockContact, isLoading: false } as any;
+          return mockUseGetOneReturn<Contact>({ data: mockContactData, isLoading: false });
         }
         if (resource === "organizations") {
-          return { data: mockOrganization, isLoading: false } as any;
+          return mockUseGetOneReturn<Organization>({
+            data: mockOrganizationData,
+            isLoading: false,
+          });
         }
         if (resource === "opportunities") {
-          return { data: mockOpportunity, isLoading: false } as any;
+          return mockUseGetOneReturn<Opportunity>({
+            data: mockOpportunityData,
+            isLoading: false,
+          });
         }
-        return { data: undefined, isLoading: false } as any;
+        return mockUseGetOneReturn({ data: undefined, isLoading: false });
       });
     });
 

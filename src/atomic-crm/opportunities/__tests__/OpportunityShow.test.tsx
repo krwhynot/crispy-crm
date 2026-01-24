@@ -100,7 +100,7 @@ vi.mock("../OrganizationInfoCard", () => ({
 }));
 
 vi.mock("../ProductsTable", () => ({
-  ProductsTable: ({ products }: any) => (
+  ProductsTable: ({ products }: { products?: unknown[] }) => (
     <div data-testid="products-table">Products: {products?.length || 0}</div>
   ),
 }));

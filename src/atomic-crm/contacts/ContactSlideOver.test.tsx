@@ -132,6 +132,33 @@ vi.mock("@/components/ui/skeleton", () => ({
   Skeleton: () => <div data-testid="skeleton">Loading...</div>,
 }));
 
+// Type for tab configuration in ResourceSlideOver
+interface MockTabConfig {
+  key: string;
+  label: string;
+  component: React.ComponentType<{
+    record: { id: number | null; first_name: string; last_name: string };
+    mode: "view" | "edit";
+    onModeToggle: () => void;
+  }>;
+}
+
+// Type for ResourceSlideOver props
+interface MockResourceSlideOverProps {
+  resource: string;
+  recordId: number | null;
+  isOpen: boolean;
+  onClose: () => void;
+  mode: "view" | "edit";
+  onModeToggle: () => void;
+  tabs: MockTabConfig[];
+  recordRepresentation?: (record: {
+    id: number | null;
+    first_name: string;
+    last_name: string;
+  }) => string;
+}
+
 // Mock ResourceSlideOver (the wrapper)
 vi.mock("@/components/layouts/ResourceSlideOver", () => ({
   ResourceSlideOver: ({
@@ -143,7 +170,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
     onModeToggle,
     tabs,
     recordRepresentation,
-  }: any) => {
+  }: MockResourceSlideOverProps) => {
     const mockRecord = {
       id: recordId,
       first_name: "John",
@@ -167,7 +194,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
         </div>
 
         <div role="tablist" data-testid="tab-list">
-          {tabs.map((tab: any) => (
+          {tabs.map((tab: MockTabConfig) => (
             <button key={tab.key} role="tab" data-testid={`tab-${tab.key}`}>
               {tab.label}
             </button>
@@ -175,7 +202,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
         </div>
 
         <div data-testid="tab-content">
-          {tabs.map((tab: any) => {
+          {tabs.map((tab: MockTabConfig) => {
             const TabComponent = tab.component;
             return (
               <div key={tab.key} data-testid={`tab-panel-${tab.key}`}>
