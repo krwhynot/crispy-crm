@@ -12,17 +12,14 @@
 
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
-import type { ReactNode } from "react";
 import type { GetManyReferenceParams } from "react-admin";
 import { useRelatedRecordCounts } from "../useRelatedRecordCounts";
-import { TestWrapper } from "@/tests/utils/TestWrapper";
 
 // Mock dataProvider
 const mockGetManyReference = vi.fn();
 
-// Create mock dataProvider function that returns the mocked methods
-const createMockDataProvider = () => ({
+// Create stable dataProvider object
+const stableDataProvider = {
   getList: vi.fn(),
   getOne: vi.fn(),
   getMany: vi.fn(),
@@ -32,6 +29,16 @@ const createMockDataProvider = () => ({
   updateMany: vi.fn(),
   delete: vi.fn(),
   deleteMany: vi.fn(),
+};
+
+// Mock react-admin
+vi.mock("react-admin", async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const actual = (await importOriginal()) as typeof import("react-admin");
+  return {
+    ...actual,
+    useDataProvider: () => stableDataProvider,
+  };
 });
 
 // Mock console.error to verify logging
@@ -54,18 +61,12 @@ describe("useRelatedRecordCounts", () => {
       total: 5,
     });
 
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [1],
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [1],
+        enabled: true,
+      })
     );
 
     // Wait for loading to complete
@@ -92,18 +93,12 @@ describe("useRelatedRecordCounts", () => {
       }
     );
 
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [1],
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [1],
+        enabled: true,
+      })
     );
 
     // Wait for loading to complete
@@ -133,18 +128,12 @@ describe("useRelatedRecordCounts", () => {
     // Mock all queries to fail
     mockGetManyReference.mockRejectedValue(new Error("Database connection lost"));
 
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [1],
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [1],
+        enabled: true,
+      })
     );
 
     // Wait for loading to complete
@@ -167,18 +156,12 @@ describe("useRelatedRecordCounts", () => {
       total: 3,
     });
 
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [1, 2], // Multiple IDs
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [1, 2], // Multiple IDs
+        enabled: true,
+      })
     );
 
     await waitFor(() => {
@@ -191,18 +174,12 @@ describe("useRelatedRecordCounts", () => {
   });
 
   it("returns empty arrays when disabled", async () => {
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [1],
-          enabled: false, // Disabled
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [1],
+        enabled: false, // Disabled
+      })
     );
 
     expect(result.current.relatedCounts).toEqual([]);
@@ -212,18 +189,12 @@ describe("useRelatedRecordCounts", () => {
   });
 
   it("returns empty arrays when no IDs provided", async () => {
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [], // No IDs
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [], // No IDs
+        enabled: true,
+      })
     );
 
     expect(result.current.relatedCounts).toEqual([]);
@@ -233,18 +204,12 @@ describe("useRelatedRecordCounts", () => {
   });
 
   it("returns empty arrays for resource with no relationships defined", async () => {
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "unknown_resource", // Not in RESOURCE_RELATIONSHIPS
-          ids: [1],
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "unknown_resource", // Not in RESOURCE_RELATIONSHIPS
+        ids: [1],
+        enabled: true,
+      })
     );
 
     expect(result.current.relatedCounts).toEqual([]);
