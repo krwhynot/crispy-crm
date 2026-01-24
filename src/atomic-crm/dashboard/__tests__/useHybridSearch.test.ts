@@ -265,6 +265,9 @@ describe("useHybridSearch", () => {
       // Perform search
       act(() => {
         result.current.setSearchTerm("test");
+      });
+
+      act(() => {
         vi.runAllTimers();
       });
 
@@ -297,6 +300,9 @@ describe("useHybridSearch", () => {
 
       act(() => {
         result.current.setSearchTerm("test");
+      });
+
+      act(() => {
         vi.runAllTimers();
       });
 
@@ -322,6 +328,9 @@ describe("useHybridSearch", () => {
 
       act(() => {
         result.current.setSearchTerm("test");
+      });
+
+      act(() => {
         vi.runAllTimers();
       });
 
@@ -363,6 +372,9 @@ describe("useHybridSearch", () => {
 
       act(() => {
         result.current.setSearchTerm("nonexistent");
+      });
+
+      act(() => {
         vi.runAllTimers();
       });
 
@@ -382,6 +394,9 @@ describe("useHybridSearch", () => {
 
       act(() => {
         result.current.setSearchTerm("test");
+      });
+
+      act(() => {
         vi.runAllTimers();
       });
 
