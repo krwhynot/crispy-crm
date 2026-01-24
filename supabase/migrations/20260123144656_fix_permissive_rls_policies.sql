@@ -46,6 +46,8 @@ BEGIN;
 DROP POLICY IF EXISTS "activities_insert_all" ON activities;
 DROP POLICY IF EXISTS "activities_insert_owner" ON activities;
 
+DROP POLICY IF EXISTS "activities_insert_owner" ON activities;
+
 CREATE POLICY "activities_insert_owner"
 ON activities FOR INSERT
 TO authenticated
@@ -63,6 +65,9 @@ COMMENT ON POLICY "activities_insert_owner" ON activities IS
 -- ============================================================
 
 DROP POLICY IF EXISTS "insert_contacts" ON contacts;
+DROP POLICY IF EXISTS "contacts_insert_owner" ON contacts;
+
+DROP POLICY IF EXISTS "contacts_insert_owner" ON contacts;
 
 CREATE POLICY "contacts_insert_owner"
 ON contacts FOR INSERT
@@ -76,6 +81,9 @@ COMMENT ON POLICY "contacts_insert_owner" ON contacts IS
     'INSERT requires ownership (created_by = current user) or manager/admin role';
 
 DROP POLICY IF EXISTS "update_contacts" ON contacts;
+DROP POLICY IF EXISTS "contacts_update_owner_or_privileged" ON contacts;
+
+DROP POLICY IF EXISTS "contacts_update_owner_or_privileged" ON contacts;
 
 CREATE POLICY "contacts_update_owner_or_privileged"
 ON contacts FOR UPDATE
@@ -97,6 +105,8 @@ COMMENT ON POLICY "contacts_update_owner_or_privileged" ON contacts IS
 
 DROP POLICY IF EXISTS "insert_organizations" ON organizations;
 
+DROP POLICY IF EXISTS "organizations_insert_owner" ON organizations;
+
 CREATE POLICY "organizations_insert_owner"
 ON organizations FOR INSERT
 TO authenticated
@@ -109,6 +119,8 @@ COMMENT ON POLICY "organizations_insert_owner" ON organizations IS
     'INSERT requires ownership (created_by = current user) or manager/admin role';
 
 DROP POLICY IF EXISTS "update_organizations" ON organizations;
+
+DROP POLICY IF EXISTS "organizations_update_owner_or_privileged" ON organizations;
 
 CREATE POLICY "organizations_update_owner_or_privileged"
 ON organizations FOR UPDATE
@@ -131,6 +143,8 @@ COMMENT ON POLICY "organizations_update_owner_or_privileged" ON organizations IS
 
 DROP POLICY IF EXISTS "insert_products" ON products;
 
+DROP POLICY IF EXISTS "products_insert_privileged" ON products;
+
 CREATE POLICY "products_insert_privileged"
 ON products FOR INSERT
 TO authenticated
@@ -144,6 +158,8 @@ COMMENT ON POLICY "products_insert_privileged" ON products IS
 -- Fix UPDATE if it still has WITH CHECK (true)
 DROP POLICY IF EXISTS "update_products" ON products;
 DROP POLICY IF EXISTS "update_products_owned" ON products;
+
+DROP POLICY IF EXISTS "products_update_privileged" ON products;
 
 CREATE POLICY "products_update_privileged"
 ON products FOR UPDATE
@@ -162,6 +178,8 @@ COMMENT ON POLICY "products_update_privileged" ON products IS
 -- ============================================================
 
 DROP POLICY IF EXISTS "insert_contact_notes" ON contact_notes;
+
+DROP POLICY IF EXISTS "contact_notes_insert_owner" ON contact_notes;
 
 CREATE POLICY "contact_notes_insert_owner"
 ON contact_notes FOR INSERT
@@ -182,6 +200,8 @@ COMMENT ON POLICY "contact_notes_insert_owner" ON contact_notes IS
 
 DROP POLICY IF EXISTS "insert_opportunity_notes" ON opportunity_notes;
 
+DROP POLICY IF EXISTS "opportunity_notes_insert_owner" ON opportunity_notes;
+
 CREATE POLICY "opportunity_notes_insert_owner"
 ON opportunity_notes FOR INSERT
 TO authenticated
@@ -195,6 +215,8 @@ COMMENT ON POLICY "opportunity_notes_insert_owner" ON opportunity_notes IS
     'INSERT requires ownership (created_by or sales_id match) or manager/admin role';
 
 DROP POLICY IF EXISTS "update_opportunity_notes" ON opportunity_notes;
+
+DROP POLICY IF EXISTS "opportunity_notes_update_owner_or_privileged" ON opportunity_notes;
 
 CREATE POLICY "opportunity_notes_update_owner_or_privileged"
 ON opportunity_notes FOR UPDATE
@@ -216,6 +238,8 @@ COMMENT ON POLICY "opportunity_notes_update_owner_or_privileged" ON opportunity_
 
 DROP POLICY IF EXISTS "insert_organization_notes" ON organization_notes;
 
+DROP POLICY IF EXISTS "organization_notes_insert_owner" ON organization_notes;
+
 CREATE POLICY "organization_notes_insert_owner"
 ON organization_notes FOR INSERT
 TO authenticated
@@ -228,6 +252,8 @@ COMMENT ON POLICY "organization_notes_insert_owner" ON organization_notes IS
     'INSERT requires ownership (sales_id = current user) or manager/admin role';
 
 DROP POLICY IF EXISTS "update_organization_notes" ON organization_notes;
+
+DROP POLICY IF EXISTS "organization_notes_update_owner_or_privileged" ON organization_notes;
 
 CREATE POLICY "organization_notes_update_owner_or_privileged"
 ON organization_notes FOR UPDATE
@@ -248,6 +274,8 @@ COMMENT ON POLICY "organization_notes_update_owner_or_privileged" ON organizatio
 
 DROP POLICY IF EXISTS "insert_product_distributors" ON product_distributors;
 
+DROP POLICY IF EXISTS "product_distributors_insert_owner" ON product_distributors;
+
 CREATE POLICY "product_distributors_insert_owner"
 ON product_distributors FOR INSERT
 TO authenticated
@@ -260,6 +288,8 @@ COMMENT ON POLICY "product_distributors_insert_owner" ON product_distributors IS
     'INSERT requires ownership (created_by = current user) or manager/admin role';
 
 DROP POLICY IF EXISTS "update_product_distributors" ON product_distributors;
+
+DROP POLICY IF EXISTS "product_distributors_update_owner_or_privileged" ON product_distributors;
 
 CREATE POLICY "product_distributors_update_owner_or_privileged"
 ON product_distributors FOR UPDATE
@@ -280,6 +310,8 @@ COMMENT ON POLICY "product_distributors_update_owner_or_privileged" ON product_d
 
 DROP POLICY IF EXISTS "insert_segments" ON segments;
 
+DROP POLICY IF EXISTS "segments_insert_privileged" ON segments;
+
 CREATE POLICY "segments_insert_privileged"
 ON segments FOR INSERT
 TO authenticated
@@ -291,6 +323,8 @@ COMMENT ON POLICY "segments_insert_privileged" ON segments IS
     'Segments are reference data - only manager/admin can create';
 
 DROP POLICY IF EXISTS "update_segments" ON segments;
+
+DROP POLICY IF EXISTS "segments_update_privileged" ON segments;
 
 CREATE POLICY "segments_update_privileged"
 ON segments FOR UPDATE
@@ -311,6 +345,8 @@ COMMENT ON POLICY "segments_update_privileged" ON segments IS
 
 DROP POLICY IF EXISTS "authenticated_insert_tags" ON tags;
 
+DROP POLICY IF EXISTS "tags_insert_privileged" ON tags;
+
 CREATE POLICY "tags_insert_privileged"
 ON tags FOR INSERT
 TO authenticated
@@ -328,6 +364,8 @@ COMMENT ON POLICY "tags_insert_privileged" ON tags IS
 -- ============================================================
 
 DROP POLICY IF EXISTS "interaction_participants_insert_policy" ON interaction_participants;
+
+DROP POLICY IF EXISTS "interaction_participants_insert_owner" ON interaction_participants;
 
 CREATE POLICY "interaction_participants_insert_owner"
 ON interaction_participants FOR INSERT
@@ -352,6 +390,8 @@ COMMENT ON POLICY "interaction_participants_insert_owner" ON interaction_partici
 -- ============================================================
 
 DROP POLICY IF EXISTS "opportunity_participants_insert_policy" ON opportunity_participants;
+
+DROP POLICY IF EXISTS "opportunity_participants_insert_owner" ON opportunity_participants;
 
 CREATE POLICY "opportunity_participants_insert_owner"
 ON opportunity_participants FOR INSERT

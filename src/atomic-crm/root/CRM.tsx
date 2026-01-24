@@ -23,7 +23,6 @@ import {
   dataProvider as supabaseDataProvider,
 } from "../providers/supabase";
 import sales from "../sales/resource";
-import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
 import { ConfigurationProvider } from "./ConfigurationContext";
 import {
@@ -45,6 +44,21 @@ const ReportsPage = React.lazy(() => import("../reports/ReportsPage"));
 
 // Lazy load HealthDashboard (admin only)
 const HealthDashboard = React.lazy(() => import("../admin/HealthDashboard"));
+
+// Lazy load Settings and Auth pages
+const SettingsPage = React.lazy(() =>
+  import("../settings/SettingsPage").then((m) => ({ default: m.SettingsPage }))
+);
+const SetPasswordPage = React.lazy(() =>
+  import("@/components/supabase/set-password-page").then((m) => ({
+    default: m.SetPasswordPage,
+  }))
+);
+const ForgotPasswordPage = React.lazy(() =>
+  import("@/components/supabase/forgot-password-page").then((m) => ({
+    default: m.ForgotPasswordPage,
+  }))
+);
 
 // Redirect component for /admin/users/:id to /sales?view=:id (consolidation)
 const AdminUserRedirect = () => {
@@ -201,8 +215,22 @@ export const CRM = ({
         {...rest}
       >
         <CustomRoutes noLayout>
-          <Route path={SetPasswordPage.path} element={<SetPasswordPage />} />
-          <Route path={ForgotPasswordPage.path} element={<ForgotPasswordPage />} />
+          <Route
+            path={ROUTES.SET_PASSWORD}
+            element={
+              <Suspense fallback={<AuthSkeleton />}>
+                <SetPasswordPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path={ROUTES.FORGOT_PASSWORD}
+            element={
+              <Suspense fallback={<AuthSkeleton />}>
+                <ForgotPasswordPage />
+              </Suspense>
+            }
+          />
         </CustomRoutes>
 
         <CustomRoutes>

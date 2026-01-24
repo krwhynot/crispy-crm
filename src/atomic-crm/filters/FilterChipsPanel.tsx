@@ -108,7 +108,7 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
                   <FilterChip
                     key={`${chip.key}-${chip.value}-${index}`}
                     label={label}
-                    onRemove={() => removeFilterValue(chip.key, chip.value)}
+                    onRemove={() => handleRemoveFilter(chip.key, chip.value)}
                   />
                 );
               })}
