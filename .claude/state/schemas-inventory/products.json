@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-23T13:52:46.214Z",
+  "generated_at": "2026-01-24T00:45:47.280Z",
   "item_count": 5,
   "items": [
     {
@@ -159,7 +159,6 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityProductSchema",
         "opportunityProductSyncInputSchema",
         "opportunityProductSyncHandlerSchema",
         "productDistributorStatusSchema",
@@ -168,6 +167,7 @@
         "productStatusSchema",
         "productCreateWithDistributorsSchema",
         "productUpdateWithDistributorsSchema",
+        "opportunityProductSchema",
         "syncOpportunityWithProductsParamsSchema"
       ],
       "validationFunctions": [
@@ -179,7 +179,7 @@
     {
       "name": "productCreateWithDistributorsSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 135,
+      "line": 138,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -325,7 +325,7 @@
     {
       "name": "productUpdateWithDistributorsSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 184,
+      "line": 187,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -527,7 +527,7 @@
     {
       "name": "opportunityProductSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 255,
+      "line": 258,
       "schemaType": "strictObject",
       "fields": [
         {

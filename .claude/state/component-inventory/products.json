@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-23T13:52:37.633Z",
+  "generated_at": "2026-01-24T00:45:06.978Z",
   "item_count": 30,
   "items": [
     {
@@ -115,7 +115,7 @@
     {
       "name": "ProductDetailsTab",
       "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-      "line": 98,
+      "line": 99,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -125,6 +125,7 @@
       ],
       "imports": [
         "../validation/products",
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/utils",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-input",

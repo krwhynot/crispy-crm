@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-23T13:52:46.216Z",
+  "generated_at": "2026-01-24T00:45:47.306Z",
   "item_count": 4,
   "items": [
     {
@@ -137,8 +137,10 @@
       "fields": [
         {
           "name": "colors",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "enum",
+          "constraints": [
+            "max(20, \"Maximum 20 color filters\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,

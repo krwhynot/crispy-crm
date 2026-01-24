@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-23T13:52:37.626Z",
+  "generated_at": "2026-01-24T00:45:06.895Z",
   "item_count": 33,
   "items": [
     {
@@ -583,7 +583,7 @@
     {
       "name": "QuickLogForm",
       "file": "src/atomic-crm/dashboard/QuickLogForm.tsx",
-      "line": 61,
+      "line": 62,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -613,6 +613,7 @@
         "@/atomic-crm/validation/activities",
         "@/atomic-crm/validation/rpc",
         "@/components/ui/form",
+        "@/lib/logger",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
         "lucide-react",

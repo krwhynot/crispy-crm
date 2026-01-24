@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-23T13:52:46.200Z",
+  "generated_at": "2026-01-24T00:45:47.256Z",
   "item_count": 6,
   "items": [
     {
@@ -31,10 +31,10 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityProductSchema",
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "productSchema"
+        "productSchema",
+        "opportunityProductSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -95,10 +95,10 @@
         }
       ],
       "relatedSchemas": [
-        "opportunityProductSchema",
         "createOpportunitySchema",
         "updateOpportunitySchema",
-        "productSchema"
+        "productSchema",
+        "opportunityProductSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -107,14 +107,13 @@
     {
       "name": "createOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 203,
-      "schemaType": "array",
+      "line": 207,
+      "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
         "opportunityNoteSchema",
         "opportunityStageSchema",
         "opportunityPrioritySchema",
-        "opportunityProductSchema",
         "opportunityParticipantRoleSchema",
         "opportunityParticipantSchema",
         "opportunityContactSchema",
@@ -123,6 +122,7 @@
         "quickCreateOpportunitySchema",
         "updateOpportunitySchema",
         "closeOpportunityBaseSchema",
+        "opportunityProductSchema",
         "archiveOpportunityWithRelationsParamsSchema",
         "unarchiveOpportunityWithRelationsParamsSchema",
         "syncOpportunityWithProductsParamsSchema"
@@ -136,7 +136,7 @@
     {
       "name": "quickCreateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 279,
+      "line": 289,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -236,14 +236,13 @@
     {
       "name": "updateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 317,
-      "schemaType": "array",
+      "line": 327,
+      "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
         "opportunityNoteSchema",
         "opportunityStageSchema",
         "opportunityPrioritySchema",
-        "opportunityProductSchema",
         "opportunityParticipantRoleSchema",
         "opportunityParticipantSchema",
         "opportunityContactSchema",
@@ -252,6 +251,7 @@
         "createOpportunitySchema",
         "quickCreateOpportunitySchema",
         "closeOpportunityBaseSchema",
+        "opportunityProductSchema",
         "archiveOpportunityWithRelationsParamsSchema",
         "unarchiveOpportunityWithRelationsParamsSchema",
         "syncOpportunityWithProductsParamsSchema"
@@ -265,7 +265,7 @@
     {
       "name": "closeOpportunityBaseSchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 430,
+      "line": 463,
       "schemaType": "strictObject",
       "fields": [
         {

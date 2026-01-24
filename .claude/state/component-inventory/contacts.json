@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-23T13:52:37.625Z",
+  "generated_at": "2026-01-24T00:45:06.885Z",
   "item_count": 59,
   "items": [
     {
@@ -1178,7 +1178,7 @@
     {
       "name": "QuickCreateContactPopover",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 26,
+      "line": 27,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1195,6 +1195,7 @@
         "@/components/ui/label",
         "@/components/ui/popover",
         "@/hooks/useSupportCreateSuggestion",
+        "@/lib/logger",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
         "ra-core",
@@ -1211,7 +1212,7 @@
     {
       "name": "QuickCreateContactRA",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 206,
+      "line": 210,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1229,6 +1230,7 @@
         "@/components/ui/label",
         "@/components/ui/popover",
         "@/hooks/useSupportCreateSuggestion",
+        "@/lib/logger",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
         "ra-core",
@@ -1501,7 +1503,7 @@
     {
       "name": "usePapaParse",
       "file": "src/atomic-crm/contacts/usePapaParse.tsx",
-      "line": 42,
+      "line": 50,
       "type": "presentational",
       "hooks": [
         "useCallback",

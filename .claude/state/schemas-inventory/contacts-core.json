@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-23T13:52:46.184Z",
+  "generated_at": "2026-01-24T00:45:47.221Z",
   "item_count": 3,
   "items": [
     {
@@ -57,7 +57,9 @@
         {
           "name": "email",
           "zodType": "array",
-          "constraints": [],
+          "constraints": [
+            "max(10, \"Maximum 10 email addresses\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -66,7 +68,9 @@
         {
           "name": "phone",
           "zodType": "array",
-          "constraints": [],
+          "constraints": [
+            "max(10, \"Maximum 10 phone numbers\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -372,7 +376,8 @@
           "zodType": "array",
           "constraints": [
             "trim()",
-            "max(100)"
+            "max(100)",
+            "max(50, \"Maximum 50 tags\")"
           ],
           "optional": false,
           "nullable": false,

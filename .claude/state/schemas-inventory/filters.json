@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-23T13:52:46.198Z",
+  "generated_at": "2026-01-24T00:45:47.231Z",
   "item_count": 3,
   "items": [
     {
@@ -83,8 +83,10 @@
       "fields": [
         {
           "name": "stage",
-          "zodType": "union",
-          "constraints": [],
+          "zodType": "string",
+          "constraints": [
+            "max(20, \"Maximum 20 stage filters\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-23T13:52:46.215Z",
+  "generated_at": "2026-01-24T00:45:47.292Z",
   "item_count": 16,
   "items": [
     {
@@ -130,8 +130,10 @@
         },
         {
           "name": "products_to_create",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "ref:z\n    ",
+          "constraints": [
+            "max(100, \"Maximum 100 products to create\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -139,8 +141,10 @@
         },
         {
           "name": "products_to_update",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "ref:z\n    ",
+          "constraints": [
+            "max(100, \"Maximum 100 products to update\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -148,8 +152,10 @@
         },
         {
           "name": "product_ids_to_delete",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "number",
+          "constraints": [
+            "max(100, \"Maximum 100 products to delete\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -168,7 +174,7 @@
     {
       "name": "checkAuthorizationParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 68,
+      "line": 77,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -207,7 +213,7 @@
     {
       "name": "checkAuthorizationResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 90,
+      "line": 99,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -372,7 +378,7 @@
     {
       "name": "checkAuthorizationBatchParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 122,
+      "line": 131,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -386,8 +392,10 @@
         },
         {
           "name": "_product_ids",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "number",
+          "constraints": [
+            "max(500, \"Maximum 500 product IDs\")"
+          ],
           "optional": true,
           "nullable": true,
           "hasTransform": false,
@@ -395,8 +403,10 @@
         },
         {
           "name": "_principal_ids",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "number",
+          "constraints": [
+            "max(500, \"Maximum 500 principal IDs\")"
+          ],
           "optional": true,
           "nullable": true,
           "hasTransform": false,
@@ -411,7 +421,7 @@
     {
       "name": "checkAuthorizationBatchResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 145,
+      "line": 162,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -444,7 +454,9 @@
         {
           "name": "results",
           "zodType": "array",
-          "constraints": [],
+          "constraints": [
+            "max(500, \"Maximum 500 results\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -459,7 +471,7 @@
     {
       "name": "logActivityWithTaskParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 187,
+      "line": 204,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -491,7 +503,7 @@
     {
       "name": "logActivityWithTaskResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 192,
+      "line": 209,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -532,7 +544,7 @@
     {
       "name": "checkSimilarOpportunitiesParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 202,
+      "line": 219,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -589,7 +601,7 @@
     {
       "name": "checkSimilarOpportunitiesResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 209,
+      "line": 226,
       "schemaType": "array",
       "fields": [],
       "relatedSchemas": [],
@@ -600,7 +612,7 @@
     {
       "name": "getCampaignReportStatsParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 230,
+      "line": 249,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -623,13 +635,15 @@
     {
       "name": "getCampaignReportStatsResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 245,
+      "line": 264,
       "schemaType": "strictObject",
       "fields": [
         {
           "name": "campaign_options",
           "zodType": "array",
-          "constraints": [],
+          "constraints": [
+            "max(200, \"Maximum 200 campaign options\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -638,7 +652,9 @@
         {
           "name": "sales_rep_options",
           "zodType": "array",
-          "constraints": [],
+          "constraints": [
+            "max(200, \"Maximum 200 sales rep options\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -662,7 +678,7 @@
     {
       "name": "edgeFunctionSchemas",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 273,
+      "line": 292,
       "schemaType": "object",
       "fields": [],
       "relatedSchemas": [],

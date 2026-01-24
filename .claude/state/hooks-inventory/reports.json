@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-23T13:52:45.631Z",
+  "generated_at": "2026-01-24T00:45:44.879Z",
   "item_count": 5,
   "items": [
     {
@@ -21,7 +21,7 @@
     {
       "name": "useCampaignActivityExport",
       "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts",
-      "line": 42,
+      "line": 43,
       "parameters": [
         "selectedCampaign",
         "salesMap"
@@ -36,7 +36,7 @@
     {
       "name": "useCampaignActivityMetrics",
       "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts",
-      "line": 53,
+      "line": 54,
       "parameters": [
         "activities",
         "allOpportunities",
@@ -64,7 +64,7 @@
     {
       "name": "useReportData",
       "file": "src/atomic-crm/reports/hooks/useReportData.ts",
-      "line": 52,
+      "line": 53,
       "parameters": [
         "resource",
         "options"

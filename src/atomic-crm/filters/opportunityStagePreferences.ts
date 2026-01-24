@@ -41,7 +41,8 @@ export const getStoredStagePreferences = (): string[] => {
     return stored;
   } catch (error) {
     // Log storage read failures for debugging - non-critical, graceful fallback to defaults
-    console.warn("[opportunityStagePreferences] Failed to read stage preferences from storage", {
+    logger.warn("Failed to read stage preferences from storage", {
+      feature: "opportunityStagePreferences",
       error: error instanceof Error ? error.message : String(error),
     });
     return DEFAULT_VISIBLE_STAGES;
@@ -63,7 +64,10 @@ export const saveStagePreferences = (selectedStages: string[]): void => {
     // SECURITY: Use sessionStorage instead of localStorage
     setStorageItem(STORAGE_KEY, selectedStages, { type: "session" });
   } catch (error: unknown) {
-    console.warn("Failed to save stage preferences:", error);
+    logger.warn("Failed to save stage preferences", {
+      feature: "opportunityStagePreferences",
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 };
 

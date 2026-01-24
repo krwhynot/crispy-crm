@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-23T13:52:49.562Z",
+  "generated_at": "2026-01-24T00:46:02.201Z",
   "items": {
     "nodes": [
       {
@@ -67,55 +67,55 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "name": "useCampaignActivityExport",
         "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts",
-        "line": 42,
+        "line": 43,
         "nodeType": "hook",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:37:getLastActivityForOpportunity",
         "name": "getLastActivityForOpportunity",
         "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts",
-        "line": 36,
+        "line": 37,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "id": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
         "name": "useCampaignActivityMetrics",
         "file": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts",
-        "line": 53,
+        "line": 54,
         "nodeType": "hook",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
+        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
         "name": "FilterToolbar",
         "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-        "line": 47,
+        "line": 48,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "name": "OpportunitiesByPrincipalReport",
         "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-        "line": 159,
+        "line": 160,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "id": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "name": "PrincipalGroupCard",
         "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-        "line": 497,
+        "line": 498,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -148,19 +148,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "id": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "name": "WeeklyActivitySummary",
         "file": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
-        "line": 25,
+        "line": 26,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "id": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "name": "RepActivityCard",
         "file": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
-        "line": 309,
+        "line": 310,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -283,10 +283,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "id": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "name": "useReportData",
         "file": "src/atomic-crm/reports/hooks/useReportData.ts",
-        "line": 52,
+        "line": 53,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -2338,6 +2338,15 @@
       },
       {
         "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:37:useCampaignActivityData",
+        "target": "campaignStats",
+        "targetName": "campaignStats",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts:37:useCampaignActivityData",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
@@ -2490,61 +2499,52 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 43,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 48,
+        "line": 49,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 52,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 54,
+        "line": 55,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 57,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -2553,7 +2553,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -2562,187 +2562,187 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "format",
-        "targetName": "format",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 61,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "toString",
-        "targetName": "toString",
-        "edgeType": "call",
-        "line": 64,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "jsonExport",
-        "targetName": "jsonExport",
-        "edgeType": "call",
-        "line": 69,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
-        "line": 71,
+        "line": 62,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "jsonExport",
+        "targetName": "jsonExport",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 72,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 75,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 75,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 75,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "format",
         "targetName": "format",
-        "edgeType": "call",
-        "line": 79,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "downloadCSV",
-        "targetName": "downloadCSV",
         "edgeType": "call",
         "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "downloadCSV",
+        "targetName": "downloadCSV",
         "edgeType": "call",
         "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 89,
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 92,
+        "line": 93,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "flatMap",
         "targetName": "flatMap",
-        "edgeType": "call",
-        "line": 96,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "map",
-        "targetName": "map",
         "edgeType": "call",
         "line": 97,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "map",
+        "targetName": "map",
         "edgeType": "call",
         "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "floor",
-        "targetName": "floor",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 100,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "now",
-        "targetName": "now",
-        "edgeType": "call",
-        "line": 100,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 100,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 104,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "floor",
+        "targetName": "floor",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -2751,7 +2751,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -2760,7 +2760,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -2769,7 +2769,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -2778,7 +2778,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -2787,151 +2787,151 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 110,
+        "line": 111,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 111,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 111,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 113,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "jsonExport",
         "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 118,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "error",
         "targetName": "error",
-        "edgeType": "call",
-        "line": 120,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 121,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 122,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 124,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 124,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 124,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
         "target": "format",
         "targetName": "format",
-        "edgeType": "call",
-        "line": 128,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "downloadCSV",
-        "targetName": "downloadCSV",
         "edgeType": "call",
         "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:42:useCampaignActivityExport",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "downloadCSV",
+        "targetName": "downloadCSV",
         "edgeType": "call",
         "line": 130,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts:43:useCampaignActivityExport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:37:getLastActivityForOpportunity",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 40,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:37:getLastActivityForOpportunity",
         "target": "sort",
         "targetName": "sort",
-        "edgeType": "call",
-        "line": 43,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
         "edgeType": "call",
         "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:37:getLastActivityForOpportunity",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
@@ -2940,754 +2940,754 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:36:getLastActivityForOpportunity",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 60,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 66,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 69,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "set",
-        "targetName": "set",
-        "edgeType": "call",
-        "line": 70,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 81,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 82,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "values",
-        "targetName": "values",
-        "edgeType": "call",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 91,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "set",
-        "targetName": "set",
-        "edgeType": "call",
-        "line": 92,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 97,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "sort",
-        "targetName": "sort",
-        "edgeType": "call",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "entries",
-        "targetName": "entries",
-        "edgeType": "call",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "round",
-        "targetName": "round",
-        "edgeType": "call",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "sort",
-        "targetName": "sort",
-        "edgeType": "call",
-        "line": 113,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 116,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "sort",
-        "targetName": "sort",
-        "edgeType": "call",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 124,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 127,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "getLastActivityForOpportunity",
-        "targetName": "getLastActivityForOpportunity",
-        "edgeType": "call",
-        "line": 137,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:37:getLastActivityForOpportunity",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 138,
-        "conditional": true,
+        "line": 46,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "floor",
-        "targetName": "floor",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:37:getLastActivityForOpportunity",
         "target": "getTime",
         "targetName": "getTime",
         "edgeType": "call",
-        "line": 140,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "getTime",
-        "targetName": "getTime",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "getStaleThreshold",
-        "targetName": "getStaleThreshold",
-        "edgeType": "call",
-        "line": 145,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "isOpportunityStale",
-        "targetName": "isOpportunityStale",
-        "edgeType": "call",
-        "line": 152,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 164,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 166,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "round",
-        "targetName": "round",
-        "edgeType": "call",
-        "line": 168,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:53:useCampaignActivityMetrics",
-        "target": "toFixed",
-        "targetName": "toFixed",
-        "edgeType": "call",
-        "line": 170,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "useForm",
-        "targetName": "useForm",
-        "edgeType": "hook",
         "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "useWatch",
-        "targetName": "useWatch",
-        "edgeType": "hook",
-        "line": 53,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "onFiltersChange",
-        "targetName": "onFiltersChange",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:37:getLastActivityForOpportunity",
+        "target": "getTime",
+        "targetName": "getTime",
         "edgeType": "call",
-        "line": 56,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "reset",
-        "targetName": "reset",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "forEach",
+        "targetName": "forEach",
         "edgeType": "call",
         "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "register",
-        "targetName": "register",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "has",
+        "targetName": "has",
         "edgeType": "call",
-        "line": 113,
+        "line": 70,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "register",
-        "targetName": "register",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "push",
+        "targetName": "push",
         "edgeType": "call",
-        "line": 121,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "values",
+        "targetName": "values",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 92,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "round",
+        "targetName": "round",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 117,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "sort",
+        "targetName": "sort",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "getLastActivityForOpportunity",
+        "targetName": "getLastActivityForOpportunity",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "floor",
+        "targetName": "floor",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "getTime",
+        "targetName": "getTime",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "getStaleThreshold",
+        "targetName": "getStaleThreshold",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "isOpportunityStale",
+        "targetName": "isOpportunityStale",
+        "edgeType": "call",
+        "line": 153,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 165,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "round",
+        "targetName": "round",
+        "edgeType": "call",
+        "line": 169,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts:54:useCampaignActivityMetrics",
+        "target": "toFixed",
+        "targetName": "toFixed",
+        "edgeType": "call",
+        "line": 171,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "useForm",
+        "targetName": "useForm",
+        "edgeType": "hook",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "useWatch",
+        "targetName": "useWatch",
+        "edgeType": "hook",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "onFiltersChange",
+        "targetName": "onFiltersChange",
+        "edgeType": "call",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "reset",
+        "targetName": "reset",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "register",
+        "targetName": "register",
+        "edgeType": "call",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
         "target": "FormProvider",
         "targetName": "FormProvider",
         "edgeType": "render",
-        "line": 77,
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 80,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
-        "edgeType": "render",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "AutocompleteArrayInput",
-        "targetName": "AutocompleteArrayInput",
-        "edgeType": "render",
-        "line": 85,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "MultiSelectInput",
-        "targetName": "MultiSelectInput",
-        "edgeType": "render",
-        "line": 93,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:47:FilterToolbar",
-        "target": "AutocompleteArrayInput",
-        "targetName": "AutocompleteArrayInput",
         "edgeType": "render",
         "line": 102,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "useNavigate",
-        "targetName": "useNavigate",
-        "edgeType": "hook",
-        "line": 160,
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "AutocompleteArrayInput",
+        "targetName": "AutocompleteArrayInput",
+        "edgeType": "render",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "MultiSelectInput",
+        "targetName": "MultiSelectInput",
+        "edgeType": "render",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:48:FilterToolbar",
+        "target": "AutocompleteArrayInput",
+        "targetName": "AutocompleteArrayInput",
+        "edgeType": "render",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "useNavigate",
+        "targetName": "useNavigate",
         "edgeType": "hook",
         "line": 161,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 164,
+        "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 173,
+        "line": 165,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 174,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 176,
+        "line": 177,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useReportData",
         "targetName": "useReportData",
         "edgeType": "hook",
-        "line": 210,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 215,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 217,
+        "line": 218,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 217,
+        "line": 218,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 217,
+        "line": 218,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 221,
+        "line": 222,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 226,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
         "line": 227,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 228,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 232,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "forEach",
         "targetName": "forEach",
-        "edgeType": "call",
-        "line": 238,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "toString",
-        "targetName": "toString",
         "edgeType": "call",
         "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "has",
-        "targetName": "has",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "toString",
+        "targetName": "toString",
         "edgeType": "call",
-        "line": 242,
-        "conditional": true,
+        "line": 240,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "set",
-        "targetName": "set",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "has",
+        "targetName": "has",
         "edgeType": "call",
         "line": 243,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "get",
-        "targetName": "get",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "set",
+        "targetName": "set",
         "edgeType": "call",
-        "line": 252,
-        "conditional": false,
+        "line": 244,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "push",
-        "targetName": "push",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "get",
+        "targetName": "get",
         "edgeType": "call",
         "line": 253,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 254,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 262,
+        "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 262,
+        "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 262,
+        "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "map",
         "targetName": "map",
-        "edgeType": "call",
-        "line": 266,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "slice",
-        "targetName": "slice",
-        "edgeType": "call",
-        "line": 266,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "setExpandedPrincipals",
-        "targetName": "setExpandedPrincipals",
         "edgeType": "call",
         "line": 267,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "has",
-        "targetName": "has",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "slice",
+        "targetName": "slice",
         "edgeType": "call",
-        "line": 277,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "delete",
-        "targetName": "delete",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "setExpandedPrincipals",
+        "targetName": "setExpandedPrincipals",
+        "edgeType": "call",
+        "line": 268,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "has",
+        "targetName": "has",
         "edgeType": "call",
         "line": 278,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "add",
-        "targetName": "add",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "delete",
+        "targetName": "delete",
         "edgeType": "call",
-        "line": 280,
+        "line": 279,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "add",
+        "targetName": "add",
+        "edgeType": "call",
+        "line": 281,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "setExpandedPrincipals",
         "targetName": "setExpandedPrincipals",
         "edgeType": "call",
-        "line": 282,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 299,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
@@ -3696,34 +3696,34 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "forEach",
+        "targetName": "forEach",
         "edgeType": "call",
-        "line": 302,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 304,
+        "line": 301,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 303,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "push",
+        "targetName": "push",
         "edgeType": "call",
         "line": 305,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -3732,7 +3732,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -3741,7 +3741,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -3750,34 +3750,25 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
+        "edgeType": "call",
+        "line": 309,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 309,
+        "line": 310,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
-        "edgeType": "call",
-        "line": 310,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "get",
-        "targetName": "get",
-        "edgeType": "call",
-        "line": 310,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -3786,7 +3777,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 311,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -3795,614 +3795,623 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 319,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "jsonExport",
-        "targetName": "jsonExport",
-        "edgeType": "call",
-        "line": 323,
+        "line": 313,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 325,
+        "line": 320,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "jsonExport",
+        "targetName": "jsonExport",
+        "edgeType": "call",
+        "line": 324,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 326,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "downloadCSV",
-        "targetName": "downloadCSV",
-        "edgeType": "call",
-        "line": 329,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "format",
-        "targetName": "format",
-        "edgeType": "call",
-        "line": 329,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "notify",
         "targetName": "notify",
+        "edgeType": "call",
+        "line": 327,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "downloadCSV",
+        "targetName": "downloadCSV",
         "edgeType": "call",
         "line": 330,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "navigate",
-        "targetName": "navigate",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "format",
+        "targetName": "format",
         "edgeType": "call",
-        "line": 336,
+        "line": 330,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 331,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "navigate",
+        "targetName": "navigate",
+        "edgeType": "call",
+        "line": 337,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 340,
+        "line": 341,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 344,
+        "line": 345,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 347,
+        "line": 348,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 352,
+        "line": 353,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 355,
+        "line": 356,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 360,
+        "line": 361,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 363,
+        "line": 364,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 368,
+        "line": 369,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "format",
         "targetName": "format",
-        "edgeType": "call",
-        "line": 370,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "setFilters",
-        "targetName": "setFilters",
         "edgeType": "call",
         "line": 371,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 372,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 376,
+        "line": 377,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 378,
+        "line": 379,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 379,
+        "line": 380,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 394,
+        "line": 395,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "round",
         "targetName": "round",
         "edgeType": "call",
-        "line": 453,
+        "line": 454,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 467,
+        "line": 468,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 472,
+        "line": 473,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "has",
         "targetName": "has",
-        "edgeType": "call",
-        "line": 476,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "togglePrincipalExpansion",
-        "targetName": "togglePrincipalExpansion",
         "edgeType": "call",
         "line": 477,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "togglePrincipalExpansion",
+        "targetName": "togglePrincipalExpansion",
+        "edgeType": "call",
+        "line": 478,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 406,
+        "line": 407,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 416,
+        "line": 417,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "handleExport",
         "targetName": "handleExport",
         "edgeType": "callback",
-        "line": 418,
+        "line": 419,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 437,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
         "edgeType": "render",
         "line": 438,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "Card",
-        "targetName": "Card",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
-        "line": 443,
+        "line": 439,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 444,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "Card",
-        "targetName": "Card",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
-        "line": 449,
+        "line": 445,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
-        "target": "CardContent",
-        "targetName": "CardContent",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 450,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 451,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "FilterToolbar",
         "targetName": "FilterToolbar",
         "edgeType": "render",
-        "line": 419,
+        "line": 420,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "AppliedFiltersBar",
         "targetName": "AppliedFiltersBar",
         "edgeType": "render",
-        "line": 422,
+        "line": 423,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "handleResetAllFilters",
         "targetName": "handleResetAllFilters",
         "edgeType": "callback",
-        "line": 424,
+        "line": 425,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 461,
+        "line": 462,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "PrincipalGroupCard",
         "targetName": "PrincipalGroupCard",
         "edgeType": "render",
-        "line": 473,
+        "line": 474,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:159:OpportunitiesByPrincipalReport",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:160:OpportunitiesByPrincipalReport",
         "target": "handleOpportunityClick",
         "targetName": "handleOpportunityClick",
         "edgeType": "callback",
-        "line": 478,
+        "line": 479,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 505,
+        "line": 506,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 505,
+        "line": 506,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 505,
+        "line": 506,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 505,
+        "line": 506,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 505,
+        "line": 506,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 554,
+        "line": 555,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 581,
+        "line": 582,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 582,
+        "line": 583,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 582,
+        "line": 583,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 586,
+        "line": 587,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "stopPropagation",
         "targetName": "stopPropagation",
-        "edgeType": "call",
-        "line": 593,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
-        "target": "onOpportunityClick",
-        "targetName": "onOpportunityClick",
         "edgeType": "call",
         "line": 594,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 512,
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
+        "target": "onOpportunityClick",
+        "targetName": "onOpportunityClick",
+        "edgeType": "call",
+        "line": 595,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 513,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 514,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "onToggle",
         "targetName": "onToggle",
         "edgeType": "callback",
-        "line": 515,
+        "line": 516,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 517,
+        "line": 518,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 527,
+        "line": 528,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 540,
+        "line": 541,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 560,
+        "line": 561,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 565,
+        "line": 566,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 570,
+        "line": 571,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 578,
+        "line": 579,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 589,
+        "line": 590,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "ChevronDown",
         "targetName": "ChevronDown",
         "edgeType": "render",
-        "line": 520,
+        "line": 521,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "ChevronRight",
         "targetName": "ChevronRight",
         "edgeType": "render",
-        "line": 522,
+        "line": 523,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:497:PrincipalGroupCard",
+        "source": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx:498:PrincipalGroupCard",
         "target": "ExternalLink",
         "targetName": "ExternalLink",
         "edgeType": "render",
-        "line": 597,
+        "line": 598,
         "conditional": false,
         "inLoop": false
       },
@@ -4767,367 +4776,358 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 26,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 28,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "getWeekRange",
         "targetName": "getWeekRange",
         "edgeType": "call",
-        "line": 28,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useReportData",
         "targetName": "useReportData",
         "edgeType": "hook",
-        "line": 35,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 44,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 49,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 55,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 60,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 66,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 66,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 68,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
         "line": 69,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 74,
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 78,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "setDateRange",
         "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "getWeekRange",
         "targetName": "getWeekRange",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 91,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "getWeekRange",
-        "targetName": "getWeekRange",
-        "edgeType": "call",
         "line": 92,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
-        "edgeType": "call",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "getWeekRange",
         "targetName": "getWeekRange",
         "edgeType": "call",
-        "line": 101,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "getWeekRange",
+        "targetName": "getWeekRange",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 105,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 126,
+        "line": 127,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 129,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "has",
         "targetName": "has",
-        "edgeType": "call",
-        "line": 132,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "set",
-        "targetName": "set",
         "edgeType": "call",
         "line": 133,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "get",
-        "targetName": "get",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "set",
+        "targetName": "set",
         "edgeType": "call",
-        "line": 136,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "has",
-        "targetName": "has",
-        "edgeType": "call",
-        "line": 139,
+        "line": 134,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "get",
         "targetName": "get",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "has",
+        "targetName": "has",
         "edgeType": "call",
         "line": 140,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "set",
-        "targetName": "set",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "get",
+        "targetName": "get",
         "edgeType": "call",
         "line": 141,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 151,
+        "line": 152,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 162,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 162,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 176,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
@@ -5136,25 +5136,25 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "push",
-        "targetName": "push",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "forEach",
+        "targetName": "forEach",
         "edgeType": "call",
         "line": 178,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "sanitizeCsvValue",
-        "targetName": "sanitizeCsvValue",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "push",
+        "targetName": "push",
         "edgeType": "call",
         "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "sanitizeCsvValue",
         "targetName": "sanitizeCsvValue",
         "edgeType": "call",
@@ -5163,326 +5163,335 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "jsonExport",
-        "targetName": "jsonExport",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "sanitizeCsvValue",
+        "targetName": "sanitizeCsvValue",
         "edgeType": "call",
-        "line": 190,
+        "line": 181,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "jsonExport",
+        "targetName": "jsonExport",
         "edgeType": "call",
-        "line": 192,
-        "conditional": true,
+        "line": 191,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 193,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "downloadCSV",
-        "targetName": "downloadCSV",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 196,
-        "conditional": false,
+        "line": 194,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "downloadCSV",
+        "targetName": "downloadCSV",
         "edgeType": "call",
         "line": 197,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "setDateRange",
-        "targetName": "setDateRange",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 220,
+        "line": 198,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "setDateRange",
         "targetName": "setDateRange",
         "edgeType": "call",
-        "line": 227,
+        "line": 221,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "setDateRange",
+        "targetName": "setDateRange",
+        "edgeType": "call",
+        "line": 228,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "round",
         "targetName": "round",
         "edgeType": "call",
-        "line": 266,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 282,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 203,
+        "line": 204,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "ReportLayout",
         "targetName": "ReportLayout",
         "edgeType": "render",
-        "line": 212,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "handleExport",
         "targetName": "handleExport",
         "edgeType": "callback",
-        "line": 214,
+        "line": 215,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 250,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "CardContent",
-        "targetName": "CardContent",
         "edgeType": "render",
         "line": 251,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "Card",
-        "targetName": "Card",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
-        "line": 256,
+        "line": 252,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "CardContent",
-        "targetName": "CardContent",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 257,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "Card",
-        "targetName": "Card",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
-        "line": 262,
+        "line": 258,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
-        "target": "CardContent",
-        "targetName": "CardContent",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 264,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "AppliedFiltersBar",
         "targetName": "AppliedFiltersBar",
         "edgeType": "render",
-        "line": 233,
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "handleResetAllFilters",
         "targetName": "handleResetAllFilters",
         "edgeType": "callback",
-        "line": 235,
+        "line": 236,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "EmptyState",
         "targetName": "EmptyState",
         "edgeType": "render",
-        "line": 274,
+        "line": 275,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:25:WeeklyActivitySummary",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:26:WeeklyActivitySummary",
         "target": "RepActivityCard",
         "targetName": "RepActivityCard",
         "edgeType": "render",
-        "line": 283,
+        "line": 284,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "reduce",
         "targetName": "reduce",
         "edgeType": "call",
-        "line": 310,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 310,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 310,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 315,
+        "line": 316,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 315,
+        "line": 316,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "values",
         "targetName": "values",
         "edgeType": "call",
-        "line": 315,
+        "line": 316,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "pluralize",
         "targetName": "pluralize",
         "edgeType": "call",
-        "line": 324,
+        "line": 325,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 340,
+        "line": 341,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 318,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 319,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 320,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
-        "target": "Badge",
-        "targetName": "Badge",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
         "edgeType": "render",
-        "line": 324,
+        "line": 321,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 325,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
-        "line": 327,
+        "line": 328,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:309:RepActivityCard",
+        "source": "src/atomic-crm/reports/WeeklyActivitySummary.tsx:310:RepActivityCard",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 348,
+        "line": 349,
         "conditional": false,
         "inLoop": false
       },
@@ -6567,25 +6576,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "useState",
-        "targetName": "useState",
         "edgeType": "hook",
         "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -6594,7 +6594,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -6603,7 +6603,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -6612,88 +6612,97 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 67,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 71,
+        "line": 72,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 74,
+        "line": 75,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 83,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "setIsLoading",
         "targetName": "setIsLoading",
-        "edgeType": "call",
-        "line": 85,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "setError",
-        "targetName": "setError",
         "edgeType": "call",
         "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
+        "target": "setError",
+        "targetName": "setError",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "catch",
         "targetName": "catch",
         "edgeType": "call",
-        "line": 88,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "then",
         "targetName": "then",
         "edgeType": "call",
-        "line": 88,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 88,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
@@ -6702,65 +6711,65 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "setData",
         "targetName": "setData",
-        "edgeType": "call",
-        "line": 123,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "setIsLoading",
-        "targetName": "setIsLoading",
         "edgeType": "call",
         "line": 124,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
+        "target": "setIsLoading",
+        "targetName": "setIsLoading",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "setError",
         "targetName": "setError",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
+        "target": "setIsLoading",
+        "targetName": "setIsLoading",
         "edgeType": "call",
         "line": 131,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "setIsLoading",
-        "targetName": "setIsLoading",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 132,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 133,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 142,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/reports/hooks/useReportData.ts:52:useReportData",
+        "source": "src/atomic-crm/reports/hooks/useReportData.ts:53:useReportData",
         "target": "setRefetchTrigger",
         "targetName": "setRefetchTrigger",
         "edgeType": "call",
-        "line": 143,
+        "line": 142,
         "conditional": false,
         "inLoop": false
       },

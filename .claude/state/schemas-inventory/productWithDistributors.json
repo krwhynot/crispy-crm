@@ -1,6 +1,6 @@
 {
   "chunk_name": "productWithDistributors",
-  "generated_at": "2026-01-23T13:52:46.213Z",
+  "generated_at": "2026-01-24T00:45:47.280Z",
   "item_count": 2,
   "items": [
     {
@@ -125,8 +125,10 @@
         },
         {
           "name": "distributors",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "ref:z\n    ",
+          "constraints": [
+            "max(100, \"Maximum 100 distributors\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,

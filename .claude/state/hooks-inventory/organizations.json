@@ -1,12 +1,12 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-23T13:52:45.631Z",
+  "generated_at": "2026-01-24T00:45:44.879Z",
   "item_count": 7,
   "items": [
     {
       "name": "useDuplicateOrgCheck",
       "file": "src/atomic-crm/organizations/useDuplicateOrgCheck.ts",
-      "line": 51,
+      "line": 52,
       "parameters": [],
       "returnType": "UseDuplicateOrgCheckResult",
       "dependencies": [
@@ -51,7 +51,7 @@
     {
       "name": "useOrganizationImportMapper",
       "file": "src/atomic-crm/organizations/useOrganizationImportMapper.ts",
-      "line": 31,
+      "line": 32,
       "parameters": [],
       "returnType": "MapperState",
       "dependencies": [

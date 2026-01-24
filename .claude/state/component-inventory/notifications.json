@@ -1,12 +1,12 @@
 {
   "chunk_name": "notifications",
-  "generated_at": "2026-01-23T13:52:37.628Z",
+  "generated_at": "2026-01-24T00:45:06.921Z",
   "item_count": 3,
   "items": [
     {
       "name": "NotificationsList",
       "file": "src/atomic-crm/notifications/NotificationsList.tsx",
-      "line": 29,
+      "line": 30,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -21,6 +21,7 @@
         "@/components/ui/card",
         "@/lib/date-utils",
         "@/lib/utils",
+        "@tanstack/react-query",
         "date-fns",
         "lucide-react",
         "ra-core",

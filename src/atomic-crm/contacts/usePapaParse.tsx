@@ -1,6 +1,7 @@
 import * as Papa from "papaparse";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { parseRawCsvData } from "./csvProcessor";
+import { logger } from "@/lib/logger";
 
 /**
  * Type guard to safely cast PapaParse results to array of arrays.
@@ -157,7 +158,7 @@ export function usePapaParse<T = Record<string, unknown>>({
                 return previous;
               });
             } catch (error: unknown) {
-              console.error("Batch processing error:", error);
+              logger.error("Batch processing error", error, { feature: "usePapaParse", batchIndex: i });
               setImporter((previous) =>
                 previous.state === "running"
                   ? {

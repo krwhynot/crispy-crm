@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-quick-create",
-  "generated_at": "2026-01-23T13:52:46.185Z",
+  "generated_at": "2026-01-24T00:45:47.230Z",
   "item_count": 2,
   "items": [
     {
@@ -99,7 +99,9 @@
         {
           "name": "email",
           "zodType": "array",
-          "constraints": [],
+          "constraints": [
+            "max(10, \"Maximum 10 email addresses\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
@@ -107,8 +109,10 @@
         },
         {
           "name": "phone",
-          "zodType": "array",
-          "constraints": [],
+          "zodType": "ref:z\n    ",
+          "constraints": [
+            "max(10, \"Maximum 10 phone numbers\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,

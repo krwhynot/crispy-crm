@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-23T13:52:45.630Z",
+  "generated_at": "2026-01-24T00:45:44.863Z",
   "item_count": 12,
   "items": [
     {
@@ -23,7 +23,7 @@
     {
       "name": "useBulkActionsState",
       "file": "src/atomic-crm/opportunities/useBulkActionsState.ts",
-      "line": 36,
+      "line": 37,
       "parameters": [
         "{\n  selectedIds,\n  opportunities,\n  onUnselectItems,\n  resource = \"opportunities\",\n}"
       ],
@@ -41,7 +41,7 @@
     {
       "name": "useColumnPreferences",
       "file": "src/atomic-crm/opportunities/useColumnPreferences.ts",
-      "line": 23,
+      "line": 14,
       "parameters": [],
       "returnType": "{ collapsedStages: (\"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\")[]; visibleStages: (\"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\")[]; toggleCollapse: (stage: OpportunityStageValue) => void; toggleVisibility: (stage: OpportunityStageValue) => void; collapseAll: () => void; expandAll: () => void; resetPreferences: () => void; }",
       "dependencies": [

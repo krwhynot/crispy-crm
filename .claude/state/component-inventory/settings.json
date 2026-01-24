@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-23T13:52:37.636Z",
+  "generated_at": "2026-01-24T00:45:07.015Z",
   "item_count": 13,
   "items": [
     {
@@ -93,9 +93,9 @@
         "./TimeZoneSelect",
         "./useSalesUpdate",
         "@/components/admin/AdminButton",
+        "@/components/ra-wrappers/image-editor-field",
         "@/components/ra-wrappers/record-field",
         "@/components/ra-wrappers/text-input",
-        "@/components/ui",
         "@/components/ui/card",
         "lucide-react",
         "ra-core",
@@ -177,7 +177,7 @@
     {
       "name": "SettingsPage",
       "file": "src/atomic-crm/settings/SettingsPage.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -197,6 +197,7 @@
         "./SettingsLayout",
         "./UsersSection",
         "./useSalesUpdate",
+        "@/lib/logger",
         "@tanstack/react-query",
         "lucide-react",
         "ra-core"
@@ -270,7 +271,7 @@
     {
       "name": "SettingsPage",
       "file": "src/atomic-crm/settings/index.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useDataProvider",

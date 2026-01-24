@@ -1,13 +1,13 @@
 {
   "chunk_name": "tutorial",
-  "generated_at": "2026-01-23T13:52:49.587Z",
+  "generated_at": "2026-01-24T00:46:02.316Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "id": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "name": "OpportunityCreateFormTutorial",
         "file": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx",
-        "line": 21,
+        "line": 22,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -31,19 +31,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "id": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "name": "TutorialProvider",
         "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
-        "line": 36,
+        "line": 37,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/tutorial/TutorialProvider.tsx:272:useTutorial",
+        "id": "src/atomic-crm/tutorial/TutorialProvider.tsx:276:useTutorial",
         "name": "useTutorial",
         "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
-        "line": 272,
+        "line": 276,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -123,209 +123,209 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "useLocation",
         "targetName": "useLocation",
-        "edgeType": "hook",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
-        "target": "useRef",
-        "targetName": "useRef",
         "edgeType": "hook",
         "line": 23,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
+        "target": "useRef",
+        "targetName": "useRef",
         "edgeType": "hook",
         "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 30,
+        "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "destroy",
         "targetName": "destroy",
         "edgeType": "call",
-        "line": 33,
+        "line": 34,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 39,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "destroy",
         "targetName": "destroy",
         "edgeType": "call",
-        "line": 42,
+        "line": 43,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "filterValidSteps",
         "targetName": "filterValidSteps",
         "edgeType": "call",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 50,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "waitForElement",
         "targetName": "waitForElement",
         "edgeType": "call",
-        "line": 53,
+        "line": 54,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 55,
+        "line": 56,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 72,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "setIsActive",
         "targetName": "setIsActive",
         "edgeType": "call",
-        "line": 83,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "driver",
         "targetName": "driver",
         "edgeType": "call",
-        "line": 89,
+        "line": 92,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "setIsActive",
         "targetName": "setIsActive",
-        "edgeType": "call",
-        "line": 90,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
-        "target": "drive",
-        "targetName": "drive",
-        "edgeType": "call",
-        "line": 91,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
-        "target": "error",
-        "targetName": "error",
         "edgeType": "call",
         "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
-        "target": "setIsActive",
-        "targetName": "setIsActive",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
+        "target": "drive",
+        "targetName": "drive",
         "edgeType": "call",
         "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
+        "target": "setIsActive",
+        "targetName": "setIsActive",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "Tooltip",
         "targetName": "Tooltip",
         "edgeType": "render",
-        "line": 106,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "TooltipTrigger",
         "targetName": "TooltipTrigger",
         "edgeType": "render",
-        "line": 107,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 108,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "TooltipContent",
         "targetName": "TooltipContent",
         "edgeType": "render",
-        "line": 118,
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:21:OpportunityCreateFormTutorial",
+        "source": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx:22:OpportunityCreateFormTutorial",
         "target": "HelpCircle",
         "targetName": "HelpCircle",
         "edgeType": "render",
-        "line": 115,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
@@ -546,43 +546,34 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "useNavigate",
         "targetName": "useNavigate",
-        "edgeType": "hook",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "useRef",
-        "targetName": "useRef",
         "edgeType": "hook",
         "line": 38,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "useRef",
+        "targetName": "useRef",
         "edgeType": "hook",
         "line": 39,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "useRef",
-        "targetName": "useRef",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
         "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "useRef",
         "targetName": "useRef",
         "edgeType": "hook",
@@ -591,7 +582,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "useRef",
         "targetName": "useRef",
         "edgeType": "hook",
@@ -600,331 +591,313 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "useTutorialProgress",
         "targetName": "useTutorialProgress",
         "edgeType": "hook",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 53,
+        "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "destroy",
         "targetName": "destroy",
         "edgeType": "call",
-        "line": 55,
+        "line": 56,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "setIsActive",
         "targetName": "setIsActive",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "setCurrentChapter",
-        "targetName": "setCurrentChapter",
         "edgeType": "call",
         "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 66,
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "setCurrentChapter",
+        "targetName": "setCurrentChapter",
+        "edgeType": "call",
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 72,
+        "line": 73,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "setTimeout",
         "targetName": "setTimeout",
         "edgeType": "call",
-        "line": 74,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "waitForElement",
         "targetName": "waitForElement",
         "edgeType": "call",
-        "line": 80,
+        "line": 81,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 93,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "stopTutorial",
-        "targetName": "stopTutorial",
-        "edgeType": "call",
         "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "getChapterSteps",
-        "targetName": "getChapterSteps",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "stopTutorial",
+        "targetName": "stopTutorial",
         "edgeType": "call",
         "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "warn",
-        "targetName": "warn",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "getChapterSteps",
+        "targetName": "getChapterSteps",
         "edgeType": "call",
         "line": 102,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "setCurrentChapter",
-        "targetName": "setCurrentChapter",
-        "edgeType": "call",
-        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "prepareStep",
-        "targetName": "prepareStep",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 105,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "setCurrentChapter",
+        "targetName": "setCurrentChapter",
         "edgeType": "call",
         "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "warn",
-        "targetName": "warn",
-        "edgeType": "call",
-        "line": 116,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "destroy",
-        "targetName": "destroy",
-        "edgeType": "call",
-        "line": 142,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "prepareStep",
         "targetName": "prepareStep",
         "edgeType": "call",
-        "line": 150,
+        "line": 116,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "setCurrentStep",
-        "targetName": "setCurrentStep",
-        "edgeType": "call",
-        "line": 155,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "moveNext",
-        "targetName": "moveNext",
-        "edgeType": "call",
-        "line": 158,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 161,
+        "line": 118,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "destroy",
+        "targetName": "destroy",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "prepareStep",
+        "targetName": "prepareStep",
+        "edgeType": "call",
+        "line": 154,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "setCurrentStep",
+        "targetName": "setCurrentStep",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "moveNext",
         "targetName": "moveNext",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "warn",
+        "targetName": "warn",
         "edgeType": "call",
         "line": 164,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "moveNext",
+        "targetName": "moveNext",
+        "edgeType": "call",
+        "line": 169,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "prepareStep",
         "targetName": "prepareStep",
         "edgeType": "call",
-        "line": 177,
+        "line": 182,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "setCurrentStep",
         "targetName": "setCurrentStep",
         "edgeType": "call",
-        "line": 180,
+        "line": 185,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "movePrevious",
         "targetName": "movePrevious",
         "edgeType": "call",
-        "line": 183,
+        "line": 188,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "destroy",
         "targetName": "destroy",
         "edgeType": "call",
-        "line": 190,
+        "line": 195,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "querySelector",
         "targetName": "querySelector",
-        "edgeType": "call",
-        "line": 198,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "destroy",
-        "targetName": "destroy",
         "edgeType": "call",
         "line": 203,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "map",
-        "targetName": "map",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "destroy",
+        "targetName": "destroy",
         "edgeType": "call",
-        "line": 210,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "markChapterComplete",
-        "targetName": "markChapterComplete",
-        "edgeType": "call",
-        "line": 223,
+        "line": 208,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "setIsActive",
-        "targetName": "setIsActive",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "markChapterComplete",
+        "targetName": "markChapterComplete",
         "edgeType": "call",
         "line": 228,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "driver",
-        "targetName": "driver",
-        "edgeType": "call",
-        "line": 235,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "setIsActive",
         "targetName": "setIsActive",
         "edgeType": "call",
-        "line": 236,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "drive",
-        "targetName": "drive",
-        "edgeType": "call",
-        "line": 237,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "driver",
+        "targetName": "driver",
         "edgeType": "call",
         "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "setIsActive",
         "targetName": "setIsActive",
         "edgeType": "call",
@@ -933,47 +906,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 248,
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "drive",
+        "targetName": "drive",
+        "edgeType": "call",
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 243,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "setIsActive",
+        "targetName": "setIsActive",
+        "edgeType": "call",
+        "line": 244,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 252,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "destroy",
         "targetName": "destroy",
         "edgeType": "call",
-        "line": 251,
+        "line": 255,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 256,
+        "line": 260,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:36:TutorialProvider",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:37:TutorialProvider",
         "target": "TutorialContext.Provider",
         "targetName": "TutorialContext.Provider",
         "edgeType": "render",
-        "line": 269,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:272:useTutorial",
+        "source": "src/atomic-crm/tutorial/TutorialProvider.tsx:276:useTutorial",
         "target": "useContext",
         "targetName": "useContext",
         "edgeType": "hook",
-        "line": 273,
+        "line": 277,
         "conditional": false,
         "inLoop": false
       },

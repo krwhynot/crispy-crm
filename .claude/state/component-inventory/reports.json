@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-23T13:52:37.634Z",
+  "generated_at": "2026-01-24T00:45:06.997Z",
   "item_count": 23,
   "items": [
     {
@@ -127,7 +127,7 @@
     {
       "name": "OpportunitiesByPrincipalReport",
       "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-      "line": 159,
+      "line": 160,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -151,6 +151,7 @@
         "@/components/ui/badge",
         "@/components/ui/card",
         "@/lib/date-utils",
+        "@/lib/logger",
         "date-fns",
         "jsonexport/dist",
         "lucide-react",
@@ -215,7 +216,7 @@
     {
       "name": "WeeklyActivitySummary",
       "file": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
-      "line": 25,
+      "line": 26,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -234,6 +235,7 @@
         "@/atomic-crm/utils/csvUploadValidator",
         "@/components/ui/badge",
         "@/components/ui/card",
+        "@/lib/logger",
         "@/lib/utils/pluralize",
         "jsonexport/dist",
         "lucide-react",

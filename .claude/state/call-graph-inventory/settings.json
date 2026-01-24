@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-23T13:52:49.577Z",
+  "generated_at": "2026-01-24T00:46:02.272Z",
   "items": {
     "nodes": [
       {
@@ -76,10 +76,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "id": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "name": "SettingsPage",
         "file": "src/atomic-crm/settings/SettingsPage.tsx",
-        "line": 14,
+        "line": 15,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -112,10 +112,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "id": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
         "name": "useSalesUpdate",
         "file": "src/atomic-crm/settings/useSalesUpdate.ts",
-        "line": 38,
+        "line": 39,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -1131,254 +1131,254 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 19,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "useGetOne",
-        "targetName": "useGetOne",
         "edgeType": "hook",
         "line": 20,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "useGetOne",
+        "targetName": "useGetOne",
         "edgeType": "hook",
-        "line": 23,
+        "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "useSalesUpdate",
         "targetName": "useSalesUpdate",
         "edgeType": "hook",
-        "line": 26,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "refetchIdentity",
         "targetName": "refetchIdentity",
-        "edgeType": "call",
-        "line": 29,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "refetchUser",
-        "targetName": "refetchUser",
         "edgeType": "call",
         "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "refetchUser",
+        "targetName": "refetchUser",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "useMutation",
         "targetName": "useMutation",
         "edgeType": "hook",
-        "line": 34,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "updatePassword",
         "targetName": "updatePassword",
         "edgeType": "call",
-        "line": 40,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 43,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "error",
         "targetName": "error",
-        "edgeType": "call",
-        "line": 46,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "mutate",
         "targetName": "mutate",
         "edgeType": "call",
-        "line": 64,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "updatePassword",
         "targetName": "updatePassword",
         "edgeType": "call",
-        "line": 68,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "Form",
         "targetName": "Form",
-        "edgeType": "render",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "handleOnSubmit",
-        "targetName": "handleOnSubmit",
-        "edgeType": "callback",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "User",
-        "targetName": "User",
-        "edgeType": "render",
-        "line": 75,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "PersonalSection",
-        "targetName": "PersonalSection",
         "edgeType": "render",
         "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "Bell",
-        "targetName": "Bell",
-        "edgeType": "render",
-        "line": 85,
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "handleOnSubmit",
+        "targetName": "handleOnSubmit",
+        "edgeType": "callback",
+        "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "NotificationsSection",
-        "targetName": "NotificationsSection",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "User",
+        "targetName": "User",
+        "edgeType": "render",
+        "line": 76,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "PersonalSection",
+        "targetName": "PersonalSection",
+        "edgeType": "render",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "Bell",
+        "targetName": "Bell",
         "edgeType": "render",
         "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "NotificationsSection",
+        "targetName": "NotificationsSection",
+        "edgeType": "render",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "Shield",
         "targetName": "Shield",
         "edgeType": "render",
-        "line": 91,
+        "line": 92,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "SecuritySection",
         "targetName": "SecuritySection",
         "edgeType": "render",
-        "line": 92,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "handleClickOpenPasswordChange",
         "targetName": "handleClickOpenPasswordChange",
         "edgeType": "callback",
-        "line": 92,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "Users",
         "targetName": "Users",
-        "edgeType": "render",
-        "line": 99,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "UsersSection",
-        "targetName": "UsersSection",
         "edgeType": "render",
         "line": 100,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "History",
-        "targetName": "History",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "UsersSection",
+        "targetName": "UsersSection",
         "edgeType": "render",
-        "line": 105,
+        "line": 101,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
-        "target": "AuditLogSection",
-        "targetName": "AuditLogSection",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "History",
+        "targetName": "History",
         "edgeType": "render",
         "line": 106,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/SettingsPage.tsx:14:SettingsPage",
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
+        "target": "AuditLogSection",
+        "targetName": "AuditLogSection",
+        "edgeType": "render",
+        "line": 107,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/SettingsPage.tsx:15:SettingsPage",
         "target": "SettingsLayout",
         "targetName": "SettingsLayout",
         "edgeType": "render",
-        "line": 112,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
@@ -1446,74 +1446,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
         "target": "useNotify",
         "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
         "edgeType": "hook",
         "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
         "target": "useMutation",
         "targetName": "useMutation",
         "edgeType": "hook",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
         "target": "salesUpdate",
         "targetName": "salesUpdate",
         "edgeType": "call",
-        "line": 48,
+        "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
         "target": "notify",
         "targetName": "notify",
-        "edgeType": "call",
-        "line": 51,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
         "edgeType": "call",
         "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
         "edgeType": "call",
-        "line": 55,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:38:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       }

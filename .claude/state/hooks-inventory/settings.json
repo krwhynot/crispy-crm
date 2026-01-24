@@ -1,12 +1,12 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-23T13:52:45.632Z",
+  "generated_at": "2026-01-24T00:45:44.883Z",
   "item_count": 1,
   "items": [
     {
       "name": "useSalesUpdate",
       "file": "src/atomic-crm/settings/useSalesUpdate.ts",
-      "line": 38,
+      "line": 39,
       "parameters": [
         "{ userId, onSuccess }"
       ],

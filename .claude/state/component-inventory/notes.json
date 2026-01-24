@@ -1,14 +1,15 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-23T13:52:37.628Z",
+  "generated_at": "2026-01-24T00:45:06.914Z",
   "item_count": 5,
   "items": [
     {
       "name": "Note",
       "file": "src/atomic-crm/notes/Note.tsx",
-      "line": 17,
+      "line": 25,
       "type": "presentational",
       "hooks": [
+        "useCallback",
         "useDelete",
         "useNotify",
         "useQueryClient",
@@ -19,6 +20,7 @@
       "imports": [
         "../contacts/Avatar",
         "../organizations/OrganizationAvatar",
+        "../queryKeys",
         "../sales/SaleName",
         "../types",
         "./NoteInputs",

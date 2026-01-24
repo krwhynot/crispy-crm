@@ -1,12 +1,12 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-23T13:52:37.638Z",
+  "generated_at": "2026-01-24T00:45:07.026Z",
   "item_count": 28,
   "items": [
     {
       "name": "AddTask",
       "file": "src/atomic-crm/tasks/AddTask.tsx",
-      "line": 35,
+      "line": 36,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -31,6 +31,7 @@
         "@/components/ra-wrappers/text-input",
         "@/components/ui/dialog",
         "@/components/ui/tooltip",
+        "@/lib/logger",
         "lucide-react",
         "ra-core",
         "react"
@@ -477,7 +478,7 @@
     {
       "name": "TaskSlideOverDetailsTab",
       "file": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
-      "line": 50,
+      "line": 51,
       "type": "presentational",
       "hooks": [
         "useFormOptions",
@@ -506,6 +507,7 @@
         "@/components/ui/priority-badge",
         "@/components/ui/scroll-area",
         "@/components/ui/snooze-badge",
+        "@/lib/logger",
         "@tanstack/react-query",
         "ra-core",
         "react",

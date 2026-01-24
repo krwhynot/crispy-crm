@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-23T13:52:37.636Z",
+  "generated_at": "2026-01-24T00:45:07.014Z",
   "item_count": 23,
   "items": [
     {
@@ -52,7 +52,7 @@
     {
       "name": "SalesCreate",
       "file": "src/atomic-crm/sales/SalesCreate.tsx",
-      "line": 24,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useCanAccess",
@@ -75,6 +75,7 @@
         "@/components/ui/card",
         "@/components/ui/list-skeleton",
         "@/hooks/useUnsavedChangesWarning",
+        "@/lib/logger",
         "@/lib/type-guards",
         "@tanstack/react-query",
         "ra-core",
@@ -378,7 +379,7 @@
     {
       "name": "UserDisableReassignDialog",
       "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
-      "line": 114,
+      "line": 118,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -398,6 +399,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/components/ui/select",
+        "@/lib/logger",
         "@tanstack/react-query",
         "lucide-react",
         "ra-core",
@@ -416,7 +418,7 @@
     {
       "name": "UserDisableReassignDialog",
       "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
-      "line": 114,
+      "line": 118,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -436,6 +438,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/components/ui/select",
+        "@/lib/logger",
         "@tanstack/react-query",
         "lucide-react",
         "ra-core",

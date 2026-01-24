@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useDataProvider, useGetList, useRefresh } from "ra-core";
+import { logger } from "@/lib/logger";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 
@@ -99,7 +100,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
       success("Stage updated successfully");
     } catch (error: unknown) {
-      console.error("Stage update failed:", error);
+      logger.error("Stage update failed", error, { feature: "ActivityNoteForm" });
       const message = error instanceof Error ? error.message : "Unknown error";
       if (message.includes("CONFLICT")) {
         warning("This opportunity was modified by another user. Refreshing.");

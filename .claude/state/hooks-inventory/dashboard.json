@@ -1,12 +1,12 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-23T13:52:45.629Z",
+  "generated_at": "2026-01-24T00:45:44.845Z",
   "item_count": 13,
   "items": [
     {
       "name": "useCurrentSale",
       "file": "src/atomic-crm/dashboard/useCurrentSale.ts",
-      "line": 65,
+      "line": 60,
       "parameters": [],
       "returnType": "{ salesId: number; loading: boolean; error: Error; }",
       "dependencies": [
@@ -18,7 +18,7 @@
     {
       "name": "useDebouncedSearch",
       "file": "src/atomic-crm/dashboard/useDebouncedSearch.ts",
-      "line": 12,
+      "line": 11,
       "parameters": [
         "delay"
       ],
@@ -62,9 +62,9 @@
     {
       "name": "useHybridSearch",
       "file": "src/atomic-crm/dashboard/useHybridSearch.ts",
-      "line": 62,
+      "line": 68,
       "parameters": [
-        "{\n  resource,\n  initialPageSize = 100,\n  minSearchLength = 2,\n  debounceMs = 300,\n  staleTimeMs = 5 * 60 * 1000, // 5 minutes default\n  sortField = \"name\",\n  additionalFilter = {},\n  enabled = true,\n}"
+        "{\n  resource,\n  initialPageSize = 100,\n  minSearchLength = AUTOCOMPLETE_MIN_CHARS,\n  debounceMs = SEARCH_DEBOUNCE_MS,\n  staleTimeMs = DEFAULT_STALE_TIME_MS,\n  sortField = \"name\",\n  additionalFilter = {},\n  enabled = true,\n}"
       ],
       "returnType": "HybridSearchResult<T>",
       "dependencies": [
@@ -77,7 +77,7 @@
     {
       "name": "useKPIMetrics",
       "file": "src/atomic-crm/dashboard/useKPIMetrics.ts",
-      "line": 68,
+      "line": 69,
       "parameters": [],
       "returnType": "UseKPIMetricsReturn",
       "dependencies": [
@@ -91,7 +91,7 @@
     {
       "name": "useMyPerformance",
       "file": "src/atomic-crm/dashboard/useMyPerformance.ts",
-      "line": 89,
+      "line": 90,
       "parameters": [],
       "returnType": "UseMyPerformanceReturn",
       "dependencies": [
@@ -105,7 +105,7 @@
     {
       "name": "useMyTasks",
       "file": "src/atomic-crm/dashboard/useMyTasks.ts",
-      "line": 19,
+      "line": 20,
       "parameters": [],
       "returnType": "{ tasks: { id: number; subject: string; dueDate: Date; priority: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").Priority; taskType: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").TaskType; relatedTo: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").RelatedEntity; status: TaskStatus; owner?: string; notes: string; snoozeUntil: Date; deleted?: boolean; }[]; loading: boolean; error: Error; completeTask: (taskId: number) => Promise<void>; snoozeTask: (taskId: number) => Promise<void>; deleteTask: (taskId: number) => Promise<void>; viewTask: (taskId: number) => void; updateTaskDueDate: (taskId: number, newDueDate: Date) => Promise<void>; updateTaskLocally: (taskId: number, updates: Partial<TaskItem>) => void; rollbackTask: (taskId: number, _previousState: TaskItem) => void; calculateStatus: (dueDate: Date) => TaskStatus; }",
       "dependencies": [

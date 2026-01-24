@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-23T13:52:37.629Z",
+  "generated_at": "2026-01-24T00:45:06.931Z",
   "item_count": 74,
   "items": [
     {
@@ -30,7 +30,7 @@
     {
       "name": "ActivityNoteForm",
       "file": "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
-      "line": 35,
+      "line": 36,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -53,6 +53,7 @@
         "@/components/ui/select",
         "@/components/ui/select-ui",
         "@/components/ui/textarea",
+        "@/lib/logger",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
         "ra-core",
@@ -1566,7 +1567,7 @@
         "@/components/ui/label",
         "@/components/ui/popover",
         "@/lib/utils",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react",
@@ -1828,7 +1829,7 @@
     {
       "name": "OpportunityListContent",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
-      "line": 115,
+      "line": 116,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1854,6 +1855,7 @@
         "./OpportunityColumn",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/opportunities",
+        "@/lib/logger",
         "@dnd-kit/core",
         "@dnd-kit/sortable",
         "@tanstack/react-query",
@@ -1881,7 +1883,7 @@
     {
       "name": "QuickAddOpportunity",
       "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-      "line": 23,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -1899,6 +1901,8 @@
         "../../validation/opportunities",
         "@/atomic-crm/utils/formatters",
         "@/components/admin/AdminButton",
+        "@/lib/devLogger",
+        "@/lib/logger",
         "lucide-react",
         "react",
         "react-admin"

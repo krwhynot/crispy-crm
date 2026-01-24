@@ -18,11 +18,13 @@ import type {
   UseGetOneHookValue,
   UseCreateResult,
   UseDeleteResult,
+  UseUpdateResult,
   GetListParams,
   RaRecord,
   ListControllerResult,
   SortPayload,
   FilterPayload,
+  ShowControllerResult,
 } from "ra-core";
 
 /**
@@ -294,4 +296,139 @@ export function mockUseListContext<RecordType extends RaRecord = RaRecord>(
   returnValue: MockListContextValue<RecordType>
 ): Mock {
   return vi.fn().mockReturnValue(mockUseListContextReturn(returnValue));
+}
+
+/**
+ * Partial type for useShowContext mock to allow flexible overrides
+ */
+export interface MockShowContextValue<RecordType extends RaRecord = RaRecord> {
+  record?: RecordType;
+  isPending?: boolean;
+  isLoading?: boolean;
+  isFetching?: boolean;
+  error?: Error | null;
+  resource?: string;
+  refetch?: Mock;
+}
+
+/**
+ * Create a mock return value for useShowContext hook
+ * @param overrides - Partial values to override defaults
+ *
+ * @example
+ * ```tsx
+ * vi.mocked(useShowContext).mockReturnValue(
+ *   mockUseShowContextReturn({ record: mockContact, isPending: false })
+ * );
+ * ```
+ */
+export function mockUseShowContextReturn<RecordType extends RaRecord = RaRecord>(
+  overrides?: MockShowContextValue<RecordType>
+): ShowControllerResult<RecordType> {
+  // Return loading state if isPending is true
+  if (overrides?.isPending) {
+    return {
+      record: undefined,
+      isPending: true,
+      isLoading: overrides?.isLoading ?? true,
+      isFetching: overrides?.isFetching ?? true,
+      error: null,
+      resource: overrides?.resource ?? "test",
+      refetch: overrides?.refetch ?? vi.fn(),
+    } as ShowControllerResult<RecordType>;
+  }
+
+  // Return success state with record
+  return {
+    record: overrides?.record,
+    isPending: false,
+    isLoading: overrides?.isLoading ?? false,
+    isFetching: overrides?.isFetching ?? false,
+    error: overrides?.error ?? null,
+    resource: overrides?.resource ?? "test",
+    refetch: overrides?.refetch ?? vi.fn(),
+  } as ShowControllerResult<RecordType>;
+}
+
+/**
+ * Create a mock implementation for useShowContext that returns typed values
+ * @param returnValue - Partial values to return from the mock
+ */
+export function mockUseShowContext<RecordType extends RaRecord = RaRecord>(
+  returnValue: MockShowContextValue<RecordType>
+): Mock {
+  return vi.fn().mockReturnValue(mockUseShowContextReturn(returnValue));
+}
+
+/**
+ * Create a mock return value for useUpdate hook
+ * Returns a tuple of [mutate function, mutation state]
+ * @param overrides - Options to customize the mock behavior
+ *
+ * @example
+ * ```tsx
+ * vi.mocked(useUpdate).mockReturnValue(
+ *   mockUseUpdateReturn({ isPending: false, isSuccess: true })
+ * );
+ * ```
+ */
+export function mockUseUpdateReturn<RecordType extends RaRecord = RaRecord>(overrides?: {
+  mutate?: Mock;
+  isPending?: boolean;
+  isLoading?: boolean;
+  isSuccess?: boolean;
+  isError?: boolean;
+  error?: Error | null;
+  data?: RecordType;
+}): UseUpdateResult<RecordType> {
+  const mutateFn = overrides?.mutate ?? vi.fn();
+  return [
+    mutateFn,
+    {
+      isPending: overrides?.isPending ?? false,
+      isLoading: overrides?.isLoading ?? false,
+      isSuccess: overrides?.isSuccess ?? false,
+      isError: overrides?.isError ?? false,
+      error: overrides?.error ?? null,
+      data: overrides?.data,
+      reset: vi.fn(),
+    },
+  ] as unknown as UseUpdateResult<RecordType>;
+}
+
+/**
+ * Create a mock implementation for useUpdate that returns typed values
+ * @param options - Options to customize the mock behavior
+ */
+export function mockUseUpdate<RecordType extends RaRecord = RaRecord>(
+  options?: Parameters<typeof mockUseUpdateReturn<RecordType>>[0]
+): Mock {
+  return vi.fn().mockReturnValue(mockUseUpdateReturn<RecordType>(options));
+}
+
+/**
+ * Create a mock return value for useRecordContext hook
+ * @param record - The record to return from the mock (or undefined for no record)
+ *
+ * @example
+ * ```tsx
+ * vi.mocked(useRecordContext).mockReturnValue(
+ *   mockUseRecordContextReturn(mockContact)
+ * );
+ * ```
+ */
+export function mockUseRecordContextReturn<RecordType extends RaRecord = RaRecord>(
+  record?: RecordType
+): RecordType | undefined {
+  return record;
+}
+
+/**
+ * Create a mock implementation for useRecordContext that returns typed values
+ * @param record - The record to return from the mock
+ */
+export function mockUseRecordContext<RecordType extends RaRecord = RaRecord>(
+  record?: RecordType
+): Mock {
+  return vi.fn().mockReturnValue(mockUseRecordContextReturn(record));
 }

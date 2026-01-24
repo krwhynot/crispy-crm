@@ -1,7 +1,7 @@
 {
   "chunk_name": "opportunities-core",
-  "generated_at": "2026-01-23T13:52:46.200Z",
-  "item_count": 6,
+  "generated_at": "2026-01-24T00:45:47.233Z",
+  "item_count": 5,
   "items": [
     {
       "name": "opportunityStageSchema",
@@ -103,25 +103,6 @@
       ],
       "relatedSchemas": [],
       "validationFunctions": [],
-      "hasTransforms": false,
-      "hasSuperRefine": false
-    },
-    {
-      "name": "opportunityProductSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
-      "line": 102,
-      "schemaType": "array",
-      "fields": [],
-      "relatedSchemas": [
-        "opportunityProductSyncInputSchema",
-        "opportunityProductSyncHandlerSchema",
-        "createOpportunitySchema",
-        "updateOpportunitySchema",
-        "productSchema"
-      ],
-      "validationFunctions": [
-        "validateOpportunityProduct"
-      ],
       "hasTransforms": false,
       "hasSuperRefine": false
     }

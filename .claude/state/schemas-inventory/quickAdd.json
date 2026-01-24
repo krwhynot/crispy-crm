@@ -1,6 +1,6 @@
 {
   "chunk_name": "quickAdd",
-  "generated_at": "2026-01-23T13:52:46.214Z",
+  "generated_at": "2026-01-24T00:45:47.282Z",
   "item_count": 1,
   "items": [
     {
@@ -134,7 +134,9 @@
         {
           "name": "product_ids",
           "zodType": "array",
-          "constraints": [],
+          "constraints": [
+            "max(100, \"Maximum 100 products\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-23T13:52:49.574Z",
+  "generated_at": "2026-01-24T00:46:02.245Z",
   "items": {
     "nodes": [
       {
@@ -22,10 +22,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "id": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "name": "SalesCreate",
         "file": "src/atomic-crm/sales/SalesCreate.tsx",
-        "line": 24,
+        "line": 25,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -211,19 +211,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:50:batchReassign",
+        "id": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:51:batchReassign",
         "name": "batchReassign",
         "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
-        "line": 50,
+        "line": 51,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "id": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "name": "UserDisableReassignDialog",
         "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
-        "line": 114,
+        "line": 118,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -339,133 +339,133 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 30,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 32,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
         "edgeType": "hook",
         "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 36,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "useCanAccess",
         "targetName": "useCanAccess",
         "edgeType": "hook",
-        "line": 39,
+        "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "useMutation",
         "targetName": "useMutation",
         "edgeType": "hook",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "setServerError",
         "targetName": "setServerError",
-        "edgeType": "call",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
-        "target": "salesCreate",
-        "targetName": "salesCreate",
         "edgeType": "call",
         "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
+        "target": "salesCreate",
+        "targetName": "salesCreate",
         "edgeType": "call",
-        "line": 59,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
         "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
-        "target": "redirect",
-        "targetName": "redirect",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
+        "target": "redirect",
+        "targetName": "redirect",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
@@ -474,7 +474,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -483,7 +483,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
@@ -492,7 +492,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "redirect",
         "targetName": "redirect",
         "edgeType": "call",
@@ -501,7 +501,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "isHttpError",
         "targetName": "isHttpError",
         "edgeType": "call",
@@ -510,7 +510,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "setServerError",
         "targetName": "setServerError",
         "edgeType": "call",
@@ -519,7 +519,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
@@ -528,7 +528,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -537,7 +537,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -546,7 +546,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -555,7 +555,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -564,7 +564,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -573,7 +573,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -582,7 +582,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
@@ -591,7 +591,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
@@ -600,7 +600,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
@@ -609,7 +609,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "redirect",
         "targetName": "redirect",
         "edgeType": "call",
@@ -618,7 +618,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "mutate",
         "targetName": "mutate",
         "edgeType": "call",
@@ -627,7 +627,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
@@ -636,7 +636,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "CardHeader",
         "targetName": "CardHeader",
         "edgeType": "render",
@@ -645,7 +645,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "CardTitle",
         "targetName": "CardTitle",
         "edgeType": "render",
@@ -654,7 +654,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "CardContent",
         "targetName": "CardContent",
         "edgeType": "render",
@@ -663,7 +663,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "SimpleForm",
         "targetName": "SimpleForm",
         "edgeType": "render",
@@ -672,7 +672,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "onSubmit",
         "targetName": "onSubmit",
         "edgeType": "callback",
@@ -681,7 +681,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "SalesListSkeleton",
         "targetName": "SalesListSkeleton",
         "edgeType": "render",
@@ -690,7 +690,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesCreate.tsx:24:SalesCreate",
+        "source": "src/atomic-crm/sales/SalesCreate.tsx:25:SalesCreate",
         "target": "SalesFormContent",
         "targetName": "SalesFormContent",
         "edgeType": "render",
@@ -2706,520 +2706,502 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:50:batchReassign",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:51:batchReassign",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 66,
+        "line": 67,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:50:batchReassign",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:51:batchReassign",
         "target": "allSettled",
         "targetName": "allSettled",
-        "edgeType": "call",
-        "line": 68,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:50:batchReassign",
-        "target": "map",
-        "targetName": "map",
         "edgeType": "call",
         "line": 69,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:50:batchReassign",
-        "target": "update",
-        "targetName": "update",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:51:batchReassign",
+        "target": "map",
+        "targetName": "map",
         "edgeType": "call",
         "line": 70,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:50:batchReassign",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 78,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:50:batchReassign",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:51:batchReassign",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:51:batchReassign",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:51:batchReassign",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 120,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 121,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 127,
+        "line": 131,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "useState",
         "targetName": "useState",
-        "edgeType": "hook",
-        "line": 128,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useRef",
-        "targetName": "useRef",
-        "edgeType": "hook",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
         "edgeType": "hook",
         "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useUpdate",
-        "targetName": "useUpdate",
-        "edgeType": "hook",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useRef",
+        "targetName": "useRef",
         "edgeType": "hook",
         "line": 134,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
-        "edgeType": "hook",
-        "line": 135,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
         "edgeType": "hook",
         "line": 136,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useGetList",
-        "targetName": "useGetList",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
+        "edgeType": "hook",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
         "edgeType": "hook",
         "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 150,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 152,
+        "line": 156,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setCounts",
         "targetName": "setCounts",
         "edgeType": "call",
-        "line": 153,
+        "line": 157,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setSelectedSalesId",
         "targetName": "setSelectedSalesId",
         "edgeType": "call",
-        "line": 154,
+        "line": 158,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setProgressMessage",
         "targetName": "setProgressMessage",
         "edgeType": "call",
-        "line": 155,
+        "line": 159,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setStep",
         "targetName": "setStep",
-        "edgeType": "call",
-        "line": 160,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "all",
-        "targetName": "all",
         "edgeType": "call",
         "line": 164,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "getList",
-        "targetName": "getList",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "all",
+        "targetName": "all",
         "edgeType": "call",
-        "line": 165,
+        "line": 168,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 170,
+        "line": 169,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 175,
+        "line": 174,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 180,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "getList",
+        "targetName": "getList",
+        "edgeType": "call",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setCounts",
         "targetName": "setCounts",
         "edgeType": "call",
-        "line": 194,
+        "line": 198,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setStep",
         "targetName": "setStep",
-        "edgeType": "call",
-        "line": 200,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 202,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 203,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "onClose",
-        "targetName": "onClose",
         "edgeType": "call",
         "line": 204,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "fetchCounts",
-        "targetName": "fetchCounts",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
-        "line": 208,
+        "line": 206,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 212,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "abort",
-        "targetName": "abort",
-        "edgeType": "call",
-        "line": 214,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "setStep",
-        "targetName": "setStep",
-        "edgeType": "call",
-        "line": 222,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "setProgressMessage",
-        "targetName": "setProgressMessage",
-        "edgeType": "call",
-        "line": 223,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "update",
-        "targetName": "update",
-        "edgeType": "call",
-        "line": 226,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 232,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 234,
+        "line": 210,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "formatName",
-        "targetName": "formatName",
-        "edgeType": "call",
-        "line": 234,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "refresh",
-        "targetName": "refresh",
-        "edgeType": "call",
-        "line": 237,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
-        "edgeType": "call",
-        "line": 238,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "onClose",
         "targetName": "onClose",
+        "edgeType": "call",
+        "line": 211,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "fetchCounts",
+        "targetName": "fetchCounts",
+        "edgeType": "call",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 219,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "abort",
+        "targetName": "abort",
+        "edgeType": "call",
+        "line": 221,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "setStep",
+        "targetName": "setStep",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "setProgressMessage",
+        "targetName": "setProgressMessage",
+        "edgeType": "call",
+        "line": 230,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
         "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 242,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "setStep",
-        "targetName": "setStep",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "formatName",
+        "targetName": "formatName",
         "edgeType": "call",
-        "line": 243,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 244,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
+        "edgeType": "call",
+        "line": 245,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "onClose",
+        "targetName": "onClose",
+        "edgeType": "call",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "notify",
         "targetName": "notify",
-        "edgeType": "call",
-        "line": 248,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "setStep",
-        "targetName": "setStep",
         "edgeType": "call",
         "line": 249,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 262,
+        "line": 250,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 255,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "setStep",
+        "targetName": "setStep",
+        "edgeType": "call",
+        "line": 256,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "setStep",
+        "targetName": "setStep",
+        "edgeType": "call",
+        "line": 269,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "parseInt",
         "targetName": "parseInt",
-        "edgeType": "call",
-        "line": 263,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 264,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "formatName",
-        "targetName": "formatName",
-        "edgeType": "call",
-        "line": 266,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "setProgressMessage",
-        "targetName": "setProgressMessage",
         "edgeType": "call",
         "line": 270,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "all",
-        "targetName": "all",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "find",
+        "targetName": "find",
         "edgeType": "call",
-        "line": 272,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "getList",
-        "targetName": "getList",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "formatName",
+        "targetName": "formatName",
         "edgeType": "call",
-        "line": 274,
+        "line": 273,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "resolve",
-        "targetName": "resolve",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "setProgressMessage",
+        "targetName": "setProgressMessage",
+        "edgeType": "call",
+        "line": 277,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "all",
+        "targetName": "all",
         "edgeType": "call",
         "line": 279,
-        "conditional": true,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
@@ -3228,7 +3210,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "resolve",
         "targetName": "resolve",
         "edgeType": "call",
@@ -3237,7 +3219,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
@@ -3246,7 +3228,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "resolve",
         "targetName": "resolve",
         "edgeType": "call",
@@ -3255,7 +3237,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
@@ -3264,7 +3246,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "resolve",
         "targetName": "resolve",
         "edgeType": "call",
@@ -3273,439 +3255,421 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "getList",
+        "targetName": "getList",
+        "edgeType": "call",
+        "line": 302,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "resolve",
+        "targetName": "resolve",
+        "edgeType": "call",
+        "line": 307,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setProgressMessage",
         "targetName": "setProgressMessage",
         "edgeType": "call",
-        "line": 305,
+        "line": 312,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "all",
         "targetName": "all",
         "edgeType": "call",
-        "line": 307,
+        "line": 314,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "batchReassign",
         "targetName": "batchReassign",
         "edgeType": "call",
-        "line": 308,
+        "line": 315,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "batchReassign",
         "targetName": "batchReassign",
         "edgeType": "call",
-        "line": 316,
+        "line": 323,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "batchReassign",
         "targetName": "batchReassign",
         "edgeType": "call",
-        "line": 324,
+        "line": 331,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "batchReassign",
         "targetName": "batchReassign",
         "edgeType": "call",
-        "line": 332,
+        "line": 339,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setProgressMessage",
         "targetName": "setProgressMessage",
         "edgeType": "call",
-        "line": 341,
+        "line": 348,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "update",
         "targetName": "update",
-        "edgeType": "call",
-        "line": 343,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
         "edgeType": "call",
         "line": 350,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 351,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 352,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 353,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 354,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "formatName",
-        "targetName": "formatName",
-        "edgeType": "call",
-        "line": 356,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 357,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "refresh",
-        "targetName": "refresh",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 358,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 359,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 360,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
         "line": 361,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
-        "edgeType": "call",
-        "line": 362,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "onClose",
-        "targetName": "onClose",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "formatName",
+        "targetName": "formatName",
         "edgeType": "call",
         "line": 363,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 366,
+        "line": 364,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "setStep",
-        "targetName": "setStep",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 368,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
         "edgeType": "call",
         "line": 369,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "onClose",
+        "targetName": "onClose",
         "edgeType": "call",
-        "line": 375,
-        "conditional": true,
+        "line": 370,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 373,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
         "line": 376,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
-        "line": 379,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 380,
-        "conditional": false,
+        "line": 382,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 381,
+        "line": 383,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 386,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 391,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "setStep",
+        "targetName": "setStep",
+        "edgeType": "call",
+        "line": 392,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "abort",
         "targetName": "abort",
         "edgeType": "call",
-        "line": 389,
+        "line": 400,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "call",
-        "line": 391,
+        "line": 402,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 396,
+        "line": 407,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "call",
-        "line": 399,
+        "line": 410,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
+        "line": 508,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 509,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "formatName",
+        "targetName": "formatName",
+        "edgeType": "call",
+        "line": 510,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "Dialog",
+        "targetName": "Dialog",
+        "edgeType": "render",
+        "line": 410,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "DialogContent",
+        "targetName": "DialogContent",
+        "edgeType": "render",
+        "line": 411,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "DialogHeader",
+        "targetName": "DialogHeader",
+        "edgeType": "render",
+        "line": 412,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "DialogTitle",
+        "targetName": "DialogTitle",
+        "edgeType": "render",
+        "line": 413,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "DialogDescription",
+        "targetName": "DialogDescription",
+        "edgeType": "render",
+        "line": 417,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
         "line": 497,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 498,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "formatName",
-        "targetName": "formatName",
-        "edgeType": "call",
-        "line": 499,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Dialog",
-        "targetName": "Dialog",
-        "edgeType": "render",
-        "line": 399,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "DialogContent",
-        "targetName": "DialogContent",
-        "edgeType": "render",
-        "line": 400,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "DialogHeader",
-        "targetName": "DialogHeader",
-        "edgeType": "render",
-        "line": 401,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "DialogTitle",
-        "targetName": "DialogTitle",
-        "edgeType": "render",
-        "line": 402,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "DialogDescription",
-        "targetName": "DialogDescription",
-        "edgeType": "render",
-        "line": 406,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 486,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 491,
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "SelectContent",
         "targetName": "SelectContent",
         "edgeType": "render",
-        "line": 496,
+        "line": 507,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 498,
+        "line": 509,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "DialogFooter",
         "targetName": "DialogFooter",
         "edgeType": "render",
-        "line": 518,
+        "line": 529,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 520,
+        "line": 531,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 520,
+        "line": 531,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 527,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "handleCancel",
-        "targetName": "handleCancel",
-        "edgeType": "callback",
-        "line": 527,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 530,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "handleDirectDisable",
-        "targetName": "handleDirectDisable",
-        "edgeType": "callback",
-        "line": 530,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
@@ -3714,7 +3678,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
@@ -3723,7 +3687,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
@@ -3732,16 +3696,34 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
-        "target": "handleReassignAndDisable",
-        "targetName": "handleReassignAndDisable",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "handleDirectDisable",
+        "targetName": "handleDirectDisable",
         "edgeType": "callback",
-        "line": 543,
+        "line": 541,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 549,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "handleCancel",
+        "targetName": "handleCancel",
+        "edgeType": "callback",
+        "line": 549,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
@@ -3750,65 +3732,83 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "handleReassignAndDisable",
+        "targetName": "handleReassignAndDisable",
+        "edgeType": "callback",
+        "line": 554,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 563,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 552,
+        "line": 563,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "AlertTriangle",
         "targetName": "AlertTriangle",
         "edgeType": "render",
-        "line": 403,
+        "line": 414,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "Briefcase",
         "targetName": "Briefcase",
         "edgeType": "render",
-        "line": 448,
+        "line": 459,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "User",
         "targetName": "User",
         "edgeType": "render",
-        "line": 456,
+        "line": 467,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "Building2",
         "targetName": "Building2",
         "edgeType": "render",
-        "line": 464,
+        "line": 475,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "CheckSquare",
         "targetName": "CheckSquare",
         "edgeType": "render",
-        "line": 472,
+        "line": 483,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:114:UserDisableReassignDialog",
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 492,
+        "line": 503,
         "conditional": false,
         "inLoop": false
       },

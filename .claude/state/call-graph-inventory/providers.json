@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-23T13:52:49.555Z",
+  "generated_at": "2026-01-24T00:46:02.138Z",
   "items": {
     "nodes": [
       {
@@ -112,19 +112,19 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:223:contactsBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:234:contactsBeforeGetList",
         "name": "contactsBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
-        "line": 223,
+        "line": 234,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:269:stripComputedFields",
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:280:stripComputedFields",
         "name": "stripComputedFields",
         "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
-        "line": 269,
+        "line": 280,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -220,28 +220,37 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "name": "organizationsBeforeDelete",
         "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
-        "line": 100,
+        "line": 106,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:170:organizationsBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "name": "organizationsBeforeDeleteMany",
+        "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
+        "line": 173,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:236:organizationsBeforeGetList",
         "name": "organizationsBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
-        "line": 170,
+        "line": 236,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:216:stripComputedFields",
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:283:stripComputedFields",
         "name": "stripComputedFields",
         "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
-        "line": 216,
+        "line": 283,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -868,46 +877,55 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:40:extractStoragePath",
+        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:22:isArray",
+        "name": "isArray",
+        "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
+        "line": 22,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:49:extractStoragePath",
         "name": "extractStoragePath",
         "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-        "line": 40,
+        "line": 49,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:66:extractAttachmentPaths",
+        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:75:extractAttachmentPaths",
         "name": "extractAttachmentPaths",
         "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-        "line": 66,
+        "line": 75,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "name": "deleteStorageFiles",
         "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-        "line": 98,
+        "line": 107,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "name": "collectContactFilePaths",
         "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-        "line": 141,
+        "line": 152,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "id": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "name": "collectOrganizationFilePaths",
         "file": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
-        "line": 189,
+        "line": 214,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -1315,25 +1333,43 @@
         "target": "deleteStorageFiles",
         "targetName": "deleteStorageFiles",
         "edgeType": "call",
-        "line": 190,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
-        "target": "error",
-        "targetName": "error",
-        "edgeType": "call",
         "line": 192,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:223:contactsBeforeGetList",
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 196,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:163:contactsBeforeDelete",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 199,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:234:contactsBeforeGetList",
         "target": "transformQToIlikeSearch",
         "targetName": "transformQToIlikeSearch",
         "edgeType": "call",
-        "line": 228,
+        "line": 239,
         "conditional": false,
         "inLoop": false
       },
@@ -1563,92 +1599,173 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 105,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "isInteger",
         "targetName": "isInteger",
         "edgeType": "call",
-        "line": 106,
+        "line": 112,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "collectOrganizationFilePaths",
         "targetName": "collectOrganizationFilePaths",
         "edgeType": "call",
-        "line": 112,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 116,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "catch",
         "targetName": "catch",
         "edgeType": "call",
-        "line": 131,
+        "line": 137,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "deleteStorageFiles",
         "targetName": "deleteStorageFiles",
         "edgeType": "call",
-        "line": 131,
+        "line": 137,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 133,
+        "line": 139,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 134,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:100:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 137,
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:170:organizationsBeforeGetList",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 179,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "isInteger",
+        "targetName": "isInteger",
+        "edgeType": "call",
+        "line": 180,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "collectOrganizationFilePaths",
+        "targetName": "collectOrganizationFilePaths",
+        "edgeType": "call",
+        "line": 185,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 187,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "catch",
+        "targetName": "catch",
+        "edgeType": "call",
+        "line": 197,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "deleteStorageFiles",
+        "targetName": "deleteStorageFiles",
+        "edgeType": "call",
+        "line": 197,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 198,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 199,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:236:organizationsBeforeGetList",
         "target": "transformQToIlikeSearch",
         "targetName": "transformQToIlikeSearch",
         "edgeType": "call",
-        "line": 175,
+        "line": 241,
         "conditional": false,
         "inLoop": false
       },
@@ -5253,489 +5370,552 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:40:extractStoragePath",
-        "target": "match",
-        "targetName": "match",
-        "edgeType": "call",
-        "line": 46,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:40:extractStoragePath",
-        "target": "decodeURIComponent",
-        "targetName": "decodeURIComponent",
-        "edgeType": "call",
-        "line": 49,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:66:extractAttachmentPaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:22:isArray",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 67,
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:49:extractStoragePath",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:49:extractStoragePath",
+        "target": "decodeURIComponent",
+        "targetName": "decodeURIComponent",
+        "edgeType": "call",
+        "line": 58,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:66:extractAttachmentPaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:75:extractAttachmentPaths",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 76,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:75:extractAttachmentPaths",
         "target": "extractStoragePath",
         "targetName": "extractStoragePath",
         "edgeType": "call",
-        "line": 80,
+        "line": 89,
         "conditional": false,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:66:extractAttachmentPaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:75:extractAttachmentPaths",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 82,
+        "line": 91,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "target": "remove",
         "targetName": "remove",
         "edgeType": "call",
-        "line": 102,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 102,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 106,
+        "line": 115,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 109,
+        "line": 119,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "target": "devLog",
         "targetName": "devLog",
         "edgeType": "call",
-        "line": 114,
+        "line": 124,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 118,
+        "line": 128,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:98:deleteStorageFiles",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:107:deleteStorageFiles",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 121,
+        "line": 132,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "not",
         "targetName": "not",
         "edgeType": "call",
-        "line": 146,
+        "line": 157,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "eq",
         "targetName": "eq",
         "edgeType": "call",
-        "line": 146,
+        "line": 157,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "select",
         "targetName": "select",
         "edgeType": "call",
-        "line": 146,
+        "line": 157,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 146,
+        "line": 157,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 165,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 154,
+        "line": 166,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "extractAttachmentPaths",
         "targetName": "extractAttachmentPaths",
         "edgeType": "call",
-        "line": 154,
+        "line": 166,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "not",
         "targetName": "not",
         "edgeType": "call",
-        "line": 159,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "eq",
         "targetName": "eq",
         "edgeType": "call",
-        "line": 159,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "select",
         "targetName": "select",
         "edgeType": "call",
-        "line": 159,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 159,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 180,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 167,
+        "line": 181,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "extractAttachmentPaths",
         "targetName": "extractAttachmentPaths",
         "edgeType": "call",
-        "line": 167,
+        "line": 181,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:141:collectContactFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 171,
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:152:collectContactFilePaths",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 193,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "single",
         "targetName": "single",
         "edgeType": "call",
-        "line": 194,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "eq",
         "targetName": "eq",
         "edgeType": "call",
-        "line": 194,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "select",
         "targetName": "select",
         "edgeType": "call",
-        "line": 194,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 194,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "extractStoragePath",
         "targetName": "extractStoragePath",
         "edgeType": "call",
-        "line": 201,
+        "line": 226,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "push",
         "targetName": "push",
-        "edgeType": "call",
-        "line": 202,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "not",
-        "targetName": "not",
-        "edgeType": "call",
-        "line": 206,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "eq",
-        "targetName": "eq",
-        "edgeType": "call",
-        "line": 206,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "select",
-        "targetName": "select",
-        "edgeType": "call",
-        "line": 206,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 206,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 214,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "extractAttachmentPaths",
-        "targetName": "extractAttachmentPaths",
-        "edgeType": "call",
-        "line": 214,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "is",
-        "targetName": "is",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "eq",
-        "targetName": "eq",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "select",
-        "targetName": "select",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 219,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "collectContactFilePaths",
-        "targetName": "collectContactFilePaths",
         "edgeType": "call",
         "line": 227,
         "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "push",
-        "targetName": "push",
-        "edgeType": "call",
-        "line": 228,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "is",
-        "targetName": "is",
-        "edgeType": "call",
-        "line": 233,
-        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "or",
-        "targetName": "or",
-        "edgeType": "call",
-        "line": 233,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "select",
-        "targetName": "select",
-        "edgeType": "call",
-        "line": 233,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
-        "target": "from",
-        "targetName": "from",
-        "edgeType": "call",
-        "line": 233,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "not",
         "targetName": "not",
         "edgeType": "call",
-        "line": 243,
-        "conditional": true,
-        "inLoop": true
+        "line": 231,
+        "conditional": false,
+        "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "eq",
         "targetName": "eq",
         "edgeType": "call",
-        "line": 243,
-        "conditional": true,
-        "inLoop": true
+        "line": 231,
+        "conditional": false,
+        "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "select",
         "targetName": "select",
         "edgeType": "call",
-        "line": 243,
-        "conditional": true,
-        "inLoop": true
+        "line": 231,
+        "conditional": false,
+        "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 243,
+        "line": 231,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 239,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 251,
+        "line": 240,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "extractAttachmentPaths",
         "targetName": "extractAttachmentPaths",
         "edgeType": "call",
-        "line": 251,
+        "line": 240,
         "conditional": true,
         "inLoop": true
       },
       {
-        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:189:collectOrganizationFilePaths",
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "is",
+        "targetName": "is",
+        "edgeType": "call",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "eq",
+        "targetName": "eq",
+        "edgeType": "call",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "select",
+        "targetName": "select",
+        "edgeType": "call",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "collectContactFilePaths",
+        "targetName": "collectContactFilePaths",
+        "edgeType": "call",
+        "line": 254,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 255,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "is",
+        "targetName": "is",
+        "edgeType": "call",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "or",
+        "targetName": "or",
+        "edgeType": "call",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "select",
+        "targetName": "select",
+        "edgeType": "call",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "not",
+        "targetName": "not",
+        "edgeType": "call",
+        "line": 270,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "eq",
+        "targetName": "eq",
+        "edgeType": "call",
+        "line": 270,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "select",
+        "targetName": "select",
+        "edgeType": "call",
+        "line": 270,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 270,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 278,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 279,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "extractAttachmentPaths",
+        "targetName": "extractAttachmentPaths",
+        "edgeType": "call",
+        "line": 279,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 257,
+        "line": 289,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/utils/storageCleanup.ts:214:collectOrganizationFilePaths",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 292,
+        "conditional": true,
         "inLoop": false
       },
       {

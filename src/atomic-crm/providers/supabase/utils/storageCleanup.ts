@@ -186,10 +186,11 @@ export async function collectContactFilePaths(contactId: number): Promise<string
     // INTENTIONAL SILENT: File collection failure should not block archive operation.
     // Orphaned files are acceptable technical debt - cleaned up via scheduled job.
     // Structured logging for debugging without blocking the caller.
-    console.warn("[StorageCleanup] Error collecting contact files", {
+    logger.warn("Error collecting contact files", {
+      feature: "StorageCleanup",
       contactId,
       collectedSoFar: paths.length,
-      error: error instanceof Error ? error.message : String(error),
+      errorMessage: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       note: "Partial collection may have succeeded - returning collected paths",
     });
@@ -285,10 +286,11 @@ export async function collectOrganizationFilePaths(orgId: number): Promise<strin
     // INTENTIONAL SILENT: File collection failure should not block archive operation.
     // Orphaned files are acceptable technical debt - cleaned up via scheduled job.
     // Structured logging for debugging without blocking the caller.
-    console.warn("[StorageCleanup] Error collecting organization files", {
+    logger.warn("Error collecting organization files", {
+      feature: "StorageCleanup",
       orgId,
       collectedSoFar: paths.length,
-      error: error instanceof Error ? error.message : String(error),
+      errorMessage: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       note: "Partial collection may have succeeded - returning collected paths",
     });

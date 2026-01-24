@@ -1,13 +1,13 @@
 {
   "chunk_name": "services",
-  "generated_at": "2026-01-23T13:52:49.577Z",
+  "generated_at": "2026-01-24T00:46:02.271Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/services/digest.service.ts:382:createDigestService",
+        "id": "src/atomic-crm/services/digest.service.ts:383:createDigestService",
         "name": "createDigestService",
         "file": "src/atomic-crm/services/digest.service.ts",
-        "line": 382,
+        "line": 383,
         "nodeType": "arrow",
         "exported": true,
         "async": false

@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-23T13:52:45.630Z",
+  "generated_at": "2026-01-24T00:45:44.861Z",
   "item_count": 8,
   "items": [
     {
@@ -17,7 +17,7 @@
     {
       "name": "useFilterCleanup",
       "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
-      "line": 46,
+      "line": 47,
       "parameters": [
         "resource"
       ],
@@ -43,7 +43,7 @@
     {
       "name": "useRecentSearches",
       "file": "src/atomic-crm/hooks/useRecentSearches.ts",
-      "line": 155,
+      "line": 158,
       "parameters": [],
       "returnType": "UseRecentSearchesReturn",
       "dependencies": [
@@ -68,7 +68,7 @@
     {
       "name": "useRelatedRecordCounts",
       "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
-      "line": 102,
+      "line": 104,
       "parameters": [
         "{\n  resource,\n  ids,\n  enabled = true,\n}"
       ],

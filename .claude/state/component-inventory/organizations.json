@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-23T13:52:37.630Z",
+  "generated_at": "2026-01-24T00:45:06.950Z",
   "item_count": 76,
   "items": [
     {
@@ -143,7 +143,7 @@
     {
       "name": "AuthorizationsTab",
       "file": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
-      "line": 40,
+      "line": 41,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -160,6 +160,7 @@
         "./authorization-types",
         "@/components/admin/AdminButton",
         "@/components/ui/skeleton",
+        "@/lib/logger",
         "lucide-react",
         "react",
         "react-admin"
@@ -180,7 +181,7 @@
     {
       "name": "AuthorizationsTab",
       "file": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
-      "line": 40,
+      "line": 41,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -197,6 +198,7 @@
         "./authorization-types",
         "@/components/admin/AdminButton",
         "@/components/ui/skeleton",
+        "@/lib/logger",
         "lucide-react",
         "react",
         "react-admin"
@@ -1502,7 +1504,7 @@
     {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 88,
+      "line": 89,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1521,6 +1523,7 @@
         "@/components/ui/popover",
         "@/components/ui/select",
         "@/hooks/useSupportCreateSuggestion",
+        "@/lib/logger",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
         "ra-core",
@@ -1537,7 +1540,7 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 272,
+      "line": 273,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1557,6 +1560,7 @@
         "@/components/ui/popover",
         "@/components/ui/select",
         "@/hooks/useSupportCreateSuggestion",
+        "@/lib/logger",
         "@hookform/resolvers/zod",
         "@tanstack/react-query",
         "ra-core",
@@ -1888,7 +1892,7 @@
     {
       "name": "OrganizationDetailsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
-      "line": 65,
+      "line": 66,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -1913,6 +1917,7 @@
         "@/components/ra-wrappers/text-input",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
+        "@/lib/logger",
         "ra-core",
         "react",
         "react-admin",
