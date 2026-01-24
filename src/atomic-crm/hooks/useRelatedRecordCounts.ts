@@ -70,6 +70,8 @@ interface UseRelatedRecordCountsResult {
   isLoading: boolean;
   /** Any error that occurred */
   error: Error | null;
+  /** True if some (but not all) queries failed - UI should show warning */
+  hasPartialFailure: boolean;
 }
 
 /**
