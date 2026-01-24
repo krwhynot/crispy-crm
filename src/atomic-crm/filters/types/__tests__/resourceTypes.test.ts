@@ -8,6 +8,8 @@
 import { describe, it, expect } from "vitest";
 import { resourceExtractors, type FetchedResource } from "../resourceTypes";
 import type { Sales } from "../../../validation/sales";
+import type { Organization } from "../../../validation/organizations";
+import type { Tag } from "../../../validation/tags";
 
 describe("resourceExtractors", () => {
   describe("sales extractor", () => {

@@ -391,7 +391,8 @@ describe("OpportunitiesService", () => {
         products_to_sync: products,
       });
 
-      const callArgs = (mockDataProvider.rpc as any).mock.calls[0][1];
+      const rpcMock = mockDataProvider.rpc as Mock;
+      const callArgs = rpcMock.mock.calls[0][1];
 
       // Verify products_to_sync is not in opportunity_data
       expect(callArgs.opportunity_data).not.toHaveProperty("products_to_sync");

@@ -131,7 +131,7 @@ export function HealthDashboard() {
       setMetrics(newMetrics);
       setLastUpdated(new Date());
       setIsRefreshing(false);
-    }, 300);
+    }, UI_FEEDBACK_DELAY_MS);
   }, []);
 
   // Initial load and auto-refresh every 30 seconds
