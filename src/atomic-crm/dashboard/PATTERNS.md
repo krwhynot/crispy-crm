@@ -1282,7 +1282,7 @@ export function useEntityData({
 
 ---
 
-## Pattern N: Optimistic Updates with Rollback
+## Pattern M: Optimistic Updates with Rollback
 
 Immediate UI updates with automatic rollback on API failure.
 

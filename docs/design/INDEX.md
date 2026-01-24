@@ -2,7 +2,9 @@
 
 Central navigation hub for Crispy CRM design documentation.
 
-**Target Devices:** Desktop-first (1440px+) with iPad support for field sales reps.
+**Implementation Details:** See [design-system/](../design-system/INDEX.md) for code patterns (forms, filters, badges, typography).
+
+**Target Devices:** Desktop (1440px+) & iPad (equal priority) for field sales representatives.
 
 ---
 
