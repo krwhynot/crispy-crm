@@ -265,60 +265,7 @@ export function QuickLogForm({
 
 ---
 
-## Pattern D: Follow-Up Toast Notification
-
-Post-action toast with contextual follow-up action button.
-
-```tsx
-// utils/showFollowUpToast.tsx
-import { toast } from "sonner";
-import type { TaskItem } from "../types";
-
-interface FollowUpToastOptions {
-  task: TaskItem;
-  onCreateFollowUp: (task: TaskItem) => void;
-}
-
-export function showFollowUpToast({ task, onCreateFollowUp }: FollowUpToastOptions): void {
-  toast.success(`Task completed: ${task.subject}`, {
-    description: "Would you like to schedule a follow-up?",
-    duration: 5000, // 5 second auto-dismiss
-    action: {
-      label: "Create Follow-up",
-      onClick: () => onCreateFollowUp(task),
-    },
-  });
-}
-```
-
-```tsx
-// Usage in task completion handler
-const handleCompleteTask = async (taskId: number) => {
-  const task = tasks.find(t => t.id === taskId);
-  await completeTask(taskId);
-
-  showFollowUpToast({
-    task,
-    onCreateFollowUp: (completedTask) => {
-      navigate(`/tasks/create?followUp=${completedTask.id}`);
-    },
-  });
-};
-```
-
-**When to use**: After completing an action that commonly leads to a follow-up action. Provides a non-intrusive prompt without forcing the user into a workflow.
-
-**Key points:**
-- Uses Sonner's `toast.success()` for native action button support
-- 5-second auto-dismiss prevents UI clutter
-- Action callback receives original task for context
-- Non-blocking: user can ignore and toast disappears
-
-**Example:** `src/atomic-crm/dashboard/v3/utils/showFollowUpToast.tsx`
-
----
-
-## Pattern E: Snooze Popover with Calendar
+## Pattern D: Snooze Popover with Calendar
 
 Two-tier popover with quick options and calendar fallback for date selection.
 

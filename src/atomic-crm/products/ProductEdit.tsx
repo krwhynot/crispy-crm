@@ -49,7 +49,7 @@ const ProductEditForm = () => {
   if (!record) return null;
 
   return (
-    <Form defaultValues={defaultValues}>
+    <Form defaultValues={defaultValues} key={record.id}>
       <Card>
         <CardContent>
           <div className="mb-6">
