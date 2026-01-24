@@ -259,10 +259,12 @@ describe("useFavorites", () => {
   describe("cache invalidation on remove favorite", () => {
     beforeEach(() => {
       // Setup with existing favorite
-      mockUseGetList.mockReturnValue({
-        data: [mockFavorite],
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetList>);
+      mockUseGetList.mockReturnValue(
+        mockUseGetListReturn({
+          data: [mockFavorite],
+          isLoading: false,
+        })
+      );
     });
 
     it("should call invalidateQueries with userFavoriteKeys.all on successful update (soft delete)", async () => {
@@ -365,10 +367,12 @@ describe("useFavorites", () => {
         entity_id: i + 1,
       }));
 
-      mockUseGetList.mockReturnValue({
-        data: tenFavorites,
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetList>);
+      mockUseGetList.mockReturnValue(
+        mockUseGetListReturn({
+          data: tenFavorites,
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => useFavorites());
 
@@ -383,10 +387,12 @@ describe("useFavorites", () => {
         entity_id: i + 1,
       }));
 
-      mockUseGetList.mockReturnValue({
-        data: tenFavorites,
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetList>);
+      mockUseGetList.mockReturnValue(
+        mockUseGetListReturn({
+          data: tenFavorites,
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => useFavorites());
 
@@ -410,10 +416,12 @@ describe("useFavorites", () => {
 
   describe("user authentication", () => {
     it("should show error notification when user is not logged in", async () => {
-      mockUseGetIdentity.mockReturnValue({
-        data: undefined,
-        isLoading: false,
-      } as unknown as ReturnType<typeof useGetIdentity>);
+      mockUseGetIdentity.mockReturnValue(
+        mockUseGetIdentityReturn({
+          data: undefined,
+          isLoading: false,
+        })
+      );
 
       const { result } = renderHook(() => useFavorites());
 
