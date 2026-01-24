@@ -13,16 +13,15 @@
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { JunctionsService } from "../junctions.service";
-import type { DataProvider } from "ra-core";
 import { createMockDataProvider } from "@/tests/utils/mock-providers";
+import { createMockDataProviderWithRpc, type DataProviderWithRpc } from "@/tests/utils/typed-mocks";
 
 describe("JunctionsService", () => {
   let service: JunctionsService;
-  let mockDataProvider: DataProvider & { rpc?: any };
+  let mockDataProvider: DataProviderWithRpc;
 
   beforeEach(() => {
-    mockDataProvider = createMockDataProvider() as any;
-    mockDataProvider.rpc = vi.fn();
+    mockDataProvider = createMockDataProviderWithRpc(createMockDataProvider());
     service = new JunctionsService(mockDataProvider);
   });
 

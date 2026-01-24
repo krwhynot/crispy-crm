@@ -72,7 +72,8 @@ describe("productsCallbacks", () => {
 
       await productsCallbacks.beforeDelete!(params, mockDataProvider);
 
-      const updateCall = (mockDataProvider.update as any).mock.calls[0];
+      const updateMock = mockDataProvider.update as Mock;
+      const updateCall = updateMock.mock.calls[0];
       const deletedAt = updateCall[1].data.deleted_at;
 
       // Should be valid ISO string

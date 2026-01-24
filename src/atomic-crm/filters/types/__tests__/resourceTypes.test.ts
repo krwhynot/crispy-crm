@@ -137,12 +137,12 @@ describe("resourceExtractors", () => {
 
   describe("organizations extractor", () => {
     it("should return organization name", () => {
-      const org = {
+      const org: FetchedResource<Organization> = {
         id: 1,
         name: "Acme Corp",
       };
 
-      const result = resourceExtractors.organizations(org as any);
+      const result = resourceExtractors.organizations(org);
 
       expect(result).toBe("Acme Corp");
     });
@@ -150,12 +150,12 @@ describe("resourceExtractors", () => {
 
   describe("tags extractor", () => {
     it("should return tag name", () => {
-      const tag = {
+      const tag: FetchedResource<Tag> = {
         id: 1,
         name: "Important",
       };
 
-      const result = resourceExtractors.tags(tag as any);
+      const result = resourceExtractors.tags(tag);
 
       expect(result).toBe("Important");
     });

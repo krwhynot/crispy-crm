@@ -11,6 +11,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
+import type { DeleteParamsWithMeta } from "@/tests/utils/typed-mocks";
 
 // Must use vi.hoisted to define mock before vi.mock (hoisting issues)
 const { mockRpc } = vi.hoisted(() => ({

@@ -137,7 +137,7 @@ export function HealthDashboard() {
   // Initial load and auto-refresh every 30 seconds
   useEffect(() => {
     refreshMetrics();
-    const interval = setInterval(refreshMetrics, 30000);
+    const interval = setInterval(refreshMetrics, NOTIFICATION_POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [refreshMetrics]);
 

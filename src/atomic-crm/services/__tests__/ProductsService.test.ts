@@ -19,14 +19,14 @@ import type {
   ProductDistributorInput,
 } from "../products.service";
 import { createMockDataProvider, createMockProduct } from "@/tests/utils/mock-providers";
+import { createMockDataProviderWithRpc, type DataProviderWithRpc } from "@/tests/utils/typed-mocks";
 
 describe("ProductsService", () => {
   let service: ProductsService;
-  let mockDataProvider: ReturnType<typeof createMockDataProvider> & { rpc: any };
+  let mockDataProvider: DataProviderWithRpc;
 
   beforeEach(() => {
-    mockDataProvider = createMockDataProvider() as any;
-    mockDataProvider.rpc = vi.fn();
+    mockDataProvider = createMockDataProviderWithRpc(createMockDataProvider());
     service = new ProductsService(mockDataProvider);
   });
 
