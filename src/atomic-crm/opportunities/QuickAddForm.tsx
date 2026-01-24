@@ -279,7 +279,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     <Form defaultValues={defaultValues} mode="onBlur" resolver={createFormResolver(quickAddSchema)}>
       <QuickAddFormContent
         onSuccess={onSuccess}
-        identityId={identity?.id}
+        identity={identity}
         identityLoading={identityLoading}
       />
     </Form>
