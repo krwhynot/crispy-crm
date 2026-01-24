@@ -294,13 +294,13 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
  */
 interface QuickAddFormContentProps {
   onSuccess: () => void;
-  identityId?: string | number;
+  identity?: { id: string | number; fullName?: string; [key: string]: unknown };
   identityLoading: boolean;
 }
 
 const QuickAddFormContent = ({
   onSuccess,
-  identityId,
+  identity,
   identityLoading,
 }: QuickAddFormContentProps) => {
   const { mutate, isPending } = useQuickAdd();
@@ -370,12 +370,34 @@ const QuickAddFormContent = ({
 
   const salesList = salesListData?.data;
 
+  // Merge identity into sales choices for immediate display of current user
+  // Even before sales list loads, show the current user's name
+  const accountManagerChoices = useMemo(() => {
+    const choices =
+      salesList?.map((sale) => ({
+        id: sale.id,
+        name: sale.name || sale.email || `Sales #${sale.id}`,
+      })) ?? [];
+
+    // If sales list hasn't loaded but we have identity, include it as a fallback
+    if (!salesList && identity?.id) {
+      return [
+        {
+          id: Number(identity.id),
+          name: (identity.fullName as string) || `User #${identity.id}`,
+        },
+      ];
+    }
+
+    return choices;
+  }, [salesList, identity]);
+
   // Sync account_manager_id with identity when loaded
   useEffect(() => {
-    if (identityId && !identityLoading) {
-      setValue("account_manager_id", Number(identityId));
+    if (identity?.id && !identityLoading) {
+      setValue("account_manager_id", Number(identity.id));
     }
-  }, [identityId, identityLoading, setValue]);
+  }, [identity?.id, identityLoading, setValue]);
 
   // Watch form values for dependent UI updates
   const [organizationId, principalId, cityValue, productIds] = useWatch({
@@ -492,12 +514,7 @@ const QuickAddFormContent = ({
             <FormSelectInput
               source="account_manager_id"
               label="Account Manager"
-              choices={
-                salesList?.map((sale) => ({
-                  id: sale.id,
-                  name: sale.name || sale.email || `Sales #${sale.id}`,
-                })) ?? []
-              }
+              choices={accountManagerChoices}
               placeholder={salesLoading ? "Loading..." : "Select account manager"}
               disabled={salesLoading}
             />

@@ -91,7 +91,7 @@ describe("OpportunityListFilter - Network Optimization", () => {
         return { data: [], total: 0 };
       });
 
-      renderWithAdminContext(<OpportunityListFilter />, {
+      renderWithAdminContext(<FilterWithContext />, {
         dataProvider: {
           getList: mockGetList,
         } as Partial<DataProvider>,
@@ -137,7 +137,7 @@ describe("OpportunityListFilter - Network Optimization", () => {
         return { data: [], total: 0 };
       });
 
-      renderWithAdminContext(<OpportunityListFilter />, {
+      renderWithAdminContext(<FilterWithContext />, {
         dataProvider: {
           getList: mockGetList,
         } as Partial<DataProvider>,
@@ -178,7 +178,7 @@ describe("OpportunityListFilter - Network Optimization", () => {
         return { data: [], total: 0 };
       });
 
-      renderWithAdminContext(<OpportunityListFilter />, {
+      renderWithAdminContext(<FilterWithContext />, {
         dataProvider: {
           getList: mockGetList,
         } as Partial<DataProvider>,
@@ -218,7 +218,7 @@ describe("OpportunityListFilter - Network Optimization", () => {
         return { data: [], total: 0 };
       });
 
-      renderWithAdminContext(<OpportunityListFilter />, {
+      renderWithAdminContext(<FilterWithContext />, {
         dataProvider: {
           getList: mockGetList,
         } as Partial<DataProvider>,
@@ -274,7 +274,7 @@ describe("OpportunityListFilter - Network Optimization", () => {
         return { data: [], total: 0 };
       });
 
-      renderWithAdminContext(<OpportunityListFilter />, {
+      renderWithAdminContext(<FilterWithContext />, {
         dataProvider: {
           getList: mockGetList,
         } as Partial<DataProvider>,
@@ -321,7 +321,7 @@ describe("OpportunityListFilter - Network Optimization", () => {
         return { data: [], total: 0 };
       });
 
-      renderWithAdminContext(<OpportunityListFilter />, {
+      renderWithAdminContext(<FilterWithContext />, {
         dataProvider: {
           getList: mockGetList,
         } as Partial<DataProvider>,
