@@ -304,6 +304,7 @@ const QuickAddFormContent = ({
   identityLoading,
 }: QuickAddFormContentProps) => {
   const { mutate, isPending } = useQuickAdd();
+  const dataProvider = useDataProvider();
 
   // Use useFormContext to access form methods from RA's Form wrapper
   const {
@@ -319,31 +320,52 @@ const QuickAddFormContent = ({
   // Track whether user has interacted with Account Manager field
   const [shouldLoadSales, setShouldLoadSales] = useState(false);
 
-  // Data fetching hooks - Organizations and Principals needed immediately
-  const { data: principalsList, isLoading: principalsLoading } = useGetList("organizations", {
-    filter: { organization_type: "principal" },
-    pagination: { page: 1, perPage: 100 },
+  // PERFORMANCE OPTIMIZATION: Combine principals + customers/prospects into single query
+  // Reduces initial mount from 2 queries → 1 query (both hit same table with different filters)
+  // Trade-off: Fetch ~300 records total vs 100+200 in separate queries
+  const { data: allOrganizationsList, isLoading: organizationsLoading } = useGetList("organizations", {
+    filter: {}, // Fetch all organization types, filter client-side
+    pagination: { page: 1, perPage: 500 }, // Increased to accommodate all types
     sort: { field: "name", order: "ASC" },
-    meta: { staleTime: 5 * 60 * 1000 }, // Cache for 5 minutes
   });
 
-  const { data: organizationsList, isLoading: organizationsLoading } = useGetList("organizations", {
-    filter: { "organization_type@in": "(customer,prospect)" },
-    pagination: { page: 1, perPage: 200 },
-    sort: { field: "name", order: "ASC" },
-    meta: { staleTime: 5 * 60 * 1000 }, // Cache for 5 minutes
-  });
+  // Client-side filtering - negligible performance impact for ~300 records
+  const principalsList = useMemo(
+    () => allOrganizationsList?.filter((org) => org.organization_type === "principal") ?? [],
+    [allOrganizationsList]
+  );
+
+  const organizationsList = useMemo(
+    () =>
+      allOrganizationsList?.filter(
+        (org) => org.organization_type === "customer" || org.organization_type === "prospect"
+      ) ?? [],
+    [allOrganizationsList]
+  );
+
+  // Both lists share same loading state since they come from single query
+  const principalsLoading = organizationsLoading;
 
   // Defer sales list until user interacts with Account Manager field
   // Most users never change this (auto-populated from identity)
-  const { data: salesList, isLoading: salesLoading } = useGetList("sales", {
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "name", order: "ASC" },
-    meta: {
-      enabled: shouldLoadSales,
-      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+  const { data: salesListData, isLoading: salesLoading } = useQuery({
+    queryKey: [
+      "sales",
+      "getList",
+      { pagination: { page: 1, perPage: 100 }, sort: { field: "name", order: "ASC" } },
+    ],
+    queryFn: async () => {
+      const result = await dataProvider.getList("sales", {
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: "name", order: "ASC" },
+      });
+      return result;
     },
+    enabled: shouldLoadSales,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
+
+  const salesList = salesListData?.data;
 
   // Sync account_manager_id with identity when loaded
   useEffect(() => {
