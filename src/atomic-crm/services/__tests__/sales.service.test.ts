@@ -228,9 +228,9 @@ describe("SalesService", () => {
     });
 
     test("should throw if dataProvider lacks invoke capability", async () => {
-      const serviceWithoutInvoke = new SalesService({
-        ...createMockDataProvider(),
-      } as any);
+      // DataProvider without invoke method - intentional to test error handling
+      const providerWithoutInvoke: DataProviderWithInvoke = createMockDataProvider();
+      const serviceWithoutInvoke = new SalesService(providerWithoutInvoke);
 
       await expect(serviceWithoutInvoke.salesUpdate(1, { first_name: "John" })).rejects.toThrow(
         "DataProvider does not support Edge Function operations"
@@ -266,10 +266,11 @@ describe("SalesService", () => {
     });
 
     test("should exclude password from update data", async () => {
-      const updateDataWithPassword: any = {
+      // Intentional: Testing that password is excluded even if passed (bypasses type check)
+      const updateDataWithPassword = {
         first_name: "John",
         password: "should-not-be-here",
-      };
+      } as unknown as Parameters<typeof service.salesUpdate>[1];
 
       mockDataProvider.invoke = vi.fn().mockResolvedValue({ id: 1 } as Sale);
 

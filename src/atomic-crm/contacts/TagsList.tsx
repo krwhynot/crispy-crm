@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useRecordContext } from "ra-core";
 import { getTagColorClass } from "../tags/tag-colors";
+import type { Tag } from "../types";
 
 interface ColoredBadgeProps {
   source?: string;

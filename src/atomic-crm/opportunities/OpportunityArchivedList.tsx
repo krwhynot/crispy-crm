@@ -112,6 +112,16 @@ export const OpportunityArchivedList = () => {
   );
 };
 
+/**
+ * Module-level Intl formatters for performance.
+ * Created once at module load instead of on every call.
+ */
+const longDateFormatter = new Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "long",
+});
+const relativeTimeFormatter = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
+
 export function getRelativeTimeString(dateString: string): string {
   const date = new Date(dateString);
   date.setHours(0, 0, 0, 0);
@@ -124,13 +134,9 @@ export function getRelativeTimeString(dateString: string): string {
 
   // Check if the date is more than one week old
   if (Math.abs(unitDiff) > 7) {
-    return new Intl.DateTimeFormat(undefined, {
-      day: "numeric",
-      month: "long",
-    }).format(date);
+    return longDateFormatter.format(date);
   }
 
   // Intl.RelativeTimeFormat for dates within the last week
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
-  return ucFirst(rtf.format(unitDiff, "day"));
+  return ucFirst(relativeTimeFormatter.format(unitDiff, "day"));
 }
