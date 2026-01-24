@@ -164,6 +164,6 @@ describe("QuickLogForm provider integration", () => {
     );
 
     // Verify the mock function is accessible on the returned dataProvider
-    expect((dataProvider as any).logActivityWithTask).toBeDefined();
+    expect((dataProvider as ExtendedDataProvider).logActivityWithTask).toBeDefined();
   });
 });

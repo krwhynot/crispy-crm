@@ -306,10 +306,22 @@ vi.mock("@tanstack/react-query", async (importOriginal) => {
   };
 });
 
+// Mock form values type for react-hook-form mock
+interface MockFormValues {
+  activityType: string;
+  outcome: string;
+  notes: string;
+  date: Date;
+  createFollowUp: boolean;
+  opportunityId: number | undefined;
+  contactId: number | undefined;
+  organizationId: number | undefined;
+}
+
 // Mock react-hook-form with controlled form state - use importOriginal to preserve all exports
 vi.mock("react-hook-form", async (importOriginal) => {
   const actual = await importOriginal<typeof ReactHookForm>();
-  const mockFormValues = {
+  const mockFormValues: MockFormValues = {
     activityType: "Call",
     outcome: "Connected",
     notes: "",
@@ -323,15 +335,16 @@ vi.mock("react-hook-form", async (importOriginal) => {
     ...actual,
     useForm: () => ({
       control: {},
-      handleSubmit: (fn: any) => (e?: any) => {
-        e?.preventDefault?.();
-        fn({
-          activityType: "Call",
-          outcome: "Connected",
-          notes: "Test notes",
-          date: new Date(),
-        });
-      },
+      handleSubmit:
+        (fn: (data: Record<string, unknown>) => void) => (e?: { preventDefault?: () => void }) => {
+          e?.preventDefault?.();
+          fn({
+            activityType: "Call",
+            outcome: "Connected",
+            notes: "Test notes",
+            date: new Date(),
+          });
+        },
       watch: (field?: string) => {
         if (!field) return mockFormValues;
         if (field === "activityType") return "Call";
@@ -348,16 +361,24 @@ vi.mock("react-hook-form", async (importOriginal) => {
     useWatch: (options?: { name?: string[] }) => {
       if (options?.name) {
         // Return array of values for named fields
-        return options.name.map((field: string) => (mockFormValues as any)[field]);
+        return options.name.map((field: string) => mockFormValues[field as keyof MockFormValues]);
       }
       // Return all form values
       return mockFormValues;
     },
-    Controller: ({ render, name }: any) => {
+    Controller: ({
+      render,
+      name,
+    }: {
+      render: (props: {
+        field: { value: undefined; onChange: ReturnType<typeof vi.fn>; name: string };
+      }) => ReactNode;
+      name: string;
+    }) => {
       const field = { value: undefined, onChange: vi.fn(), name };
       return render({ field });
     },
-    FormProvider: ({ children }: any) => <>{children}</>,
+    FormProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
     useFormContext: () => ({
       getFieldState: () => ({}),
       formState: { isSubmitting: false, errors: {} },

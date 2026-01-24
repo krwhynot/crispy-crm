@@ -93,10 +93,10 @@ describe("ActivityRelatedTab", () => {
 
   describe("Empty State", () => {
     it("shows empty state when no relationships exist", () => {
-      const activity = createMockActivity({
-        contact_id: undefined,
-        organization_id: undefined,
-        opportunity_id: undefined,
+      const activity = createTestActivity({
+        contact_id: null,
+        organization_id: null,
+        opportunity_id: null,
       });
 
       renderWithAdminContext(
@@ -107,10 +107,10 @@ describe("ActivityRelatedTab", () => {
     });
 
     it("empty state has correct title and description", () => {
-      const activity = createMockActivity({
-        contact_id: undefined,
-        organization_id: undefined,
-        opportunity_id: undefined,
+      const activity = createTestActivity({
+        contact_id: null,
+        organization_id: null,
+        opportunity_id: null,
       });
 
       renderWithAdminContext(

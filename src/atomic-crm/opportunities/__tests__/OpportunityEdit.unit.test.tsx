@@ -99,13 +99,13 @@ describe("OpportunityEdit - Form Architecture", () => {
 
 describe("OpportunityEdit - Cache Invalidation", () => {
   it("should invalidate correct cache keys", () => {
-    const mockQueryClient = {
+    const mockQueryClient: MockQueryClient = {
       invalidateQueries: vi.fn(),
     };
 
     // Simulate onSuccess callback
     const onSuccess = () => {
-      mockQueryClient.invalidateQueries({ queryKey: ["opportunities"] } as any);
+      mockQueryClient.invalidateQueries({ queryKey: ["opportunities"] });
     };
 
     onSuccess();
@@ -116,14 +116,14 @@ describe("OpportunityEdit - Cache Invalidation", () => {
   });
 
   it("should handle cache invalidation errors gracefully", () => {
-    const mockQueryClient = {
+    const mockQueryClient: MockQueryClient = {
       invalidateQueries: vi.fn().mockRejectedValue(new Error("Cache error")),
     };
 
     // onSuccess should not throw even if cache invalidation fails
     const onSuccess = async () => {
       try {
-        await mockQueryClient.invalidateQueries({ queryKey: ["opportunities"] } as any);
+        await mockQueryClient.invalidateQueries({ queryKey: ["opportunities"] });
       } catch (error: unknown) {
         // Silently handle cache errors - the update was successful
         console.warn("Cache invalidation failed:", error);

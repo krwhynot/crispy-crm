@@ -124,9 +124,9 @@ describe("AuthorizationsTab", () => {
     test("renders loading skeleton when fetching authorizations", () => {
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: undefined, isPending: true, error: null } as any;
+          return mockUseGetListReturn({ data: undefined, isPending: true, error: null });
         }
-        return { data: [], isPending: false, error: null } as any;
+        return mockUseGetListReturn({ data: [], isPending: false, error: null });
       });
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);

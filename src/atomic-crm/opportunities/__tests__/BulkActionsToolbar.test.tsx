@@ -130,8 +130,8 @@ describe("BulkActionsToolbar", () => {
     });
 
     it("should prepare correct data structure for status update", () => {
-      const updateData = {
-        status: "on_hold" as any,
+      const updateData: Pick<Opportunity, "status" | "status_manual"> = {
+        status: "on_hold",
         status_manual: true,
       };
 

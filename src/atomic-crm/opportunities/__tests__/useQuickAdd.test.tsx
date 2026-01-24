@@ -20,8 +20,8 @@ vi.mock("ra-core", async (importOriginal) => {
 import { useDataProvider, useNotify } from "ra-core";
 
 describe("useQuickAdd", () => {
-  let mockDataProvider: any;
-  let mockNotify: ReturnType<typeof vi.fn>;
+  let mockDataProvider: Pick<ExtendedDataProvider, "createBoothVisitor">;
+  let mockNotify: Mock;
   let queryClient: QueryClient;
 
   // Test data with new required account_manager_id field
