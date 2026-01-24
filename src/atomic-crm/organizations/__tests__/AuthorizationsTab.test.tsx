@@ -104,7 +104,7 @@ describe("AuthorizationsTab", () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Default implementations for all hooks
     vi.mocked(reactAdmin.useRefresh).mockReturnValue(mockRefresh);
@@ -351,12 +351,20 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
+            return mockUseGetListReturn({
+              data: [mockAuthorizations[0]],
+              isPending: false,
+              error: null,
+            });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
+              return mockUseGetListReturn({
+                data: principal ? [principal] : [],
+                isPending: false,
+                error: null,
+              });
             }
             return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
@@ -384,16 +392,24 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+            return mockUseGetListReturn({
+              data: [mockAuthorizations[0]],
+              isPending: false,
+              error: null,
+            });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({
+                data: principal ? [principal] : [],
+                isPending: false,
+                error: null,
+              });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -425,16 +441,16 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -470,12 +486,12 @@ describe("AuthorizationsTab", () => {
 
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
-          return { data: mockAuthorizations, isPending: false, error: null } as any;
+          return { data: mockAuthorizations, isPending: false, error: null });
         }
         if (resource === "organizations") {
-          return { data: mockPrincipals, isPending: false, error: null } as any;
+          return { data: mockPrincipals, isPending: false, error: null });
         }
-        return { data: [], isPending: false, error: null } as any;
+        return { data: [], isPending: false, error: null });
       });
 
       renderWithAdminContext(
@@ -505,16 +521,16 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -540,22 +556,22 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "product_distributor_authorizations") {
-            return { data: mockProductAuths, isPending: false, error: null } as any;
+            return { data: mockProductAuths, isPending: false, error: null });
           }
           if (resource === "products") {
-            return { data: mockProducts, isPending: false, error: null } as any;
+            return { data: mockProducts, isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -589,22 +605,22 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "product_distributor_authorizations") {
-            return { data: mockProductAuths, isPending: false, error: null } as any;
+            return { data: mockProductAuths, isPending: false, error: null });
           }
           if (resource === "products") {
-            return { data: mockProducts, isPending: false, error: null } as any;
+            return { data: mockProducts, isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -639,22 +655,22 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "product_distributor_authorizations") {
-            return { data: mockProductAuths, isPending: false, error: null } as any;
+            return { data: mockProductAuths, isPending: false, error: null });
           }
           if (resource === "products") {
-            return { data: mockProducts, isPending: false, error: null } as any;
+            return { data: mockProducts, isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -685,16 +701,16 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: [mockAuthorizations[0]], isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -721,16 +737,16 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [expiredAuth], isPending: false, error: null } as any;
+            return { data: [expiredAuth], isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
@@ -757,16 +773,16 @@ describe("AuthorizationsTab", () => {
           }>
         ) => {
           if (resource === "distributor_principal_authorizations") {
-            return { data: [inactiveAuth], isPending: false, error: null } as any;
+            return { data: [inactiveAuth], isPending: false, error: null });
           }
           if (resource === "organizations") {
             if (params?.filter?.id) {
               const principal = mockPrincipals.find((p) => p.id === params.filter!.id);
-              return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+              return mockUseGetListReturn({ data: principal ? [principal] : [], isPending: false, error: null });
             }
-            return { data: mockPrincipals, isPending: false, error: null } as any;
+            return mockUseGetListReturn({ data: mockPrincipals, isPending: false, error: null });
           }
-          return { data: [], isPending: false, error: null } as any;
+          return mockUseGetListReturn({ data: [], isPending: false, error: null });
         }
       );
 
