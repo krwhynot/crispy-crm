@@ -55,7 +55,7 @@ describe("withValidation", () => {
     };
 
     // Override the mock implementation for this test
-    (ValidationService as any).mockImplementation(() => mockValidationService);
+    vi.mocked(ValidationService).mockImplementation(() => mockValidationService);
   });
 
   afterEach(() => {

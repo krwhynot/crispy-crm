@@ -121,6 +121,7 @@ export function SalesProfileTab({
       } else {
         notify("An error occurred", { type: "error" });
       }
+      throw error;
     }
   };
 

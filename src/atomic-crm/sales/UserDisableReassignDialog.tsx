@@ -209,6 +209,7 @@ export function UserDisableReassignDialog({
         });
         notify("Failed to check user records", { type: "error" });
         onClose();
+        throw error;
       }
     };
 
@@ -390,6 +391,7 @@ export function UserDisableReassignDialog({
       });
       notify("Failed to reassign records", { type: "error" });
       setStep("reassign");
+      throw error;
     } finally {
       abortControllerRef.current = null;
     }

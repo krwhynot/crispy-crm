@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
 /**
  * Props for TextColumnFilter component
@@ -13,7 +14,7 @@ export interface TextColumnFilterProps {
   source: string;
   /** Placeholder text for input */
   placeholder?: string;
-  /** Debounce delay in milliseconds (default: 300ms) */
+  /** Debounce delay in milliseconds (default: SEARCH_DEBOUNCE_MS) */
   debounceMs?: number;
   /** Additional CSS classes */
   className?: string;

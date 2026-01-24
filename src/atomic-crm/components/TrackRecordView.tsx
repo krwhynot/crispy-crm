@@ -16,7 +16,7 @@ import { useRecentItems } from "../hooks/useRecentItems";
  * ```
  */
 export const TrackRecordView = () => {
-  const record = useRecordContext();
+  const record = useRecordContext<RaRecord>();
   const resource = useResourceContext();
   const getRecordRepresentation = useGetRecordRepresentation(resource);
   const { addRecentItem } = useRecentItems();

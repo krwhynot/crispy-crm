@@ -272,8 +272,11 @@ describe("withErrorLogging", () => {
       };
 
       const wrappedProvider = withErrorLogging(extendedProvider);
-      expect((wrappedProvider as any).customMethod).toBeDefined();
-      const result = await (wrappedProvider as any).customMethod();
+      const extendedWrappedProvider = wrappedProvider as typeof wrappedProvider & {
+        customMethod: () => Promise<{ success: boolean }>;
+      };
+      expect(extendedWrappedProvider.customMethod).toBeDefined();
+      const result = await extendedWrappedProvider.customMethod();
       expect(result).toEqual({ success: true });
     });
   });
