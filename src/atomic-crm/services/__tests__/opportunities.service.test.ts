@@ -285,7 +285,12 @@ describe("OpportunitiesService", () => {
     test("should handle undefined opportunity ID", async () => {
       mockDataProvider.rpc = vi.fn().mockResolvedValue({ success: true });
 
-      await service.archiveOpportunity({ ...mockOpportunity, id: undefined as any });
+      // Intentional: testing undefined ID handling - bypasses type check
+      const opportunityWithUndefinedId = {
+        ...mockOpportunity,
+        id: undefined,
+      } as unknown as Opportunity;
+      await service.archiveOpportunity(opportunityWithUndefinedId);
 
       expect(mockDataProvider.rpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
         opp_id: undefined,

@@ -285,8 +285,9 @@ describe("Task Validation Schemas (task.ts)", () => {
       });
 
       it("should accept undefined for created_by (optional)", () => {
-        const taskWithoutCreator = { ...validTask };
-        delete (taskWithoutCreator as any).created_by;
+        // Use Partial to allow property deletion for testing optional field behavior
+        const taskWithoutCreator: Partial<Task> = { ...validTask };
+        delete taskWithoutCreator.created_by;
         const result = taskSchema.safeParse(taskWithoutCreator);
         expect(result.success).toBe(true);
       });

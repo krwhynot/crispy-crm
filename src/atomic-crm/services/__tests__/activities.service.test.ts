@@ -227,7 +227,8 @@ describe("ActivitiesService", () => {
 
   describe("Error Handling Edge Cases", () => {
     test("should handle null response from RPC", async () => {
-      mockGetActivityLog.mockResolvedValue(null as any);
+      // Intentional: testing null response handling
+      mockGetActivityLog.mockResolvedValue(null);
 
       // Service returns whatever getActivityLog returns (including null)
       const result = await service.getActivityLog();
@@ -235,7 +236,8 @@ describe("ActivitiesService", () => {
     });
 
     test("should handle undefined response from RPC", async () => {
-      mockGetActivityLog.mockResolvedValue(undefined as any);
+      // Intentional: testing undefined response handling
+      mockGetActivityLog.mockResolvedValue(undefined);
 
       // Service returns whatever getActivityLog returns (including undefined)
       const result = await service.getActivityLog();

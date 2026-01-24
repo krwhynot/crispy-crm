@@ -16,15 +16,18 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type * as ReactAdmin from "react-admin";
 import { useHybridSearch } from "../useHybridSearch";
 
+// Generic record type for mock data
+type MockRecord = { id: number; name: string };
+
 // Track mock state
 const mockInitialData = {
-  data: [] as any[],
+  data: [] as MockRecord[],
   isPending: false,
   error: null as Error | null,
 };
 
 const mockSearchData = {
-  data: [] as any[],
+  data: [] as MockRecord[],
   isPending: false,
   error: null as Error | null,
 };

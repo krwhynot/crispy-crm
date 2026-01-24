@@ -163,7 +163,14 @@
 
 ## Resolved Items Summary
 
-**Total Resolved: 117 items**
+**Total Resolved: 120 items**
+
+### Error Handling Verification (Jan 24, 2026)
+
+**P1 Fixed (3 items):**
+- ERR-01: Avatar utils already have logger.warn calls (lines 57, 88)
+- ERR-02: Filter storage already has logger.warn calls (lines 72-76, 192-195)
+- ERR-03: QuickCreatePopover already has logger.error + throw error (lines 123-128, 158-163)
 
 ### TODO/FIXME Scan (Jan 23, 2026)
 
@@ -231,11 +238,10 @@
 | DEAD-07 | Verify sales show route is registered or delete | 5 min |
 | FORM-02/03 | Add min-h-11 to FormErrorSummary buttons | 5 min |
 | EC-01 | Add dir="auto" to textarea.tsx | 2 min |
-| ERR-01/02/03 | Add console.error logging to catch blocks | 15 min |
 | UI-26 | Add aria-controls to select-ui.tsx and filter-select-ui.tsx | 10 min |
 | CFG-01 | Move DEFAULT_SEGMENT_ID to env variable | 5 min |
 
-**Quick wins batch: ~55 minutes for 9+ items fixed**
+**Quick wins batch: ~40 minutes for 7+ items fixed**
 
 ---
 

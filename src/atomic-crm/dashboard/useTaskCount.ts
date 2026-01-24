@@ -1,5 +1,6 @@
 import { useGetList } from "react-admin";
 import { useCurrentSale } from "./useCurrentSale";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants";
 
 interface UseTaskCountResult {
   pendingCount: number;

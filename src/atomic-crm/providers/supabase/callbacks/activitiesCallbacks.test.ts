@@ -56,7 +56,8 @@ describe("activitiesCallbacks", () => {
 
       // Should return modified params to skip actual delete
       expect(result).toHaveProperty("meta");
-      expect((result as any).meta.skipDelete).toBe(true);
+      const resultWithMeta = result as DeleteParamsWithMeta;
+      expect(resultWithMeta.meta?.skipDelete).toBe(true);
     });
 
     it("should set deleted_at to ISO timestamp", async () => {
@@ -67,7 +68,8 @@ describe("activitiesCallbacks", () => {
 
       await activitiesCallbacks.beforeDelete!(params, mockDataProvider);
 
-      const updateCall = (mockDataProvider.update as any).mock.calls[0];
+      const updateMock = mockDataProvider.update as Mock;
+      const updateCall = updateMock.mock.calls[0];
       const deletedAt = updateCall[1].data.deleted_at;
 
       // Should be valid ISO string
