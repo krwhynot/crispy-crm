@@ -15,29 +15,23 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { GetManyReferenceParams } from "react-admin";
 import { useRelatedRecordCounts } from "../useRelatedRecordCounts";
 
-// Mock dataProvider
+// Create stable mock functions outside the factory
 const mockGetManyReference = vi.fn();
 
-// Create stable dataProvider object
-const stableDataProvider = {
-  getList: vi.fn(),
-  getOne: vi.fn(),
-  getMany: vi.fn(),
-  getManyReference: mockGetManyReference,
-  create: vi.fn(),
-  update: vi.fn(),
-  updateMany: vi.fn(),
-  delete: vi.fn(),
-  deleteMany: vi.fn(),
-};
-
-// Mock react-admin
-vi.mock("react-admin", async (importOriginal) => {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  const actual = (await importOriginal()) as typeof import("react-admin");
+// Mock react-admin to avoid ES module resolution issues
+vi.mock("react-admin", async () => {
   return {
-    ...actual,
-    useDataProvider: () => stableDataProvider,
+    useDataProvider: () => ({
+      getList: vi.fn(),
+      getOne: vi.fn(),
+      getMany: vi.fn(),
+      getManyReference: mockGetManyReference,
+      create: vi.fn(),
+      update: vi.fn(),
+      updateMany: vi.fn(),
+      delete: vi.fn(),
+      deleteMany: vi.fn(),
+    }),
   };
 });
 
@@ -230,18 +224,12 @@ describe("useRelatedRecordCounts", () => {
       });
     });
 
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [1],
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [1],
+        enabled: true,
+      })
     );
 
     await waitFor(() => {
@@ -264,18 +252,12 @@ describe("useRelatedRecordCounts", () => {
       return Promise.reject(new Error(`Query ${callCount} failed`));
     });
 
-    const { result } = renderHook(
-      () =>
-        useRelatedRecordCounts({
-          resource: "organizations",
-          ids: [1],
-          enabled: true,
-        }),
-      {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
-      }
+    const { result } = renderHook(() =>
+      useRelatedRecordCounts({
+        resource: "organizations",
+        ids: [1],
+        enabled: true,
+      })
     );
 
     await waitFor(() => {
@@ -308,9 +290,6 @@ describe("useRelatedRecordCounts", () => {
           enabled: true,
         }),
       {
-        wrapper: ({ children }: { children: ReactNode }) => (
-          <TestWrapper dataProvider={createMockDataProvider()}>{children}</TestWrapper>
-        ),
         initialProps: { ids: [1] },
       }
     );
