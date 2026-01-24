@@ -176,6 +176,9 @@ describe("useHybridSearch", () => {
 
       act(() => {
         result.current.setSearchTerm("ac");
+      });
+
+      act(() => {
         vi.runAllTimers();
       });
 
@@ -212,6 +215,9 @@ describe("useHybridSearch", () => {
 
       act(() => {
         result.current.setSearchTerm("acme");
+      });
+
+      act(() => {
         vi.runAllTimers();
       });
 
