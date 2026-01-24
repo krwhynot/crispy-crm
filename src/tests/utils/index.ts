@@ -55,6 +55,7 @@ export {
   mockUseGetListReturn,
   mockUseGetOne,
   mockUseGetOneReturn,
+  mockUseGetManyReturn,
   mockUseCreate,
   mockUseCreateReturn,
   mockUseDelete,
@@ -73,6 +74,7 @@ export {
   type DataProviderWithRpc,
   type DeleteParamsWithMeta,
   type ActivityLogEntry,
+  type UseGetManyReturn,
 } from "./typed-mocks";
 
 // Typed test helpers for eliminating `: any` patterns

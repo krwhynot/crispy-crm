@@ -90,6 +90,45 @@ export function mockUseGetOne<RecordType extends RaRecord = RaRecord>(
 }
 
 /**
+ * Return type for useGetMany hook
+ */
+export interface UseGetManyReturn<RecordType extends RaRecord = RaRecord> {
+  data: RecordType[] | undefined;
+  isPending: boolean;
+  isFetching: boolean;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: Mock;
+}
+
+/**
+ * Create a mock return value for useGetMany hook
+ * @param overrides - Partial values to override defaults
+ *
+ * @example
+ * ```tsx
+ * vi.mocked(useGetMany<Contact>).mockReturnValue(
+ *   mockUseGetManyReturn<Contact>({
+ *     data: [mockContact1, mockContact2],
+ *     isLoading: false,
+ *   })
+ * );
+ * ```
+ */
+export function mockUseGetManyReturn<RecordType extends RaRecord = RaRecord>(
+  overrides?: Partial<UseGetManyReturn<RecordType>>
+): UseGetManyReturn<RecordType> {
+  return {
+    data: overrides?.data,
+    isPending: overrides?.isPending ?? false,
+    isFetching: overrides?.isFetching ?? false,
+    isLoading: overrides?.isLoading ?? false,
+    error: overrides?.error ?? null,
+    refetch: overrides?.refetch ?? vi.fn(),
+  } as UseGetManyReturn<RecordType>;
+}
+
+/**
  * Create a mock return value for useCreate hook
  * Returns a tuple of [mutate function, mutation state]
  * @param overrides - Options to customize the mock behavior
