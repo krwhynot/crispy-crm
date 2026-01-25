@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, lazy, Suspense, useRef, useMemo } from "react";
-import { useGetOne } from "react-admin";
+import { useDataProvider } from "react-admin";
+import { useQueries } from "@tanstack/react-query";
 import {
   Sheet,
   SheetContent,
