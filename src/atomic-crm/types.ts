@@ -106,9 +106,6 @@ export interface PhoneNumberAndType {
 // department, department_type, manager_id, sales_id, district_code, territory_name,
 // birthday, twitter_handle, address fields, created_at/updated_at/deleted_at,
 // nb_notes, nb_tasks, nb_activities, company_name (computed view fields)
-//
-// Legacy fields removed (not in database schema):
-// - has_newsletter, opportunity_owner_id, background
 
 // ContactOrganization interface removed - junction table was deprecated.
 // Contacts now use a direct organization_id FK (single org per contact).

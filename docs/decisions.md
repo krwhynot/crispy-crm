@@ -35,7 +35,7 @@
 **Date:** 2024-10
 **Context:** React Admin requires a data provider. Need consistent validation, security, and data transformation across all DB operations.
 
-**Decision:** All database access flows through ONE file: `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`. Never import Supabase client directly in components.
+**Decision:** All database access flows through ONE file: `src/atomic-crm/providers/supabase/composedDataProvider.ts`. Never import Supabase client directly in components.
 
 **Rationale:**
 - Single source of truth for data operations
@@ -59,7 +59,7 @@
 **Context:** Form validation was being duplicated—once in forms, once at API boundary. Type mismatches emerged (e.g., "operator" type in DB but not in Zod schema).
 
 **Decision:**
-- Validate ONLY in `unifiedDataProvider.ts`, never in form components
+- Validate ONLY in `composedDataProvider.ts`, never in form components
 - Form defaults come from `zodSchema.partial().parse({})`
 - Forms submit raw data; validation happens at provider layer
 

@@ -11,5 +11,4 @@ export const findOpportunityLabel = (
   return getOpportunityStageLabel(opportunityValue);
 };
 
-// Legacy compatibility - use centralized lookup
 export { findOpportunityLabel as legacyFindOpportunityLabel } from "./constants";
