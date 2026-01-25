@@ -9,7 +9,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCreateSuggestionContext } from "@/hooks/useSupportCreateSuggestion";
-import { contactKeys } from "@/atomic-crm/queryKeys";
+import { contactKeys, organizationKeys } from "@/atomic-crm/queryKeys";
 import {
   quickCreateContactFormSchema,
   type QuickCreateContactFormInput,
