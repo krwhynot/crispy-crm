@@ -16,10 +16,10 @@
     "L5_features": { "critical": 7, "high": 20, "medium": 48, "status": "CRITICAL" }
   },
   "by_category": {
-    "security": { "critical": 1, "high": 5, "medium": 5 },
-    "data-integrity": { "critical": 2, "high": 0, "medium": 2 },
+    "security": { "critical": 0, "high": 5, "medium": 5 },
+    "data-integrity": { "critical": 0, "high": 0, "medium": 2 },
     "error-handling": { "critical": 0, "high": 1, "medium": 2 },
-    "db-hardening": { "critical": 3, "high": 8, "medium": 5 },
+    "db-hardening": { "critical": 0, "high": 8, "medium": 5 },
     "stale-state": { "critical": 7, "high": 12, "medium": 8 },
     "workflow-gaps": { "critical": 2, "high": 4, "medium": 3 },
     "architecture": { "critical": 0, "high": 1, "medium": 2 },
@@ -325,9 +325,9 @@
   ],
   "trend": {
     "direction": "IMPROVING",
-    "note": "Total issues reduced 34% (220→146). High issues down 15% (65→55). Medium issues cut in half (-48%). Critical stable at 22 with some resolved as false positives, new cache invalidation issues found.",
+    "note": "L1 database security resolved: 7 critical issues closed (activities USING(true), product_distributors dual-auth, soft-delete filters, participant tables). Critical reduced 32% (22→15). All remaining critical are L5 cache/performance.",
     "previous_critical": 22,
-    "current_critical": 22,
+    "current_critical": 15,
     "previous_high": 65,
     "current_high": 55,
     "previous_medium": 133,
