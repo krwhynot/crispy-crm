@@ -255,14 +255,9 @@ ON CONFLICT (id) DO NOTHING;
 -- due to hybrid_soft_delete_cascade constraint that blocks org archival
 -- when active opportunities exist.
 
--- Archive opportunities linked to organizations we're about to soft-delete
-UPDATE opportunities SET deleted_at = NOW()
-WHERE deleted_at IS NULL
-  AND (
-    customer_organization_id IN (SELECT id FROM organizations WHERE deleted_at IS NULL)
-    OR principal_organization_id IN (SELECT id FROM organizations WHERE deleted_at IS NULL)
-    OR distributor_organization_id IN (SELECT id FROM organizations WHERE deleted_at IS NULL)
-  );
+-- Archive ALL migration-seeded opportunities first (they'll be recreated by seed RBAC section)
+-- This is safe because seed.sql always runs on fresh database after reset
+UPDATE opportunities SET deleted_at = NOW() WHERE deleted_at IS NULL;
 
 -- Soft-delete batch 1/11
 UPDATE organizations SET deleted_at = NOW()
