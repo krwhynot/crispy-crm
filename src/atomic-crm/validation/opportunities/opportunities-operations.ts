@@ -394,7 +394,8 @@ export const updateOpportunitySchema = opportunityBaseSchema
       return validTransitions.includes(data.stage);
     },
     {
-      message: "Invalid stage transition. Opportunities must progress through pipeline stages in order.",
+      message:
+        "Invalid stage transition. Opportunities must progress through pipeline stages in order.",
       path: ["stage"],
     }
   )

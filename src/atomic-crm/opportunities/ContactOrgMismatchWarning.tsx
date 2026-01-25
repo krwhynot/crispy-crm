@@ -64,8 +64,13 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
     }
   );
 
+  // Memoize visibility check to prevent unnecessary renders
+  const shouldRender = useMemo(() => {
+    return hasMismatch && !isLoading;
+  }, [hasMismatch, isLoading]);
+
   // Don't render if no mismatch or still loading
-  if (!hasMismatch || isLoading) {
+  if (!shouldRender) {
     return null;
   }
 

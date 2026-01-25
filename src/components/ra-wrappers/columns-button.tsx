@@ -30,7 +30,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FieldToggle } from "@/components/ra-wrappers/field-toggle";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 /**
@@ -69,8 +75,8 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
 
   return (
     <span className={cn("inline-flex", className)}>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
           {isMobile ? (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -86,15 +92,14 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
               {title}
             </Button>
           )}
-        </PopoverTrigger>
-        <PopoverContent
-          align="start"
-          className="w-56 p-0"
-          onOpenAutoFocus={(e) => e.preventDefault()}
-        >
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
           <ColumnsSelector storeKey={storeKey}>{children}</ColumnsSelector>
-        </PopoverContent>
-      </Popover>
+        </DialogContent>
+      </Dialog>
     </span>
   );
 };

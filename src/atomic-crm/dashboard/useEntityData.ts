@@ -143,6 +143,7 @@ export function useEntityData({
     },
     {
       staleTime: STALE_TIME_MS,
+      gcTime: GC_TIME_MS,
       placeholderData: (prev) => prev,
     }
   );
@@ -198,6 +199,7 @@ export function useEntityData({
     {
       enabled: anchorOrgMissing && anchorOrganizationId !== null,
       staleTime: STALE_TIME_MS,
+      gcTime: GC_TIME_MS,
     }
   );
 
@@ -218,6 +220,7 @@ export function useEntityData({
     {
       enabled: contactsForAnchorOrgMissing && anchorOrganizationId !== null,
       staleTime: STALE_TIME_MS,
+      gcTime: GC_TIME_MS,
     }
   );
 
@@ -238,6 +241,7 @@ export function useEntityData({
     {
       enabled: oppsForAnchorOrgMissing && anchorOrganizationId !== null,
       staleTime: STALE_TIME_MS,
+      gcTime: GC_TIME_MS,
     }
   );
 
