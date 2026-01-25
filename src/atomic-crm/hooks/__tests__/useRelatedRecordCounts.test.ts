@@ -7,7 +7,7 @@
  * - Some queries fail → hasPartialFailure = true, errors logged
  * - All queries fail → error state (not hasPartialFailure)
  * - Partial results show only successful counts
- * - Console.error called with structured details
+ * - Logger.warn called with structured details
  */
 
 import { renderHook, waitFor } from "@testing-library/react";
@@ -34,8 +34,16 @@ vi.mock("react-admin", async () => {
   };
 });
 
-// Mock console.error to verify logging
-const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+// Mock logger to verify structured logging
+const mockLoggerWarn = vi.fn();
+vi.mock("@/lib/logger", () => ({
+  logger: {
+    warn: mockLoggerWarn,
+    error: vi.fn(),
+    info: vi.fn(),
+    debug: vi.fn(),
+  },
+}));
 
 describe("useRelatedRecordCounts", () => {
   beforeEach(() => {

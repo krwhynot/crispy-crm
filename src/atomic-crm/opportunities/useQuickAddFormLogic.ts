@@ -24,8 +24,6 @@ interface QuickAddFormValues {
 interface UseQuickAddFormLogicProps {
   identity?: { id: string | number; fullName?: string; [key: string]: unknown };
   identityLoading: boolean;
-  onSuccess: () => void;
-  onSubmit: (data: QuickAddFormValues, closeAfter: boolean) => void;
 }
 
 /**
@@ -37,12 +35,7 @@ interface UseQuickAddFormLogicProps {
  * - Computed values (options, previews)
  * - Identity synchronization
  */
-export const useQuickAddFormLogic = ({
-  identity,
-  identityLoading,
-  onSuccess,
-  onSubmit: handleFormSubmit,
-}: UseQuickAddFormLogicProps) => {
+export const useQuickAddFormLogic = ({ identity, identityLoading }: UseQuickAddFormLogicProps) => {
   const dataProvider = useDataProvider();
   const { setValue, setFocus, control, reset } = useFormContext<QuickAddFormValues>();
 
@@ -158,15 +151,10 @@ export const useQuickAddFormLogic = ({
     organizationOptions,
     cityOptions,
     // State
-    shouldLoadSales,
     setShouldLoadSales,
     // Handlers
     handleCitySelect,
     onValidationError,
     handleOrganizationChange,
-    // Form methods
-    control,
-    reset,
-    setFocus,
   };
 };

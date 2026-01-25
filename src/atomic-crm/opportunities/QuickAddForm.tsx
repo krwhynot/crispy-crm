@@ -150,8 +150,6 @@ const QuickAddFormContent = ({
   } = useQuickAddFormLogic({
     identity,
     identityLoading,
-    onSuccess,
-    onSubmit,
   });
 
   // Watch form values for dependent UI updates
