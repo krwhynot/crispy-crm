@@ -302,12 +302,6 @@ describe("withErrorLogging", () => {
   });
 
   describe("success audit logging", () => {
-    let consoleInfoSpy: ReturnType<typeof vi.spyOn>;
-
-    beforeEach(() => {
-      consoleInfoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
-    });
-
     it("should log success for delete operation on any resource", async () => {
       const expectedResult = { data: { id: 123 } };
       (mockProvider.delete as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
@@ -315,13 +309,13 @@ describe("withErrorLogging", () => {
       const wrappedProvider = withErrorLogging(mockProvider);
       await wrappedProvider.delete("contacts", { id: 123 });
 
-      expect(consoleInfoSpy).toHaveBeenCalledWith(
-        "[DataProvider Audit]",
+      expect(logger.info).toHaveBeenCalledWith(
+        "DataProvider audit: sensitive operation succeeded",
         expect.objectContaining({
           method: "delete",
           resource: "contacts",
+          operation: "DataProvider.delete",
           recordId: 123,
-          timestamp: expect.any(String),
         })
       );
     });
@@ -333,13 +327,13 @@ describe("withErrorLogging", () => {
       const wrappedProvider = withErrorLogging(mockProvider);
       await wrappedProvider.deleteMany("opportunities", { ids: [1, 2, 3] });
 
-      expect(consoleInfoSpy).toHaveBeenCalledWith(
-        "[DataProvider Audit]",
+      expect(logger.info).toHaveBeenCalledWith(
+        "DataProvider audit: sensitive operation succeeded",
         expect.objectContaining({
           method: "deleteMany",
           resource: "opportunities",
+          operation: "DataProvider.deleteMany",
           recordId: [1, 2, 3],
-          timestamp: expect.any(String),
         })
       );
     });
@@ -351,13 +345,13 @@ describe("withErrorLogging", () => {
       const wrappedProvider = withErrorLogging(mockProvider);
       await wrappedProvider.update("sales", { id: 456, data: { name: "John" } });
 
-      expect(consoleInfoSpy).toHaveBeenCalledWith(
-        "[DataProvider Audit]",
+      expect(logger.info).toHaveBeenCalledWith(
+        "DataProvider audit: sensitive operation succeeded",
         expect.objectContaining({
           method: "update",
           resource: "sales",
+          operation: "DataProvider.update",
           recordId: 456,
-          timestamp: expect.any(String),
         })
       );
     });
@@ -369,13 +363,13 @@ describe("withErrorLogging", () => {
       const wrappedProvider = withErrorLogging(mockProvider);
       await wrappedProvider.create("opportunities", { data: { title: "Big Deal" } });
 
-      expect(consoleInfoSpy).toHaveBeenCalledWith(
-        "[DataProvider Audit]",
+      expect(logger.info).toHaveBeenCalledWith(
+        "DataProvider audit: sensitive operation succeeded",
         expect.objectContaining({
           method: "create",
           resource: "opportunities",
+          operation: "DataProvider.create",
           recordId: 789,
-          timestamp: expect.any(String),
         })
       );
     });
@@ -391,7 +385,7 @@ describe("withErrorLogging", () => {
         filter: {},
       });
 
-      expect(consoleInfoSpy).not.toHaveBeenCalled();
+      expect(logger.info).not.toHaveBeenCalled();
     });
   });
 });
