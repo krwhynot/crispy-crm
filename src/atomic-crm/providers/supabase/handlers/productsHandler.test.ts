@@ -126,11 +126,10 @@ describe("productsHandler", () => {
         })
       ).rejects.toThrow();
 
-      // Verify withErrorLogging caught and logged the error
+      // Verify withErrorLogging caught and logged the error with structured format
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[DataProvider Error]"),
-        expect.anything(),
-        expect.anything()
+        expect.stringContaining("DataProvider operation failed"),
+        expect.any(Error)
       );
 
       consoleErrorSpy.mockRestore();
@@ -148,10 +147,10 @@ describe("productsHandler", () => {
 
       await expect(handler.deleteMany("products", { ids: [997, 998, 999] })).rejects.toThrow();
 
+      // Verify withErrorLogging caught and logged the error with structured format
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[DataProvider Error]"),
-        expect.anything(),
-        expect.anything()
+        expect.stringContaining("DataProvider operation failed"),
+        expect.any(Error)
       );
 
       consoleErrorSpy.mockRestore();

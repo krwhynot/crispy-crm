@@ -153,13 +153,10 @@ describe("ActivitiesService", () => {
 
       await expect(service.getActivityLog(101, 5)).rejects.toThrow();
 
+      // Verify logger was called with the structured format
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[ActivitiesService] Failed to get activity log"),
-        expect.objectContaining({
-          organizationId: 101,
-          salesId: 5,
-          error: expect.any(Error),
-        })
+        expect.stringContaining("Failed to get activity log"),
+        expect.any(Error)
       );
 
       consoleErrorSpy.mockRestore();

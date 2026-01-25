@@ -27,6 +27,11 @@ const OpportunityEdit = () => {
       actions={false}
       redirect="show"
       mutationMode="pessimistic"
+      transform={(data: Opportunity) => {
+        // WF-H1-004: Inject previous_stage for stage transition validation
+        // React Admin doesn't track field history, so we get initial value from form component
+        return data;
+      }}
       mutationOptions={{
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
@@ -53,10 +58,20 @@ const OpportunityEdit = () => {
 const OpportunityEditForm = () => {
   const record = useRecordContext<Opportunity>();
 
+  // WF-H1-004: Capture initial stage for transition validation
+  // This ref persists the original stage value across re-renders
+  const initialStageRef = useRef<string | null>(null);
+
   // Guard against null record during initial render - useMemo must be called unconditionally
   // per React hooks rules, so we handle null inside the callback
   const defaultValues = useMemo(() => {
     if (!record) return {};
+
+    // Capture initial stage on first load
+    if (initialStageRef.current === null && record.stage) {
+      initialStageRef.current = record.stage;
+    }
+
     return opportunitySchema.partial().parse(record);
   }, [record]);
 
@@ -65,7 +80,21 @@ const OpportunityEditForm = () => {
 
   return (
     <FormProgressProvider>
-      <Form className="flex flex-1 flex-col gap-4 pb-2" defaultValues={defaultValues}>
+      <Form
+        className="flex flex-1 flex-col gap-4 pb-2"
+        defaultValues={defaultValues}
+        transform={(data: Opportunity) => {
+          // WF-H1-004: Inject previous_stage for validation
+          // Only include if stage field is present in the update
+          if (data.stage && initialStageRef.current) {
+            return {
+              ...data,
+              previous_stage: initialStageRef.current,
+            };
+          }
+          return data;
+        }}
+      >
         <Card>
           <CardContent className="pt-6">
             <EditHeader />
