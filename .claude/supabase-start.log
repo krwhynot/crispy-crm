@@ -1,3 +1,1209 @@
 WARN: no SMS provider is enabled. Disabling phone login
-failed to inspect service: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
-Docker Desktop is a prerequisite for local development. Follow the official docs to install: https://docs.docker.com/desktop
+WARNING: You are running different service versions locally than your linked project:
+supabase/storage-api:v1.33.5 => v1.33.0
+supabase/gotrue:v2.183.0 => v2.185.0
+Run supabase link to update them.
+ gateway Skipped - Image is already present locally 
+ api Skipped - Image is already present locally 
+ auth Skipped - Image is already present locally 
+ realtime Skipped - Image is already present locally 
+ edgeRuntime Skipped - Image is already present locally 
+ studio Skipped - Image is already present locally 
+ pgmeta Skipped - Image is already present locally 
+ db Skipped - Image is already present locally 
+Starting database...
+Initialising schema...
+Seeding globals from roles.sql...
+Skipping migration 20260123051958_remote_schema.sql.skip... (file name must match pattern "<timestamp>_name.sql")
+Skipping migration 20260124184930_restrict_product_features_admin_only.sql.skip... (file name must match pattern "<timestamp>_name.sql")
+Skipping migration PATTERNS.md... (file name must match pattern "<timestamp>_name.sql")
+Applying migration 20251018152315_cloud_schema_fresh.sql...
+Applying migration 20251018203500_update_rls_for_shared_team_access.sql...
+NOTICE (00000): policy "authenticated_select_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+Applying migration 20251018204500_add_helper_function_and_audit_trail.sql...
+NOTICE (42701): column "updated_by" of relation "products" already exists, skipping
+NOTICE (00000): trigger "set_updated_by_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): trigger "set_updated_by_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): trigger "set_updated_by_opportunities" for relation "opportunities" does not exist, skipping
+NOTICE (00000): trigger "set_updated_by_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): trigger "set_updated_by_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): trigger "set_updated_by_products" for relation "products" does not exist, skipping
+Applying migration 20251018210000_add_created_by_audit_field.sql...
+NOTICE (42701): column "created_by" of relation "contacts" already exists, skipping
+NOTICE (42701): column "created_by" of relation "organizations" already exists, skipping
+NOTICE (42701): column "created_by" of relation "opportunities" already exists, skipping
+NOTICE (42701): column "created_by" of relation "products" already exists, skipping
+Applying migration 20251018211500_restore_auth_triggers_and_backfill.sql...
+NOTICE (00000): trigger "on_auth_user_created" for relation "auth.users" does not exist, skipping
+NOTICE (00000): trigger "on_auth_user_updated" for relation "auth.users" does not exist, skipping
+NOTICE (00000): No backfill needed - all users have sales records
+Applying migration 20251018232818_remove_deprecated_organization_fields.sql...
+Applying migration 20251019000000_remove_partner_organization_type.sql...
+Applying migration 20251020001702_add_organizations_summary_rls_policies.sql...
+Applying migration 20251020002305_fix_contacts_summary_security_invoker.sql...
+Applying migration 20251022172248_add_account_manager_unique_constraint.sql...
+Applying migration 20251024125242_add_opportunities_summary_view.sql...
+Applying migration 20251027225853_remove_csv_line_number_column.sql...
+NOTICE (00000): constraint "organizations_csv_line_number_key" of relation "organizations" does not exist, skipping
+NOTICE (00000): column "csv_line_number" of relation "organizations" does not exist, skipping
+Applying migration 20251028040008_remove_product_pricing_and_uom.sql...
+Applying migration 20251028042131_add_product_distributor_field.sql...
+Applying migration 20251028044618_change_product_category_to_text.sql...
+Applying migration 20251028213020_create_opportunity_contacts_junction_table.sql...
+Applying migration 20251028213032_add_soft_delete_cascade_functions.sql...
+Applying migration 20251029022906_add_opportunity_foreign_key_constraints.sql...
+Applying migration 20251029022918_add_activity_contact_validation.sql...
+Applying migration 20251029022924_add_opportunity_optimistic_locking.sql...
+NOTICE (00000): trigger "check_concurrent_opportunity_update" for relation "opportunities" does not exist, skipping
+Applying migration 20251029024045_fix_rls_policies_company_isolation.sql...
+Applying migration 20251029051540_create_opportunity_products_table.sql...
+Applying migration 20251029051621_update_sync_rpc_remove_pricing.sql...
+Applying migration 20251029051954_add_products_to_opportunities_view.sql...
+Applying migration 20251029070224_grant_authenticated_permissions.sql...
+Applying migration 20251030025007_create_distinct_product_categories_view.sql...
+Applying migration 20251030130720_fix_sync_opportunity_schema_mismatch.sql...
+Applying migration 20251030131117_fix_rpc_array_parsing.sql...
+Applying migration 20251030132011_add_rpc_backend_validation.sql...
+Applying migration 20251030145417_fix_sync_opportunity_id_handling.sql...
+Applying migration 20251030201606_fix_sync_rpc_response_format.sql...
+Applying migration 20251031132404_remove_unused_tables.sql...
+NOTICE (00000): SAFETY CHECK PASSED: All tables verified empty or non-existent.
+NOTICE (00000): DROP VERIFICATION PASSED: All tables successfully removed.
+NOTICE (00000): 
+NOTICE (00000): ================================================================
+NOTICE (00000): CLEANUP COMPLETE
+NOTICE (00000): ================================================================
+NOTICE (00000): Tables removed: 6
+NOTICE (00000):   - product_pricing_models
+NOTICE (00000):   - product_pricing_tiers
+NOTICE (00000):   - contact_preferred_principals
+NOTICE (00000):   - product_distributor_authorizations
+NOTICE (00000):   - product_category_hierarchy
+NOTICE (00000):   - product_features
+NOTICE (00000): 
+NOTICE (00000): Current table count: 18
+NOTICE (00000): Expected: 24 base tables (down from 30)
+NOTICE (00000): 
+NOTICE (00000): Next steps:
+NOTICE (00000): 1. Regenerate TypeScript types: npx supabase gen types typescript --local
+NOTICE (00000): 2. Verify no TypeScript errors: npm run type-check
+NOTICE (00000): 3. Test application: npm run dev
+NOTICE (00000): ================================================================
+Applying migration 20251031223406_complete_partner_type_removal.sql...
+Applying migration 20251101172947_enforce_opportunity_customer_requirement.sql...
+Applying migration 20251101231344_optimize_activity_log_rpc.sql...
+Applying migration 20251102183932_remove_financial_tracking.sql...
+NOTICE (00000): column "amount" of relation "opportunities" does not exist, skipping
+Applying migration 20251102212250_fix_founding_interaction_trigger.sql...
+Applying migration 20251103214809_remove_territory_fields.sql...
+Applying migration 20251103215645_remove_phase3_features.sql...
+NOTICE (00000): column "commission_rate" of relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): table "contact_preferred_principals" does not exist, skipping
+Applying migration 20251103220516_remove_product_pricing_tables.sql...
+NOTICE (00000): table "product_pricing_tiers" does not exist, skipping
+NOTICE (00000): table "product_pricing_models" does not exist, skipping
+NOTICE (00000): table "product_distributor_authorizations" does not exist, skipping
+Applying migration 20251103220531_remove_product_food_specific_fields.sql...
+Applying migration 20251103220544_remove_deprecated_contact_organizations.sql...
+NOTICE (00000): table "product_features" does not exist, skipping
+NOTICE (00000): table "product_category_hierarchy" does not exist, skipping
+Applying migration 20251103220652_fix_products_search_trigger_removed_fields.sql...
+Applying migration 20251103232837_create_audit_trail_system.sql...
+Applying migration 20251103233745_add_campaign_and_related_opportunity_fields.sql...
+Applying migration 20251104004610_create_booth_visitor_opportunity.sql...
+Applying migration 20251104024615_fix_booth_visitor_product_column.sql...
+Applying migration 20251104044122_add_products_summary_view.sql...
+Applying migration 20251104125744_update_opportunities_summary_with_principal_name.sql...
+Applying migration 20251104155935_add_opportunity_notes_field.sql...
+Applying migration 20251104174935_add_campaign_choices_view.sql...
+Applying migration 20251105001240_add_notifications_table.sql...
+Applying migration 20251105005940_add_overdue_notification_tracking.sql...
+Applying migration 20251105010132_setup_overdue_task_cron.sql...
+Applying migration 20251106042002_fix_activity_log_deleted_at.sql...
+Applying migration 20251106185819_add_stage_changed_at_to_opportunities.sql...
+NOTICE (00000): trigger "trigger_update_opportunity_stage_changed_at" for relation "opportunities" does not exist, skipping
+Applying migration 20251106190107_create_dashboard_principal_summary_view.sql...
+Applying migration 20251108051117_add_soft_delete_columns.sql...
+Applying migration 20251108051154_fix_opportunity_products_soft_delete.sql...
+Applying migration 20251108051302_fix_notifications_soft_delete.sql...
+Applying migration 20251108172640_document_rls_security_model.sql...
+Applying migration 20251108213039_fix_rls_policies_role_based_access.sql...
+Applying migration 20251108213216_cleanup_duplicate_rls_policies.sql...
+Applying migration 20251110110402_dashboard_quick_actions_view_update.sql...
+Applying migration 20251110111229_complete_task_with_followup_rpc.sql...
+Applying migration 20251110125720_fix_complete_task_with_followup_created_by.sql...
+Applying migration 20251110142650_add_organization_deletion_protection.sql...
+Applying migration 20251110142654_add_organization_hierarchy_rollups.sql...
+Applying migration 20251111121526_add_role_based_permissions.sql...
+NOTICE (00000): policy "select_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "insert_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "update_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "delete_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "select_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "insert_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "update_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "delete_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "select_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "insert_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "update_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "delete_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "select_products" for relation "products" does not exist, skipping
+NOTICE (00000): policy "insert_products" for relation "products" does not exist, skipping
+NOTICE (00000): policy "update_products" for relation "products" does not exist, skipping
+NOTICE (00000): policy "delete_products" for relation "products" does not exist, skipping
+NOTICE (00000): policy "select_opportunities" for relation "opportunities" does not exist, skipping
+NOTICE (00000): policy "insert_opportunities" for relation "opportunities" does not exist, skipping
+NOTICE (00000): policy "update_opportunities" for relation "opportunities" does not exist, skipping
+NOTICE (00000): policy "delete_opportunities" for relation "opportunities" does not exist, skipping
+NOTICE (00000): policy "select_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "insert_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "update_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "delete_contactnotes" for relation "contactNotes" does not exist, skipping
+NOTICE (00000): policy "select_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): policy "insert_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): policy "update_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): policy "delete_opportunitynotes" for relation "opportunityNotes" does not exist, skipping
+NOTICE (00000): policy "select_sales" for relation "sales" does not exist, skipping
+NOTICE (00000): policy "insert_sales" for relation "sales" does not exist, skipping
+NOTICE (00000): policy "update_sales" for relation "sales" does not exist, skipping
+NOTICE (00000): policy "delete_sales" for relation "sales" does not exist, skipping
+NOTICE (00000): ========================================
+NOTICE (00000): Role-Based Permission System Installed
+NOTICE (00000): ========================================
+NOTICE (00000): Total users: 0
+NOTICE (00000):   - Admins: 0
+NOTICE (00000):   - Managers: 0
+NOTICE (00000):   - Reps: 0
+NOTICE (00000): ========================================
+NOTICE (00000): Helper functions created:
+NOTICE (00000):   - auth.user_role()
+NOTICE (00000):   - public.is_admin()
+NOTICE (00000):   - public.is_manager_or_admin()
+NOTICE (00000):   - public.current_sales_id()
+NOTICE (00000): ========================================
+NOTICE (00000): RLS Policies updated for:
+NOTICE (00000):   - tasks (personal ownership)
+NOTICE (00000):   - contacts (shared, admin-only delete)
+NOTICE (00000):   - organizations (shared, admin-only delete)
+NOTICE (00000):   - products (shared, admin-only delete)
+NOTICE (00000):   - opportunities (ownership-based)
+NOTICE (00000):   - contactNotes (ownership-based)
+NOTICE (00000):   - opportunityNotes (ownership-based)
+NOTICE (00000):   - sales (role management)
+NOTICE (00000): ========================================
+Applying migration 20251111183436_add_note_to_interaction_type_enum.sql...
+Applying migration 20251111185058_import_grand_rapids_campaign.sql...
+Applying migration 20251112063019_add_weekly_activity_count_and_assigned_reps_to_dashboard.sql...
+Applying migration 20251113235406_principal_opportunities_view.sql...
+Applying migration 20251114001720_priority_tasks_view.sql...
+Applying migration 20251114060720_fix_view_permissions.sql...
+Applying migration 20251116005423_add_id_to_dashboard_views.sql...
+Applying migration 20251116030314_add_sales_id_to_dashboard_views.sql...
+Applying migration 20251116124147_fix_permissive_rls_policies.sql...
+Applying migration 20251116210019_fix_sales_schema_consistency.sql...
+NOTICE (00000): [OK] 1:1 mapping verified: 0 auth.users = 0 sales records
+Applying migration 20251117010529_add_missing_tasks_update_policy.sql...
+Applying migration 20251117011028_fix_tasks_select_policy.sql...
+NOTICE (00000): policy "select_tasks" for relation "tasks" does not exist, skipping
+Applying migration 20251117020743_seed_opportunities_for_tasks.sql...
+Applying migration 20251117032253_fix_referential_integrity.sql...
+NOTICE (00000): constraint "activities_organization_id_fkey" of relation "activities" does not exist, skipping
+Applying migration 20251117105523_add_organization_cycle_protection.sql...
+Applying migration 20251117112343_organization_hierarchy_phase1_cleanup.sql...
+NOTICE (00000): Created US Foods Corporate parent (ID: 10334)
+NOTICE (00000): Linked US Foods branches: 0 organizations updated
+NOTICE (00000): Created Sysco Corporation parent (ID: 10335)
+NOTICE (00000): Linked Sysco branches: 0 organizations updated
+NOTICE (00000): Created Gordon Food Service parent (ID: 10336)
+NOTICE (00000): Linked Gordon FS branches: 0 organizations updated
+NOTICE (00000): Created Performance Food Group parent (ID: 10337)
+NOTICE (00000): Fixed PFG organization types: 0 updated to distributor
+NOTICE (00000): Linked PFG branches: 0 organizations updated
+NOTICE (00000): Created PFS Corporate parent (ID: 10338)
+NOTICE (00000): Linked PFS branches: 0 organizations updated
+NOTICE (00000): Created Trinity Health System parent (ID: 10339)
+NOTICE (00000): Linked THS facilities: 2 organizations updated
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): PHASE 1 CLEANUP SUMMARY
+NOTICE (00000): ========================================
+NOTICE (00000): Trinity Health System -> 2 branches
+NOTICE (00000): US Foods Corporate -> 0 branches
+NOTICE (00000): Sysco Corporation -> 0 branches
+NOTICE (00000): Gordon Food Service -> 0 branches
+NOTICE (00000): Performance Food Group -> 0 branches
+NOTICE (00000): PFS Corporate -> 0 branches
+NOTICE (00000): 
+NOTICE (00000): Total organizations with parents: 2
+NOTICE (00000): Total parent organizations: 1
+NOTICE (00000): ========================================
+Applying migration 20251117120623_phase2b_chain_parents_and_duplicates.sql...
+NOTICE (00000): === SECTION 1: Creating Parent Organizations ===
+NOTICE (00000): Created Dave & Buster's parent: ID 10340
+NOTICE (00000):   -> Linked 2 children (IDs 287, 288)
+NOTICE (00000): Created Notre Dame Dining parent: ID 10341
+NOTICE (00000):   -> Linked 1 child (ID 10206)
+NOTICE (00000): SECTION 1 COMPLETE: 2 parents created, 3 children linked
+NOTICE (00000): 
+NOTICE (00000): === SECTION 2: Updating Official Names ===
+NOTICE (00000): Updated ID 441: "Girl in the goat" -> "Girl & The Goat"
+NOTICE (00000): Updated ID 20: "AL PEAKE & SONS INC." -> "Al Peake & Sons & Daughter Too Foodservice"
+NOTICE (00000): SECTION 2 COMPLETE: 2 names updated to official Google names
+NOTICE (00000): 
+NOTICE (00000): === SECTION 3: Marking Duplicates for Consolidation ===
+NOTICE (00000): Marked ID 5 as duplicate of ID 10005 (7 Monks Taproom)
+NOTICE (00000): Marked ID 1338 as duplicate of ID 10206 (Notre Dame Dining)
+NOTICE (00000): Marked ID 1533 as duplicate of ID 20 (Al Peake & Sons)
+NOTICE (00000): Marked ID 21 as duplicate of ID 20 (Al Peake & Sons - with typo)
+NOTICE (00000): SECTION 3 COMPLETE: 4 duplicates marked (3 groups)
+NOTICE (00000): 
+NOTICE (00000): === SECTION 4: Flagging Organizations for Research ===
+NOTICE (00000): Flagged ID 442 for research (possibly Little Goat Diner)
+NOTICE (00000): Flagged ID 443 for research (possibly Duck Duck Goat)
+NOTICE (00000): Flagged ID 855 for address verification (Portillo's)
+NOTICE (00000): Flagged ID 856 for address verification (Portillo's Hot Dogs)
+NOTICE (00000): SECTION 4 COMPLETE: 4 organizations flagged for research
+NOTICE (00000): 
+NOTICE (00000): === VALIDATION SUMMARY ===
+NOTICE (00000): New parents created: 1 (expected: 2)
+NOTICE (00000): Children linked to new parents: 1 (expected: 3)
+NOTICE (00000): Official names updated: 0 (expected: 2)
+NOTICE (00000): Duplicates marked for consolidation: 0 (expected: 4)
+NOTICE (00000): Organizations flagged for research: 0 (expected: 4)
+NOTICE (00000): 
+NOTICE (00000): === PHASE 2B MIGRATION COMPLETE ===
+NOTICE (00000): Next steps:
+NOTICE (00000):   1. Review marked duplicates and manually consolidate
+NOTICE (00000):   2. Research flagged organizations (Girl & The Goat variants, Portillo's)
+NOTICE (00000):   3. Optional Phase 2C: Create "Stephanie Izard Restaurants" parent if IDs 442, 443 confirmed
+Applying migration 20251117121913_phase2c_correct_misnamed_restaurants.sql...
+NOTICE (00000): === SECTION 1: Correcting Misnamed Restaurants ===
+NOTICE (00000): Updated ID 442: "Girl in the goat1" -> "Ever Restaurant"
+NOTICE (00000): Updated ID 443: "Girl in the goat2" -> "Galit"
+NOTICE (00000): Updated ID 855: "Portillo's" -> "Swift & Sons"
+NOTICE (00000): SECTION 1 COMPLETE: 3 restaurant names corrected
+NOTICE (00000): 
+NOTICE (00000): === SECTION 2: Deleting Unverifiable Entry ===
+NOTICE (00000): Deleted ID 856 (no address, unverifiable placeholder)
+NOTICE (00000): SECTION 2 COMPLETE: 1 placeholder entry deleted
+NOTICE (00000): 
+NOTICE (00000): === VALIDATION SUMMARY ===
+NOTICE (00000): Restaurant names corrected: 0 (expected: 3)
+NOTICE (00000): ID 856 still exists (expected: 0): 0
+NOTICE (00000): 
+NOTICE (00000): === PHASE 2C MIGRATION COMPLETE ===
+NOTICE (00000): Next steps:
+NOTICE (00000):   1. Verify corrected names in UI
+NOTICE (00000):   2. Review Phase 2C completion report for full findings
+Applying migration 20251117123500_phase2d_consolidate_duplicates.sql...
+NOTICE (00000): GROUP 1: Skipped - IDs 5 or 10005 not found in database
+NOTICE (00000): GROUP 2: Skipped - IDs 1338 or 10206 not found in database
+NOTICE (00000): GROUP 3: Skipped - ID 20 not found in database
+Applying migration 20251117130422_diagnostic_sysco_parents.sql...
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): SYSCO PARENT DIAGNOSTIC
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): Step 1: Checking for Phase 1 parent organizations...
+NOTICE (00000): 
+NOTICE (00000): Phase 1 parents found: 6 of 6 expected
+NOTICE (00000): 
+NOTICE (00000): Phase 1 Parents in Database:
+NOTICE (00000):   - Gordon Food Service (ID: 10336, Type: distributor, Branches: 0)
+NOTICE (00000):   - Performance Food Group (ID: 10337, Type: distributor, Branches: 0)
+NOTICE (00000):   - PFS Corporate (ID: 10338, Type: distributor, Branches: 0)
+NOTICE (00000):   - Sysco Corporation (ID: 10335, Type: distributor, Branches: 0)
+NOTICE (00000):   - Trinity Health System (ID: 10339, Type: customer, Branches: 2)
+NOTICE (00000):   - US Foods Corporate (ID: 10334, Type: distributor, Branches: 0)
+NOTICE (00000): 
+NOTICE (00000): Step 2: Checking Sysco Corporation parent...
+NOTICE (00000): 
+NOTICE (00000): [OK] Sysco Corporation parent EXISTS (ID: 10335)
+NOTICE (00000): 
+NOTICE (00000): Step 3: Counting Sysco branch organizations...
+NOTICE (00000): 
+NOTICE (00000): Total Sysco branches: 0
+NOTICE (00000): Branches with parent_organization_id set: 0
+NOTICE (00000): 
+NOTICE (00000): Sample Sysco Branches (first 10):
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): ANALYSIS
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): [WARN] ISSUE: Parent exists but NO branches are linked
+NOTICE (00000):    - Migration UPDATE statement failed or did not match any rows
+NOTICE (00000):    - Pattern used: name ILIKE 'Sysco%' OR name ILIKE 'SYSCO%'
+NOTICE (00000): 
+NOTICE (00000): [FIX] RECOMMENDED FIX:
+NOTICE (00000):    - Create migration to UPDATE organizations SET parent_organization_id = 10335
+NOTICE (00000):    - WHERE clause: name ILIKE 'Sysco%' OR name ILIKE 'SYSCO%'
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): DIAGNOSTIC COMPLETE
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): This migration made NO schema changes.
+NOTICE (00000): Safe to rollback or delete after reviewing output.
+NOTICE (00000): 
+Applying migration 20251117130839_fix_phase1_invalid_parent_ids.sql...
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): FIXING PHASE 1 INVALID PARENT IDS
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): [1/6] US Foods Corporate (ID 10334): Fixed 0 branches
+NOTICE (00000): [2/6] Sysco Corporation (ID 10335): Fixed 0 branches
+NOTICE (00000): [3/6] Gordon Food Service (ID 10336): Fixed 0 branches
+NOTICE (00000): [4/6] Performance Food Group (ID 10337): Fixed 0 branches
+NOTICE (00000): [5/6] PFS Corporate (ID 10338): Fixed 0 branches
+NOTICE (00000): [6/6] Trinity Health System (ID 10339): Fixed 0 branches
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): VALIDATION
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): [OK] Trinity Health System (ID 10339): 2 valid branches
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): FIX COMPLETE
+NOTICE (00000): ========================================
+NOTICE (00000): 
+Applying migration 20251117131650_verify_sysco_parent_actual_values.sql...
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): SYSCO PARENT_ORGANIZATION_ID RAW VALUES
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): Correct Sysco Corporation parent ID: 10335
+NOTICE (00000): 
+NOTICE (00000): Sysco Branches (showing RAW parent_organization_id values):
+NOTICE (00000): 
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): SUMMARY
+NOTICE (00000): ========================================
+NOTICE (00000): Branches with NULL parent: 0
+NOTICE (00000): Branches with CORRECT parent (10335 ): 0
+NOTICE (00000): Branches with WRONG parent: 0
+NOTICE (00000): 
+NOTICE (00000): [OK] All Sysco branches correctly linked
+NOTICE (00000): ========================================
+NOTICE (00000): 
+Applying migration 20251117153658_test_parent_organization_api_access.sql...
+Applying migration 20251117154601_check_organizations_summary_view.sql...
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): ORGANIZATIONS_SUMMARY VIEW ANALYSIS
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): View columns check:
+NOTICE (00000):   - parent_organization_id: EXISTS
+NOTICE (00000):   - parent_organization_name: EXISTS
+NOTICE (00000): 
+NOTICE (00000): All columns in organizations_summary:
+NOTICE (00000):    1 | id                             | bigint
+NOTICE (00000):    2 | name                           | text
+NOTICE (00000):    3 | organization_type              | USER-DEFINED
+NOTICE (00000):    4 | parent_organization_id         | bigint
+NOTICE (00000):    5 | parent_organization_name       | text
+NOTICE (00000):    6 | priority                       | character varying
+NOTICE (00000):    7 | sales_id                       | bigint
+NOTICE (00000):    8 | created_at                     | timestamp with time zone
+NOTICE (00000):    9 | deleted_at                     | timestamp with time zone
+NOTICE (00000):   10 | child_branch_count             | bigint
+NOTICE (00000):   11 | total_contacts_across_branches | bigint
+NOTICE (00000):   12 | total_opportunities_across_bra | bigint
+NOTICE (00000):   13 | nb_contacts                    | bigint
+NOTICE (00000):   14 | nb_opportunities               | bigint
+NOTICE (00000): 
+NOTICE (00000): First 100 chars of view definition:
+NOTICE (00000):  SELECT o.id,
+    o.name,
+    o.organization_type,
+    o.parent_organization_id,
+    parent.name AS 
+NOTICE (00000): 
+NOTICE (00000): ✅ Parent columns exist in the view as expected.
+NOTICE (00000): The issue may be in the data provider or frontend code.
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): 
+Applying migration 20251117154738_fix_organizations_summary_add_parent_fields.sql...
+NOTICE (00000): SUCCESS: Parent fields have been added to organizations_summary view
+NOTICE (00000):   - parent_organization_id: EXISTS
+NOTICE (00000):   - parent_organization_name: EXISTS
+Applying migration 20251117160306_remove_organization_branch_functionality.sql...
+NOTICE (00000): trigger "prevent_organization_cycles" for relation "organizations" does not exist, skipping
+NOTICE (00000): trigger "prevent_parent_deletion" for relation "organizations" does not exist, skipping
+NOTICE (00000): function check_organization_hierarchy_cycle() does not exist, skipping
+NOTICE (00000): function check_organization_cycle() does not exist, skipping
+NOTICE (00000): function prevent_parent_organization_deletion() does not exist, skipping
+NOTICE (00000): view "organization_hierarchy_phase1_cleanup" does not exist, skipping
+NOTICE (00000): SUCCESS: parent_organization_id column removed
+NOTICE (00000): SUCCESS: Branch fields removed from organizations_summary
+Applying migration 20251117174732_restore_parent_remove_branch_features.sql...
+NOTICE (00000): trigger "check_organization_cycle" for relation "organizations" does not exist, skipping
+NOTICE (00000): SUCCESS: parent_organization_id column restored
+NOTICE (00000): SUCCESS: child_branch_count removed from view
+Applying migration 20251117180837_restore_full_branch_parent_functionality.sql...
+NOTICE (00000): trigger "prevent_parent_deletion" for relation "organizations" does not exist, skipping
+NOTICE (00000): SUCCESS: Full branch and parent functionality restored
+NOTICE (00000):   - child_branch_count field: ADDED
+NOTICE (00000):   - total_contacts_across_branches field: ADDED
+NOTICE (00000):   - total_opportunities_across_branches field: ADDED
+NOTICE (00000):   - Cycle prevention: ENABLED
+NOTICE (00000):   - Parent deletion protection: ENABLED
+Applying migration 20251117200302_fix_distributor_parent_relationships.sql...
+NOTICE (00000): Linked 1 Sysco branches to parent (ID: 10335)
+NOTICE (00000): Linked 1 Gordon Food Service branches to parent (ID: 10336)
+NOTICE (00000): Linked 1 Performance Food Group branches to parent (ID: 10337)
+NOTICE (00000): Parent-Branch Relationships Fixed:
+NOTICE (00000):   Parent organizations: 3
+NOTICE (00000):   Total branches linked: 0
+WARNING (01000):   Orphaned distributor branches remaining: 1
+Applying migration 20251118050755_add_principal_pipeline_summary_view.sql...
+NOTICE (42710): enum label "note" already exists, skipping
+NOTICE (00000): view "principal_pipeline_summary" does not exist, skipping
+Applying migration 20251118165501_fix_principal_pipeline_summary_id_column.sql...
+Applying migration 20251122232133_cleanup_duplicate_organizations.sql...
+NOTICE (00000): ========================================
+NOTICE (00000): STARTING DUPLICATE ORGANIZATION CLEANUP
+NOTICE (00000): ========================================
+NOTICE (00000): 
+NOTICE (00000): ========================================
+NOTICE (00000): DUPLICATE CLEANUP COMPLETE
+NOTICE (00000): Duplicate groups processed: 0
+NOTICE (00000): Duplicate records merged: 0
+NOTICE (00000): ========================================
+NOTICE (00000): No duplicates found - database is clean!
+NOTICE (00000): Verification passed: No duplicates remain
+Applying migration 20251122232134_add_unique_organization_name_constraint.sql...
+NOTICE (00000): No duplicate organization names found. Proceeding with constraint creation.
+Applying migration 20251123190738_restore_activities_rls_policies.sql...
+NOTICE (00000): policy "authenticated_select_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_tags" for relation "tags" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_tags" for relation "tags" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_tags" for relation "tags" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_tags" for relation "tags" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_interaction_participants" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_interaction_participants" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_interaction_participants" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_interaction_participants" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+Applying migration 20251123214721_add_contact_duplicates_view.sql...
+Applying migration 20251123215857_fix_merge_function_table_names.sql...
+Applying migration 20251124005758_add_note_to_interaction_type.sql...
+NOTICE (42710): enum label "note" already exists, skipping
+Applying migration 20251124225546_add_organization_notes.sql...
+Applying migration 20251126015956_add_contacts_summary_counts.sql...
+NOTICE (42P07): relation "idx_tasks_contact_id" already exists, skipping
+Applying migration 20251126041953_fix_opportunities_update_policy.sql...
+NOTICE (00000): policy "update_opportunities" for relation "opportunities" does not exist, skipping
+Applying migration 20251127054700_fix_critical_rls_security_tasks.sql...
+NOTICE (00000): policy "select_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "update_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): trigger "trigger_set_task_created_by" for relation "tasks" does not exist, skipping
+Applying migration 20251127055705_enhance_rls_security_activities_and_indexes.sql...
+NOTICE (42701): column "deleted_at" of relation "tasks" already exists, skipping
+Applying migration 20251128063810_remove_contact_duplicate_artifacts.sql...
+NOTICE (00000): function merge_duplicate_contacts(uuid,uuid[]) does not exist, skipping
+Applying migration 20251128070000_migrate_awaiting_response_stage.sql...
+NOTICE (00000): Migration: Found 0 opportunities with awaiting_response stage
+NOTICE (00000): Migration complete: No opportunities with awaiting_response stage remain
+Applying migration 20251129030358_contact_organization_id_not_null.sql...
+NOTICE (00000): No orphan contacts found - all contacts have organization_id
+NOTICE (00000): Foreign key constraint contacts_organization_id_fkey already exists
+NOTICE (42P07): relation "idx_contacts_organization_id" already exists, skipping
+Applying migration 20251129030715_add_is_manager_helper.sql...
+NOTICE (00000): ========================================
+NOTICE (00000): RBAC Helper Functions Complete
+NOTICE (00000): ========================================
+NOTICE (00000): Available functions:
+NOTICE (00000):   - user_role()          - Returns user role enum
+NOTICE (00000):   - is_admin()           - True if admin
+NOTICE (00000):   - is_manager()         - True if manager (NEW)
+NOTICE (00000):   - is_rep()             - True if rep (NEW)
+NOTICE (00000):   - is_manager_or_admin()- True if manager OR admin
+NOTICE (00000):   - current_sales_id()   - Returns sales record ID
+NOTICE (00000): ========================================
+Applying migration 20251129031410_activity_contact_cascade_trigger.sql...
+Applying migration 20251129031937_add_win_loss_reason_fields.sql...
+Applying migration 20251129040323_add_sample_status_enum.sql...
+NOTICE (42710): enum label "note" already exists, skipping
+Applying migration 20251129044504_add_organization_id_to_tasks.sql...
+Applying migration 20251129044526_align_task_type_enum.sql...
+Applying migration 20251129050428_add_distributor_principal_authorizations.sql...
+Applying migration 20251129050526_setup_daily_digest_cron.sql...
+Applying migration 20251129051554_add_check_authorization_view.sql...
+Applying migration 20251129051625_add_product_distributor_authorizations.sql...
+Applying migration 20251129120417_fix_public_role_rls_policies.sql...
+Applying migration 20251129170506_harden_participant_tables_rls_security.sql...
+NOTICE (42P07): relation "idx_opportunities_owner_id" already exists, skipping
+NOTICE (42P07): relation "idx_activities_created_by" already exists, skipping
+NOTICE (00000): trigger "trigger_set_opportunity_participant_created_by" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): trigger "trigger_set_interaction_participant_created_by" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "select_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): policy "insert_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): policy "update_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): policy "delete_opportunity_participants" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): policy "select_interaction_participants" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "insert_interaction_participants" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "update_interaction_participants" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "delete_interaction_participants" for relation "interaction_participants" does not exist, skipping
+Applying migration 20251129173209_remove_awaiting_response_enum_value.sql...
+NOTICE (00000): view "dashboard_pipeline_summary" does not exist, skipping
+Applying migration 20251129180000_add_digest_query_functions.sql...
+Applying migration 20251129180728_add_soft_delete_rls_filtering.sql...
+Applying migration 20251129181451_add_missing_update_policies.sql...
+NOTICE (00000): policy "update_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "update_organizations" for relation "organizations" does not exist, skipping
+Applying migration 20251129190000_add_tasks_due_today_function.sql...
+Applying migration 20251129225719_replace_segments_with_playbook_categories.sql...
+NOTICE (00000): constraint "organizations_segment_id_fkey" of relation "organizations" does not exist, skipping
+Applying migration 20251129230248_p1_security_and_performance_fixes.sql...
+Applying migration 20251129230638_p2_remove_unused_indexes_and_functions.sql...
+NOTICE (00000): index "idx_organizations_principal" does not exist, skipping
+NOTICE (00000): index "idx_opportunities_stage_active" does not exist, skipping
+NOTICE (00000): index "idx_opportunities_updated_at_active" does not exist, skipping
+NOTICE (00000): index "idx_activities_activity_date_active" does not exist, skipping
+NOTICE (00000): index "idx_tasks_sales_due_date_incomplete" does not exist, skipping
+NOTICE (00000): index "idx_sales_digest_opt_in" does not exist, skipping
+NOTICE (00000): index "idx_sales_user_id" does not exist, skipping
+Applying migration 20251129230942_p3_rename_camelcase_tables.sql...
+NOTICE (00000): trigger "trigger_set_organizationnotes_updated_by" for relation "organizationNotes" does not exist, skipping
+NOTICE (00000): trigger "trigger_update_organizationnotes_updated_at" for relation "organizationNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_organizationnotes" for relation "organizationNotes" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_organizationnotes" for relation "organizationNotes" does not exist, skipping
+NOTICE (00000): policy "update_organizationnotes" for relation "organizationNotes" does not exist, skipping
+NOTICE (00000): policy "delete_organizationnotes" for relation "organizationNotes" does not exist, skipping
+Applying migration 20251129231451_setup_daily_digest_cron_trigger.sql...
+NOTICE (42710): extension "pg_net" already exists, skipping
+NOTICE (00000): Ensure vault secrets are configured:
+NOTICE (00000):   - project_url: Your Supabase project URL (e.g., https://xyz.supabase.co)
+NOTICE (00000):   - service_role_key: Your service role API key
+NOTICE (00000): For local dev, add to supabase/seed.sql
+NOTICE (00000): For cloud, use Supabase Dashboard -> Vault
+NOTICE (00000): === Daily Digest Cron Setup Complete ===
+NOTICE (00000): Job Name: daily-digest-7am
+NOTICE (00000): Schedule: 0 7 * * * (7:00 AM UTC daily)
+NOTICE (00000): Function: invoke_daily_digest_function()
+NOTICE (00000): 
+NOTICE (00000): To verify: SELECT * FROM cron.job WHERE jobname = 'daily-digest-7am';
+NOTICE (00000): To test manually: SELECT invoke_daily_digest_function();
+NOTICE (00000): To check results: SELECT * FROM net._http_response ORDER BY created DESC LIMIT 5;
+Applying migration 20251130010932_security_invoker_and_search_path_remediation.sql...
+NOTICE (00000): ============================================
+NOTICE (00000): SECURITY REMEDIATION COMPLETE
+NOTICE (00000): ============================================
+NOTICE (00000): Views with SECURITY INVOKER: 11
+NOTICE (00000): Functions with search_path set: 29
+NOTICE (00000): ============================================
+NOTICE (00000): Changes made:
+NOTICE (00000):   - 8 views converted to SECURITY INVOKER
+NOTICE (00000):   - 9 auth functions hardened with SET search_path = ''
+NOTICE (00000):   - Anon grants revoked from sensitive views
+NOTICE (00000): ============================================
+Applying migration 20251130011911_fix_remaining_security_definer_views.sql...
+NOTICE (00000): ============================================
+NOTICE (00000): SECURITY INVOKER FIX COMPLETE
+NOTICE (00000): Views fixed: 3 of 3
+NOTICE (00000): ============================================
+Applying migration 20251130042855_add_performance_indexes.sql...
+NOTICE (00000): All 6 performance indexes created successfully
+Applying migration 20251130045429_fix_security_definer_search_paths.sql...
+WARNING (01000): Still have 1 SECURITY DEFINER functions without search_path
+Applying migration 20251130173144_add_nb_activities_to_contacts_summary.sql...
+Applying migration 20251130173357_add_nb_notes_to_organizations_summary.sql...
+Applying migration 20251202014630_add_timezone_to_sales.sql...
+Applying migration 20251202045956_add_ownership_not_null_constraints.sql...
+NOTICE (00000): No admin users found - migration will proceed but NOT NULL constraint may fail if orphaned tasks exist
+NOTICE (00000): Backfilled 0 tasks with NULL sales_id
+NOTICE (00000): Backfilled 369 opportunities with NULL opportunity_owner_id
+NOTICE (00000): Added NOT NULL constraint to tasks.sales_id
+NOTICE (00000): Could not add NOT NULL to opportunities.opportunity_owner_id: column "opportunity_owner_id" of relation "opportunities" contains null values
+NOTICE (00000): === VERIFICATION ===
+NOTICE (00000): Tasks with NULL sales_id: 0
+NOTICE (00000): Active opportunities with NULL opportunity_owner_id: 369
+WARNING (01000): Some records still have NULL ownership - check for edge cases
+Applying migration 20251202050616_add_demo_products_and_contacts.sql...
+NOTICE (00000): WARNING: No sales users found, cannot insert contacts
+NOTICE (00000): ============================================
+NOTICE (00000): DEMO DATA SUMMARY
+NOTICE (00000): ============================================
+NOTICE (00000): Contacts: 369 (additional added)
+NOTICE (00000): Activities: 120 (existing)
+NOTICE (00000): Tasks: 0 (existing)
+NOTICE (00000): ============================================
+Applying migration 20251202054127_add_sales_member_and_team_tasks.sql...
+NOTICE (00000): WARNING: No sales users found, cannot insert tasks
+NOTICE (00000): ============================================
+NOTICE (00000): TEAM TASKS SUMMARY
+NOTICE (00000): ============================================
+NOTICE (00000): Total Tasks: 0
+NOTICE (00000): --------------------------------------------
+NOTICE (00000): ============================================
+Applying migration 20251202055500_add_sue_martinez.sql...
+NOTICE (00000): Created auth user for sue@mfbroker.com: eed3d52a-a6bc-40e1-b0cd-89830489be4d
+NOTICE (00000): Sue Martinez already exists in sales table
+Applying migration 20251202055600_verify_team.sql...
+NOTICE (00000): ============================================
+NOTICE (00000): SALES TEAM ROSTER (1s members)
+NOTICE (00000): ============================================
+NOTICE (00000):   [1]   (rep) - sue@mfbroker.com - 0 tasks
+NOTICE (00000): ============================================
+Applying migration 20251202055700_assign_tasks_to_sue.sql...
+NOTICE (00000): Found Sue Martinez with ID 1
+NOTICE (00000): SUCCESS: Added 6 tasks for Sue Martinez
+NOTICE (00000): ============================================
+NOTICE (00000): UPDATED TASK DISTRIBUTION
+NOTICE (00000): ============================================
+NOTICE (00000):    : 6 tasks
+NOTICE (00000): ============================================
+Applying migration 20251202060000_populate_sales_names.sql...
+NOTICE (00000): ============================================
+NOTICE (00000): UPDATED SALES TEAM NAMES
+NOTICE (00000): ============================================
+NOTICE (00000):   [1] Sue Martinez (sue@mfbroker.com)
+NOTICE (00000): ============================================
+Applying migration 20251202062000_add_sample_activities_cloud.sql...
+NOTICE (00000): Sales IDs - Kyle: <NULL>, Gary: <NULL>, Sue: 1, Admin: <NULL>, Test: <NULL>
+NOTICE (00000): Org IDs - 10001,  10002, 10003, 10004, 10005
+NOTICE (00000): SUCCESS: Added sample activities for demo
+NOTICE (00000): ============================================
+NOTICE (00000): RECENT ACTIVITIES (with sales user names)
+NOTICE (00000): ============================================
+NOTICE (00000):   [call] Introduction call with HCA Healthcare - Sue Martinez
+NOTICE (00000):   [note] Number not in service - Unknown
+NOTICE (00000):   [note] Number not in service - Unknown
+NOTICE (00000):   [note] Call back Friday 10:30 - Unknown
+NOTICE (00000):   [note] Call back Friday for Rachel - Unknown
+NOTICE (00000):   [note] Call back after 3:00 - Unknown
+NOTICE (00000):   [note] Left message - food procurement line - call back - Unknown
+NOTICE (00000):   [note] No voice mail - call back Froday 11/7 - Unknown
+NOTICE (00000):   [note] Carol out of office - call bacl 11/7 - Unknown
+NOTICE (00000):   [note] Send sample - not received - order from GFS - Unknown
+NOTICE (00000):   [note] Sold original - Unknown
+NOTICE (00000):   [note] Send sample - not received - order from GFS - Unknown
+NOTICE (00000):   [note] Send sample - not received - order from GFS - Unknown
+NOTICE (00000):   [note] No opportuity - not on menu plans - Unknown
+NOTICE (00000):   [note] Customer requested sample - senf to Dale at MFB - Unknown
+NOTICE (00000): ============================================
+Applying migration 20251203120000_fix_rls_auth_uid_select_wrapper.sql...
+Applying migration 20251203120100_fix_rls_security_gaps.sql...
+NOTICE (00000): === SECURITY & PERFORMANCE VERIFICATION ===
+NOTICE (00000): 
+NOTICE (00000): 1. audit_trail RLS:
+NOTICE (00000):    - SELECT policy exists: t
+NOTICE (00000):    - INSERT grant revoked: t
+NOTICE (00000):    - Status: SECURE ✓
+NOTICE (00000): 
+NOTICE (00000): 2. sales.user_id index:
+NOTICE (00000):    - idx_sales_user_id exists: t
+NOTICE (00000):    - Status: OPTIMIZED ✓
+NOTICE (00000): 
+NOTICE (00000): 3. opportunity_contacts.created_by:
+NOTICE (00000):    - Column exists: f
+NOTICE (00000):    - Status: N/A (column does not exist) ✓
+NOTICE (00000): 
+NOTICE (00000): === OVERALL STATUS ===
+NOTICE (00000): SUCCESS: All security and performance checks passed ✓
+Applying migration 20251203120200_add_security_invoker_to_compat_views.sql...
+NOTICE (00000): Successfully verified 3 backward-compatibility views with security_invoker
+Applying migration 20251203191347_add_snooze_until_to_tasks.sql...
+Applying migration 20251204205132_add_days_in_stage_to_opportunities_summary.sql...
+NOTICE (00000): ============================================
+NOTICE (00000): SUCCESS: days_in_stage column added to opportunities_summary
+NOTICE (00000): ============================================
+Applying migration 20251204220000_add_activity_task_counts_to_opportunities_summary.sql...
+NOTICE (00000): No dependent views found - safe to proceed.
+NOTICE (00000): SUCCESS: All three new columns added to opportunities_summary
+Applying migration 20251206000001_create_tutorial_progress.sql...
+Applying migration 20251207000001_make_sku_optional.sql...
+Applying migration 20251207000002_add_operator_segments.sql...
+NOTICE (00000): index "industries_name_case_insensitive_idx" does not exist, skipping
+Applying migration 20251207211946_add_organization_distributors.sql...
+Applying migration 20251207214606_add_import_support_columns.sql...
+Applying migration 20251207220000_backfill_organization_enrichment.sql...
+NOTICE (00000): 
+NOTICE (00000): === ENRICHMENT BACKFILL RESULTS ===
+NOTICE (00000): Organizations matched: 160
+NOTICE (00000): Now have address: 160
+NOTICE (00000): Now have phone: 155
+NOTICE (00000): Now have website: 144
+NOTICE (00000): Unmatched enrichment records: 1869
+NOTICE (00000): ===================================
+Applying migration 20251208114039_backfill_organization_enrichment.sql...
+NOTICE (00000): === ENRICHMENT BACKFILL RESULTS ===
+NOTICE (00000): Organizations matched: 160
+NOTICE (00000): Now have address: 160
+NOTICE (00000): Now have phone: 155
+NOTICE (00000): Now have website: 144
+Applying migration 20251208120000_assign_chain_segments.sql...
+NOTICE (00000): === CHAIN SEGMENT ASSIGNMENT RESULTS ===
+NOTICE (00000): Total organizations: 341
+NOTICE (00000): Assigned with segment (no review needed): 341
+NOTICE (00000): Auto-assigned but needs manual review: 0
+Applying migration 20251208122758_remove_partner_unknown_org_types.sql...
+NOTICE (00000): Safety check passed: 0 unknown and 0 partner records
+NOTICE (00000): type "organization_type_v2" does not exist, skipping
+Applying migration 20251208152916_fix_auth_user_trigger_upsert.sql...
+Applying migration 20251208190305_backfill_contact_first_last_names.sql...
+NOTICE (00000): Contacts with populated first_name/last_name: 369
+Applying migration 20251208191516_cleanup_duplicate_contacts.sql...
+NOTICE (00000): === DUPLICATE CLEANUP STARTING ===
+NOTICE (00000): Duplicate contact sets found: 20
+NOTICE (00000): Organizations affected: 20
+NOTICE (00000): === DUPLICATE CLEANUP COMPLETE ===
+NOTICE (00000): Contacts soft-deleted: 21
+NOTICE (00000): Remaining duplicate sets: 0
+NOTICE (00000): SUCCESS: All duplicates cleaned up
+Applying migration 20251208191517_add_contact_unique_constraint.sql...
+NOTICE (00000): Safety check passed: No duplicate contacts found
+NOTICE (00000): SUCCESS: Unique constraint idx_contacts_unique_org_name created
+Applying migration 20251210081404_seed_segments_data.sql...
+Applying migration 20251210191556_add_distributor_codes_to_products.sql...
+Applying migration 20251210200000_create_edge_function_helpers.sql...
+Applying migration 20251211060000_add_get_sale_by_id_function.sql...
+Applying migration 20251211080000_add_authorization_to_security_definer_functions.sql...
+Applying migration 20251211120000_fix_sales_rls_self_update.sql...
+Applying migration 20251211130000_harden_security_definer_functions.sql...
+Applying migration 20251211140000_enforce_column_level_updates.sql...
+NOTICE (00000): trigger "enforce_sales_column_restrictions_trigger" for relation "sales" does not exist, skipping
+Applying migration 20251211160000_fix_trigger_null_auth.sql...
+Applying migration 20251211170000_allow_admin_full_edit.sql...
+Applying migration 20251211180000_fix_is_admin_null_auth.sql...
+Applying migration 20251212021008_fix_update_sales_policy_role.sql...
+Applying migration 20251212031800_add_deleted_at_to_admin_update_sale.sql...
+Applying migration 20251212034456_add_soft_delete_product_distributor_authorizations.sql...
+NOTICE (42701): column "deleted_at" of relation "product_distributor_authorizations" already exists, skipping
+Applying migration 20251212034757_align_notes_schemas.sql...
+NOTICE (00000): contact_notes.attachments migrated from TEXT[] to JSONB
+NOTICE (00000): opportunity_notes.attachments migrated from TEXT[] to JSONB
+NOTICE (00000): policy "authenticated_select_contact_notes" for relation "public.contact_notes" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_contact_notes" for relation "public.contact_notes" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_contact_notes" for relation "public.contact_notes" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_contact_notes" for relation "public.contact_notes" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_opportunity_notes" for relation "public.opportunity_notes" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_opportunity_notes" for relation "public.opportunity_notes" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_opportunity_notes" for relation "public.opportunity_notes" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_opportunity_notes" for relation "public.opportunity_notes" does not exist, skipping
+NOTICE (00000): trigger "trigger_update_contact_notes_updated_at" for relation "public.contact_notes" does not exist, skipping
+NOTICE (00000): trigger "trigger_set_contact_notes_updated_by" for relation "public.contact_notes" does not exist, skipping
+NOTICE (00000): trigger "trigger_update_opportunity_notes_updated_at" for relation "public.opportunity_notes" does not exist, skipping
+NOTICE (00000): trigger "trigger_set_opportunity_notes_updated_by" for relation "public.opportunity_notes" does not exist, skipping
+Applying migration 20251212061722_document_cloud_objects.sql...
+Applying migration 20251212094908_create_dashboard_snapshots_table.sql...
+Applying migration 20251212095238_setup_snapshot_capture_cron.sql...
+NOTICE (42710): extension "pg_cron" already exists, skipping
+NOTICE (42710): extension "pg_net" already exists, skipping
+NOTICE (00000): Using existing vault secrets from daily-digest setup:
+NOTICE (00000):   - project_url
+NOTICE (00000):   - service_role_key
+NOTICE (00000): === Dashboard Snapshot Capture Cron Setup Complete ===
+NOTICE (00000): Job Name: snapshot-capture-23h
+NOTICE (00000): Schedule: 0 23 * * * (11:00 PM UTC daily)
+NOTICE (00000): Function: invoke_snapshot_capture_function()
+NOTICE (00000): Purpose: Historical KPI snapshots for week-over-week trends
+NOTICE (00000): 
+NOTICE (00000): To verify: SELECT * FROM cron.job WHERE jobname = 'snapshot-capture-23h';
+NOTICE (00000): To test manually: SELECT invoke_snapshot_capture_function();
+NOTICE (00000): To check results: SELECT * FROM dashboard_snapshots ORDER BY created_at DESC LIMIT 10;
+Applying migration 20251212100000_extend_admin_update_sale_profile.sql...
+Applying migration 20251212100701_readd_tasks_sales_id_index.sql...
+Applying migration 20251215023234_drop_product_legacy_columns.sql...
+NOTICE (00000): index "idx_products_sku" does not exist, skipping
+Applying migration 20251215044315_01_add_org_hierarchy_fields.sql...
+Applying migration 20251215050703_02_add_org_type_field.sql...
+Applying migration 20251215050704_03_add_org_status_fields.sql...
+Applying migration 20251215050705_04_add_org_billing_address.sql...
+Applying migration 20251215050706_05_add_org_shipping_address.sql...
+Applying migration 20251215050707_06_add_org_payment_contact.sql...
+Applying migration 20251215054821_07_add_org_indexes.sql...
+Applying migration 20251215054822_08_create_product_distributors.sql...
+Applying migration 20251215054823_11_add_contact_territory.sql...
+Applying migration 20251215054833_09_add_product_distributors_indexes.sql...
+Applying migration 20251215054834_10_add_contact_manager.sql...
+Applying migration 20251216175827_add_next_task_to_opportunities_summary.sql...
+NOTICE (00000): No dependent views found - safe to proceed.
+NOTICE (00000): SUCCESS: All four next_task columns added to opportunities_summary
+Applying migration 20251221004511_fix_principal_organization_fk_restrict.sql...
+Applying migration 20251221074508_add_test_principals_fix_opportunities.sql...
+NOTICE (00000): ============================================
+NOTICE (00000): PRINCIPAL ORGANIZATION FIX COMPLETE
+NOTICE (00000): ============================================
+NOTICE (00000): Principals created: 5
+NOTICE (00000): Opportunities still NULL: 0
+NOTICE (00000): SUCCESS: All opportunities now have principal assignments
+Applying migration 20251221075031_link_opportunities_to_contacts.sql...
+NOTICE (00000): ============================================
+NOTICE (00000): OPPORTUNITY-CONTACT LINKING COMPLETE
+NOTICE (00000): ============================================
+NOTICE (00000): Total opportunity_contacts entries: 369
+NOTICE (00000): Opportunities still unlinked: 0
+NOTICE (00000): SUCCESS: All opportunities now have contact links
+Applying migration 20251221135232_complete_soft_delete_cascade.sql...
+Applying migration 20251221185149_add_contact_self_manager_check.sql...
+Applying migration 20251221185448_create_distinct_opportunities_campaigns_view.sql...
+Applying migration 20251222011040_fix_product_distributors_rls.sql...
+NOTICE (00000): SUCCESS: product_distributors now has 4 secure RLS policies
+Applying migration 20251222011129_optimize_opportunities_summary_performance.sql...
+NOTICE (00000): No dependent views found - safe to proceed.
+NOTICE (00000): SUCCESS: opportunities_summary has 49 columns including all computed fields
+NOTICE (00000): PERFORMANCE: View now uses CTEs for O(n+4) complexity instead of O(n*8)
+Applying migration 20251222034729_add_opportunity_version_column.sql...
+NOTICE (00000): trigger "opportunities_version_increment" for relation "opportunities" does not exist, skipping
+Applying migration 20251222190801_fix_booth_visitor_segment_id.sql...
+Applying migration 20251223120000_fix_products_search_triggers_remove_sku.sql...
+Applying migration 20251223120100_add_create_product_with_distributors_rpc.sql...
+Applying migration 20251223130000_fix_create_product_rpc_enum_cast.sql...
+Applying migration 20251223154505_drop_organization_name_unique_constraint.sql...
+NOTICE (00000): ========================================
+NOTICE (00000): UNIQUE CONSTRAINT REMOVED
+NOTICE (00000): organizations_name_unique_idx has been dropped
+NOTICE (00000): Duplicate organization names are now allowed
+NOTICE (00000): Duplicate detection dialog still provides soft warning
+NOTICE (00000): ========================================
+Applying migration 20251224091825_add_last_activity_date_to_opportunities_summary.sql...
+NOTICE (00000): No dependent views found - safe to proceed.
+NOTICE (00000): SUCCESS: opportunities_summary has 50 columns including last_activity_date
+Applying migration 20251225003612_add_org_text_constraints.sql...
+Applying migration 20251228005054_cleanup_admin_update_sale_overloads.sql...
+Applying migration 20251228094746_fix_security_invoker_views.sql...
+Applying migration 20251231120000_add_sync_opportunity_contacts_rpc.sql...
+Applying migration 20260101001837_add_sales_id_to_organizations_summary.sql...
+Applying migration 20260101122512_fix_opportunity_delete_validation.sql...
+Applying migration 20260102025200_set_opportunity_owner_defaults.sql...
+NOTICE (00000): trigger "trigger_set_opportunity_owner_defaults" for relation "public.opportunities" does not exist, skipping
+Applying migration 20260102130955_allow_delete_all_roles.sql...
+NOTICE (00000): policy "authenticated_delete_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_organizations" for relation "organizations" does not exist, skipping
+Applying migration 20260102142324_create_user_favorites.sql...
+Applying migration 20260102180656_remove_operator_org_type.sql...
+Applying migration 20260103120000_add_get_organization_descendants_function.sql...
+Applying migration 20260103162502_add_missing_cols_to_organizations_summary.sql...
+Applying migration 20260103180000_add_pg_trgm_search_indexes.sql...
+Applying migration 20260104113431_fix_user_favorites_update_rls.sql...
+Applying migration 20260104132335_add_brent_ramsy.sql...
+NOTICE (00000): Created auth user for bramsy@masterfoodbokers.com: 03125322-fa10-49e3-b699-790779778b01
+NOTICE (00000): Brent Ramsy already exists in sales table
+Applying migration 20260105172343_consolidate_rls_policies.sql...
+NOTICE (00000): policy "select_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "insert_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "update_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "delete_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "select_tutorial_progress" for relation "tutorial_progress" does not exist, skipping
+NOTICE (00000): policy "insert_tutorial_progress" for relation "tutorial_progress" does not exist, skipping
+NOTICE (00000): policy "update_tutorial_progress" for relation "tutorial_progress" does not exist, skipping
+NOTICE (00000): policy "select_segments" for relation "segments" does not exist, skipping
+NOTICE (00000): policy "insert_segments" for relation "segments" does not exist, skipping
+NOTICE (00000): policy "update_segments" for relation "segments" does not exist, skipping
+NOTICE (00000): policy "delete_segments" for relation "segments" does not exist, skipping
+Applying migration 20260105203724_add_soft_delete_product_rpc.sql...
+Applying migration 20260106001702_fix_lead_source_enum.sql...
+Applying migration 20260109000001_fix_function_search_paths.sql...
+Applying migration 20260109000002_move_pg_trgm_to_extensions.sql...
+Applying migration 20260109000003_require_principal_organization_id.sql...
+Applying migration 20260109000004_harden_rls_ownership_policies.sql...
+Applying migration 20260110000001_add_opportunity_stage_changes_view.sql...
+Applying migration 20260111000001_convert_merge_to_soft_delete.sql...
+NOTICE (00000): function merge_duplicate_contacts(pg_catalog.int4,pg_catalog.int4[]) does not exist, skipping
+Applying migration 20260111000002_soft_delete_orphaned_opportunities.sql...
+NOTICE (00000): Soft deleted 0 orphaned opportunities
+Applying migration 20260111000003_soft_delete_orphaned_activities.sql...
+NOTICE (00000): Soft deleted 0 orphaned activities
+Applying migration 20260111000004_consolidate_merge_functions.sql...
+NOTICE (00000): function merge_duplicate_contacts(pg_catalog.int4,pg_catalog.int4[],pg_catalog.bool) does not exist, skipping
+NOTICE (00000): function merge_contacts(pg_catalog.int4,pg_catalog.int4[]) does not exist, skipping
+NOTICE (00000): function consolidate_duplicate_contacts(pg_catalog.int4,pg_catalog.int4[]) does not exist, skipping
+WARNING (01000): Multiple merge functions found: 2. Review manually.
+Applying migration 20260111000005_drop_old_bigint_merge_function.sql...
+NOTICE (00000): SUCCESS: Only soft-delete merge_duplicate_contacts(INTEGER, INTEGER[]) remains
+Applying migration 20260111120000_add_audit_columns_product_distributors.sql...
+Applying migration 20260111130000_fix_segments_created_by.sql...
+NOTICE (00000): Segments: 39 total, 39 with NULL created_by
+NOTICE (00000): Backfilled 39 segment(s) with created_by = eed3d52a-a6bc-40e1-b0cd-89830489be4d
+NOTICE (00000): Added NOT NULL constraint to segments.created_by
+Applying migration 20260111130100_add_user_favorites_audit.sql...
+Applying migration 20260111130200_add_missing_audit_triggers.sql...
+Applying migration 20260111130300_create_log_activity_with_task.sql...
+Applying migration 20260115120607_db_hardening.sql...
+NOTICE (42701): column "updated_at" of relation "user_favorites" already exists, skipping
+NOTICE (00000): trigger "set_updated_at_tutorial_progress" for relation "public.tutorial_progress" does not exist, skipping
+NOTICE (00000): trigger "set_updated_at_user_favorites" for relation "public.user_favorites" does not exist, skipping
+Applying migration 20260118000001_fix_segments_indexes.sql...
+NOTICE (00000): index "industries_name_case_insensitive_idx" does not exist, skipping
+Applying migration 20260118000002_fix_opp_products_constraint.sql...
+Applying migration 20260118000003_fix_org_distributors.sql...
+Applying migration 20260118000004_fix_sales_unique_index.sql...
+NOTICE (00000): index "idx_sales_unique_non_user" does not exist, skipping
+Applying migration 20260118000005_fix_rls_write_policies.sql...
+NOTICE (00000): policy "update_contact_notes" for relation "contact_notes" does not exist, skipping
+NOTICE (00000): policy "delete_contact_notes" for relation "contact_notes" does not exist, skipping
+NOTICE (00000): policy "update_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "insert_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_opportunities" for relation "opportunities" does not exist, skipping
+Applying migration 20260118000010_fix_helper_function_null_safety.sql...
+NOTICE (00000): ========================================
+NOTICE (00000): RLS Helper Functions Null-Safety Fix
+NOTICE (00000): ========================================
+NOTICE (00000): Updated functions:
+NOTICE (00000):   - is_manager()        : FALSE when auth.uid() IS NULL
+NOTICE (00000):   - is_rep()            : FALSE when auth.uid() IS NULL
+NOTICE (00000):   - is_manager_or_admin(): FALSE when auth.uid() IS NULL
+NOTICE (00000):   - user_role()         : 'rep' when auth.uid() IS NULL
+NOTICE (00000): ========================================
+NOTICE (00000): Unchanged functions (already correct):
+NOTICE (00000):   - is_admin()          : TRUE when auth.uid() IS NULL (service role bypass)
+NOTICE (00000):   - current_sales_id()  : NULL when auth.uid() IS NULL
+NOTICE (00000): ========================================
+NOTICE (00000): Security pattern applied:
+NOTICE (00000):   - SECURITY DEFINER retained
+NOTICE (00000):   - SET search_path = '' applied
+NOTICE (00000):   - STABLE volatility retained
+NOTICE (00000):   - deleted_at IS NULL filter added
+NOTICE (00000): ========================================
+Applying migration 20260118120000_add_check_similar_opportunities_rpc.sql...
+NOTICE (42P06): schema "extensions" already exists, skipping
+NOTICE (42710): extension "pg_trgm" already exists, skipping
+Applying migration 20260118130000_add_campaign_report_stats_rpc.sql...
+Applying migration 20260118140000_add_role_based_access_helpers.sql...
+NOTICE (00000): ========================================
+NOTICE (00000): Role-Based Access Helpers Installed
+NOTICE (00000): ========================================
+NOTICE (00000): Schema created:
+NOTICE (00000):   - private (internal security functions)
+NOTICE (00000): ========================================
+NOTICE (00000): Functions created:
+NOTICE (00000):   - private.get_current_user_role()
+NOTICE (00000):   - private.can_access_by_role(bigint, bigint)
+NOTICE (00000):   - private.is_admin_or_manager()
+NOTICE (00000): ========================================
+NOTICE (00000): Security features:
+NOTICE (00000):   - SECURITY DEFINER (elevated privileges)
+NOTICE (00000):   - SET search_path = '' (injection protection)
+NOTICE (00000):   - STABLE volatility (query optimization)
+NOTICE (00000):   - Explicit NULL handling (fail-safe defaults)
+NOTICE (00000):   - deleted_at IS NULL filter (soft delete aware)
+NOTICE (00000): ========================================
+NOTICE (00000): Grants applied:
+NOTICE (00000):   - USAGE on schema private to authenticated
+NOTICE (00000):   - EXECUTE on all functions to authenticated
+NOTICE (00000): ========================================
+Applying migration 20260118193604_update_rls_for_role_based_access.sql...
+NOTICE (00000): policy "organizations_select_policy" for relation "public.organizations" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_organizations" for relation "public.organizations" does not exist, skipping
+NOTICE (00000): policy "update_organizations" for relation "public.organizations" does not exist, skipping
+NOTICE (00000): policy "organizations_update_policy" for relation "public.organizations" does not exist, skipping
+NOTICE (00000): policy "contacts_select_policy" for relation "public.contacts" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_contacts" for relation "public.contacts" does not exist, skipping
+NOTICE (00000): policy "opportunities_select_policy" for relation "public.opportunities" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_opportunities" for relation "public.opportunities" does not exist, skipping
+NOTICE (00000): policy "update_opportunities" for relation "public.opportunities" does not exist, skipping
+NOTICE (00000): policy "opportunities_update_policy" for relation "public.opportunities" does not exist, skipping
+NOTICE (00000): policy "select_activities" for relation "public.activities" does not exist, skipping
+NOTICE (00000): policy "activities_select_policy" for relation "public.activities" does not exist, skipping
+NOTICE (00000): policy "contact_notes_select_policy" for relation "public.contact_notes" does not exist, skipping
+NOTICE (00000): policy "organization_notes_select_policy" for relation "public.organization_notes" does not exist, skipping
+NOTICE (00000): policy "opportunity_notes_select_policy" for relation "public.opportunity_notes" does not exist, skipping
+NOTICE (00000): ========================================
+NOTICE (00000): Role-Based RLS Policies Updated
+NOTICE (00000): ========================================
+NOTICE (00000): Tables updated:
+NOTICE (00000):   - organizations (SELECT, UPDATE)
+NOTICE (00000):   - contacts (SELECT)
+NOTICE (00000):   - opportunities (SELECT, UPDATE - dual ownership)
+NOTICE (00000):   - activities (SELECT - created_by only)
+NOTICE (00000):   - contact_notes (SELECT)
+NOTICE (00000):   - organization_notes (SELECT)
+NOTICE (00000):   - opportunity_notes (SELECT)
+NOTICE (00000): ========================================
+NOTICE (00000): Security model:
+NOTICE (00000):   - Admin/Manager: Full access
+NOTICE (00000):   - Rep: Own records only (sales_id OR created_by)
+NOTICE (00000): ========================================
+Applying migration 20260119000000_update_quick_add_opportunity.sql...
+Applying migration 20260119000001_create_entity_timeline_view.sql...
+NOTICE (42P07): relation "idx_activities_contact_id" already exists, skipping
+Applying migration 20260119000002_update_tasks_visibility_rls.sql...
+NOTICE (00000): policy "authenticated_select_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "select_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "tasks_select_role_based" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "tasks_select_all_authenticated" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "update_tasks" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "tasks_update_role_based" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "tasks_update_owner_or_privileged" for relation "tasks" does not exist, skipping
+NOTICE (00000): policy "tasks_update_own_or_manager" for relation "tasks" does not exist, skipping
+NOTICE (42P07): relation "idx_tasks_contact_id" already exists, skipping
+NOTICE (00000): ========================================
+NOTICE (00000): Tasks RLS Updated for Universal Visibility
+NOTICE (00000): ========================================
+NOTICE (00000): SELECT policy: Universal (all authenticated users)
+NOTICE (00000):   - Filter: deleted_at IS NULL
+NOTICE (00000):   - Enables: Unified timeline collaboration
+NOTICE (00000): ========================================
+NOTICE (00000): UPDATE policy: Scoped (owner or privileged)
+NOTICE (00000):   - Reps: Own tasks only (sales_id match)
+NOTICE (00000):   - Managers/Admins: All tasks
+NOTICE (00000):   - Optimization: SELECT-wrapped functions
+NOTICE (00000): ========================================
+NOTICE (00000): Indexes created (partial, soft-delete aware):
+NOTICE (00000):   - idx_tasks_contact_id
+NOTICE (00000):   - idx_tasks_organization_id
+NOTICE (00000):   - idx_tasks_sales_id
+NOTICE (00000): ========================================
+Applying migration 20260120000001_fix_sync_opportunity_contacts_soft_delete.sql...
+Applying migration 20260121000000_add_task_enum_values.sql...
+Applying migration 20260121000001_add_task_columns_to_activities.sql...
+NOTICE (42701): column "related_task_id" of relation "activities" already exists, skipping
+Applying migration 20260121000002_migrate_tasks_to_activities.sql...
+NOTICE (00000): Migrating 6 tasks to activities table
+NOTICE (00000): === Migration Verification ===
+NOTICE (00000): Original tasks: 6
+NOTICE (00000): Migrated activities (type=task): 6
+NOTICE (00000): ID mappings created: 6
+Applying migration 20260121000003_create_compatibility_views.sql...
+Applying migration 20260121000004_update_activities_rls_for_tasks.sql...
+NOTICE (00000): policy "authenticated_update_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "activities_update_policy" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "activities_update_unified" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "activities_delete_unified" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_select_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "activities_select_all" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "activities_insert_all" for relation "activities" does not exist, skipping
+NOTICE (00000): trigger "trigger_set_activity_created_by" for relation "activities" does not exist, skipping
+Applying migration 20260121000005_deprecate_tasks_table.sql...
+NOTICE (00000): policy "authenticated_insert_tasks" for relation "tasks_deprecated" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_tasks" for relation "tasks_deprecated" does not exist, skipping
+NOTICE (00000): === DEPRECATION NOTICE ===
+NOTICE (00000): tasks table renamed to tasks_deprecated
+NOTICE (00000): All task operations should now use activities table
+NOTICE (00000): Scheduled for removal: 2026-03-21
+NOTICE (00000): ===========================
+Applying migration 20260121053244_relax_rls_for_shared_visibility.sql...
+Applying migration 20260122000000_log_opportunity_stage_change_trigger.sql...
+NOTICE (00000): trigger "trigger_log_opportunity_stage_change" for relation "public.opportunities" does not exist, skipping
+Applying migration 20260122184338_security_remediation.sql...
+NOTICE (00000): policy "update_products" for relation "products" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_tags" for relation "tags" does not exist, skipping
+NOTICE (00000): policy "authenticated_update_tags" for relation "tags" does not exist, skipping
+NOTICE (00000): trigger "update_activities_updated_at" for relation "activities" does not exist, skipping
+NOTICE (00000): trigger "update_contacts_updated_at" for relation "contacts" does not exist, skipping
+NOTICE (00000): trigger "update_opportunities_updated_at" for relation "opportunities" does not exist, skipping
+NOTICE (00000): trigger "update_opportunity_participants_updated_at" for relation "opportunity_participants" does not exist, skipping
+NOTICE (00000): trigger "update_organizations_updated_at" for relation "organizations" does not exist, skipping
+NOTICE (00000): trigger "update_product_distributors_updated_at" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): trigger "update_products_updated_at" for relation "products" does not exist, skipping
+NOTICE (00000): trigger "update_sales_updated_at" for relation "sales" does not exist, skipping
+NOTICE (00000): trigger "update_tags_updated_at" for relation "tags" does not exist, skipping
+NOTICE (00000): trigger "update_tasks_deprecated_updated_at" for relation "tasks_deprecated" does not exist, skipping
+NOTICE (00000): trigger "update_tutorial_progress_updated_at" for relation "tutorial_progress" does not exist, skipping
+NOTICE (42701): column "deleted_at" of relation "tutorial_progress" already exists, skipping
+NOTICE (00000): policy "Enable read access for all users" for relation "tasks_deprecated" does not exist, skipping
+Applying migration 20260122231125_enable_rls_task_id_mapping.sql...
+Applying migration 20260122235000_add_win_loss_check_constraints.sql...
+Applying migration 20260123051957_backfill_opportunity_owner_before_remote_schema.sql...
+WARNING (01000): No admin users found - using first available user
+NOTICE (00000): Backfilled 369 opportunities with NULL opportunity_owner_id
+NOTICE (00000): === VERIFICATION ===
+NOTICE (00000): Opportunities with NULL opportunity_owner_id: 0
+NOTICE (00000): SUCCESS: All opportunities now have opportunity_owner_id set
+NOTICE (00000): Ready for remote_schema.sql to apply NOT NULL constraint
+Applying migration 20260123084707_add_missing_timestamps_and_fix_functions.sql...
+NOTICE (42701): column "updated_at" of relation "user_favorites" already exists, skipping
+NOTICE (00000): trigger "update_interaction_participants_updated_at" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): trigger "update_notifications_updated_at" for relation "notifications" does not exist, skipping
+NOTICE (00000): trigger "update_opportunity_contacts_updated_at" for relation "opportunity_contacts" does not exist, skipping
+NOTICE (00000): trigger "update_segments_updated_at" for relation "segments" does not exist, skipping
+NOTICE (00000): trigger "update_user_favorites_updated_at" for relation "user_favorites" does not exist, skipping
+Applying migration 20260123115636_fix_rls_soft_delete.sql...
+NOTICE (00000): policy "authenticated_select_organization_distributors" for relation "organization_distributors" does not exist, skipping
+NOTICE (00000): policy "deprecated_read_only" for relation "tasks_deprecated" does not exist, skipping
+Applying migration 20260123144656_fix_permissive_rls_policies.sql...
+NOTICE (00000): policy "activities_insert_owner" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "insert_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "contacts_insert_owner" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "update_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "contacts_update_owner_or_privileged" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "insert_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "update_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "organizations_update_owner_or_privileged" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "insert_products" for relation "products" does not exist, skipping
+NOTICE (00000): policy "update_products" for relation "products" does not exist, skipping
+NOTICE (00000): policy "products_update_privileged" for relation "products" does not exist, skipping
+NOTICE (00000): policy "insert_contact_notes" for relation "contact_notes" does not exist, skipping
+NOTICE (00000): policy "insert_opportunity_notes" for relation "opportunity_notes" does not exist, skipping
+NOTICE (00000): policy "update_opportunity_notes" for relation "opportunity_notes" does not exist, skipping
+NOTICE (00000): policy "insert_organization_notes" for relation "organization_notes" does not exist, skipping
+NOTICE (00000): policy "update_organization_notes" for relation "organization_notes" does not exist, skipping
+NOTICE (00000): policy "insert_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "update_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "insert_segments" for relation "segments" does not exist, skipping
+NOTICE (00000): policy "update_segments" for relation "segments" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_tags" for relation "tags" does not exist, skipping
+NOTICE (00000): policy "interaction_participants_insert_policy" for relation "interaction_participants" does not exist, skipping
+NOTICE (00000): policy "opportunity_participants_insert_policy" for relation "opportunity_participants" does not exist, skipping
+Applying migration 20260123175626_fix_sync_contact_organizations_soft_delete.sql...
+Applying migration 20260123222442_fix_task_id_mapping_rls.sql...
+Applying migration 20260124162942_fix_product_distributors_select_delete_rls.sql...
+Applying migration 20260124170000_fix_product_distributors_rls_security.sql...
+NOTICE (00000): policy "delete_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Users can delete product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "authenticated_delete_product_distributors" for relation "product_distributors" does not exist, skipping
+Applying migration 20260124_harden_function_search_path.sql...
+Applying migration 20260125000000_make_opportunity_products_team_shared.sql...
+NOTICE (00000): SUCCESS: All 4 team-shared RLS policies created for opportunity_products
+Applying migration 20260125000001_expand_delete_permissions.sql...
+NOTICE (00000): policy "delete_contacts" for relation "contacts" does not exist, skipping
+NOTICE (00000): policy "delete_organizations" for relation "organizations" does not exist, skipping
+NOTICE (00000): policy "delete_activities" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "delete_contact_notes" for relation "contact_notes" does not exist, skipping
+Applying migration 20260125000002_manager_task_assignment.sql...
+NOTICE (00000): policy "insert_tasks" for relation "activities" does not exist, skipping
+NOTICE (00000): policy "authenticated_insert_activities" for relation "activities" does not exist, skipping
+Applying migration 20260125000003_add_primary_contact_to_opportunities.sql...
+Applying migration 20260125000004_hybrid_soft_delete_cascade.sql...
+Applying migration 20260125000005_critical_field_audit.sql...
+Applying migration 20260125000006_audit_field_immutability.sql...
+Applying migration 20260125000007_product_distributors_dual_auth_rls.sql...
+NOTICE (00000): policy "Users can view product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Users can insert product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Users can update product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Users can delete product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Authenticated users can view product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Admins can insert product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Admins can update product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "Admins can delete product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): policy "delete_product_distributors" for relation "product_distributors" does not exist, skipping
+NOTICE (00000): SUCCESS: product_distributors has 5 policies
+Applying migration 20260125041510_add_junction_table_partial_indexes.sql...
+Applying migration 20260125041610_opportunity_closure_validation.sql...
+NOTICE (00000): trigger "trg_validate_opportunity_closure" for relation "opportunities" does not exist, skipping
+Seeding data from supabase/seed.sql...
+NOTICE (00000): Verification passed: auth.users=5, sales=5
+Stopping containers...
+failed to send batch: ERROR: Cannot archive organization with active opportunities. Archive or reassign opportunities first. (SQLSTATE 23503)
+Try rerunning the command with --debug to troubleshoot the error.
