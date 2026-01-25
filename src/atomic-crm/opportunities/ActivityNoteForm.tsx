@@ -27,6 +27,7 @@ import {
   type ActivityNoteFormData,
 } from "../validation/activities";
 import type { Opportunity, Contact } from "../types";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface ActivityNoteFormProps {
   opportunity: Opportunity;
@@ -43,7 +44,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
   // Pattern H: Cascading contact selection filtered by opportunity's organization
   const { data: contacts, isPending: contactsLoading } = useGetList<Contact>("contacts_summary", {
     filter: { organization_id: opportunity.customer_organization_id },
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
   });
 
   // Transform contacts for SelectUI

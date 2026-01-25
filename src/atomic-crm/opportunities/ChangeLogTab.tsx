@@ -17,6 +17,7 @@ import {
 import type { Opportunity } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
 import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface AuditTrailEntry {
   audit_id: number;
@@ -55,7 +56,7 @@ export const ChangeLogTab = () => {
         record_id: record?.id,
       },
       sort: { field: "changed_at", order: "DESC" },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     },
     {
       enabled: !!record?.id, // Only fetch when record.id is available

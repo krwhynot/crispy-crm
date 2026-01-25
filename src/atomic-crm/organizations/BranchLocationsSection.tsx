@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Store, MapPin, Phone, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Company } from "../types";
 
 /**
@@ -19,7 +20,7 @@ export const BranchLocationsSection = () => {
   const { data: branches, isLoading } = useGetList("organizations", {
     filter: { parent_organization_id: record?.id },
     sort: { field: "name", order: "ASC" },
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
   });
 
   if (!record || isLoading) {

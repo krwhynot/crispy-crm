@@ -34,6 +34,7 @@ import {
   getOpportunityStageClasses,
 } from "./constants";
 import { useExportOpportunities } from "./useExportOpportunities";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface BulkActionsToolbarProps {
   selectedIds: (string | number)[];
@@ -77,7 +78,7 @@ export const BulkActionsToolbar = ({
 
   // Fetch sales list for owner assignment
   const { data: salesList } = useGetList("sales", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     sort: { field: "last_name", order: "ASC" },
   });
 

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building2, ChevronRight, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Company } from "../types";
 
 /**

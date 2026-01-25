@@ -22,6 +22,7 @@ import { useGetList, useRefresh, useDelete, useNotify } from "react-admin";
 import { logger } from "@/lib/logger";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 // Import extracted components
 import {
@@ -62,7 +63,7 @@ export function AuthorizationsTab({
     {
       filter: { distributor_id: distributorId, deleted_at: null },
       sort: { field: "created_at", order: "DESC" },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     },
     { enabled: isActiveTab && !!distributorId }
   );
