@@ -4,6 +4,7 @@ import { useNotify, useRefresh, useDataProvider } from "ra-core";
 import { logger } from "@/lib/logger";
 import type { Opportunity, OpportunityStageValue } from "../types";
 import { opportunityKeys } from "@/atomic-crm/queryKeys";
+import { getOpportunityStageLabel } from "./constants";
 
 export type BulkAction = "change_stage" | "change_status" | "assign_owner" | "archive" | null;
 
