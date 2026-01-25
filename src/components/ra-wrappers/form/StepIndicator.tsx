@@ -50,7 +50,7 @@ function StepIndicator({ className }: StepIndicatorProps) {
             {/* Step circle */}
             <div
               className={cn(
-                "flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors",
+                "flex items-center justify-center w-11 h-11 rounded-full text-sm font-medium transition-colors",
                 isComplete && "bg-primary text-primary-foreground",
                 isCurrent && "border-2 border-primary text-primary bg-background",
                 isFuture && "border-2 border-muted text-foreground/70 bg-background"

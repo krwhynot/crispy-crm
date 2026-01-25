@@ -89,19 +89,16 @@ WHERE o.deleted_at IS NULL;
 -- RE-GRANT PERMISSIONS (lost during DROP CASCADE)
 -- ============================================================================
 
-GRANT SELECT ON opportunities_summary TO authenticated;
+GRANT SELECT ON opportunities_summary TO authenticated, anon;
 
 -- ============================================================================
 -- DOCUMENTATION
 -- ============================================================================
 
 COMMENT ON VIEW opportunities_summary IS
-    'OPTIMIZED VIEW: Uses CTEs instead of correlated subqueries. '
-    'Performance: O(n*8) reduced to O(n+4) - handles 1000+ opportunities without browser crash. '
-    'Columns: days_in_stage, days_since_last_activity, pending/overdue task counts, '
-    'next_task (id/title/due_date/priority), organization names, products JSONB array. '
-    'SECURITY: Uses SECURITY INVOKER to enforce RLS policies on underlying tables. '
-    'SOFT-DELETE: Filters deleted opportunities and organizations.';
+'Denormalized opportunity view with organization names, primary contact, and products array for efficient reads.
+Updated 2026-01-25 (20260125190223): Added soft-delete filtering to WHERE clause and all JOINs.
+SECURITY: Filters deleted opportunities, organizations, contacts, and products.';
 
 -- ============================================================================
 -- VERIFICATION
@@ -111,14 +108,11 @@ DO $$
 DECLARE
     col_count INTEGER;
     expected_cols TEXT[] := ARRAY[
-        'days_in_stage',
-        'days_since_last_activity',
-        'pending_task_count',
-        'overdue_task_count',
-        'next_task_id',
-        'next_task_title',
-        'next_task_due_date',
-        'next_task_priority',
+        'customer_organization_name',
+        'principal_organization_name',
+        'distributor_organization_name',
+        'primary_contact_id',
+        'primary_contact_name',
         'products'
     ];
     missing_cols TEXT[] := '{}';
@@ -148,7 +142,6 @@ BEGIN
     WHERE table_name = 'opportunities_summary';
 
     RAISE NOTICE 'SUCCESS: opportunities_summary has % columns including all computed fields', col_count;
-    RAISE NOTICE 'PERFORMANCE: View now uses CTEs for O(n+4) complexity instead of O(n*8)';
 
     -- Verify soft-delete filtering works
     SELECT COUNT(*) INTO total_opps FROM opportunities;
