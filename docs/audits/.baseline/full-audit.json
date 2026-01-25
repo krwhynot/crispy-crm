@@ -1,202 +1,226 @@
 {
   "lastAudit": "2026-01-25",
-  "lastAuditTime": "12:13",
+  "lastAuditTime": "18:35",
   "mode": "full",
-  "duration_minutes": 27,
+  "duration_minutes": 30,
   "totals": {
-    "critical": 39,
-    "high": 113,
-    "medium": 88,
-    "total": 240
+    "critical": 8,
+    "high": 198,
+    "medium": 134,
+    "total": 340
   },
   "by_layer": {
     "L1_database": {
-      "critical": 14,
-      "high": 24,
-      "medium": 9,
+      "critical": 7,
+      "high": 16,
+      "medium": 12,
       "status": "CRITICAL",
-      "primary_concerns": "RLS policies (96 USING(true)), soft-delete gaps, missing indexes, stage/priority defaults"
+      "primary_concerns": "Views missing soft-delete filters, RLS disabled tables (task_id_mapping), FK constraints and indexes"
     },
     "L2_domain": {
       "critical": 0,
-      "high": 30,
-      "medium": 28,
+      "high": 158,
+      "medium": 62,
       "status": "WARN",
-      "primary_concerns": "Type assertions in tests, interface drift risk, validation naming"
+      "primary_concerns": "158 any usages in test code (production code clean), type assertions in tests"
     },
     "L3_provider": {
-      "critical": 2,
-      "high": 14,
-      "medium": 3,
-      "status": "WARN",
-      "primary_concerns": "Direct Supabase import in timelineHandler, incomplete junction handlers"
+      "critical": 0,
+      "high": 4,
+      "medium": 7,
+      "status": "OK",
+      "primary_concerns": "Direct Supabase import in timelineHandler, Strangler Fig COMPLETE"
     },
     "L4_ui_foundation": {
-      "critical": 4,
-      "high": 8,
-      "medium": 12,
+      "critical": 0,
+      "high": 6,
+      "medium": 8,
       "status": "WARN",
-      "primary_concerns": "Missing form-primitives.tsx, small touch targets, icon accessibility"
+      "primary_concerns": "Touch targets (StepIndicator 32px), opacity contrast in select"
     },
     "L5_features": {
-      "critical": 19,
-      "high": 37,
-      "medium": 36,
-      "status": "CRITICAL",
-      "primary_concerns": "Cache invalidation gaps, N+1 queries, incomplete features, business rule enforcement"
+      "critical": 1,
+      "high": 14,
+      "medium": 45,
+      "status": "HIGH",
+      "primary_concerns": "6 files over 500 lines, cache invalidation gaps, magic values, stale leads RPC"
     }
   },
   "by_category": {
     "security": {
-      "critical": 4,
-      "high": 18,
-      "medium": 8,
-      "status": "CRITICAL",
-      "note": "4 RLS USING(true) holes in task_id_mapping, audit_trail, products, tags tables"
+      "critical": 1,
+      "high": 3,
+      "medium": 6,
+      "status": "WARN",
+      "note": "1 hardcoded secrets pattern, RLS gaps in task_id_mapping"
     },
     "data-integrity": {
-      "critical": 6,
-      "high": 8,
-      "medium": 5,
+      "critical": 4,
+      "high": 5,
+      "medium": 3,
       "status": "CRITICAL",
-      "note": "96 USING(true) policies, Strangler Fig complete (13 handlers), hard DELETE statements"
+      "note": "4 views missing soft-delete filters (contacts/opportunities/organizations/activities_summary)"
     },
     "error-handling": {
       "critical": 0,
-      "high": 2,
-      "medium": 3,
+      "high": 1,
+      "medium": 4,
       "status": "OK",
-      "note": "Both HIGH findings are compliant patterns (fire-and-forget storage cleanup), 100% withErrorLogging coverage"
+      "note": "Fail-fast compliant, 100% withErrorLogging coverage, fire-and-forget patterns documented"
     },
     "db-hardening": {
-      "critical": 4,
-      "high": 8,
-      "medium": 6,
+      "critical": 3,
+      "high": 11,
+      "medium": 12,
       "status": "CRITICAL",
-      "note": "product_distributors missing soft-delete, missing FK indexes, nullable company_id breaks isolation"
+      "note": "Missing FK indexes, product_distributors soft-delete cascade, nullable company_id"
     },
     "stale-state": {
-      "critical": 2,
-      "high": 5,
-      "medium": 4,
-      "status": "HIGH",
+      "critical": 0,
+      "high": 3,
+      "medium": 5,
+      "status": "WARN",
       "note": "useSalesUpdate/updatePassword missing cache invalidation, hardcoded query keys"
     },
     "workflow-gaps": {
-      "critical": 4,
-      "high": 5,
-      "medium": 3,
-      "status": "CRITICAL",
-      "note": "Stage transitions app-only, customer_organization_id nullable, win/loss validation gaps, priority silently defaults"
+      "critical": 0,
+      "high": 3,
+      "medium": 6,
+      "status": "WARN",
+      "note": "Stage transitions app-only, stale leads RPC not implemented, 20 activities without opportunity_id"
     },
     "architecture": {
-      "critical": 7,
-      "high": 12,
-      "medium": 4,
-      "status": "HIGH",
-      "note": "7 manual interfaces (type drift), unverified .strict() coverage, timelineHandler Supabase import"
+      "critical": 0,
+      "high": 3,
+      "medium": 7,
+      "status": "WARN",
+      "note": "7 manual interfaces (type drift), timelineHandler Supabase import, feature compliance 12/14"
     },
     "typescript": {
       "critical": 0,
-      "high": 30,
-      "medium": 28,
+      "high": 158,
+      "medium": 62,
       "status": "WARN",
-      "note": "Test code patterns (180+ any usages in mocks), 35+ as unknown as casts, production code clean"
+      "note": "Production code has 0 any usages. Test code: 158 :any, 12 as any, 35 as unknown as, 20 @ts-expect-error (all documented)"
     },
     "accessibility": {
-      "critical": 4,
-      "high": 8,
-      "medium": 12,
-      "status": "WARN",
-      "note": "Missing form-primitives.tsx, small touch targets (h-8 w-8), icon labels, opacity contrast"
+      "critical": 0,
+      "high": 3,
+      "medium": 8,
+      "status": "PASS",
+      "note": "Form primitives compliant (aria-invalid, aria-describedby, role=alert). Issues: StepIndicator 32px, Avatar 32px, opacity-50 contrast"
     },
     "performance": {
-      "critical": 4,
-      "high": 6,
-      "medium": 8,
+      "critical": 0,
+      "high": 2,
+      "medium": 6,
       "status": "WARN",
-      "note": "N+1 patterns in useEntityData (7 queries), useDistributorAuthorization (3 queries), memoization gaps"
+      "note": "Large pagination (perPage:1000), good memoization (40+ React.memo), useWatch correctly used"
     },
     "code-quality": {
-      "critical": 4,
-      "high": 12,
-      "medium": 7,
+      "critical": 0,
+      "high": 6,
+      "medium": 15,
       "status": "WARN",
-      "note": "1406-line test file, 70 console statements, stale leads TODO, DRY violations (4 identical hooks)"
+      "note": "6 files over 500 lines, 80 console statements in tests, 12 TODO comments, 28 eslint-disable (documented)"
     }
   },
   "critical_issues_summary": [
     {
       "rank": 1,
-      "category": "security",
-      "issue": "task_id_mapping RLS disabled",
-      "impact": "Multi-tenant data leakage",
+      "category": "data-integrity",
+      "issue": "contacts_summary view missing soft-delete filter",
+      "impact": "Deleted contacts visible in UI",
       "fix_effort": "5 min",
       "status": "OPEN"
     },
     {
       "rank": 2,
-      "category": "security",
-      "issue": "audit_trail/products/tags USING(true) policies",
-      "impact": "Unrestricted access to sensitive data",
-      "fix_effort": "30 min per table",
+      "category": "data-integrity",
+      "issue": "opportunities_summary view missing soft-delete filter",
+      "impact": "Deleted opportunities visible in UI",
+      "fix_effort": "5 min",
       "status": "OPEN"
     },
     {
       "rank": 3,
-      "category": "workflow-gaps",
-      "issue": "Stage transitions enforced only in app layer",
-      "impact": "Invalid transitions possible via raw SQL",
-      "fix_effort": "1 hour (DB trigger)",
+      "category": "data-integrity",
+      "issue": "organizations_summary view missing soft-delete filter",
+      "impact": "Deleted organizations visible in UI",
+      "fix_effort": "5 min",
       "status": "OPEN"
     },
     {
       "rank": 4,
-      "category": "stale-state",
-      "issue": "useSalesUpdate/updatePassword missing cache invalidation",
-      "impact": "Stale user data after profile changes",
-      "fix_effort": "15 min each",
+      "category": "data-integrity",
+      "issue": "activities_summary view missing soft-delete filter",
+      "impact": "Deleted activities visible in UI",
+      "fix_effort": "5 min",
       "status": "OPEN"
     },
     {
       "rank": 5,
+      "category": "security",
+      "issue": "task_id_mapping RLS disabled",
+      "impact": "Multi-tenant data leakage",
+      "fix_effort": "15 min",
+      "status": "OPEN"
+    },
+    {
+      "rank": 6,
       "category": "db-hardening",
-      "issue": "customer_organization_id nullable but required by Q12",
-      "impact": "Orphaned opportunities violate business rules",
-      "fix_effort": "30 min (migration + trigger)",
+      "issue": "product_distributors missing soft-delete cascade",
+      "impact": "Orphaned distributor records",
+      "fix_effort": "30 min",
+      "status": "OPEN"
+    },
+    {
+      "rank": 7,
+      "category": "db-hardening",
+      "issue": "Missing FK indexes",
+      "impact": "Query performance degradation",
+      "fix_effort": "1 hour",
+      "status": "OPEN"
+    },
+    {
+      "rank": 8,
+      "category": "security",
+      "issue": "Hardcoded secrets pattern in .env",
+      "impact": "Security exposure risk",
+      "fix_effort": "2 hours",
       "status": "OPEN"
     }
   ],
   "layer_fix_priority": [
     {
       "layer": "L1_database",
-      "reason": "RLS holes + business rule enforcement at DB level",
-      "critical_count": 14,
-      "estimated_effort": "4-6 hours"
-    },
-    {
-      "layer": "L5_features",
-      "reason": "Cache coherence + N+1 queries block feature reliability",
-      "critical_count": 19,
-      "estimated_effort": "8-10 hours"
-    },
-    {
-      "layer": "L3_provider",
-      "reason": "Strangler Fig completion, architecture compliance",
-      "critical_count": 2,
+      "reason": "Views missing soft-delete, RLS gaps - data integrity at risk",
+      "critical_count": 7,
       "estimated_effort": "2-3 hours"
     },
     {
-      "layer": "L2_domain",
-      "reason": "Type safety (test patterns, not production)",
-      "critical_count": 0,
+      "layer": "L5_features",
+      "reason": "Large files need splitting, cache invalidation gaps",
+      "critical_count": 1,
       "estimated_effort": "4-6 hours"
     },
     {
       "layer": "L4_ui_foundation",
-      "reason": "Accessibility, touch targets",
-      "critical_count": 4,
-      "estimated_effort": "3-4 hours"
+      "reason": "Touch target accessibility issues",
+      "critical_count": 0,
+      "estimated_effort": "1-2 hours"
+    },
+    {
+      "layer": "L2_domain",
+      "reason": "Test code type safety (not blocking)",
+      "critical_count": 0,
+      "estimated_effort": "4-6 hours"
+    },
+    {
+      "layer": "L3_provider",
+      "reason": "Minor architecture compliance",
+      "critical_count": 0,
+      "estimated_effort": "1 hour"
     }
   ],
   "strangler_fig_status": {
@@ -212,23 +236,33 @@
     "batch2_agents": ["stale-state", "workflow-gaps", "architecture", "typescript"],
     "batch3_agents": ["accessibility", "performance", "code-quality"],
     "files_analyzed": 913,
-    "duration_minutes": 27,
+    "duration_minutes": 30,
     "confidence_average": 88
   },
   "delta_from_previous": {
     "previous_date": "2026-01-25",
-    "previous_critical": 10,
-    "previous_high": 55,
-    "previous_medium": 69,
-    "previous_total": 134,
-    "current_critical": 39,
-    "current_high": 113,
-    "current_medium": 88,
-    "current_total": 240,
-    "critical_change": 29,
-    "high_change": 58,
-    "medium_change": 19,
-    "total_change": 106,
-    "analysis": "Increase due to comprehensive full audits. +29 critical largely pre-existing (96 USING(true) policies, business rule gaps). True regressions: settings mutations, missing form-primitives.tsx, incomplete stale leads feature."
-  }
+    "previous_critical": 39,
+    "previous_high": 113,
+    "previous_medium": 88,
+    "previous_total": 240,
+    "current_critical": 8,
+    "current_high": 198,
+    "current_medium": 134,
+    "current_total": 340,
+    "critical_change": -31,
+    "high_change": 85,
+    "medium_change": 46,
+    "total_change": 100,
+    "analysis": "Critical issues significantly reduced (-31) through remediation. High/medium increase (+131) due to comprehensive TypeScript audit discovering 158 test code any usages. Production code quality improved."
+  },
+  "positive_findings": [
+    "Zero any usage in production TypeScript code",
+    "Zero @ts-ignore directives in entire codebase",
+    "Strangler Fig migration COMPLETE (25 handlers)",
+    "Form primitives properly implement accessibility (aria-invalid, aria-describedby, role=alert)",
+    "100% withErrorLogging coverage on handlers",
+    "Fail-fast principle followed (no retry logic)",
+    "Strong Zod adoption (118 z.infer usages)",
+    "Good memoization patterns (40+ React.memo)"
+  ]
 }
