@@ -2,6 +2,8 @@
 
 Governs `src/atomic-crm/providers/supabase/` - Composed Proxy Pattern (No Monoliths).
 
+> **The Rule:** All resources MUST use `handlers/[resource]Handler.ts` registered in `composedDataProvider.ts`. Direct Supabase imports in components are banned.
+
 ## Composed Architecture
 
 DO:
@@ -10,7 +12,7 @@ DO:
 - Register in `composedDataProvider.ts`
 
 DON'T:
-- Recreate monolithic `unifiedDataProvider.ts` - it's dead
+- Recreate monolithic `unifiedDataProvider.ts` - was successfully migrated and deleted
 - Build auto-CRUD factories that guess table names
 
 ## View/Table Duality
