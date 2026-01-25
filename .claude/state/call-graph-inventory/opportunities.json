@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-25T22:18:58.481Z",
+  "generated_at": "2026-01-25T22:38:34.029Z",
   "items": {
     "nodes": [
       {
@@ -1255,10 +1255,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "id": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "name": "useBulkActionsState",
         "file": "src/atomic-crm/opportunities/useBulkActionsState.ts",
-        "line": 37,
+        "line": 38,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -22047,16 +22047,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 43,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -22065,7 +22056,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -22074,7 +22065,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -22083,7 +22074,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -22092,389 +22083,470 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
-        "line": 49,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 50,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
         "edgeType": "hook",
         "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
         "edgeType": "hook",
         "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useCallback",
-        "targetName": "useCallback",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
         "edgeType": "hook",
-        "line": 54,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setActiveAction",
-        "targetName": "setActiveAction",
-        "edgeType": "call",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
         "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setSelectedStage",
-        "targetName": "setSelectedStage",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setActiveAction",
+        "targetName": "setActiveAction",
         "edgeType": "call",
         "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setSelectedStatus",
-        "targetName": "setSelectedStatus",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setSelectedStage",
+        "targetName": "setSelectedStage",
         "edgeType": "call",
         "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setSelectedOwner",
-        "targetName": "setSelectedOwner",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setSelectedStatus",
+        "targetName": "setSelectedStatus",
         "edgeType": "call",
         "line": 58,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 61,
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setSelectedOwner",
+        "targetName": "setSelectedOwner",
+        "edgeType": "call",
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setActiveAction",
-        "targetName": "setActiveAction",
-        "edgeType": "call",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
         "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setSelectedStage",
-        "targetName": "setSelectedStage",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setActiveAction",
+        "targetName": "setActiveAction",
         "edgeType": "call",
         "line": 63,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setSelectedStatus",
-        "targetName": "setSelectedStatus",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setSelectedStage",
+        "targetName": "setSelectedStage",
         "edgeType": "call",
         "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setSelectedOwner",
-        "targetName": "setSelectedOwner",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setSelectedStatus",
+        "targetName": "setSelectedStatus",
         "edgeType": "call",
         "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setSelectedOwner",
+        "targetName": "setSelectedOwner",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 68,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "setIsProcessing",
         "targetName": "setIsProcessing",
         "edgeType": "call",
-        "line": 71,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "parseInt",
         "targetName": "parseInt",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "map",
         "targetName": "map",
-        "edgeType": "call",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "update",
-        "targetName": "update",
         "edgeType": "call",
         "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 90,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "allSettled",
         "targetName": "allSettled",
         "edgeType": "call",
-        "line": 94,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 96,
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 100,
+        "line": 101,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "map",
+        "targetName": "map",
         "edgeType": "call",
-        "line": 110,
+        "line": 112,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "find",
+        "targetName": "find",
         "edgeType": "call",
-        "line": 118,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 123,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "refresh",
-        "targetName": "refresh",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "create",
+        "targetName": "create",
         "edgeType": "call",
-        "line": 124,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "onUnselectItems",
-        "targetName": "onUnselectItems",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "getOpportunityStageLabel",
+        "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 125,
+        "line": 121,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "handleCloseDialog",
-        "targetName": "handleCloseDialog",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "toISOString",
+        "targetName": "toISOString",
         "edgeType": "call",
-        "line": 126,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "warn",
+        "targetName": "warn",
         "edgeType": "call",
         "line": 128,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "String",
+        "targetName": "String",
         "edgeType": "call",
-        "line": 129,
-        "conditional": false,
+        "line": 132,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setIsProcessing",
-        "targetName": "setIsProcessing",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "allSettled",
+        "targetName": "allSettled",
         "edgeType": "call",
-        "line": 131,
-        "conditional": false,
+        "line": 139,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 149,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "setIsProcessing",
-        "targetName": "setIsProcessing",
-        "edgeType": "call",
-        "line": 150,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "deleteMany",
-        "targetName": "deleteMany",
-        "edgeType": "call",
-        "line": 153,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 155,
-        "conditional": false,
+        "line": 143,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 151,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 160,
+        "line": 156,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "refresh",
         "targetName": "refresh",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "onUnselectItems",
+        "targetName": "onUnselectItems",
+        "edgeType": "call",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "handleCloseDialog",
+        "targetName": "handleCloseDialog",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 161,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "onUnselectItems",
-        "targetName": "onUnselectItems",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "handleCloseDialog",
-        "targetName": "handleCloseDialog",
-        "edgeType": "call",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
-        "target": "notify",
-        "targetName": "notify",
-        "edgeType": "call",
-        "line": 165,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "setIsProcessing",
         "targetName": "setIsProcessing",
         "edgeType": "call",
-        "line": 170,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:37:useBulkActionsState",
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setIsProcessing",
+        "targetName": "setIsProcessing",
+        "edgeType": "call",
         "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "deleteMany",
+        "targetName": "deleteMany",
+        "edgeType": "call",
+        "line": 186,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 188,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 193,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 194,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "onUnselectItems",
+        "targetName": "onUnselectItems",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "handleCloseDialog",
+        "targetName": "handleCloseDialog",
+        "edgeType": "call",
+        "line": 196,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 198,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "setIsProcessing",
+        "targetName": "setIsProcessing",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
