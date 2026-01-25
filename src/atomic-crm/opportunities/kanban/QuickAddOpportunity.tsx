@@ -15,6 +15,7 @@ import { quickCreateOpportunitySchema } from "../../validation/opportunities";
 import { ZodError } from "../../validation";
 import type { OpportunityStageValue, Organization, Opportunity } from "../../types";
 import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface QuickAddOpportunityProps {
   stage: OpportunityStageValue;
@@ -43,7 +44,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
   const { data: principals, isLoading: principalsLoading } = useGetList<Organization>(
     "organizations",
     {
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
       filter: { organization_type: "principal", deleted_at: null },
     }
@@ -53,7 +54,7 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
   const { data: customers, isLoading: customersLoading } = useGetList<Organization>(
     "organizations",
     {
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
       filter: { "organization_type@in": "(prospect,customer)", deleted_at: null },
     }

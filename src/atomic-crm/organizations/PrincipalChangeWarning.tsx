@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Organization } from "../types";
 
 interface Product {
@@ -34,7 +35,7 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
     "products",
     {
       filter: { principal_id: record?.id },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
     },
     {

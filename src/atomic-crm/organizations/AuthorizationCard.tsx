@@ -16,6 +16,7 @@ import {
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 import type {
   AuthorizationCardProps,
@@ -52,7 +53,7 @@ export function AuthorizationCard({
     {
       filter: { principal_id: authorization.principal_id, deleted_at: null },
       sort: { field: "name", order: "ASC" },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     },
     { enabled: isExpanded }
   );

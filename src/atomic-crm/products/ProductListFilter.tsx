@@ -4,6 +4,7 @@ import { useGetList } from "ra-core";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import type { Organization } from "../types";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 export const ProductListFilter = () => {
   // Fetch principal organizations dynamically
@@ -11,7 +12,7 @@ export const ProductListFilter = () => {
     "organizations",
     {
       filter: { organization_type: "principal" },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
     },
     {

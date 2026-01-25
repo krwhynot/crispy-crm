@@ -33,7 +33,7 @@ export const ParentOrganizationSection = () => {
         "id@neq": record?.id, // Exclude current organization
       },
       sort: { field: "name", order: "ASC" },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     },
     {
       enabled: !!record?.parent_organization_id,

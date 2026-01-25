@@ -32,6 +32,7 @@ import { Card } from "@/components/ui/card";
 import { QuickCreateContactRA } from "../../contacts/QuickCreateContactPopover";
 import { contactOptionText } from "../../contacts/ContactOption";
 import type { Opportunity, OpportunityContact, Contact } from "@/atomic-crm/types";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 /**
  * Inner form component for contact editing - needs to be separate to access React Admin form context
@@ -116,7 +117,7 @@ export function OpportunityContactsTab({
     "opportunity_contacts",
     {
       filter: { opportunity_id: record.id },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "is_primary", order: "DESC" },
     },
     { enabled: isActiveTab && mode === "view" }
@@ -128,7 +129,7 @@ export function OpportunityContactsTab({
     "contacts",
     {
       filter: { id: contactIds },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     },
     { enabled: isActiveTab && mode === "view" && contactIds.length > 0 }
   );
