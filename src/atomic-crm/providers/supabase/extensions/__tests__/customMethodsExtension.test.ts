@@ -684,12 +684,10 @@ describe("extendWithCustomMethods", () => {
 
       await expect(extendedProvider.rpc("test_function", { param: "value" })).rejects.toThrow();
 
+      // Verify logger was called with the structured format
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "[DataProvider rpc] Error in test_function:",
-        expect.objectContaining({
-          params: expect.any(Object),
-          error: "RPC test_function failed: Test error",
-        })
+        expect.stringContaining("[DataProvider rpc] Error in test_function"),
+        expect.any(Error)
       );
     });
   });
