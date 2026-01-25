@@ -7,6 +7,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parseDateSafely } from "@/lib/date-utils";
+import { productDistributorAuthKeys } from "@/atomic-crm/queryKeys";
 
 import type { ProductExceptionsSectionProps, ProductAuthorization } from "./authorization-types";
 import { AddProductExceptionDialog } from "./AddProductExceptionDialog";
@@ -48,7 +49,7 @@ export function ProductExceptionsSection({
             notify(`Removed exception for ${productName}`, { type: "success" });
             // Invalidate React Query cache for authorization data
             void queryClient.invalidateQueries({
-              queryKey: ["product_distributor_authorizations"],
+              queryKey: productDistributorAuthKeys.all,
             });
             refresh();
             setRemoveException(null);

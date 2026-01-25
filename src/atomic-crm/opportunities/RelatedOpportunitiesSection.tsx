@@ -4,7 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import type { Opportunity } from "../types";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
-import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_STALE_TIME_MS,
+  DEFAULT_GC_TIME_MS,
+} from "@/atomic-crm/constants/appConstants";
 
 interface RelatedOpportunitiesSectionProps {
   opportunity: Opportunity;
@@ -21,7 +25,11 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
   const { data: parentOpportunity } = useGetOne<Opportunity>(
     "opportunities",
     { id: opportunity.related_opportunity_id || 0 },
-    { enabled: !!opportunity.related_opportunity_id }
+    {
+      enabled: !!opportunity.related_opportunity_id,
+      staleTime: DEFAULT_STALE_TIME_MS,
+      gcTime: DEFAULT_GC_TIME_MS,
+    }
   );
 
   // Fetch child opportunities (opportunities that reference this one)

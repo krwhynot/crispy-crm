@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
-import { useGetList, useDataProvider } from "ra-core";
-import { useQuery } from "@tanstack/react-query";
+import { useGetList } from "ra-core";
 import { US_CITIES } from "./data/us-cities";
 
 interface QuickAddFormValues {
@@ -36,7 +35,6 @@ interface UseQuickAddFormLogicProps {
  * - Identity synchronization
  */
 export const useQuickAddFormLogic = ({ identity, identityLoading }: UseQuickAddFormLogicProps) => {
-  const dataProvider = useDataProvider();
   const { setValue, setFocus } = useFormContext<QuickAddFormValues>();
 
   // Track whether user has interacted with Account Manager field
