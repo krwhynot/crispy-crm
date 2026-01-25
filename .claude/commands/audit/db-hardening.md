@@ -327,7 +327,7 @@ AND NOT EXISTS (
 **Severity:** Medium
 **Risk:** Audit trail gaps
 
-### 3.7 Supabase Advisors
+### 3.8 Supabase Advisors
 ```
 -- mcp__supabase__get_advisors with type: "security"
 -- mcp__supabase__get_advisors with type: "performance"
@@ -453,6 +453,11 @@ date=$(date +%Y-%m-%d)
 | Constraint | Table | Referenced Table | Current Behavior |
 |------------|-------|------------------|------------------|
 | [name] | [table] | [ref_table] | [RESTRICT/NO ACTION] |
+
+#### Junction Table Policies Missing Dual Authorization
+| Table | Policy | Risk |
+|-------|--------|------|
+| [table] | Missing dual EXISTS checks | Users can link unauthorized records |
 
 ---
 
@@ -580,6 +585,7 @@ date=$(date +%Y-%m-%d)
 - `no-rls-{table}` - Table without RLS
 - `fk-no-cascade-{constraint}` - FK without CASCADE
 - `no-fk-index-{table}-{column}` - Missing FK index
+- `junction-no-dual-auth-{table}-{policy}` - Junction table policy missing dual EXISTS checks
 - `unbounded-string-{table}-{column}` - Unbounded string
 - `no-soft-delete-{table}` - No deleted_at
 - `no-updated-trigger-{table}` - No updated_at trigger

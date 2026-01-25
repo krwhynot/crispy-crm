@@ -213,7 +213,7 @@ const handleClick = useCallback(() => {
 <Button onClick={handleClick} />
 ```
 
-#### 1.10 Non-lazy Resource Components
+#### 1.11 Non-lazy Resource Components
 ```bash
 # Find Resource components without lazy loading (flag if no lazy())
 rg "<Resource" --type tsx -n src/ -A 3
@@ -255,7 +255,7 @@ const ContactCreate = lazy(() => import('./contacts/ContactCreate'));
 
 ### Medium Severity (Optimization Opportunities)
 
-#### 1.7 Inline Object/Array Props
+#### 1.9 Inline Object/Array Props
 ```bash
 # Find inline object styles and props
 rg "style=\{\{|className=\{\{|\[\]" --type tsx -n
@@ -281,7 +281,7 @@ const styles = { marginTop: 8 };
 <div className="mt-2" />
 ```
 
-#### 1.8 Missing React.memo for List Items
+#### 1.10 Missing React.memo for List Items
 ```bash
 # Find list item components without memo
 rg "export (default )?(function|const) \w+Item|Row|Card" --type tsx -n
@@ -302,7 +302,7 @@ export const ContactRow = React.memo(function ContactRow({ contact }) {
 });
 ```
 
-#### 1.9 Console.log in Production Code
+#### 1.12 Console.log in Production Code
 ```bash
 # Find console statements in source
 rg "console\.(log|debug|info|warn)" --type ts src/atomic-crm/ -n

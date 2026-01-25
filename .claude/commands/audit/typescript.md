@@ -569,12 +569,14 @@ function parse(data: unknown): ParsedResult {
 | H6 | Non-null assertion on optional chain | `\?\.\w+!` | High |
 | H7 | Database type in features | `Database\['public'\]` | High |
 | H8 | Manual interface in types/ | `export interface` (in types/) | High |
+| H9 | Type casts in test files | ` as any\| as unknown as ` (in test files) | High |
 | M1 | useState without type | `useState\(\)` | Medium |
 | M2 | useRef without type | `useRef\(\)` | Medium |
 | M3 | Loose equality | `==[^=]\|!=[^=]` | Medium |
 | M4 | Object type | `: Object\b` | Medium |
 | M5 | Function type | `: Function\b` | Medium |
 | M6 | Empty interface | `interface \w+ \{\}` | Medium |
+| M7 | Missing typed mock factories | `mockReturnValue\(\{` with `as any` | Medium |
 
 ---
 
