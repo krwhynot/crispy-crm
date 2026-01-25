@@ -2,11 +2,9 @@
  * Junctions Extension Layer
  *
  * Delegates junction table custom methods to JunctionsService.
- * Provides relationship management for contact-organization, opportunity-participant,
- * and opportunity-contact junctions.
+ * Provides relationship management for opportunity-participant and opportunity-contact junctions.
  *
- * Methods (13 total):
- * - Contact-Organization (4): get, add, remove, setPrimary
+ * Methods (9 total):
  * - Opportunity-Participant (3): get, add, remove
  * - Opportunity-Contact (6): get, add, remove, + 3 legacy "ViaJunction" methods
  *
