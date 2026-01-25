@@ -1,15 +1,15 @@
 {
   "lastAudit": "2026-01-25",
-  "lastAuditTime": "01:07",
+  "lastAuditTime": "12:45",
   "mode": "full",
   "duration_minutes": 23,
   "totals": {
-    "critical": 22,
+    "critical": 15,
     "high": 55,
     "medium": 69
   },
   "by_layer": {
-    "L1_database": { "critical": 13, "high": 16, "medium": 13, "status": "CRITICAL" },
+    "L1_database": { "critical": 6, "high": 16, "medium": 13, "status": "WARN" },
     "L2_domain": { "critical": 0, "high": 3, "medium": 2, "status": "OK" },
     "L3_provider": { "critical": 2, "high": 14, "medium": 3, "status": "WARN" },
     "L4_ui_foundation": { "critical": 0, "high": 2, "medium": 3, "status": "OK" },
@@ -39,7 +39,9 @@
       "description": "14 RLS policies allow ANY authenticated user to access all activities records",
       "fix": "Replace all USING(true) with company_id isolation: company_id = (auth.jwt() ->> 'company_id')::int AND deleted_at IS NULL",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed in migration 20260123144656_fix_permissive_rls_policies.sql - verified deployed with ownership-based policies + deleted_at IS NULL",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "security",
