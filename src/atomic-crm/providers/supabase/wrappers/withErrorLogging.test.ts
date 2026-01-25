@@ -95,26 +95,21 @@ describe("withErrorLogging", () => {
         })
       ).rejects.toThrow("Database connection failed");
 
-      // Verify structured logging
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "[DataProvider Error]",
+      // Verify structured logging with logger
+      expect(logger.error).toHaveBeenCalledWith(
+        "DataProvider operation failed",
+        error,
         expect.objectContaining({
           method: "getList",
           resource: "contacts",
-          params: expect.objectContaining({
-            filter: { status: "active" },
-            pagination: { page: 1, perPage: 10 },
-          }),
-          timestamp: expect.any(String),
-        }),
-        expect.objectContaining({
-          error: "Database connection failed",
-          stack: expect.any(String),
+          operation: "DataProvider.getList",
+          filter: { status: "active" },
+          pagination: { page: 1, perPage: 10 },
         })
       );
     });
 
-    it("should redact data field in logs (show [Data Present] instead)", async () => {
+    it("should redact data field in logs (show hasData flag instead)", async () => {
       const error = new Error("Validation failed");
       (mockProvider.create as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
@@ -125,27 +120,39 @@ describe("withErrorLogging", () => {
         })
       ).rejects.toThrow();
 
-      // Verify data is redacted
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "[DataProvider Error]",
+      // Verify data is redacted (hasData flag, not actual data)
+      expect(logger.error).toHaveBeenCalledWith(
+        "DataProvider operation failed",
+        error,
         expect.objectContaining({
-          params: expect.objectContaining({
-            data: "[Data Present]",
-          }),
-        }),
-        expect.anything()
+          hasData: true,
+          method: "create",
+          resource: "contacts",
+        })
       );
+      // Ensure actual data is NOT in the context
+      const callContext = vi.mocked(logger.error).mock.calls[0][2];
+      expect(callContext).not.toHaveProperty("data");
+      expect(callContext).not.toHaveProperty("name");
+      expect(callContext).not.toHaveProperty("email");
     });
 
-    it("should include timestamp in ISO format", async () => {
-      const error = new Error("Test error");
+    it("should log errors for non-Error types", async () => {
+      const error = "String error";
       (mockProvider.getOne as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
       const wrappedProvider = withErrorLogging(mockProvider);
       await expect(wrappedProvider.getOne("contacts", { id: 1 })).rejects.toThrow();
 
-      const loggedContext = consoleErrorSpy.mock.calls[0][1];
-      expect(loggedContext.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+      // Should convert to Error
+      expect(logger.error).toHaveBeenCalledWith(
+        "DataProvider operation failed",
+        expect.any(Error),
+        expect.objectContaining({
+          method: "getOne",
+          resource: "contacts",
+        })
+      );
     });
   });
 
@@ -167,8 +174,8 @@ describe("withErrorLogging", () => {
         validationError
       );
 
-      // Error should be passed through unchanged for React Admin
-      expect(consoleErrorSpy).toHaveBeenCalled();
+      // Error should be logged and passed through unchanged for React Admin
+      expect(logger.error).toHaveBeenCalled();
     });
 
     it("should log validation errors in detail", async () => {
@@ -187,10 +194,12 @@ describe("withErrorLogging", () => {
         wrappedProvider.update("contacts", { id: 1, data: {}, previousData: {} as RaRecord })
       ).rejects.toThrow();
 
-      // Should log validation errors separately
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "[Validation Errors Detail]",
-        expect.stringContaining("email")
+      // Should log validation errors with debug logger
+      expect(logger.debug).toHaveBeenCalledWith(
+        "Validation errors detail",
+        expect.objectContaining({
+          validationErrors: { email: "Invalid email format" },
+        })
       );
     });
   });
