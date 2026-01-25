@@ -424,7 +424,8 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
         if (params?.filter?.organization_type === "principal") {
           return { data: principals, isLoading: false };
         }
-        if (params?.filter?.["organization_type@in"]) {
+        // Check for array filter: { organization_type: ["customer", "prospect"] }
+        if (Array.isArray(params?.filter?.organization_type)) {
           return { data: customerOrgs, isLoading: false };
         }
         return { data: [...principals, ...customerOrgs], isLoading: false };
