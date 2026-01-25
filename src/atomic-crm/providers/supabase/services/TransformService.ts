@@ -67,7 +67,6 @@ const OPPORTUNITY_FIELDS_TO_STRIP = [
   "created_at",
   "updated_at",
   "deleted_at",
-  // Legacy/view fields
   "products", // View field - UI uses products_to_sync for sync
   "total_value",
   "participant_count",

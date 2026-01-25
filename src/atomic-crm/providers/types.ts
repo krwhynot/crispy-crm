@@ -1,1 +1,1 @@
-export type { CrmDataProvider } from "./supabase/unifiedDataProvider";
+export type { CrmDataProvider } from "./supabase/extensions/types";
