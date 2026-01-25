@@ -77,16 +77,18 @@ vi.mock("./UnlinkConfirmDialog", () => ({
   UnlinkConfirmDialog: ({
     opportunity,
     contactName,
+    contactId,
     onClose,
   }: {
     opportunity: { id: number; name: string } | null;
     contactName: string;
+    contactId: number;
     onClose: () => void;
   }) => {
     if (!opportunity) return null;
     return (
       <div data-testid="unlink-dialog">
-        Unlink {opportunity.name} from {contactName}
+        Unlink {opportunity.name} from {contactName} (Contact ID: {contactId})
         <button onClick={onClose}>Close</button>
       </div>
     );

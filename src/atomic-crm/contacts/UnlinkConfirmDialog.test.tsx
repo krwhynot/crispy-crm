@@ -27,6 +27,7 @@ describe("UnlinkConfirmDialog", () => {
       <UnlinkConfirmDialog
         opportunity={mockOpportunity}
         contactName="Jane Doe"
+        contactId={1}
         onClose={vi.fn()}
         onSuccess={vi.fn()}
       />
@@ -42,6 +43,7 @@ describe("UnlinkConfirmDialog", () => {
       <UnlinkConfirmDialog
         opportunity={null}
         contactName="Jane Doe"
+        contactId={1}
         onClose={vi.fn()}
         onSuccess={vi.fn()}
       />

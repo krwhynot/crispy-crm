@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Sale } from "../../types";
 
 interface DateRange {
@@ -67,7 +68,7 @@ export function TabFilterBar({
 }: TabFilterBarProps) {
   // Fetch sales reps for dropdown
   const { data: salesReps = [] } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     sort: { field: "first_name", order: "ASC" },
   });
 

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useCreate, useNotify, useGetIdentity } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { distributorPrincipalAuthKeys, organizationKeys } from "@/atomic-crm/queryKeys";
 
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
@@ -34,6 +37,7 @@ export function AddPrincipalDialog({
   const [create, { isPending }] = useCreate();
   const notify = useNotify();
   const { data: identity } = useGetIdentity();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async () => {
     if (!selectedPrincipalId) {
@@ -58,6 +62,8 @@ export function AddPrincipalDialog({
       );
 
       notify("Principal authorization added", { type: "success" });
+      queryClient.invalidateQueries({ queryKey: distributorPrincipalAuthKeys.all });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
       setSelectedPrincipalId("");
       setNotes("");
       onSuccess();

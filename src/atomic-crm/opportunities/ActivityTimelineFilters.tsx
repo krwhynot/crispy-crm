@@ -25,6 +25,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Filter, X } from "lucide-react";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import type { Sale } from "../types";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface ActivityTimelineFiltersProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -41,7 +42,10 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
   const [showStageChangesOnly, setShowStageChangesOnly] = useState(false);
 
   // Memoize pagination to prevent unnecessary re-fetches
-  const paginationOptions = useMemo(() => ({ pagination: { page: 1, perPage: 100 } }), []);
+  const paginationOptions = useMemo(
+    () => ({ pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE } }),
+    []
+  );
 
   // Fetch users for filter
   const { data: users } = useGetList<Sale>("sales", paginationOptions);

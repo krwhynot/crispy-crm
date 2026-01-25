@@ -14,6 +14,7 @@ import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
 import { RepPerformanceChart } from "../charts/RepPerformanceChart";
 import { OPPORTUNITY_STAGE_CHOICES, STAGE } from "../../opportunities/constants";
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import "../charts/chartSetup";
 import type { Sale } from "../types";
 import {
@@ -61,7 +62,7 @@ export default function OverviewTab() {
 
   // Fetch sales reps for filter display and rep performance
   const { data: salesReps = [] } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
   });
 
   // Build filters array for AppliedFiltersBar
