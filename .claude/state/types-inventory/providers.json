@@ -1,7 +1,7 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-25T03:03:58.501Z",
-  "item_count": 7,
+  "generated_at": "2026-01-25T22:18:54.513Z",
+  "item_count": 15,
   "items": [
     {
       "name": "JunctionParams",
@@ -84,6 +84,84 @@
       "line": 614,
       "kind": "type_alias",
       "typeExpression": "ExtendedDataProvider",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TableName",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 20,
+      "kind": "type_alias",
+      "typeExpression": "keyof Database[\"public\"][\"Tables\"]",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ViewName",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 25,
+      "kind": "type_alias",
+      "typeExpression": "keyof Database[\"public\"][\"Views\"]",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "DatabaseResource",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 30,
+      "kind": "type_alias",
+      "typeExpression": "TableName | ViewName",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "TableColumns",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 35,
+      "kind": "type_alias",
+      "typeExpression": "keyof Database[\"public\"][\"Tables\"][T][\"Row\"]",
+      "isComplex": false,
+      "isExported": true,
+      "generics": [
+        "T extends TableName"
+      ]
+    },
+    {
+      "name": "ViewColumns",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 40,
+      "kind": "type_alias",
+      "typeExpression": "keyof Database[\"public\"][\"Views\"][T][\"Row\"]",
+      "isComplex": false,
+      "isExported": true,
+      "generics": [
+        "T extends ViewName"
+      ]
+    },
+    {
+      "name": "VirtualFilterField",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 46,
+      "kind": "type_alias",
+      "typeExpression": "| \"q\" // Full-text search parameter\n  | \"stale\" // Staleness filter (transformed to last_activity_date + stage)\n  | \"type\" // Alias for organization_type/activity_type in some contexts\n  | \"opportunities.campaign\" // Nested relationship filter\n  | \"opportunities.deleted_at\"",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "RegisteredResource",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 57,
+      "kind": "type_alias",
+      "typeExpression": "| DatabaseResource\n  | \"contactNotes\" // React Admin alias for contact_notes\n  | \"opportunityNotes\" // React Admin alias for opportunity_notes\n  | \"user_favorites\"",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterRegistry",
+      "file": "src/atomic-crm/providers/supabase/filters/types.ts",
+      "line": 67,
+      "kind": "type_alias",
+      "typeExpression": "Record<RegisteredResource, readonly string[]>",
       "isComplex": false,
       "isExported": true
     },

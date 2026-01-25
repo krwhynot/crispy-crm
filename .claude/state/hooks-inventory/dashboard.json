@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-25T03:03:57.905Z",
+  "generated_at": "2026-01-25T22:18:53.832Z",
   "item_count": 13,
   "items": [
     {
@@ -33,7 +33,7 @@
     {
       "name": "useEntityData",
       "file": "src/atomic-crm/dashboard/useEntityData.ts",
-      "line": 52,
+      "line": 55,
       "parameters": [
         "{\n  form,\n  selectedOrganizationId,\n  selectedContactId,\n  selectedOpportunityId,\n}"
       ],

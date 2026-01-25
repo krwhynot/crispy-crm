@@ -61,15 +61,9 @@ import type {
 
 // SignUpData type removed - all users created through Sales management
 
-export interface SalesFormData {
-  avatar_url: string;
-  email: string;
-  password?: string; // Optional - user sets via invite email
-  first_name: string;
-  last_name: string;
-  role: "admin" | "manager" | "rep"; // Primary field (from DB enum)
-  disabled: boolean;
-}
+// SalesFormData type - Single Source of Truth via Zod schema inference
+import { createSalesSchema } from "./validation/sales";
+export type SalesFormData = z.infer<typeof createSalesSchema>;
 
 // Sale type is now exported from validation/sales.ts (P2 consolidation)
 // The schema includes: id, first_name, last_name, email, avatar_url, role, user_id,
@@ -91,15 +85,13 @@ export interface OrganizationWithHierarchy extends Organization {
   total_opportunities_across_branches?: number;
 }
 
-export interface EmailAndType {
-  value: string;
-  type: "work" | "home" | "other";
-}
-
-export interface PhoneNumberAndType {
-  value: string;
-  type: "work" | "home" | "other";
-}
+// EmailAndType and PhoneNumberAndType types - Single Source of Truth via Zod schema inference
+import {
+  emailAndTypeSchema,
+  phoneNumberAndTypeSchema,
+} from "./validation/contacts/contacts-communication";
+export type EmailAndType = z.infer<typeof emailAndTypeSchema>;
+export type PhoneNumberAndType = z.infer<typeof phoneNumberAndTypeSchema>;
 
 // Contact type is now exported from validation/contacts/contacts-core.ts (P2 consolidation)
 // The schema includes: id, first_name, last_name, name, title, email, phone, avatar,

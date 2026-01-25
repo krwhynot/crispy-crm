@@ -1,7 +1,7 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-25T03:03:52.499Z",
-  "item_count": 23,
+  "generated_at": "2026-01-25T22:18:44.050Z",
+  "item_count": 25,
   "items": [
     {
       "name": "ActivityTypeCard",
@@ -127,9 +127,10 @@
     {
       "name": "OpportunitiesByPrincipalReport",
       "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-      "line": 160,
+      "line": 36,
       "type": "presentational",
       "hooks": [
+        "useEffect",
         "useGetList",
         "useMemo",
         "useNavigate",
@@ -138,26 +139,19 @@
         "useState"
       ],
       "imports": [
-        "../opportunities/constants",
         "../types",
         "./ReportLayout",
         "./components",
         "./hooks",
-        "@/atomic-crm/utils/csvUploadValidator",
-        "@/components/admin/AdminButton",
-        "@/components/ra-wrappers/autocomplete-array-input",
-        "@/components/ra-wrappers/multi-select-input",
-        "@/components/ra-wrappers/reference-input",
-        "@/components/ui/badge",
+        "./opportunities-by-principal/components/FilterToolbar",
+        "./opportunities-by-principal/components/PrincipalGroupCard",
+        "./opportunities-by-principal/utils/exportOpportunitiesReport",
+        "@/atomic-crm/constants/appConstants",
         "@/components/ui/card",
-        "@/lib/date-utils",
-        "@/lib/logger",
         "date-fns",
-        "jsonexport/dist",
         "lucide-react",
         "ra-core",
         "react",
-        "react-hook-form",
         "react-router-dom"
       ],
       "isDefaultExport": true,
@@ -165,9 +159,12 @@
         "ReportLayout",
         "AppliedFiltersBar",
         "EmptyState",
-        "OPPORTUNITY_STAGE_CHOICES",
         "Opportunity",
-        "Sale"
+        "Sale",
+        "FilterToolbar",
+        "FilterValues",
+        "PrincipalGroupCard",
+        "PrincipalGroup"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -216,7 +213,7 @@
     {
       "name": "WeeklyActivitySummary",
       "file": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
-      "line": 26,
+      "line": 27,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -231,6 +228,7 @@
         "./ReportLayout",
         "./components",
         "./hooks",
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/utils",
         "@/atomic-crm/utils/csvUploadValidator",
         "@/components/ui/badge",
@@ -427,7 +425,7 @@
     {
       "name": "TabFilterBar",
       "file": "src/atomic-crm/reports/components/TabFilterBar.tsx",
-      "line": 57,
+      "line": 58,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -435,6 +433,7 @@
       ],
       "imports": [
         "../../types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/select",
         "lucide-react",
@@ -447,6 +446,53 @@
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "FilterToolbar",
+      "file": "src/atomic-crm/reports/opportunities-by-principal/components/FilterToolbar.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useForm",
+        "useWatch"
+      ],
+      "imports": [
+        "@/atomic-crm/constants/appConstants",
+        "@/atomic-crm/opportunities/constants",
+        "@/components/admin/AdminButton",
+        "@/components/ra-wrappers/autocomplete-array-input",
+        "@/components/ra-wrappers/multi-select-input",
+        "@/components/ra-wrappers/reference-input",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "PrincipalGroupCard",
+      "file": "src/atomic-crm/reports/opportunities-by-principal/components/PrincipalGroupCard.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/types",
+        "@/components/admin/AdminButton",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "CampaignActivityTab",
@@ -481,7 +527,7 @@
     {
       "name": "OverviewTab",
       "file": "src/atomic-crm/reports/tabs/OverviewTab.tsx",
-      "line": 44,
+      "line": 45,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -503,6 +549,7 @@
         "../components/TabFilterBar",
         "../hooks",
         "../types",
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/utils/stalenessCalculation",
         "@/components/ui/kpi-card",
         "@/components/ui/skeleton",

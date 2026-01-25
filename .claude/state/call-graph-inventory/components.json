@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-25T03:04:01.980Z",
+  "generated_at": "2026-01-25T22:18:58.431Z",
   "items": {
     "nodes": [
       {
@@ -31,37 +31,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:110:getNextStatus",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:111:getNextStatus",
         "name": "getNextStatus",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 110,
+        "line": 111,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:122:getPreviousStatus",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:123:getPreviousStatus",
         "name": "getPreviousStatus",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 122,
+        "line": 123,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:133:isValidTransition",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:134:isValidTransition",
         "name": "isValidTransition",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 133,
+        "line": 134,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
         "name": "SampleStatusStepper",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 475,
+        "line": 484,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -564,34 +564,25 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:110:getNextStatus",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:111:getNextStatus",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 111,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:122:getPreviousStatus",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:123:getPreviousStatus",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 123,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:133:isValidTransition",
-        "target": "indexOf",
-        "targetName": "indexOf",
-        "edgeType": "call",
-        "line": 134,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:133:isValidTransition",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:134:isValidTransition",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
@@ -600,47 +591,56 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:134:isValidTransition",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 482,
+        "line": 136,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 491,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 485,
+        "line": 494,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 486,
+        "line": 495,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 493,
+        "line": 502,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 503,
+        "line": 512,
         "conditional": false,
         "inLoop": false
       },

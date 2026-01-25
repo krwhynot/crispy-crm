@@ -1,64 +1,12 @@
 {
   "chunk_name": "_root",
-  "generated_at": "2026-01-25T03:03:58.503Z",
+  "generated_at": "2026-01-25T22:18:54.514Z",
   "item_count": 18,
   "items": [
     {
-      "name": "SalesFormData",
-      "file": "src/atomic-crm/types.ts",
-      "line": 63,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "avatar_url",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "email",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "password",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "first_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "last_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "role",
-          "type": "\"admin\" | \"manager\" | \"rep\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "disabled",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
       "name": "OrganizationWithHierarchy",
       "file": "src/atomic-crm/types.ts",
-      "line": 86,
+      "line": 81,
       "kind": "interface",
       "properties": [
         {
@@ -93,53 +41,9 @@
       "isExported": true
     },
     {
-      "name": "EmailAndType",
-      "file": "src/atomic-crm/types.ts",
-      "line": 93,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "value",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "\"other\" | \"work\" | \"home\"",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "PhoneNumberAndType",
-      "file": "src/atomic-crm/types.ts",
-      "line": 98,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "value",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "\"other\" | \"work\" | \"home\"",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
       "name": "InteractionParticipant",
       "file": "src/atomic-crm/types.ts",
-      "line": 123,
+      "line": 116,
       "kind": "interface",
       "properties": [
         {
@@ -194,7 +98,7 @@
     {
       "name": "DashboardSnapshot",
       "file": "src/atomic-crm/types.ts",
-      "line": 164,
+      "line": 157,
       "kind": "interface",
       "properties": [
         {
@@ -273,7 +177,7 @@
     {
       "name": "ActivityOrganizationCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 181,
+      "line": 174,
       "kind": "interface",
       "properties": [
         {
@@ -316,7 +220,7 @@
     {
       "name": "ActivityContactCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 189,
+      "line": 182,
       "kind": "interface",
       "properties": [
         {
@@ -359,7 +263,7 @@
     {
       "name": "ActivityContactNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 197,
+      "line": 190,
       "kind": "interface",
       "properties": [
         {
@@ -396,7 +300,7 @@
     {
       "name": "ActivityOpportunityCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 204,
+      "line": 197,
       "kind": "interface",
       "properties": [
         {
@@ -436,7 +340,7 @@
     {
       "name": "ActivityOpportunityNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 212,
+      "line": 205,
       "kind": "interface",
       "properties": [
         {
@@ -470,7 +374,7 @@
     {
       "name": "NoteStatus",
       "file": "src/atomic-crm/types.ts",
-      "line": 238,
+      "line": 231,
       "kind": "interface",
       "properties": [
         {
@@ -498,7 +402,7 @@
     {
       "name": "ContactGender",
       "file": "src/atomic-crm/types.ts",
-      "line": 244,
+      "line": 237,
       "kind": "interface",
       "properties": [
         {
@@ -524,18 +428,48 @@
       "isExported": true
     },
     {
+      "name": "SalesFormData",
+      "file": "src/atomic-crm/types.ts",
+      "line": 66,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof createSalesSchema>",
+      "isComplex": true,
+      "derivedFrom": "createSalesSchema",
+      "isExported": true
+    },
+    {
       "name": "Company",
       "file": "src/atomic-crm/types.ts",
-      "line": 80,
+      "line": 75,
       "kind": "type_alias",
       "typeExpression": "Organization",
       "isComplex": false,
       "isExported": true
     },
     {
+      "name": "EmailAndType",
+      "file": "src/atomic-crm/types.ts",
+      "line": 93,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof emailAndTypeSchema>",
+      "isComplex": true,
+      "derivedFrom": "emailAndTypeSchema",
+      "isExported": true
+    },
+    {
+      "name": "PhoneNumberAndType",
+      "file": "src/atomic-crm/types.ts",
+      "line": 94,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof phoneNumberAndTypeSchema>",
+      "isComplex": true,
+      "derivedFrom": "phoneNumberAndTypeSchema",
+      "isExported": true
+    },
+    {
       "name": "Activity",
       "file": "src/atomic-crm/types.ts",
-      "line": 219,
+      "line": 212,
       "kind": "type_alias",
       "typeExpression": "RaRecord &\n  (\n    | ActivityOrganizationCreated\n    | ActivityContactCreated\n    | ActivityContactNoteCreated\n    | ActivityOpportunityCreated\n    | ActivityOpportunityNoteCreated\n  )",
       "isComplex": true,
@@ -544,7 +478,7 @@
     {
       "name": "RAFileView",
       "file": "src/atomic-crm/types.ts",
-      "line": 230,
+      "line": 223,
       "kind": "type_alias",
       "typeExpression": "RAFileBase & {\n  path?: string;\n  type?: string;\n}",
       "isComplex": true,
@@ -553,7 +487,7 @@
     {
       "name": "AttachmentNote",
       "file": "src/atomic-crm/types.ts",
-      "line": 235,
+      "line": 228,
       "kind": "type_alias",
       "typeExpression": "RAFileBase",
       "isComplex": false,
@@ -562,7 +496,7 @@
     {
       "name": "Product",
       "file": "src/atomic-crm/types.ts",
-      "line": 257,
+      "line": 250,
       "kind": "type_alias",
       "typeExpression": "ProductBase & {\n  id?: Identifier;\n  // Database columns not in the form schema\n  manufacturer_part_number?: string | null;\n  list_price?: number | null;\n  currency_code?: string | null;\n  unit_of_measure?: string | null;\n  created_at?: string;\n  updated_at?: string;\n  deleted_at?: string;\n  // Computed fields from products_summary view (read-only)\n  principal_name?: string;\n}",
       "isComplex": true,

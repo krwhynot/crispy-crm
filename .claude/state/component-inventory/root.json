@@ -1,7 +1,7 @@
 {
   "chunk_name": "root",
-  "generated_at": "2026-01-25T03:03:52.500Z",
-  "item_count": 8,
+  "generated_at": "2026-01-25T22:18:44.050Z",
+  "item_count": 7,
   "items": [
     {
       "name": "CRM",
@@ -85,37 +85,6 @@
       "type": "presentational",
       "hooks": [
         "useMemo"
-      ],
-      "imports": [
-        "../contexts/AppBrandingContext",
-        "../contexts/FormOptionsContext",
-        "../contexts/PipelineConfigContext",
-        "../contexts/useAppBranding",
-        "../contexts/useFormOptions",
-        "../contexts/usePipelineConfig",
-        "../types",
-        "./defaultConfiguration",
-        "react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "ContactGender",
-        "DealStage",
-        "NoteStatus",
-        "AppBrandingProvider",
-        "PipelineConfigProvider",
-        "FormOptionsProvider"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "useConfigurationContext",
-      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
-      "line": 160,
-      "type": "presentational",
-      "hooks": [
-        "useContext"
       ],
       "imports": [
         "../contexts/AppBrandingContext",

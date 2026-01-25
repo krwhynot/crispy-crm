@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-25T03:03:57.903Z",
+  "generated_at": "2026-01-25T22:18:53.831Z",
   "item_count": 8,
   "items": [
     {
@@ -84,9 +84,9 @@
     {
       "name": "useImportWizard",
       "file": "src/atomic-crm/contacts/useImportWizard.ts",
-      "line": 506,
+      "line": 64,
       "parameters": [],
-      "returnType": "{ state: WizardState; actions: { startParsing: () => void; startImport: (totalContacts: number) => void; cancel: () => void; reset: () => void; selectFile: (file: File, validationErrors?: CsvValidationError[], validationWarnings?: string[]) => void; clearFile: () => void; parsingComplete: (previewData: PreviewData) => void; parsingFailed: (error: Error) => void; updatePreview: (previewData: PreviewData) => void; updateDataQualityDecisions: (decisions: { importOrganizationsWithoutContacts: boolean; importContactsWithoutContactInfo: boolean; }) => void; updateProgress: (count: number) => void; accumulateResult: (payload: { batchProcessed: number; batchSuccess: number; batchSkipped: number; batchFailed: number; batchErrors: Array<{ row: number; data: unknown; errors: Array<{ field: string; message: string; }>; }>; batchSize: number; }) => void; importComplete: () => void; importFailed: (error: Error) => void; }; flags: { showPreview: boolean; showResult: boolean; isImporting: boolean; isParsing: boolean; hasError: boolean; hasFile: boolean; isTerminal: boolean; isProcessing: boolean; }; dispatch: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").ActionDispatch<[action: WizardAction]>; abortSignal: AbortSignal; isAborted: () => boolean; getAbortSignal: () => AbortSignal; }",
+      "returnType": "{ state: WizardState; actions: { startParsing: () => void; startImport: (totalContacts: number) => void; cancel: () => void; reset: () => void; selectFile: (file: File, validationErrors?: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/csvUploadValidator\").CsvValidationError[], validationWarnings?: string[]) => void; clearFile: () => void; parsingComplete: (previewData: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportPreview\").PreviewData) => void; parsingFailed: (error: Error) => void; updatePreview: (previewData: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportPreview\").PreviewData) => void; updateDataQualityDecisions: (decisions: { importOrganizationsWithoutContacts: boolean; importContactsWithoutContactInfo: boolean; }) => void; updateProgress: (count: number) => void; accumulateResult: (payload: { batchProcessed: number; batchSuccess: number; batchSkipped: number; batchFailed: number; batchErrors: Array<{ row: number; data: unknown; errors: Array<{ field: string; message: string; }>; }>; batchSize: number; }) => void; importComplete: () => void; importFailed: (error: Error) => void; }; flags: { showPreview: boolean; showResult: boolean; isImporting: boolean; isParsing: boolean; hasError: boolean; hasFile: boolean; isTerminal: boolean; isProcessing: boolean; }; dispatch: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").ActionDispatch<[action: WizardAction]>; abortSignal: AbortSignal; isAborted: () => boolean; getAbortSignal: () => AbortSignal; }",
       "dependencies": [
         "useCallback",
         "useEffect",

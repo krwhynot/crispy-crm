@@ -1,7 +1,7 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-25T03:03:52.496Z",
-  "item_count": 74,
+  "generated_at": "2026-01-25T22:18:44.043Z",
+  "item_count": 83,
   "items": [
     {
       "name": "ActivitiesList",
@@ -30,7 +30,7 @@
     {
       "name": "ActivityNoteForm",
       "file": "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
-      "line": 36,
+      "line": 37,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -46,6 +46,7 @@
         "../types",
         "../validation/activities",
         "./constants",
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
@@ -74,7 +75,7 @@
     {
       "name": "ActivityTimelineFilters",
       "file": "src/atomic-crm/opportunities/ActivityTimelineFilters.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -85,6 +86,7 @@
       "imports": [
         "../types",
         "../validation/activities",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/checkbox",
@@ -190,7 +192,7 @@
     {
       "name": "BulkActionsToolbar",
       "file": "src/atomic-crm/opportunities/BulkActionsToolbar.tsx",
-      "line": 52,
+      "line": 53,
       "type": "presentational",
       "hooks": [
         "useBulkActionsState",
@@ -202,6 +204,7 @@
         "./constants",
         "./useBulkActionsState",
         "./useExportOpportunities",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/dialog",
@@ -248,7 +251,7 @@
     {
       "name": "ChangeLogTab",
       "file": "src/atomic-crm/opportunities/ChangeLogTab.tsx",
-      "line": 46,
+      "line": 47,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -258,6 +261,7 @@
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/utils/formatters",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
@@ -341,6 +345,22 @@
       "componentRole": "leaf"
     },
     {
+      "name": "ContactInformationSection",
+      "file": "src/atomic-crm/opportunities/ContactInformationSection.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/AccessibleField",
+        "@/components/ui/input",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "ContactList",
       "file": "src/atomic-crm/opportunities/ContactList.tsx",
       "line": 5,
@@ -365,12 +385,13 @@
     {
       "name": "ContactOrgMismatchWarning",
       "file": "src/atomic-crm/opportunities/ContactOrgMismatchWarning.tsx",
-      "line": 40,
+      "line": 41,
       "type": "presentational",
       "hooks": [
         "useContactOrgMismatch",
         "useFormContext",
         "useGetOne",
+        "useMemo",
         "useWatch"
       ],
       "imports": [
@@ -381,6 +402,7 @@
         "@/components/ui/alert-dialog",
         "lucide-react",
         "ra-core",
+        "react",
         "react-admin",
         "react-hook-form"
       ],
@@ -455,6 +477,28 @@
       "childComponents": [],
       "contextDependencies": [],
       "componentRole": "leaf"
+    },
+    {
+      "name": "LocationNotesSection",
+      "file": "src/atomic-crm/opportunities/LocationNotesSection.tsx",
+      "line": 38,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./data/us-cities",
+        "@/components/admin/AccessibleField",
+        "@/components/ui/combobox",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/lib/utils",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "US_CITIES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "MetadataField",
@@ -616,7 +660,7 @@
     {
       "name": "getRelativeTimeString",
       "file": "src/atomic-crm/opportunities/OpportunityArchivedList.tsx",
-      "line": 125,
+      "line": 143,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -640,7 +684,7 @@
     {
       "name": "OpportunityArchivedList",
       "file": "src/atomic-crm/opportunities/OpportunityArchivedList.tsx",
-      "line": 18,
+      "line": 20,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -916,6 +960,32 @@
       "componentRole": "wrapper"
     },
     {
+      "name": "OpportunityDetailsSection",
+      "file": "src/atomic-crm/opportunities/OpportunityDetailsSection.tsx",
+      "line": 51,
+      "type": "presentational",
+      "hooks": [
+        "useWatch"
+      ],
+      "imports": [
+        "./OrganizationCombobox",
+        "@/components/admin/AccessibleField",
+        "@/components/admin/inputs/FormSelectInput",
+        "@/components/ui/combobox",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationCombobox"
+      ],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
+    },
+    {
       "name": "OpportunityEdit",
       "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
       "line": 20,
@@ -1134,7 +1204,7 @@
     {
       "name": "OpportunityListFilter",
       "file": "src/atomic-crm/opportunities/OpportunityListFilter.tsx",
-      "line": 30,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -1144,6 +1214,7 @@
       "imports": [
         "../filters/FilterCategory",
         "./constants",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/OwnerFilterDropdown",
         "@/components/ra-wrappers/search-input",
@@ -1436,6 +1507,31 @@
       "componentRole": "leaf"
     },
     {
+      "name": "OrganizationCombobox",
+      "file": "src/atomic-crm/opportunities/OrganizationCombobox.tsx",
+      "line": 97,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "@/atomic-crm/queryKeys",
+        "@/atomic-crm/validation/segments",
+        "@/components/admin/AdminButton",
+        "@/components/ui/combobox",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/popover",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "OrganizationInfoCard",
       "file": "src/atomic-crm/opportunities/OrganizationInfoCard.tsx",
       "line": 24,
@@ -1547,44 +1643,55 @@
     {
       "name": "QuickAddForm",
       "file": "src/atomic-crm/opportunities/QuickAddForm.tsx",
-      "line": 256,
+      "line": 47,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
         "useMemo"
       ],
       "imports": [
-        "./data/us-cities",
+        "./ContactInformationSection",
+        "./LocationNotesSection",
+        "./OpportunityDetailsSection",
+        "./QuickAddFormActions",
         "./useFilteredProducts",
         "./useQuickAdd",
-        "@/atomic-crm/queryKeys",
+        "./useQuickAddFormLogic",
         "@/atomic-crm/utils/secureStorage",
         "@/atomic-crm/validation/quickAdd",
-        "@/atomic-crm/validation/segments",
-        "@/components/admin/AdminButton",
-        "@/components/admin/inputs/FormSelectInput",
-        "@/components/ui/combobox",
-        "@/components/ui/input",
-        "@/components/ui/label",
-        "@/components/ui/popover",
-        "@/lib/utils",
         "@/lib/zodErrorFormatting",
-        "@tanstack/react-query",
         "ra-core",
         "react",
         "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "US_CITIES"
+        "QuickAddFormActions",
+        "OpportunityDetailsSection",
+        "ContactInformationSection",
+        "LocationNotesSection"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
     },
     {
+      "name": "QuickAddFormActions",
+      "file": "src/atomic-crm/opportunities/QuickAddFormActions.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/AdminButton"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
       "name": "RelatedOpportunitiesSection",
       "file": "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx",
-      "line": 18,
+      "line": 23,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1592,6 +1699,7 @@
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/opportunities/constants",
         "@/components/ui/badge",
         "lucide-react",
@@ -1887,40 +1995,51 @@
     {
       "name": "QuickAddOpportunity",
       "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-      "line": 25,
+      "line": 17,
       "type": "presentational",
       "hooks": [
-        "useCreate",
-        "useDataProvider",
-        "useEffect",
-        "useGetIdentity",
-        "useGetList",
-        "useNotify",
-        "useRefresh",
+        "useQuickAddOpportunityData",
+        "useQuickAddOpportunityForm",
         "useState"
       ],
       "imports": [
-        "../../types",
-        "../../validation",
-        "../../validation/opportunities",
-        "@/atomic-crm/utils/formatters",
-        "@/components/admin/AdminButton",
-        "@/lib/devLogger",
-        "@/lib/logger",
-        "lucide-react",
-        "react",
-        "react-admin"
+        "./QuickAddOpportunityDialog",
+        "./hooks/useQuickAddOpportunityData",
+        "./hooks/useQuickAddOpportunityForm",
+        "@/atomic-crm/types",
+        "react"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "ZodError",
-        "OpportunityStageValue",
-        "Organization",
-        "Opportunity"
+        "QuickAddOpportunityDialog"
       ],
-      "contextDependencies": [
-        "useDataProvider"
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "QuickAddOpportunityDialog",
+      "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunityDialog.tsx",
+      "line": 44,
+      "type": "presentational",
+      "hooks": [
+        "useEffect"
       ],
+      "imports": [
+        "./fields/QuickAddNameField",
+        "./fields/QuickAddOrganizationFields",
+        "./fields/QuickAddStageField",
+        "@/atomic-crm/types",
+        "@/components/admin/AdminButton",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickAddNameField",
+        "QuickAddOrganizationFields",
+        "QuickAddStageField"
+      ],
+      "contextDependencies": [],
       "componentRole": "wrapper"
     },
     {
@@ -1939,6 +2058,44 @@
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "QuickAddNameField",
+      "file": "src/atomic-crm/opportunities/kanban/fields/QuickAddNameField.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "QuickAddOrganizationFields",
+      "file": "src/atomic-crm/opportunities/kanban/fields/QuickAddOrganizationFields.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/types"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "QuickAddStageField",
+      "file": "src/atomic-crm/opportunities/kanban/fields/QuickAddStageField.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunityListView",
@@ -2003,18 +2160,21 @@
     {
       "name": "OpportunityContactsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
-      "line": 100,
+      "line": 103,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
         "useGetList",
         "useNotify",
+        "useQueryClient",
         "useState"
       ],
       "imports": [
         "../../contacts/ContactOption",
         "../../contacts/QuickCreateContactPopover",
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/providers/supabase/extensions/types",
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/services/opportunities.service",
         "@/atomic-crm/types",
         "@/atomic-crm/utils/autocompleteDefaults",
@@ -2024,6 +2184,7 @@
         "@/components/ui/badge",
         "@/components/ui/card",
         "@/components/ui/scroll-area",
+        "@tanstack/react-query",
         "lucide-react",
         "ra-core",
         "react",
@@ -2137,7 +2298,7 @@
     {
       "name": "OpportunityProductsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-      "line": 53,
+      "line": 54,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -2148,6 +2309,7 @@
         "useUpdate"
       ],
       "imports": [
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",

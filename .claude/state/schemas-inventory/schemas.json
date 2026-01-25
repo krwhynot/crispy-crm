@@ -1,6 +1,6 @@
 {
   "chunk_name": "schemas",
-  "generated_at": "2026-01-25T03:03:58.315Z",
+  "generated_at": "2026-01-25T22:18:54.232Z",
   "item_count": 6,
   "items": [
     {
@@ -368,7 +368,7 @@
     {
       "name": "activitiesSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 167,
+      "line": 168,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -382,7 +382,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 192,
+      "line": 193,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -393,7 +393,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 212,
+      "line": 213,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -404,7 +404,7 @@
     {
       "name": "updateActivitiesSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 233,
+      "line": 234,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -418,7 +418,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 241,
+      "line": 242,
       "schemaType": "strictObject",
       "fields": [
         {

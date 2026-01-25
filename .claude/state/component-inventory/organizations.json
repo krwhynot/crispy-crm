@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-25T03:03:52.497Z",
+  "generated_at": "2026-01-25T22:18:44.045Z",
   "item_count": 76,
   "items": [
     {
@@ -38,21 +38,24 @@
     {
       "name": "AddPrincipalDialog",
       "file": "src/atomic-crm/organizations/AddPrincipalDialog.tsx",
-      "line": 25,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useCreate",
         "useGetIdentity",
         "useNotify",
+        "useQueryClient",
         "useState"
       ],
       "imports": [
         "./authorization-types",
+        "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/components/ui/label",
         "@/components/ui/select",
         "@/components/ui/textarea",
+        "@tanstack/react-query",
         "react",
         "react-admin"
       ],
@@ -66,22 +69,25 @@
     {
       "name": "AddProductExceptionDialog",
       "file": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx",
-      "line": 27,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useCreate",
         "useGetIdentity",
         "useNotify",
+        "useQueryClient",
         "useState"
       ],
       "imports": [
         "./authorization-types",
+        "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/dialog",
         "@/components/ui/label",
         "@/components/ui/select",
         "@/components/ui/textarea",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -96,7 +102,7 @@
     {
       "name": "AuthorizationCard",
       "file": "src/atomic-crm/organizations/AuthorizationCard.tsx",
-      "line": 28,
+      "line": 29,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -105,6 +111,7 @@
       "imports": [
         "./ProductExceptionsSection",
         "./authorization-types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/collapsible",
@@ -143,7 +150,7 @@
     {
       "name": "AuthorizationsTab",
       "file": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
-      "line": 41,
+      "line": 42,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -158,6 +165,7 @@
         "./AuthorizationsEmptyState",
         "./RemoveConfirmDialog",
         "./authorization-types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/skeleton",
         "@/lib/logger",
@@ -181,7 +189,7 @@
     {
       "name": "AuthorizationsTab",
       "file": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
-      "line": 41,
+      "line": 42,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -196,6 +204,7 @@
         "./AuthorizationsEmptyState",
         "./RemoveConfirmDialog",
         "./authorization-types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/skeleton",
         "@/lib/logger",
@@ -237,7 +246,7 @@
     {
       "name": "BranchLocationsSection",
       "file": "src/atomic-crm/organizations/BranchLocationsSection.tsx",
-      "line": 13,
+      "line": 14,
       "type": "presentational",
       "hooks": [
         "useCreatePath",
@@ -247,6 +256,7 @@
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/ui/badge",
         "@/components/ui/card",
         "lucide-react",
@@ -1383,7 +1393,7 @@
     {
       "name": "ParentOrganizationSection",
       "file": "src/atomic-crm/organizations/ParentOrganizationSection.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useCreatePath",
@@ -1394,6 +1404,7 @@
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/ui/badge",
         "@/components/ui/card",
         "lucide-react",
@@ -1451,7 +1462,7 @@
     {
       "name": "PrincipalChangeWarning",
       "file": "src/atomic-crm/organizations/PrincipalChangeWarning.tsx",
-      "line": 29,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useGetList",
@@ -1459,6 +1470,7 @@
       ],
       "imports": [
         "../types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/alert-dialog",
         "@/components/ui/scroll-area",
@@ -1477,7 +1489,7 @@
     {
       "name": "ProductExceptionsSection",
       "file": "src/atomic-crm/organizations/ProductExceptionsSection.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -1490,6 +1502,7 @@
         "./AddProductExceptionDialog",
         "./RemoveConfirmDialog",
         "./authorization-types",
+        "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/skeleton",
@@ -1687,7 +1700,7 @@
     {
       "name": "BranchLocationsSection",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 13,
+      "line": 14,
       "type": "presentational",
       "hooks": [
         "useCreatePath",
@@ -1706,7 +1719,7 @@
     {
       "name": "ParentOrganizationSection",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useCreatePath",

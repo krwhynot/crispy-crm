@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-25T03:03:52.499Z",
+  "generated_at": "2026-01-25T22:18:44.048Z",
   "item_count": 30,
   "items": [
     {
@@ -171,13 +171,14 @@
     {
       "name": "ProductDistributorInput",
       "file": "src/atomic-crm/products/ProductDistributorInput.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useGetList",
         "useWatch"
       ],
       "imports": [
+        "@/atomic-crm/constants/appConstants",
         "@/components/ra-wrappers/autocomplete-array-input",
         "@/components/ra-wrappers/reference-array-input",
         "@/components/ra-wrappers/text-input",
@@ -452,7 +453,7 @@
     {
       "name": "ProductListFilter",
       "file": "src/atomic-crm/products/ProductListFilter.tsx",
-      "line": 8,
+      "line": 9,
       "type": "presentational",
       "hooks": [
         "useGetList"
@@ -460,6 +461,7 @@
       "imports": [
         "../filters/FilterCategory",
         "../types",
+        "@/atomic-crm/constants/appConstants",
         "@/components/ra-wrappers/toggle-filter-button",
         "lucide-react",
         "ra-core"
@@ -475,12 +477,13 @@
     {
       "name": "ProductRelationshipsTab",
       "file": "src/atomic-crm/products/ProductRelationshipsTab.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useGetList"
       ],
       "imports": [
+        "@/atomic-crm/constants/appConstants",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/date-field",
         "@/components/ra-wrappers/reference-field",
@@ -564,11 +567,12 @@
     {
       "name": "ProductNameHeader",
       "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 41,
+      "line": 42,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/atomic-crm/constants",
+        "@/atomic-crm/constants/appConstants",
         "@/components/ra-wrappers/column-filters",
         "ra-core"
       ],
@@ -580,13 +584,14 @@
     {
       "name": "ProductCategoryHeader",
       "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 57,
+      "line": 58,
       "type": "presentational",
       "hooks": [
         "useGetList"
       ],
       "imports": [
         "@/atomic-crm/constants",
+        "@/atomic-crm/constants/appConstants",
         "@/components/ra-wrappers/column-filters",
         "ra-core"
       ],
@@ -598,11 +603,12 @@
     {
       "name": "ProductStatusHeader",
       "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 95,
+      "line": 96,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/atomic-crm/constants",
+        "@/atomic-crm/constants/appConstants",
         "@/components/ra-wrappers/column-filters",
         "ra-core"
       ],

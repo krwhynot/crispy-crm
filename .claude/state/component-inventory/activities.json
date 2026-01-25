@@ -1,7 +1,7 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-25T03:03:52.491Z",
-  "item_count": 34,
+  "generated_at": "2026-01-25T22:18:44.033Z",
+  "item_count": 36,
   "items": [
     {
       "name": "ActivityCreate",
@@ -392,26 +392,28 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
-      "line": 349,
+      "line": 208,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useDataProvider",
         "useEffect",
-        "useGetOne",
         "useMemo",
+        "useQueries",
         "useRecentSearches",
         "useRef",
         "useState"
       ],
       "imports": [
         "../types",
-        "@/atomic-crm/activities/activityDraftSchema",
+        "./components/LockedEntityDisplay",
+        "./components/QuickLogFormSkeleton",
+        "./utils/activityDraftStorage",
         "@/atomic-crm/hooks/useRecentSearches",
-        "@/atomic-crm/utils/safeJsonParse",
         "@/atomic-crm/validation/activities",
         "@/components/ui/badge",
         "@/components/ui/sheet",
-        "@/components/ui/skeleton",
+        "@tanstack/react-query",
         "react",
         "react-admin"
       ],
@@ -419,10 +421,45 @@
       "childComponents": [
         "Contact",
         "Organization",
-        "Opportunity"
+        "Opportunity",
+        "DEFAULT_DRAFT_STORAGE_KEY",
+        "DRAFT_SAVE_DEBOUNCE_MS",
+        "QuickLogFormSkeleton",
+        "LockedEntityDisplay"
       ],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "LockedEntityDisplay",
+      "file": "src/atomic-crm/activities/components/LockedEntityDisplay.tsx",
+      "line": 50,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/skeleton"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "QuickLogFormSkeleton",
+      "file": "src/atomic-crm/activities/components/QuickLogFormSkeleton.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/skeleton"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ActivityList",
@@ -503,13 +540,14 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 349,
+      "line": 208,
       "type": "presentational",
       "hooks": [
         "useCallback",
+        "useDataProvider",
         "useEffect",
-        "useGetOne",
         "useMemo",
+        "useQueries",
         "useRecentSearches",
         "useRef",
         "useState"
@@ -517,7 +555,9 @@
       "imports": [],
       "isDefaultExport": false,
       "childComponents": [],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
       "componentRole": "entry"
     },
     {

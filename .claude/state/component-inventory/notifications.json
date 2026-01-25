@@ -1,17 +1,18 @@
 {
   "chunk_name": "notifications",
-  "generated_at": "2026-01-25T03:03:52.496Z",
+  "generated_at": "2026-01-25T22:18:44.042Z",
   "item_count": 3,
   "items": [
     {
       "name": "NotificationsList",
       "file": "src/atomic-crm/notifications/NotificationsList.tsx",
-      "line": 30,
+      "line": 31,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../filters/FilterCategory",
         "../layout/TopToolbar",
+        "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/bulk-actions-toolbar",
         "@/components/ra-wrappers/list",

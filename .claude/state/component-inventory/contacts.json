@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-25T03:03:52.493Z",
+  "generated_at": "2026-01-25T22:18:44.036Z",
   "item_count": 59,
   "items": [
     {
@@ -1089,7 +1089,7 @@
     {
       "name": "LinkOpportunityModal",
       "file": "src/atomic-crm/contacts/LinkOpportunityModal.tsx",
-      "line": 31,
+      "line": 36,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -1118,7 +1118,7 @@
     {
       "name": "OpportunitiesTab",
       "file": "src/atomic-crm/contacts/OpportunitiesTab.tsx",
-      "line": 38,
+      "line": 39,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -1139,6 +1139,7 @@
         "./StageBadgeWithHealth",
         "./SuggestedOpportunityCard",
         "./UnlinkConfirmDialog",
+        "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/opportunities/constants",
         "@/components/admin/AdminButton",
         "@/lib/logger",
@@ -1217,7 +1218,7 @@
     {
       "name": "QuickCreateContactRA",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 210,
+      "line": 212,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1345,7 +1346,7 @@
     {
       "name": "UnlinkConfirmDialog",
       "file": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
-      "line": 24,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useDelete",

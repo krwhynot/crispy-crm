@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-25T03:04:01.995Z",
+  "generated_at": "2026-01-25T22:18:58.448Z",
   "items": {
     "nodes": [
       {
@@ -499,10 +499,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "id": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "name": "useEntityData",
         "file": "src/atomic-crm/dashboard/useEntityData.ts",
-        "line": 52,
+        "line": 55,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -8133,133 +8133,115 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useNotify",
         "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "useDebouncedSearch",
-        "targetName": "useDebouncedSearch",
         "edgeType": "hook",
         "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useDebouncedSearch",
         "targetName": "useDebouncedSearch",
         "edgeType": "hook",
-        "line": 62,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useDebouncedSearch",
         "targetName": "useDebouncedSearch",
         "edgeType": "hook",
-        "line": 63,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "useDebouncedSearch",
+        "targetName": "useDebouncedSearch",
+        "edgeType": "hook",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 71,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 83,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 92,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 104,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 118,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 132,
+        "line": 137,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 155,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 156,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 160,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
         "line": 161,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
@@ -8268,317 +8250,335 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 184,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "some",
-        "targetName": "some",
-        "edgeType": "call",
-        "line": 186,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "useGetOne",
-        "targetName": "useGetOne",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
         "edgeType": "hook",
         "line": 190,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 200,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 202,
+        "line": 192,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "useGetList",
-        "targetName": "useGetList",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "useGetOne",
+        "targetName": "useGetOne",
         "edgeType": "hook",
-        "line": 206,
+        "line": 196,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 220,
+        "line": 207,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 222,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 226,
+        "line": 213,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 240,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "filter",
-        "targetName": "filter",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "some",
+        "targetName": "some",
         "edgeType": "call",
-        "line": 244,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 250,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 251,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 253,
+        "line": 230,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 253,
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 254,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 254,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
+        "line": 249,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 253,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 259,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 260,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
         "line": 262,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 266,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 271,
-        "conditional": true,
+        "line": 262,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "filter",
-        "targetName": "filter",
-        "edgeType": "call",
-        "line": 272,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 272,
+        "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 272,
+        "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 279,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 283,
+        "line": 275,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 290,
+        "line": 280,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 291,
+        "line": 281,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 291,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 291,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "useEffect",
-        "targetName": "useEffect",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "useMemo",
+        "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 298,
+        "line": 288,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "setValue",
-        "targetName": "setValue",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 292,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 299,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "filter",
+        "targetName": "filter",
         "edgeType": "call",
         "line": 300,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "getValues",
-        "targetName": "getValues",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
-        "line": 302,
-        "conditional": true,
+        "line": 300,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
-        "target": "find",
-        "targetName": "find",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 304,
-        "conditional": true,
+        "line": 300,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 307,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "setValue",
         "targetName": "setValue",
         "edgeType": "call",
-        "line": 306,
+        "line": 309,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useEntityData.ts:52:useEntityData",
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "getValues",
+        "targetName": "getValues",
+        "edgeType": "call",
+        "line": 311,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 313,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 315,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useEntityData.ts:55:useEntityData",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 307,
+        "line": 316,
         "conditional": true,
         "inLoop": false
       },

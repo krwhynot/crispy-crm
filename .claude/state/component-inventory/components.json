@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-25T03:03:52.492Z",
+  "generated_at": "2026-01-25T22:18:44.035Z",
   "item_count": 25,
   "items": [
     {
@@ -348,7 +348,7 @@
     {
       "name": "getNextStatus",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 110,
+      "line": 111,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -357,6 +357,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",
@@ -371,7 +372,7 @@
     {
       "name": "getPreviousStatus",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 122,
+      "line": 123,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -380,6 +381,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",
@@ -394,7 +396,7 @@
     {
       "name": "isValidTransition",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 133,
+      "line": 134,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -403,6 +405,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",
@@ -417,7 +420,7 @@
     {
       "name": "SampleStatusStepper",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 475,
+      "line": 484,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -426,6 +429,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",
@@ -440,7 +444,7 @@
     {
       "name": "SAMPLE_STATUS_WORKFLOW",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 48,
+      "line": 49,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -449,6 +453,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",
@@ -463,7 +468,7 @@
     {
       "name": "SAMPLE_STATUS_CONFIG",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 71,
+      "line": 72,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -472,6 +477,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",
@@ -486,7 +492,7 @@
     {
       "name": "SampleStatusBadge",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 184,
+      "line": 185,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -501,6 +507,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",
@@ -515,7 +522,7 @@
     {
       "name": "SampleStatusBadge",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 184,
+      "line": 185,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -530,6 +537,7 @@
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
+        "@/lib/logger",
         "@/lib/utils",
         "@tanstack/react-query",
         "lucide-react",

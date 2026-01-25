@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-25T03:03:52.500Z",
+  "generated_at": "2026-01-25T22:18:44.051Z",
   "item_count": 23,
   "items": [
     {
@@ -381,7 +381,7 @@
     {
       "name": "UserDisableReassignDialog",
       "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
-      "line": 118,
+      "line": 119,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -398,6 +398,7 @@
         "../queryKeys",
         "../types",
         "../utils/formatName",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/components/ui/select",
@@ -420,7 +421,7 @@
     {
       "name": "UserDisableReassignDialog",
       "file": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
-      "line": 118,
+      "line": 119,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -437,6 +438,7 @@
         "../queryKeys",
         "../types",
         "../utils/formatName",
+        "@/atomic-crm/constants/appConstants",
         "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "@/components/ui/select",

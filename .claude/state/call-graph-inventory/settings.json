@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-25T03:04:02.054Z",
+  "generated_at": "2026-01-25T22:18:58.574Z",
   "items": {
     "nodes": [
       {
@@ -112,10 +112,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "id": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
         "name": "useSalesUpdate",
         "file": "src/atomic-crm/settings/useSalesUpdate.ts",
-        "line": 39,
+        "line": 40,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -1446,74 +1446,110 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
         "target": "useNotify",
         "targetName": "useNotify",
-        "edgeType": "hook",
-        "line": 40,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
         "edgeType": "hook",
         "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
-        "target": "useMutation",
-        "targetName": "useMutation",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
         "edgeType": "hook",
         "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
+        "target": "useMutation",
+        "targetName": "useMutation",
+        "edgeType": "hook",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
         "target": "salesUpdate",
         "targetName": "salesUpdate",
         "edgeType": "call",
-        "line": 49,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 57,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
+        "target": "detail",
+        "targetName": "detail",
+        "edgeType": "call",
+        "line": 57,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 52,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "call",
-        "line": 53,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 56,
+        "line": 63,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/useSalesUpdate.ts:39:useSalesUpdate",
+        "source": "src/atomic-crm/settings/useSalesUpdate.ts:40:useSalesUpdate",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 57,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       }

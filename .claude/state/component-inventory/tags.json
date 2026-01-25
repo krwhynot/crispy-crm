@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-25T03:03:52.502Z",
+  "generated_at": "2026-01-25T22:18:44.054Z",
   "item_count": 22,
   "items": [
     {
@@ -90,14 +90,17 @@
     {
       "name": "TagCreateModal",
       "file": "src/atomic-crm/tags/TagCreateModal.tsx",
-      "line": 11,
+      "line": 13,
       "type": "presentational",
       "hooks": [
-        "useCreate"
+        "useCreate",
+        "useQueryClient"
       ],
       "imports": [
         "../types",
         "./TagDialog",
+        "@/atomic-crm/queryKeys",
+        "@tanstack/react-query",
         "ra-core"
       ],
       "isDefaultExport": false,

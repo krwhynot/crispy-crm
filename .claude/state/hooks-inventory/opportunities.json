@@ -1,8 +1,35 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-25T03:03:57.906Z",
-  "item_count": 12,
+  "generated_at": "2026-01-25T22:18:53.833Z",
+  "item_count": 15,
   "items": [
+    {
+      "name": "useQuickAddOpportunityData",
+      "file": "src/atomic-crm/opportunities/kanban/hooks/useQuickAddOpportunityData.ts",
+      "line": 9,
+      "parameters": [],
+      "returnType": "{ principals: { name: string; organization_type: \"prospect\" | \"customer\" | \"principal\" | \"distributor\"; priority: \"A\" | \"B\" | \"C\" | \"D\"; is_operating_entity: boolean; status: \"active\" | \"inactive\"; billing_country: string; shipping_country: string; needs_review: boolean; id?: number; logo?: { src: string; title?: string; rawFile?: File; }; parent_organization_id?: number; segment_id?: string; linkedin_url?: string; website?: string; phone?: string; address?: string; postal_code?: string; city?: string; state?: string; sales_id?: number; description?: string; context_links?: string[]; tags?: string; email?: string; notes?: string; employee_count?: number; founded_year?: number; tax_identifier?: string; logo_url?: string; updated_at?: string; updated_by?: number; nb_contacts?: number; nb_opportunities?: number; nb_notes?: number; org_scope?: \"national\" | \"regional\" | \"local\"; status_reason?: \"prospect\" | \"active_customer\" | \"authorized_distributor\" | \"account_closed\" | \"out_of_business\" | \"disqualified\"; billing_street?: string; billing_city?: string; billing_state?: string; billing_postal_code?: string; shipping_street?: string; shipping_city?: string; shipping_state?: string; shipping_postal_code?: string; payment_terms?: \"net_30\" | \"net_60\" | \"net_90\" | \"cod\" | \"prepaid\" | \"2_10_net_30\"; credit_limit?: number; territory?: string; created_at?: string; created_by?: number; deleted_at?: string; import_session_id?: string; playbook_category_id?: string; cuisine?: string; sector?: string; }[]; principalsLoading: boolean; customers: { name: string; organization_type: \"prospect\" | \"customer\" | \"principal\" | \"distributor\"; priority: \"A\" | \"B\" | \"C\" | \"D\"; is_operating_entity: boolean; status: \"active\" | \"inactive\"; billing_country: string; shipping_country: string; needs_review: boolean; id?: number; logo?: { src: string; title?: string; rawFile?: File; }; parent_organization_id?: number; segment_id?: string; linkedin_url?: string; website?: string; phone?: string; address?: string; postal_code?: string; city?: string; state?: string; sales_id?: number; description?: string; context_links?: string[]; tags?: string; email?: string; notes?: string; employee_count?: number; founded_year?: number; tax_identifier?: string; logo_url?: string; updated_at?: string; updated_by?: number; nb_contacts?: number; nb_opportunities?: number; nb_notes?: number; org_scope?: \"national\" | \"regional\" | \"local\"; status_reason?: \"prospect\" | \"active_customer\" | \"authorized_distributor\" | \"account_closed\" | \"out_of_business\" | \"disqualified\"; billing_street?: string; billing_city?: string; billing_state?: string; billing_postal_code?: string; shipping_street?: string; shipping_city?: string; shipping_state?: string; shipping_postal_code?: string; payment_terms?: \"net_30\" | \"net_60\" | \"net_90\" | \"cod\" | \"prepaid\" | \"2_10_net_30\"; credit_limit?: number; territory?: string; created_at?: string; created_by?: number; deleted_at?: string; import_session_id?: string; playbook_category_id?: string; cuisine?: string; sector?: string; }[]; customersLoading: boolean; }",
+      "dependencies": [],
+      "isReact19Action": false
+    },
+    {
+      "name": "useQuickAddOpportunityForm",
+      "file": "src/atomic-crm/opportunities/kanban/hooks/useQuickAddOpportunityForm.ts",
+      "line": 27,
+      "parameters": [
+        "{\n  stage,\n  onOpportunityCreated,\n  principals,\n  customers,\n}"
+      ],
+      "returnType": "{ name: string; setName: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; customerId: string; setCustomerId: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; principalId: string; setPrincipalId: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; errors: FormErrors; setErrors: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<FormErrors>>; isLoading: boolean; stageLabel: string; handleSubmit: (e: React.FormEvent) => Promise<boolean>; resetForm: () => void; }",
+      "dependencies": [
+        "useCreate",
+        "useDataProvider",
+        "useGetIdentity",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
     {
       "name": "useAutoGenerateName",
       "file": "src/atomic-crm/opportunities/useAutoGenerateName.ts",
@@ -137,6 +164,22 @@
         "useMutation",
         "useQueryClient",
         "useSafeNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useQuickAddFormLogic",
+      "file": "src/atomic-crm/opportunities/useQuickAddFormLogic.ts",
+      "line": 37,
+      "parameters": [
+        "{ identity, identityLoading }"
+      ],
+      "returnType": "{ principalsList: any[]; principalsLoading: boolean; organizationsList: any[]; organizationsLoading: boolean; salesLoading: boolean; accountManagerChoices: { id: any; name: any; }[]; organizationOptions: { value: any; label: any; }[]; cityOptions: { value: \"Albuquerque\" | \"Anaheim\" | \"Anchorage\" | \"Arlington\" | \"Atlanta\" | \"Aurora\" | \"Austin\" | \"Bakersfield\" | \"Baltimore\" | \"Baton Rouge\" | \"Birmingham\" | \"Boise\" | \"Boston\" | \"Buffalo\" | \"Chandler\" | \"Charlotte\" | \"Chesapeake\" | \"Chicago\" | \"Chula Vista\" | \"Cincinnati\" | \"Cleveland\" | \"Colorado Springs\" | \"Columbus\" | \"Corpus Christi\" | \"Dallas\" | \"Denver\" | \"Des Moines\" | \"Detroit\" | \"Durham\" | \"El Paso\" | \"Fort Wayne\" | \"Fort Worth\" | \"Fremont\" | \"Fresno\" | \"Garland\" | \"Gilbert\" | \"Glendale\" | \"Greensboro\" | \"Henderson\" | \"Hialeah\" | \"Honolulu\" | \"Houston\" | \"Huntington Beach\" | \"Indianapolis\" | \"Irvine\" | \"Irving\" | \"Jacksonville\" | \"Jersey City\" | \"Kansas City\" | \"Laredo\" | \"Las Vegas\" | \"Lexington\" | \"Lincoln\" | \"Long Beach\" | \"Los Angeles\" | \"Louisville\" | \"Lubbock\" | \"Madison\" | \"Memphis\" | \"Mesa\" | \"Miami\" | \"Milwaukee\" | \"Minneapolis\" | \"Modesto\" | \"Nashville\" | \"New Orleans\" | \"New York\" | \"Newark\" | \"Norfolk\" | \"North Las Vegas\" | \"Oakland\" | \"Oklahoma City\" | \"Omaha\" | \"Orlando\" | \"Oxnard\" | \"Philadelphia\" | \"Phoenix\" | \"Pittsburgh\" | \"Plano\" | \"Portland\" | \"Raleigh\" | \"Reno\" | \"Richmond\" | \"Riverside\" | \"Rochester\" | \"Sacramento\" | \"Salt Lake City\" | \"San Antonio\" | \"San Bernardino\" | \"San Diego\" | \"San Francisco\" | \"San Jose\" | \"Santa Ana\" | \"Santa Clarita\" | \"Scottsdale\" | \"Seattle\" | \"Spokane\" | \"St. Louis\" | \"St. Paul\" | \"St. Petersburg\" | \"Stockton\" | \"Tampa\" | \"Toledo\" | \"Tucson\" | \"Tulsa\" | \"Virginia Beach\" | \"Washington\" | \"Wichita\" | \"Winston-Salem\"; label: \"Albuquerque\" | \"Anaheim\" | \"Anchorage\" | \"Arlington\" | \"Atlanta\" | \"Aurora\" | \"Austin\" | \"Bakersfield\" | \"Baltimore\" | \"Baton Rouge\" | \"Birmingham\" | \"Boise\" | \"Boston\" | \"Buffalo\" | \"Chandler\" | \"Charlotte\" | \"Chesapeake\" | \"Chicago\" | \"Chula Vista\" | \"Cincinnati\" | \"Cleveland\" | \"Colorado Springs\" | \"Columbus\" | \"Corpus Christi\" | \"Dallas\" | \"Denver\" | \"Des Moines\" | \"Detroit\" | \"Durham\" | \"El Paso\" | \"Fort Wayne\" | \"Fort Worth\" | \"Fremont\" | \"Fresno\" | \"Garland\" | \"Gilbert\" | \"Glendale\" | \"Greensboro\" | \"Henderson\" | \"Hialeah\" | \"Honolulu\" | \"Houston\" | \"Huntington Beach\" | \"Indianapolis\" | \"Irvine\" | \"Irving\" | \"Jacksonville\" | \"Jersey City\" | \"Kansas City\" | \"Laredo\" | \"Las Vegas\" | \"Lexington\" | \"Lincoln\" | \"Long Beach\" | \"Los Angeles\" | \"Louisville\" | \"Lubbock\" | \"Madison\" | \"Memphis\" | \"Mesa\" | \"Miami\" | \"Milwaukee\" | \"Minneapolis\" | \"Modesto\" | \"Nashville\" | \"New Orleans\" | \"New York\" | \"Newark\" | \"Norfolk\" | \"North Las Vegas\" | \"Oakland\" | \"Oklahoma City\" | \"Omaha\" | \"Orlando\" | \"Oxnard\" | \"Philadelphia\" | \"Phoenix\" | \"Pittsburgh\" | \"Plano\" | \"Portland\" | \"Raleigh\" | \"Reno\" | \"Richmond\" | \"Riverside\" | \"Rochester\" | \"Sacramento\" | \"Salt Lake City\" | \"San Antonio\" | \"San Bernardino\" | \"San Diego\" | \"San Francisco\" | \"San Jose\" | \"Santa Ana\" | \"Santa Clarita\" | \"Scottsdale\" | \"Seattle\" | \"Spokane\" | \"St. Louis\" | \"St. Paul\" | \"St. Petersburg\" | \"Stockton\" | \"Tampa\" | \"Toledo\" | \"Tucson\" | \"Tulsa\" | \"Virginia Beach\" | \"Washington\" | \"Wichita\" | \"Winston-Salem\"; }[]; setShouldLoadSales: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<boolean>>; handleCitySelect: (cityName: string) => void; onValidationError: (errors: FieldErrors<QuickAddFormValues>) => void; handleOrganizationChange: (value: number | undefined, name?: string) => void; }",
+      "dependencies": [
+        "useEffect",
+        "useGetList",
+        "useMemo",
+        "useState"
       ],
       "isReact19Action": false
     },

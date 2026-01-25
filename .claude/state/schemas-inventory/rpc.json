@@ -1,7 +1,7 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-25T03:03:58.323Z",
-  "item_count": 16,
+  "generated_at": "2026-01-25T22:18:54.245Z",
+  "item_count": 18,
   "items": [
     {
       "name": "getOrCreateSegmentParamsSchema",
@@ -676,9 +676,152 @@
       "hasSuperRefine": false
     },
     {
+      "name": "getStaleOpportunitiesParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 282,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "p_campaign",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Campaign name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "p_start_date",
+          "zodType": "string",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "p_end_date",
+          "zodType": "string",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "p_sales_rep_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "staleOpportunityRecordSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 289,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "max(500, \"Opportunity name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "stage",
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Stage too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "customer_organization_name",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Organization name too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_activity_date",
+          "zodType": "string",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "days_inactive",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "stage_threshold",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "is_stale",
+          "zodType": "boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
       "name": "edgeFunctionSchemas",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 292,
+      "line": 328,
       "schemaType": "object",
       "fields": [],
       "relatedSchemas": [],
