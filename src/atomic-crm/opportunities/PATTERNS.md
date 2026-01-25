@@ -549,14 +549,14 @@ export const QuickAddForm = ({ onSuccess }: Props) => {
       {/* Contact, Organization sections */}
 
       <div className="flex items-center justify-between pt-4 border-t">
-        <Button variant="outline" onClick={onSuccess}>Cancel</Button>
+        <AdminButton variant="outline" onClick={onSuccess}>Cancel</AdminButton>
         <div className="flex gap-2">
-          <Button onClick={handleSubmit((data) => onSubmit(data, false))}>
+          <AdminButton onClick={handleSubmit((data) => onSubmit(data, false))}>
             Save & Add Another
-          </Button>
-          <Button variant="secondary" onClick={handleSubmit((data) => onSubmit(data, true))}>
+          </AdminButton>
+          <AdminButton variant="secondary" onClick={handleSubmit((data) => onSubmit(data, true))}>
             Save & Close
-          </Button>
+          </AdminButton>
         </div>
       </div>
     </form>
@@ -1003,7 +1003,7 @@ export const OpportunitySpeedDial = ({ className }: Props) => {
             className="absolute bottom-full right-0 mb-3 flex flex-col items-end gap-2 animate-in fade-in-0 slide-in-from-bottom-2"
           >
             {actions.map((action, index) => (
-              <Button
+              <AdminButton
                 key={index}
                 role="menuitem"
                 onClick={action.onClick}
@@ -1011,13 +1011,13 @@ export const OpportunitySpeedDial = ({ className }: Props) => {
               >
                 <action.icon className="size-5" />
                 <span>{action.label}</span>
-              </Button>
+              </AdminButton>
             ))}
           </div>
         )}
 
         {/* Main FAB - 56px diameter */}
-        <Button
+        <AdminButton
           onClick={() => setIsOpen(!isOpen)}
           aria-haspopup="menu"
           aria-expanded={isOpen}
@@ -1033,7 +1033,7 @@ export const OpportunitySpeedDial = ({ className }: Props) => {
               isOpen ? "rotate-0 opacity-100" : "-rotate-45 opacity-0"
             )} />
           </span>
-        </Button>
+        </AdminButton>
       </div>
 
       <QuickAddDialog open={isQuickAddOpen} onOpenChange={setIsQuickAddOpen} />

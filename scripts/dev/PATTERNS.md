@@ -342,6 +342,10 @@ Generate local Supabase JWTs for testing using the custom jwt_secret from config
 
 **When to use**: Custom JWT secret, testing auth flows, debugging API access
 
+**Available Utilities:**
+- `generate-jwt.mjs` - Generates service_role and anon tokens from jwt_secret
+- `test-fetch.mjs` - Tests Auth API endpoints with generated JWTs
+
 ### JWT Structure
 
 ```javascript
@@ -698,11 +702,11 @@ When creating new development scripts:
 
 ## File Reference
 
-| Pattern | Primary Files |
-|---------|---------------|
-| **A: Environment Verification** | `verify-environment.sh` |
-| **B: Database Seeding** | `create-test-users.sh` |
-| **C: Cleanup/Reset** | `reset-environment.sh` |
-| **D: JWT/Auth Utilities** | `generate-jwt.mjs`, `test-fetch.mjs` |
-| **E: Cloud Synchronization** | `sync-local-to-cloud.sh` |
-| **Monitoring** | `monitor-resources.sh`, `optimize-memory.sh` |
+| Pattern | Primary Files | Status |
+|---------|---------------|--------|
+| **A: Environment Verification** | `verify-environment.sh` | ✅ Implemented |
+| **B: Database Seeding** | `create-test-users.sh` | ✅ Implemented |
+| **C: Cleanup/Reset** | `reset-environment.sh` | ✅ Implemented |
+| **D: JWT/Auth Utilities** | `generate-jwt.mjs`, `test-fetch.mjs` | ✅ Implemented |
+| **E: Cloud Synchronization** | `sync-local-to-cloud.sh` | ✅ Implemented |
+| **Monitoring** | `monitor-resources.sh`, `optimize-memory.sh` | ✅ Implemented |

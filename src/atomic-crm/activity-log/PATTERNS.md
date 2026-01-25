@@ -374,6 +374,8 @@ export function ActivityLog({ organizationId, pageSize = 20, context = "all" }: 
 
 ```tsx
 // services/activities.service.ts
+import { logger } from '@/lib/logger';
+
 export class ActivitiesService {
   constructor(private dataProvider: DataProvider) {}
 

@@ -9,7 +9,7 @@ index.tsx (Entry Point)
 └── Suspense + Lazy Load
     └── CurrentSaleProvider (Context) ─────────────────────────────────┐
         └── DashboardErrorBoundary                                      │
-            └── PrincipalDashboardV3                                    │
+            └── PrincipalDashboard                                      │
                 ├── KPISummaryRow                                       │
                 │   └── 4x KPICard (using useKPIMetrics) ◄──────────────┤
                 ├── DashboardTabPanel                                   │
@@ -109,7 +109,7 @@ export function useCurrentSale() {
 - Fallback to direct query for backward compatibility outside provider
 - Expected improvement: 4+ fewer queries, ~100-200ms faster initial load
 
-**Example:** `src/atomic-crm/dashboard/v3/context/CurrentSaleContext.tsx`
+**Example:** `src/atomic-crm/dashboard/CurrentSaleContext.tsx`
 
 ---
 
@@ -185,7 +185,7 @@ function getDecayIndicatorColor(momentum: Momentum): string {
 - Context-aware defaults: ascending for names, descending for metrics
 - ARIA attributes for accessibility: `aria-sort` on column headers
 
-**Example:** `src/atomic-crm/dashboard/v3/components/PipelineTableRow.tsx`
+**Example:** `src/atomic-crm/dashboard/PipelineTableRow.tsx`
 
 ---
 

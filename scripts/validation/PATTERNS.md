@@ -63,14 +63,18 @@ export class ReferentialIntegrityValidator {
     this.warnings = [];    // Stores non-blocking issues
   }
 
-  // 2. Main orchestration method
+  // 2. Main orchestration method - runs 7 integrity checks
   async validateAll() {
     console.log("🔗 Starting referential integrity validation...");
 
     const checks = [
-      this.validateContactCompanyReferences,
-      this.validateDealCompanyReferences,
-      this.validateDealContactReferences,
+      this.validateContactCompanyReferences,    // 1. Contacts → Companies FK
+      this.validateDealCompanyReferences,       // 2. Deals → Companies FK
+      this.validateDealContactReferences,       // 3. Deals → Contacts FK
+      this.validateContactNoteReferences,       // 4. Contact Notes → Contacts FK
+      this.validateDealNoteReferences,          // 5. Deal Notes → Deals FK
+      this.validateTaskReferences,              // 6. Tasks → multiple FKs
+      this.validateTagReferences,               // 7. Tags → entities FK
     ];
 
     for (const check of checks) {
@@ -489,13 +493,26 @@ makeFinalDecision(decision) {
 
 | Aspect | data-quality | referential-integrity | required-fields | unique-constraints |
 |--------|--------------|----------------------|-----------------|-------------------|
-| **Focus** | Scoring (0-100) | FK validation | Field presence | Duplicates |
+| **Focus** | Scoring (0-100) | FK validation (7 checks) | Field presence | Duplicates |
 | **Container** | `metrics` + `issues` | `violations` | `violations` | `conflicts` |
 | **Main Method** | `assessAll()` | `validateAll()` | `validateAll()` | `validateAll()` |
 | **Output** | Score + issues | Violations list | Violations list | Conflicts list |
 | **Threshold** | 99% min score | 0 critical, 0 high | 0 critical, 10 high | 0 critical, 5 high |
 | **Has SQL Fixes** | Yes | Yes | Yes | Yes |
 | **Fixable Flag** | No | No | Yes | Yes |
+| **Checks Count** | 4 categories | 7 FK checks | Per-entity | Per-table |
+
+### ReferentialIntegrityValidator - 7 Integrity Checks
+
+The `ReferentialIntegrityValidator` runs 7 distinct foreign key relationship checks to detect orphaned records:
+
+1. **validateContactCompanyReferences** - Contacts → Companies (company_id FK)
+2. **validateDealCompanyReferences** - Deals → Companies (company_id FK)
+3. **validateDealContactReferences** - Deals → Contacts (contact_id FK)
+4. **validateContactNoteReferences** - Contact Notes → Contacts (contact_id FK)
+5. **validateDealNoteReferences** - Deal Notes → Deals (deal_id FK)
+6. **validateTaskReferences** - Tasks → Contacts, Companies, Deals (multiple FKs)
+7. **validateTagReferences** - Tags → Entities (polymorphic relationships)
 
 ---
 
