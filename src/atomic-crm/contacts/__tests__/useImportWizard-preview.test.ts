@@ -12,7 +12,7 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { importWizardReducer } from "../useImportWizard";
+import { importWizardReducer } from "../reducers/importWizardReducer";
 import type { WizardAction, WizardStatePreview } from "../useImportWizard.types";
 import type { PreviewData } from "../ContactImportPreview";
 

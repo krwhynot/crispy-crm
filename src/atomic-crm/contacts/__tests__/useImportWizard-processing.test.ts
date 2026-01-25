@@ -13,7 +13,7 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { importWizardReducer } from "../useImportWizard";
+import { importWizardReducer } from "../reducers/importWizardReducer";
 import type { WizardState, WizardAction, WizardStateImporting } from "../useImportWizard.types";
 import { INITIAL_ACCUMULATED_RESULT } from "../useImportWizard.types";
 

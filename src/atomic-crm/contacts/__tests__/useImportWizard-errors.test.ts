@@ -13,7 +13,8 @@
 
 import { describe, it, expect, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { importWizardReducer, useImportWizard } from "../useImportWizard";
+import { importWizardReducer } from "../reducers/importWizardReducer";
+import { useImportWizard } from "../useImportWizard";
 import type {
   WizardState,
   WizardAction,
