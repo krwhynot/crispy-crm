@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon, X } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 
 export type DateInputProps = InputProps & {
   /** Disable future dates (e.g., for activity logging) */
@@ -70,7 +71,12 @@ export const DateInput = React.forwardRef<HTMLButtonElement, DateInputProps>((pr
     if (typeof val === "string") {
       try {
         return parseISO(val);
-      } catch {
+      } catch (error: unknown) {
+        logger.warn("Date parsing failed", {
+          feature: "DateInput",
+          invalidDate: val,
+          error: error instanceof Error ? error.message : String(error),
+        });
         return undefined;
       }
     }

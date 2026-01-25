@@ -238,8 +238,12 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
           },
         }
       );
-    } catch {
-      // Error handled by onError callback
+    } catch (error: unknown) {
+      logger.error("Sample status update exception", error, {
+        feature: "SampleStatusBadge",
+        activityId,
+        targetStatus: nextStatus,
+      });
     }
   }, [activityId, nextStatus, status, update, notify, onStatusChange, queryClient]);
 
@@ -279,8 +283,12 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
             },
           }
         );
-      } catch {
-        // Error handled by onError callback
+      } catch (error: unknown) {
+        logger.error("Sample status update exception", error, {
+          feature: "SampleStatusBadge",
+          activityId,
+          targetStatus,
+        });
       }
     },
     [activityId, status, update, notify, onStatusChange, queryClient]

@@ -15,6 +15,7 @@ import { useDropzone, type DropzoneOptions } from "react-dropzone";
 import { XCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 import { FormError, FormField, FormLabel } from "@/components/ra-wrappers/form";
 import { InputHelperText } from "@/components/ra-wrappers/input-helper-text";
 import { Button } from "@/components/ui/button";
@@ -132,7 +133,12 @@ export const FileInput = (props: FileInputProps) => {
     if (validateFileRemoval) {
       try {
         await validateFileRemoval(file);
-      } catch {
+      } catch (error: unknown) {
+        logger.warn("File removal validation failed", {
+          feature: "FileInput",
+          fileName: file.title,
+          error: error instanceof Error ? error.message : String(error),
+        });
         return;
       }
     }
