@@ -2,7 +2,11 @@
 
 Standard patterns for React Context usage in Crispy CRM configuration.
 
-These contexts were split from a monolithic `ConfigurationContext` to prevent unnecessary re-renders (P2-1 fix). Each context serves a single responsibility, allowing components to subscribe only to the data they need.
+These contexts are split from a monolithic `ConfigurationContext` to prevent unnecessary re-renders. Each context serves a single responsibility, allowing components to subscribe only to the data they need.
+
+## Migration Status
+
+✅ **Migration Complete** - The deprecated `useConfigurationContext` hook has been removed. All production code now uses focused hooks (`useAppBranding`, `usePipelineConfig`, `useFormOptions`).
 
 ## Context Hierarchy
 

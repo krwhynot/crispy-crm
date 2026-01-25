@@ -149,15 +149,5 @@ export const ConfigurationProvider = ({
   );
 };
 
-/**
- * @deprecated Use focused hooks for better performance:
- * - useAppBranding() for title, logos
- * - usePipelineConfig() for stages, categories
- * - useFormOptions() for note statuses, task types
- *
- * This combined hook causes re-renders when ANY config value changes.
- */
-export const useConfigurationContext = () => useContext(ConfigurationContext);
-
 // Re-export focused hooks for easy access
 export { useAppBranding, usePipelineConfig, useFormOptions };

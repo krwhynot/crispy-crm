@@ -2,8 +2,7 @@
 export { CRM } from "./CRM";
 export {
   ConfigurationContext,
-  useConfigurationContext,
-  // Focused hooks for better performance (P2-1 fix)
+  // Focused hooks for better performance
   useAppBranding,
   usePipelineConfig,
   useFormOptions,
