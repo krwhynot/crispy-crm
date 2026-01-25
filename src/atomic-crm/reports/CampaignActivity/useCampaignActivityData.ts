@@ -1,11 +1,14 @@
 import { useMemo } from "react";
 import { useGetList, useDataProvider } from "ra-core";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tantml:parameter>query";
 import { useReportData } from "@/atomic-crm/reports/hooks";
 import { reportKeys } from "@/atomic-crm/queryKeys";
 import type { Sale } from "../types";
 import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
-import type { GetCampaignReportStatsResponse } from "../../validation/rpc";
+import type {
+  GetCampaignReportStatsResponse,
+  GetStaleOpportunitiesResponse,
+} from "../../validation/rpc";
 
 interface CampaignActivity {
   id: number;
@@ -32,11 +35,18 @@ interface UseCampaignActivityDataOptions {
   selectedActivityTypes: string[];
   selectedSalesRep: number | null;
   allActivityTypes: readonly { value: string; label: string }[];
+  showStaleLeads: boolean;
 }
 
 export function useCampaignActivityData(options: UseCampaignActivityDataOptions) {
-  const { selectedCampaign, dateRange, selectedActivityTypes, selectedSalesRep, allActivityTypes } =
-    options;
+  const {
+    selectedCampaign,
+    dateRange,
+    selectedActivityTypes,
+    selectedSalesRep,
+    allActivityTypes,
+    showStaleLeads,
+  } = options;
 
   const dataProvider = useDataProvider() as ExtendedDataProvider;
 
@@ -115,6 +125,20 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
     return selected?.count ?? 0;
   }, [campaignOptions, selectedCampaign]);
 
+  // Fetch stale opportunities when showStaleLeads is true
+  const { data: staleOpportunities = [], isPending: staleOpportunitiesLoading } = useQuery({
+    queryKey: reportKeys.staleOpportunities(selectedCampaign, dateRange, selectedSalesRep),
+    queryFn: () =>
+      dataProvider.rpc<GetStaleOpportunitiesResponse>("get_stale_opportunities", {
+        p_campaign: selectedCampaign,
+        p_start_date: dateRange?.start ? new Date(dateRange.start).toISOString() : null,
+        p_end_date: dateRange?.end ? new Date(dateRange.end).toISOString() : null,
+        p_sales_rep_id: selectedSalesRep,
+      }),
+    enabled: showStaleLeads && !!selectedCampaign,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+
   const isLoadingCampaigns = reportStatsPending;
   const isLoadingActivities = activitiesLoading;
 
@@ -129,5 +153,7 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
     totalCampaignOpportunities,
     isLoadingCampaigns,
     isLoadingActivities,
+    staleOpportunities,
+    isLoadingStaleOpportunities: staleOpportunitiesLoading,
   };
 }

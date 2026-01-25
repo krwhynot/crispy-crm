@@ -316,6 +316,7 @@ export const RPC_SCHEMAS = {
   log_activity_with_task: logActivityWithTaskParamsSchema,
   check_similar_opportunities: checkSimilarOpportunitiesParamsSchema,
   get_campaign_report_stats: getCampaignReportStatsParamsSchema,
+  get_stale_opportunities: getStaleOpportunitiesParamsSchema,
 } as const;
 
 export type RPCFunctionName = keyof typeof RPC_SCHEMAS;
