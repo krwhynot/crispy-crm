@@ -1,6 +1,6 @@
 {
   "chunk_name": "notifications",
-  "generated_at": "2026-01-24T00:45:06.921Z",
+  "generated_at": "2026-01-25T03:03:52.496Z",
   "item_count": 3,
   "items": [
     {
@@ -38,7 +38,7 @@
     {
       "name": "NotificationsListView",
       "file": "src/atomic-crm/notifications/index.tsx",
-      "line": 6,
+      "line": 7,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -50,11 +50,12 @@
     {
       "name": "NotificationsListView",
       "file": "src/atomic-crm/notifications/resource.tsx",
-      "line": 6,
+      "line": 7,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,

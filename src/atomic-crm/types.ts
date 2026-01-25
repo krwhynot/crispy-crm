@@ -113,8 +113,6 @@ export interface PhoneNumberAndType {
 // OpportunityContact type is now exported from validation/opportunities (P2 consolidation)
 // Defined in validation/opportunities/opportunities-junctions.ts
 
-// SampleStatus type removed - now imported from validation/activities.ts (P2 consolidation)
-
 // ActivityRecord type is now exported from validation/activities.ts (P2 consolidation)
 // The schema includes: id, activity_type, type, subject, description, activity_date,
 // duration_minutes, contact_id, organization_id, opportunity_id, follow_up_required,

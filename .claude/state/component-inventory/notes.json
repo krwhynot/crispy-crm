@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-24T00:45:06.914Z",
+  "generated_at": "2026-01-25T03:03:52.495Z",
   "item_count": 5,
   "items": [
     {
@@ -50,7 +50,7 @@
     {
       "name": "NoteCreate",
       "file": "src/atomic-crm/notes/NoteCreate.tsx",
-      "line": 25,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -58,6 +58,7 @@
         "useResourceContext"
       ],
       "imports": [
+        "../types",
         "../validation/notes",
         "./NoteInputs",
         "@/components/ra-wrappers/FormErrorSummary",
@@ -67,6 +68,9 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
+        "Contact",
+        "Organization",
+        "Opportunity",
         "NoteInputs"
       ],
       "contextDependencies": [

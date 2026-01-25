@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-24T00:45:06.895Z",
+  "generated_at": "2026-01-25T03:03:52.494Z",
   "item_count": 33,
   "items": [
     {
@@ -43,7 +43,7 @@
     {
       "name": "ActivityFeedPanel",
       "file": "src/atomic-crm/dashboard/ActivityFeedPanel.tsx",
-      "line": 131,
+      "line": 137,
       "type": "presentational",
       "hooks": [
         "useMemo",
@@ -70,7 +70,7 @@
     {
       "name": "ActivityFeedPanel",
       "file": "src/atomic-crm/dashboard/ActivityFeedPanel.tsx",
-      "line": 131,
+      "line": 137,
       "type": "presentational",
       "hooks": [
         "useMemo",
@@ -145,7 +145,7 @@
     {
       "name": "DashboardTabPanel",
       "file": "src/atomic-crm/dashboard/DashboardTabPanel.tsx",
-      "line": 133,
+      "line": 137,
       "type": "presentational",
       "hooks": [
         "useTaskCount"
@@ -171,7 +171,7 @@
     {
       "name": "DashboardTabPanel",
       "file": "src/atomic-crm/dashboard/DashboardTabPanel.tsx",
-      "line": 133,
+      "line": 137,
       "type": "presentational",
       "hooks": [
         "useTaskCount"
@@ -639,7 +639,7 @@
     {
       "name": "RecentItemsWidget",
       "file": "src/atomic-crm/dashboard/RecentItemsWidget.tsx",
-      "line": 76,
+      "line": 81,
       "type": "presentational",
       "hooks": [
         "useRecentSearches"

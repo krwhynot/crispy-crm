@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-24T00:45:06.997Z",
+  "generated_at": "2026-01-25T03:03:52.499Z",
   "item_count": 23,
   "items": [
     {
@@ -381,11 +381,12 @@
     {
       "name": "FilterChip",
       "file": "src/atomic-crm/reports/components/FilterChip.tsx",
-      "line": 9,
+      "line": 10,
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "lucide-react"
+        "lucide-react",
+        "react"
       ],
       "isDefaultExport": false,
       "childComponents": [],

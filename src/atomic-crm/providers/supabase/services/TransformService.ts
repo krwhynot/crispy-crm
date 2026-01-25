@@ -80,9 +80,6 @@ const OPPORTUNITY_FIELDS_TO_STRIP = [
 /**
  * TransformService handles data mutations and transformations
  * Following Engineering Constitution principle #1: Single responsibility
- *
- * This service consolidates all transformation logic previously scattered
- * in the monolithic unifiedDataProvider (was ~150 lines)
  */
 export class TransformService {
   constructor(private storageService: StorageService) {}

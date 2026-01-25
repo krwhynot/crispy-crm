@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-24T00:45:06.798Z",
+  "generated_at": "2026-01-25T03:03:52.491Z",
   "item_count": 34,
   "items": [
     {
@@ -356,7 +356,7 @@
     {
       "name": "QuickLogActivity",
       "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
-      "line": 97,
+      "line": 98,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -374,6 +374,7 @@
         "@/components/ui/label",
         "@/components/ui/select",
         "@/components/ui/textarea",
+        "@/lib/logger",
         "@tanstack/react-query",
         "ra-core",
         "react"
@@ -522,7 +523,7 @@
     {
       "name": "QuickLogActivity",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 97,
+      "line": 98,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -579,7 +580,7 @@
     {
       "name": "ActivityListView",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 23,
+      "line": 24,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -591,7 +592,7 @@
     {
       "name": "ActivityCreateView",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 29,
+      "line": 32,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -603,7 +604,7 @@
     {
       "name": "ActivityEditView",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 35,
+      "line": 40,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -615,7 +616,7 @@
     {
       "name": "ActivityShowView",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 41,
+      "line": 48,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -627,12 +628,13 @@
     {
       "name": "ActivityListView",
       "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 23,
+      "line": 24,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "@/lib/date-utils",
         "react"
       ],
@@ -646,12 +648,13 @@
     {
       "name": "ActivityCreateView",
       "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 29,
+      "line": 32,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "@/lib/date-utils",
         "react"
       ],
@@ -665,12 +668,13 @@
     {
       "name": "ActivityEditView",
       "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 35,
+      "line": 40,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "@/lib/date-utils",
         "react"
       ],
@@ -684,12 +688,13 @@
     {
       "name": "ActivityShowView",
       "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 41,
+      "line": 48,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "@/lib/date-utils",
         "react"
       ],
@@ -703,7 +708,7 @@
     {
       "name": "ActivityDetailsTab",
       "file": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx",
-      "line": 57,
+      "line": 58,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -726,6 +731,7 @@
         "@/components/ra-wrappers/text-input",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
+        "@/lib/logger",
         "@tanstack/react-query",
         "ra-core",
         "react-admin"

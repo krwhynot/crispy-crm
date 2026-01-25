@@ -1,6 +1,6 @@
 {
   "chunk_name": "_root",
-  "generated_at": "2026-01-24T00:45:48.089Z",
+  "generated_at": "2026-01-25T03:03:58.503Z",
   "item_count": 18,
   "items": [
     {
@@ -139,7 +139,7 @@
     {
       "name": "InteractionParticipant",
       "file": "src/atomic-crm/types.ts",
-      "line": 131,
+      "line": 123,
       "kind": "interface",
       "properties": [
         {
@@ -194,7 +194,7 @@
     {
       "name": "DashboardSnapshot",
       "file": "src/atomic-crm/types.ts",
-      "line": 172,
+      "line": 164,
       "kind": "interface",
       "properties": [
         {
@@ -273,7 +273,7 @@
     {
       "name": "ActivityOrganizationCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 189,
+      "line": 181,
       "kind": "interface",
       "properties": [
         {
@@ -316,7 +316,7 @@
     {
       "name": "ActivityContactCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 197,
+      "line": 189,
       "kind": "interface",
       "properties": [
         {
@@ -359,7 +359,7 @@
     {
       "name": "ActivityContactNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 205,
+      "line": 197,
       "kind": "interface",
       "properties": [
         {
@@ -396,7 +396,7 @@
     {
       "name": "ActivityOpportunityCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 212,
+      "line": 204,
       "kind": "interface",
       "properties": [
         {
@@ -419,7 +419,7 @@
         },
         {
           "name": "opportunity",
-          "type": "{ name: string; estimated_close_date: Date; stage: \"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\"; priority: \"medium\" | \"critical\" | \"high\" | \"low\"; contact_ids: number[]; tags: string[]; id?: string | number; created_at?: string; updated_at?: string; version?: number; deleted_at?: string; description?: string; lead_source?: \"website\" | \"referral\" | \"trade_show\" | \"cold_call\" | \"email_campaign\" | \"social_media\" | \"partner\" | \"existing_customer\"; customer_organization_id?: string | number; principal_organization_id?: string | number; distributor_organization_id?: string | number; account_manager_id?: string | number; campaign?: string; related_opportunity_id?: string | number; notes?: string; next_action?: string; next_action_date?: Date; decision_criteria?: string; win_reason?: \"other\" | \"relationship\" | \"product_quality\" | \"price_competitive\" | \"timing\"; loss_reason?: \"other\" | \"timing\" | \"price_too_high\" | \"no_authorization\" | \"competitor_relationship\" | \"product_fit\" | \"no_response\"; close_reason_notes?: string; status?: \"active\" | \"on_hold\" | \"nurturing\" | \"stalled\" | \"expired\"; index?: number; actual_close_date?: Date; stage_manual?: boolean; status_manual?: boolean; competition?: string; founding_interaction_id?: string | number; probability?: number; opportunity_owner_id?: string | number; created_by?: string | number; updated_by?: string | number; search_tsv?: string; stage_changed_at?: string; customer_organization_name?: string; principal_organization_name?: string; distributor_organization_name?: string; days_in_stage?: number; last_activity_date?: string; days_since_last_activity?: number; pending_task_count?: number; overdue_task_count?: number; next_task_id?: string | number; next_task_title?: string; next_task_due_date?: string; next_task_priority?: string; products?: { [x: string]: unknown; id: number; product_id_reference?: number; product_name?: string; product_category?: string; principal_name?: string; notes?: string; }[]; }",
+          "type": "{ name: string; estimated_close_date: Date; stage: \"new_lead\" | \"initial_outreach\" | \"sample_visit_offered\" | \"feedback_logged\" | \"demo_scheduled\" | \"closed_won\" | \"closed_lost\"; priority: \"medium\" | \"critical\" | \"high\" | \"low\"; contact_ids: number[]; tags: string[]; id?: string | number; created_at?: string; updated_at?: string; version?: number; deleted_at?: string; description?: string; lead_source?: \"website\" | \"referral\" | \"trade_show\" | \"cold_call\" | \"email_campaign\" | \"social_media\" | \"partner\" | \"existing_customer\"; customer_organization_id?: string | number; principal_organization_id?: string | number; distributor_organization_id?: string | number; account_manager_id?: string | number; primary_contact_id?: number; campaign?: string; related_opportunity_id?: string | number; notes?: string; next_action?: string; next_action_date?: Date; decision_criteria?: string; win_reason?: \"other\" | \"relationship\" | \"product_quality\" | \"price_competitive\" | \"timing\"; loss_reason?: \"other\" | \"timing\" | \"price_too_high\" | \"no_authorization\" | \"competitor_relationship\" | \"product_fit\" | \"no_response\"; close_reason_notes?: string; status?: \"active\" | \"on_hold\" | \"nurturing\" | \"stalled\" | \"expired\"; index?: number; actual_close_date?: Date; stage_manual?: boolean; status_manual?: boolean; competition?: string; founding_interaction_id?: string | number; probability?: number; opportunity_owner_id?: string | number; created_by?: string | number; updated_by?: string | number; search_tsv?: string; stage_changed_at?: string; customer_organization_name?: string; principal_organization_name?: string; distributor_organization_name?: string; days_in_stage?: number; last_activity_date?: string; days_since_last_activity?: number; pending_task_count?: number; overdue_task_count?: number; next_task_id?: string | number; next_task_title?: string; next_task_due_date?: string; next_task_priority?: string; products?: { [x: string]: unknown; id: number; product_id_reference?: number; product_name?: string; product_category?: string; principal_name?: string; notes?: string; }[]; }",
           "optional": false,
           "readonly": false
         },
@@ -436,7 +436,7 @@
     {
       "name": "ActivityOpportunityNoteCreated",
       "file": "src/atomic-crm/types.ts",
-      "line": 220,
+      "line": 212,
       "kind": "interface",
       "properties": [
         {
@@ -470,7 +470,7 @@
     {
       "name": "NoteStatus",
       "file": "src/atomic-crm/types.ts",
-      "line": 246,
+      "line": 238,
       "kind": "interface",
       "properties": [
         {
@@ -498,7 +498,7 @@
     {
       "name": "ContactGender",
       "file": "src/atomic-crm/types.ts",
-      "line": 252,
+      "line": 244,
       "kind": "interface",
       "properties": [
         {
@@ -535,7 +535,7 @@
     {
       "name": "Activity",
       "file": "src/atomic-crm/types.ts",
-      "line": 227,
+      "line": 219,
       "kind": "type_alias",
       "typeExpression": "RaRecord &\n  (\n    | ActivityOrganizationCreated\n    | ActivityContactCreated\n    | ActivityContactNoteCreated\n    | ActivityOpportunityCreated\n    | ActivityOpportunityNoteCreated\n  )",
       "isComplex": true,
@@ -544,7 +544,7 @@
     {
       "name": "RAFileView",
       "file": "src/atomic-crm/types.ts",
-      "line": 238,
+      "line": 230,
       "kind": "type_alias",
       "typeExpression": "RAFileBase & {\n  path?: string;\n  type?: string;\n}",
       "isComplex": true,
@@ -553,7 +553,7 @@
     {
       "name": "AttachmentNote",
       "file": "src/atomic-crm/types.ts",
-      "line": 243,
+      "line": 235,
       "kind": "type_alias",
       "typeExpression": "RAFileBase",
       "isComplex": false,
@@ -562,7 +562,7 @@
     {
       "name": "Product",
       "file": "src/atomic-crm/types.ts",
-      "line": 265,
+      "line": 257,
       "kind": "type_alias",
       "typeExpression": "ProductBase & {\n  id?: Identifier;\n  // Database columns not in the form schema\n  manufacturer_part_number?: string | null;\n  list_price?: number | null;\n  currency_code?: string | null;\n  unit_of_measure?: string | null;\n  created_at?: string;\n  updated_at?: string;\n  deleted_at?: string;\n  // Computed fields from products_summary view (read-only)\n  principal_name?: string;\n}",
       "isComplex": true,

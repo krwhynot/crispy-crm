@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-24T00:45:06.978Z",
+  "generated_at": "2026-01-25T03:03:52.499Z",
   "item_count": 30,
   "items": [
     {
@@ -115,7 +115,7 @@
     {
       "name": "ProductDetailsTab",
       "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
-      "line": 99,
+      "line": 100,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -136,6 +136,7 @@
         "@/components/ra-wrappers/text-input",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
+        "@/lib/logger",
         "@tanstack/react-query",
         "ra-core",
         "react",
@@ -310,7 +311,7 @@
     {
       "name": "ProductList",
       "file": "src/atomic-crm/products/ProductList.tsx",
-      "line": 43,
+      "line": 44,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -345,6 +346,7 @@
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": false,
@@ -367,7 +369,7 @@
     {
       "name": "ProductList",
       "file": "src/atomic-crm/products/ProductList.tsx",
-      "line": 43,
+      "line": 44,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -402,6 +404,7 @@
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "ra-core",
+        "react",
         "react-admin"
       ],
       "isDefaultExport": true,
@@ -561,10 +564,11 @@
     {
       "name": "ProductNameHeader",
       "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 40,
+      "line": 41,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters",
         "ra-core"
       ],
@@ -576,12 +580,13 @@
     {
       "name": "ProductCategoryHeader",
       "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 56,
+      "line": 57,
       "type": "presentational",
       "hooks": [
         "useGetList"
       ],
       "imports": [
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters",
         "ra-core"
       ],
@@ -593,10 +598,11 @@
     {
       "name": "ProductStatusHeader",
       "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
-      "line": 94,
+      "line": 95,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters",
         "ra-core"
       ],
@@ -608,7 +614,7 @@
     {
       "name": "ProductListView",
       "file": "src/atomic-crm/products/index.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -620,7 +626,7 @@
     {
       "name": "ProductEditView",
       "file": "src/atomic-crm/products/index.tsx",
-      "line": 22,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -632,7 +638,7 @@
     {
       "name": "ProductCreateView",
       "file": "src/atomic-crm/products/index.tsx",
-      "line": 16,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -644,11 +650,12 @@
     {
       "name": "ProductListView",
       "file": "src/atomic-crm/products/resource.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -659,11 +666,12 @@
     {
       "name": "ProductCreateView",
       "file": "src/atomic-crm/products/resource.tsx",
-      "line": 16,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -674,11 +682,12 @@
     {
       "name": "ProductEditView",
       "file": "src/atomic-crm/products/resource.tsx",
-      "line": 22,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -689,11 +698,12 @@
     {
       "name": "ProductShowView",
       "file": "src/atomic-crm/products/resource.tsx",
-      "line": 28,
+      "line": 35,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,

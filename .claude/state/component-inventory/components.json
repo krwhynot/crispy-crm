@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-24T00:45:06.868Z",
+  "generated_at": "2026-01-25T03:03:52.492Z",
   "item_count": 25,
   "items": [
     {
@@ -348,15 +348,17 @@
     {
       "name": "getNextStatus",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 108,
+      "line": 110,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -369,15 +371,17 @@
     {
       "name": "getPreviousStatus",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 120,
+      "line": 122,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -390,15 +394,17 @@
     {
       "name": "isValidTransition",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 131,
+      "line": 133,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -411,15 +417,17 @@
     {
       "name": "SampleStatusStepper",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 462,
+      "line": 475,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -432,15 +440,17 @@
     {
       "name": "SAMPLE_STATUS_WORKFLOW",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 46,
+      "line": 48,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -453,15 +463,17 @@
     {
       "name": "SAMPLE_STATUS_CONFIG",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 69,
+      "line": 71,
       "type": "presentational",
       "hooks": [],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -474,20 +486,23 @@
     {
       "name": "SampleStatusBadge",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 182,
+      "line": 184,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useNotify",
+        "useQueryClient",
         "useState",
         "useUpdate"
       ],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -500,20 +515,23 @@
     {
       "name": "SampleStatusBadge",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 182,
+      "line": 184,
       "type": "presentational",
       "hooks": [
         "useCallback",
         "useNotify",
+        "useQueryClient",
         "useState",
         "useUpdate"
       ],
       "imports": [
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/popover",
         "@/lib/utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -526,7 +544,7 @@
     {
       "name": "TrackRecordView",
       "file": "src/atomic-crm/components/TrackRecordView.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useEffect",

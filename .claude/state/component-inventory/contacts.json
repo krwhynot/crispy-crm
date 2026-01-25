@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-24T00:45:06.885Z",
+  "generated_at": "2026-01-25T03:03:52.493Z",
   "item_count": 59,
   "items": [
     {
@@ -253,7 +253,7 @@
     {
       "name": "ContactCompactForm",
       "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "line": 18,
+      "line": 22,
       "type": "presentational",
       "hooks": [
         "useFormContext"
@@ -319,11 +319,12 @@
     {
       "name": "ContactNameHeader",
       "file": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
-      "line": 30,
+      "line": 31,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -336,11 +337,12 @@
     {
       "name": "ContactStatusHeader",
       "file": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
-      "line": 46,
+      "line": 47,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -353,7 +355,7 @@
     {
       "name": "ContactDetailsTab",
       "file": "src/atomic-crm/contacts/ContactDetailsTab.tsx",
-      "line": 45,
+      "line": 46,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -376,6 +378,7 @@
         "@/components/ra-wrappers/text-field",
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
+        "@/lib/logger",
         "@tanstack/react-query",
         "lucide-react",
         "ra-core",
@@ -753,7 +756,7 @@
     {
       "name": "ContactInputs",
       "file": "src/atomic-crm/contacts/ContactInputs.tsx",
-      "line": 61,
+      "line": 65,
       "type": "presentational",
       "hooks": [
         "useFormState"
@@ -1086,7 +1089,7 @@
     {
       "name": "LinkOpportunityModal",
       "file": "src/atomic-crm/contacts/LinkOpportunityModal.tsx",
-      "line": 30,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -1101,6 +1104,7 @@
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ui/dialog",
+        "@/lib/logger",
         "@tanstack/react-query",
         "react-admin"
       ],
@@ -1114,7 +1118,7 @@
     {
       "name": "OpportunitiesTab",
       "file": "src/atomic-crm/contacts/OpportunitiesTab.tsx",
-      "line": 37,
+      "line": 38,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -1137,6 +1141,7 @@
         "./UnlinkConfirmDialog",
         "@/atomic-crm/opportunities/constants",
         "@/components/admin/AdminButton",
+        "@/lib/logger",
         "@tanstack/react-query",
         "lucide-react",
         "ra-core",
@@ -1281,11 +1286,12 @@
     {
       "name": "TagsList",
       "file": "src/atomic-crm/contacts/TagsList.tsx",
-      "line": 50,
+      "line": 51,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../tags/tag-colors",
+        "../types",
         "@/components/ra-wrappers/reference-array-field",
         "@/components/ra-wrappers/single-field-list",
         "@/components/ui/badge",
@@ -1293,9 +1299,11 @@
         "ra-core"
       ],
       "isDefaultExport": false,
-      "childComponents": [],
+      "childComponents": [
+        "Tag"
+      ],
       "contextDependencies": [],
-      "componentRole": "leaf"
+      "componentRole": "wrapper"
     },
     {
       "name": "TagsListEdit",
@@ -1337,15 +1345,18 @@
     {
       "name": "UnlinkConfirmDialog",
       "file": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
-      "line": 22,
+      "line": 24,
       "type": "presentational",
       "hooks": [
         "useDelete",
+        "useQueryClient",
         "useSafeNotify"
       ],
       "imports": [
         "../hooks/useSafeNotify",
+        "../queryKeys",
         "@/components/ui/alert-dialog",
+        "@tanstack/react-query",
         "react-admin"
       ],
       "isDefaultExport": false,
@@ -1356,7 +1367,7 @@
     {
       "name": "ContactListView",
       "file": "src/atomic-crm/contacts/index.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1368,7 +1379,7 @@
     {
       "name": "ContactEditView",
       "file": "src/atomic-crm/contacts/index.tsx",
-      "line": 16,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1380,7 +1391,7 @@
     {
       "name": "ContactCreateView",
       "file": "src/atomic-crm/contacts/index.tsx",
-      "line": 22,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1392,13 +1403,14 @@
     {
       "name": "ContactListView",
       "file": "src/atomic-crm/contacts/resource.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -1411,13 +1423,14 @@
     {
       "name": "ContactEditView",
       "file": "src/atomic-crm/contacts/resource.tsx",
-      "line": 16,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -1430,13 +1443,14 @@
     {
       "name": "ContactCreateView",
       "file": "src/atomic-crm/contacts/resource.tsx",
-      "line": 22,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -1468,7 +1482,7 @@
     {
       "name": "useContactImport",
       "file": "src/atomic-crm/contacts/useContactImport.tsx",
-      "line": 65,
+      "line": 66,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1481,6 +1495,7 @@
         "./contactImport.logic",
         "./contactImport.types",
         "@/lib/date-utils",
+        "@/lib/logger",
         "ra-core",
         "react",
         "zod"
@@ -1503,7 +1518,7 @@
     {
       "name": "usePapaParse",
       "file": "src/atomic-crm/contacts/usePapaParse.tsx",
-      "line": 50,
+      "line": 51,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1513,6 +1528,7 @@
       ],
       "imports": [
         "./csvProcessor",
+        "@/lib/logger",
         "papaparse",
         "react"
       ],

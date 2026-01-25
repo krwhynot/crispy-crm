@@ -1,0 +1,47 @@
+{
+  "chunk_name": "validation",
+  "generated_at": "2026-01-25T03:03:58.503Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "ActivityType",
+      "file": "src/atomic-crm/validation/activities/types.ts",
+      "line": 60,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof activityTypeSchema>",
+      "isComplex": true,
+      "derivedFrom": "activityTypeSchema",
+      "isExported": true
+    },
+    {
+      "name": "InteractionType",
+      "file": "src/atomic-crm/validation/activities/types.ts",
+      "line": 61,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof interactionTypeSchema>",
+      "isComplex": true,
+      "derivedFrom": "interactionTypeSchema",
+      "isExported": true
+    },
+    {
+      "name": "SampleStatus",
+      "file": "src/atomic-crm/validation/activities/types.ts",
+      "line": 62,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof sampleStatusSchema>",
+      "isComplex": true,
+      "derivedFrom": "sampleStatusSchema",
+      "isExported": true
+    },
+    {
+      "name": "Sentiment",
+      "file": "src/atomic-crm/validation/activities/types.ts",
+      "line": 63,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof sentimentSchema>",
+      "isComplex": true,
+      "derivedFrom": "sentimentSchema",
+      "isExported": true
+    }
+  ]
+}

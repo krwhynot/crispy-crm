@@ -1,0 +1,76 @@
+{
+  "chunk_name": "validation",
+  "generated_at": "2026-01-25T03:03:59.036Z",
+  "item_count": 7,
+  "items": [
+    {
+      "name": "validateActivitiesForm",
+      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "line": 43,
+      "type": "formatter",
+      "schemaReference": "activitiesSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": [
+        "validateCreateActivities",
+        "validateUpdateActivities",
+        "validateCreateEngagements",
+        "validateCreateInteractions"
+      ]
+    },
+    {
+      "name": "validateCreateActivities",
+      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "line": 57,
+      "pattern": "date"
+    },
+    {
+      "name": "validateUpdateActivities",
+      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "line": 64,
+      "pattern": "date"
+    },
+    {
+      "name": "validateEngagementsForm",
+      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "line": 71,
+      "type": "formatter",
+      "schemaReference": "engagementsSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": [
+        "validateCreateActivities",
+        "validateUpdateActivities",
+        "validateCreateEngagements",
+        "validateCreateInteractions"
+      ]
+    },
+    {
+      "name": "validateCreateEngagements",
+      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "line": 85,
+      "pattern": "date"
+    },
+    {
+      "name": "validateInteractionsForm",
+      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "line": 104,
+      "type": "formatter",
+      "schemaReference": "interactionsSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": [
+        "validateCreateActivities",
+        "validateUpdateActivities",
+        "validateCreateEngagements",
+        "validateCreateInteractions"
+      ]
+    },
+    {
+      "name": "validateCreateInteractions",
+      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "line": 118,
+      "pattern": "date"
+    }
+  ]
+}

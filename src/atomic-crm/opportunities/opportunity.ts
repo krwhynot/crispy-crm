@@ -10,5 +10,3 @@ export const findOpportunityLabel = (
   // Use centralized stage label lookup instead of array search
   return getOpportunityStageLabel(opportunityValue);
 };
-
-export { findOpportunityLabel as legacyFindOpportunityLabel } from "./constants";

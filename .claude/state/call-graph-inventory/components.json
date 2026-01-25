@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-24T00:46:01.776Z",
+  "generated_at": "2026-01-25T03:04:01.980Z",
   "items": {
     "nodes": [
       {
@@ -31,46 +31,46 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:108:getNextStatus",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:110:getNextStatus",
         "name": "getNextStatus",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 108,
+        "line": 110,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:120:getPreviousStatus",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:122:getPreviousStatus",
         "name": "getPreviousStatus",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 120,
+        "line": 122,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:131:isValidTransition",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:133:isValidTransition",
         "name": "isValidTransition",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 131,
+        "line": 133,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
         "name": "SampleStatusStepper",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 462,
+        "line": 475,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "id": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
         "name": "TrackRecordView",
         "file": "src/atomic-crm/components/TrackRecordView.tsx",
-        "line": 17,
+        "line": 18,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -564,155 +564,155 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:108:getNextStatus",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:110:getNextStatus",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 109,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:120:getPreviousStatus",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:122:getPreviousStatus",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 121,
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:131:isValidTransition",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:133:isValidTransition",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 132,
+        "line": 134,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:131:isValidTransition",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:133:isValidTransition",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 133,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 469,
+        "line": 482,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 472,
+        "line": 485,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 473,
+        "line": 486,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 480,
+        "line": 493,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:475:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 490,
+        "line": 503,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
-        "edgeType": "hook",
-        "line": 18,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
-        "target": "useResourceContext",
-        "targetName": "useResourceContext",
         "edgeType": "hook",
         "line": 19,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
-        "target": "useGetRecordRepresentation",
-        "targetName": "useGetRecordRepresentation",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
+        "target": "useResourceContext",
+        "targetName": "useResourceContext",
         "edgeType": "hook",
         "line": 20,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
-        "target": "useRecentItems",
-        "targetName": "useRecentItems",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
+        "target": "useGetRecordRepresentation",
+        "targetName": "useGetRecordRepresentation",
         "edgeType": "hook",
         "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
+        "target": "useRecentItems",
+        "targetName": "useRecentItems",
+        "edgeType": "hook",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
         "target": "useRef",
         "targetName": "useRef",
         "edgeType": "hook",
-        "line": 24,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 26,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
         "target": "getRecordRepresentation",
         "targetName": "getRecordRepresentation",
         "edgeType": "call",
-        "line": 33,
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/TrackRecordView.tsx:17:TrackRecordView",
+        "source": "src/atomic-crm/components/TrackRecordView.tsx:18:TrackRecordView",
         "target": "addRecentItem",
         "targetName": "addRecentItem",
         "edgeType": "call",
-        "line": 35,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       }

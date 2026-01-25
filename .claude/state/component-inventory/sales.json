@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-24T00:45:07.014Z",
+  "generated_at": "2026-01-25T03:03:52.500Z",
   "item_count": 23,
   "items": [
     {
@@ -172,7 +172,7 @@
     {
       "name": "SalesList",
       "file": "src/atomic-crm/sales/SalesList.tsx",
-      "line": 29,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -182,6 +182,7 @@
       "imports": [
         "../hooks/useFilterCleanup",
         "../layout/TopToolbar",
+        "../types",
         "../utils/listPatterns",
         "./SalesSlideOver",
         "./salesFilterConfig",
@@ -198,6 +199,7 @@
       ],
       "isDefaultExport": true,
       "childComponents": [
+        "Sale",
         "TopToolbar",
         "COLUMN_VISIBILITY",
         "SalesSlideOver",
@@ -457,7 +459,7 @@
     {
       "name": "SalesListView",
       "file": "src/atomic-crm/sales/index.tsx",
-      "line": 11,
+      "line": 12,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -469,7 +471,7 @@
     {
       "name": "SalesEditView",
       "file": "src/atomic-crm/sales/index.tsx",
-      "line": 17,
+      "line": 20,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -481,7 +483,7 @@
     {
       "name": "SalesCreateView",
       "file": "src/atomic-crm/sales/index.tsx",
-      "line": 23,
+      "line": 28,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -493,13 +495,14 @@
     {
       "name": "SalesListView",
       "file": "src/atomic-crm/sales/resource.tsx",
-      "line": 11,
+      "line": 12,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -512,13 +515,14 @@
     {
       "name": "SalesEditView",
       "file": "src/atomic-crm/sales/resource.tsx",
-      "line": 17,
+      "line": 20,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -531,13 +535,14 @@
     {
       "name": "SalesCreateView",
       "file": "src/atomic-crm/sales/resource.tsx",
-      "line": 23,
+      "line": 28,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -550,13 +555,14 @@
     {
       "name": "SalesShowView",
       "file": "src/atomic-crm/sales/resource.tsx",
-      "line": 29,
+      "line": 36,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "../utils/formatName",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-24T00:46:02.201Z",
+  "generated_at": "2026-01-25T03:04:02.044Z",
   "items": {
     "nodes": [
       {
@@ -224,15 +224,6 @@
         "name": "ChartWrapper",
         "file": "src/atomic-crm/reports/components/ChartWrapper.tsx",
         "line": 11,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/reports/components/FilterChip.tsx:9:FilterChip",
-        "name": "FilterChip",
-        "file": "src/atomic-crm/reports/components/FilterChip.tsx",
-        "line": 9,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -6051,51 +6042,6 @@
         "edgeType": "render",
         "line": 19,
         "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/components/FilterChip.tsx:9:FilterChip",
-        "target": "preventDefault",
-        "targetName": "preventDefault",
-        "edgeType": "call",
-        "line": 12,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/components/FilterChip.tsx:9:FilterChip",
-        "target": "onRemove",
-        "targetName": "onRemove",
-        "edgeType": "call",
-        "line": 13,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/components/FilterChip.tsx:9:FilterChip",
-        "target": "onRemove",
-        "targetName": "onRemove",
-        "edgeType": "callback",
-        "line": 26,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/components/FilterChip.tsx:9:FilterChip",
-        "target": "handleKeyDown",
-        "targetName": "handleKeyDown",
-        "edgeType": "callback",
-        "line": 27,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/reports/components/FilterChip.tsx:9:FilterChip",
-        "target": "X",
-        "targetName": "X",
-        "edgeType": "render",
-        "line": 31,
-        "conditional": false,
         "inLoop": false
       },
       {

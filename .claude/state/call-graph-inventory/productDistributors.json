@@ -1,6 +1,6 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-24T00:46:02.094Z",
+  "generated_at": "2026-01-25T03:04:02.035Z",
   "items": {
     "nodes": [
       {
@@ -58,37 +58,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/productDistributors/resource.tsx:9:ProductDistributorListView",
+        "id": "src/atomic-crm/productDistributors/resource.tsx:10:ProductDistributorListView",
         "name": "ProductDistributorListView",
         "file": "src/atomic-crm/productDistributors/resource.tsx",
-        "line": 9,
+        "line": 10,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/productDistributors/resource.tsx:15:ProductDistributorCreateView",
+        "id": "src/atomic-crm/productDistributors/resource.tsx:18:ProductDistributorCreateView",
         "name": "ProductDistributorCreateView",
         "file": "src/atomic-crm/productDistributors/resource.tsx",
-        "line": 15,
+        "line": 18,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/productDistributors/resource.tsx:21:ProductDistributorEditView",
+        "id": "src/atomic-crm/productDistributors/resource.tsx:26:ProductDistributorEditView",
         "name": "ProductDistributorEditView",
         "file": "src/atomic-crm/productDistributors/resource.tsx",
-        "line": 21,
+        "line": 26,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/productDistributors/resource.tsx:27:ProductDistributorShowView",
+        "id": "src/atomic-crm/productDistributors/resource.tsx:34:ProductDistributorShowView",
         "name": "ProductDistributorShowView",
         "file": "src/atomic-crm/productDistributors/resource.tsx",
-        "line": 27,
+        "line": 34,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -618,74 +618,146 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:9:ProductDistributorListView",
+        "source": "src/atomic-crm/productDistributors/resource.tsx:10:ProductDistributorListView",
         "target": "ResourceErrorBoundary",
         "targetName": "ResourceErrorBoundary",
-        "edgeType": "render",
-        "line": 10,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:9:ProductDistributorListView",
-        "target": "ProductDistributorListLazy",
-        "targetName": "ProductDistributorListLazy",
         "edgeType": "render",
         "line": 11,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:15:ProductDistributorCreateView",
-        "target": "ResourceErrorBoundary",
-        "targetName": "ResourceErrorBoundary",
+        "source": "src/atomic-crm/productDistributors/resource.tsx:10:ProductDistributorListView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
         "edgeType": "render",
-        "line": 16,
+        "line": 12,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:15:ProductDistributorCreateView",
+        "source": "src/atomic-crm/productDistributors/resource.tsx:10:ProductDistributorListView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 12,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:10:ProductDistributorListView",
+        "target": "ProductDistributorListLazy",
+        "targetName": "ProductDistributorListLazy",
+        "edgeType": "render",
+        "line": 13,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:18:ProductDistributorCreateView",
+        "target": "ResourceErrorBoundary",
+        "targetName": "ResourceErrorBoundary",
+        "edgeType": "render",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:18:ProductDistributorCreateView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
+        "edgeType": "render",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:18:ProductDistributorCreateView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:18:ProductDistributorCreateView",
         "target": "ProductDistributorCreateLazy",
         "targetName": "ProductDistributorCreateLazy",
         "edgeType": "render",
-        "line": 17,
+        "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:21:ProductDistributorEditView",
+        "source": "src/atomic-crm/productDistributors/resource.tsx:26:ProductDistributorEditView",
         "target": "ResourceErrorBoundary",
         "targetName": "ResourceErrorBoundary",
         "edgeType": "render",
-        "line": 22,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:21:ProductDistributorEditView",
-        "target": "ProductDistributorEditLazy",
-        "targetName": "ProductDistributorEditLazy",
-        "edgeType": "render",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:27:ProductDistributorShowView",
-        "target": "ResourceErrorBoundary",
-        "targetName": "ResourceErrorBoundary",
+        "source": "src/atomic-crm/productDistributors/resource.tsx:26:ProductDistributorEditView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
         "edgeType": "render",
         "line": 28,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/productDistributors/resource.tsx:27:ProductDistributorShowView",
+        "source": "src/atomic-crm/productDistributors/resource.tsx:26:ProductDistributorEditView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:26:ProductDistributorEditView",
+        "target": "ProductDistributorEditLazy",
+        "targetName": "ProductDistributorEditLazy",
+        "edgeType": "render",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:34:ProductDistributorShowView",
+        "target": "ResourceErrorBoundary",
+        "targetName": "ResourceErrorBoundary",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:34:ProductDistributorShowView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
+        "edgeType": "render",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:34:ProductDistributorShowView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/productDistributors/resource.tsx:34:ProductDistributorShowView",
         "target": "ProductDistributorShowLazy",
         "targetName": "ProductDistributorShowLazy",
         "edgeType": "render",
-        "line": 29,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       }

@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-24T00:45:06.950Z",
+  "generated_at": "2026-01-25T03:03:52.497Z",
   "item_count": 76,
   "items": [
     {
@@ -678,11 +678,12 @@
     {
       "name": "OrganizationNameHeader",
       "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
-      "line": 31,
+      "line": 32,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -697,11 +698,12 @@
     {
       "name": "OrganizationTypeHeader",
       "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
-      "line": 47,
+      "line": 48,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -716,11 +718,12 @@
     {
       "name": "OrganizationPriorityHeader",
       "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
-      "line": 62,
+      "line": 63,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -735,11 +738,12 @@
     {
       "name": "OrganizationStateHeader",
       "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
-      "line": 80,
+      "line": 81,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./constants",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -1034,7 +1038,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 293,
+      "line": 294,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1055,6 +1059,7 @@
         "./constants",
         "./organizationFilterConfig",
         "./types",
+        "@/atomic-crm/constants/listDefaults",
         "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",
@@ -1100,7 +1105,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 293,
+      "line": 294,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1121,6 +1126,7 @@
         "./constants",
         "./organizationFilterConfig",
         "./types",
+        "@/atomic-crm/constants/listDefaults",
         "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",
@@ -1471,11 +1477,12 @@
     {
       "name": "ProductExceptionsSection",
       "file": "src/atomic-crm/organizations/ProductExceptionsSection.tsx",
-      "line": 14,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useDelete",
         "useNotify",
+        "useQueryClient",
         "useRefresh",
         "useState"
       ],
@@ -1487,6 +1494,7 @@
         "@/components/ui/badge",
         "@/components/ui/skeleton",
         "@/lib/date-utils",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin"
@@ -1540,7 +1548,7 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 273,
+      "line": 281,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1594,7 +1602,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 293,
+      "line": 294,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1742,7 +1750,7 @@
     {
       "name": "OrganizationListView",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 28,
+      "line": 29,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1754,7 +1762,7 @@
     {
       "name": "OrganizationCreateView",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 34,
+      "line": 37,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1766,7 +1774,7 @@
     {
       "name": "OrganizationEditView",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 40,
+      "line": 45,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1778,7 +1786,7 @@
     {
       "name": "OrganizationShowView",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 46,
+      "line": 53,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1790,12 +1798,13 @@
     {
       "name": "OrganizationListView",
       "file": "src/atomic-crm/organizations/resource.tsx",
-      "line": 28,
+      "line": 29,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -1808,12 +1817,13 @@
     {
       "name": "OrganizationCreateView",
       "file": "src/atomic-crm/organizations/resource.tsx",
-      "line": 34,
+      "line": 37,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -1826,12 +1836,13 @@
     {
       "name": "OrganizationEditView",
       "file": "src/atomic-crm/organizations/resource.tsx",
-      "line": 40,
+      "line": 45,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -1844,12 +1855,13 @@
     {
       "name": "OrganizationShowView",
       "file": "src/atomic-crm/organizations/resource.tsx",
-      "line": 46,
+      "line": 53,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,

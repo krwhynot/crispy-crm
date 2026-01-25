@@ -1,12 +1,12 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-24T00:45:07.026Z",
+  "generated_at": "2026-01-25T03:03:52.502Z",
   "item_count": 28,
   "items": [
     {
       "name": "AddTask",
       "file": "src/atomic-crm/tasks/AddTask.tsx",
-      "line": 36,
+      "line": 37,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -20,6 +20,7 @@
       "imports": [
         "../contacts/ContactOption",
         "../root/ConfigurationContext",
+        "../types",
         "../validation/task",
         "@/atomic-crm/utils/autocompleteDefaults",
         "@/components/admin/AdminButton",
@@ -37,12 +38,14 @@
         "react"
       ],
       "isDefaultExport": false,
-      "childComponents": [],
+      "childComponents": [
+        "Contact"
+      ],
       "contextDependencies": [
         "useDataProvider",
         "useRecordContext"
       ],
-      "componentRole": "leaf"
+      "componentRole": "wrapper"
     },
     {
       "name": "Task",
@@ -525,11 +528,12 @@
     {
       "name": "TaskTitleHeader",
       "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
-      "line": 42,
+      "line": 43,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../root/ConfigurationContext",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -540,11 +544,12 @@
     {
       "name": "TaskPriorityHeader",
       "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
-      "line": 58,
+      "line": 59,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../root/ConfigurationContext",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -555,13 +560,14 @@
     {
       "name": "TaskTypeHeader",
       "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
-      "line": 73,
+      "line": 74,
       "type": "presentational",
       "hooks": [
         "useFormOptions"
       ],
       "imports": [
         "../root/ConfigurationContext",
+        "@/atomic-crm/constants",
         "@/components/ra-wrappers/column-filters"
       ],
       "isDefaultExport": false,
@@ -596,7 +602,7 @@
     {
       "name": "TaskListView",
       "file": "src/atomic-crm/tasks/index.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -608,7 +614,7 @@
     {
       "name": "TaskEditView",
       "file": "src/atomic-crm/tasks/index.tsx",
-      "line": 16,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -620,7 +626,7 @@
     {
       "name": "TaskCreateView",
       "file": "src/atomic-crm/tasks/index.tsx",
-      "line": 22,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -632,12 +638,13 @@
     {
       "name": "TaskListView",
       "file": "src/atomic-crm/tasks/resource.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -650,12 +657,13 @@
     {
       "name": "TaskEditView",
       "file": "src/atomic-crm/tasks/resource.tsx",
-      "line": 16,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -668,12 +676,13 @@
     {
       "name": "TaskCreateView",
       "file": "src/atomic-crm/tasks/resource.tsx",
-      "line": 22,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,

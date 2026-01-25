@@ -1,6 +1,6 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2026-01-24T00:45:44.914Z",
+  "generated_at": "2026-01-25T03:03:57.913Z",
   "item_count": 23,
   "items": [
     {
@@ -94,7 +94,7 @@
     {
       "name": "useBulkExport",
       "file": "src/hooks/useBulkExport.tsx",
-      "line": 16,
+      "line": 17,
       "parameters": [
         "props"
       ],
@@ -138,7 +138,7 @@
     {
       "name": "useFavorites",
       "file": "src/hooks/useFavorites.ts",
-      "line": 26,
+      "line": 27,
       "parameters": [],
       "returnType": "UseFavoritesReturn",
       "dependencies": [
@@ -200,7 +200,7 @@
     {
       "name": "useOrganizationDescendants",
       "file": "src/hooks/useOrganizationDescendants.ts",
-      "line": 21,
+      "line": 22,
       "parameters": [
         "orgId"
       ],

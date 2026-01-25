@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-24T00:46:02.283Z",
+  "generated_at": "2026-01-25T03:04:02.055Z",
   "items": {
     "nodes": [
       {
@@ -67,10 +67,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tags/TagEditModal.tsx:12:TagEditModal",
+        "id": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
         "name": "TagEditModal",
         "file": "src/atomic-crm/tags/TagEditModal.tsx",
-        "line": 12,
+        "line": 14,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -906,56 +906,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagEditModal.tsx:12:TagEditModal",
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
         "target": "useUpdate",
         "targetName": "useUpdate",
         "edgeType": "hook",
-        "line": 13,
+        "line": 15,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagEditModal.tsx:12:TagEditModal",
-        "target": "update",
-        "targetName": "update",
-        "edgeType": "call",
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
         "line": 16,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagEditModal.tsx:12:TagEditModal",
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "call",
-        "line": 21,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagEditModal.tsx:12:TagEditModal",
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
         "target": "TagDialog",
         "targetName": "TagDialog",
         "edgeType": "render",
-        "line": 28,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagEditModal.tsx:12:TagEditModal",
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 28,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagEditModal.tsx:12:TagEditModal",
+        "source": "src/atomic-crm/tags/TagEditModal.tsx:14:TagEditModal",
         "target": "handleEditTag",
         "targetName": "handleEditTag",
         "edgeType": "callback",
-        "line": 28,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },

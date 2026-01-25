@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-24T00:46:01.751Z",
+  "generated_at": "2026-01-25T03:04:01.970Z",
   "items": {
     "nodes": [
       {
@@ -130,19 +130,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "id": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "name": "inferActivityTypeFromTitle",
         "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
-        "line": 72,
+        "line": 73,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "id": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "name": "QuickLogActivity",
         "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
-        "line": 97,
+        "line": 98,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -202,55 +202,55 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/resource.tsx:23:ActivityListView",
+        "id": "src/atomic-crm/activities/resource.tsx:24:ActivityListView",
         "name": "ActivityListView",
         "file": "src/atomic-crm/activities/resource.tsx",
-        "line": 23,
+        "line": 24,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/resource.tsx:29:ActivityCreateView",
+        "id": "src/atomic-crm/activities/resource.tsx:32:ActivityCreateView",
         "name": "ActivityCreateView",
         "file": "src/atomic-crm/activities/resource.tsx",
-        "line": 29,
+        "line": 32,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/resource.tsx:35:ActivityEditView",
+        "id": "src/atomic-crm/activities/resource.tsx:40:ActivityEditView",
         "name": "ActivityEditView",
         "file": "src/atomic-crm/activities/resource.tsx",
-        "line": 35,
+        "line": 40,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/resource.tsx:41:ActivityShowView",
+        "id": "src/atomic-crm/activities/resource.tsx:48:ActivityShowView",
         "name": "ActivityShowView",
         "file": "src/atomic-crm/activities/resource.tsx",
-        "line": 41,
+        "line": 48,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/resource.tsx:47:activityRecordRepresentation",
+        "id": "src/atomic-crm/activities/resource.tsx:56:activityRecordRepresentation",
         "name": "activityRecordRepresentation",
         "file": "src/atomic-crm/activities/resource.tsx",
-        "line": 47,
+        "line": 56,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "id": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "name": "ActivityDetailsTab",
         "file": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx",
-        "line": 57,
+        "line": 58,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -2544,34 +2544,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 73,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 75,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 75,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2580,7 +2562,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2589,7 +2571,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2598,7 +2580,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2607,7 +2589,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2616,7 +2598,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2625,7 +2607,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2634,7 +2616,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2643,7 +2625,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2652,7 +2634,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2661,7 +2643,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2670,7 +2652,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2679,7 +2661,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2688,7 +2670,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2697,7 +2679,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2706,7 +2688,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2715,25 +2697,34 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 86,
+        "line": 84,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 84,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2742,7 +2733,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2751,25 +2742,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 91,
+        "line": 89,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 91,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2778,7 +2760,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:72:inferActivityTypeFromTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
@@ -2787,61 +2769,61 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:73:inferActivityTypeFromTitle",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 98,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 99,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "inferActivityTypeFromTitle",
         "targetName": "inferActivityTypeFromTitle",
         "edgeType": "call",
-        "line": 109,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 112,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "getInitialActivityType",
-        "targetName": "getInitialActivityType",
-        "edgeType": "call",
-        "line": 112,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -2850,7 +2832,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "getInitialActivityType",
+        "targetName": "getInitialActivityType",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -2859,7 +2850,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
@@ -2868,70 +2859,70 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "useGetOne",
         "targetName": "useGetOne",
         "edgeType": "hook",
-        "line": 118,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 124,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "setOrganizationId",
         "targetName": "setOrganizationId",
         "edgeType": "call",
-        "line": 126,
+        "line": 127,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "setIsSubmitting",
         "targetName": "setIsSubmitting",
         "edgeType": "call",
-        "line": 131,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 134,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 140,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 149,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
@@ -2940,7 +2931,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
@@ -2949,353 +2940,362 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 153,
+        "line": 152,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "onClose",
-        "targetName": "onClose",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "onClose",
+        "targetName": "onClose",
         "edgeType": "call",
-        "line": 156,
+        "line": 155,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
         "line": 157,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "setIsSubmitting",
-        "targetName": "setIsSubmitting",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 159,
+        "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "onClose",
-        "targetName": "onClose",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "setIsSubmitting",
+        "targetName": "setIsSubmitting",
         "edgeType": "call",
         "line": 164,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "call",
-        "line": 168,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 186,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 198,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 210,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "setNotes",
-        "targetName": "setNotes",
-        "edgeType": "call",
-        "line": 225,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "Dialog",
-        "targetName": "Dialog",
-        "edgeType": "render",
-        "line": 168,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "DialogContent",
-        "targetName": "DialogContent",
-        "edgeType": "render",
         "line": 169,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "onClose",
+        "targetName": "onClose",
+        "edgeType": "call",
+        "line": 173,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "setNotes",
+        "targetName": "setNotes",
+        "edgeType": "call",
+        "line": 230,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "Dialog",
+        "targetName": "Dialog",
+        "edgeType": "render",
+        "line": 173,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "DialogContent",
+        "targetName": "DialogContent",
+        "edgeType": "render",
+        "line": 174,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "DialogHeader",
         "targetName": "DialogHeader",
         "edgeType": "render",
-        "line": 170,
+        "line": 175,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "DialogTitle",
         "targetName": "DialogTitle",
         "edgeType": "render",
-        "line": 171,
+        "line": 176,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "DialogDescription",
         "targetName": "DialogDescription",
-        "edgeType": "render",
-        "line": 172,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "Label",
-        "targetName": "Label",
         "edgeType": "render",
         "line": 177,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 178,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
-        "edgeType": "render",
-        "line": 179,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "Label",
+        "targetName": "Label",
         "edgeType": "render",
         "line": 182,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "SelectGroup",
-        "targetName": "SelectGroup",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
         "edgeType": "render",
         "line": 184,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "SelectLabel",
-        "targetName": "SelectLabel",
-        "edgeType": "render",
-        "line": 185,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
         "edgeType": "render",
         "line": 187,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectGroup",
         "targetName": "SelectGroup",
         "edgeType": "render",
-        "line": 196,
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectLabel",
         "targetName": "SelectLabel",
         "edgeType": "render",
-        "line": 197,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 199,
+        "line": 192,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectGroup",
         "targetName": "SelectGroup",
         "edgeType": "render",
-        "line": 208,
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectLabel",
         "targetName": "SelectLabel",
         "edgeType": "render",
-        "line": 209,
+        "line": 202,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 211,
+        "line": 204,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "SelectGroup",
+        "targetName": "SelectGroup",
+        "edgeType": "render",
+        "line": 213,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "SelectLabel",
+        "targetName": "SelectLabel",
+        "edgeType": "render",
+        "line": 214,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 216,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 221,
+        "line": 226,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "DialogFooter",
         "targetName": "DialogFooter",
         "edgeType": "render",
-        "line": 233,
+        "line": 238,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 234,
+        "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "handleSkip",
         "targetName": "handleSkip",
-        "edgeType": "callback",
-        "line": 234,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 237,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
-        "target": "handleSave",
-        "targetName": "handleSave",
         "edgeType": "callback",
         "line": 239,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 242,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
+        "target": "handleSave",
+        "targetName": "handleSave",
+        "edgeType": "callback",
+        "line": 244,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 180,
+        "line": 185,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectSeparator",
         "targetName": "SelectSeparator",
         "edgeType": "render",
-        "line": 193,
+        "line": 198,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "SelectSeparator",
         "targetName": "SelectSeparator",
         "edgeType": "render",
-        "line": 205,
+        "line": 210,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:97:QuickLogActivity",
+        "source": "src/atomic-crm/activities/QuickLogActivity.tsx:98:QuickLogActivity",
         "target": "Textarea",
         "targetName": "Textarea",
         "edgeType": "render",
-        "line": 222,
+        "line": 227,
         "conditional": false,
         "inLoop": false
       },
@@ -3966,313 +3966,367 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/resource.tsx:23:ActivityListView",
+        "source": "src/atomic-crm/activities/resource.tsx:24:ActivityListView",
         "target": "ResourceErrorBoundary",
         "targetName": "ResourceErrorBoundary",
-        "edgeType": "render",
-        "line": 24,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/resource.tsx:23:ActivityListView",
-        "target": "ActivityListLazy",
-        "targetName": "ActivityListLazy",
         "edgeType": "render",
         "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/resource.tsx:29:ActivityCreateView",
-        "target": "ResourceErrorBoundary",
-        "targetName": "ResourceErrorBoundary",
+        "source": "src/atomic-crm/activities/resource.tsx:24:ActivityListView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
         "edgeType": "render",
-        "line": 30,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/resource.tsx:29:ActivityCreateView",
+        "source": "src/atomic-crm/activities/resource.tsx:24:ActivityListView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:24:ActivityListView",
+        "target": "ActivityListLazy",
+        "targetName": "ActivityListLazy",
+        "edgeType": "render",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:32:ActivityCreateView",
+        "target": "ResourceErrorBoundary",
+        "targetName": "ResourceErrorBoundary",
+        "edgeType": "render",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:32:ActivityCreateView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
+        "edgeType": "render",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:32:ActivityCreateView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:32:ActivityCreateView",
         "target": "ActivityCreateLazy",
         "targetName": "ActivityCreateLazy",
         "edgeType": "render",
-        "line": 31,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/resource.tsx:35:ActivityEditView",
+        "source": "src/atomic-crm/activities/resource.tsx:40:ActivityEditView",
         "target": "ResourceErrorBoundary",
         "targetName": "ResourceErrorBoundary",
         "edgeType": "render",
-        "line": 36,
+        "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/resource.tsx:35:ActivityEditView",
-        "target": "ActivityEditLazy",
-        "targetName": "ActivityEditLazy",
-        "edgeType": "render",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/resource.tsx:41:ActivityShowView",
-        "target": "ResourceErrorBoundary",
-        "targetName": "ResourceErrorBoundary",
+        "source": "src/atomic-crm/activities/resource.tsx:40:ActivityEditView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
         "edgeType": "render",
         "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/resource.tsx:41:ActivityShowView",
-        "target": "ActivityShowLazy",
-        "targetName": "ActivityShowLazy",
+        "source": "src/atomic-crm/activities/resource.tsx:40:ActivityEditView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:40:ActivityEditView",
+        "target": "ActivityEditLazy",
+        "targetName": "ActivityEditLazy",
         "edgeType": "render",
         "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/resource.tsx:47:activityRecordRepresentation",
-        "target": "toLocaleDateString",
-        "targetName": "toLocaleDateString",
-        "edgeType": "call",
-        "line": 50,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/resource.tsx:47:activityRecordRepresentation",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
-        "edgeType": "call",
-        "line": 50,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "useUpdate",
-        "targetName": "useUpdate",
-        "edgeType": "hook",
-        "line": 63,
+        "source": "src/atomic-crm/activities/resource.tsx:48:ActivityShowView",
+        "target": "ResourceErrorBoundary",
+        "targetName": "ResourceErrorBoundary",
+        "edgeType": "render",
+        "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/activities/resource.tsx:48:ActivityShowView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
+        "edgeType": "render",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:48:ActivityShowView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:48:ActivityShowView",
+        "target": "ActivityShowLazy",
+        "targetName": "ActivityShowLazy",
+        "edgeType": "render",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:56:activityRecordRepresentation",
+        "target": "toLocaleDateString",
+        "targetName": "toLocaleDateString",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/resource.tsx:56:activityRecordRepresentation",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
         "edgeType": "hook",
         "line": 64,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 69,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 74,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "onModeToggle",
-        "targetName": "onModeToggle",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "onModeToggle",
+        "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 78,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "error",
-        "targetName": "error",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "String",
-        "targetName": "String",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
-        "line": 81,
-        "conditional": true,
+        "line": 80,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "formatInteractionType",
         "targetName": "formatInteractionType",
         "edgeType": "call",
-        "line": 177,
+        "line": 178,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "getSentimentVariant",
         "targetName": "getSentimentVariant",
-        "edgeType": "call",
-        "line": 213,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "ucFirst",
-        "targetName": "ucFirst",
         "edgeType": "call",
         "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "ucFirst",
+        "targetName": "ucFirst",
+        "edgeType": "call",
+        "line": 215,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 241,
+        "line": 242,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
         "edgeType": "render",
-        "line": 88,
+        "line": 89,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "Form",
         "targetName": "Form",
         "edgeType": "render",
-        "line": 89,
+        "line": 90,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "handleSave",
         "targetName": "handleSave",
         "edgeType": "callback",
-        "line": 89,
+        "line": 90,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 133,
+        "line": 134,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 137,
+        "line": 138,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "ReferenceInput",
         "targetName": "ReferenceInput",
         "edgeType": "render",
-        "line": 141,
+        "line": 142,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "RecordContextProvider",
         "targetName": "RecordContextProvider",
-        "edgeType": "render",
-        "line": 168,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "ScrollArea",
-        "targetName": "ScrollArea",
         "edgeType": "render",
         "line": 169,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "ScrollArea",
+        "targetName": "ScrollArea",
+        "edgeType": "render",
+        "line": 170,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 171,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 176,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
@@ -4281,272 +4335,281 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
-        "target": "SidepaneSection",
-        "targetName": "SidepaneSection",
-        "edgeType": "render",
-        "line": 208,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 213,
+        "line": 178,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 237,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 240,
+        "line": 214,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 249,
+        "line": 238,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 241,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SidepaneSection",
         "targetName": "SidepaneSection",
         "edgeType": "render",
-        "line": 284,
+        "line": 250,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
+        "target": "SidepaneSection",
+        "targetName": "SidepaneSection",
+        "edgeType": "render",
+        "line": 285,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 289,
+        "line": 290,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 298,
+        "line": 299,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 307,
+        "line": 308,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "DirtyStateTracker",
         "targetName": "DirtyStateTracker",
         "edgeType": "render",
-        "line": 90,
+        "line": 91,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "onDirtyChange",
         "targetName": "onDirtyChange",
         "edgeType": "callback",
-        "line": 90,
+        "line": 91,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 93,
+        "line": 94,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 99,
+        "line": 100,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 105,
+        "line": 106,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "DateInput",
         "targetName": "DateInput",
         "edgeType": "render",
-        "line": 107,
+        "line": 108,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 109,
+        "line": 110,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 111,
+        "line": 112,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 113,
+        "line": 114,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 115,
+        "line": 116,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 117,
+        "line": 118,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "BooleanInput",
         "targetName": "BooleanInput",
         "edgeType": "render",
-        "line": 119,
+        "line": 120,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "DateInput",
         "targetName": "DateInput",
         "edgeType": "render",
-        "line": 121,
+        "line": 122,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 123,
+        "line": 124,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 126,
+        "line": 127,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 134,
+        "line": 135,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 138,
+        "line": 139,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "AutocompleteInput",
         "targetName": "AutocompleteInput",
         "edgeType": "render",
-        "line": 142,
+        "line": 143,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "DateField",
         "targetName": "DateField",
         "edgeType": "render",
-        "line": 182,
+        "line": 183,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "DateField",
         "targetName": "DateField",
         "edgeType": "render",
-        "line": 261,
+        "line": 262,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:57:ActivityDetailsTab",
+        "source": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx:58:ActivityDetailsTab",
         "target": "SidepaneMetadata",
         "targetName": "SidepaneMetadata",
         "edgeType": "render",
-        "line": 316,
+        "line": 317,
         "conditional": false,
         "inLoop": false
       },

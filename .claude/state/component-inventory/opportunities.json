@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-24T00:45:06.931Z",
+  "generated_at": "2026-01-25T03:03:52.496Z",
   "item_count": 74,
   "items": [
     {
@@ -616,7 +616,7 @@
     {
       "name": "getRelativeTimeString",
       "file": "src/atomic-crm/opportunities/OpportunityArchivedList.tsx",
-      "line": 115,
+      "line": 125,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -1070,7 +1070,7 @@
     {
       "name": "OpportunityList",
       "file": "src/atomic-crm/opportunities/OpportunityList.tsx",
-      "line": 65,
+      "line": 66,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -1097,6 +1097,7 @@
         "./kanban",
         "./opportunityExporter",
         "./opportunityFilterConfig",
+        "@/atomic-crm/constants/listDefaults",
         "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/ListNoResults",
         "@/components/ra-wrappers/ListSearchBar",
@@ -1666,7 +1667,7 @@
     {
       "name": "OpportunityListView",
       "file": "src/atomic-crm/opportunities/index.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1678,7 +1679,7 @@
     {
       "name": "OpportunityCreateView",
       "file": "src/atomic-crm/opportunities/index.tsx",
-      "line": 24,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1690,7 +1691,7 @@
     {
       "name": "OpportunityEditView",
       "file": "src/atomic-crm/opportunities/index.tsx",
-      "line": 26,
+      "line": 29,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -1759,7 +1760,7 @@
     {
       "name": "OpportunityCardActions",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
-      "line": 30,
+      "line": 32,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1767,6 +1768,7 @@
         "useDelete",
         "useNavigate",
         "useNotify",
+        "useQueryClient",
         "useRecordContext",
         "useRefresh",
         "useState",
@@ -1776,9 +1778,11 @@
         "../../types",
         "../CloseOpportunityModal",
         "@/atomic-crm/opportunities/constants",
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/opportunities",
         "@/components/ra-wrappers/delete-confirm-dialog",
         "@/components/ui/dropdown-menu",
+        "@tanstack/react-query",
         "lucide-react",
         "react",
         "react-admin",
@@ -1939,12 +1943,13 @@
     {
       "name": "OpportunityListView",
       "file": "src/atomic-crm/opportunities/resource.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "ra-core",
         "react"
       ],
@@ -1958,12 +1963,13 @@
     {
       "name": "OpportunityCreateView",
       "file": "src/atomic-crm/opportunities/resource.tsx",
-      "line": 24,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "ra-core",
         "react"
       ],
@@ -1977,12 +1983,13 @@
     {
       "name": "OpportunityEditView",
       "file": "src/atomic-crm/opportunities/resource.tsx",
-      "line": 26,
+      "line": 29,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "ra-core",
         "react"
       ],
@@ -2130,7 +2137,7 @@
     {
       "name": "OpportunityProductsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-      "line": 52,
+      "line": 53,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -2151,6 +2158,7 @@
         "@/components/ui/badge",
         "@/components/ui/card",
         "@/components/ui/scroll-area",
+        "@/lib/logger",
         "@tanstack/react-query",
         "lucide-react",
         "react",
@@ -2167,7 +2175,7 @@
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 26,
+      "line": 27,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2185,6 +2193,7 @@
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/opportunities",
+        "@/lib/logger",
         "@tanstack/react-query",
         "react",
         "react-admin"

@@ -1,0 +1,56 @@
+{
+  "chunk_name": "types",
+  "generated_at": "2026-01-25T03:03:58.315Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "activityTypeSchema",
+      "file": "src/atomic-crm/validation/activities/types.ts",
+      "line": 13,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "engagement",
+        "interaction",
+        "task"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "sampleStatusSchema",
+      "file": "src/atomic-crm/validation/activities/types.ts",
+      "line": 47,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "sent",
+        "received",
+        "feedback_pending",
+        "feedback_received"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "sentimentSchema",
+      "file": "src/atomic-crm/validation/activities/types.ts",
+      "line": 57,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "positive",
+        "neutral",
+        "negative"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

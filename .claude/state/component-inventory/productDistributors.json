@@ -1,6 +1,6 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-24T00:45:06.970Z",
+  "generated_at": "2026-01-25T03:03:52.498Z",
   "item_count": 24,
   "items": [
     {
@@ -240,7 +240,7 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 9,
+      "line": 10,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -252,7 +252,7 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 21,
+      "line": 26,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -264,7 +264,7 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 15,
+      "line": 18,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -276,7 +276,7 @@
     {
       "name": "ProductDistributorShowView",
       "file": "src/atomic-crm/productDistributors/index.tsx",
-      "line": 27,
+      "line": 34,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -300,11 +300,12 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 9,
+      "line": 10,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -315,11 +316,12 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 15,
+      "line": 18,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -330,11 +332,12 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 21,
+      "line": 26,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -345,11 +348,12 @@
     {
       "name": "ProductDistributorShowView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 27,
+      "line": 34,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -360,11 +364,12 @@
     {
       "name": "ProductDistributorListView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 9,
+      "line": 10,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -375,11 +380,12 @@
     {
       "name": "ProductDistributorEditView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 21,
+      "line": 26,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -390,11 +396,12 @@
     {
       "name": "ProductDistributorCreateView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 15,
+      "line": 18,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,
@@ -405,11 +412,12 @@
     {
       "name": "ProductDistributorShowView",
       "file": "src/atomic-crm/productDistributors/resource.tsx",
-      "line": 27,
+      "line": 34,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "@/components/ResourceErrorBoundary",
+        "@/components/ra-wrappers/loading",
         "react"
       ],
       "isDefaultExport": false,

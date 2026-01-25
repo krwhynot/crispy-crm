@@ -1,0 +1,165 @@
+{
+  "chunk_name": "transforms",
+  "generated_at": "2026-01-25T03:03:58.315Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "activityDisplayTypeSchema",
+      "file": "src/atomic-crm/validation/activities/transforms.ts",
+      "line": 23,
+      "schemaType": "enum",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "activityOutcomeSchema",
+      "file": "src/atomic-crm/validation/activities/transforms.ts",
+      "line": 66,
+      "schemaType": "enum",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "quickLogFormBaseSchema",
+      "file": "src/atomic-crm/validation/activities/transforms.ts",
+      "line": 79,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "activityType",
+          "zodType": "ref:activityDisplayTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "outcome",
+          "zodType": "ref:activityOutcomeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "date",
+          "zodType": "date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "duration",
+          "zodType": "number",
+          "constraints": [
+            "min(0)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "contactId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organizationId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "opportunityId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "min(1, \"Notes are required\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "anonymous",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "createFollowUp",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "followUpDate",
+          "zodType": "date",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sampleStatus",
+          "zodType": "ref:sampleStatusSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "quickLogFormSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "quickLogFormSchema",
+      "file": "src/atomic-crm/validation/activities/transforms.ts",
+      "line": 102,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "quickLogFormBaseSchema",
+        "quickLogFormPropsSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": true
+    }
+  ]
+}

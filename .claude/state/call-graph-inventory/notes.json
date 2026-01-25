@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-24T00:46:01.913Z",
+  "generated_at": "2026-01-25T03:04:02.010Z",
   "items": {
     "nodes": [
       {
@@ -13,28 +13,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
+        "id": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
         "name": "NoteCreate",
         "file": "src/atomic-crm/notes/NoteCreate.tsx",
-        "line": 25,
+        "line": 28,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/notes/NoteCreate.tsx:51:NoteFormContent",
+        "id": "src/atomic-crm/notes/NoteCreate.tsx:56:NoteFormContent",
         "name": "NoteFormContent",
         "file": "src/atomic-crm/notes/NoteCreate.tsx",
-        "line": 51,
+        "line": 56,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "id": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "name": "NoteCreateButton",
         "file": "src/atomic-crm/notes/NoteCreate.tsx",
-        "line": 69,
+        "line": 74,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -654,236 +654,236 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
         "target": "useResourceContext",
         "targetName": "useResourceContext",
         "edgeType": "hook",
-        "line": 30,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 31,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 32,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
-        "target": "partial",
-        "targetName": "partial",
-        "edgeType": "call",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
-        "target": "CreateBase",
-        "targetName": "CreateBase",
-        "edgeType": "render",
-        "line": 41,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
-        "target": "Form",
-        "targetName": "Form",
-        "edgeType": "render",
         "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:25:NoteCreate",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
+        "target": "partial",
+        "targetName": "partial",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
+        "target": "CreateBase",
+        "targetName": "CreateBase",
+        "edgeType": "render",
+        "line": 46,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
+        "target": "Form",
+        "targetName": "Form",
+        "edgeType": "render",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:28:NoteCreate",
         "target": "NoteFormContent",
         "targetName": "NoteFormContent",
         "edgeType": "render",
-        "line": 44,
+        "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:51:NoteFormContent",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:56:NoteFormContent",
         "target": "useFormState",
         "targetName": "useFormState",
         "edgeType": "hook",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:51:NoteFormContent",
-        "target": "FormErrorSummary",
-        "targetName": "FormErrorSummary",
-        "edgeType": "render",
-        "line": 62,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:51:NoteFormContent",
-        "target": "NoteInputs",
-        "targetName": "NoteInputs",
-        "edgeType": "render",
         "line": 63,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:51:NoteFormContent",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:56:NoteFormContent",
+        "target": "FormErrorSummary",
+        "targetName": "FormErrorSummary",
+        "edgeType": "render",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:56:NoteFormContent",
+        "target": "NoteInputs",
+        "targetName": "NoteInputs",
+        "edgeType": "render",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:56:NoteFormContent",
         "target": "NoteCreateButton",
         "targetName": "NoteCreateButton",
         "edgeType": "render",
-        "line": 64,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "useUpdate",
         "targetName": "useUpdate",
         "edgeType": "hook",
-        "line": 76,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 77,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 78,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "useFormContext",
         "targetName": "useFormContext",
         "edgeType": "hook",
-        "line": 79,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 80,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 85,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 85,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 85,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 89,
+        "line": 94,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 91,
+        "line": 96,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "refetch",
         "targetName": "refetch",
         "edgeType": "call",
-        "line": 96,
+        "line": 101,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 97,
+        "line": 102,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "getCurrentDate",
         "targetName": "getCurrentDate",
         "edgeType": "call",
-        "line": 110,
+        "line": 115,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notes/NoteCreate.tsx:69:NoteCreateButton",
+        "source": "src/atomic-crm/notes/NoteCreate.tsx:74:NoteCreateButton",
         "target": "SaveButton",
         "targetName": "SaveButton",
         "edgeType": "render",
-        "line": 102,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },

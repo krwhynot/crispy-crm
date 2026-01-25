@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-24T00:46:02.245Z",
+  "generated_at": "2026-01-25T03:04:02.050Z",
   "items": {
     "nodes": [
       {
@@ -94,46 +94,46 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "id": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "name": "SalesList",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 29,
+        "line": 30,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "id": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "name": "SalesListLayout",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 67,
+        "line": 68,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:137:SalesListActions",
+        "id": "src/atomic-crm/sales/SalesList.tsx:138:SalesListActions",
         "name": "SalesListActions",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 137,
+        "line": 138,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "id": "src/atomic-crm/sales/SalesList.tsx:143:RoleBadgeField",
         "name": "RoleBadgeField",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 142,
+        "line": 143,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:199:StatusField",
+        "id": "src/atomic-crm/sales/SalesList.tsx:200:StatusField",
         "name": "StatusField",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 199,
+        "line": 200,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -229,37 +229,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/resource.tsx:11:SalesListView",
+        "id": "src/atomic-crm/sales/resource.tsx:12:SalesListView",
         "name": "SalesListView",
         "file": "src/atomic-crm/sales/resource.tsx",
-        "line": 11,
+        "line": 12,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/resource.tsx:17:SalesEditView",
+        "id": "src/atomic-crm/sales/resource.tsx:20:SalesEditView",
         "name": "SalesEditView",
         "file": "src/atomic-crm/sales/resource.tsx",
-        "line": 17,
+        "line": 20,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/resource.tsx:23:SalesCreateView",
+        "id": "src/atomic-crm/sales/resource.tsx:28:SalesCreateView",
         "name": "SalesCreateView",
         "file": "src/atomic-crm/sales/resource.tsx",
-        "line": 23,
+        "line": 28,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/resource.tsx:29:SalesShowView",
+        "id": "src/atomic-crm/sales/resource.tsx:36:SalesShowView",
         "name": "SalesShowView",
         "file": "src/atomic-crm/sales/resource.tsx",
-        "line": 29,
+        "line": 36,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -1113,290 +1113,290 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 30,
+        "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "useSlideOverState",
         "targetName": "useSlideOverState",
         "edgeType": "hook",
-        "line": 32,
+        "line": 33,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "useFilterCleanup",
         "targetName": "useFilterCleanup",
         "edgeType": "hook",
-        "line": 34,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "List",
         "targetName": "List",
         "edgeType": "render",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "SalesListSkeleton",
         "targetName": "SalesListSkeleton",
         "edgeType": "render",
-        "line": 36,
+        "line": 37,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "SalesListActions",
         "targetName": "SalesListActions",
         "edgeType": "render",
-        "line": 44,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "SalesListLayout",
         "targetName": "SalesListLayout",
-        "edgeType": "render",
-        "line": 48,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
-        "target": "FloatingCreateButton",
-        "targetName": "FloatingCreateButton",
         "edgeType": "render",
         "line": 49,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:29:SalesList",
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
+        "target": "FloatingCreateButton",
+        "targetName": "FloatingCreateButton",
+        "edgeType": "render",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesList.tsx:30:SalesList",
         "target": "SalesSlideOver",
         "targetName": "SalesSlideOver",
         "edgeType": "render",
-        "line": 53,
+        "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 74,
+        "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "useListKeyboardNavigation",
         "targetName": "useListKeyboardNavigation",
         "edgeType": "hook",
-        "line": 78,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 79,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 79,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 83,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 111,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
+        "target": "PremiumDatagrid",
+        "targetName": "PremiumDatagrid",
+        "edgeType": "render",
         "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
-        "target": "PremiumDatagrid",
-        "targetName": "PremiumDatagrid",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
+        "target": "SalesListSkeleton",
+        "targetName": "SalesListSkeleton",
+        "edgeType": "render",
+        "line": 90,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
+        "target": "ListSearchBar",
+        "targetName": "ListSearchBar",
         "edgeType": "render",
         "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
-        "target": "SalesListSkeleton",
-        "targetName": "SalesListSkeleton",
-        "edgeType": "render",
-        "line": 89,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
-        "target": "ListSearchBar",
-        "targetName": "ListSearchBar",
-        "edgeType": "render",
-        "line": 109,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 116,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 119,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "EmailField",
         "targetName": "EmailField",
         "edgeType": "render",
-        "line": 122,
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "RoleBadgeField",
         "targetName": "RoleBadgeField",
         "edgeType": "render",
-        "line": 125,
+        "line": 126,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:68:SalesListLayout",
         "target": "StatusField",
         "targetName": "StatusField",
         "edgeType": "render",
-        "line": 128,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:137:SalesListActions",
+        "source": "src/atomic-crm/sales/SalesList.tsx:138:SalesListActions",
         "target": "TopToolbar",
         "targetName": "TopToolbar",
         "edgeType": "render",
-        "line": 137,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:143:RoleBadgeField",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 150,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:143:RoleBadgeField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 157,
+        "line": 158,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:143:RoleBadgeField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 169,
+        "line": 170,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:143:RoleBadgeField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 181,
+        "line": 182,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:199:StatusField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:200:StatusField",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 207,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:199:StatusField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:200:StatusField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 213,
+        "line": 214,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:199:StatusField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:200:StatusField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 222,
+        "line": 223,
         "conditional": true,
         "inLoop": false
       },
@@ -1801,7 +1801,7 @@
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 232,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
@@ -1810,7 +1810,7 @@
         "target": "handleSave",
         "targetName": "handleSave",
         "edgeType": "call",
-        "line": 234,
+        "line": 235,
         "conditional": true,
         "inLoop": false
       },
@@ -1819,7 +1819,7 @@
         "target": "getRoleBadge",
         "targetName": "getRoleBadge",
         "edgeType": "call",
-        "line": 263,
+        "line": 264,
         "conditional": true,
         "inLoop": false
       },
@@ -1828,7 +1828,7 @@
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 268,
+        "line": 269,
         "conditional": false,
         "inLoop": false
       },
@@ -1837,7 +1837,7 @@
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 301,
+        "line": 302,
         "conditional": false,
         "inLoop": false
       },
@@ -1846,7 +1846,7 @@
         "target": "setShowDisableDialog",
         "targetName": "setShowDisableDialog",
         "edgeType": "call",
-        "line": 427,
+        "line": 428,
         "conditional": false,
         "inLoop": false
       },
@@ -1855,7 +1855,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 209,
+        "line": 210,
         "conditional": true,
         "inLoop": false
       },
@@ -1864,7 +1864,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 215,
+        "line": 216,
         "conditional": true,
         "inLoop": false
       },
@@ -1873,7 +1873,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 221,
+        "line": 222,
         "conditional": true,
         "inLoop": false
       },
@@ -1882,7 +1882,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 261,
+        "line": 262,
         "conditional": false,
         "inLoop": false
       },
@@ -1891,7 +1891,7 @@
         "target": "Select",
         "targetName": "Select",
         "edgeType": "render",
-        "line": 266,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
@@ -1900,7 +1900,7 @@
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 271,
+        "line": 272,
         "conditional": true,
         "inLoop": false
       },
@@ -1908,15 +1908,6 @@
         "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
         "target": "SelectContent",
         "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 274,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
         "edgeType": "render",
         "line": 275,
         "conditional": true,
@@ -1942,10 +1933,19 @@
       },
       {
         "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 278,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 290,
+        "line": 291,
         "conditional": false,
         "inLoop": false
       },
@@ -1954,7 +1954,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 319,
+        "line": 320,
         "conditional": false,
         "inLoop": false
       },
@@ -1963,7 +1963,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 323,
+        "line": 324,
         "conditional": true,
         "inLoop": false
       },
@@ -1972,7 +1972,7 @@
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 327,
+        "line": 328,
         "conditional": true,
         "inLoop": false
       },
@@ -1981,7 +1981,7 @@
         "target": "AlertDialog",
         "targetName": "AlertDialog",
         "edgeType": "render",
-        "line": 372,
+        "line": 373,
         "conditional": false,
         "inLoop": false
       },
@@ -1990,7 +1990,7 @@
         "target": "AlertDialogTrigger",
         "targetName": "AlertDialogTrigger",
         "edgeType": "render",
-        "line": 373,
+        "line": 374,
         "conditional": false,
         "inLoop": false
       },
@@ -1999,7 +1999,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 374,
+        "line": 375,
         "conditional": false,
         "inLoop": false
       },
@@ -2008,7 +2008,7 @@
         "target": "AlertDialogContent",
         "targetName": "AlertDialogContent",
         "edgeType": "render",
-        "line": 384,
+        "line": 385,
         "conditional": false,
         "inLoop": false
       },
@@ -2017,7 +2017,7 @@
         "target": "AlertDialogHeader",
         "targetName": "AlertDialogHeader",
         "edgeType": "render",
-        "line": 385,
+        "line": 386,
         "conditional": false,
         "inLoop": false
       },
@@ -2026,7 +2026,7 @@
         "target": "AlertDialogTitle",
         "targetName": "AlertDialogTitle",
         "edgeType": "render",
-        "line": 386,
+        "line": 387,
         "conditional": false,
         "inLoop": false
       },
@@ -2035,7 +2035,7 @@
         "target": "AlertDialogDescription",
         "targetName": "AlertDialogDescription",
         "edgeType": "render",
-        "line": 387,
+        "line": 388,
         "conditional": false,
         "inLoop": false
       },
@@ -2044,7 +2044,7 @@
         "target": "AlertDialogFooter",
         "targetName": "AlertDialogFooter",
         "edgeType": "render",
-        "line": 399,
+        "line": 400,
         "conditional": false,
         "inLoop": false
       },
@@ -2053,7 +2053,7 @@
         "target": "AlertDialogCancel",
         "targetName": "AlertDialogCancel",
         "edgeType": "render",
-        "line": 400,
+        "line": 401,
         "conditional": false,
         "inLoop": false
       },
@@ -2062,7 +2062,7 @@
         "target": "AlertDialogAction",
         "targetName": "AlertDialogAction",
         "edgeType": "render",
-        "line": 401,
+        "line": 402,
         "conditional": false,
         "inLoop": false
       },
@@ -2071,7 +2071,7 @@
         "target": "handleRemoveUser",
         "targetName": "handleRemoveUser",
         "edgeType": "callback",
-        "line": 402,
+        "line": 403,
         "conditional": false,
         "inLoop": false
       },
@@ -2080,16 +2080,7 @@
         "target": "handleFormSubmit",
         "targetName": "handleFormSubmit",
         "edgeType": "callback",
-        "line": 420,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 241,
+        "line": 421,
         "conditional": true,
         "inLoop": false
       },
@@ -2113,10 +2104,19 @@
       },
       {
         "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 244,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 272,
+        "line": 273,
         "conditional": true,
         "inLoop": false
       },
@@ -2125,7 +2125,7 @@
         "target": "Switch",
         "targetName": "Switch",
         "edgeType": "render",
-        "line": 298,
+        "line": 299,
         "conditional": true,
         "inLoop": false
       },
@@ -2134,7 +2134,7 @@
         "target": "Switch",
         "targetName": "Switch",
         "edgeType": "render",
-        "line": 335,
+        "line": 336,
         "conditional": true,
         "inLoop": false
       },
@@ -2143,7 +2143,7 @@
         "target": "handleDisabledChange",
         "targetName": "handleDisabledChange",
         "edgeType": "callback",
-        "line": 338,
+        "line": 339,
         "conditional": true,
         "inLoop": false
       },
@@ -2152,7 +2152,7 @@
         "target": "Trash2",
         "targetName": "Trash2",
         "edgeType": "render",
-        "line": 380,
+        "line": 381,
         "conditional": false,
         "inLoop": false
       },
@@ -2161,7 +2161,7 @@
         "target": "UserDisableReassignDialog",
         "targetName": "UserDisableReassignDialog",
         "edgeType": "render",
-        "line": 424,
+        "line": 425,
         "conditional": true,
         "inLoop": false
       },
@@ -2170,7 +2170,7 @@
         "target": "handleDisableSuccess",
         "targetName": "handleDisableSuccess",
         "edgeType": "callback",
-        "line": 428,
+        "line": 429,
         "conditional": true,
         "inLoop": false
       },
@@ -2332,7 +2332,7 @@
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 139,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
@@ -2341,7 +2341,7 @@
         "target": "handleSave",
         "targetName": "handleSave",
         "edgeType": "call",
-        "line": 140,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
@@ -2350,7 +2350,7 @@
         "target": "getInitials",
         "targetName": "getInitials",
         "edgeType": "call",
-        "line": 154,
+        "line": 155,
         "conditional": false,
         "inLoop": false
       },
@@ -2359,7 +2359,7 @@
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 167,
+        "line": 168,
         "conditional": false,
         "inLoop": false
       },
@@ -2368,7 +2368,7 @@
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 189,
+        "line": 190,
         "conditional": false,
         "inLoop": false
       },
@@ -2377,7 +2377,7 @@
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 208,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
@@ -2386,7 +2386,7 @@
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 231,
+        "line": 232,
         "conditional": false,
         "inLoop": false
       },
@@ -2395,7 +2395,7 @@
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 251,
+        "line": 252,
         "conditional": false,
         "inLoop": false
       },
@@ -2404,7 +2404,7 @@
         "target": "Avatar",
         "targetName": "Avatar",
         "edgeType": "render",
-        "line": 148,
+        "line": 149,
         "conditional": false,
         "inLoop": false
       },
@@ -2413,7 +2413,7 @@
         "target": "AvatarFallback",
         "targetName": "AvatarFallback",
         "edgeType": "render",
-        "line": 153,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
@@ -2422,7 +2422,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 162,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       },
@@ -2431,7 +2431,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 181,
+        "line": 182,
         "conditional": false,
         "inLoop": false
       },
@@ -2440,7 +2440,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 200,
+        "line": 201,
         "conditional": false,
         "inLoop": false
       },
@@ -2449,7 +2449,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 222,
+        "line": 223,
         "conditional": false,
         "inLoop": false
       },
@@ -2458,7 +2458,7 @@
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 242,
+        "line": 243,
         "conditional": false,
         "inLoop": false
       },
@@ -2467,16 +2467,7 @@
         "target": "handleFormSubmit",
         "targetName": "handleFormSubmit",
         "edgeType": "callback",
-        "line": 266,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 130,
+        "line": 267,
         "conditional": true,
         "inLoop": false
       },
@@ -2500,10 +2491,19 @@
       },
       {
         "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 133,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
         "target": "AvatarImage",
         "targetName": "AvatarImage",
         "edgeType": "render",
-        "line": 149,
+        "line": 150,
         "conditional": false,
         "inLoop": false
       },
@@ -2512,7 +2512,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 163,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
@@ -2521,7 +2521,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 186,
+        "line": 187,
         "conditional": true,
         "inLoop": false
       },
@@ -2530,7 +2530,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 205,
+        "line": 206,
         "conditional": true,
         "inLoop": false
       },
@@ -2539,7 +2539,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 227,
+        "line": 228,
         "conditional": true,
         "inLoop": false
       },
@@ -2548,7 +2548,7 @@
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 247,
+        "line": 248,
         "conditional": true,
         "inLoop": false
       },
@@ -3007,7 +3007,7 @@
         "target": "fetchCounts",
         "targetName": "fetchCounts",
         "edgeType": "call",
-        "line": 215,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
@@ -3016,7 +3016,7 @@
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 219,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
@@ -3025,7 +3025,7 @@
         "target": "abort",
         "targetName": "abort",
         "edgeType": "call",
-        "line": 221,
+        "line": 222,
         "conditional": false,
         "inLoop": false
       },
@@ -3034,7 +3034,7 @@
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 229,
+        "line": 230,
         "conditional": false,
         "inLoop": false
       },
@@ -3043,7 +3043,7 @@
         "target": "setProgressMessage",
         "targetName": "setProgressMessage",
         "edgeType": "call",
-        "line": 230,
+        "line": 231,
         "conditional": false,
         "inLoop": false
       },
@@ -3052,7 +3052,7 @@
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 233,
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
@@ -3061,7 +3061,7 @@
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 239,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
@@ -3070,7 +3070,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 241,
+        "line": 242,
         "conditional": false,
         "inLoop": false
       },
@@ -3079,7 +3079,7 @@
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 241,
+        "line": 242,
         "conditional": false,
         "inLoop": false
       },
@@ -3088,7 +3088,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 244,
+        "line": 245,
         "conditional": false,
         "inLoop": false
       },
@@ -3097,7 +3097,7 @@
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "call",
-        "line": 245,
+        "line": 246,
         "conditional": false,
         "inLoop": false
       },
@@ -3106,7 +3106,7 @@
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "call",
-        "line": 246,
+        "line": 247,
         "conditional": false,
         "inLoop": false
       },
@@ -3114,15 +3114,6 @@
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "notify",
         "targetName": "notify",
-        "edgeType": "call",
-        "line": 249,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
-        "target": "setStep",
-        "targetName": "setStep",
         "edgeType": "call",
         "line": 250,
         "conditional": false,
@@ -3130,17 +3121,17 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
-        "target": "notify",
-        "targetName": "notify",
+        "target": "setStep",
+        "targetName": "setStep",
         "edgeType": "call",
-        "line": 255,
+        "line": 251,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
-        "target": "setStep",
-        "targetName": "setStep",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
         "line": 256,
         "conditional": false,
@@ -3151,7 +3142,16 @@
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 269,
+        "line": 257,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "setStep",
+        "targetName": "setStep",
+        "edgeType": "call",
+        "line": 270,
         "conditional": false,
         "inLoop": false
       },
@@ -3160,7 +3160,7 @@
         "target": "parseInt",
         "targetName": "parseInt",
         "edgeType": "call",
-        "line": 270,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
@@ -3169,7 +3169,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 271,
+        "line": 272,
         "conditional": false,
         "inLoop": false
       },
@@ -3178,7 +3178,7 @@
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 273,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },
@@ -3187,7 +3187,7 @@
         "target": "setProgressMessage",
         "targetName": "setProgressMessage",
         "edgeType": "call",
-        "line": 277,
+        "line": 278,
         "conditional": false,
         "inLoop": false
       },
@@ -3196,7 +3196,7 @@
         "target": "all",
         "targetName": "all",
         "edgeType": "call",
-        "line": 279,
+        "line": 280,
         "conditional": false,
         "inLoop": false
       },
@@ -3205,7 +3205,7 @@
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 281,
+        "line": 282,
         "conditional": true,
         "inLoop": false
       },
@@ -3214,7 +3214,7 @@
         "target": "resolve",
         "targetName": "resolve",
         "edgeType": "call",
-        "line": 286,
+        "line": 287,
         "conditional": true,
         "inLoop": false
       },
@@ -3223,7 +3223,7 @@
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 288,
+        "line": 289,
         "conditional": true,
         "inLoop": false
       },
@@ -3232,7 +3232,7 @@
         "target": "resolve",
         "targetName": "resolve",
         "edgeType": "call",
-        "line": 293,
+        "line": 294,
         "conditional": true,
         "inLoop": false
       },
@@ -3241,7 +3241,7 @@
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 295,
+        "line": 296,
         "conditional": true,
         "inLoop": false
       },
@@ -3250,7 +3250,7 @@
         "target": "resolve",
         "targetName": "resolve",
         "edgeType": "call",
-        "line": 300,
+        "line": 301,
         "conditional": true,
         "inLoop": false
       },
@@ -3259,7 +3259,7 @@
         "target": "getList",
         "targetName": "getList",
         "edgeType": "call",
-        "line": 302,
+        "line": 303,
         "conditional": true,
         "inLoop": false
       },
@@ -3268,7 +3268,7 @@
         "target": "resolve",
         "targetName": "resolve",
         "edgeType": "call",
-        "line": 307,
+        "line": 308,
         "conditional": true,
         "inLoop": false
       },
@@ -3277,7 +3277,7 @@
         "target": "setProgressMessage",
         "targetName": "setProgressMessage",
         "edgeType": "call",
-        "line": 312,
+        "line": 313,
         "conditional": false,
         "inLoop": false
       },
@@ -3285,15 +3285,6 @@
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "all",
         "targetName": "all",
-        "edgeType": "call",
-        "line": 314,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
-        "target": "batchReassign",
-        "targetName": "batchReassign",
         "edgeType": "call",
         "line": 315,
         "conditional": false,
@@ -3304,7 +3295,7 @@
         "target": "batchReassign",
         "targetName": "batchReassign",
         "edgeType": "call",
-        "line": 323,
+        "line": 316,
         "conditional": false,
         "inLoop": false
       },
@@ -3313,7 +3304,7 @@
         "target": "batchReassign",
         "targetName": "batchReassign",
         "edgeType": "call",
-        "line": 331,
+        "line": 324,
         "conditional": false,
         "inLoop": false
       },
@@ -3322,7 +3313,16 @@
         "target": "batchReassign",
         "targetName": "batchReassign",
         "edgeType": "call",
-        "line": 339,
+        "line": 332,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "batchReassign",
+        "targetName": "batchReassign",
+        "edgeType": "call",
+        "line": 340,
         "conditional": false,
         "inLoop": false
       },
@@ -3331,7 +3331,7 @@
         "target": "setProgressMessage",
         "targetName": "setProgressMessage",
         "edgeType": "call",
-        "line": 348,
+        "line": 349,
         "conditional": false,
         "inLoop": false
       },
@@ -3340,16 +3340,7 @@
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 350,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 357,
+        "line": 351,
         "conditional": false,
         "inLoop": false
       },
@@ -3391,10 +3382,19 @@
       },
       {
         "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 362,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 363,
+        "line": 364,
         "conditional": false,
         "inLoop": false
       },
@@ -3403,7 +3403,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 364,
+        "line": 365,
         "conditional": false,
         "inLoop": false
       },
@@ -3412,7 +3412,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 368,
+        "line": 369,
         "conditional": false,
         "inLoop": false
       },
@@ -3421,7 +3421,7 @@
         "target": "onSuccess",
         "targetName": "onSuccess",
         "edgeType": "call",
-        "line": 369,
+        "line": 370,
         "conditional": false,
         "inLoop": false
       },
@@ -3430,7 +3430,7 @@
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "call",
-        "line": 370,
+        "line": 371,
         "conditional": false,
         "inLoop": false
       },
@@ -3439,7 +3439,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 373,
+        "line": 374,
         "conditional": false,
         "inLoop": false
       },
@@ -3448,7 +3448,7 @@
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 376,
+        "line": 377,
         "conditional": false,
         "inLoop": false
       },
@@ -3457,7 +3457,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 382,
+        "line": 383,
         "conditional": true,
         "inLoop": false
       },
@@ -3466,7 +3466,7 @@
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 383,
+        "line": 384,
         "conditional": true,
         "inLoop": false
       },
@@ -3475,7 +3475,7 @@
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 386,
+        "line": 387,
         "conditional": false,
         "inLoop": false
       },
@@ -3484,7 +3484,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 391,
+        "line": 392,
         "conditional": false,
         "inLoop": false
       },
@@ -3493,7 +3493,7 @@
         "target": "setStep",
         "targetName": "setStep",
         "edgeType": "call",
-        "line": 392,
+        "line": 393,
         "conditional": false,
         "inLoop": false
       },
@@ -3502,7 +3502,7 @@
         "target": "abort",
         "targetName": "abort",
         "edgeType": "call",
-        "line": 400,
+        "line": 402,
         "conditional": true,
         "inLoop": false
       },
@@ -3511,7 +3511,7 @@
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "call",
-        "line": 402,
+        "line": 404,
         "conditional": true,
         "inLoop": false
       },
@@ -3520,7 +3520,7 @@
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 407,
+        "line": 409,
         "conditional": false,
         "inLoop": false
       },
@@ -3529,7 +3529,7 @@
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "call",
-        "line": 410,
+        "line": 412,
         "conditional": false,
         "inLoop": false
       },
@@ -3538,7 +3538,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 508,
+        "line": 510,
         "conditional": false,
         "inLoop": false
       },
@@ -3547,7 +3547,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 509,
+        "line": 511,
         "conditional": false,
         "inLoop": false
       },
@@ -3556,7 +3556,7 @@
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 510,
+        "line": 512,
         "conditional": false,
         "inLoop": false
       },
@@ -3565,7 +3565,7 @@
         "target": "Dialog",
         "targetName": "Dialog",
         "edgeType": "render",
-        "line": 410,
+        "line": 412,
         "conditional": false,
         "inLoop": false
       },
@@ -3574,7 +3574,7 @@
         "target": "DialogContent",
         "targetName": "DialogContent",
         "edgeType": "render",
-        "line": 411,
+        "line": 413,
         "conditional": false,
         "inLoop": false
       },
@@ -3583,7 +3583,7 @@
         "target": "DialogHeader",
         "targetName": "DialogHeader",
         "edgeType": "render",
-        "line": 412,
+        "line": 414,
         "conditional": false,
         "inLoop": false
       },
@@ -3592,7 +3592,7 @@
         "target": "DialogTitle",
         "targetName": "DialogTitle",
         "edgeType": "render",
-        "line": 413,
+        "line": 415,
         "conditional": false,
         "inLoop": false
       },
@@ -3601,7 +3601,7 @@
         "target": "DialogDescription",
         "targetName": "DialogDescription",
         "edgeType": "render",
-        "line": 417,
+        "line": 419,
         "conditional": false,
         "inLoop": false
       },
@@ -3610,7 +3610,7 @@
         "target": "Select",
         "targetName": "Select",
         "edgeType": "render",
-        "line": 497,
+        "line": 499,
         "conditional": false,
         "inLoop": false
       },
@@ -3619,7 +3619,7 @@
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 502,
+        "line": 504,
         "conditional": false,
         "inLoop": false
       },
@@ -3628,7 +3628,7 @@
         "target": "SelectContent",
         "targetName": "SelectContent",
         "edgeType": "render",
-        "line": 507,
+        "line": 509,
         "conditional": false,
         "inLoop": false
       },
@@ -3637,7 +3637,7 @@
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 509,
+        "line": 511,
         "conditional": false,
         "inLoop": false
       },
@@ -3646,24 +3646,6 @@
         "target": "DialogFooter",
         "targetName": "DialogFooter",
         "edgeType": "render",
-        "line": 529,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 531,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
-        "target": "handleCancel",
-        "targetName": "handleCancel",
-        "edgeType": "callback",
         "line": 531,
         "conditional": false,
         "inLoop": false
@@ -3673,7 +3655,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 538,
+        "line": 533,
         "conditional": false,
         "inLoop": false
       },
@@ -3682,7 +3664,7 @@
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 538,
+        "line": 533,
         "conditional": false,
         "inLoop": false
       },
@@ -3691,7 +3673,25 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 541,
+        "line": 540,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "handleCancel",
+        "targetName": "handleCancel",
+        "edgeType": "callback",
+        "line": 540,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/UserDisableReassignDialog.tsx:118:UserDisableReassignDialog",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 543,
         "conditional": false,
         "inLoop": false
       },
@@ -3700,7 +3700,7 @@
         "target": "handleDirectDisable",
         "targetName": "handleDirectDisable",
         "edgeType": "callback",
-        "line": 541,
+        "line": 543,
         "conditional": false,
         "inLoop": false
       },
@@ -3709,7 +3709,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 549,
+        "line": 551,
         "conditional": false,
         "inLoop": false
       },
@@ -3718,7 +3718,7 @@
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 549,
+        "line": 551,
         "conditional": false,
         "inLoop": false
       },
@@ -3727,7 +3727,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 552,
+        "line": 554,
         "conditional": false,
         "inLoop": false
       },
@@ -3736,7 +3736,7 @@
         "target": "handleReassignAndDisable",
         "targetName": "handleReassignAndDisable",
         "edgeType": "callback",
-        "line": 554,
+        "line": 556,
         "conditional": false,
         "inLoop": false
       },
@@ -3745,7 +3745,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 563,
+        "line": 565,
         "conditional": false,
         "inLoop": false
       },
@@ -3754,7 +3754,7 @@
         "target": "handleCancel",
         "targetName": "handleCancel",
         "edgeType": "callback",
-        "line": 563,
+        "line": 565,
         "conditional": false,
         "inLoop": false
       },
@@ -3763,7 +3763,7 @@
         "target": "AlertTriangle",
         "targetName": "AlertTriangle",
         "edgeType": "render",
-        "line": 414,
+        "line": 416,
         "conditional": false,
         "inLoop": false
       },
@@ -3772,7 +3772,7 @@
         "target": "Briefcase",
         "targetName": "Briefcase",
         "edgeType": "render",
-        "line": 459,
+        "line": 461,
         "conditional": false,
         "inLoop": false
       },
@@ -3781,7 +3781,7 @@
         "target": "User",
         "targetName": "User",
         "edgeType": "render",
-        "line": 467,
+        "line": 469,
         "conditional": false,
         "inLoop": false
       },
@@ -3790,7 +3790,7 @@
         "target": "Building2",
         "targetName": "Building2",
         "edgeType": "render",
-        "line": 475,
+        "line": 477,
         "conditional": false,
         "inLoop": false
       },
@@ -3799,7 +3799,7 @@
         "target": "CheckSquare",
         "targetName": "CheckSquare",
         "edgeType": "render",
-        "line": 483,
+        "line": 485,
         "conditional": false,
         "inLoop": false
       },
@@ -3808,79 +3808,151 @@
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 503,
+        "line": 505,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/resource.tsx:11:SalesListView",
+        "source": "src/atomic-crm/sales/resource.tsx:12:SalesListView",
         "target": "ResourceErrorBoundary",
         "targetName": "ResourceErrorBoundary",
-        "edgeType": "render",
-        "line": 12,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/resource.tsx:11:SalesListView",
-        "target": "SalesListLazy",
-        "targetName": "SalesListLazy",
         "edgeType": "render",
         "line": 13,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/resource.tsx:17:SalesEditView",
-        "target": "ResourceErrorBoundary",
-        "targetName": "ResourceErrorBoundary",
+        "source": "src/atomic-crm/sales/resource.tsx:12:SalesListView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
         "edgeType": "render",
-        "line": 18,
+        "line": 14,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/resource.tsx:17:SalesEditView",
+        "source": "src/atomic-crm/sales/resource.tsx:12:SalesListView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 14,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:12:SalesListView",
+        "target": "SalesListLazy",
+        "targetName": "SalesListLazy",
+        "edgeType": "render",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:20:SalesEditView",
+        "target": "ResourceErrorBoundary",
+        "targetName": "ResourceErrorBoundary",
+        "edgeType": "render",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:20:SalesEditView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
+        "edgeType": "render",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:20:SalesEditView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:20:SalesEditView",
         "target": "SalesEditLazy",
         "targetName": "SalesEditLazy",
         "edgeType": "render",
-        "line": 19,
+        "line": 23,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/resource.tsx:23:SalesCreateView",
+        "source": "src/atomic-crm/sales/resource.tsx:28:SalesCreateView",
         "target": "ResourceErrorBoundary",
         "targetName": "ResourceErrorBoundary",
         "edgeType": "render",
-        "line": 24,
+        "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/resource.tsx:23:SalesCreateView",
-        "target": "SalesCreateLazy",
-        "targetName": "SalesCreateLazy",
-        "edgeType": "render",
-        "line": 25,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/resource.tsx:29:SalesShowView",
-        "target": "ResourceErrorBoundary",
-        "targetName": "ResourceErrorBoundary",
+        "source": "src/atomic-crm/sales/resource.tsx:28:SalesCreateView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
         "edgeType": "render",
         "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/resource.tsx:29:SalesShowView",
+        "source": "src/atomic-crm/sales/resource.tsx:28:SalesCreateView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:28:SalesCreateView",
+        "target": "SalesCreateLazy",
+        "targetName": "SalesCreateLazy",
+        "edgeType": "render",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:36:SalesShowView",
+        "target": "ResourceErrorBoundary",
+        "targetName": "ResourceErrorBoundary",
+        "edgeType": "render",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:36:SalesShowView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
+        "edgeType": "render",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:36:SalesShowView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/resource.tsx:36:SalesShowView",
         "target": "SalesShowLazy",
         "targetName": "SalesShowLazy",
         "edgeType": "render",
-        "line": 31,
+        "line": 39,
         "conditional": false,
         "inLoop": false
       }

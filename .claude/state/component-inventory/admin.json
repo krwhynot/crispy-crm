@@ -1,12 +1,12 @@
 {
   "chunk_name": "admin",
-  "generated_at": "2026-01-24T00:45:06.865Z",
+  "generated_at": "2026-01-25T03:03:52.492Z",
   "item_count": 2,
   "items": [
     {
       "name": "HealthDashboard",
       "file": "src/atomic-crm/admin/HealthDashboard.tsx",
-      "line": 115,
+      "line": 116,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -14,6 +14,7 @@
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/card",
@@ -30,7 +31,7 @@
     {
       "name": "HealthDashboard",
       "file": "src/atomic-crm/admin/HealthDashboard.tsx",
-      "line": 115,
+      "line": 116,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -38,6 +39,7 @@
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants",
         "@/components/admin/AdminButton",
         "@/components/ui/badge",
         "@/components/ui/card",

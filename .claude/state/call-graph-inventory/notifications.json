@@ -1,6 +1,6 @@
 {
   "chunk_name": "notifications",
-  "generated_at": "2026-01-24T00:46:01.927Z",
+  "generated_at": "2026-01-25T03:04:02.011Z",
   "items": {
     "nodes": [
       {
@@ -94,10 +94,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/notifications/resource.tsx:6:NotificationsListView",
+        "id": "src/atomic-crm/notifications/resource.tsx:7:NotificationsListView",
         "name": "NotificationsListView",
         "file": "src/atomic-crm/notifications/resource.tsx",
-        "line": 6,
+        "line": 7,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -618,20 +618,38 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notifications/resource.tsx:6:NotificationsListView",
+        "source": "src/atomic-crm/notifications/resource.tsx:7:NotificationsListView",
         "target": "ResourceErrorBoundary",
         "targetName": "ResourceErrorBoundary",
         "edgeType": "render",
-        "line": 7,
+        "line": 8,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/notifications/resource.tsx:6:NotificationsListView",
+        "source": "src/atomic-crm/notifications/resource.tsx:7:NotificationsListView",
+        "target": "React.Suspense",
+        "targetName": "React.Suspense",
+        "edgeType": "render",
+        "line": 9,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/resource.tsx:7:NotificationsListView",
+        "target": "Loading",
+        "targetName": "Loading",
+        "edgeType": "render",
+        "line": 9,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/resource.tsx:7:NotificationsListView",
         "target": "NotificationsListLazy",
         "targetName": "NotificationsListLazy",
         "edgeType": "render",
-        "line": 8,
+        "line": 10,
         "conditional": false,
         "inLoop": false
       }

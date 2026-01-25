@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-24T00:46:01.893Z",
+  "generated_at": "2026-01-25T03:04:02.006Z",
   "items": {
     "nodes": [
       {
@@ -58,28 +58,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:38:withTimeout",
-        "name": "withTimeout",
-        "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
-        "line": 38,
-        "nodeType": "function",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "id": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "name": "useRelatedRecordCounts",
         "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
-        "line": 104,
+        "line": 83,
         "nodeType": "hook",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "id": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "name": "useSafeNotify",
         "file": "src/atomic-crm/hooks/useSafeNotify.ts",
-        "line": 60,
+        "line": 65,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -175,19 +166,19 @@
         "async": false
       },
       {
-        "id": "src/hooks/useFavorites.ts:22:createFavoriteKey",
+        "id": "src/hooks/useFavorites.ts:23:createFavoriteKey",
         "name": "createFavoriteKey",
         "file": "src/hooks/useFavorites.ts",
-        "line": 22,
+        "line": 23,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/hooks/useFavorites.ts:26:useFavorites",
+        "id": "src/hooks/useFavorites.ts:27:useFavorites",
         "name": "useFavorites",
         "file": "src/hooks/useFavorites.ts",
-        "line": 26,
+        "line": 27,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -229,10 +220,10 @@
         "async": false
       },
       {
-        "id": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "id": "src/hooks/useOrganizationDescendants.ts:22:useOrganizationDescendants",
         "name": "useOrganizationDescendants",
         "file": "src/hooks/useOrganizationDescendants.ts",
-        "line": 21,
+        "line": 22,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -807,452 +798,452 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:38:withTimeout",
-        "target": "race",
-        "targetName": "race",
-        "edgeType": "call",
-        "line": 39,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:38:withTimeout",
-        "target": "setTimeout",
-        "targetName": "setTimeout",
-        "edgeType": "call",
-        "line": 41,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:38:withTimeout",
-        "target": "resolve",
-        "targetName": "resolve",
-        "edgeType": "call",
-        "line": 41,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
         "edgeType": "hook",
-        "line": 109,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 110,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 111,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 112,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 92,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setRelatedCounts",
+        "targetName": "setRelatedCounts",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setHasPartialFailure",
+        "targetName": "setHasPartialFailure",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setRelatedCounts",
+        "targetName": "setRelatedCounts",
+        "edgeType": "call",
+        "line": 104,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setHasPartialFailure",
+        "targetName": "setHasPartialFailure",
+        "edgeType": "call",
+        "line": 105,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setIsLoading",
+        "targetName": "setIsLoading",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setError",
+        "targetName": "setError",
+        "edgeType": "call",
         "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "setRelatedCounts",
-        "targetName": "setRelatedCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setHasPartialFailure",
+        "targetName": "setHasPartialFailure",
         "edgeType": "call",
-        "line": 117,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "setRelatedCounts",
-        "targetName": "setRelatedCounts",
-        "edgeType": "call",
-        "line": 123,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "setIsLoading",
-        "targetName": "setIsLoading",
-        "edgeType": "call",
-        "line": 131,
+        "line": 115,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "setError",
-        "targetName": "setError",
-        "edgeType": "call",
-        "line": 132,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "flatMap",
         "targetName": "flatMap",
+        "edgeType": "call",
+        "line": 123,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "then",
+        "targetName": "then",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "getManyReference",
+        "targetName": "getManyReference",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "allSettled",
+        "targetName": "allSettled",
         "edgeType": "call",
         "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 147,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 141,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "getManyReference",
-        "targetName": "getManyReference",
-        "edgeType": "call",
-        "line": 145,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "String",
-        "targetName": "String",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "map",
+        "targetName": "map",
         "edgeType": "call",
         "line": 155,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 157,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 159,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "devLog",
-        "targetName": "devLog",
-        "edgeType": "call",
-        "line": 163,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "warn",
-        "targetName": "warn",
-        "edgeType": "call",
-        "line": 169,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 172,
+        "line": 156,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "withTimeout",
-        "targetName": "withTimeout",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "error",
+        "targetName": "error",
         "edgeType": "call",
-        "line": 183,
-        "conditional": false,
+        "line": 159,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "allSettled",
-        "targetName": "allSettled",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setHasPartialFailure",
+        "targetName": "setHasPartialFailure",
         "edgeType": "call",
-        "line": 189,
-        "conditional": false,
+        "line": 170,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 190,
-        "conditional": false,
+        "line": 176,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "filter",
-        "targetName": "filter",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "String",
+        "targetName": "String",
         "edgeType": "call",
-        "line": 190,
-        "conditional": false,
+        "line": 177,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 200,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
-        "line": 205,
+        "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 205,
+        "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 205,
+        "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 205,
+        "line": 193,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
         "target": "setRelatedCounts",
         "targetName": "setRelatedCounts",
+        "edgeType": "call",
+        "line": 198,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setError",
+        "targetName": "setError",
+        "edgeType": "call",
+        "line": 201,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "setIsLoading",
+        "targetName": "setIsLoading",
+        "edgeType": "call",
+        "line": 205,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:83:useRelatedRecordCounts",
+        "target": "fetchCounts",
+        "targetName": "fetchCounts",
         "edgeType": "call",
         "line": 210,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "setError",
-        "targetName": "setError",
-        "edgeType": "call",
-        "line": 213,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "setIsLoading",
-        "targetName": "setIsLoading",
-        "edgeType": "call",
-        "line": 217,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useRelatedRecordCounts.ts:104:useRelatedRecordCounts",
-        "target": "fetchCounts",
-        "targetName": "fetchCounts",
-        "edgeType": "call",
-        "line": 222,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "useNotify",
         "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 61,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 63,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 65,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 75,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "mapErrorToUserMessage",
         "targetName": "mapErrorToUserMessage",
         "edgeType": "call",
-        "line": 88,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 90,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 100,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 102,
+        "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 112,
+        "line": 117,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 114,
+        "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 124,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "mapErrorToUserMessage",
         "targetName": "mapErrorToUserMessage",
         "edgeType": "call",
-        "line": 127,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "getActionErrorMessage",
         "targetName": "getActionErrorMessage",
         "edgeType": "call",
-        "line": 131,
+        "line": 136,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSafeNotify.ts:60:useSafeNotify",
+        "source": "src/atomic-crm/hooks/useSafeNotify.ts:65:useSafeNotify",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 133,
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
@@ -1725,362 +1716,362 @@
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 27,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 28,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "useCreate",
-        "targetName": "useCreate",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 29,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "useUpdate",
-        "targetName": "useUpdate",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "useCreate",
+        "targetName": "useCreate",
         "edgeType": "hook",
         "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
         "edgeType": "hook",
         "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
+        "edgeType": "hook",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 33,
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 37,
+        "line": 38,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 52,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "createFavoriteKey",
         "targetName": "createFavoriteKey",
-        "edgeType": "call",
-        "line": 54,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "get",
-        "targetName": "get",
         "edgeType": "call",
         "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 61,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 66,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 73,
+        "line": 74,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "createFavoriteKey",
         "targetName": "createFavoriteKey",
-        "edgeType": "call",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "isFavorite",
-        "targetName": "isFavorite",
         "edgeType": "call",
         "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "notify",
-        "targetName": "notify",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "isFavorite",
+        "targetName": "isFavorite",
         "edgeType": "call",
-        "line": 81,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
-        "target": "setOptimisticState",
-        "targetName": "setOptimisticState",
-        "edgeType": "call",
-        "line": 87,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
+        "target": "setOptimisticState",
+        "targetName": "setOptimisticState",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "set",
         "targetName": "set",
         "edgeType": "call",
-        "line": 87,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 91,
+        "line": 92,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 96,
+        "line": 97,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 100,
+        "line": 101,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 105,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 107,
+        "line": 108,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 110,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 113,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 115,
+        "line": 116,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 120,
+        "line": 121,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 126,
+        "line": 127,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 138,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 140,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 143,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 146,
+        "line": 147,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 148,
+        "line": 149,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 153,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 160,
+        "line": 161,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
         "line": 164,
-        "conditional": true,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "setOptimisticState",
         "targetName": "setOptimisticState",
         "edgeType": "call",
-        "line": 166,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 168,
+        "line": 169,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useFavorites.ts:26:useFavorites",
+        "source": "src/hooks/useFavorites.ts:27:useFavorites",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 171,
+        "line": 172,
         "conditional": false,
         "inLoop": false
       },
@@ -2967,38 +2958,38 @@
         "inLoop": false
       },
       {
-        "source": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "source": "src/hooks/useOrganizationDescendants.ts:22:useOrganizationDescendants",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
         "edgeType": "hook",
-        "line": 24,
+        "line": 25,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "source": "src/hooks/useOrganizationDescendants.ts:22:useOrganizationDescendants",
         "target": "useQuery",
         "targetName": "useQuery",
         "edgeType": "hook",
-        "line": 30,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
-        "target": "detail",
-        "targetName": "detail",
-        "edgeType": "call",
         "line": 31,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/hooks/useOrganizationDescendants.ts:21:useOrganizationDescendants",
+        "source": "src/hooks/useOrganizationDescendants.ts:22:useOrganizationDescendants",
+        "target": "detail",
+        "targetName": "detail",
+        "edgeType": "call",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useOrganizationDescendants.ts:22:useOrganizationDescendants",
         "target": "invoke",
         "targetName": "invoke",
         "edgeType": "call",
-        "line": 34,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },

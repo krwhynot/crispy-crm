@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-24T00:45:07.025Z",
+  "generated_at": "2026-01-25T03:03:52.502Z",
   "item_count": 22,
   "items": [
     {
@@ -199,14 +199,17 @@
     {
       "name": "TagEditModal",
       "file": "src/atomic-crm/tags/TagEditModal.tsx",
-      "line": 12,
+      "line": 14,
       "type": "presentational",
       "hooks": [
+        "useQueryClient",
         "useUpdate"
       ],
       "imports": [
         "../types",
         "./TagDialog",
+        "@/atomic-crm/queryKeys",
+        "@tanstack/react-query",
         "ra-core"
       ],
       "isDefaultExport": false,

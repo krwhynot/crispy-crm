@@ -1,12 +1,12 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-24T00:45:48.087Z",
+  "generated_at": "2026-01-25T03:03:58.501Z",
   "item_count": 7,
   "items": [
     {
       "name": "JunctionParams",
       "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 52,
+      "line": 50,
       "kind": "interface",
       "properties": [
         {
@@ -34,7 +34,7 @@
     {
       "name": "BoothVisitorResult",
       "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 67,
+      "line": 65,
       "kind": "interface",
       "properties": [
         {
@@ -62,7 +62,7 @@
     {
       "name": "ExtendedDataProvider",
       "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 88,
+      "line": 86,
       "kind": "interface",
       "properties": [
         {
@@ -81,7 +81,7 @@
     {
       "name": "CrmDataProvider",
       "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 696,
+      "line": 614,
       "kind": "type_alias",
       "typeExpression": "ExtendedDataProvider",
       "isComplex": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-24T00:45:44.845Z",
+  "generated_at": "2026-01-25T03:03:57.905Z",
   "item_count": 13,
   "items": [
     {
@@ -69,6 +69,7 @@
       "returnType": "HybridSearchResult<T>",
       "dependencies": [
         "useCallback",
+        "useEffect",
         "useMemo",
         "useState"
       ],
@@ -114,6 +115,7 @@
         "useDataProvider",
         "useEffect",
         "useMemo",
+        "useMutation",
         "useQueryClient"
       ],
       "isReact19Action": false
@@ -163,7 +165,7 @@
     {
       "name": "useTaskCount",
       "file": "src/atomic-crm/dashboard/useTaskCount.ts",
-      "line": 16,
+      "line": 17,
       "parameters": [],
       "returnType": "UseTaskCountResult",
       "dependencies": [

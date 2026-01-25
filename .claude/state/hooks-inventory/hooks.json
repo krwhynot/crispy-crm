@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-24T00:45:44.861Z",
+  "generated_at": "2026-01-25T03:03:57.906Z",
   "item_count": 8,
   "items": [
     {
@@ -68,7 +68,7 @@
     {
       "name": "useRelatedRecordCounts",
       "file": "src/atomic-crm/hooks/useRelatedRecordCounts.ts",
-      "line": 104,
+      "line": 83,
       "parameters": [
         "{\n  resource,\n  ids,\n  enabled = true,\n}"
       ],
@@ -83,7 +83,7 @@
     {
       "name": "useSafeNotify",
       "file": "src/atomic-crm/hooks/useSafeNotify.ts",
-      "line": 60,
+      "line": 65,
       "parameters": [],
       "returnType": "SafeNotifyReturn",
       "dependencies": [

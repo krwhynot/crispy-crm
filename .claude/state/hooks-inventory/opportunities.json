@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-24T00:45:44.863Z",
+  "generated_at": "2026-01-25T03:03:57.906Z",
   "item_count": 12,
   "items": [
     {
@@ -93,7 +93,7 @@
     {
       "name": "useExportOpportunities",
       "file": "src/atomic-crm/opportunities/useExportOpportunities.ts",
-      "line": 8,
+      "line": 9,
       "parameters": [],
       "returnType": "{ exportToCSV: (opportunities: Opportunity[], filename?: string) => void; }",
       "dependencies": [
