@@ -17,7 +17,7 @@ import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
-import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import { DEFAULT_PAGE_SIZE, FILTER_DEBOUNCE_MS } from "@/atomic-crm/constants/appConstants";
 import type { Opportunity, Sale } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
 
@@ -54,9 +54,33 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
   // Watch form values using useWatch hook (isolates re-renders, no subscription leak)
   const watchedValues = useWatch({ control: form.control });
 
+  // Stabilize watchedValues to prevent render loop
+  // useWatch returns new object reference on every render, causing infinite loop
+  const stableWatchedValues = useMemo(
+    () => ({
+      principal_organization_id: watchedValues.principal_organization_id ?? null,
+      stage: watchedValues.stage ?? [],
+      opportunity_owner_id: watchedValues.opportunity_owner_id ?? null,
+      startDate: watchedValues.startDate ?? null,
+      endDate: watchedValues.endDate ?? null,
+    }),
+    [
+      watchedValues.principal_organization_id,
+      watchedValues.stage,
+      watchedValues.opportunity_owner_id,
+      watchedValues.startDate,
+      watchedValues.endDate,
+    ]
+  );
+
+  // Debounce filter changes to prevent excessive API calls during date input typing
   useEffect(() => {
-    onFiltersChange(watchedValues as FilterValues);
-  }, [watchedValues, onFiltersChange]);
+    const timeoutId = setTimeout(() => {
+      onFiltersChange(stableWatchedValues);
+    }, FILTER_DEBOUNCE_MS);
+
+    return () => clearTimeout(timeoutId);
+  }, [stableWatchedValues, onFiltersChange]);
 
   const hasActiveFilters =
     filters.principal_organization_id ||
