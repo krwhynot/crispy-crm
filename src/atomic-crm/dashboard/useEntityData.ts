@@ -7,6 +7,9 @@ import { useDebouncedSearch } from "./useDebouncedSearch";
 // Cache duration for data queries (5 minutes)
 const STALE_TIME_MS = 5 * 60 * 1000;
 
+// Garbage collection time for cached data (15 minutes)
+const GC_TIME_MS = 15 * 60 * 1000;
+
 // Initial page size for dropdown population
 const INITIAL_PAGE_SIZE = 25;
 
@@ -110,6 +113,7 @@ export function useEntityData({
     },
     {
       staleTime: STALE_TIME_MS,
+      gcTime: GC_TIME_MS,
       placeholderData: (prev) => prev,
     }
   );
@@ -124,6 +128,7 @@ export function useEntityData({
     },
     {
       staleTime: STALE_TIME_MS,
+      gcTime: GC_TIME_MS,
       placeholderData: (prev) => prev,
     }
   );

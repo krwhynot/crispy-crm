@@ -1,6 +1,7 @@
 import { AlertTriangle } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetOne } from "react-admin";
+import { useMemo } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
@@ -51,10 +52,16 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
   );
 
   // Fetch customer org name for clearer messaging
+  // Using staleTime to prevent refetch on every form field change
   const { data: customerOrg } = useGetOne<Organization>(
     "organizations",
     { id: customerOrgId! },
-    { enabled: !!customerOrgId }
+    {
+      enabled: !!customerOrgId,
+      meta: {
+        staleTime: 5 * 60 * 1000, // 5 minutes
+      },
+    }
   );
 
   // Don't render if no mismatch or still loading
