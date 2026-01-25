@@ -62,24 +62,29 @@ export function useReportData<T extends RaRecord>(
 
   const { dateRange, salesRepId, additionalFilters, dateField = "created_at" } = options;
 
-  // Memoize filter object to prevent infinite re-render loops
-  // This is critical - without memoization, a new filter object is created
-  // on every render, causing useEffect to re-run infinitely
-  const filter = useMemo(() => {
-    const baseFilter: Record<string, unknown> = { ...additionalFilters };
+  // CRITICAL: Extract primitive values to prevent render loops
+  // Objects (dateRange, additionalFilters) compared by reference cause infinite loops
+  // when parent component creates new object references on each render
+  const dateStartStr = dateRange?.start?.toISOString() ?? null;
+  const dateEndStr = dateRange?.end?.toISOString() ?? null;
+  const additionalFiltersStr = JSON.stringify(additionalFilters ?? {});
 
-    if (dateRange?.start) {
-      baseFilter[`${dateField}@gte`] = dateRange.start.toISOString();
+  // Memoize filter object using primitive dependencies only
+  const filter = useMemo(() => {
+    const baseFilter: Record<string, unknown> = additionalFilters ? { ...additionalFilters } : {};
+
+    if (dateStartStr) {
+      baseFilter[`${dateField}@gte`] = dateStartStr;
     }
-    if (dateRange?.end) {
-      baseFilter[`${dateField}@lte`] = dateRange.end.toISOString();
+    if (dateEndStr) {
+      baseFilter[`${dateField}@lte`] = dateEndStr;
     }
     if (salesRepId) {
       baseFilter.sales_id = salesRepId;
     }
 
     return baseFilter;
-  }, [additionalFilters, dateRange, salesRepId, dateField]);
+  }, [additionalFiltersStr, dateStartStr, dateEndStr, salesRepId, dateField, additionalFilters]);
 
   useEffect(() => {
     let cancelled = false;

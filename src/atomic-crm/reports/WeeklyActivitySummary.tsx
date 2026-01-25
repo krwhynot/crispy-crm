@@ -29,16 +29,24 @@ export default function WeeklyActivitySummary() {
   const notify = useNotify();
   const [dateRange, setDateRange] = useState(() => getWeekRange());
 
+  // CRITICAL: Memoize Date objects to prevent render loop
+  // new Date() creates new object reference every render, causing useReportData
+  // to see "changed" dependencies and re-fetch continuously
+  const stableDateRange = useMemo(
+    () => ({
+      start: new Date(dateRange.start),
+      end: new Date(dateRange.end),
+    }),
+    [dateRange.start, dateRange.end] // Depend on primitives, not objects
+  );
+
   // Fetch activities for date range
   const {
     data: activities,
     isLoading: activitiesLoading,
     error: activitiesError,
   } = useReportData<ActivityRecord>("activities", {
-    dateRange: {
-      start: new Date(dateRange.start),
-      end: new Date(dateRange.end),
-    },
+    dateRange: stableDateRange,
     dateField: "activity_date",
   });
 
@@ -48,9 +56,15 @@ export default function WeeklyActivitySummary() {
     [activities]
   );
 
+  // Memoize filter to prevent render loop (inline objects cause re-fetches)
+  const salesFilter = useMemo(
+    () => (createdByIds.length > 0 ? { id: createdByIds } : undefined),
+    [createdByIds]
+  );
+
   const { data: sales } = useGetList<Sale>("sales", {
     pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
-    filter: { id: createdByIds },
+    filter: salesFilter,
   });
 
   // Fetch organizations (principals)
@@ -59,9 +73,12 @@ export default function WeeklyActivitySummary() {
     [activities]
   );
 
+  // Memoize filter to prevent render loop
+  const orgsFilter = useMemo(() => (orgIds.length > 0 ? { id: orgIds } : undefined), [orgIds]);
+
   const { data: organizations } = useGetList<Organization>("organizations", {
     pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
-    filter: { id: orgIds },
+    filter: orgsFilter,
   });
 
   // Build lookup maps

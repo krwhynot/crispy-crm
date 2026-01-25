@@ -271,9 +271,15 @@ export default function OpportunitiesByPrincipalReport() {
     [opportunities]
   );
 
+  // Memoize filter to prevent render loop (inline objects cause re-fetches)
+  const salesFilter = useMemo(
+    () => (ownerIds.length > 0 ? { id: ownerIds } : undefined),
+    [ownerIds]
+  );
+
   const { data: salesReps } = useGetList<Sale>("sales", {
     pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
-    filter: ownerIds.length > 0 ? { id: ownerIds } : undefined,
+    filter: salesFilter,
   });
 
   const salesMap = useMemo(
