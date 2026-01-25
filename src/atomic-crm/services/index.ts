@@ -16,7 +16,7 @@ export {
 
 // Re-export types for convenience
 export type { SalesFormData, Sale } from "../types";
-export type { ContactOrganization, OpportunityParticipant } from "../types";
+export type { OpportunityParticipant } from "../types";
 export type { Opportunity } from "../types";
 export type { OpportunityCreateInput, OpportunityUpdateInput } from "./opportunities.service";
 export type {

@@ -2,10 +2,10 @@
  * Custom Methods Extension Tests
  *
  * Comprehensive test suite for extendWithCustomMethods() decorator.
- * Verifies all 30 custom methods delegate correctly with proper error handling.
+ * Verifies all 26 custom methods delegate correctly with proper error handling.
  *
  * Test Coverage:
- * - Service delegation (19 methods)
+ * - Service delegation (15 methods)
  * - Direct Supabase operations (11 methods)
  * - Error handling and logging
  * - Type safety and parameter validation

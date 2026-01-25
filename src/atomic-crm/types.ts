@@ -107,9 +107,6 @@ export interface PhoneNumberAndType {
 // birthday, twitter_handle, address fields, created_at/updated_at/deleted_at,
 // nb_notes, nb_tasks, nb_activities, company_name (computed view fields)
 
-// ContactOrganization interface removed - junction table was deprecated.
-// Contacts now use a direct organization_id FK (single org per contact).
-
 // OpportunityParticipant type is now exported from validation/opportunities (P2 consolidation)
 // Defined in validation/opportunities/opportunities-junctions.ts
 
