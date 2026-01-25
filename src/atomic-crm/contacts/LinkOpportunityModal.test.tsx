@@ -118,4 +118,58 @@ describe("LinkOpportunityModal", () => {
     expect(mockCreate).not.toHaveBeenCalled();
     expect(onSuccess).not.toHaveBeenCalled();
   });
+
+  it("invalidates cache on successful link", async () => {
+    const onClose = vi.fn();
+    const onSuccess = vi.fn();
+    let successCallback: (() => Promise<void>) | undefined;
+
+    // Capture the onSuccess callback passed to create()
+    mockCreate.mockImplementation((resource: string, data: any, options: any) => {
+      successCallback = options.onSuccess;
+      return Promise.resolve({ data: { id: 1 } });
+    });
+
+    render(
+      <LinkOpportunityModal
+        open={true}
+        contactName="Jane Doe"
+        contactId={1}
+        linkedOpportunityIds={[]}
+        onClose={onClose}
+        onSuccess={onSuccess}
+      />
+    );
+
+    // Simulate form submission
+    const submitButton = screen.getByRole("button", { name: /Link Opportunity/i });
+    fireEvent.click(submitButton);
+
+    // Execute the success callback
+    await waitFor(() => {
+      expect(successCallback).toBeDefined();
+    });
+
+    if (successCallback) {
+      await successCallback();
+    }
+
+    // Verify cache invalidation is called with correct keys
+    await waitFor(() => {
+      expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
+        queryKey: ["opportunities"],
+      });
+      expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
+        queryKey: ["contacts"],
+      });
+      expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
+        queryKey: ["opportunity_contacts"],
+      });
+    });
+
+    // Verify modal is closed and callbacks are called
+    expect(onClose).toHaveBeenCalled();
+    expect(onSuccess).toHaveBeenCalled();
+    expect(mockNotify).toHaveBeenCalledWith("Opportunity linked successfully", { type: "success" });
+  });
 });

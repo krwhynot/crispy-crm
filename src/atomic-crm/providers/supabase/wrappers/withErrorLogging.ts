@@ -13,9 +13,15 @@
  * 6. React Admin validation error format preservation
  *
  * Engineering Constitution: Cross-cutting concern extracted for single responsibility
+ *
+ * Production Observability: Uses structured logger with Sentry integration
+ * - Errors automatically captured in Sentry for production monitoring
+ * - Console output preserved in development
+ * - Structured context (tags, extras) for error filtering
  */
 
 import type { DataProvider, Identifier, FilterPayload, RaRecord } from "ra-core";
+import { logger } from "@/lib/logger";
 
 /**
  * Interface for data provider method params logging
@@ -63,6 +69,7 @@ interface ExtendedError extends Error {
 
 /**
  * Log error with context for debugging
+ * Uses structured logger for production Sentry integration
  *
  * @param method - The DataProvider method that failed
  * @param resource - The resource being operated on
@@ -75,55 +82,55 @@ function logError(
   params: DataProviderLogParams,
   error: unknown
 ): void {
+  const extendedError = error as ExtendedError | undefined;
+
+  // Build structured context for logger
   const context = {
     method,
     resource,
-    params: {
-      id: params?.id,
-      ids: params?.ids,
-      filter: params?.filter,
-      sort: params?.sort,
-      pagination: params?.pagination,
-      target: params?.target,
-      // SECURITY: Redact actual data, just indicate presence
-      data: params?.data ? "[Data Present]" : undefined,
-    },
-    timestamp: new Date().toISOString(),
+    operation: `DataProvider.${method}`,
+    // SECURITY: Redact actual data, just indicate presence
+    hasData: params?.data ? true : undefined,
+    id: params?.id,
+    ids: params?.ids,
+    filter: params?.filter,
+    sort: params?.sort,
+    pagination: params?.pagination,
+    target: params?.target,
+    validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
   };
 
-  const extendedError = error as ExtendedError | undefined;
-  const errorMessage =
-    error instanceof Error
-      ? error.message
-      : extendedError?.message
-        ? extendedError.message
-        : String(error);
-
-  console.error(`[DataProvider Error]`, context, {
-    error: errorMessage,
-    stack: error instanceof Error ? error.stack : undefined,
-    validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
-    fullError: error,
-  });
+  // Log main error with structured context
+  logger.error(
+    "DataProvider operation failed",
+    error instanceof Error ? error : new Error(String(error)),
+    context
+  );
 
   // Log validation errors in detail for debugging
   if (extendedError?.body?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.body.errors, null, 2));
+    logger.debug("Validation errors detail", {
+      ...context,
+      validationErrors: extendedError.body.errors,
+    });
     // DEBUG: Also log the data that caused the error
     if (params && "data" in params) {
-      console.error(
-        "[Validation Data Submitted]",
-        JSON.stringify((params as { data: unknown }).data, null, 2)
-      );
+      logger.debug("Validation data submitted", {
+        ...context,
+        submittedData: (params as { data: unknown }).data,
+      });
     }
   } else if (extendedError?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.errors, null, 2));
+    logger.debug("Validation errors detail", {
+      ...context,
+      validationErrors: extendedError.errors,
+    });
     // DEBUG: Also log the data that caused the error
     if (params && "data" in params) {
-      console.error(
-        "[Validation Data Submitted]",
-        JSON.stringify((params as { data: unknown }).data, null, 2)
-      );
+      logger.debug("Validation data submitted", {
+        ...context,
+        submittedData: (params as { data: unknown }).data,
+      });
     }
   }
 }

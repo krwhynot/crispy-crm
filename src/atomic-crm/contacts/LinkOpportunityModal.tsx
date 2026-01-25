@@ -2,7 +2,12 @@ import { useCreate, useNotify, useDataProvider, Form, ReferenceInput } from "rea
 import { useQueryClient } from "@tanstack/react-query";
 import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { getAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
-import { activityKeys, opportunityKeys, contactKeys } from "@/atomic-crm/queryKeys";
+import {
+  activityKeys,
+  opportunityKeys,
+  contactKeys,
+  opportunityContactKeys,
+} from "@/atomic-crm/queryKeys";
 import { logger } from "@/lib/logger";
 import {
   Dialog,
@@ -63,9 +68,14 @@ export function LinkOpportunityModal({
         },
         {
           onSuccess: async () => {
-            // Invalidate caches immediately after successful link
-            queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-            queryClient.invalidateQueries({ queryKey: contactKeys.all });
+            // Invalidate caches for both parent resources (granular invalidation)
+            queryClient.invalidateQueries({
+              queryKey: opportunityKeys.detail(data.opportunity_id!),
+            });
+            queryClient.invalidateQueries({
+              queryKey: contactKeys.detail(contactId),
+            });
+            // Also invalidate junction table queries
             queryClient.invalidateQueries({ queryKey: opportunityContactKeys.all });
 
             notify("Opportunity linked successfully", { type: "success" });
