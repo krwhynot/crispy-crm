@@ -42,6 +42,24 @@ interface FilterToolbarProps {
   onFiltersChange: (filters: FilterValues) => void;
 }
 
+// Memoize inline objects to prevent re-renders
+const PRINCIPAL_FILTER = { organization_type: "principal" } as const;
+const AUTOCOMPLETE_SX_200 = { minWidth: 200 } as const;
+const MULTISELECT_SX_150 = { minWidth: 150 } as const;
+
+/**
+ * Deep equality check for filter values to prevent unnecessary state updates
+ */
+function areFiltersEqual(a: FilterValues, b: FilterValues): boolean {
+  return (
+    a.principal_organization_id === b.principal_organization_id &&
+    a.opportunity_owner_id === b.opportunity_owner_id &&
+    a.startDate === b.startDate &&
+    a.endDate === b.endDate &&
+    JSON.stringify(a.stage) === JSON.stringify(b.stage)
+  );
+}
+
 /**
  * Filter toolbar with form context for React Admin inputs
  * Wraps ReferenceInput components in FormProvider to provide required React Hook Form context
@@ -54,34 +72,42 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
   // Watch form values using useWatch hook (isolates re-renders, no subscription leak)
   const watchedValues = useWatch({ control: form.control });
 
-  // Stabilize watchedValues to prevent render loop
-  // useWatch returns new object reference on every render, causing infinite loop
-  // Arrays need JSON.stringify for stable comparison (array references always differ)
-  const stableWatchedValues = useMemo(
-    () => ({
-      principal_organization_id: watchedValues.principal_organization_id ?? null,
-      stage: watchedValues.stage ?? [],
-      opportunity_owner_id: watchedValues.opportunity_owner_id ?? null,
-      startDate: watchedValues.startDate ?? null,
-      endDate: watchedValues.endDate ?? null,
-    }),
-    [
-      watchedValues.principal_organization_id,
-      JSON.stringify(watchedValues.stage ?? []), // Serialize array for stable comparison
-      watchedValues.opportunity_owner_id,
-      watchedValues.startDate,
-      watchedValues.endDate,
-    ]
-  );
+  // Extract primitive values for stable comparison
+  const principalId = watchedValues.principal_organization_id ?? null;
+  const stageStr = JSON.stringify(watchedValues.stage ?? []);
+  const ownerId = watchedValues.opportunity_owner_id ?? null;
+  const startDate = watchedValues.startDate ?? null;
+  const endDate = watchedValues.endDate ?? null;
 
-  // Debounce filter changes to prevent excessive API calls during date input typing
+  // Debounce and only update if values actually changed (prevents render loop)
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      onFiltersChange(stableWatchedValues);
-    }, FILTER_DEBOUNCE_MS);
+    const newFilters: FilterValues = {
+      principal_organization_id: principalId,
+      stage: watchedValues.stage ?? [],
+      opportunity_owner_id: ownerId,
+      startDate,
+      endDate,
+    };
 
-    return () => clearTimeout(timeoutId);
-  }, [stableWatchedValues, onFiltersChange]);
+    // CRITICAL: Only call onFiltersChange if values actually changed
+    // This prevents the render loop where new object reference → re-render → new object
+    if (!areFiltersEqual(newFilters, filters)) {
+      const timeoutId = setTimeout(() => {
+        onFiltersChange(newFilters);
+      }, FILTER_DEBOUNCE_MS);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    principalId,
+    stageStr,
+    ownerId,
+    startDate,
+    endDate,
+    filters,
+    onFiltersChange,
+    watchedValues.stage,
+  ]);
 
   const hasActiveFilters =
     filters.principal_organization_id ||

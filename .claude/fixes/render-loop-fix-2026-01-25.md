@@ -7,10 +7,11 @@
 ## The Problem
 
 ### Root Cause
-The `FilterToolbar` component had a render loop caused by:
-1. `useWatch` from React Hook Form returns a **new object reference on every render**
-2. This new reference was passed directly to `useEffect` dependency array
-3. Effect runs → calls `onFiltersChange` → parent re-renders → FilterToolbar re-renders → new `watchedValues` object → Effect runs again → **INFINITE LOOP**
+The `FilterToolbar` component had a render loop caused by **TWO unstable references**:
+
+1. **Object instability:** `useWatch` from React Hook Form returns a **new object reference on every render**
+2. **Array instability:** The `stage` array field gets a new reference even when contents are identical
+3. Effect dependency array sees "new" values → Effect runs → calls `onFiltersChange` → parent re-renders → FilterToolbar re-renders → new objects/arrays → Effect runs again → **INFINITE LOOP**
 
 ### The Analogy: The Panic-Stricken Waiter
 - **Component** = Waiter watching a table

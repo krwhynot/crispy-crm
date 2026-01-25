@@ -1,0 +1,112 @@
+{
+  "audit": "workflow-gaps",
+  "mode": "full",
+  "timestamp": "2026-01-25T00:00:00Z",
+  "critical": 3,
+  "high": 5,
+  "medium": 4,
+  "db_findings": {
+    "orphaned_opportunities": 0,
+    "invalid_stages": 0,
+    "unlinked_contacts": 0
+  },
+  "findings": [
+    {
+      "id": "WF-001",
+      "severity": "critical",
+      "check": "Stage transition validation gap in bulk operations",
+      "location": "src/atomic-crm/opportunities/useBulkActionsState.ts:76-92",
+      "description": "Bulk stage updates bypass previous_stage validation. When changing multiple opportunities' stages via bulk action, only stage and stage_manual are sent. The updateOpportunitySchema requires previous_stage for VALID_STAGE_TRANSITIONS enforcement (WF-H1-004), but bulk updates never provide it, allowing invalid transitions like new_lead directly to closed_won.",
+      "fix": "Pass previous_stage for each opportunity in bulk update: updateData should include previous_stage: opportunities.find(opp => opp.id === id)?.stage to enable transition validation."
+    },
+    {
+      "id": "WF-002",
+      "severity": "critical",
+      "check": "Kanban drag-drop stage updates missing transition validation",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:221-226",
+      "description": "Kanban performStageUpdate sends only {stage, ...additionalData} to update(). Missing previous_stage field means updateOpportunitySchema cannot validate stage transitions. While close stages are validated client-side (WG-002), intermediate stage changes like initial_outreach→demo_scheduled skip validation entirely.",
+      "fix": "Add previous_stage: draggedItem.stage to data payload: data: {stage: newStage, previous_stage: draggedItem.stage, ...additionalData}"
+    },
+    {
+      "id": "WF-003",
+      "severity": "critical",
+      "check": "Missing opportunity owner requirement during create",
+      "location": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:80-92",
+      "description": "opportunity_owner_id is explicitly stripped from UPDATE operations (UPDATE_ONLY_STRIP_FIELDS). However, during CREATE, if auth context is not properly set, the trigger set_opportunity_owner_defaults fails silently with 'Cannot determine opportunity owner'. The field should have a NOT NULL default at database level to prevent orphaned records.",
+      "fix": "Add database constraint: ALTER TABLE opportunities ADD CONSTRAINT opportunities_owner_not_null CHECK (opportunity_owner_id IS NOT NULL). Currently relies on trigger which fails silently if auth.jwt() context is missing."
+    },
+    {
+      "id": "WF-004",
+      "severity": "high",
+      "check": "Activity logging on stage change may fail silently",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:234-260",
+      "description": "After stage update succeeds, code attempts to create an activity record (activity_type: 'interaction'). If this fails (e.g., dataProvider.create throws), user is notified but opportunity remains at new stage with no audit trail. The activity creation is not part of the transaction, creating an audit gap.",
+      "fix": "Treat activity creation failure as critical: Either wrap both update+activity in a service layer transaction, or make activity creation a prerequisite before confirming stage change UI."
+    },
+    {
+      "id": "WF-005",
+      "severity": "high",
+      "check": "Silent default activity type assignment",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:23-24",
+      "description": "baseActivitiesSchema has activity_type: activityTypeSchema.default('interaction') and type: interactionTypeSchema.default('call'). If forms don't explicitly select these, they silently default to 'interaction'/'call' without user awareness. Can cause misclassification of activity types.",
+      "fix": "Make activity_type and type required (no defaults) in forms. Defaults are appropriate for REST defaults, not for user-facing forms which must explicitly choose."
+    },
+    {
+      "id": "WF-006",
+      "severity": "high",
+      "check": "Missing sample_status validation for sample activities",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:90-110",
+      "description": "Schema enforces sample_status IS required when type='sample' via superRefine. However, sample_status is optional.nullable() in baseActivitiesSchema. If UI sends type='sample' without sample_status and skips schema validation, activity saves to DB without tracking sample delivery status, violating PRD 4.4 requirements.",
+      "fix": "Make sample_status NOT nullable when type='sample': Use conditional Zod refine with z.ZodIssueCode.custom to fail at API boundary with field-level error."
+    },
+    {
+      "id": "WF-007",
+      "severity": "high",
+      "check": "follow_up_required defaulting to false silently",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:42",
+      "description": "follow_up_required: z.coerce.boolean().default(false) means activities without explicit follow-up selection default to false, hiding follow-up tracking requirements. Sample activities with active status require follow-up (line 106), but if schema validation is bypassed in UI, follow_up_required can be false incorrectly.",
+      "fix": "Remove .default(false) from activities schema. Require explicit follow-up decision in UI forms. Let forms handle defaults, not schema."
+    },
+    {
+      "id": "WF-008",
+      "severity": "high",
+      "check": "Close reason requirement not enforced at database level",
+      "location": "supabase/migrations/20260122235000_add_win_loss_check_constraints.sql",
+      "description": "Database has CHECK constraints: (stage != 'closed_won' OR win_reason IS NOT NULL) and (stage != 'closed_lost' OR loss_reason IS NOT NULL). However, if frontend validation fails or is bypassed, user can send stage='closed_won' without win_reason, and database rejects with cryptic constraint error instead of field-level validation feedback.",
+      "fix": "Add close_reason_notes required when 'other' is selected. Currently optional.nullable() but schema.refine() enforces it - GUI could bypass. Move to Zod .superRefine() with early path-level error."
+    },
+    {
+      "id": "WF-009",
+      "severity": "medium",
+      "check": "Stage default of 'new_lead' in database may hide null stages",
+      "location": "supabase/migrations/20251129173209_remove_awaiting_response_enum_value.sql",
+      "description": "Opportunities table has DEFAULT 'new_lead'::opportunity_stage on stage column. If legacy data exists with NULL stage and migration doesn't explicitly populate it, opportunities could silently start as new_lead, bypassing audit trail of actual initial stage.",
+      "fix": "Verify migration includes UPDATE opportunities SET stage='new_lead' WHERE stage IS NULL before adding NOT NULL constraint."
+    },
+    {
+      "id": "WF-010",
+      "severity": "medium",
+      "check": "Product sync validation gap - empty product array",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:61-64",
+      "description": "opportunityProductSyncInputSchema requires product_id_reference but has no check for empty array. If UI sends empty products array [], it's allowed, potentially deleting all linked products silently.",
+      "fix": "Add .min(1, 'At least one product is required') constraint when products are being synced."
+    },
+    {
+      "id": "WF-011",
+      "severity": "medium",
+      "check": "Missing contact_ids validation in stage-only kanban updates",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:225",
+      "description": "When kanban drag triggers stage-only update, callbacks.ts detects and strips empty contact_ids to avoid validation errors. This is a workaround, not a fix. Schema should explicitly allow contact_ids to be optional.",
+      "fix": "Ensure contact_ids is optional with .default([]) in updateOpportunitySchema rather than stripping at callback layer."
+    },
+    {
+      "id": "WF-012",
+      "severity": "medium",
+      "check": "Activity type defaults not validated against opportunity context",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:240",
+      "description": "Code hardcodes activity_type: 'interaction' for stage change logging. Schema allows both 'interaction' and 'engagement'. No validation that activity_type='engagement' requires opportunity_id=null. If future code violates this, backend silently rejects.",
+      "fix": "Add superRefine check in activitiesSchema: engagement requires opportunity_id=null, interaction requires opportunity_id is present."
+    }
+  ],
+  "summary": "Workflow-gaps audit found 3 CRITICAL issues in stage transition validation (bulk ops, kanban updates, owner tracking) that bypass pipeline enforcement. 5 HIGH severity issues in activity logging, defaults, and close reason enforcement. 4 MEDIUM issues in product sync, contact validation, and activity type consistency. Root cause: Previous_stage validation (WF-H1-004) defined in schema but not passed from UI layers (bulk, kanban). Activity logging is non-transactional, creating audit gaps. Silent defaults on activity_type and follow_up_required hide user intent. Database constraints exist but UI bypasses them with graceful handling instead of preventing invalid submissions. [Confidence: 92%]"
+}
