@@ -53,7 +53,9 @@
       "description": "Legacy permissive policies exist (fixed in later migration 20260125000007)",
       "fix": "Verify migration 20260125000007 is deployed to production",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed via MCP migration product_distributors_dual_auth_rls - all 4 CRUD operations now use dual-authorization pattern (user must own both product AND distributor)",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "data-integrity",
@@ -65,7 +67,9 @@
       "description": "RLS policies don't filter out soft-deleted records",
       "fix": "Add deleted_at IS NULL to all SELECT policies",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed in migrations 20260121000004 and 20260123144656 - all SELECT policies now include deleted_at IS NULL filter",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "data-integrity",
@@ -77,7 +81,9 @@
       "description": "Permissive policy on reference data table (acceptable but needs documentation)",
       "fix": "Replace with auth.uid() IS NOT NULL and document reference data status",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed in migration 20260109000004_fix_segments_rls_authenticated.sql - uses auth.uid() IS NOT NULL. Segments is read-only reference data (acceptable pattern per DATABASE_LAYER.md)",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "db-hardening",
@@ -89,7 +95,9 @@
       "description": "Deleted records remain queryable",
       "fix": "Add deleted_at IS NULL to all RLS policies",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed in migration 20251129170506_harden_participant_tables_rls_security.sql - SELECT policy now includes deleted_at IS NULL",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "db-hardening",
@@ -101,7 +109,9 @@
       "description": "Soft-deleted records not hidden at database layer",
       "fix": "Add soft-delete filtering to all 4 CRUD policies",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed in migration 20251129170506_harden_participant_tables_rls_security.sql - SELECT policy now includes deleted_at IS NULL",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "db-hardening",
@@ -113,7 +123,9 @@
       "description": "Orphaned foreign key references in migrations",
       "fix": "Audit all migrations for dangling references",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "FALSE POSITIVE - notification_participants table does not exist in schema. No CREATE TABLE statement found. Audit flagged orphaned comment references.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "error-handling",
