@@ -2,16 +2,20 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type * as ReactAdmin from "react-admin";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { createTestQueryClient } from "@/tests/setup";
 import { QuickLogActivityDialog } from "../QuickLogActivityDialog";
+import type { ReactNode } from "react";
 
 // Mock ra-core hooks
 const mockDataProvider = {
   create: vi.fn(),
+  getOne: vi.fn(),
 };
 
 const mockNotify = vi.fn();
 
-// Store mock implementations for useGetOne to control per-test
+// Store mock implementations for entity data to control per-test
 let mockContactData: { data: unknown; isLoading: boolean; error: unknown } = {
   data: undefined,
   isLoading: false,
@@ -28,17 +32,20 @@ let mockOppData: { data: unknown; isLoading: boolean; error: unknown } = {
   error: null,
 };
 
+// Mock @tanstack/react-query useQueries
+vi.mock("@tanstack/react-query", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@tanstack/react-query")>();
+  return {
+    ...actual,
+    useQueries: () => [mockContactData, mockOrgData, mockOppData],
+  };
+});
+
 // Mock react-admin - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
-    useGetOne: (resource: string) => {
-      if (resource === "contacts") return mockContactData;
-      if (resource === "organizations") return mockOrgData;
-      if (resource === "opportunities") return mockOppData;
-      return { data: undefined, isLoading: false, error: null };
-    },
     useDataProvider: () => mockDataProvider,
     useNotify: () => mockNotify,
   };
@@ -103,6 +110,16 @@ describe("QuickLogActivityDialog", () => {
   const defaultProps = {
     open: true,
     onOpenChange: vi.fn(),
+  };
+
+  // Test wrapper that provides QueryClient
+  const renderWithQueryClient = (ui: ReactNode) => {
+    const queryClient = createTestQueryClient();
+    return render(
+      <QueryClientProvider client={queryClient}>
+        {ui}
+      </QueryClientProvider>
+    );
   };
 
   beforeEach(() => {

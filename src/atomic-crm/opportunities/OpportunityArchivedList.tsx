@@ -123,6 +123,7 @@ export const OpportunityArchivedList = () => {
                 {isPending ? "Loading..." : "Load More"}
               </AdminButton>
             )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

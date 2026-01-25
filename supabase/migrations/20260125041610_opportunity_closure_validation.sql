@@ -7,21 +7,21 @@ CREATE OR REPLACE FUNCTION validate_opportunity_closure()
 RETURNS TRIGGER AS $$
 BEGIN
   -- Validate closed_won requires win_reason
-  IF NEW.stage = 'closed_won' AND (NEW.win_reason IS NULL OR NEW.win_reason = '') THEN
+  IF NEW.stage = 'closed_won' AND NEW.win_reason IS NULL THEN
     RAISE EXCEPTION 'win_reason is required when closing opportunity as won'
       USING
         ERRCODE = 'check_violation',
         DETAIL = 'Opportunity stage cannot be set to closed_won without specifying a win reason',
-        HINT = 'Please select a reason from: price, quality, relationship, or other';
+        HINT = 'Please select a reason from: relationship, product_quality, price_competitive, timing, or other';
   END IF;
 
   -- Validate closed_lost requires loss_reason
-  IF NEW.stage = 'closed_lost' AND (NEW.loss_reason IS NULL OR NEW.loss_reason = '') THEN
+  IF NEW.stage = 'closed_lost' AND NEW.loss_reason IS NULL THEN
     RAISE EXCEPTION 'loss_reason is required when closing opportunity as lost'
       USING
         ERRCODE = 'check_violation',
         DETAIL = 'Opportunity stage cannot be set to closed_lost without specifying a loss reason',
-        HINT = 'Please select a reason from: price, quality, relationship, no_authorization, competitor, or other';
+        HINT = 'Please select a reason from: price_too_high, no_authorization, competitor_relationship, product_fit, timing, no_response, or other';
   END IF;
 
   RETURN NEW;
