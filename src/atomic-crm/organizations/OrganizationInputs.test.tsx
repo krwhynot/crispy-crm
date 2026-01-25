@@ -7,7 +7,6 @@ import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import type { Company } from "../types";
-import { ConfigurationContext } from "../root/ConfigurationContext";
 import { vi } from "vitest";
 
 // Mock useRecordContext from ra-core
