@@ -195,7 +195,7 @@ For creating records that require multiple fields or complex forms.
 import { useState } from 'react';
 import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
 import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
-import { Button } from '@/components/ui/button';
+import { AdminButton } from '@/components/ra-wrappers/admin-button';
 import { PlusIcon } from 'lucide-react';
 import { TagDialog } from './TagDialog';
 import type { Tag } from '../types';
@@ -215,11 +215,11 @@ export function TagSelectWithCreate({ source, label }: { source: string; label?:
   };
 
   const footer = (
-    <Button type="button" variant="ghost" className="h-11 w-full justify-start text-sm"
+    <AdminButton type="button" variant="ghost" className="h-11 w-full justify-start text-sm"
       onClick={() => setDialogOpen(true)}>
       <PlusIcon className="mr-2 h-4 w-4" />
       Create new tag
-    </Button>
+    </AdminButton>
   );
 
   return (
@@ -458,7 +458,7 @@ function QuickLogForm() {
         placeholder="Select contact"
       />
 
-      <Button onClick={handleSubmit}>Log Activity</Button>
+      <AdminButton onClick={handleSubmit}>Log Activity</AdminButton>
     </div>
   );
 }

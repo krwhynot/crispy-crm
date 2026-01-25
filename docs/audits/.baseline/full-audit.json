@@ -4,7 +4,7 @@
   "mode": "full",
   "duration_minutes": 23,
   "totals": {
-    "critical": 15,
+    "critical": 10,
     "high": 55,
     "medium": 69
   },
@@ -13,14 +13,14 @@
     "L2_domain": { "critical": 0, "high": 3, "medium": 2, "status": "OK" },
     "L3_provider": { "critical": 2, "high": 14, "medium": 3, "status": "WARN" },
     "L4_ui_foundation": { "critical": 0, "high": 2, "medium": 3, "status": "OK" },
-    "L5_features": { "critical": 7, "high": 20, "medium": 48, "status": "CRITICAL" }
+    "L5_features": { "critical": 2, "high": 20, "medium": 48, "status": "WARN" }
   },
   "by_category": {
     "security": { "critical": 0, "high": 5, "medium": 5 },
     "data-integrity": { "critical": 0, "high": 0, "medium": 2 },
     "error-handling": { "critical": 0, "high": 1, "medium": 2 },
     "db-hardening": { "critical": 0, "high": 8, "medium": 5 },
-    "stale-state": { "critical": 7, "high": 12, "medium": 8 },
+    "stale-state": { "critical": 6, "high": 12, "medium": 8 },
     "workflow-gaps": { "critical": 2, "high": 4, "medium": 3 },
     "architecture": { "critical": 0, "high": 1, "medium": 2 },
     "typescript": { "critical": 0, "high": 2, "medium": 3 },

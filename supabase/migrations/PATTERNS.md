@@ -180,7 +180,7 @@ CREATE POLICY authenticated_delete_organization_distributors
     ON public.organization_distributors
     FOR DELETE
     TO authenticated
-    USING (auth.uid() IS NOT NULL);
+    USING (auth.uid() IS NOT NULL AND deleted_at IS NULL);
 ```
 
 **Legacy Pattern:** `USING (true)` (still valid, but less explicit)
@@ -190,7 +190,7 @@ CREATE POLICY authenticated_delete_organization_distributors
 CREATE POLICY authenticated_select_contacts ON contacts
   FOR SELECT
   TO authenticated
-  USING (true);  -- Works, but auth check is implicit via "TO authenticated"
+  USING (deleted_at IS NULL);  -- Legacy: soft delete filter (auth check implicit via "TO authenticated")
 ```
 
 **Pattern Evolution:**
@@ -209,26 +209,27 @@ For user-specific data (tasks, preferences).
 ```sql
 -- Pattern: Only creator can access their own records
 -- Uses helper function for cleaner policies
+-- Always includes deleted_at IS NULL to enforce soft delete
 
 CREATE POLICY authenticated_select_tasks ON tasks
   FOR SELECT
   TO authenticated
-  USING (sales_id = public.get_current_sales_id());
+  USING (sales_id = public.get_current_sales_id() AND deleted_at IS NULL);
 
 CREATE POLICY authenticated_insert_tasks ON tasks
   FOR INSERT
   TO authenticated
-  WITH CHECK (sales_id = public.get_current_sales_id());
+  WITH CHECK (sales_id = public.get_current_sales_id() AND deleted_at IS NULL);
 
 CREATE POLICY authenticated_update_tasks ON tasks
   FOR UPDATE
   TO authenticated
-  USING (sales_id = public.get_current_sales_id());
+  USING (sales_id = public.get_current_sales_id() AND deleted_at IS NULL);
 
 CREATE POLICY authenticated_delete_tasks ON tasks
   FOR DELETE
   TO authenticated
-  USING (sales_id = public.get_current_sales_id());
+  USING (sales_id = public.get_current_sales_id() AND deleted_at IS NULL);
 ```
 
 ### Complex Access Pattern (Junction Tables)
