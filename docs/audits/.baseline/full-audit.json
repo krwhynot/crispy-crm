@@ -165,7 +165,9 @@
       "description": "Product exceptions don't appear without refresh",
       "fix": "Add queryClient.invalidateQueries after mutation",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - added queryClient.invalidateQueries({ queryKey: productDistributorAuthKeys.all }) after mutation. Added productDistributorAuthKeys to queryKeys.ts.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "stale-state",
@@ -177,7 +179,9 @@
       "description": "New authorizations invisible without refresh",
       "fix": "Add cache invalidation after mutation",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - added queryClient.invalidateQueries for both distributorPrincipalAuthKeys.all and organizationKeys.all after mutation. Added distributorPrincipalAuthKeys to queryKeys.ts.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "stale-state",
@@ -189,7 +193,9 @@
       "description": "New tags don't appear in selectors",
       "fix": "Add queryClient.invalidateQueries",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - added await queryClient.invalidateQueries({ queryKey: tagKeys.all }) after mutation, copying pattern from TagEditModal.tsx.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "stale-state",
@@ -201,7 +207,9 @@
       "description": "Product counts go stale after sync mutation",
       "fix": "Invalidate product caches after mutation",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - extended cache invalidation to include opportunityKeys.detail(record.id), opportunityKeys.all, and opportunityProductKeys.all after mutation. Added opportunityProductKeys to queryKeys.ts.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "stale-state",
@@ -213,7 +221,9 @@
       "description": "Only invalidates junction table, missing parent caches",
       "fix": "Add parent opportunity/contact detail invalidation",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - added opportunityKeys.detail(opportunity.id) and contactKeys.detail(contactId) invalidation. Updated props interface and parent component to pass contactId. Updated tests.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "stale-state",
@@ -225,7 +235,9 @@
       "description": "Modal doesn't invalidate caches after linking",
       "fix": "Add cache invalidation after successful link",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "FALSE POSITIVE - LinkOpportunityModal.tsx:72-79 already correctly implements granular cache invalidation (opportunityKeys.detail, contactKeys.detail, opportunityContactKeys.all, activityKeys.all). Used as reference pattern for other fixes.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "stale-state",
@@ -249,7 +261,9 @@
       "description": "6 parallel queries fetching 300+ records, 2-3s dashboard load time",
       "fix": "Add staleTime: 5*60*1000, batch fallback queries, reduce perPage: 100→25",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - changed INITIAL_PAGE_SIZE from 100 to 25 (line 11). staleTime already configured at 5*60*1000. Reduces JSON payload from ~1-2MB to ~300-500KB per query.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "performance",
@@ -273,7 +287,9 @@
       "description": "perPage: 100 without pagination UI, 1-2MB JSON per page",
       "fix": "Bulk find-replace perPage: 100→25",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - replaced perPage: 100 with perPage: DEFAULT_PAGE_SIZE in 26 files across Reports, Organizations, Opportunities, Products, and Sales modules. Added DEFAULT_PAGE_SIZE import from @/atomic-crm/constants/appConstants to all modified files.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "code-quality",
