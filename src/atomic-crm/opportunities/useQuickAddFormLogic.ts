@@ -54,24 +54,17 @@ export const useQuickAddFormLogic = ({ identity, identityLoading }: UseQuickAddF
   });
 
   // Defer sales list until user interacts with Account Manager field
-  const { data: salesListData, isLoading: salesLoading } = useQuery({
-    queryKey: [
-      "sales",
-      "getList",
-      { pagination: { page: 1, perPage: 100 }, sort: { field: "name", order: "ASC" } },
-    ],
-    queryFn: async () => {
-      const result = await dataProvider.getList("sales", {
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: "name", order: "ASC" },
-      });
-      return result;
+  const { data: salesList, isLoading: salesLoading } = useGetList(
+    "sales",
+    {
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
     },
-    enabled: shouldLoadSales,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-  });
-
-  const salesList = salesListData?.data;
+    {
+      enabled: shouldLoadSales,
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    }
+  );
 
   // Merge identity into sales choices for immediate display
   const accountManagerChoices = useMemo(() => {

@@ -99,6 +99,7 @@ export function QuickCreateContactPopover({
         },
       });
       queryClient.invalidateQueries({ queryKey: contactKeys.all });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
       notify("Contact created", { type: "success" });
       onCreated(result.data as { id: number; first_name: string; last_name: string });
       setOpen(false);
@@ -247,6 +248,7 @@ export function QuickCreateContactRA({
           },
         });
         queryClient.invalidateQueries({ queryKey: contactKeys.all });
+        queryClient.invalidateQueries({ queryKey: organizationKeys.all });
         notify("Contact created", { type: "success" });
         onCreate(result.data); // KEY FIX: Pass real record back to RA
       } catch (error: unknown) {
@@ -281,6 +283,7 @@ export function QuickCreateContactRA({
         },
       });
       queryClient.invalidateQueries({ queryKey: contactKeys.all });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
       notify("Contact created", { type: "success" });
       onCreate(result.data); // KEY FIX: Pass real record back to RA
     } catch (error: unknown) {

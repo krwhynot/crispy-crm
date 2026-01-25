@@ -93,8 +93,11 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
           },
         });
 
-        // Invalidate opportunity caches to update dashboard stats (Won/Lost counters)
-        queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+        // Invalidate granular opportunity caches
+        // 1. Specific opportunity detail (this card's data)
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(opportunityId) });
+        // 2. All opportunity lists (kanban columns, stage counts, filters)
+        queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
 
         notify(
           closeTargetStage === STAGE.CLOSED_WON
