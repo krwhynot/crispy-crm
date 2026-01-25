@@ -1,199 +1,23 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
-import { useGetList, useNotify, downloadCSV } from "ra-core";
+import { useState, useMemo, useEffect } from "react";
+import { useGetList, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
-import { useForm, FormProvider, useWatch } from "react-hook-form";
-import jsonExport from "jsonexport/dist";
 import { format } from "date-fns";
-import { logger } from "@/lib/logger";
+import { TrendingUp } from "lucide-react";
 import { ReportLayout } from "./ReportLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { AdminButton } from "@/components/admin/AdminButton";
-import { ChevronDown, ChevronRight, ExternalLink, TrendingUp } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { AppliedFiltersBar, EmptyState } from "./components";
 import { useReportData } from "./hooks";
-import { MultiSelectInput } from "@/components/ra-wrappers/multi-select-input";
-import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
-import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
-import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants";
-import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
-import { DEFAULT_PAGE_SIZE, FILTER_DEBOUNCE_MS } from "@/atomic-crm/constants/appConstants";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Opportunity, Sale } from "../types";
-import { parseDateSafely } from "@/lib/date-utils";
-
-interface PrincipalGroup {
-  principalId: string | null;
-  principalName: string;
-  opportunities: Opportunity[];
-  totalCount: number;
-  stageBreakdown: Record<string, number>;
-}
-
-interface FilterValues {
-  principal_organization_id: string | null;
-  stage: string[];
-  opportunity_owner_id: string | null;
-  startDate: string | null;
-  endDate: string | null;
-}
-
-interface FilterToolbarProps {
-  filters: FilterValues;
-  onFiltersChange: (filters: FilterValues) => void;
-}
-
-// Memoize inline objects to prevent re-renders
-const PRINCIPAL_FILTER = { organization_type: "principal" } as const;
-const AUTOCOMPLETE_SX_200 = { minWidth: 200 } as const;
-const MULTISELECT_SX_150 = { minWidth: 150 } as const;
-
-/**
- * Deep equality check for filter values to prevent unnecessary state updates
- */
-function areFiltersEqual(a: FilterValues, b: FilterValues): boolean {
-  return (
-    a.principal_organization_id === b.principal_organization_id &&
-    a.opportunity_owner_id === b.opportunity_owner_id &&
-    a.startDate === b.startDate &&
-    a.endDate === b.endDate &&
-    JSON.stringify(a.stage) === JSON.stringify(b.stage)
-  );
-}
-
-/**
- * Filter toolbar with form context for React Admin inputs
- * Wraps ReferenceInput components in FormProvider to provide required React Hook Form context
- */
-function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
-  const form = useForm<FilterValues>({
-    defaultValues: filters,
-  });
-
-  // Watch form values using useWatch hook (isolates re-renders, no subscription leak)
-  const watchedValues = useWatch({ control: form.control });
-
-  // Extract primitive values for stable comparison
-  const principalId = watchedValues.principal_organization_id ?? null;
-  const stageStr = JSON.stringify(watchedValues.stage ?? []);
-  const ownerId = watchedValues.opportunity_owner_id ?? null;
-  const startDate = watchedValues.startDate ?? null;
-  const endDate = watchedValues.endDate ?? null;
-
-  // Debounce and only update if values actually changed (prevents render loop)
-  useEffect(() => {
-    const newFilters: FilterValues = {
-      principal_organization_id: principalId,
-      stage: watchedValues.stage ?? [],
-      opportunity_owner_id: ownerId,
-      startDate,
-      endDate,
-    };
-
-    // CRITICAL: Only call onFiltersChange if values actually changed
-    // This prevents the render loop where new object reference → re-render → new object
-    if (!areFiltersEqual(newFilters, filters)) {
-      const timeoutId = setTimeout(() => {
-        onFiltersChange(newFilters);
-      }, FILTER_DEBOUNCE_MS);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [
-    principalId,
-    stageStr,
-    ownerId,
-    startDate,
-    endDate,
-    filters,
-    onFiltersChange,
-    watchedValues.stage,
-  ]);
-
-  const hasActiveFilters =
-    filters.principal_organization_id ||
-    filters.stage.length > 0 ||
-    filters.opportunity_owner_id ||
-    filters.startDate ||
-    filters.endDate;
-
-  const clearFilters = () => {
-    form.reset({
-      principal_organization_id: null,
-      stage: [],
-      opportunity_owner_id: null,
-      startDate: null,
-      endDate: null,
-    });
-  };
-
-  return (
-    <FormProvider {...form}>
-      <form className="flex flex-wrap items-center gap-2">
-        {/* Principal Filter */}
-        <ReferenceInput
-          source="principal_organization_id"
-          reference="organizations"
-          filter={{ organization_type: "principal" }}
-        >
-          <AutocompleteArrayInput
-            label={false}
-            placeholder="Filter by Principal"
-            sx={{ minWidth: 200 }}
-          />
-        </ReferenceInput>
-
-        {/* Stage Filter */}
-        <MultiSelectInput
-          source="stage"
-          emptyText="All Stages"
-          choices={OPPORTUNITY_STAGE_CHOICES}
-          sx={{ minWidth: 150 }}
-        />
-
-        {/* Sales Rep Filter */}
-        <ReferenceInput source="opportunity_owner_id" reference="sales">
-          <AutocompleteArrayInput
-            label={false}
-            placeholder="Filter by Sales Rep"
-            sx={{ minWidth: 200 }}
-          />
-        </ReferenceInput>
-
-        {/* Date Range */}
-        <div className="flex items-center gap-2">
-          <input
-            type="date"
-            {...form.register("startDate")}
-            className="h-11 px-3 py-2 border border-border rounded text-sm"
-            placeholder="From Date"
-            aria-label="Filter from date"
-          />
-          <span className="text-muted-foreground">to</span>
-          <input
-            type="date"
-            {...form.register("endDate")}
-            className="h-11 px-3 py-2 border border-border rounded text-sm"
-            placeholder="To Date"
-            aria-label="Filter to date"
-          />
-        </div>
-
-        {/* Clear Filters */}
-        {hasActiveFilters && (
-          <AdminButton
-            variant="ghost"
-            size="sm"
-            onClick={clearFilters}
-            type="button"
-            className="h-11"
-          >
-            Clear Filters
-          </AdminButton>
-        )}
-      </form>
-    </FormProvider>
-  );
-}
+import {
+  FilterToolbar,
+  type FilterValues,
+} from "./opportunities-by-principal/components/FilterToolbar";
+import {
+  PrincipalGroupCard,
+  type PrincipalGroup,
+} from "./opportunities-by-principal/components/PrincipalGroupCard";
+import { exportOpportunitiesReport } from "./opportunities-by-principal/utils/exportOpportunitiesReport";
 
 /**
  * Opportunities by Principal Report
@@ -355,50 +179,12 @@ export default function OpportunitiesByPrincipalReport() {
 
   // Handle CSV export
   const handleExport = () => {
-    const exportData: Array<{
-      principal: string;
-      opportunity: string;
-      organization: string;
-      stage: string;
-      close_date: string;
-      sales_rep: string;
-      priority: string;
-      status: string;
-      days_in_stage: number;
-    }> = [];
-
-    principalGroups.forEach((group) => {
-      group.opportunities.forEach((opp) => {
-        const closeDateObj = opp.estimated_close_date
-          ? parseDateSafely(opp.estimated_close_date)
-          : null;
-        exportData.push({
-          principal: sanitizeCsvValue(group.principalName),
-          opportunity: sanitizeCsvValue(opp.name),
-          organization: sanitizeCsvValue(opp.customer_organization_name || ""),
-          stage: sanitizeCsvValue(opp.stage),
-          close_date: closeDateObj ? format(closeDateObj, "yyyy-MM-dd") : "",
-          sales_rep: sanitizeCsvValue(salesMap.get(opp.opportunity_owner_id!) || "Unassigned"),
-          priority: sanitizeCsvValue(opp.priority || "medium"),
-          status: sanitizeCsvValue(opp.status),
-          days_in_stage: opp.days_in_stage || 0,
-        });
-      });
-    });
-
-    if (exportData.length === 0) {
-      notify("No data to export", { type: "warning" });
-      return;
-    }
-
-    jsonExport(exportData, (err, csv) => {
-      if (err) {
-        logger.error("Export error", err, { feature: "OpportunitiesByPrincipalReport" });
-        notify("Export failed. Please try again.", { type: "error" });
-        return;
-      }
-      downloadCSV(csv, `opportunities-by-principal-${format(new Date(), "yyyy-MM-dd")}`);
-      notify("Report exported successfully", { type: "success" });
+    exportOpportunitiesReport({
+      principalGroups,
+      salesMap,
+      onSuccess: () => notify("Report exported successfully", { type: "success" }),
+      onError: (message) => notify(message, { type: "error" }),
+      onEmpty: () => notify("No data to export", { type: "warning" }),
     });
   };
 
@@ -554,127 +340,5 @@ export default function OpportunitiesByPrincipalReport() {
         )}
       </div>
     </ReportLayout>
-  );
-}
-
-interface PrincipalGroupCardProps {
-  group: PrincipalGroup;
-  isExpanded: boolean;
-  onToggle: () => void;
-  onOpportunityClick: (id: string | number) => void;
-  salesMap: Map<string | number, string>;
-}
-
-function PrincipalGroupCard({
-  group,
-  isExpanded,
-  onToggle,
-  onOpportunityClick,
-  salesMap,
-}: PrincipalGroupCardProps) {
-  // Get stage summary
-  const stageSummary = Object.entries(group.stageBreakdown)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 3)
-    .map(([stage, count]) => `${stage}: ${count}`)
-    .join(", ");
-
-  return (
-    <Card>
-      <CardHeader
-        className="cursor-pointer hover:bg-accent/50 transition-colors"
-        onClick={onToggle}
-      >
-        <CardTitle className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {isExpanded ? (
-              <ChevronDown className="w-5 h-5" />
-            ) : (
-              <ChevronRight className="w-5 h-5" />
-            )}
-            <span>{group.principalName}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary">
-              {group.totalCount} {group.totalCount === 1 ? "opportunity" : "opportunities"}
-            </Badge>
-            {stageSummary && (
-              <span className="text-sm text-muted-foreground hidden md:inline">
-                ({stageSummary})
-              </span>
-            )}
-          </div>
-        </CardTitle>
-      </CardHeader>
-
-      {isExpanded && (
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b text-sm text-muted-foreground">
-                  <th className="text-left py-2 px-2 min-w-[200px]">Opportunity</th>
-                  <th className="text-left py-2 px-2 min-w-[150px]">Organization</th>
-                  <th className="text-left py-2 px-2 min-w-[120px]">Stage</th>
-                  <th className="text-left py-2 px-2 min-w-[100px]">Close Date</th>
-                  <th className="text-left py-2 px-2 min-w-[100px]">Sales Rep</th>
-                  <th className="text-center py-2 px-2 min-w-[50px]">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {group.opportunities.map((opp) => (
-                  <tr key={opp.id} className="border-b hover:bg-accent/30 transition-colors">
-                    <td className="py-2 px-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{opp.name}</span>
-                        {opp.priority === "high" && (
-                          <Badge variant="outline" className="text-xs bg-warning-light">
-                            High
-                          </Badge>
-                        )}
-                        {opp.priority === "critical" && (
-                          <Badge variant="outline" className="text-xs bg-destructive-light">
-                            Critical
-                          </Badge>
-                        )}
-                        {opp.days_in_stage && opp.days_in_stage > 14 && (
-                          <Badge variant="outline" className="text-xs">
-                            {opp.days_in_stage} days
-                          </Badge>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-2 px-2">{opp.customer_organization_name || "-"}</td>
-                    <td className="py-2 px-2">
-                      <Badge variant="outline">{opp.stage}</Badge>
-                    </td>
-                    <td className="py-2 px-2">
-                      {opp.estimated_close_date && parseDateSafely(opp.estimated_close_date)
-                        ? format(parseDateSafely(opp.estimated_close_date)!, "MMM dd, yyyy")
-                        : "-"}
-                    </td>
-                    <td className="py-2 px-2">
-                      {salesMap.get(opp.opportunity_owner_id!) || "Unassigned"}
-                    </td>
-                    <td className="py-2 px-2 text-center">
-                      <AdminButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onOpportunityClick(opp.id);
-                        }}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </AdminButton>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      )}
-    </Card>
   );
 }

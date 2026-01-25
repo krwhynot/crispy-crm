@@ -181,5 +181,4 @@ export function useImportWizard() {
 // TYPE EXPORTS
 // ============================================================
 
-export type { WizardState, WizardAction, ImportProgress };
-export type WizardActions = ReturnType<typeof createWizardActions>;
+export type { WizardState, WizardAction, ImportProgress, WizardActions };

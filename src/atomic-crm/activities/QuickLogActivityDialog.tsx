@@ -174,151 +174,6 @@ export interface QuickLogActivityDialogProps {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Constants
-// ═══════════════════════════════════════════════════════════════════════════════
-
-const DEFAULT_DRAFT_STORAGE_KEY = "quick-log-activity-draft";
-const DRAFT_SAVE_DEBOUNCE_MS = 500;
-const DRAFT_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Draft Persistence Helpers
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function loadDraft(storageKey: string): Partial<ActivityLogInput> | null {
-  if (typeof window === "undefined") return null;
-
-  const stored = localStorage.getItem(storageKey);
-  if (!stored) return null;
-
-  const draft = safeJsonParse(stored, activityDraftSchema);
-  if (!draft) {
-    localStorage.removeItem(storageKey);
-    return null;
-  }
-
-  // Check if draft has expired
-  if (Date.now() - draft.savedAt > DRAFT_EXPIRY_MS) {
-    localStorage.removeItem(storageKey);
-    return null;
-  }
-
-  return draft.formData;
-}
-
-function saveDraft(storageKey: string, formData: Partial<ActivityLogInput>): void {
-  if (typeof window === "undefined") return;
-
-  // Don't save empty drafts
-  const hasContent =
-    formData.notes || formData.contactId || formData.organizationId || formData.opportunityId;
-
-  if (!hasContent) {
-    localStorage.removeItem(storageKey);
-    return;
-  }
-
-  const draft: ActivityDraft = {
-    formData,
-    savedAt: Date.now(),
-  };
-
-  localStorage.setItem(storageKey, JSON.stringify(draft));
-}
-
-function clearDraft(storageKey: string): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(storageKey);
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Skeleton Component
-// ═══════════════════════════════════════════════════════════════════════════════
-
-/**
- * Skeleton fallback shown while QuickLogForm lazy loads
- * Matches the form structure for smooth loading transition
- */
-function QuickLogFormSkeleton() {
-  return (
-    <div className="space-y-4" data-testid="quick-log-form-skeleton">
-      {/* Activity Type section */}
-      <div className="space-y-3">
-        <Skeleton className="h-4 w-24" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-11 w-full" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-11 w-full" />
-        </div>
-      </div>
-
-      {/* Who was involved section */}
-      <div className="space-y-3">
-        <Skeleton className="h-4 w-32" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-11 w-full" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-11 w-full" />
-        </div>
-      </div>
-
-      {/* Notes section */}
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-12" />
-        <Skeleton className="h-24 w-full" />
-      </div>
-
-      {/* Action buttons */}
-      <div className="flex justify-between pt-4">
-        <Skeleton className="h-10 w-20" />
-        <div className="flex gap-2">
-          <Skeleton className="h-11 w-28" />
-          <Skeleton className="h-11 w-24" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Entity Display Components
-// ═══════════════════════════════════════════════════════════════════════════════
-
-interface LockedEntityDisplayProps {
-  label: string;
-  name: string | undefined;
-  loading: boolean;
-}
-
-/**
- * Displays a locked (read-only) entity field
- * Used when entityContext provides a pre-filled ID
- */
-function LockedEntityDisplay({ label, name, loading }: LockedEntityDisplayProps) {
-  return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium">{label}</label>
-      <div className="flex h-11 items-center justify-between rounded-md border border-border bg-muted px-3">
-        {loading ? (
-          <Skeleton className="h-4 w-32" />
-        ) : (
-          <span className="text-sm">{name || "Unknown"}</span>
-        )}
-        <Badge variant="secondary" className="ml-2 text-xs">
-          Locked
-        </Badge>
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
 // Main Component
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -419,12 +274,12 @@ export function QuickLogActivityDialog({
   const queryResults = useQueries({
     queries: [
       {
-        queryKey: ["contacts", "getOne", { id: entityContext?.contactId ?? 0 }],
+        queryKey: contactKeys.detail(entityContext?.contactId ?? 0),
         queryFn: () => dataProvider.getOne<Contact>("contacts", { id: entityContext!.contactId! }),
         enabled: !!entityContext?.contactId,
       },
       {
-        queryKey: ["organizations", "getOne", { id: entityContext?.organizationId ?? 0 }],
+        queryKey: organizationKeys.detail(entityContext?.organizationId ?? 0),
         queryFn: () =>
           dataProvider.getOne<Organization>("organizations", {
             id: entityContext!.organizationId!,
@@ -432,7 +287,7 @@ export function QuickLogActivityDialog({
         enabled: !!entityContext?.organizationId,
       },
       {
-        queryKey: ["opportunities", "getOne", { id: entityContext?.opportunityId ?? 0 }],
+        queryKey: opportunityKeys.detail(entityContext?.opportunityId ?? 0),
         queryFn: () =>
           dataProvider.getOne<Opportunity>("opportunities", { id: entityContext!.opportunityId! }),
         enabled: !!entityContext?.opportunityId,

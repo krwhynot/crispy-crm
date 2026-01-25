@@ -12,7 +12,7 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { importWizardReducer, createInitialState } from "../useImportWizard";
+import { importWizardReducer, createInitialState } from "../reducers/importWizardReducer";
 import type {
   WizardAction,
   WizardStateIdle,

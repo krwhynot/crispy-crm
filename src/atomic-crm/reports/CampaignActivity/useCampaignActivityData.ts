@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useGetList, useDataProvider } from "ra-core";
-import { useQuery } from "@tantml:parameter>query";
+import { useQuery } from "@tanstack/react-query";
 import { useReportData } from "@/atomic-crm/reports/hooks";
 import { reportKeys } from "@/atomic-crm/queryKeys";
 import type { Sale } from "../types";
