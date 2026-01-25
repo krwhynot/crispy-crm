@@ -1,0 +1,99 @@
+{
+  "audit": "stale-state",
+  "mode": "full",
+  "timestamp": "2026-01-25T00:00:00Z",
+  "critical": 2,
+  "high": 5,
+  "medium": 4,
+  "findings": [
+    {
+      "id": "SS-001",
+      "severity": "critical",
+      "check": "Missing queryClient.invalidateQueries in useSalesUpdate mutation",
+      "location": "src/atomic-crm/settings/useSalesUpdate.ts:51-54",
+      "description": "useSalesUpdate hook completes with onSuccess but lacks explicit queryClient invalidation. Only calls onSuccess callback which is optional. When users update their profile, related sales data cache is not invalidated, causing stale reads.",
+      "fix": "Add: queryClient.invalidateQueries({ queryKey: saleKeys.all }); in onSuccess before calling onSuccess callback"
+    },
+    {
+      "id": "SS-002",
+      "severity": "critical",
+      "check": "Missing invalidateQueries in updatePassword mutation",
+      "location": "src/atomic-crm/settings/SettingsPage.tsx:35-52",
+      "description": "updatePassword mutation has no cache invalidation strategy. No queryClient imported, no queryKeys invalidated. User profile cache remains stale after password change.",
+      "fix": "Import useQueryClient and saleKeys, add queryClient.invalidateQueries({ queryKey: saleKeys.all }) in onSuccess"
+    },
+    {
+      "id": "SS-003",
+      "severity": "high",
+      "check": "Inconsistent refetchOnWindowFocus patterns",
+      "location": "src/atomic-crm/opportunities/OpportunityListFilter.tsx:125, src/atomic-crm/products/ProductListFilter.tsx:22, src/atomic-crm/products/ProductsDatagridHeader.tsx:69",
+      "description": "Product and Opportunity filters disable refetchOnWindowFocus (false) while most other queries enable it (true). This creates stale data pockets when users switch tabs and return.",
+      "fix": "Align strategy: enable refetchOnWindowFocus for lists OR add explicit polling with refetchInterval"
+    },
+    {
+      "id": "SS-004",
+      "severity": "high",
+      "check": "Notification polling with aggressive staleTime",
+      "location": "src/components/NotificationBell.tsx:26",
+      "description": "staleTime set to NOTIFICATION_POLL_INTERVAL_MS - 5000 = 25s, but refetchInterval = 30s. Creates 5s window where stale data is served before refetch triggers. Non-trivial for notifications (user sees old unread counts).",
+      "fix": "Increase staleTime to equal refetchInterval (30s) to prevent stale serves, or reduce refetchInterval to 25s"
+    },
+    {
+      "id": "SS-005",
+      "severity": "high",
+      "check": "useSimilarOpportunityCheck missing onSuccess/onError invalidation",
+      "location": "src/atomic-crm/opportunities/useSimilarOpportunityCheck.ts:106+",
+      "description": "useMutation for similarity RPC check lacks cache invalidation. No onSuccess/onError handlers observed in grep output. If opportunity names change server-side, similarity check cache becomes stale.",
+      "fix": "Add onSuccess handler to invalidate opportunityKeys.all after successful similarity check"
+    },
+    {
+      "id": "SS-006",
+      "severity": "high",
+      "check": "useMyTasks mutations use onSettled but missing optimistic update context in snooze/delete",
+      "location": "src/atomic-crm/dashboard/useMyTasks.ts:236+, 299+, 372+",
+      "description": "Snooze and delete task mutations have onSettled invalidations but lack proper onMutate/onError optimistic update patterns seen in completeTask (lines 165-197). Risk: rollback failures if mutation fails.",
+      "fix": "Backport optimistic update + rollback pattern from completeTask mutation (cancelQueries, snapshot, restore) to snooze/delete mutations"
+    },
+    {
+      "id": "SS-007",
+      "severity": "medium",
+      "check": "Hardcoded queryKey strings in invalidateQueries",
+      "location": "src/atomic-crm/notifications/NotificationsList.tsx:134, 235",
+      "description": "Using hardcoded queryKey: ['notifications'] instead of notificationKeys constant. Creates maintainability risk - if key changes in queryKeys.ts, invalidation misses cache.",
+      "fix": "Import notificationKeys from queryKeys.ts and use notificationKeys.all instead of hardcoded string"
+    },
+    {
+      "id": "SS-008",
+      "severity": "medium",
+      "check": "Missing staleTime in DigestPreferences useQuery",
+      "location": "src/atomic-crm/settings/DigestPreferences.tsx:51-58",
+      "description": "useQuery for digest preference has staleTime: 5 * 60 * 1000 but no explicit refetchOnWindowFocus or refetchInterval defined. Relies on defaults which may be aggressive in some configs.",
+      "fix": "Add explicit refetchOnWindowFocus: false (if 5min cache intended) or add refetchInterval for periodic polling"
+    },
+    {
+      "id": "SS-009",
+      "severity": "medium",
+      "check": "useQuickAdd invalidates .all keys instead of specific filters",
+      "location": "src/atomic-crm/opportunities/useQuickAdd.ts:36-38",
+      "description": "Invalidates organizationKeys.all, contactKeys.all, opportunityKeys.all on quick add success. Correct but overly broad - all list filters refetch even if organization filter wouldn't match new org.",
+      "fix": "Consider more granular invalidation: invalidate .lists() instead of .all, or use queryClient.refetchQueries with filters"
+    },
+    {
+      "id": "SS-010",
+      "severity": "medium",
+      "check": "Notification count Bell polls but mutation success doesn't refetch",
+      "location": "src/components/NotificationBell.tsx:16-30 vs src/atomic-crm/notifications/NotificationsList.tsx:134, 235",
+      "description": "NotificationBell polls notifications every 30s (refetchInterval). NotificationsList marks as read/unread but only invalidates cache (line 134, 235). Count Bell won't show updates until next 30s poll or user clicks.",
+      "fix": "In NotificationsList onSuccess handlers, trigger manual refetch of NotificationBell query OR reduce poll interval to 10s"
+    },
+    {
+      "id": "SS-011",
+      "severity": "medium",
+      "check": "gcTime set inconsistently (15min vs 5min)",
+      "location": "src/atomic-crm/opportunities/OpportunityListFilter.tsx:124, src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx:66",
+      "description": "Opportunity filter uses gcTime: 15min, but Organization contacts slide-over uses staleTime: 5min with no explicit gcTime. Defaults to 5min. Can cause slide-over data to garbage-collect while list cache still active.",
+      "fix": "Align gcTime across feature modules: use gcTime: DEFAULT_GC_TIME_MS (15min) consistently or document exceptions"
+    }
+  ],
+  "summary": "2 critical (missing sales invalidations), 5 high (polling misalignment, optimistic patterns incomplete), 4 medium (hardcoded keys, gcTime inconsistency) issues found"
+}

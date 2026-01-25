@@ -56,6 +56,7 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
 
   // Stabilize watchedValues to prevent render loop
   // useWatch returns new object reference on every render, causing infinite loop
+  // Arrays need JSON.stringify for stable comparison (array references always differ)
   const stableWatchedValues = useMemo(
     () => ({
       principal_organization_id: watchedValues.principal_organization_id ?? null,
@@ -66,7 +67,7 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
     }),
     [
       watchedValues.principal_organization_id,
-      watchedValues.stage,
+      JSON.stringify(watchedValues.stage ?? []), // Serialize array for stable comparison
       watchedValues.opportunity_owner_id,
       watchedValues.startDate,
       watchedValues.endDate,
