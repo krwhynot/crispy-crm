@@ -88,9 +88,10 @@ describe("useCampaignActivityMetrics", () => {
 
       // The opportunity with null stage should be filtered out
       // Only the valid opportunity should be processed
-      expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining("[DATA INTEGRITY]"));
+      // Logger uses structured format: "[timestamp] [ERROR] message {json}"
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Opportunity ID 1 has no stage")
+        expect.stringContaining("Opportunity ID 1 has no stage"),
+        "" // logger.error passes empty string as second param when no error object
       );
     });
 
