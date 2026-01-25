@@ -279,7 +279,7 @@ describe("withErrorLogging", () => {
           params: Record<string, unknown>
         ) => Promise<unknown>;
         await expect(providerMethod("resource", {})).rejects.toThrow(`${method} failed`);
-        expect(consoleErrorSpy).toHaveBeenCalled();
+        expect(logger.error).toHaveBeenCalled();
       });
     });
   });

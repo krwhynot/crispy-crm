@@ -15,13 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormSelectInput } from "@/components/admin/inputs/FormSelectInput";
 import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
-import { Popover, PopoverContent, PopoverAnchor } from "@/components/ui/popover";
 import { US_CITIES } from "./data/us-cities";
 import { cn } from "@/lib/utils";
 import { getStorageItem } from "@/atomic-crm/utils/secureStorage";
-import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
-import { organizationKeys } from "@/atomic-crm/queryKeys";
 import { QuickAddFormActions } from "./QuickAddFormActions";
+import { OrganizationCombobox } from "./OrganizationCombobox";
 
 interface QuickAddFormProps {
   onSuccess: () => void;

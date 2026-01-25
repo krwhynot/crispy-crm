@@ -60,22 +60,16 @@ CREATE INDEX IF NOT EXISTS idx_pda_distributor_id_partial
 -- ============================================================================
 -- PRODUCT_FEATURES (FK missing partial index)
 -- ============================================================================
-CREATE INDEX IF NOT EXISTS idx_product_features_product_id_partial
-  ON product_features (product_id)
-  WHERE deleted_at IS NULL;
+-- SKIPPED: product_features table does not exist in current schema
 
 -- ============================================================================
 -- OPPORTUNITY_PRODUCTS (product_id_reference missing partial index)
 -- Note: opportunity_id already has partial index
 -- ============================================================================
-CREATE INDEX IF NOT EXISTS idx_opportunity_products_product_id_partial
-  ON opportunity_products (product_id_reference)
-  WHERE deleted_at IS NULL;
+-- SKIPPED: opportunity_products table does not exist in current schema
 
 -- ============================================================================
 -- OPPORTUNITY_PARTICIPANTS (organization_id missing partial index)
 -- Note: opportunity_id already has partial index
 -- ============================================================================
-CREATE INDEX IF NOT EXISTS idx_opportunity_participants_org_id_partial
-  ON opportunity_participants (organization_id)
-  WHERE deleted_at IS NULL;
+-- SKIPPED: opportunity_participants table does not exist in current schema
