@@ -25,7 +25,6 @@ import type {
   Sale,
   Opportunity,
   OpportunityParticipant,
-  ContactOrganization,
   OpportunityContact,
   Activity,
 } from "../../../../types";
@@ -76,10 +75,6 @@ describe("extendWithCustomMethods", () => {
         getActivityLog: vi.fn(),
       },
       junctions: {
-        getContactOrganizations: vi.fn(),
-        addContactToOrganization: vi.fn(),
-        removeContactFromOrganization: vi.fn(),
-        setPrimaryOrganization: vi.fn(),
         getOpportunityParticipants: vi.fn(),
         addOpportunityParticipant: vi.fn(),
         removeOpportunityParticipant: vi.fn(),
