@@ -20,9 +20,18 @@ const ProductEdit = () => {
       redirect="show"
       mutationMode="pessimistic"
       mutationOptions={{
-        onSuccess: () => {
+        onSuccess: (data) => {
           // Invalidate products cache
           queryClient.invalidateQueries({ queryKey: productKeys.all });
+
+          // Invalidate linked distributors if present
+          if (data?.distributor_ids && Array.isArray(data.distributor_ids)) {
+            data.distributor_ids.forEach((distributorId) => {
+              queryClient.invalidateQueries({
+                queryKey: organizationKeys.detail(distributorId),
+              });
+            });
+          }
         },
       }}
     >

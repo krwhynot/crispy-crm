@@ -65,7 +65,7 @@ describe("withErrorLogging", () => {
         filter: {},
       });
       expect(result).toEqual(expectedResult);
-      expect(consoleErrorSpy).not.toHaveBeenCalled();
+      expect(logger.error).not.toHaveBeenCalled();
     });
 
     it("should pass through successful create calls unchanged", async () => {
@@ -77,7 +77,7 @@ describe("withErrorLogging", () => {
         data: { name: "New Contact" },
       });
       expect(result).toEqual(expectedResult);
-      expect(consoleErrorSpy).not.toHaveBeenCalled();
+      expect(logger.error).not.toHaveBeenCalled();
     });
   });
 

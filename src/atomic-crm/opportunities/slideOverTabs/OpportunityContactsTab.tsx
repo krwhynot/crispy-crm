@@ -140,6 +140,22 @@ export function OpportunityContactsTab({
       const service = new OpportunitiesService(dataProvider as ExtendedDataProvider);
       await service.updateWithContacts(record.id, data.contact_ids || []);
 
+      // Invalidate caches for parent resources
+      queryClient.invalidateQueries({
+        queryKey: opportunityKeys.detail(record.id),
+      });
+
+      // Invalidate all contacts that were in the junction
+      if (data.contact_ids && data.contact_ids.length > 0) {
+        data.contact_ids.forEach((contactId) => {
+          queryClient.invalidateQueries({
+            queryKey: contactKeys.detail(contactId),
+          });
+        });
+      }
+
+      queryClient.invalidateQueries({ queryKey: opportunityContactKeys.all });
+
       notify("Contacts updated successfully", { type: "success" });
       if (onModeToggle) {
         onModeToggle();

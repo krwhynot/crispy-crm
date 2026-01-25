@@ -10,6 +10,7 @@ import { useFilteredProducts } from "./useFilteredProducts";
 import { Form, useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { AdminButton } from "@/components/admin/AdminButton";
+import { AccessibleField } from "@/components/admin/AccessibleField";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormSelectInput } from "@/components/admin/inputs/FormSelectInput";
@@ -24,53 +25,6 @@ import { QuickAddFormActions } from "./QuickAddFormActions";
 
 interface QuickAddFormProps {
   onSuccess: () => void;
-}
-
-interface AccessibleFieldProps {
-  name: string;
-  label: string;
-  error?: string;
-  required?: boolean;
-  children: React.ReactElement;
-  className?: string;
-}
-
-function AccessibleField({
-  name,
-  label,
-  error,
-  required,
-  children,
-  className,
-}: AccessibleFieldProps) {
-  const errorId = `${name}-error`;
-
-  return (
-    <div className={cn("space-y-2", className)}>
-      <Label htmlFor={name}>
-        {label}
-        {required && (
-          <span className="text-destructive" aria-hidden="true">
-            {" "}
-            *
-          </span>
-        )}
-      </Label>
-
-      {React.cloneElement(children, {
-        id: name,
-        "aria-invalid": error ? "true" : undefined,
-        "aria-describedby": error ? errorId : undefined,
-        "aria-required": required ? "true" : undefined,
-      } as React.HTMLAttributes<HTMLElement>)}
-
-      {error && (
-        <p id={errorId} role="alert" className="text-sm text-destructive">
-          {error}
-        </p>
-      )}
-    </div>
-  );
 }
 
 interface InlineCreateOrganizationProps {
@@ -614,38 +568,12 @@ const QuickAddFormContent = ({
         </div>
       </div>
 
-      <div className="flex items-center justify-between pt-4 border-t">
-        <AdminButton
-          type="button"
-          variant="outline"
-          onClick={onSuccess}
-          disabled={isPending}
-          className="h-11"
-        >
-          Cancel
-        </AdminButton>
-
-        <div className="flex gap-2">
-          <AdminButton
-            type="button"
-            onClick={handleSubmit((data) => onSubmit(data, false), onValidationError)}
-            disabled={isPending}
-            className="h-11"
-          >
-            Save & Add Another
-          </AdminButton>
-
-          <AdminButton
-            type="button"
-            variant="secondary"
-            onClick={handleSubmit((data) => onSubmit(data, true), onValidationError)}
-            disabled={isPending}
-            className="h-11"
-          >
-            Save & Close
-          </AdminButton>
-        </div>
-      </div>
+      <QuickAddFormActions
+        onCancel={onSuccess}
+        onSaveAndAddAnother={handleSubmit((data) => onSubmit(data, false), onValidationError)}
+        onSaveAndClose={handleSubmit((data) => onSubmit(data, true), onValidationError)}
+        isPending={isPending}
+      />
     </div>
   );
 };

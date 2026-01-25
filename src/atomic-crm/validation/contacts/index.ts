@@ -9,4 +9,3 @@ export * from "./contacts-core";
 export * from "./contacts-department";
 export * from "./contacts-import";
 export * from "./contacts-quick-create";
-export * from "./contacts-relations";
