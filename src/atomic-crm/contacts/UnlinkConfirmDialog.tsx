@@ -2,7 +2,7 @@
 import { useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSafeNotify } from "../hooks/useSafeNotify";
-import { opportunityContactKeys } from "../queryKeys";
+import { opportunityContactKeys, opportunityKeys, contactKeys } from "../queryKeys";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -17,6 +17,7 @@ import {
 interface UnlinkConfirmDialogProps {
   opportunity: { id: number; name: string; junctionId: string } | null;
   contactName: string;
+  contactId: number;
   onClose: () => void;
   onSuccess: () => void;
 }

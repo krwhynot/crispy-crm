@@ -11,6 +11,7 @@ import { pluralize } from "@/lib/utils/pluralize";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { AppliedFiltersBar, EmptyState } from "./components";
 import { useReportData } from "./hooks";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { ActivityRecord, Organization, Sale } from "../types";
 
 /**
@@ -48,7 +49,7 @@ export default function WeeklyActivitySummary() {
   );
 
   const { data: sales } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     filter: { id: createdByIds },
   });
 

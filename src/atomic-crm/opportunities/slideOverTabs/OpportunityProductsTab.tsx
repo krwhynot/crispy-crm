@@ -5,7 +5,7 @@ import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import type { Identifier } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { activityKeys } from "@/atomic-crm/queryKeys";
+import { activityKeys, opportunityKeys, opportunityProductKeys } from "@/atomic-crm/queryKeys";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";

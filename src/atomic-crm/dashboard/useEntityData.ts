@@ -8,7 +8,7 @@ import { useDebouncedSearch } from "./useDebouncedSearch";
 const STALE_TIME_MS = 5 * 60 * 1000;
 
 // Initial page size for dropdown population
-const INITIAL_PAGE_SIZE = 100;
+const INITIAL_PAGE_SIZE = 25;
 
 // Minimum characters before server search
 const MIN_SEARCH_LENGTH = 2;

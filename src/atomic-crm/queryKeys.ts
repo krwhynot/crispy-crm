@@ -42,6 +42,9 @@ export const segmentKeys = createKeys("segments");
 export const opportunityParticipantKeys = createKeys("opportunity_participants");
 export const opportunityContactKeys = createKeys("opportunity_contacts");
 export const userFavoriteKeys = createKeys("user_favorites");
+export const productDistributorAuthKeys = createKeys("product_distributor_authorizations");
+export const distributorPrincipalAuthKeys = createKeys("distributor_principal_authorizations");
+export const opportunityProductKeys = createKeys("opportunity_products");
 
 // Custom / Non-CRUD Keys
 export const orgDescendantKeys = {
@@ -97,6 +100,9 @@ export const queryKeys = {
   opportunityParticipants: opportunityParticipantKeys,
   opportunityContacts: opportunityContactKeys,
   userFavorites: userFavoriteKeys,
+  productDistributorAuth: productDistributorAuthKeys,
+  distributorPrincipalAuth: distributorPrincipalAuthKeys,
+  opportunityProducts: opportunityProductKeys,
   orgDescendants: orgDescendantKeys,
   digest: digestKeys,
   dashboard: dashboardKeys,
