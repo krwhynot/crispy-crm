@@ -137,7 +137,9 @@
       "description": "Uses console.error instead of structured logger service",
       "fix": "Replace with logger service for Sentry integration",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "FALSE POSITIVE - withErrorLogging.ts:24 already uses structured logger (import { logger } from '@/lib/logger') with Sentry integration. Logger.error() called at lines 104-108.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "workflow-gaps",
@@ -149,7 +151,9 @@
       "description": "Win/loss reason validation only exists client-side",
       "fix": "Implement server-side RPC validation",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "3-layer defense already implemented: (1) Zod validation at src/atomic-crm/validation/opportunities/opportunities-operations.ts:417-456, (2) DB constraint at migrations/20260122235000_add_win_loss_check_constraints.sql:23-35, (3) Trigger validation at migrations/20260125041610_opportunity_closure_validation.sql:1-50",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "stale-state",

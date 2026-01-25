@@ -53,7 +53,7 @@ export function OpportunitiesTab() {
     "opportunity_contacts",
     {
       filter: { contact_id: contact?.id },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "created_at", order: "DESC" },
     },
     { enabled: !!contact?.id, refetchOnWindowFocus: true }
@@ -76,7 +76,7 @@ export function OpportunitiesTab() {
       filter: {
         customer_organization_id: contact?.organization_id,
       },
-      pagination: { page: 1, perPage: 25 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "updated_at", order: "DESC" },
     },
     { enabled: !!contact?.organization_id && (!junctionRecords || junctionRecords.length === 0) }
