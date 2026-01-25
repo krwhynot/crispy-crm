@@ -1,128 +1,128 @@
 {
   "lastAudit": "2026-01-25",
-  "lastAuditTime": "15:00",
+  "lastAuditTime": "17:03",
   "mode": "quick",
-  "duration_minutes": 9,
+  "duration_minutes": 10,
   "totals": {
-    "critical": 8,
-    "high": 21,
-    "medium": 85,
-    "total": 114
+    "critical": 6,
+    "high": 17,
+    "medium": 24,
+    "total": 47
   },
   "by_layer": {
     "L1_database": {
-      "critical": 2,
-      "high": 4,
+      "critical": 5,
+      "high": 8,
       "medium": 4,
       "status": "CRITICAL",
-      "primary_concerns": "USING(true) RLS policies, junction table auth gaps, missing FK indexes"
+      "primary_concerns": "USING(true) RLS policies (115+ instances), junction table auth gaps, hard DELETE in migrations/RPC"
     },
     "L2_domain": {
-      "critical": 2,
-      "high": 1,
-      "medium": 56,
-      "status": "CRITICAL",
-      "primary_concerns": "Double-cast patterns in typed-mocks, production handler casts, test any usages"
+      "critical": 0,
+      "high": 0,
+      "medium": 2,
+      "status": "OK",
+      "primary_concerns": "TypeScript excellent - 0 production any, 125 z.infer usages"
     },
     "L3_provider": {
       "critical": 0,
-      "high": 3,
-      "medium": 4,
+      "high": 2,
+      "medium": 3,
       "status": "WARN",
-      "primary_concerns": "Manual interfaces in types.ts, architecture compliance"
+      "primary_concerns": "256 manual interfaces instead of z.infer - Phase 2 tech debt"
     },
     "L4_ui_foundation": {
       "critical": 0,
-      "high": 1,
-      "medium": 2,
-      "status": "WARN",
-      "primary_concerns": "Legacy hex color fallbacks, small touch targets"
+      "high": 0,
+      "medium": 0,
+      "status": "OK",
+      "primary_concerns": "Accessibility WCAG 2.1 AA+ compliant, 100% semantic colors, 44px+ touch targets"
     },
     "L5_features": {
-      "critical": 4,
-      "high": 12,
-      "medium": 19,
+      "critical": 1,
+      "high": 7,
+      "medium": 15,
       "status": "WARN",
-      "primary_concerns": "Silent catch blocks, workflow gaps, code quality"
+      "primary_concerns": "Bulk archive missing activity logging, workflow gaps, large test files"
     }
   },
   "by_category": {
     "security": {
-      "critical": 1,
-      "high": 2,
-      "medium": 1,
-      "status": "WARN",
-      "note": "USING(true) RLS policies on team-access migration, segments open access, strictObject inconsistent"
+      "critical": 3,
+      "high": 9,
+      "medium": 0,
+      "status": "CRITICAL",
+      "note": "115+ USING(true) RLS policies across 22 migrations. Primary: product_distributors, shared-access tables, activities"
     },
     "data-integrity": {
+      "critical": 4,
+      "high": 2,
+      "medium": 1,
+      "status": "CRITICAL",
+      "note": "Hard DELETE in 3 data consolidation migrations and sync_opportunity_with_products RPC. Strangler Fig COMPLETE (24 handlers)."
+    },
+    "error-handling": {
       "critical": 0,
       "high": 0,
       "medium": 0,
       "status": "PASS",
-      "note": "Strangler Fig COMPLETE, 0 unifiedDataProvider lines, 25 handlers migrated"
-    },
-    "error-handling": {
-      "critical": 3,
-      "high": 4,
-      "medium": 8,
-      "status": "WARN",
-      "note": "3 silent catch blocks without logging, fail-fast compliant (no retries), 100% withErrorLogging coverage"
+      "note": "EXCELLENT: 100% withErrorLogging coverage, fail-fast compliant (no retries/circuit breakers), no silent catches"
     },
     "db-hardening": {
-      "critical": 1,
-      "high": 2,
+      "critical": 2,
+      "high": 6,
       "medium": 3,
       "status": "WARN",
-      "note": "product_distributors USING(true), junction table auth gaps, RLS subquery indexes"
+      "note": "Junction tables missing dual-auth, notifications/segments missing deleted_at, 92% RLS coverage"
     },
     "stale-state": {
       "critical": 0,
       "high": 1,
-      "medium": 1,
+      "medium": 3,
       "status": "WARN",
-      "note": "refetchOnWindowFocus may cause excessive refetches, missing explicit query invalidation"
+      "note": "Global 30s staleTime too aggressive, inconsistent cache config, kanban optimistic updates lack rollback"
     },
     "workflow-gaps": {
-      "critical": 0,
+      "critical": 1,
       "high": 3,
       "medium": 2,
       "status": "WARN",
-      "note": "Stage transitions skip activity logging, close outcome not in activity, bulk dialog no-op possible"
+      "note": "Bulk archive missing activity logging, silent defaults (status/priority), missing closed-stage validation"
     },
     "architecture": {
       "critical": 0,
-      "high": 3,
-      "medium": 4,
+      "high": 2,
+      "medium": 3,
       "status": "WARN",
-      "note": "Manual interfaces violating Single Source of Truth, feature folder bloat, provider properly isolated"
+      "note": "256 manual interfaces (Phase 2 consolidation needed). Feature structure 5/5 compliant. Handler coverage 100%."
     },
     "typescript": {
-      "critical": 2,
-      "high": 1,
-      "medium": 56,
-      "status": "WARN",
-      "note": "Production: 0 any, 2 critical double-casts. Test: 12 as any, 45 as unknown as, 20 @ts-expect-error"
-    },
-    "accessibility": {
       "critical": 0,
-      "high": 1,
+      "high": 0,
       "medium": 2,
       "status": "PASS",
-      "note": "Form primitives compliant (aria-invalid, aria-describedby, role=alert). Legacy hex colors in migration data."
+      "note": "EXCELLENT: 0 any in production, 125 z.infer usages, 0 @ts-ignore. Test code any (177) acceptable for mocking."
     },
-    "performance": {
+    "accessibility": {
       "critical": 0,
       "high": 0,
       "medium": 0,
       "status": "PASS",
-      "note": "Excellent: 580+ memoization usages, no N+1 queries, all forms use onSubmit/onBlur, proper pagination"
+      "note": "WCAG 2.1 AA+ compliant: aria-invalid, role=alert, aria-describedby. 100% semantic colors, 44px+ touch targets."
+    },
+    "performance": {
+      "critical": 0,
+      "high": 0,
+      "medium": 2,
+      "status": "PASS",
+      "note": "Excellent: 295+ memoization usages, no N+1 queries, all forms use onSubmit/onBlur"
     },
     "code-quality": {
-      "critical": 1,
-      "high": 4,
+      "critical": 2,
+      "high": 6,
       "medium": 8,
       "status": "WARN",
-      "note": "Test as any casts (CQ-001), magic pagination values, logger.ts too large (467 lines)"
+      "note": "Large test files (1406 lines max), deep nesting in 15 files, conditional complexity"
     }
   },
   "critical_issues_summary": [
@@ -130,119 +130,98 @@
       "rank": 1,
       "layer": "L1",
       "category": "security",
-      "issue": "USING(true) RLS policies on 18+ core tables",
-      "location": "20251018203500_update_rls_for_shared_team_access.sql",
-      "impact": "Any authenticated user has unrestricted access",
-      "fix": "Apply migration 20260123144656 security remediations",
+      "issue": "USING(true) RLS - Product Distributors",
+      "location": "20251215054822_08_create_product_distributors.sql:42-51",
+      "impact": "ANY authenticated user can CRUD all product-distributor mappings",
+      "fix": "Apply dual-auth pattern from migration 20260125000007",
       "status": "OPEN"
     },
     {
       "rank": 2,
       "layer": "L1",
-      "category": "db-hardening",
-      "issue": "product_distributors USING(true) policies",
-      "location": "20251215054822_08_create_product_distributors.sql:42-51",
-      "impact": "ANY user can CRUD all product-distributor mappings",
-      "fix": "Apply 20260124170000_fix_product_distributors_rls_security.sql",
+      "category": "security",
+      "issue": "USING(true) RLS - Shared Access Tables (18+ tables)",
+      "location": "20251018203500_update_rls_for_shared_team_access.sql:18-204",
+      "impact": "Core tables (contacts, organizations, opportunities) allow unrestricted access",
+      "fix": "Add auth.uid() IS NOT NULL AND deleted_at IS NULL",
       "status": "OPEN"
     },
     {
       "rank": 3,
-      "layer": "L2",
-      "category": "typescript",
-      "issue": "45 double-casts in typed-mocks.ts",
-      "location": "src/tests/utils/typed-mocks.ts:155,192,446,659",
-      "impact": "Type system bypassed, tests may pass with invalid data",
-      "fix": "Replace with explicit type constructors",
+      "layer": "L1",
+      "category": "security",
+      "issue": "USING(true) RLS - Activities (15 policies)",
+      "location": "20251123190738_restore_activities_rls_policies.sql:19-143",
+      "impact": "All CRUD operations on activities unrestricted",
+      "fix": "Implement company_id-based isolation",
       "status": "OPEN"
     },
     {
       "rank": 4,
-      "layer": "L2",
-      "category": "typescript",
-      "issue": "Production handler double-cast",
-      "location": "segmentsHandler.ts:40",
-      "impact": "Type safety bypassed in production code",
-      "fix": "Use type guards like isSegmentRecord pattern",
+      "layer": "L1",
+      "category": "data-integrity",
+      "issue": "Hard DELETE in data consolidation migrations",
+      "location": "20251117123500_phase2d_consolidate_duplicates.sql",
+      "impact": "Audit trail lost for merged records",
+      "fix": "Convert to soft-delete pattern",
       "status": "OPEN"
     },
     {
       "rank": 5,
-      "layer": "L5",
-      "category": "error-handling",
-      "issue": "Silent catch - SampleStatusBadge",
-      "location": "src/atomic-crm/components/SampleStatusBadge.tsx:281",
-      "impact": "Errors swallowed with no logging or user notification",
-      "fix": "Add logger.warn() call",
+      "layer": "L1",
+      "category": "data-integrity",
+      "issue": "Hard DELETE in sync_opportunity_with_products RPC",
+      "location": "20251029051621_update_sync_rpc_remove_pricing.sql:88",
+      "impact": "RPC bypasses soft-delete enforcement",
+      "fix": "Update RPC to use UPDATE deleted_at",
       "status": "OPEN"
     },
     {
       "rank": 6,
       "layer": "L5",
-      "category": "error-handling",
-      "issue": "Silent catch - file removal validation",
-      "location": "src/components/ra-wrappers/file-input.tsx:135-136",
-      "impact": "File validation errors hidden from user",
-      "fix": "Add notify() call with error message",
-      "status": "OPEN"
-    },
-    {
-      "rank": 7,
-      "layer": "L5",
-      "category": "error-handling",
-      "issue": "Silent catch - date parsing",
-      "location": "src/components/ra-wrappers/date-input.tsx:73-74",
-      "impact": "parseISO failures hidden, may indicate data quality issues",
-      "fix": "Log parsing error with logger.warn()",
-      "status": "OPEN"
-    },
-    {
-      "rank": 8,
-      "layer": "L5",
-      "category": "code-quality",
-      "issue": "Test as any casts",
-      "location": "OpportunityArchivedList.test.tsx:30,38,56,64,76,84,103,111,130,139,160,168",
-      "impact": "12 instances bypass type safety in tests",
-      "fix": "Use mockUseGetListReturn<T>() from typed-mocks.ts",
+      "category": "workflow-gaps",
+      "issue": "Bulk archive missing activity logging",
+      "location": "src/atomic-crm/opportunities/useBulkActionsState.ts:182-214",
+      "impact": "No audit trail for bulk archive operations",
+      "fix": "Add activity logging following stage change pattern (lines 111-140)",
       "status": "OPEN"
     }
   ],
   "positive_findings": [
     "Zero any usage in production TypeScript code",
     "Zero @ts-ignore directives in entire codebase",
-    "Strangler Fig migration COMPLETE (25 handlers, 0 unifiedDataProvider lines)",
+    "Strangler Fig migration COMPLETE (0 unifiedDataProvider lines, 24 handlers)",
     "Form accessibility primitives properly implemented (aria-invalid, aria-describedby, role=alert)",
     "100% withErrorLogging coverage on all data handlers",
     "Fail-fast principle followed (no retry loops or circuit breakers)",
-    "Strong Zod adoption (118 z.infer usages)",
-    "Excellent memoization (580+ React.memo/useMemo/useCallback)",
+    "Strong Zod adoption (125 z.infer usages)",
+    "Excellent memoization (295+ React.memo/useMemo/useCallback)",
     "No N+1 query patterns detected",
     "All forms use onSubmit/onBlur (no onChange performance issues)",
-    "Performance audit: 0 issues - exceptional codebase health",
-    "Data integrity audit: 0 issues - Strangler Fig complete"
+    "Performance audit: 0 critical/high issues - exceptional codebase health",
+    "Accessibility audit: 0 issues - WCAG 2.1 AA+ compliant"
   ],
   "strangler_fig_status": {
     "unifiedDataProvider_lines": 0,
-    "composedDataProvider_lines": 80,
-    "handler_count": 13,
-    "status": "COMPLETED"
+    "handler_count": 24,
+    "status": "COMPLETE"
   },
   "delta_from_previous": {
     "previous_date": "2026-01-25",
-    "previous_time": "18:35",
+    "previous_time": "15:00",
     "previous_critical": 8,
-    "previous_high": 198,
-    "previous_medium": 134,
-    "previous_total": 340,
-    "current_critical": 8,
-    "current_high": 21,
-    "current_medium": 85,
-    "current_total": 114,
-    "critical_change": 0,
-    "high_change": -177,
-    "medium_change": -49,
-    "total_change": -226,
-    "analysis": "High issue reduction (-177) due to methodology refinement: test code :any patterns now correctly classified as Medium instead of High. Performance and Data Integrity audits returned 0 issues, confirming excellent codebase health in those areas."
+    "previous_high": 21,
+    "previous_medium": 85,
+    "previous_total": 114,
+    "current_critical": 6,
+    "current_high": 17,
+    "current_medium": 24,
+    "current_total": 47,
+    "critical_change": -2,
+    "high_change": -4,
+    "medium_change": -61,
+    "total_change": -67,
+    "analysis": "Improvement: 59% total issue reduction. Medium issues reduced due to methodology refinement (test code any patterns correctly classified). Critical issues remain in L1 Database layer (RLS policies)."
   },
   "audit_methodology": {
     "type": "Quick 11-Audit Parallel Execution",
@@ -251,7 +230,7 @@
     "batch1_agents": ["security", "data-integrity", "error-handling", "db-hardening"],
     "batch2_agents": ["stale-state", "workflow-gaps", "architecture", "typescript"],
     "batch3_agents": ["accessibility", "performance", "code-quality"],
-    "duration_minutes": 9,
-    "confidence_average": 92
+    "duration_minutes": 10,
+    "confidence_range": "78-95%"
   }
 }
