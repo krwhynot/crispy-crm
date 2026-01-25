@@ -85,14 +85,7 @@ export const reportKeys = {
     campaign?: string,
     dateRange?: { start: string; end: string } | null,
     salesRepId?: number | null
-  ) =>
-    [
-      "stale-opportunities",
-      campaign,
-      dateRange?.start,
-      dateRange?.end,
-      salesRepId,
-    ] as const,
+  ) => ["stale-opportunities", campaign, dateRange?.start, dateRange?.end, salesRepId] as const,
 };
 
 // Aggregate export for convenience

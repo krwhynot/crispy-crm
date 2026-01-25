@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { parseDateSafely } from "@/lib/date-utils";
+import { notificationKeys } from "@/atomic-crm/queryKeys";
 
 interface Notification {
   id: number;

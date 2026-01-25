@@ -74,12 +74,15 @@ export default function CampaignActivityReport() {
     totalCampaignOpportunities,
     isLoadingCampaigns,
     isLoadingActivities,
+    staleOpportunities: staleOpportunitiesData,
+    isLoadingStaleOpportunities,
   } = useCampaignActivityData({
     selectedCampaign,
     dateRange,
     selectedActivityTypes,
     selectedSalesRep,
     allActivityTypes: INTERACTION_TYPE_OPTIONS,
+    showStaleLeads,
   });
 
   const { exportStaleLeads, exportActivities } = useCampaignActivityExport(
@@ -145,19 +148,21 @@ export default function CampaignActivityReport() {
     return result.sort((a, b) => b.totalCount - a.totalCount);
   }, [activities]);
 
-  // TODO: Stale leads feature requires server-side RPC (get_stale_opportunities)
-  // The previous client-side implementation used perPage: 1000 which was a time bomb.
-  // Temporarily returning empty array until RPC is implemented.
-  const staleOpportunities: Array<{
-    id: number;
-    name: string;
-    stage?: string;
-    customer_organization_name?: string;
-    lastActivityDate: string | null;
-    daysInactive: number;
-    stageThreshold?: number;
-    isStale: boolean;
-  }> = [];
+  // Map RPC response to component shape
+  const staleOpportunities = useMemo(
+    () =>
+      (staleOpportunitiesData || []).map((opp) => ({
+        id: opp.id,
+        name: opp.name,
+        stage: opp.stage,
+        customer_organization_name: opp.customer_organization_name ?? undefined,
+        lastActivityDate: opp.last_activity_date,
+        daysInactive: opp.days_inactive,
+        stageThreshold: opp.stage_threshold,
+        isStale: opp.is_stale,
+      })),
+    [staleOpportunitiesData]
+  );
 
   // Auto-expand top 3 activity types on load
   React.useEffect(() => {
