@@ -40,21 +40,23 @@
 
 ---
 
-## Critical Issues (24 Total)
+## Critical Issues (22 Total, 2 False Positives Resolved)
 
-### L1 - Database Layer (9 Critical)
+### L1 - Database Layer (7 Critical)
 
 | ID | Issue | File | Line |
 |----|-------|------|------|
 | SEC-01 | USING(true) on activities, tasks, tags tables | `20251123190738_restore_activities_rls_policies.sql` | - |
 | SEC-02 | Legacy product_distributors has permissive RLS | `20251215054822_08_create_product_distributors.sql` | - |
-| DI-01 | hard_delete_contact function bypasses soft delete | Multiple migrations | - |
-| DI-02 | hard_delete_organization bypasses soft delete | Multiple migrations | - |
+| ~~DI-01~~ | ~~hard_delete_contact function bypasses soft delete~~ | **FALSE POSITIVE** | - |
+| ~~DI-02~~ | ~~hard_delete_organization bypasses soft delete~~ | **FALSE POSITIVE** | - |
 | DI-03 | RLS SELECT policies missing deleted_at IS NULL | activities, tasks, tags | - |
 | DB-01 | Permissive USING(true) on write policies | activities, tasks, tags | - |
 | DB-02 | Missing FK indexes for EXISTS subqueries | Junction tables | - |
 | SS-01 | contact_organizations cache invalidation gap | Junction table | - |
 | SS-02 | opportunity_contacts cache invalidation gap | Junction table | - |
+
+**Note**: DI-01 and DI-02 marked as false positives on 2026-01-24. Comprehensive verification (migrations grep, pg_proc query, codebase search) confirmed these functions never existed.
 
 ### L3 - Provider Layer (2 Critical)
 
