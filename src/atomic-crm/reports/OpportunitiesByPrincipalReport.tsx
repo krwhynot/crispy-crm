@@ -226,6 +226,8 @@ export default function OpportunitiesByPrincipalReport() {
   const [expandedPrincipals, setExpandedPrincipals] = useState<Set<string>>(new Set());
 
   // Build filter object for API
+  // CRITICAL: Use primitive dependencies to prevent render loops
+  // Depending on entire `filters` object causes recalculation when object reference changes
   const apiFilter = useMemo(() => {
     const filter: Record<string, unknown> = {
       "deleted_at@is": null,
@@ -253,7 +255,13 @@ export default function OpportunitiesByPrincipalReport() {
     }
 
     return filter;
-  }, [filters]);
+  }, [
+    filters.principal_organization_id,
+    JSON.stringify(filters.stage), // Array needs serialization for stable comparison
+    filters.opportunity_owner_id,
+    filters.startDate,
+    filters.endDate,
+  ]);
 
   // Fetch opportunities
   const {
@@ -318,16 +326,20 @@ export default function OpportunitiesByPrincipalReport() {
     });
 
     // Convert to array and sort by total count (descending)
-    const groups = Array.from(grouped.values()).sort((a, b) => b.totalCount - a.totalCount);
+    return Array.from(grouped.values()).sort((a, b) => b.totalCount - a.totalCount);
+  }, [opportunities]);
 
-    // Auto-expand first 3 principals
-    if (expandedPrincipals.size === 0 && groups.length > 0) {
-      const initialExpanded = new Set(groups.slice(0, 3).map((g) => g.principalId || "null"));
+  // Auto-expand first 3 principals on initial load
+  // CRITICAL: Moved from useMemo to useEffect - NEVER call setState inside useMemo!
+  // useMemo is for pure computation, useEffect is for side effects
+  useEffect(() => {
+    if (expandedPrincipals.size === 0 && principalGroups.length > 0) {
+      const initialExpanded = new Set(
+        principalGroups.slice(0, 3).map((g) => g.principalId || "null")
+      );
       setExpandedPrincipals(initialExpanded);
     }
-
-    return groups;
-  }, [opportunities, expandedPrincipals.size]);
+  }, [principalGroups, expandedPrincipals.size]);
 
   // Toggle principal expansion
   const togglePrincipalExpansion = (principalId: string | null) => {
