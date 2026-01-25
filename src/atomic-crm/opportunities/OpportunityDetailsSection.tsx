@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { OrganizationCombobox } from "./OrganizationCombobox";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 
-type QuickAddFormValues = {
+interface QuickAddFormValues {
   organization_id?: number;
   org_name?: string;
   principal_id: number;
@@ -21,7 +21,7 @@ type QuickAddFormValues = {
   campaign?: string;
   product_ids: number[];
   quick_note?: string;
-};
+}
 
 interface OpportunityDetailsSectionProps {
   control: Control<QuickAddFormValues>;

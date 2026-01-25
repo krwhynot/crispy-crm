@@ -48,7 +48,7 @@ vi.mock("@/lib/logger", () => ({
 describe("useRelatedRecordCounts", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    consoleErrorSpy.mockClear();
+    mockLoggerWarn.mockClear();
     // Default mock implementation
     mockGetManyReference.mockResolvedValue({ data: [], total: 0 });
   });
@@ -120,11 +120,12 @@ describe("useRelatedRecordCounts", () => {
     expect(result.current.error).toBeNull(); // Not full error, just partial failure
     expect(result.current.relatedCounts.length).toBeGreaterThan(0); // Successful queries returned data
 
-    // Verify console.error was called with structured details
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "[useRelatedRecordCounts] Partial failures detected:",
+    // Verify logger.warn was called with structured details
+    expect(mockLoggerWarn).toHaveBeenCalledWith(
+      "Partial failures detected in related record counts",
       expect.objectContaining({
         resource: "organizations",
+        operation: "useRelatedRecordCounts",
         succeeded: expect.any(Number),
         failed: expect.any(Number),
         errors: expect.any(Array),

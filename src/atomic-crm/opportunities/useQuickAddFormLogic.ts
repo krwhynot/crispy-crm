@@ -37,7 +37,7 @@ interface UseQuickAddFormLogicProps {
  */
 export const useQuickAddFormLogic = ({ identity, identityLoading }: UseQuickAddFormLogicProps) => {
   const dataProvider = useDataProvider();
-  const { setValue, setFocus, control, reset } = useFormContext<QuickAddFormValues>();
+  const { setValue, setFocus } = useFormContext<QuickAddFormValues>();
 
   // Track whether user has interacted with Account Manager field
   const [shouldLoadSales, setShouldLoadSales] = useState(false);
