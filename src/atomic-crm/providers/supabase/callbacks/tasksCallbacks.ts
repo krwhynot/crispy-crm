@@ -144,7 +144,17 @@ export const handleTaskCompletionActivity = async (
   } catch (error) {
     // Log but don't block task completion if activity creation fails
     // Task completion is the primary action, activity is side effect
-    console.error("Failed to create activity from task completion:", error);
+    logger.warn(
+      "Failed to create activity from task completion",
+      error instanceof Error ? error : new Error(String(error)),
+      {
+        resource: "tasks",
+        operation: "handleTaskCompletionActivity",
+        taskId: data.id,
+        taskType,
+        note: "Task completion succeeded - activity creation can be retried manually",
+      }
+    );
   }
 
   return params;

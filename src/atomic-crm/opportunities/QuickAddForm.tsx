@@ -1,32 +1,24 @@
 import * as React from "react";
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import type { FieldErrors } from "react-hook-form";
 import { quickAddBaseSchema, quickAddSchema } from "@/atomic-crm/validation/quickAdd";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { useQuickAdd } from "./useQuickAdd";
 import { useFilteredProducts } from "./useFilteredProducts";
-// React Admin Tier 2 imports - per MODULE_CHECKLIST.md Rule #4
-import { Form, useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { AdminButton } from "@/components/admin/AdminButton";
-import { AccessibleField } from "@/components/admin/AccessibleField";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { FormSelectInput } from "@/components/admin/inputs/FormSelectInput";
-import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
-import { US_CITIES } from "./data/us-cities";
-import { cn } from "@/lib/utils";
+import { useQuickAddFormLogic } from "./useQuickAddFormLogic";
+import { Form, useGetIdentity } from "ra-core";
 import { getStorageItem } from "@/atomic-crm/utils/secureStorage";
 import { QuickAddFormActions } from "./QuickAddFormActions";
-import { OrganizationCombobox } from "./OrganizationCombobox";
+import { OpportunityDetailsSection } from "./OpportunityDetailsSection";
+import { ContactInformationSection } from "./ContactInformationSection";
+import { LocationNotesSection } from "./LocationNotesSection";
 
 interface QuickAddFormProps {
   onSuccess: () => void;
 }
 
 // Form values type - explicitly define to avoid type inference issues with Zod defaults
-type QuickAddFormValues = {
+interface QuickAddFormValues {
   organization_id?: number;
   org_name?: string;
   principal_id: number;
@@ -40,7 +32,7 @@ type QuickAddFormValues = {
   campaign?: string;
   product_ids: number[];
   quick_note?: string;
-};
+}
 
 /**
  * QuickAddForm - Tier 2 React Admin Form Component
@@ -89,7 +81,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
  * QuickAddFormContent - Inner form component using useFormContext
  *
  * Consumes the FormProvider context from the parent Form wrapper.
- * Handles all form logic, data fetching, and rendering.
+ * Delegates logic to custom hook and rendering to section components.
  */
 interface QuickAddFormContentProps {
   onSuccess: () => void;
@@ -103,9 +95,7 @@ const QuickAddFormContent = ({
   identityLoading,
 }: QuickAddFormContentProps) => {
   const { mutate, isPending } = useQuickAdd();
-  const dataProvider = useDataProvider();
 
-  // Use useFormContext to access form methods from RA's Form wrapper
   const {
     register,
     handleSubmit,
@@ -116,98 +106,6 @@ const QuickAddFormContent = ({
     reset,
   } = useFormContext<QuickAddFormValues>();
 
-  // Track whether user has interacted with Account Manager field
-  const [shouldLoadSales, setShouldLoadSales] = useState(false);
-
-  // PERFORMANCE: Server-side filtering - fetch only needed organization types
-  // Principals query: ~100 records with organization_type = 'principal'
-  const { data: principalsList, isLoading: principalsLoading } = useGetList("organizations", {
-    filter: { organization_type: "principal" },
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "name", order: "ASC" },
-  });
-
-  // Customer/Prospect organizations query: ~200 records
-  // React Admin data provider handles OR condition via filter array
-  const { data: organizationsList, isLoading: organizationsLoading } = useGetList("organizations", {
-    filter: { organization_type: ["customer", "prospect"] },
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "name", order: "ASC" },
-  });
-
-  // Defer sales list until user interacts with Account Manager field
-  // Most users never change this (auto-populated from identity)
-  const { data: salesListData, isLoading: salesLoading } = useQuery({
-    queryKey: [
-      "sales",
-      "getList",
-      { pagination: { page: 1, perPage: 100 }, sort: { field: "name", order: "ASC" } },
-    ],
-    queryFn: async () => {
-      const result = await dataProvider.getList("sales", {
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: "name", order: "ASC" },
-      });
-      return result;
-    },
-    enabled: shouldLoadSales,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-  });
-
-  const salesList = salesListData?.data;
-
-  // Merge identity into sales choices for immediate display of current user
-  // Even before sales list loads, show the current user's name
-  const accountManagerChoices = useMemo(() => {
-    const choices =
-      salesList?.map((sale) => ({
-        id: sale.id,
-        name: sale.name || sale.email || `Sales #${sale.id}`,
-      })) ?? [];
-
-    // If sales list hasn't loaded but we have identity, include it as a fallback
-    if (!salesList && identity?.id) {
-      return [
-        {
-          id: Number(identity.id),
-          name: (identity.fullName as string) || `User #${identity.id}`,
-        },
-      ];
-    }
-
-    return choices;
-  }, [salesList, identity]);
-
-  // Sync account_manager_id with identity when loaded
-  useEffect(() => {
-    if (identity?.id && !identityLoading) {
-      setValue("account_manager_id", Number(identity.id));
-    }
-  }, [identity?.id, identityLoading, setValue]);
-
-  // Watch form values for dependent UI updates
-  const [organizationId, principalId, cityValue, productIds] = useWatch({
-    control,
-    name: ["organization_id", "principal_id", "city", "product_ids"],
-  });
-
-  const {
-    products: productsList,
-    isLoading: productsLoading,
-    isReady: productsReady,
-  } = useFilteredProducts(principalId);
-
-  const handleCitySelect = (cityName: string) => {
-    const selectedCity = US_CITIES.find((c) => c.city === cityName);
-    if (selectedCity) {
-      setValue("city", selectedCity.city);
-      setValue("state", selectedCity.state);
-    } else {
-      setValue("city", cityName);
-      setValue("state", "");
-    }
-  };
-
   const onSubmit = (data: QuickAddFormValues, closeAfter: boolean) => {
     mutate(data, {
       onSuccess: () => {
@@ -217,7 +115,6 @@ const QuickAddFormContent = ({
           reset({
             principal_id: data.principal_id,
             account_manager_id: data.account_manager_id,
-            // Preserve campaign from previous submission, undefined if empty (WF-C2-003)
             campaign: data.campaign || undefined,
             product_ids: [],
             organization_id: undefined,
@@ -236,29 +133,44 @@ const QuickAddFormContent = ({
     });
   };
 
-  const onValidationError = (errors: FieldErrors<QuickAddFormValues>) => {
-    const firstErrorField = Object.keys(errors)[0] as keyof QuickAddFormValues;
-    if (firstErrorField) {
-      setFocus(firstErrorField);
-    }
-  };
+  // Custom hook handles all data fetching, handlers, and computed values
+  const {
+    principalsList,
+    principalsLoading,
+    organizationsList,
+    organizationsLoading,
+    salesLoading,
+    accountManagerChoices,
+    organizationOptions,
+    cityOptions,
+    setShouldLoadSales,
+    handleCitySelect,
+    onValidationError,
+    handleOrganizationChange,
+  } = useQuickAddFormLogic({
+    identity,
+    identityLoading,
+    onSuccess,
+    onSubmit,
+  });
 
-  const organizationOptions =
-    organizationsList?.map((org) => ({
-      value: org.id.toString(),
-      label: org.name,
-    })) || [];
+  // Watch form values for dependent UI updates
+  const [organizationId, principalId, cityValue] = useWatch({
+    control,
+    name: ["organization_id", "principal_id", "city"],
+  });
+
+  const {
+    products: productsList,
+    isLoading: productsLoading,
+    isReady: productsReady,
+  } = useFilteredProducts(principalId);
 
   const productOptions =
     productsList?.map((product) => ({
       value: product.id.toString(),
       label: product.name,
     })) || [];
-
-  const cityOptions = US_CITIES.map(({ city }) => ({
-    value: city,
-    label: city,
-  }));
 
   const selectedOrg = organizationsList?.find((o) => o.id === organizationId);
   const selectedPrincipal = principalsList?.find((p) => p.id === principalId);
@@ -267,150 +179,37 @@ const QuickAddFormContent = ({
       ? `${selectedOrg.name} - ${selectedPrincipal.name}`
       : "Select organization and principal";
 
-  const handleOrganizationChange = (value: number | undefined, name?: string) => {
-    setValue("organization_id", value);
-    if (name) {
-      setValue("org_name", name);
-    }
-  };
-
-  // Use div instead of form - React Admin's Form component already provides the <form> wrapper
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-lg bg-success/10 p-4 space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Opportunity Details</h3>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <OrganizationCombobox
-            value={organizationId}
-            onChange={handleOrganizationChange}
-            options={organizationOptions}
-            isLoading={organizationsLoading}
-            error={errors.organization_id?.message}
-          />
+      <OpportunityDetailsSection
+        control={control}
+        register={register}
+        errors={errors}
+        organizationId={organizationId}
+        organizationOptions={organizationOptions}
+        organizationsLoading={organizationsLoading}
+        principalsList={principalsList}
+        principalsLoading={principalsLoading}
+        accountManagerChoices={accountManagerChoices}
+        salesLoading={salesLoading}
+        productOptions={productOptions}
+        productsLoading={productsLoading}
+        productsReady={productsReady}
+        opportunityNamePreview={opportunityNamePreview}
+        onOrganizationChange={handleOrganizationChange}
+        onSalesFieldFocus={() => setShouldLoadSales(true)}
+        onProductsChange={(ids) => setValue("product_ids", ids)}
+      />
 
-          <FormSelectInput
-            source="principal_id"
-            label="Principal"
-            choices={principalsList?.map((org) => ({ id: org.id, name: org.name })) ?? []}
-            placeholder={principalsLoading ? "Loading..." : "Select principal"}
-            disabled={principalsLoading}
-          />
+      <ContactInformationSection register={register} errors={errors} />
 
-          <div onFocus={() => setShouldLoadSales(true)}>
-            <FormSelectInput
-              source="account_manager_id"
-              label="Account Manager"
-              choices={accountManagerChoices}
-              placeholder={salesLoading ? "Loading..." : "Select account manager"}
-              disabled={salesLoading}
-            />
-          </div>
-
-          <AccessibleField name="campaign" label="Campaign" error={errors.campaign?.message}>
-            <Input
-              {...register("campaign")}
-              placeholder="e.g., Q4 2025 Trade Show"
-              className="bg-background"
-            />
-          </AccessibleField>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="products">Products</Label>
-          {productsReady ? (
-            <MultiSelectCombobox
-              options={productOptions}
-              value={productIds?.map((id) => id.toString()) || []}
-              onValueChange={(values) =>
-                setValue(
-                  "product_ids",
-                  values.map((v) => Number(v))
-                )
-              }
-              placeholder={productsLoading ? "Loading products..." : "Select products..."}
-              searchPlaceholder="Search products..."
-              emptyText="No products found"
-              className="bg-background"
-              disabled={productsLoading || !productOptions.length}
-            />
-          ) : (
-            <div className="text-sm text-muted-foreground p-2 border rounded-md bg-background">
-              Select a Principal first to filter products
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label>Opportunity Name Preview</Label>
-          <div className="text-sm text-muted-foreground p-2 border rounded-md bg-muted">
-            {opportunityNamePreview}
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Contact Information (Optional)</h3>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <AccessibleField name="first_name" label="First Name" error={errors.first_name?.message}>
-            <Input {...register("first_name")} placeholder="John" />
-          </AccessibleField>
-
-          <AccessibleField name="last_name" label="Last Name" error={errors.last_name?.message}>
-            <Input {...register("last_name")} placeholder="Doe" />
-          </AccessibleField>
-
-          <AccessibleField name="phone" label="Phone" error={errors.phone?.message}>
-            <Input type="tel" {...register("phone")} placeholder="555-123-4567" />
-          </AccessibleField>
-
-          <AccessibleField name="email" label="Email" error={errors.email?.message}>
-            <Input type="email" {...register("email")} placeholder="john@example.com" />
-          </AccessibleField>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Location & Notes (Optional)</h3>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="city">City</Label>
-            <Combobox
-              id="city"
-              options={cityOptions}
-              value={cityValue}
-              onValueChange={(value) => handleCitySelect(value)}
-              placeholder="Select or type city..."
-              searchPlaceholder="Search cities..."
-              emptyText="Type to search cities"
-              className="w-full"
-              creatable
-            />
-            {errors.city && (
-              <p id="city-error" role="alert" className="text-sm text-destructive">
-                {errors.city.message}
-              </p>
-            )}
-          </div>
-
-          <AccessibleField name="state" label="State" error={errors.state?.message}>
-            <Input
-              {...register("state")}
-              placeholder="CA"
-              readOnly={!!US_CITIES.find((c) => c.city === cityValue)}
-              className={cn(US_CITIES.find((c) => c.city === cityValue) && "bg-muted")}
-            />
-          </AccessibleField>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="quick_note">Quick Note</Label>
-          <Input
-            id="quick_note"
-            {...register("quick_note")}
-            placeholder="Met at booth, interested in product demo..."
-          />
-        </div>
-      </div>
+      <LocationNotesSection
+        register={register}
+        errors={errors}
+        cityValue={cityValue}
+        cityOptions={cityOptions}
+        onCitySelect={handleCitySelect}
+      />
 
       <QuickAddFormActions
         onCancel={onSuccess}

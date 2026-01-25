@@ -3,10 +3,9 @@ import { useFormContext } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { useGetList, useDataProvider } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
-import { useFilteredProducts } from "./useFilteredProducts";
 import { US_CITIES } from "./data/us-cities";
 
-type QuickAddFormValues = {
+interface QuickAddFormValues {
   organization_id?: number;
   org_name?: string;
   principal_id: number;
@@ -20,7 +19,7 @@ type QuickAddFormValues = {
   campaign?: string;
   product_ids: number[];
   quick_note?: string;
-};
+}
 
 interface UseQuickAddFormLogicProps {
   identity?: { id: string | number; fullName?: string; [key: string]: unknown };
