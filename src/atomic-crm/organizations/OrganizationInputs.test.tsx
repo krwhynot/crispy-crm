@@ -35,19 +35,12 @@ const mockDataProvider = {
   deleteMany: vi.fn(),
 };
 
-const mockConfiguration = {
-  opportunityCategories: ["Software", "Hardware", "Services", "Support"],
-  contactGender: [
-    { value: "male", label: "Male" },
-    { value: "female", label: "Female" },
-    { value: "other", label: "Other" },
-  ],
-  contactRoles: [
-    { id: "decision_maker", name: "Decision Maker" },
-    { id: "influencer", name: "Influencer" },
-    { id: "buyer", name: "Buyer" },
-  ],
-};
+// Mock focused contexts (OrganizationInputs doesn't actually use config, but keep for consistency)
+vi.mock("../contexts", () => ({
+  useFormOptions: () => ({}),
+  usePipelineConfig: () => ({}),
+  useAppBranding: () => ({ title: "Crispy CRM" }),
+}));
 
 const MockFormWrapper = ({
   children,
@@ -99,9 +92,7 @@ const TestWrapper = ({
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>
         <AdminContext dataProvider={mockDataProvider}>
-          <ConfigurationContext.Provider value={mockConfiguration}>
-            <MockFormWrapper defaultValues={mergedDefaults}>{children}</MockFormWrapper>
-          </ConfigurationContext.Provider>
+          <MockFormWrapper defaultValues={mergedDefaults}>{children}</MockFormWrapper>
         </AdminContext>
       </MemoryRouter>
     </QueryClientProvider>

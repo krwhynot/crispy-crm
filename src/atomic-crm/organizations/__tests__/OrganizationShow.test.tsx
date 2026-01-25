@@ -79,15 +79,17 @@ vi.mock("../misc/Status", () => ({
   ),
 }));
 
-// Mock ConfigurationContext
-vi.mock("../root/ConfigurationContext", () => ({
-  useConfigurationContext: vi.fn(() => ({
+// Mock focused contexts
+vi.mock("../contexts", () => ({
+  usePipelineConfig: vi.fn(() => ({
     opportunityStages: [
       { value: "lead", label: "Lead" },
       { value: "qualified", label: "Qualified" },
       { value: "proposal", label: "Proposal" },
     ],
   })),
+  useFormOptions: vi.fn(() => ({})),
+  useAppBranding: vi.fn(() => ({ title: "Crispy CRM" })),
 }));
 
 // Mock findOpportunityLabel
