@@ -10,6 +10,7 @@ import type {
 import type { Organization } from "./validation/organizations";
 // Note: OpportunityStageValue, LeadSource, SampleStatus are re-exported below
 // Database enum import removed - InteractionType now comes from re-exported ActivityRecord
+import { z } from "zod";
 
 // ============================================================================
 // P2 TYPE CONSOLIDATION: Zod-inferred types as Single Source of Truth
