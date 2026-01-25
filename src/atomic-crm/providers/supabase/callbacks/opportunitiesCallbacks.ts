@@ -48,6 +48,7 @@ const TYPED_COMPUTED_FIELDS = [
   "principal_organization_name",
   "customer_organization_name",
   "distributor_organization_name",
+  "primary_contact_name",
   // Computed aggregations (calculated in view)
   "days_in_stage",
   "days_since_last_activity",

@@ -236,6 +236,7 @@ const opportunityBaseSchema = z.strictObject({
   customer_organization_name: z.string().optional().nullable(),
   principal_organization_name: z.string().optional().nullable(),
   distributor_organization_name: z.string().optional().nullable(),
+  primary_contact_name: z.string().optional().nullable(), // JOIN from contacts table via primary_contact_id
   days_in_stage: z.number().optional().nullable(),
   last_activity_date: z.string().optional().nullable(),
   days_since_last_activity: z.number().optional().nullable(),
