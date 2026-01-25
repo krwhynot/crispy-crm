@@ -142,17 +142,34 @@ export function mockUseCreateReturn<RecordType extends RaRecord = RaRecord>(over
   data?: RecordType;
 }): UseCreateResult<RecordType> {
   const mutateFn = overrides?.mutate ?? vi.fn();
-  return [
-    mutateFn,
-    {
-      isPending: overrides?.isPending ?? false,
-      isSuccess: overrides?.isSuccess ?? false,
-      isError: overrides?.isError ?? false,
-      error: overrides?.error ?? null,
-      data: overrides?.data,
-      reset: vi.fn(),
-    },
-  ] as unknown as UseCreateResult<RecordType>;
+  const mutationState = {
+    isPending: overrides?.isPending ?? false,
+    isSuccess: overrides?.isSuccess ?? false,
+    isError: overrides?.isError ?? false,
+    error: overrides?.error ?? null,
+    data: overrides?.data,
+    reset: vi.fn(),
+    // UseMutationResult additional properties that ra-core expects
+    isLoading: overrides?.isPending ?? false,
+    status: (overrides?.isPending
+      ? "pending"
+      : overrides?.isSuccess
+        ? "success"
+        : overrides?.isError
+          ? "error"
+          : "idle") as "idle" | "pending" | "success" | "error",
+    failureCount: 0,
+    failureReason: null,
+    isIdle: !overrides?.isPending && !overrides?.isSuccess && !overrides?.isError,
+    isPaused: false,
+    variables: undefined,
+    context: undefined,
+    mutate: mutateFn,
+    mutateAsync: mutateFn,
+  };
+
+  const tuple: readonly [typeof mutateFn, typeof mutationState] = [mutateFn, mutationState];
+  return tuple as UseCreateResult<RecordType>;
 }
 
 /**
@@ -179,17 +196,34 @@ export function mockUseDeleteReturn<RecordType extends RaRecord = RaRecord>(over
   data?: RecordType;
 }): UseDeleteResult<RecordType> {
   const mutateFn = overrides?.mutate ?? vi.fn();
-  return [
-    mutateFn,
-    {
-      isPending: overrides?.isPending ?? false,
-      isSuccess: overrides?.isSuccess ?? false,
-      isError: overrides?.isError ?? false,
-      error: overrides?.error ?? null,
-      data: overrides?.data,
-      reset: vi.fn(),
-    },
-  ] as unknown as UseDeleteResult<RecordType>;
+  const mutationState = {
+    isPending: overrides?.isPending ?? false,
+    isSuccess: overrides?.isSuccess ?? false,
+    isError: overrides?.isError ?? false,
+    error: overrides?.error ?? null,
+    data: overrides?.data,
+    reset: vi.fn(),
+    // UseMutationResult additional properties that ra-core expects
+    isLoading: overrides?.isPending ?? false,
+    status: (overrides?.isPending
+      ? "pending"
+      : overrides?.isSuccess
+        ? "success"
+        : overrides?.isError
+          ? "error"
+          : "idle") as "idle" | "pending" | "success" | "error",
+    failureCount: 0,
+    failureReason: null,
+    isIdle: !overrides?.isPending && !overrides?.isSuccess && !overrides?.isError,
+    isPaused: false,
+    variables: undefined,
+    context: undefined,
+    mutate: mutateFn,
+    mutateAsync: mutateFn,
+  };
+
+  const tuple: readonly [typeof mutateFn, typeof mutationState] = [mutateFn, mutationState];
+  return tuple as UseDeleteResult<RecordType>;
 }
 
 /**
@@ -432,18 +466,34 @@ export function mockUseUpdateReturn<RecordType extends RaRecord = RaRecord>(over
   data?: RecordType;
 }): UseUpdateResult<RecordType> {
   const mutateFn = overrides?.mutate ?? vi.fn();
-  return [
-    mutateFn,
-    {
-      isPending: overrides?.isPending ?? false,
-      isLoading: overrides?.isLoading ?? false,
-      isSuccess: overrides?.isSuccess ?? false,
-      isError: overrides?.isError ?? false,
-      error: overrides?.error ?? null,
-      data: overrides?.data,
-      reset: vi.fn(),
-    },
-  ] as unknown as UseUpdateResult<RecordType>;
+  const mutationState = {
+    isPending: overrides?.isPending ?? false,
+    isLoading: overrides?.isLoading ?? false,
+    isSuccess: overrides?.isSuccess ?? false,
+    isError: overrides?.isError ?? false,
+    error: overrides?.error ?? null,
+    data: overrides?.data,
+    reset: vi.fn(),
+    // UseMutationResult additional properties that ra-core expects
+    status: (overrides?.isPending
+      ? "pending"
+      : overrides?.isSuccess
+        ? "success"
+        : overrides?.isError
+          ? "error"
+          : "idle") as "idle" | "pending" | "success" | "error",
+    failureCount: 0,
+    failureReason: null,
+    isIdle: !overrides?.isPending && !overrides?.isSuccess && !overrides?.isError,
+    isPaused: false,
+    variables: undefined,
+    context: undefined,
+    mutate: mutateFn,
+    mutateAsync: mutateFn,
+  };
+
+  const tuple: readonly [typeof mutateFn, typeof mutationState] = [mutateFn, mutationState];
+  return tuple as UseUpdateResult<RecordType>;
 }
 
 /**
@@ -645,6 +695,9 @@ export function createMockKeyboardEvent(
     target: EventTarget | null;
   }> = {}
 ): React.KeyboardEvent {
+  // Create a mock element for currentTarget
+  const mockElement = document.createElement("input");
+
   return {
     key: overrides.key ?? "",
     metaKey: overrides.metaKey ?? false,
@@ -653,10 +706,10 @@ export function createMockKeyboardEvent(
     altKey: overrides.altKey ?? false,
     preventDefault: overrides.preventDefault ?? vi.fn(),
     stopPropagation: overrides.stopPropagation ?? vi.fn(),
-    target: overrides.target ?? document.createElement("input"),
+    target: overrides.target ?? mockElement,
     // Required event properties
     nativeEvent: new KeyboardEvent("keydown"),
-    currentTarget: null as unknown as EventTarget & Element,
+    currentTarget: mockElement as EventTarget & Element,
     bubbles: true,
     cancelable: true,
     defaultPrevented: false,
