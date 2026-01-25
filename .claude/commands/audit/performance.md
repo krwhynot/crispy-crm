@@ -84,7 +84,56 @@ const status = useWatch({ name: 'status' });
 
 ### High Severity (Noticeable Slowdown)
 
-#### 1.3 Missing useMemo for Heavy Computations
+#### 1.3 Form Mode Not Specified (FORM-H001)
+```bash
+# Check 1: Find forms without mode specified
+rg "<(SimpleForm|Form)" src/atomic-crm/ --type tsx -A 3 -n | rg -v "mode="
+
+# Check 2: Find forms explicitly using onChange
+rg 'mode="onChange"' src/atomic-crm/ --type tsx -n
+```
+
+**What to look for:**
+- `<SimpleForm>` or `<Form>` without `mode` prop (defaults to onChange)
+- Explicit `mode="onChange"` (aggressive validation)
+- Forms validating on every keystroke
+
+**Risk:**
+- **onChange mode (or missing mode):** Validates on every keystroke, showing errors before user finishes typing (poor UX)
+- **Performance:** Triggers validation and re-renders on every input change
+- **User frustration:** Red error messages appear immediately while typing
+
+**Correct Pattern:**
+```tsx
+// WRONG: Missing mode (defaults to onChange)
+<SimpleForm>
+  <TextInput source="first_name" />
+  <TextInput source="email" />
+</SimpleForm>
+
+// WRONG: Explicit onChange mode
+<SimpleForm mode="onChange">
+  <TextInput source="first_name" />
+</SimpleForm>
+
+// CORRECT: onSubmit mode (validate only when user submits)
+<SimpleForm mode="onSubmit">
+  <TextInput source="first_name" />
+  <TextInput source="email" />
+</SimpleForm>
+
+// CORRECT: onBlur mode (validate when user leaves field)
+<SimpleForm mode="onBlur">
+  <TextInput source="first_name" />
+  <TextInput source="email" />
+</SimpleForm>
+```
+
+**Note:** Validation still runs at provider layer via `ValidationService`, so this doesn't skip validation - it just improves timing and UX.
+
+**Related:** See MODULE_CHECKLIST.md - "Forms" section.
+
+#### 1.5 Missing useMemo for Heavy Computations
 ```bash
 # Find array operations without memoization
 rg "\.(filter|map|reduce|sort)\(" --type tsx -n
@@ -103,7 +152,7 @@ rg "\.(filter|map|reduce|sort)\(" --type tsx -n
 const filtered = useMemo(() => items.filter(x => x.active), [items]);
 ```
 
-#### 1.4 Large Bundle Imports
+#### 1.6 Large Bundle Imports
 ```bash
 # Find full library imports that bloat bundle
 rg "import .* from ['\"]lodash['\"]|import .* from ['\"]moment['\"]" --type ts -n

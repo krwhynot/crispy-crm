@@ -66,6 +66,7 @@ Execute these rg checks. Capture file:line for each finding.
 | `H005` | Form-level schema validation | `rg "zodResolver|yupResolver" --type tsx -n src/atomic-crm/` | Validation at wrong boundary |
 | `H006` | Tier 1 imports in features | `rg "from ['\"]@/components/ui/" --type ts -n src/atomic-crm/` | Bypass Tier 2 wrappers |
 | `H007` | Manual interfaces in validation | `rg "export interface" --type ts -n src/atomic-crm/validation/` | Schema drift (use z.infer) |
+| `H7` | Wrapper composition order violation | `rg "with(Validation\|LifecycleCallbacks)\(\s*withErrorLogging" src/atomic-crm/providers/supabase/handlers/ --type ts -n` | Errors bypass logging, validation runs without error catching |
 
 ### Medium Severity (Structure Issues)
 
@@ -75,6 +76,7 @@ Execute these rg checks. Capture file:line for each finding.
 | `M002` | Large files (>500 lines) | `find src/atomic-crm -name "*.tsx" -o -name "*.ts" | xargs wc -l | sort -rn | head -20` | Maintainability |
 | `M003` | Circular dependencies | Check import cycles in feature directories | Build/runtime issues |
 | `M004` | Missing index exports | Features without index.tsx | Inconsistent structure |
+| `M5` | Business logic in handlers (manual check) | Read handlers/ files - look for loops >10 lines, complex conditionals (>3 branches), direct RPC calls | Handler bloat, should be in Service layer |
 
 ---
 

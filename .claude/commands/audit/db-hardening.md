@@ -205,7 +205,64 @@ AND NOT EXISTS (
 **Severity:** High
 **Risk:** Slow join performance
 
-### 3.4 Unbounded String Columns
+**Performance Note:** Junction tables with dual EXISTS checks in RLS policies MUST have indexes on both foreign keys. Without indexes, INSERT operations will perform full table scans and severely degrade write performance.
+
+Required indexes pattern:
+```sql
+CREATE INDEX idx_contact_organizations_contact_id
+  ON contact_organizations (contact_id)
+  WHERE (deleted_at IS NULL);
+
+CREATE INDEX idx_contact_organizations_organization_id
+  ON contact_organizations (organization_id)
+  WHERE (deleted_at IS NULL);
+```
+
+### 3.4 Junction Table Policies Missing Dual Authorization
+```sql
+-- mcp__supabase__execute_sql
+SELECT
+  p.tablename,
+  p.policyname,
+  p.qual
+FROM pg_policies p
+WHERE p.tablename LIKE '%\_%'  -- Junction tables (have underscore)
+  AND p.cmd = 'INSERT'
+  AND (p.qual NOT LIKE '%EXISTS%' OR p.qual NOT LIKE '%SELECT%');
+```
+
+**Severity:** Critical
+**Risk:** Users can link unauthorized records across tenants. Junction tables require EXISTS checks on BOTH foreign keys to verify user owns both sides of the relationship.
+
+**Rationale:** A junction table policy like this is WRONG:
+```sql
+CREATE POLICY "Allow contact_organizations inserts"
+  ON contact_organizations FOR INSERT
+  USING (true);  -- Missing authorization!
+```
+
+Should verify BOTH sides:
+```sql
+CREATE POLICY "Users can link own company contacts and orgs"
+  ON contact_organizations FOR INSERT
+  WITH CHECK (
+    -- User must own the contact
+    EXISTS (
+      SELECT 1 FROM contacts
+      WHERE id = contact_organizations.contact_id
+      AND company_id = (auth.jwt() ->> 'company_id')::int
+    )
+    AND
+    -- User must own the organization
+    EXISTS (
+      SELECT 1 FROM organizations
+      WHERE id = contact_organizations.organization_id
+      AND company_id = (auth.jwt() ->> 'company_id')::int
+    )
+  );
+```
+
+### 3.5 Unbounded String Columns
 ```sql
 -- mcp__supabase__execute_sql
 SELECT

@@ -77,6 +77,7 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | H6 | Non-null assertion on optional chain | `rg "\?\.\w+!" --type ts -n $SCOPE` | Contradictory assertions |
 | H7 | Database type in features | `rg "Database\['public'\]" --type ts -n src/atomic-crm/` | L1→L5 coupling (bypasses Domain layer) |
 | H8 | Manual interface in types/ | `rg "export interface" --type ts -n src/atomic-crm/types/` | Schema drift (use z.infer instead) |
+| H9 | Type casts in test files | `rg " as any\| as unknown as " src/**/*.test.ts* src/**/*.spec.ts* --type ts -n` | Tests pass with invalid data shapes, fail in production |
 
 ### Medium Severity Checks
 
@@ -88,6 +89,7 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | M4 | Object type (uppercase) | `rg ": Object\b" --type ts -n $SCOPE` | Prefer object or specific type |
 | M5 | Function type (uppercase) | `rg ": Function\b" --type ts -n $SCOPE` | Prefer specific function signature |
 | M6 | Empty interface | `rg "interface \w+ \{\}" --type ts -n $SCOPE` | Likely placeholder |
+| M7 | Missing typed mock factories | `rg "mockReturnValue\(\{" src/**/*.test.ts* -A 2 --type ts \| rg "as any"` | Hook mocks lack type safety, inconsistent test data |
 
 ---
 

@@ -78,6 +78,7 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | H4 | Deprecated company_id | `rg "company_id" --type ts src/atomic-crm/ -n` | Data model violation |
 | H5 | Deprecated archived_at | `rg "archived_at" --type ts src/atomic-crm/ -n` | Use deleted_at instead |
 | H6 | Hard DELETE statements | `rg "DELETE FROM" --type ts src/ -n` | Soft delete violation |
+| H7 | Frontend deleted_at filtering (RLS bypass) | `rg "\.is\('deleted_at', null\)\|\.filter\([^)]*deleted_at" src/atomic-crm/ --type ts --type tsx -n` | Attackers bypass RLS by modifying frontend code |
 
 ### Medium Severity Checks
 
@@ -265,6 +266,42 @@ These issues MUST be fixed before any production deployment.
 **Risk:** User input may be interpolated into SQL.
 
 **Fix:** Use parameterized queries or Supabase filters.
+
+---
+
+#### [H7] Frontend deleted_at Filtering - RLS Bypass Vulnerability
+
+**Files Affected:**
+- `src/atomic-crm/contacts/ContactList.tsx:34` - `.is('deleted_at', null)`
+
+**Risk:** Filtering soft-deleted records in frontend code can be bypassed by attackers who modify the JavaScript. This is a security vulnerability because:
+- RLS policies should enforce `deleted_at IS NULL` at database level
+- Frontend code runs in user's browser (untrusted environment)
+- Attackers can remove the filter via browser DevTools
+- Users could see deleted/archived data they shouldn't access
+
+**Fix:** Move soft-delete filtering to RLS policies. Frontend code should never filter deleted_at.
+
+```typescript
+// WRONG: Frontend filtering - attackers can bypass
+const { data } = await supabase
+  .from('contacts')
+  .select()
+  .is('deleted_at', null); // Runs in browser, can be modified
+
+// CORRECT: RLS policy enforces at database level
+-- Migration: supabase/migrations/XXXXXX_add_contacts_rls.sql
+CREATE POLICY "Hide deleted contacts"
+ON contacts FOR SELECT
+USING (deleted_at IS NULL AND /* other auth checks */);
+
+-- Frontend: No deleted_at filtering needed
+const { data } = await supabase
+  .from('contacts')
+  .select(); // RLS automatically filters deleted records
+```
+
+**Related:** See DATABASE_LAYER.md - "Soft Delete Enforcement (Security)" section.
 
 ---
 

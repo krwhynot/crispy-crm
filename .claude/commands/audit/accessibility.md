@@ -104,6 +104,8 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | A12 | Buttons without accessible name | `rg "<button\|<Button" --type tsx -n $SCOPE` without text content or `aria-label` | Screen readers announce "button" with no context |
 | A13 | Links without href | `rg "<a\s" --type tsx -n $SCOPE` without `href` | Keyboard inaccessible |
 | A14 | Missing form labels | `rg "<input\|<select\|<textarea" --type tsx -n $SCOPE` without associated `<label>` or `aria-label` | Form fields unlabeled for screen readers |
+| UI-M001 | Missing React.forwardRef in Tier 1 | `fd -e tsx . src/components/ui/ -x sh -c 'rg -q "React.forwardRef" {} \|\| echo {}'` | Ref props don't work, breaks shadcn/ui patterns |
+| UI-M002 | Missing CSS variables in :root | `rg "--(primary\|destructive\|muted\|border\|input\|ring):" src/index.css` (should find all) | Inconsistent theming, hardcoded colors leak in |
 
 ---
 
@@ -381,6 +383,104 @@ Save to: `docs/audits/YYYY-MM-DD-accessibility.md`
 **Risk:** Screen readers cannot describe image to users.
 
 **Fix:** Add descriptive `alt` text or `alt=""` for decorative images.
+
+#### [UI-M001] Missing React.forwardRef in Tier 1 Components
+
+**Files Affected:**
+- `src/components/ui/custom-card.tsx` - Component doesn't forward refs
+
+**Risk:**
+- Ref props don't work (ref={...} has no effect)
+- Breaks shadcn/ui composition patterns
+- Accessibility tools can't access DOM elements
+- Third-party integrations fail when they expect ref support
+
+**Fix:** Wrap all Tier 1 (src/components/ui/) components with React.forwardRef.
+
+```typescript
+// WRONG: No ref forwarding
+export const Card = ({ className, ...props }: CardProps) => {
+  return (
+    <div className={cn("rounded-lg border", className)} {...props} />
+  );
+};
+
+// CORRECT: React.forwardRef for ref support
+export const Card = React.forwardRef<
+  HTMLDivElement,
+  CardProps
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn("rounded-lg border", className)}
+      {...props}
+    />
+  );
+});
+Card.displayName = "Card";
+```
+
+**Rationale:** Tier 1 components are design system primitives - they must support all standard HTML attributes including refs.
+
+---
+
+#### [UI-M002] Missing CSS Variables in :root
+
+**Files Affected:**
+- `src/index.css` - Missing semantic color definitions
+
+**Risk:**
+- Inconsistent theming across app
+- Hardcoded colors (hex codes, direct Tailwind colors) leak into components
+- Can't switch themes (light/dark mode)
+- Design system violations harder to catch
+
+**Fix:** Define all semantic colors as CSS variables in src/index.css :root.
+
+```css
+/* WRONG: Missing variable definitions */
+:root {
+  --background: hsl(0 0% 100%);
+  /* Missing: --primary, --destructive, --muted, etc. */
+}
+
+/* CORRECT: Complete semantic palette */
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(222.2 84% 4.9%);
+
+  --primary: hsl(221.2 83.2% 53.3%);
+  --primary-foreground: hsl(210 40% 98%);
+
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(210 40% 98%);
+
+  --muted: hsl(210 40% 96.1%);
+  --muted-foreground: hsl(215.4 16.3% 46.9%);
+
+  --border: hsl(214.3 31.8% 91.4%);
+  --input: hsl(214.3 31.8% 91.4%);
+  --ring: hsl(221.2 83.2% 53.3%);
+
+  /* ... etc */
+}
+
+.dark {
+  --background: hsl(222.2 84% 4.9%);
+  /* ... dark mode overrides */
+}
+```
+
+**Usage in components:**
+```tsx
+// Use semantic classes, not direct colors
+<div className="bg-primary text-primary-foreground">  // CORRECT
+<div className="bg-blue-600 text-white">              // WRONG
+<div style={{ backgroundColor: '#3b82f6' }}>          // WRONG
+```
+
+**Related:** See UI_STANDARDS.md - "Global Styling" section.
 
 ---
 
