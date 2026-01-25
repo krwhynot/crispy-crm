@@ -8,9 +8,11 @@ import {
   useDataProvider,
 } from "react-admin";
 import type { Identifier } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { OpportunitiesService } from "@/atomic-crm/services/opportunities.service";
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { Link } from "react-router-dom";
+import { contactKeys, opportunityKeys, opportunityContactKeys } from "@/atomic-crm/queryKeys";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
@@ -106,6 +108,7 @@ export function OpportunityContactsTab({
 }: OpportunityContactsTabProps) {
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
 
   // Fetch junction table data for view mode - only when tab is active AND in view mode

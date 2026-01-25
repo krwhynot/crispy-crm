@@ -10,15 +10,26 @@
  * 3. Handle validation errors in React Admin format
  * 4. Handle Supabase errors with field extraction
  * 5. Handle idempotent delete (already deleted = success)
+ * 6. Use structured logger for production Sentry integration
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
 import { withErrorLogging } from "./withErrorLogging";
+import { logger } from "@/lib/logger";
+
+// Mock the logger
+vi.mock("@/lib/logger", () => ({
+  logger: {
+    error: vi.fn(),
+    info: vi.fn(),
+    debug: vi.fn(),
+    warn: vi.fn(),
+  },
+}));
 
 describe("withErrorLogging", () => {
   let mockProvider: DataProvider;
-  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     // Create mock DataProvider
@@ -34,12 +45,12 @@ describe("withErrorLogging", () => {
       deleteMany: vi.fn(),
     };
 
-    // Spy on console.error
-    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    // Clear mock calls
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("successful operations", () => {

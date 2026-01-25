@@ -2,7 +2,7 @@ import { EditBase, Form, useRecordContext, useGetIdentity } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { productKeys } from "../queryKeys";
+import { productKeys, organizationKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
 import { DeleteButton } from "@/components/ra-wrappers/delete-button";
 import { SaveButton } from "@/components/ra-wrappers/form";

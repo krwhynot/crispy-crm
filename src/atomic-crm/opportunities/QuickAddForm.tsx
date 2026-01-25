@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { getStorageItem } from "@/atomic-crm/utils/secureStorage";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
 import { organizationKeys } from "@/atomic-crm/queryKeys";
+import { QuickAddFormActions } from "./QuickAddFormActions";
 
 interface QuickAddFormProps {
   onSuccess: () => void;
