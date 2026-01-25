@@ -1,6 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDataProvider, useNotify } from "ra-core";
 import { logger } from "@/lib/logger";
+import { saleKeys } from "@/atomic-crm/queryKeys";
 import type { CrmDataProvider } from "../../providers/types";
 import type { SalesFormData } from "../../types";
 
@@ -39,6 +40,7 @@ interface UseSalesUpdateOptions {
 export function useSalesUpdate({ userId, onSuccess }: UseSalesUpdateOptions) {
   const notify = useNotify();
   const dataProvider = useDataProvider<CrmDataProvider>();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ["updateProfile", userId],
@@ -49,6 +51,11 @@ export function useSalesUpdate({ userId, onSuccess }: UseSalesUpdateOptions) {
       return dataProvider.salesUpdate(userId, data);
     },
     onSuccess: () => {
+      // Invalidate cache to ensure fresh data after profile update
+      queryClient.invalidateQueries({ queryKey: saleKeys.all });
+      if (userId) {
+        queryClient.invalidateQueries({ queryKey: saleKeys.detail(userId) });
+      }
       notify("Your profile has been updated");
       onSuccess?.();
     },

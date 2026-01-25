@@ -270,6 +270,41 @@ export const getCampaignReportStatsResponseSchema = z.strictObject({
 export type GetCampaignReportStatsParams = z.infer<typeof getCampaignReportStatsParamsSchema>;
 export type GetCampaignReportStatsResponse = z.infer<typeof getCampaignReportStatsResponseSchema>;
 
+/**
+ * get_stale_opportunities(
+ *   p_campaign TEXT,
+ *   p_start_date TIMESTAMPTZ DEFAULT NULL,
+ *   p_end_date TIMESTAMPTZ DEFAULT NULL,
+ *   p_sales_rep_id BIGINT DEFAULT NULL
+ * ) RETURNS SETOF stale_opportunity_record
+ * Get stale opportunities for a campaign based on per-stage activity thresholds.
+ */
+export const getStaleOpportunitiesParamsSchema = z.strictObject({
+  p_campaign: z.string().max(255, "Campaign name too long"),
+  p_start_date: z.string().datetime().optional().nullable(),
+  p_end_date: z.string().datetime().optional().nullable(),
+  p_sales_rep_id: z.number().int().positive().optional().nullable(),
+});
+
+export const staleOpportunityRecordSchema = z.strictObject({
+  id: z.number().int().positive(),
+  name: z.string().max(500, "Opportunity name too long"),
+  stage: z.string().max(50, "Stage too long"),
+  customer_organization_name: z.string().max(255, "Organization name too long").nullable(),
+  last_activity_date: z.string().datetime().nullable(),
+  days_inactive: z.number().int().nonnegative(),
+  stage_threshold: z.number().int().positive(),
+  is_stale: z.boolean(),
+});
+
+export const getStaleOpportunitiesResponseSchema = z
+  .array(staleOpportunityRecordSchema)
+  .max(1000, "Maximum 1000 stale opportunities");
+
+export type GetStaleOpportunitiesParams = z.infer<typeof getStaleOpportunitiesParamsSchema>;
+export type GetStaleOpportunitiesResponse = z.infer<typeof getStaleOpportunitiesResponseSchema>;
+export type StaleOpportunityRecord = z.infer<typeof staleOpportunityRecordSchema>;
+
 export const RPC_SCHEMAS = {
   get_or_create_segment: getOrCreateSegmentParamsSchema,
   set_primary_organization: setPrimaryOrganizationParamsSchema,
