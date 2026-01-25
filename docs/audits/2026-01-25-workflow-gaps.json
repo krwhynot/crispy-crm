@@ -1,0 +1,206 @@
+{
+  "audit": "workflow-gaps",
+  "date": "2026-01-25",
+  "mode": "full",
+  "confidence": 78,
+  "summary": "Audit of business logic holes and silent defaults in Crispy CRM. Found previously documented WG-001/WG-002/WG-003 are resolved. Identified new gaps in database constraint enforcement and activity logging architecture.",
+  "statistics": {
+    "critical": 2,
+    "high": 4,
+    "medium": 3,
+    "total": 9
+  },
+  "findings": [
+    {
+      "id": "WF-C1-001",
+      "severity": "critical",
+      "category": "Data Integrity",
+      "title": "Nullable Required Foreign Keys: customer_organization_id",
+      "description": "Field is marked REQUIRED in Zod validation (business rule Q12: every opportunity has a customer), but database schema allows NULL. No NOT NULL constraint on opportunities.customer_organization_id.",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-core.ts:152",
+      "pattern": "customer_organization_id: z.union([z.string(), z.number()]), // Required - marked with * in UI",
+      "risk": "If app validation is bypassed (direct API call), records can be created with NULL customer. Violates business rule Q12. Breaking change if later enforced with NOT NULL constraint.",
+      "confidence": 95,
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities/opportunities-core.ts",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities/opportunities-operations.ts"
+      ]
+    },
+    {
+      "id": "WF-C1-002",
+      "severity": "critical",
+      "category": "Data Integrity",
+      "title": "Nullable Required Foreign Keys: principal_organization_id",
+      "description": "Field is marked REQUIRED in Zod validation (MFB rule: every opportunity has a principal), but database schema allows NULL. No NOT NULL constraint on opportunities.principal_organization_id.",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-core.ts:153",
+      "pattern": "principal_organization_id: z.union([z.string(), z.number()]), // Required - marked with * in UI",
+      "risk": "If app validation is bypassed, records can be created without principal assignment. Core MFB business rule violation (every opp = principal's product opportunity).",
+      "confidence": 95,
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities/opportunities-core.ts",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities/opportunities-operations.ts"
+      ]
+    },
+    {
+      "id": "WF-H1-001",
+      "severity": "high",
+      "category": "Workflow Enforcement",
+      "title": "Activity Logging Architecture: No Auto-Logging",
+      "description": "All activity creation is manual via QuickLogActivityDialog. No automatic audit trail for: opportunity creation, opportunity deletion/archive, activity creation itself, workflow transitions.",
+      "location": "src/atomic-crm/activities/QuickLogActivityDialog.tsx (only entry point)",
+      "pattern": "Activities only created by explicit user action via QuickLogActivityDialog",
+      "risk": "Significant gaps in audit trail. Cannot track when/who created opportunities or completed key workflow steps. Makes it impossible to answer: 'When was this deal created?' at scale.",
+      "confidence": 90,
+      "impact": "User loses context about sales velocity (deal creation dates), deal history, and workflow execution.",
+      "files": [
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/activities/QuickLogActivityDialog.tsx",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
+        "/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/composedDataProvider.ts"
+      ]
+    },
+    {
+      "id": "WF-H1-002",
+      "severity": "high",
+      "category": "Constraint Enforcement",
+      "title": "Activity FK Relationships: Not Enforced at DB Level",
+      "description": "Activities with activity_type='interaction' REQUIRE opportunity_id, but validation is app-layer only. No database-level NOT NULL + CHECK constraint.",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:169-174",
+      "pattern": "if (data.activity_type === 'interaction' && !data.opportunity_id) { ctx.addIssue(...) }",
+      "risk": "If Zod validation is bypassed (direct Supabase call, RPC, etc.), interaction activities can be created without opportunity_id. Breaks data consistency.",
+      "confidence": 85,
+      "fix": "Add DB constraint: ALTER TABLE activities ADD CONSTRAINT interactions_require_opportunity_check CHECK (activity_type != 'interaction' OR opportunity_id IS NOT NULL)"
+    },
+    {
+      "id": "WF-H1-003",
+      "severity": "high",
+      "category": "Constraint Enforcement",
+      "title": "Activity Entity Relationship: 'At Least One' Not Enforced",
+      "description": "Activities require contact_id OR organization_id (at least one), but validation is app-layer only via refinement. No database CHECK enforces this rule.",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:102-109",
+      "pattern": "if (!data.contact_id && !data.organization_id) { ctx.addIssue(...) }",
+      "risk": "App validation enforces OR relationship, but DB allows both NULL. Orphaned activities violate data integrity.",
+      "confidence": 85,
+      "fix": "Add constraint: ALTER TABLE activities ADD CONSTRAINT activities_require_entity CHECK (contact_id IS NOT NULL OR organization_id IS NOT NULL)"
+    },
+    {
+      "id": "WF-H1-004",
+      "severity": "high",
+      "category": "State Transitions",
+      "title": "Missing Stage Transition Validation",
+      "description": "Opportunities can transition between ANY stages without enforcing pipeline order. Can jump from new_lead directly to closed_won without passing through intermediate stages.",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts (no stage transition validation)",
+      "pattern": "stage: opportunityStageSchema (accepts any stage value without transition rules)",
+      "risk": "Bypasses sales process. Users can close deals without following funnel. Makes pipeline metrics unreliable.",
+      "confidence": 90,
+      "businessImpact": "Pipeline metrics become unreliable. Cannot track proper deal progression. No enforcement of 'sample_visit_offered before demo_scheduled'."
+    },
+    {
+      "id": "WF-M1-001",
+      "severity": "medium",
+      "category": "Silent Defaults",
+      "title": "Activity Date Defaults to Today Without Explicit User Action",
+      "description": "activity_date defaults to new Date() in Zod schema. User may not notice if timestamp is backdated or forward-dated.",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:33",
+      "pattern": "activity_date: z.coerce.date().default(() => new Date()),",
+      "risk": "Low - default is sensible (today). But no explicit affordance in UI showing what date is being set.",
+      "confidence": 70
+    },
+    {
+      "id": "WF-M1-002",
+      "severity": "medium",
+      "category": "Task Workflow",
+      "title": "Task Completion State Transitions Not Validated",
+      "description": "Task schema allows setting completed=true without verifying prior state. Can set completed_at without completed=true. No validation of workflow order.",
+      "location": "src/atomic-crm/validation/task.ts:41-42",
+      "pattern": "completed: z.coerce.boolean().default(false), completed_at: z.string().max(50).nullable().optional(),",
+      "risk": "Medium - can create inconsistent states (completed=true, completed_at=null). Not enforced at DB.",
+      "confidence": 75
+    },
+    {
+      "id": "WF-M1-003",
+      "severity": "medium",
+      "category": "Audit Trail",
+      "title": "Created_by Field Not Auto-Populated on Activities",
+      "description": "Activities.created_by is optional/nullable. Manual logging may not capture which user created the activity.",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:75",
+      "pattern": "created_by: z.union([z.string(), z.number()]).optional().nullable(),",
+      "risk": "Audit trail gaps. Cannot determine who logged the activity in multi-rep scenarios.",
+      "confidence": 80
+    }
+  ],
+  "resolved_since_last_audit": [
+    {
+      "id": "WG-001",
+      "title": "Sample Follow-Up Enforcement",
+      "status": "RESOLVED ✅",
+      "details": "Validation enforces follow_up when sample_status is active. Database check constraints may be missing but app layer enforces."
+    },
+    {
+      "id": "WG-002",
+      "title": "Win/Loss Reason Validation",
+      "status": "RESOLVED ✅",
+      "details": "Zod refinements and CHECK constraints enforce win_reason when stage=closed_won and loss_reason when stage=closed_lost. Defense in depth: app + DB."
+    },
+    {
+      "id": "WG-003",
+      "title": "Stage and Priority Required Fields",
+      "status": "RESOLVED ✅",
+      "details": "No silent defaults. Schema requires explicit stage and priority selection. Forms cannot submit without these values."
+    }
+  ],
+  "architecture_observations": {
+    "strengths": [
+      "Zod validation at API boundary (single source of truth)",
+      "Win/loss reasons properly enforced with defense-in-depth (app + DB)",
+      "Sample activity workflow validated correctly",
+      "Contact/opportunity relationships validated in activities",
+      "Stage constants used throughout (no hardcoded literals in critical paths)"
+    ],
+    "weaknesses": [
+      "Critical FKs (customer_organization_id, principal_organization_id) not NOT NULL at DB",
+      "No automatic activity logging for mutations (create, update, delete)",
+      "Activity FK relationships only enforced at app layer (not DB)",
+      "No stage transition validation (can jump stages)",
+      "No audit logging infrastructure (created_by often null)"
+    ]
+  },
+  "test_coverage": {
+    "opportunities_validation": "HIGH - WG-002/WG-003 tests comprehensive",
+    "activities_validation": "MEDIUM - WG-001 tests exist but missing transition tests",
+    "database_constraints": "MEDIUM - CHECK constraints exist for win/loss, but FK relationships not fully constrained",
+    "activity_logging": "NONE - No tests for auto-logging (feature doesn't exist)"
+  },
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "action": "Add NOT NULL constraints to opportunities.customer_organization_id and principal_organization_id",
+      "files": ["supabase/migrations/"],
+      "effort": "1 hour"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Add database CHECK constraints for activity FK relationships (interactions_require_opportunity, activities_require_entity)",
+      "files": ["supabase/migrations/"],
+      "effort": "2 hours"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Implement automatic activity logging in provider layer callbacks for create/update/delete operations",
+      "files": ["src/atomic-crm/providers/supabase/callbacks/"],
+      "effort": "6 hours"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Add stage transition validation (enforce pipeline order)",
+      "files": ["src/atomic-crm/validation/opportunities/opportunities-operations.ts"],
+      "effort": "3 hours"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Add task completion state validation (completed requires prior non-completed state)",
+      "files": ["src/atomic-crm/validation/task.ts"],
+      "effort": "2 hours"
+    }
+  ],
+  "conclusion": "Crispy CRM has good app-layer validation but critical gaps at database constraint level. Foreign keys that should be NOT NULL allow NULL values. Activity logging is entirely manual with no audit trail for system operations. Stage transitions not enforced. [Confidence: 78%]"
+}

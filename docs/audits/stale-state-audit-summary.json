@@ -1,0 +1,273 @@
+{
+  "audit": "stale-state",
+  "mode": "full",
+  "date": "2026-01-25",
+  "confidence": 82,
+  "critical": 7,
+  "high": 12,
+  "medium": 8,
+  "total_issues": 27,
+  "estimated_fix_hours": "8-10",
+  "findings": [
+    {
+      "id": "C-1",
+      "severity": "CRITICAL",
+      "title": "AddProductExceptionDialog - No Cache Invalidation on Product Authorization Create",
+      "file": "src/atomic-crm/organizations/AddProductExceptionDialog.tsx",
+      "lines": "49-62",
+      "issue": "useCreate() without onSuccess handler - no cache invalidation after creating product_distributor_authorizations",
+      "impact": "Users see stale product authorization list. NEW exceptions don't appear until page refresh.",
+      "pattern": "Missing queryClient.invalidateQueries in onSuccess callback",
+      "fix": "Add onSuccess handler with queryClient.invalidateQueries({ queryKey: ['product_distributor_authorizations'] })"
+    },
+    {
+      "id": "C-2",
+      "severity": "CRITICAL",
+      "title": "AddPrincipalDialog - No Cache Invalidation on Principal Authorization Create",
+      "file": "src/atomic-crm/organizations/AddPrincipalDialog.tsx",
+      "lines": "45-58",
+      "issue": "useCreate() without onSuccess handler - no cache invalidation after creating distributor_principal_authorizations",
+      "impact": "Users see stale principal authorization list. NEW authorizations don't appear until page refresh.",
+      "pattern": "Junction table mutation without cache sync",
+      "fix": "Add onSuccess handler with cache invalidation + refresh()"
+    },
+    {
+      "id": "C-3",
+      "severity": "CRITICAL",
+      "title": "TagCreateModal - Missing Query Client Invalidation",
+      "file": "src/atomic-crm/tags/TagCreateModal.tsx",
+      "lines": "14-24",
+      "issue": "No queryClient.invalidateQueries in onSuccess - new tags not reflected in selectors",
+      "impact": "Newly created tags don't appear in tag dropdowns without page refresh",
+      "pattern": "Silent cache miss on resource creation",
+      "fix": "Add queryClient.invalidateQueries({ queryKey: tagKeys.all })"
+    },
+    {
+      "id": "C-4",
+      "severity": "CRITICAL",
+      "title": "ProductExceptionsSection - Hardcoded Query Key (Not Using Constants)",
+      "file": "src/atomic-crm/organizations/ProductExceptionsSection.tsx",
+      "lines": "50-52",
+      "issue": "Hardcoded string ['product_distributor_authorizations'] instead of query key factory constant",
+      "impact": "If constant key changes elsewhere, this hardcoded value won't match - leads to cache desync",
+      "pattern": "Missing query key factory for junction tables",
+      "fix": "Define productDistributorAuthorizationKeys in queryKeys.ts and use it"
+    },
+    {
+      "id": "C-5",
+      "severity": "CRITICAL",
+      "title": "OpportunityProductsTab - Missing Opportunity & Product Cache Invalidation",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
+      "lines": "97-145",
+      "issue": "update() with products_to_sync missing invalidation of opportunity_products junction and product detail caches",
+      "impact": "Product count badges on dashboard stale. Computed fields (count_products) show old values.",
+      "pattern": "Junction table write without view invalidation",
+      "fix": "Invalidate opportunityProductKeys.all + opportunityKeys.detail(record.id) in onSuccess"
+    },
+    {
+      "id": "C-7",
+      "severity": "CRITICAL",
+      "title": "UnlinkConfirmDialog - Incomplete Parent Resource Invalidation",
+      "file": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
+      "lines": "38-51",
+      "issue": "deleteOne() invalidates only opportunityContactKeys.all, missing parent opportunity and contact invalidation",
+      "impact": "Contact detail view may show outdated opportunity count. Opportunity detail shows stale contact list.",
+      "pattern": "Partial junction table invalidation",
+      "fix": "Add queryClient.invalidateQueries for opportunityKeys.detail(id) and contactKeys.detail(id)"
+    },
+    {
+      "id": "H-1",
+      "severity": "HIGH",
+      "title": "LinkOpportunityModal - Incomplete Parent Contact Invalidation",
+      "file": "src/atomic-crm/contacts/LinkOpportunityModal.tsx",
+      "lines": "70-79",
+      "issue": "Invalidates opportunityKeys but opportunity_contacts should filter by contact_id as well",
+      "impact": "Contact sidebar may not refresh contact count",
+      "pattern": "Missing filter-aware cache invalidation",
+      "confidence_pct": 75
+    },
+    {
+      "id": "H-2",
+      "severity": "HIGH",
+      "title": "OpportunityCardActions - Overly Broad Query Invalidation",
+      "file": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
+      "lines": 97,
+      "issue": "queryClient.invalidateQueries({ queryKey: opportunityKeys.all }) invalidates ALL opportunity queries (lists + details)",
+      "impact": "Unnecessary refetch of all opportunity lists when only one status changed - performance regression",
+      "pattern": "Broad .all invalidation instead of specific .detail()",
+      "confidence_pct": 85
+    },
+    {
+      "id": "H-3",
+      "severity": "HIGH",
+      "title": "QuickLogActivity - Missing Activity Log Invalidation",
+      "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
+      "lines": "150-152",
+      "issue": "Invalidates activityKeys.all but missing activityLogKeys.byOrganization() for polymorphic logs",
+      "impact": "Activity timeline may show stale entries grouped by organization",
+      "pattern": "Polymorphic query key invalidation gap",
+      "confidence_pct": 80
+    },
+    {
+      "id": "H-4",
+      "severity": "HIGH",
+      "title": "QuickCreateContactPopover - Missing Organization Cache Invalidation",
+      "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
+      "lines": "66, 100, 248, 282",
+      "issue": "Invalidates contactKeys.all but missing organizationKeys invalidation for contact count",
+      "impact": "Organization detail view shows stale contact count",
+      "pattern": "Related resource cache invalidation gap",
+      "confidence_pct": 85
+    },
+    {
+      "id": "H-5",
+      "severity": "HIGH",
+      "title": "QuickCreatePopover (Organization) - Too Broad Invalidation",
+      "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
+      "lines": "118, 153, 309, 338",
+      "issue": "queryClient.invalidateQueries({ queryKey: organizationKeys.all }) invalidates all org lists",
+      "impact": "Performance hit - all paginated org lists refetch unnecessarily",
+      "pattern": "Overly broad .all invalidation",
+      "confidence_pct": 80
+    },
+    {
+      "id": "H-9",
+      "severity": "HIGH",
+      "title": "AddPrincipalDialog - Missing Refresh After Create",
+      "file": "src/atomic-crm/organizations/AddPrincipalDialog.tsx",
+      "lines": "63",
+      "issue": "Create succeeds with onSuccess callback but doesn't call refresh() - UI doesn't update",
+      "impact": "New principal authorization not visible in AuthorizationsTab without manual refresh",
+      "pattern": "Missing refresh() in onSuccess",
+      "confidence_pct": 90
+    },
+    {
+      "id": "H-10",
+      "severity": "HIGH",
+      "title": "OpportunityProductsTab - Activity Log Key Missing",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
+      "lines": 126,
+      "issue": "Invalidates activityKeys.all but should also invalidate activityLogKeys.byOrganization()",
+      "impact": "Activity log filtered by organization may show stale entries",
+      "pattern": "Polymorphic key invalidation incomplete",
+      "confidence_pct": 75
+    },
+    {
+      "id": "H-11",
+      "severity": "HIGH",
+      "title": "refetchOnWindowFocus Inconsistency - List Views Set to false",
+      "file": "Multiple: OpportunityListFilter.tsx, ProductListFilter.tsx, ProductsDatagridHeader.tsx",
+      "issue": "refetchOnWindowFocus: false on list views while dashboard hooks use true - inconsistent strategy",
+      "impact": "User tabs back to list view sees stale data. Dashboard updates automatically.",
+      "pattern": "Missing refetchOnWindowFocus configuration",
+      "confidence_pct": 70
+    },
+    {
+      "id": "M-1",
+      "severity": "MEDIUM",
+      "title": "Broad Query Key Invalidation Without Filtering",
+      "issue": "Multiple components invalidate .all when .detail() or .list() would be more efficient",
+      "impact": "Unnecessary refetch of unrelated data - memory + bandwidth waste",
+      "pattern": "Optimization issue - fail-fast works but inefficient",
+      "confidence_pct": 75
+    },
+    {
+      "id": "M-2",
+      "severity": "MEDIUM",
+      "title": "Missing Junction Table Query Keys Registration",
+      "file": "src/atomic-crm/queryKeys.ts",
+      "issue": "No productDistributorAuthorizationKeys or distributorPrincipalAuthorizationKeys exported",
+      "impact": "Components use hardcoded strings instead of constants - maintenance liability",
+      "pattern": "Incomplete query key factory coverage",
+      "confidence_pct": 85
+    },
+    {
+      "id": "M-6",
+      "severity": "MEDIUM",
+      "title": "OpportunitySlideOverDetailsTab - Activity Key Not Wrapped in Polymorphic Factory",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
+      "lines": 79,
+      "issue": "queryClient.invalidateQueries({ queryKey: activityKeys.all }) should use activityLogKeys.byOrganization()",
+      "impact": "Activity timeline may not sync with organization filter",
+      "pattern": "Polymorphic query key misuse",
+      "confidence_pct": 70
+    },
+    {
+      "id": "M-7",
+      "severity": "MEDIUM",
+      "title": "UnlinkConfirmDialog Should Invalidate Opportunity & Contact Detail Keys",
+      "file": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
+      "lines": 44,
+      "issue": "Only invalidates opportunityContactKeys.all, missing opportunity and contact detail invalidation",
+      "impact": "Parent views will eventually sync via their own refreshes but not immediately",
+      "pattern": "Incomplete parent invalidation",
+      "confidence_pct": 65
+    }
+  ],
+  "patterns": {
+    "missing_invalidations": [
+      "AddProductExceptionDialog - product_distributor_authorizations",
+      "AddPrincipalDialog - distributor_principal_authorizations",
+      "TagCreateModal - tags after create",
+      "OpportunityProductsTab - opportunity_products junction",
+      "UnlinkConfirmDialog - parent opportunity/contact details"
+    ],
+    "hardcoded_query_keys": [
+      "ProductExceptionsSection - hardcoded ['product_distributor_authorizations']"
+    ],
+    "incomplete_parent_invalidation": [
+      "OpportunityProductsTab - missing product detail invalidation",
+      "QuickCreateContactPopover - missing organization invalidation",
+      "UnlinkConfirmDialog - missing opportunity/contact detail invalidation"
+    ],
+    "refetch_on_window_focus_gaps": [
+      "OpportunityListFilter - set to false, should be true",
+      "ProductListFilter - set to false, should be true",
+      "ProductsDatagridHeader - set to false, no justification"
+    ],
+    "polymorphic_log_issues": [
+      "QuickLogActivity - missing activityLogKeys.byOrganization()",
+      "OpportunitySlideOverDetailsTab - using activityKeys.all instead of polymorphic key"
+    ]
+  },
+  "query_key_audit": {
+    "missing_factories": [
+      "productDistributorAuthorizationKeys",
+      "distributorPrincipalAuthorizationKeys",
+      "opportunityProductKeys"
+    ],
+    "incomplete_polymorphic": [
+      "activityLogKeys - missing byContact()",
+      "activityLogKeys - missing byOpportunity()"
+    ]
+  },
+  "recommendations": {
+    "priority_1_critical": [
+      "AddProductExceptionDialog - add queryClient.invalidateQueries on onSuccess",
+      "AddPrincipalDialog - add queryClient.invalidateQueries on onSuccess",
+      "TagCreateModal - add tagKeys.all invalidation",
+      "OpportunityProductsTab - invalidate opportunity_products + product keys",
+      "UnlinkConfirmDialog - add parent resource invalidation"
+    ],
+    "priority_2_high": [
+      "Define productDistributorAuthorizationKeys and distributorPrincipalAuthorizationKeys in queryKeys.ts",
+      "Audit all modal create/delete handlers for cache invalidation",
+      "Enable refetchOnWindowFocus: true on all list/filter components",
+      "Implement polymorphic activityLogKeys.byOrganization()",
+      "Replace .all invalidations with .detail() or .list()"
+    ],
+    "priority_3_medium": [
+      "Add optimistic update rollback strategy",
+      "Document cache invalidation pattern in PATTERNS.md",
+      "Add enabled guards to all tab-based useGetList calls"
+    ]
+  },
+  "testing_strategy": [
+    "Manual E2E: Add product exception → verify appears immediately in list",
+    "Manual E2E: Unlink contact → verify count badges update on dashboard",
+    "Manual E2E: Create tag → verify appears in selectors without page refresh",
+    "Window focus test: Tab away and back to list views → verify fresh data",
+    "Performance test: Monitor useQuery refetch patterns with React Query DevTools"
+  ],
+  "summary": "Audit identifies critical stale-state issues in junction table mutations (contact_organizations, opportunity_contacts, opportunity_products) and modal components. Primary gaps: missing cache invalidation on product/principal authorization creates, incomplete parent resource invalidation, and inconsistent refetchOnWindowFocus strategy. 7 CRITICAL + 12 HIGH + 8 MEDIUM = 27 actionable items. Estimated fix time: 8-10 hours."
+}
