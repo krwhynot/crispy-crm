@@ -124,6 +124,10 @@ export function OpportunityProductsTab({
               });
 
               queryClient.invalidateQueries({ queryKey: activityKeys.all });
+              // SS-06 FIX: Invalidate opportunity and product caches to refresh lists
+              queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(record.id) });
+              queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+              queryClient.invalidateQueries({ queryKey: opportunityProductKeys.all });
             } catch (error: unknown) {
               logger.error("Failed to create product update activity", error, {
                 feature: "OpportunityProductsTab",

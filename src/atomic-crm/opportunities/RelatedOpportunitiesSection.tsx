@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import type { Opportunity } from "../types";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface RelatedOpportunitiesSectionProps {
   opportunity: Opportunity;

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useCreate, useNotify, useGetIdentity } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { AlertTriangle, Check, X } from "lucide-react";
+
+import { productDistributorAuthKeys } from "@/atomic-crm/queryKeys";
 
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
@@ -38,6 +41,7 @@ export function AddProductExceptionDialog({
   const [create, { isPending }] = useCreate();
   const notify = useNotify();
   const { data: identity } = useGetIdentity();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async () => {
     if (!selectedProductId) {
@@ -62,6 +66,7 @@ export function AddProductExceptionDialog({
       );
 
       notify("Product exception added", { type: "success" });
+      queryClient.invalidateQueries({ queryKey: productDistributorAuthKeys.all });
       setSelectedProductId("");
       setIsAuthorized("false");
       setNotes("");

@@ -25,6 +25,7 @@ interface UnlinkConfirmDialogProps {
 export function UnlinkConfirmDialog({
   opportunity,
   contactName,
+  contactId,
   onClose,
   onSuccess,
 }: UnlinkConfirmDialogProps) {
@@ -43,6 +44,8 @@ export function UnlinkConfirmDialog({
           onSuccess: () => {
             success(`Removed ${contactName} from ${opportunity.name}`);
             queryClient.invalidateQueries({ queryKey: opportunityContactKeys.all });
+            queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(opportunity.id) });
+            queryClient.invalidateQueries({ queryKey: contactKeys.detail(contactId) });
             onSuccess();
             onClose();
           },

@@ -26,6 +26,7 @@ import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { OPPORTUNITY_STAGES, STAGE, priorityChoices } from "./constants";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 export const OpportunityListFilter = () => {
   const { data: identity } = useGetIdentity();
@@ -35,7 +36,7 @@ export const OpportunityListFilter = () => {
   // Previously: 2 separate useGetList calls (principals + customers) = 2 network requests
   // Now: 1 combined query + client-side filtering = 1 network request
   const { data: organizationsData } = useGetList("organizations", {
-    pagination: { page: 1, perPage: 100 }, // Increased to accommodate both principals and customers
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     sort: { field: "name", order: "ASC" },
     filter: {
       "organization_type@in": "(principal,prospect,customer)",
@@ -115,7 +116,7 @@ export const OpportunityListFilter = () => {
   const { data: campaignsData } = useGetList<{ id: string; name: string }>(
     "distinct_opportunities_campaigns",
     {
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
     },
     {

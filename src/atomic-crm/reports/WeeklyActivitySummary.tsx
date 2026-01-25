@@ -60,7 +60,7 @@ export default function WeeklyActivitySummary() {
   );
 
   const { data: organizations } = useGetList<Organization>("organizations", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     filter: { id: orgIds },
   });
 

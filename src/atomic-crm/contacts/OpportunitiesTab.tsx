@@ -302,6 +302,7 @@ export function OpportunitiesTab() {
       <UnlinkConfirmDialog
         opportunity={unlinkingOpportunity}
         contactName={contactName}
+        contactId={contact.id}
         onClose={() => setUnlinkingOpportunity(null)}
         onSuccess={handleUnlinkSuccess}
       />

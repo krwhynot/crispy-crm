@@ -17,6 +17,7 @@ import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Opportunity, Sale } from "../types";
 import { parseDateSafely } from "@/lib/date-utils";
 
@@ -220,7 +221,7 @@ export default function OpportunitiesByPrincipalReport() {
   );
 
   const { data: salesReps } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     filter: ownerIds.length > 0 ? { id: ownerIds } : undefined,
   });
 
