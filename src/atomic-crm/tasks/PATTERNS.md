@@ -467,16 +467,16 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
         {/* Related Opportunity */}
         {record.opportunity_id && (
           <SidepaneSection label="Related Opportunity">
-            <Card>
-              <CardContent className="p-4">
+            <SectionCard>
+              <div className="p-4">
                 <div className="flex items-center gap-2">
                   <Target className="size-5 text-muted-foreground" />
                   <ReferenceField source="opportunity_id" reference="opportunities" link="show">
                     <TextField source="title" className="font-medium" />
                   </ReferenceField>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </SectionCard>
           </SidepaneSection>
         )}
       </div>
@@ -755,14 +755,14 @@ title: z.string().trim().min(1, "Title is required").max(500, "Title too long")
 
 ```tsx
 // ❌ WRONG: Small touch target
-<Button size="sm" className="h-6 w-6">
+<AdminButton size="sm" className="h-6 w-6">
   <Icon className="h-3 w-3" />
-</Button>
+</AdminButton>
 
 // ✅ CORRECT: 44px minimum (WCAG AA)
-<Button size="icon" className="h-11 w-11">
+<AdminButton size="icon" className="h-11 w-11">
   <Icon className="h-4 w-4" />
-</Button>
+</AdminButton>
 ```
 
 **Why**: iPad/touch users need 44x44px minimum targets.

@@ -711,7 +711,7 @@ export function MobileQuickActionBar({ onRefresh, onCompleteTask }: Props) {
 - Pre-fills activity type for faster form completion
 - Bottom sheet (`side="bottom"`) feels native on mobile
 
-**Example:** `src/atomic-crm/dashboard/v3/components/MobileQuickActionBar.tsx`
+**Example:** `src/atomic-crm/dashboard/MobileQuickActionBar.tsx`
 
 ---
 
@@ -811,7 +811,7 @@ export class DashboardErrorBoundary extends Component<{ children: ReactNode }, S
 - Dev-only error details via `import.meta.env.DEV`
 - Place OUTSIDE context providers to catch provider errors too
 
-**Example:** `src/atomic-crm/dashboard/v3/DashboardErrorBoundary.tsx`
+**Example:** `src/atomic-crm/dashboard/DashboardErrorBoundary.tsx`
 
 ---
 
@@ -1100,7 +1100,7 @@ const submitActivity = useCallback(
 - Applies to any foreign key reference in form data
 - Use `some()` for O(n) lookup against fetched entity lists
 
-**Example:** `src/atomic-crm/dashboard/QuickLogForm.tsx` (lines 134-181)
+**Example:** `src/atomic-crm/dashboard/QuickLogForm.tsx`
 
 ---
 

@@ -120,7 +120,7 @@ import { RecordContextProvider, useGetList } from "ra-core";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { AsideSection } from "@/components/ui";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/section-card";
 
 export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps) {
   // Fetch opportunities that include this product
@@ -139,13 +139,13 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
         {/* Principal Organization */}
         {record.principal_id && (
           <AsideSection title="Principal/Supplier">
-            <Card>
-              <CardContent className="p-4">
+            <SectionCard>
+              <div className="p-4">
                 <ReferenceField source="principal_id" reference="organizations" link="show">
                   <TextField source="name" className="font-medium" />
                 </ReferenceField>
-              </CardContent>
-            </Card>
+              </div>
+            </SectionCard>
           </AsideSection>
         )}
 

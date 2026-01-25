@@ -1,4 +1,8 @@
--- Add self-referential FK for related_task_id
+-- Drop existing FK if it references old tasks_deprecated table
+ALTER TABLE activities
+DROP CONSTRAINT IF EXISTS activities_related_task_id_fkey;
+
+-- Add self-referential FK for related_task_id (referencing activities table for STI pattern)
 ALTER TABLE activities
 ADD CONSTRAINT activities_related_task_id_fkey
   FOREIGN KEY (related_task_id)
