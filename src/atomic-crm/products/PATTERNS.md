@@ -151,8 +151,8 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
 
         {/* Related Opportunities */}
         <AsideSection title="Related Opportunities">
-          <Card>
-            <CardContent className="p-4">
+          <SectionCard>
+            <div className="p-4">
               {isLoading && (
                 <div className="text-sm text-muted-foreground">Loading opportunities...</div>
               )}
@@ -176,8 +176,8 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
                   ))}
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </SectionCard>
         </AsideSection>
       </div>
     </RecordContextProvider>
@@ -290,7 +290,7 @@ import { useRef, useCallback } from "react";
 import { driver, type DriveStep } from "driver.js";
 import "driver.js/dist/driver.css";
 import { HelpCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AdminButton } from "@/components/ra-wrappers/admin-button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const FORM_TUTORIAL_STEPS: DriveStep[] = [
@@ -362,7 +362,7 @@ export function ProductFormTutorial() {
     <div className="fixed bottom-4 left-4 z-50">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
+          <AdminButton
             variant="default"
             size="icon"
             onClick={startTutorial}
@@ -370,7 +370,7 @@ export function ProductFormTutorial() {
             aria-label="Start product form tutorial"
           >
             <HelpCircle className="h-5 w-5" />
-          </Button>
+          </AdminButton>
         </TooltipTrigger>
         <TooltipContent side="right">Learn how to create a product</TooltipContent>
       </Tooltip>

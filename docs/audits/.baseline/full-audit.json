@@ -249,7 +249,9 @@
       "description": "Uses hardcoded string instead of constants, risk of cache desync",
       "fix": "Use constants from query key factory",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - replaced hardcoded queryKey string with productDistributorAuthKeys.all import from @/atomic-crm/queryKeys (line 10, 52). Cache invalidation now uses centralized constants.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "performance",

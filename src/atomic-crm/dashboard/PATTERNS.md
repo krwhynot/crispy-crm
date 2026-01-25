@@ -1035,7 +1035,7 @@ When adding a new widget/panel to the dashboard:
 Pre-submission validation that verifies entity IDs still exist before database write.
 
 ```tsx
-// components/QuickLogForm.tsx (lines 134-181)
+// QuickLogForm.tsx
 const submitActivity = useCallback(
   async (data: ActivityLogInput, closeAfterSave = true) => {
     if (!salesId) {
@@ -1278,7 +1278,7 @@ export function useEntityData({
 - **Debounced search**: 300ms delay, 2-character minimum
 - **5-minute staleTime**: Reduces refetches while maintaining freshness
 
-**Example:** `src/atomic-crm/dashboard/useEntityData.ts`
+**Example:** `src/atomic-crm/dashboard/useEntityData.ts` (if file exists as separate hook)
 
 ---
 
@@ -1401,4 +1401,4 @@ export function useMyTasks() {
 3. On success: Clear optimistic update, invalidate cache
 4. On failure: Clear optimistic update (reverts to server state)
 
-**Example:** `src/atomic-crm/dashboard/useMyTasks.ts`
+**Example:** `src/atomic-crm/dashboard/useMyTasks.ts` (if file exists as separate hook)

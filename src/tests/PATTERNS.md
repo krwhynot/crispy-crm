@@ -571,6 +571,19 @@ const contact = createMockContact({ email: emails, phone: phones });
 - `deleted_at` defaults to null (active records)
 - Use overrides for specific test scenarios
 
+### Internal-Only Factories (Not for Direct Use)
+
+The following 4 factory functions are exported but documented as internal infrastructure - use public factories instead:
+
+| Factory | Status | Recommendation |
+|---------|--------|-----------------|
+| `createMockContact` | Internal use | Use via `renderWithAdminContext` with overrides |
+| `createMockOrganization` | Internal use | Use via `renderWithAdminContext` with overrides |
+| `createMockOpportunity` | Internal use | Use via `renderWithAdminContext` with overrides |
+| `createMockTask` | Internal use | Use via `renderWithAdminContext` with overrides |
+
+These functions are primarily used to seed the mock data provider and establish test infrastructure. For new tests, prefer using the higher-level patterns like Pattern A (Global Mocks) or Pattern B (Admin Context Rendering) which automatically handle data generation through the mock provider.
+
 ---
 
 ## Pattern E: Error Simulation
