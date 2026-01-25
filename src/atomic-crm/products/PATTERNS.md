@@ -401,7 +401,7 @@ import { Package, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import { formatDistanceToNow } from "date-fns";
-import { Card } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/section-card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -432,7 +432,7 @@ export const ProductCard = (props: { record?: Product }) => {
         to={createPath({ resource: "products", id: record.id, type: "show" })}
         className="no-underline group"
       >
-        <Card className="h-[200px] flex flex-col justify-between p-4 hover:shadow-md transition-shadow motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01]">
+        <SectionCard className="h-[200px] flex flex-col justify-between p-4 hover:shadow-md transition-shadow motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01]">
           <div className="flex flex-col items-center gap-1">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
               <Package className="w-6 h-6 text-primary" />
@@ -446,7 +446,7 @@ export const ProductCard = (props: { record?: Product }) => {
               )}
             </div>
           </div>
-        </Card>
+        </SectionCard>
       </Link>
     </div>
   );
@@ -794,10 +794,10 @@ const selectedIds = useWatch({ name: "distributor_ids" });
 ### 6. Missing Touch Targets
 ```tsx
 // BAD: Too small for touch
-<Button size="sm" className="h-8 w-8">...</Button>
+<AdminButton size="sm" className="h-8 w-8">...</AdminButton>
 
 // GOOD: 44x44px minimum
-<Button size="icon" className="h-11 w-11">...</Button>
+<AdminButton size="icon" className="h-11 w-11">...</AdminButton>
 ```
 
 ---

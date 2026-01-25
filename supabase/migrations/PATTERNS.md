@@ -159,21 +159,21 @@ CREATE POLICY authenticated_select_organization_distributors
     ON public.organization_distributors
     FOR SELECT
     TO authenticated
-    USING (auth.uid() IS NOT NULL);  -- Explicit: user must be authenticated
+    USING (auth.uid() IS NOT NULL AND deleted_at IS NULL);  -- Explicit auth + soft delete enforcement
 
 -- INSERT: All authenticated users can create distributor relationships
 CREATE POLICY authenticated_insert_organization_distributors
     ON public.organization_distributors
     FOR INSERT
     TO authenticated
-    WITH CHECK (auth.uid() IS NOT NULL);  -- Explicit: user must be authenticated
+    WITH CHECK (auth.uid() IS NOT NULL AND deleted_at IS NULL);  -- Explicit auth + soft delete enforcement
 
 -- UPDATE: All authenticated users can update distributor relationships
 CREATE POLICY authenticated_update_organization_distributors
     ON public.organization_distributors
     FOR UPDATE
     TO authenticated
-    USING (auth.uid() IS NOT NULL);
+    USING (auth.uid() IS NOT NULL AND deleted_at IS NULL);
 
 -- DELETE: All authenticated users can delete distributor relationships
 CREATE POLICY authenticated_delete_organization_distributors

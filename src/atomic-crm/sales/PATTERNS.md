@@ -575,10 +575,10 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
             </p>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" disabled={isDeleting}>
+                <AdminButton variant="destructive" size="sm" disabled={isDeleting}>
                   <Trash2 className="h-4 w-4" />
                   {isDeleting ? "Removing..." : "Remove User"}
-                </Button>
+                </AdminButton>
               </AlertDialogTrigger>
               {/* Confirmation dialog content */}
             </AlertDialog>

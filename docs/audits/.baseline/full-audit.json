@@ -277,7 +277,9 @@
       "description": "useGetOne + useGetList with no cache strategy",
       "fix": "Add staleTime, reduce perPage: 100→25",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - added DEFAULT_STALE_TIME_MS (5 min) and DEFAULT_GC_TIME_MS (15 min) to both useGetOne and useGetList queries (lines 24-32, 36-47). Eliminates N+1 refetch pattern on page navigation.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "performance",
@@ -303,7 +305,9 @@
       "description": "Large file needs splitting by domain",
       "fix": "Split into separate files per resource",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - split 673-line monolith into 11 modular files under filters/ directory (types.ts, contacts.ts, organizations.ts, opportunities.ts, activities.ts, products.ts, users.ts, dashboards.ts, misc.ts, utils.ts, index.ts). Largest file now 111 lines. Backward compatibility maintained via re-exports.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "code-quality",
@@ -315,7 +319,9 @@
       "description": "Large file needs splitting - extract hooks",
       "fix": "Extract custom hooks and helper functions",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Verified not needed - actual file size is 220 lines (not 663 as originally measured). File already has proper hook delegation to useQuickAddFormLogic, useFilteredProducts, and useQuickAdd. Remaining logic is simple transforms appropriate for component level.",
+      "closedDate": "2026-01-25"
     },
     {
       "source_audit": "code-quality",
@@ -327,7 +333,9 @@
       "description": "Large file needs splitting - extract components",
       "fix": "Split into smaller focused components",
       "firstSeen": "2026-01-25",
-      "status": "open"
+      "status": "closed",
+      "resolution": "Fixed - split 423-line component into 7 modular files: QuickAddOpportunity.tsx (77 lines), QuickAddOpportunityDialog.tsx (164 lines), 3 field components (51+111+24 lines), 2 hooks (36+243 lines). Main component reduced by 82%.",
+      "closedDate": "2026-01-25"
     }
   ],
   "strangler_fig_status": {
