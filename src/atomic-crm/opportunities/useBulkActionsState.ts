@@ -107,6 +107,38 @@ export function useBulkActionsState({
         }
       });
 
+      // Create activity records for successful stage changes
+      if (activeAction === "change_stage" && selectedStage && successCount > 0) {
+        const activityPromises = selectedIds.map(async (id) => {
+          const opportunity = opportunities.find((opp) => opp.id === id);
+          if (!opportunity) return;
+
+          try {
+            await dataProvider.create("activities", {
+              data: {
+                activity_type: "engagement",
+                type: "note",
+                subject: `Stage changed to ${getOpportunityStageLabel(selectedStage)} (bulk update)`,
+                activity_date: new Date().toISOString(),
+                opportunity_id: id,
+                organization_id: opportunity.customer_organization_id,
+              },
+            });
+          } catch (error: unknown) {
+            logger.warn("Activity logging failed for bulk stage transition", {
+              feature: "useBulkActionsState",
+              opportunityId: id,
+              newStage: selectedStage,
+              error: error instanceof Error ? error.message : String(error),
+            });
+            // Don't block the stage change if activity logging fails
+          }
+        });
+
+        // Fire-and-forget activity creation (don't block UI)
+        void Promise.allSettled(activityPromises);
+      }
+
       if (successCount > 0) {
         notify(
           `Successfully updated ${successCount} opportunit${successCount === 1 ? "y" : "ies"}`,

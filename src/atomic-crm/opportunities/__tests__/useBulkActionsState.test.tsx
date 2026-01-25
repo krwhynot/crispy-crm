@@ -34,6 +34,7 @@ import { useQueryClient } from "@tanstack/react-query";
 interface MockBulkActionsDataProvider {
   update: ReturnType<typeof vi.fn>;
   deleteMany: ReturnType<typeof vi.fn>;
+  create: ReturnType<typeof vi.fn>;
 }
 
 describe("useBulkActionsState - Parallel Execution", () => {
@@ -61,12 +62,14 @@ describe("useBulkActionsState - Parallel Execution", () => {
     mockDataProvider = {
       update: vi.fn(),
       deleteMany: vi.fn(),
+      create: vi.fn(),
     };
 
     vi.mocked(useDataProvider).mockReturnValue(
       createMockDataProvider({
         update: mockDataProvider.update,
         deleteMany: mockDataProvider.deleteMany,
+        create: mockDataProvider.create,
       })
     );
     vi.mocked(useNotify).mockReturnValue(mockNotify);
@@ -261,6 +264,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
       createMockDataProvider({
         update: mockDataProvider.update,
         deleteMany: mockDataProvider.deleteMany,
+        create: mockDataProvider.create,
       })
     );
     vi.mocked(useNotify).mockReturnValue(mockNotify);
@@ -299,6 +303,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
       createMockDataProvider({
         update: mockDataProvider.update,
         deleteMany: mockDataProvider.deleteMany,
+        create: mockDataProvider.create,
       })
     );
     vi.mocked(useNotify).mockReturnValue(mockNotify);
@@ -331,5 +336,140 @@ describe("useBulkActionsState - Parallel Execution", () => {
       data: { opportunity_owner_id: 42 },
       previousData: mockOpportunities[2],
     });
+  });
+
+  test("should create activity records for successful bulk stage changes", async () => {
+    mockDataProvider.update.mockResolvedValue({ data: {} });
+    mockDataProvider.create.mockResolvedValue({ data: { id: 999 } });
+
+    const { result } = renderHook(
+      () =>
+        useBulkActionsState({
+          selectedIds: [1, 2, 3],
+          opportunities: mockOpportunities.slice(0, 3),
+          onUnselectItems: mockOnUnselectItems,
+          resource: "opportunities",
+        }),
+      { wrapper }
+    );
+
+    // Open dialog and select stage
+    act(() => {
+      result.current.handleOpenDialog("change_stage");
+      result.current.setSelectedStage("demo_scheduled");
+    });
+
+    // Execute bulk action
+    await act(async () => {
+      await result.current.handleExecuteBulkAction();
+    });
+
+    // Wait for async activity creation (fire-and-forget)
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Verify activity creation was called for each opportunity
+    expect(mockDataProvider.create).toHaveBeenCalledTimes(3);
+
+    // Verify activity data structure
+    expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+      data: expect.objectContaining({
+        activity_type: "engagement",
+        type: "note",
+        subject: "Stage changed to Demo Scheduled (bulk update)",
+        opportunity_id: 1,
+        organization_id: mockOpportunities[0].customer_organization_id,
+      }),
+    });
+
+    expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+      data: expect.objectContaining({
+        activity_type: "engagement",
+        type: "note",
+        subject: "Stage changed to Demo Scheduled (bulk update)",
+        opportunity_id: 2,
+        organization_id: mockOpportunities[1].customer_organization_id,
+      }),
+    });
+
+    expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+      data: expect.objectContaining({
+        activity_type: "engagement",
+        type: "note",
+        subject: "Stage changed to Demo Scheduled (bulk update)",
+        opportunity_id: 3,
+        organization_id: mockOpportunities[2].customer_organization_id,
+      }),
+    });
+  });
+
+  test("should not block stage changes if activity logging fails", async () => {
+    mockDataProvider.update.mockResolvedValue({ data: {} });
+    mockDataProvider.create.mockRejectedValue(new Error("Activity creation failed"));
+
+    const { result } = renderHook(
+      () =>
+        useBulkActionsState({
+          selectedIds: [1, 2],
+          opportunities: mockOpportunities.slice(0, 2),
+          onUnselectItems: mockOnUnselectItems,
+          resource: "opportunities",
+        }),
+      { wrapper }
+    );
+
+    // Open dialog and select stage
+    act(() => {
+      result.current.handleOpenDialog("change_stage");
+      result.current.setSelectedStage("initial_outreach");
+    });
+
+    // Execute bulk action
+    await act(async () => {
+      await result.current.handleExecuteBulkAction();
+    });
+
+    // Wait for async activity creation attempts
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Verify stage updates succeeded
+    expect(mockDataProvider.update).toHaveBeenCalledTimes(2);
+    expect(mockNotify).toHaveBeenCalledWith("Successfully updated 2 opportunities", {
+      type: "success",
+    });
+
+    // Activity creation was attempted but failed (logged, not thrown)
+    expect(mockDataProvider.create).toHaveBeenCalled();
+  });
+
+  test("should not create activities for non-stage bulk actions", async () => {
+    mockDataProvider.update.mockResolvedValue({ data: {} });
+    mockDataProvider.create.mockResolvedValue({ data: { id: 999 } });
+
+    const { result } = renderHook(
+      () =>
+        useBulkActionsState({
+          selectedIds: [1, 2],
+          opportunities: mockOpportunities.slice(0, 2),
+          onUnselectItems: mockOnUnselectItems,
+          resource: "opportunities",
+        }),
+      { wrapper }
+    );
+
+    // Test change_status (not change_stage)
+    act(() => {
+      result.current.handleOpenDialog("change_status");
+      result.current.setSelectedStatus("active");
+    });
+
+    await act(async () => {
+      await result.current.handleExecuteBulkAction();
+    });
+
+    // Wait to ensure no async activity creation happens
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Verify no activity creation for status changes
+    expect(mockDataProvider.create).not.toHaveBeenCalled();
   });
 });
