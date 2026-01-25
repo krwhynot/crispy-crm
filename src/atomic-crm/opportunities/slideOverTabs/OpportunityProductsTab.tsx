@@ -23,6 +23,7 @@ import {
 } from "@/atomic-crm/utils/autocompleteDefaults";
 import { Card } from "@/components/ui/card";
 import type { Opportunity } from "@/atomic-crm/types";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface OpportunityProduct {
   id: Identifier;
@@ -68,7 +69,7 @@ export function OpportunityProductsTab({
     "opportunity_products",
     {
       filter: { opportunity_id: record.id },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "created_at", order: "DESC" },
     },
     { enabled: isActiveTab && mode === "view" }
@@ -80,7 +81,7 @@ export function OpportunityProductsTab({
     "products",
     {
       filter: { id: productIds },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     },
     { enabled: isActiveTab && mode === "view" && productIds.length > 0 }
   );

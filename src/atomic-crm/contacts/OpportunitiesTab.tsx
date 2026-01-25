@@ -29,6 +29,7 @@ import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { SuggestedOpportunityCard } from "./SuggestedOpportunityCard";
 import { isClosedStage } from "@/atomic-crm/opportunities/constants";
 import type { Contact, Opportunity, OpportunityContact } from "../types";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 // Extended type for opportunities with junction table metadata
 interface OpportunityWithJunction extends Opportunity {

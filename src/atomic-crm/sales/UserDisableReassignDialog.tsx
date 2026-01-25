@@ -168,22 +168,22 @@ export function UserDisableReassignDialog({
         // Fetch counts for each resource type in parallel
         const [opps, contacts, orgs, tasks] = await Promise.all([
           dataProvider.getList("opportunities", {
-            pagination: { page: 1, perPage: 1 },
+            pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
             sort: { field: "id", order: "ASC" },
             filter: { opportunity_owner_id: user.id },
           }),
           dataProvider.getList("contacts", {
-            pagination: { page: 1, perPage: 1 },
+            pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
             sort: { field: "id", order: "ASC" },
             filter: { sales_id: user.id },
           }),
           dataProvider.getList("organizations", {
-            pagination: { page: 1, perPage: 1 },
+            pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
             sort: { field: "id", order: "ASC" },
             filter: { sales_id: user.id },
           }),
           dataProvider.getList("tasks", {
-            pagination: { page: 1, perPage: 1 },
+            pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
             sort: { field: "id", order: "ASC" },
             filter: { sales_id: user.id },
           }),
@@ -281,28 +281,28 @@ export function UserDisableReassignDialog({
       const [oppsResult, contactsResult, orgsResult, tasksResult] = await Promise.all([
         counts.opportunities > 0
           ? dataProvider.getList("opportunities", {
-              pagination: { page: 1, perPage: 100 },
+              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
               sort: { field: "id", order: "ASC" },
               filter: { opportunity_owner_id: user.id },
             })
           : Promise.resolve({ data: [] }),
         counts.contacts > 0
           ? dataProvider.getList("contacts", {
-              pagination: { page: 1, perPage: 100 },
+              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
               sort: { field: "id", order: "ASC" },
               filter: { sales_id: user.id },
             })
           : Promise.resolve({ data: [] }),
         counts.organizations > 0
           ? dataProvider.getList("organizations", {
-              pagination: { page: 1, perPage: 100 },
+              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
               sort: { field: "id", order: "ASC" },
               filter: { sales_id: user.id },
             })
           : Promise.resolve({ data: [] }),
         counts.tasks > 0
           ? dataProvider.getList("tasks", {
-              pagination: { page: 1, perPage: 100 },
+              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
               sort: { field: "id", order: "ASC" },
               filter: { sales_id: user.id },
             })

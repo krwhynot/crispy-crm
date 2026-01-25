@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type ReactNode } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNotify, useRefresh, useDataProvider, useGetList, useListContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ import { UserPlus } from "lucide-react";
 import type { Sale } from "@/atomic-crm/types";
 import { formatName } from "@/atomic-crm/utils/formatName";
 import { ucFirst } from "@/atomic-crm/utils";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface ResourceItem {
   id: string | number;
@@ -65,7 +66,7 @@ export const BulkReassignButton = <T extends ResourceItem>({
   const queryClient = useQueryClient();
 
   const { data: salesList, isPending: isSalesLoading } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     sort: { field: "last_name", order: "ASC" },
     filter: {
       "disabled@neq": true,
