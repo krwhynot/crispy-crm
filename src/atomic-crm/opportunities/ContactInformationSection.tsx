@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { AccessibleField } from "@/components/admin/AccessibleField";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
-type QuickAddFormValues = {
+interface QuickAddFormValues {
   organization_id?: number;
   org_name?: string;
   principal_id: number;
@@ -16,7 +16,7 @@ type QuickAddFormValues = {
   campaign?: string;
   product_ids: number[];
   quick_note?: string;
-};
+}
 
 interface ContactInformationSectionProps {
   register: UseFormRegister<QuickAddFormValues>;

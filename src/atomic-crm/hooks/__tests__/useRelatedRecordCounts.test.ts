@@ -13,6 +13,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useRelatedRecordCounts } from "../useRelatedRecordCounts";
+import { logger } from "@/lib/logger";
 
 // Create stable mock functions outside the factory
 const mockGetManyReference = vi.fn();
@@ -35,10 +36,9 @@ vi.mock("react-admin", async () => {
 });
 
 // Mock logger to verify structured logging
-const mockLoggerWarn = vi.fn();
 vi.mock("@/lib/logger", () => ({
   logger: {
-    warn: mockLoggerWarn,
+    warn: vi.fn(),
     error: vi.fn(),
     info: vi.fn(),
     debug: vi.fn(),
@@ -48,7 +48,7 @@ vi.mock("@/lib/logger", () => ({
 describe("useRelatedRecordCounts", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockLoggerWarn.mockClear();
+    vi.mocked(logger.warn).mockClear();
     // Default mock implementation
     mockGetManyReference.mockResolvedValue({ data: [], total: 0 });
   });
@@ -81,7 +81,7 @@ describe("useRelatedRecordCounts", () => {
 
     expect(result.current.hasPartialFailure).toBe(false);
     expect(result.current.error).toBeNull();
-    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    expect(vi.mocked(logger.warn)).not.toHaveBeenCalled();
   });
 
   it("returns hasPartialFailure = true and logs errors when some queries fail", async () => {
@@ -121,7 +121,7 @@ describe("useRelatedRecordCounts", () => {
     expect(result.current.relatedCounts.length).toBeGreaterThan(0); // Successful queries returned data
 
     // Verify logger.warn was called with structured details
-    expect(mockLoggerWarn).toHaveBeenCalledWith(
+    expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
       "Partial failures detected in related record counts",
       expect.objectContaining({
         resource: "organizations",

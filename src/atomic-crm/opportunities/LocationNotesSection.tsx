@@ -6,7 +6,7 @@ import { US_CITIES } from "./data/us-cities";
 import { cn } from "@/lib/utils";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
-type QuickAddFormValues = {
+interface QuickAddFormValues {
   organization_id?: number;
   org_name?: string;
   principal_id: number;
@@ -20,7 +20,7 @@ type QuickAddFormValues = {
   campaign?: string;
   product_ids: number[];
   quick_note?: string;
-};
+}
 
 interface LocationNotesSectionProps {
   register: UseFormRegister<QuickAddFormValues>;
