@@ -162,12 +162,9 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
 
   return (
     <>
-      {/* Header */}
-      <div className="flex items-center justify-between border-b px-3 py-2">
-        <span className="text-sm font-medium text-foreground">
-          {translate("ra.action.select_columns", { _: "Columns" })}
-        </span>
-        {hasHiddenColumns && (
+      {/* Reset button in top-right corner */}
+      {hasHiddenColumns && (
+        <div className="absolute right-12 top-4">
           <Button
             variant="ghost"
             size="sm"
@@ -177,8 +174,8 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
             <X className="mr-1 h-3 w-3" />
             Reset
           </Button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Search (if > 5 columns) */}
       {shouldDisplaySearchInput && (

@@ -100,7 +100,8 @@ function applyActivityRefinements(
   ctx: z.RefinementCtx
 ): void {
   // At least one entity relationship is required (contact or organization)
-  if (!data.contact_id && !data.organization_id) {
+  // EXCEPTION: Tasks can exist without entity relationships (standalone to-dos)
+  if (data.activity_type !== 'task' && !data.contact_id && !data.organization_id) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["contact_id"],
