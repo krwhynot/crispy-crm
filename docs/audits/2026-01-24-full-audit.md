@@ -1,8 +1,8 @@
 # Full Codebase Audit Report
 
-**Date:** 2026-01-24 09:40
+**Date:** 2026-01-24 18:55
 **Mode:** Full
-**Duration:** 19 minutes
+**Duration:** ~25 minutes
 
 ---
 
@@ -14,12 +14,12 @@ Findings grouped by architectural layer (fix from bottom up):
 
 | Layer | Name | Critical | High | Status | Primary Concerns |
 |-------|------|----------|------|--------|------------------|
-| L1 | Database | 1 | 10 | CRITICAL | RLS permissive policies, soft-delete filtering |
-| L2 | Domain | 2 | 6 | CRITICAL | TypeScript double casts, implicit any |
-| L3 | Provider | 2 | 5 | CRITICAL | Error handling, fire-and-forget patterns |
-| L4 | UI Foundation | 3 | 2 | CRITICAL | Touch targets below 44px |
-| L5 | Features | 7 | 22 | CRITICAL | Stale cache, performance, code quality |
-| **TOTAL** | - | **15** | **45** | **CRITICAL** | - |
+| L1 | Database | 5 | 6 | CRITICAL | RLS USING(true) on core tables, missing soft-delete columns |
+| L2 | Domain | 0 | 0 | EXCELLENT | Production code clean, test files have justified patterns |
+| L3 | Provider | 6 | 10 | CRITICAL | Error handling gaps, fire-and-forget, fail-fast violations |
+| L4 | UI Foundation | 15 | 5 | CRITICAL | Form accessibility, touch targets, Tier 1 leaks |
+| L5 | Features | 18 | 31 | CRITICAL | Stale state, performance, code quality, workflow gaps |
+| **TOTAL** | - | **44** | **52** | **CRITICAL** | - |
 
 **Fix Order:** L1 → L2 → L3 → L4 → L5 (foundation issues cascade upward)
 
@@ -27,56 +27,55 @@ Findings grouped by architectural layer (fix from bottom up):
 
 | Category | Critical | High | Medium | Total |
 |----------|----------|------|--------|-------|
-| Security | 2 | 6 | 5 | 13 |
-| Data Integrity | 1 | 5 | 3 | 9 |
-| Error Handling | 2 | 3 | 5 | 10 |
-| DB Hardening | 0 | 5 | 8 | 13 |
-| Stale State | 3 | 6 | 6 | 15 |
-| Workflow Gaps | 0 | 2 | 3 | 5 |
-| Architecture | 0 | 0 | 1 | 1 |
-| TypeScript | 2 | 3 | 2 | 7 |
-| Accessibility | 3 | 2 | 0 | 5 |
-| Performance | 3 | 8 | 12 | 23 |
-| Code Quality | 2 | 8 | 12 | 22 |
-| **TOTAL** | **18** | **48** | **57** | **123** |
+| Security | 3 | 4 | 5 | 12 |
+| Data Integrity | 3 | 4 | 2 | 9 |
+| Error Handling | 3 | 5 | 8 | 16 |
+| DB Hardening | 2 | 3 | 4 | 9 |
+| Stale State | 3 | 8 | 12 | 23 |
+| Workflow Gaps | 3 | 3 | 2 | 8 |
+| Architecture | 3 | 2 | 213 | 218 |
+| TypeScript | 0 | 0 | 4 | 4 |
+| Accessibility | 12 | 3 | 2 | 17 |
+| Performance | 4 | 8 | 7 | 19 |
+| Code Quality | 8 | 12 | 15 | 35 |
+| **TOTAL** | **44** | **52** | **274** | **370** |
 
 ### What This Means for Users
 
 | Severity | User Impact |
 |----------|-------------|
-| **Critical (18)** | Users may experience stale data after edits, touch targets too small for iPad use, and potential data leakage through permissive RLS policies. Build issues may block deployments. |
-| **High (48)** | Users may encounter slow performance from large bundles, cache inconsistencies across views, and type safety issues could cause runtime errors. |
-| **Medium (57)** | Technical debt that makes future features slower to build. Code duplication, large files, and missing optimizations. |
+| **Critical (44)** | Security: USING(true) RLS policies on core tables allow any authenticated user to access ALL records. Accessibility: 12 form inputs missing aria attributes. Stale data visible after edits. |
+| **High (52)** | Cache inconsistencies across views, slow performance from large files, workflow gaps in activity logging. |
+| **Medium (274)** | Technical debt - 213 Tier 1 component imports in features, large files, missing optimizations. |
 
-**Status:** CRITICAL - 18 critical issues require immediate attention
+**Status:** CRITICAL - 44 critical issues require immediate attention
 
 ---
 
 ## Delta from Last Full Audit
 
-**Previous Audit:** 2026-01-23 | **Current:** 2026-01-24
+**Previous Audit:** 2026-01-24 09:40 | **Current:** 2026-01-24 18:55
 
 | Metric | Previous | Current | Change |
 |--------|----------|---------|--------|
-| Critical Issues | 36 | 18 | **-18 ✓** |
-| High Issues | 153 | 48 | **-105 ✓** |
-| Medium Issues | 78 | 57 | **-21 ✓** |
-| **Total Issues** | **267** | **123** | **-144 ✓** |
+| Critical Issues | 18 | 44 | **+26 ⚠️** |
+| High Issues | 48 | 52 | **+4 ⚠️** |
+| Medium Issues | 57 | 274 | **+217 ⚠️** |
+| **Total Issues** | **123** | **370** | **+247 ⚠️** |
 
 ### Trend Analysis
 
-**Direction:** IMPROVING 📈
+**Direction:** REGRESSED 📉
 
-The codebase has seen significant improvement:
-- Critical issues reduced by 50% (36 → 18)
-- High issues reduced by 69% (153 → 48)
-- Total issues reduced by 54% (267 → 123)
+**IMPORTANT:** This increase reflects **improved audit detection**, not codebase regression:
 
-**Key Improvements Since Last Audit:**
-1. Security migrations applied (20260122184338, 20251222011040)
-2. RLS policy hardening with proper ownership checks
-3. Strangler Fig migration COMPLETED (0 lines in monolith)
-4. Architecture compliance at 99%
+1. **Accessibility audit expanded** - Now checks all form inputs for aria-invalid, aria-describedby, role="alert" (12 new critical from SalesProfileTab.tsx)
+2. **Architecture audit expanded** - Now counts ALL Tier 1 imports in features (213 medium findings)
+3. **Security audit more thorough** - Found additional USING(true) policies on contacts, organizations, products tables
+
+**Actual Code Changes Since Morning Audit:**
+- Migration 20260124170000 FIXED product_distributors RLS (reduces DB-001)
+- No new production code issues introduced
 
 ---
 
@@ -85,54 +84,74 @@ The codebase has seen significant improvement:
 ### L1 - Database Layer [CRITICAL]
 
 **Scope:** RLS policies, indexes, constraints, soft delete enforcement
-**Audits:** db-hardening, data-integrity (soft deletes), security (RLS)
+**Audits:** db-hardening, data-integrity, security
 
-| # | Severity | Check | Location | Description |
-|---|----------|-------|----------|-------------|
-| 1 | Critical | RLS Permissive - product_distributors | migrations/20251215054822 | USING(true) allows cross-tenant access |
-| 2 | High | 93 USING(true) instances | Multiple migrations | Authenticated users get broad access |
-| 3 | High | Segments permissive SELECT | 20251018152315 | Any user can read all segments |
-| 4 | High | product_features overly permissive | 20251018152315 | Anyone can INSERT/UPDATE/DELETE |
-| 5 | High | opportunity_products RLS gaps | 20251029051540 | Only checks opportunity_owner_id |
-| 6 | High | opportunity_contacts missing deleted_at | 20251028213020 | Soft-deleted records visible |
+| # | Severity | ID | Check | Location | Description |
+|---|----------|----|-------|----------|-------------|
+| 1 | Critical | SEC-001 | USING(true) on contacts | migrations/20251111121526:163 | Any authenticated user can access ALL contacts |
+| 2 | Critical | SEC-001 | USING(true) on organizations | migrations/20251111121526:184 | Any authenticated user can access ALL orgs |
+| 3 | Critical | SEC-001 | USING(true) on products | migrations/20251111121526:205 | Any authenticated user can access ALL products |
+| 4 | Critical | DB-002 | Missing deleted_at | product_distributors table | Junction table lacks soft-delete column |
+| 5 | Critical | DB-003 | Missing deleted_at | opportunity_contacts table | Junction table lacks soft-delete column |
+| 6 | High | SEC-002 | WITH CHECK(true) | contact_notes junction | Insert policy too permissive |
+| 7 | High | DB-004 | Missing deleted_at | tutorial_progress table | No soft-delete support |
+| 8 | High | DI-002 | Missing RLS deleted_at filter | opportunity_contacts | Soft-deleted records visible |
+| 9 | High | DI-003 | Missing RLS deleted_at filter | product_distributors | Soft-deleted records visible |
+| 10 | High | SEC-003 | Permissive participant tables | call_participants, meeting_participants | USING(true) allows cross-user access |
+| 11 | High | DB-001 | USING(true) on product_distributors | 20251215054822 (FIXED in 20260124170000) | Migration applied but needs verification |
 
-**L1 Issues:** 1 critical, 5 high
+**L1 Issues:** 5 critical, 6 high
 **Status:** CRITICAL
 
 ---
 
-### L2 - Domain Layer [CRITICAL]
+### L2 - Domain Layer [EXCELLENT]
 
 **Scope:** TypeScript types, Zod schemas, validation rules
 **Audits:** typescript, security (validation)
 
-| # | Severity | Check | Location | Description |
-|---|----------|-------|----------|-------------|
-| 1 | Critical | 98 double casts (as unknown as) | Test files | Bypasses type safety entirely |
-| 2 | Critical | 154 implicit :any parameters | Test mocks | Invalid data shapes undetected |
-| 3 | High | 20 @ts-expect-error comments | Test files | Documented but indicates gaps |
-| 4 | High | 4 "as any" casts | csv-import.test.ts | Type safety bypassed |
-| 5 | High | Interface/type imbalance | 381 vs 375 | Inconsistent usage patterns |
+| # | Severity | ID | Check | Location | Description |
+|---|----------|----|-------|----------|-------------|
+| 1 | Medium | TS-001 | Test file type patterns | 159 :any in tests | Justified for mock flexibility |
+| 2 | Medium | TS-002 | Double casts in tests | 45 as unknown as | Test isolation patterns |
+| 3 | Medium | TS-003 | @ts-expect-error usage | 20 instances | All documented with reasons |
+| 4 | Medium | TS-004 | Type assertions | 6 in production | All justified with comments |
 
-**L2 Issues:** 2 critical, 3 high
-**Status:** CRITICAL
+**Production Code Grade: A+**
+- 0 `any` types in production code
+- 0 double casts in production code
+- 6 justified type assertions with documentation
+
+**L2 Issues:** 0 critical, 0 high, 4 medium (all justified)
+**Status:** EXCELLENT
 
 ---
 
 ### L3 - Provider Layer [CRITICAL]
 
 **Scope:** Data handlers, services, error transformation
-**Audits:** architecture (handlers), error-handling, data-integrity (Strangler Fig)
+**Audits:** error-handling, data-integrity (Strangler Fig)
 
-| # | Severity | Check | Location | Description |
-|---|----------|-------|----------|-------------|
-| 1 | Critical | Graceful fallback (fail-fast violation) | useRelatedRecordCounts.ts:183 | Timeout returns 0 instead of failing |
-| 2 | Critical | Fire-and-forget side effects | organizationsCallbacks.ts:137 | Storage cleanup bypasses error boundary |
-| 3 | High | Silent catch with debug logging | StorageService.ts:40-49 | Real errors masked as "not found" |
-| 4 | High | Error swallowing in collections | storageCleanup.ts:126 | Returns partial without error state |
-| 5 | High | Promise.allSettled no aggregation | useRelatedRecordCounts.ts:189 | 50% failures invisible to user |
+| # | Severity | ID | Check | Location | Description |
+|---|----------|----|-------|----------|-------------|
+| 1 | Critical | EH-001 | Fail-fast violation | useRelatedRecordCounts.ts:183 | Timeout resolves to 0 instead of failing |
+| 2 | Critical | EH-002 | Fire-and-forget | organizationsCallbacks.ts:137 | Storage cleanup bypasses error boundary |
+| 3 | Critical | EH-003 | Promise.allSettled no aggregation | useRelatedRecordCounts.ts:189 | 50% failures invisible to user |
+| 4 | Critical | DI-001 | Missing soft-delete filtering | timelineHandler.ts | Direct Supabase query missing deleted_at |
+| 5 | Critical | ARCH-001 | Direct Supabase usage | timelineHandler.ts:100 | Bypasses provider composition chain |
+| 6 | Critical | ARCH-002 | Auth provider import | SalesPermissionsTab.tsx | Imports invalidateIdentityCache directly |
+| 7 | High | EH-004 | Silent catch | StorageService.ts:40-49 | Real errors masked as "not found" |
+| 8 | High | EH-005 | Error swallowing | storageCleanup.ts:126 | Returns partial without error state |
+| 9 | High | EH-006 | Missing error boundaries | 5 async handlers | No try/catch around side effects |
+| 10 | High | EH-007 | console.error usage | 3 locations | Should use logger.error |
+| 11 | High | EH-008 | Untyped catch blocks | 8 locations | catch(e) should be catch(e: unknown) |
+| 12 | High | DI-004 | Missing validation | 3 handlers | No Zod schema at boundary |
+| 13 | High | DI-005 | Passthrough schema | contact validation | .passthrough() allows extra fields |
+| 14 | High | DI-006 | Missing .max() | 5 string fields | No length limits on text inputs |
+| 15 | High | DI-007 | Direct Supabase import | dataProvider.ts | Should use composed provider |
+| 16 | High | ARCH-003 | Tier 1 React Admin reference | filter-select-ui.tsx:71 | JSDoc mentions useListContext |
 
-**L3 Issues:** 2 critical, 3 high
+**L3 Issues:** 6 critical, 10 high
 **Status:** CRITICAL
 
 ---
@@ -140,17 +159,32 @@ The codebase has seen significant improvement:
 ### L4 - UI Foundation Layer [CRITICAL]
 
 **Scope:** Tier 1/2 components, systemic accessibility
-**Audits:** accessibility (systemic), performance (wrappers)
+**Audits:** accessibility, performance
 
-| # | Severity | Check | Location | Description |
-|---|----------|-------|----------|-------------|
-| 1 | Critical | Touch targets 24px | OrganizationAside.tsx:58,69,83 | min-h-[24px] below 44px iPad minimum |
-| 2 | Critical | Touch targets 24px | ContactAside.tsx:155 | PersonalInfoRow min-h-6 too small |
-| 3 | Critical | Bundle chunk 366 kB | dist/js/chunk-BGXvQuDD.js | Main chunk exceeds 300 kB limit |
-| 4 | High | Missing React.memo | FilterChip.tsx:41 | List component causes re-renders |
-| 5 | High | Dynamic import conflicts | OrganizationList, ActivityList | Static + dynamic breaks code splitting |
+| # | Severity | ID | Check | Location | Description |
+|---|----------|----|-------|----------|-------------|
+| 1 | Critical | A11Y-001 | Missing aria-invalid | SalesProfileTab.tsx:186 | first_name input |
+| 2 | Critical | A11Y-002 | Missing aria-invalid | SalesProfileTab.tsx:201 | last_name input |
+| 3 | Critical | A11Y-003 | Missing aria-invalid | SalesProfileTab.tsx:216 | email input |
+| 4 | Critical | A11Y-004 | Missing aria-invalid | SalesProfileTab.tsx:231 | phone input |
+| 5 | Critical | A11Y-005 | Missing aria-describedby | SalesProfileTab.tsx:186 | first_name error association |
+| 6 | Critical | A11Y-006 | Missing aria-describedby | SalesProfileTab.tsx:201 | last_name error association |
+| 7 | Critical | A11Y-007 | Missing aria-describedby | SalesProfileTab.tsx:216 | email error association |
+| 8 | Critical | A11Y-008 | Missing aria-describedby | SalesProfileTab.tsx:231 | phone error association |
+| 9 | Critical | A11Y-009 | Missing role="alert" | SalesProfileTab.tsx:186 | first_name error message |
+| 10 | Critical | A11Y-010 | Missing role="alert" | SalesProfileTab.tsx:201 | last_name error message |
+| 11 | Critical | A11Y-011 | Missing role="alert" | SalesProfileTab.tsx:216 | email error message |
+| 12 | Critical | A11Y-012 | Missing role="alert" | SalesProfileTab.tsx:231 | phone error message |
+| 13 | Critical | PERF-001 | Large bundle chunk | chunk-BGXvQuDD.js:366.64 kB | Exceeds 300 kB limit |
+| 14 | Critical | A11Y-013 | Touch targets 24px | OrganizationAside.tsx:58,69,83 | Below 44px minimum |
+| 15 | Critical | A11Y-014 | Touch targets 24px | ContactAside.tsx:155 | PersonalInfoRow too small |
+| 16 | High | A11Y-015 | Hardcoded hex colors | email templates | #333333, #666666 (acceptable) |
+| 17 | High | A11Y-016 | Hardcoded hex colors | email templates | #4F46E5 brand color (acceptable) |
+| 18 | High | A11Y-017 | Hardcoded hex colors | email templates | #f3f4f6 background (acceptable) |
+| 19 | High | PERF-002 | Missing React.memo | FilterChip.tsx:41 | List component re-renders |
+| 20 | High | PERF-003 | Dynamic import conflicts | OrganizationList, ActivityList | Static + dynamic breaks splitting |
 
-**L4 Issues:** 3 critical, 2 high
+**L4 Issues:** 15 critical, 5 high
 **Status:** CRITICAL
 
 ---
@@ -158,22 +192,33 @@ The codebase has seen significant improvement:
 ### L5 - Features Layer [CRITICAL]
 
 **Scope:** Business modules, feature-specific code
-**Audits:** stale-state, workflow-gaps, code-quality, performance (features)
+**Audits:** stale-state, workflow-gaps, code-quality, performance
 
-| # | Severity | Check | Location | Description |
-|---|----------|-------|----------|-------------|
-| 1 | Critical | Junction cache invalidation | UnlinkConfirmDialog.tsx:28 | Stale opportunity links visible |
-| 2 | Critical | Missing refetchOnWindowFocus | OpportunitiesTab.tsx:51 | Tab switch shows stale data |
-| 3 | Critical | Product auth cache hole | ProductExceptionsSection.tsx:24 | Deleted authorizations still shown |
-| 4 | Critical | N+1 queries in forms | OpportunityListFilter.tsx:35 | 2+ sequential useGetList calls |
-| 5 | Critical | QuickAddForm 3 queries | QuickAddForm.tsx:320 | 3 useGetList at mount |
-| 6 | Critical | Large file 752 lines | opportunities/constants.ts | Exceeds 500-line limit |
-| 7 | Critical | DRY violation handlers | productsHandler, opportunitiesHandler | 80-120 lines duplicated |
-| 8 | High | Activity cache sync | SampleStatusBadge.tsx:205 | Activity lists not refreshed |
-| 9 | High | Dashboard sync missing | OpportunityCardActions.tsx:68 | KPI counts stale after close |
-| 10 | High | Optimistic update races | useMyTasks.ts:147 | Concurrent mutations lose state |
+| # | Severity | ID | Check | Location | Description |
+|---|----------|----|-------|----------|-------------|
+| 1 | Critical | SS-001 | Junction cache invalidation | UnlinkConfirmDialog.tsx:28 | Stale opportunity links visible |
+| 2 | Critical | SS-002 | Missing refetchOnWindowFocus | OpportunitiesTab.tsx:51 | Tab switch shows stale data |
+| 3 | Critical | SS-003 | Product auth cache hole | ProductExceptionsSection.tsx:24 | Deleted auths still shown |
+| 4 | Critical | PERF-004 | N+1 queries | OpportunityListFilter.tsx:35 | 2 sequential useGetList |
+| 5 | Critical | PERF-005 | 3 queries at mount | QuickAddForm.tsx:320 | Could be batched |
+| 6 | Critical | PERF-006 | Large file 752 lines | opportunities/constants.ts | Exceeds 500-line limit |
+| 7 | Critical | PERF-007 | Large bundle impact | index-BHSaDpxh.js:6.96 MB | Main entry too large |
+| 8 | Critical | CQ-001 | 53 files > 400 lines | Various | Including 5000+ line generated types |
+| 9 | Critical | CQ-002 | 663 lines | QuickAddForm.tsx | 11 hooks, high complexity |
+| 10 | Critical | CQ-003 | 684 lines | SalesProfileTab.tsx | Multiple responsibilities |
+| 11 | Critical | CQ-004 | 613 lines | SalesSettingsPage.tsx | Should be split |
+| 12 | Critical | CQ-005 | DRY violation | handler passthrough patterns | 80+ lines duplicated |
+| 13 | Critical | CQ-006 | DRY violation | productsHandler, opportunitiesHandler | Similar composition logic |
+| 14 | Critical | CQ-007 | High cyclomatic complexity | QuickAddForm useEffect | 15+ branches |
+| 15 | Critical | CQ-008 | High cyclomatic complexity | handler switch statements | 10+ cases |
+| 16 | Critical | WG-001 | Stale leads feature | No server-side RPC | Requires get_stale_leads function |
+| 17 | Critical | WG-002 | Activity logging gaps | Missing required fields | Some activities lack context |
+| 18 | Critical | WG-003 | Sample tracking incomplete | No follow-up enforcement | Samples can be forgotten |
+| 19 | High | SS-004 | Activity cache sync | SampleStatusBadge.tsx:205 | Lists not refreshed |
+| 20 | High | SS-005 | Dashboard sync | OpportunityCardActions.tsx:68 | KPI counts stale |
+| 21+ | High+ | ... | Additional findings | Various | See full audit files |
 
-**L5 Issues:** 7 critical, 14 high
+**L5 Issues:** 18 critical, 31 high
 **Status:** CRITICAL
 
 ---
@@ -182,23 +227,21 @@ The codebase has seen significant improvement:
 
 **These MUST be fixed before deployment.**
 
-| # | Layer | Category | Check | Location | Fix |
-|---|-------|----------|-------|----------|-----|
-| 1 | L1 | data-integrity | RLS product_distributors | 20251215054822:42 | Replace USING(true) with company checks |
-| 2 | L2 | typescript | 98 double casts | Test files | Use typed factories from typed-mocks.ts |
-| 3 | L2 | typescript | 154 implicit :any | Test mocks | Define proper prop interfaces |
-| 4 | L3 | error-handling | Graceful fallback | useRelatedRecordCounts:183 | Remove timeout fallback, fail fast |
-| 5 | L3 | error-handling | Fire-and-forget | organizationsCallbacks:137 | Document or add error handling |
-| 6 | L4 | accessibility | Touch targets 24px | OrganizationAside:58,69,83 | Change to min-h-11 (44px) |
-| 7 | L4 | accessibility | Touch targets 24px | ContactAside:155 | Change min-h-6 to min-h-11 |
-| 8 | L4 | performance | Bundle 366 kB | chunk-BGXvQuDD.js | Implement code splitting |
-| 9 | L5 | stale-state | Junction cache | UnlinkConfirmDialog:28 | Add queryClient.invalidateQueries() |
-| 10 | L5 | stale-state | refetchOnWindowFocus | OpportunitiesTab:51 | Add { refetchOnWindowFocus: true } |
-| 11 | L5 | stale-state | Product auth cache | ProductExceptionsSection:24 | Invalidate authorization keys |
-| 12 | L5 | performance | N+1 OpportunityListFilter | OpportunityListFilter:35 | Combine to single query |
-| 13 | L5 | performance | N+1 QuickAddForm | QuickAddForm:320 | Memoize or batch queries |
-| 14 | L5 | code-quality | 752-line file | opportunities/constants.ts | Split into 4 focused files |
-| 15 | L5 | code-quality | DRY violation | handlers/*.ts | Extract base handler factory |
+| # | Layer | Category | ID | Location | Fix |
+|---|-------|----------|-----|----------|-----|
+| 1 | L1 | security | SEC-001 | migrations/20251111121526 | Replace USING(true) with company_id checks |
+| 2 | L1 | db-hardening | DB-002 | product_distributors | Add deleted_at column + migration |
+| 3 | L1 | db-hardening | DB-003 | opportunity_contacts | Add deleted_at column + migration |
+| 4 | L3 | error-handling | EH-001 | useRelatedRecordCounts:183 | Remove timeout fallback, fail fast |
+| 5 | L3 | error-handling | EH-002 | organizationsCallbacks:137 | Add error logging for fire-and-forget |
+| 6 | L3 | architecture | ARCH-001 | timelineHandler.ts:100 | Use baseProvider.getList() |
+| 7 | L4 | accessibility | A11Y-001-012 | SalesProfileTab.tsx:186-257 | Add aria-invalid, aria-describedby, role="alert" |
+| 8 | L4 | accessibility | A11Y-013-014 | OrganizationAside, ContactAside | Change min-h-6 to min-h-11 (44px) |
+| 9 | L4 | performance | PERF-001 | chunk-BGXvQuDD.js | Implement code splitting |
+| 10 | L5 | stale-state | SS-001-003 | Various | Add queryClient.invalidateQueries() |
+| 11 | L5 | performance | PERF-004-005 | OpportunityListFilter, QuickAddForm | Combine/batch queries |
+| 12 | L5 | code-quality | CQ-001-002 | QuickAddForm, SalesProfileTab | Split into focused components |
+| 13 | L5 | workflow-gaps | WG-001 | stale leads | Create get_stale_leads RPC function |
 
 ---
 
@@ -206,14 +249,13 @@ The codebase has seen significant improvement:
 
 Despite the issues found, the codebase demonstrates strong fundamentals:
 
-1. **Architecture: 99% compliance** - Feature modules follow standard patterns
-2. **Strangler Fig: 100% COMPLETE** - 13 composed handlers, 0 monolith lines
+1. **TypeScript Production Code: A+ Grade** - 0 any types, 0 double casts in production
+2. **Strangler Fig: 100% COMPLETE** - 19 composed handlers, 0 monolith lines
 3. **RLS Coverage: 22/22 tables** - All tables have RLS enabled
 4. **Fail-Fast: NO retry logic** - No exponential backoff patterns
 5. **Form Validation: Correct modes** - onSubmit/onBlur enforced
-6. **WCAG 2.1 AA: Forms correct** - aria-invalid, role="alert" implemented
-7. **Design System: No color violations** - Semantic OKLCH tokens throughout
-8. **XSS Protection: DOMPurify** - Comprehensive input sanitization
+6. **Design System: No color violations** - Semantic OKLCH tokens throughout
+7. **XSS Protection: DOMPurify** - Comprehensive input sanitization
 
 ---
 
@@ -221,23 +263,34 @@ Despite the issues found, the codebase demonstrates strong fundamentals:
 
 ### Immediate (Critical - Blocks Deployment)
 
-1. **[L4/accessibility]** Fix touch targets: Change `min-h-[24px]` to `min-h-11` in OrganizationAside and ContactAside
-2. **[L5/stale-state]** Add cache invalidation after junction table mutations
-3. **[L3/error-handling]** Remove graceful fallback in useRelatedRecordCounts - fail fast
-4. **[L1/security]** Fix product_distributors RLS with proper company isolation
+1. **[L1/security]** Fix RLS policies on contacts, organizations, products tables
+   - Replace `USING(true)` with `USING(auth.uid() IS NOT NULL AND deleted_at IS NULL)`
+   - Consider multi-tenant isolation with company_id checks
+
+2. **[L4/accessibility]** Fix SalesProfileTab.tsx form inputs (A11Y-001 through A11Y-012)
+   - Add `aria-invalid={!!error}` to each input
+   - Add `aria-describedby={errorId}` linking to error message
+   - Add `role="alert"` to error message spans
+
+3. **[L4/accessibility]** Fix touch targets
+   - Change `min-h-[24px]` to `min-h-11` in OrganizationAside and ContactAside
+
+4. **[L3/error-handling]** Remove graceful fallback in useRelatedRecordCounts
+   - Fail fast instead of returning count=0 on timeout
 
 ### Short-Term (High - Fix Before Next Release)
 
-1. **[L2/typescript]** Replace test double casts with typed factories
-2. **[L4/performance]** Implement code splitting for large chunks
-3. **[L5/performance]** Combine N+1 queries in forms/filters
-4. **[L5/code-quality]** Split 752-line constants.ts into focused modules
+1. **[L1/db-hardening]** Add deleted_at columns to junction tables
+2. **[L3/architecture]** Fix timelineHandler direct Supabase usage
+3. **[L5/stale-state]** Add cache invalidation after junction mutations
+4. **[L5/performance]** Combine N+1 queries in forms/filters
+5. **[L5/code-quality]** Split large files (QuickAddForm, SalesProfileTab)
 
 ### Technical Debt (Medium - Schedule for Sprint)
 
-1. **[L5/code-quality]** Extract base handler factory for DRY compliance
-2. **[L2/typescript]** Standardize interface vs type usage
-3. **[L5/stale-state]** Add staleTime configuration to frequently-mutated queries
+1. **[L5/architecture]** Reduce Tier 1 imports (213 instances)
+2. **[L5/code-quality]** Extract base handler factory for DRY compliance
+3. **[L3/provider]** Add Zod schemas to remaining handlers
 4. **[L3/error-handling]** Replace console.error with logger.error
 
 ---
@@ -255,7 +308,7 @@ Audits were executed in 3 batches:
 ### Mode Details
 
 - **Mode:** Full (all checks including MCP advisors)
-- **Duration:** 19 minutes
+- **Duration:** ~25 minutes
 - **Agents:** 11 parallel audit agents
 
 ---
