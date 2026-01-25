@@ -1,32 +1,32 @@
 {
-  "lastAudit": "2026-01-24",
-  "lastAuditTime": "21:25",
+  "lastAudit": "2026-01-25",
+  "lastAuditTime": "01:07",
   "mode": "full",
-  "duration_minutes": 21,
+  "duration_minutes": 23,
   "totals": {
     "critical": 22,
-    "high": 65,
-    "medium": 133
+    "high": 55,
+    "medium": 69
   },
   "by_layer": {
-    "L1_database": { "critical": 7, "high": 8, "medium": 84, "status": "CRITICAL" },
-    "L2_domain": { "critical": 0, "high": 1, "medium": 7, "status": "OK" },
-    "L3_provider": { "critical": 2, "high": 14, "medium": 9, "status": "CRITICAL" },
-    "L4_ui_foundation": { "critical": 0, "high": 0, "medium": 0, "status": "EXCELLENT" },
-    "L5_features": { "critical": 13, "high": 42, "medium": 33, "status": "CRITICAL" }
+    "L1_database": { "critical": 13, "high": 16, "medium": 13, "status": "CRITICAL" },
+    "L2_domain": { "critical": 0, "high": 3, "medium": 2, "status": "OK" },
+    "L3_provider": { "critical": 2, "high": 14, "medium": 3, "status": "WARN" },
+    "L4_ui_foundation": { "critical": 0, "high": 2, "medium": 3, "status": "OK" },
+    "L5_features": { "critical": 7, "high": 20, "medium": 48, "status": "CRITICAL" }
   },
   "by_category": {
-    "security": { "critical": 2, "high": 4, "medium": 3 },
-    "data-integrity": { "critical": 1, "high": 4, "medium": 2 },
-    "error-handling": { "critical": 1, "high": 10, "medium": 4 },
-    "db-hardening": { "critical": 2, "high": 4, "medium": 82 },
-    "stale-state": { "critical": 5, "high": 8, "medium": 4 },
-    "workflow-gaps": { "critical": 1, "high": 4, "medium": 5 },
-    "architecture": { "critical": 0, "high": 2, "medium": 3 },
-    "typescript": { "critical": 0, "high": 1, "medium": 7 },
-    "accessibility": { "critical": 0, "high": 0, "medium": 0 },
-    "performance": { "critical": 3, "high": 4, "medium": 5 },
-    "code-quality": { "critical": 7, "high": 24, "medium": 18 }
+    "security": { "critical": 1, "high": 5, "medium": 5 },
+    "data-integrity": { "critical": 2, "high": 0, "medium": 2 },
+    "error-handling": { "critical": 0, "high": 1, "medium": 2 },
+    "db-hardening": { "critical": 3, "high": 8, "medium": 5 },
+    "stale-state": { "critical": 7, "high": 12, "medium": 8 },
+    "workflow-gaps": { "critical": 2, "high": 4, "medium": 3 },
+    "architecture": { "critical": 0, "high": 1, "medium": 2 },
+    "typescript": { "critical": 0, "high": 2, "medium": 3 },
+    "accessibility": { "critical": 0, "high": 2, "medium": 4 },
+    "performance": { "critical": 3, "high": 8, "medium": 17 },
+    "code-quality": { "critical": 4, "high": 12, "medium": 18 }
   },
   "critical_findings": [
     {
@@ -34,10 +34,11 @@
       "id": "SEC-01",
       "severity": "critical",
       "layer": "L1",
-      "check": "USING(true) on activities, tasks, tags tables",
+      "check": "USING(true) on activities table",
       "location": "supabase/migrations/20251123190738_restore_activities_rls_policies.sql",
-      "description": "Any authenticated user can access ALL activities, tasks, and tags records",
-      "firstSeen": "2026-01-24",
+      "description": "14 RLS policies allow ANY authenticated user to access all activities records",
+      "fix": "Replace all USING(true) with company_id isolation: company_id = (auth.jwt() ->> 'company_id')::int AND deleted_at IS NULL",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -45,37 +46,12 @@
       "id": "SEC-02",
       "severity": "critical",
       "layer": "L1",
-      "check": "Legacy product_distributors has permissive RLS",
+      "check": "product_distributors permissive RLS",
       "location": "supabase/migrations/20251215054822_08_create_product_distributors.sql",
-      "description": "Product distributors table has overly permissive RLS policies",
-      "firstSeen": "2026-01-24",
+      "description": "Legacy permissive policies exist (fixed in later migration 20260125000007)",
+      "fix": "Verify migration 20260125000007 is deployed to production",
+      "firstSeen": "2026-01-25",
       "status": "open"
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-01",
-      "severity": "critical",
-      "layer": "L1",
-      "check": "hard_delete_contact bypasses soft delete",
-      "location": "Multiple migrations",
-      "description": "Hard delete function exists that bypasses soft-delete pattern",
-      "firstSeen": "2026-01-24",
-      "status": "false_positive",
-      "resolvedDate": "2026-01-24",
-      "resolution": "Functions never existed in codebase - verified via grep of all migrations, psql query of pg_proc, and codebase search. No CREATE/DROP statements found."
-    },
-    {
-      "source_audit": "data-integrity",
-      "id": "DI-02",
-      "severity": "critical",
-      "layer": "L1",
-      "check": "hard_delete_organization bypasses soft delete",
-      "location": "Multiple migrations",
-      "description": "Hard delete function exists that bypasses soft-delete pattern",
-      "firstSeen": "2026-01-24",
-      "status": "false_positive",
-      "resolvedDate": "2026-01-24",
-      "resolution": "Functions never existed in codebase - verified via grep of all migrations, psql query of pg_proc, and codebase search. No CREATE/DROP statements found."
     },
     {
       "source_audit": "data-integrity",
@@ -85,7 +61,20 @@
       "check": "RLS SELECT policies missing deleted_at IS NULL",
       "location": "activities, tasks, tags tables",
       "description": "RLS policies don't filter out soft-deleted records",
-      "firstSeen": "2026-01-24",
+      "fix": "Add deleted_at IS NULL to all SELECT policies",
+      "firstSeen": "2026-01-25",
+      "status": "open"
+    },
+    {
+      "source_audit": "data-integrity",
+      "id": "DI-04",
+      "severity": "critical",
+      "layer": "L1",
+      "check": "segments USING(true) policy",
+      "location": "supabase/migrations/20251018152315_cloud_schema_fresh.sql",
+      "description": "Permissive policy on reference data table (acceptable but needs documentation)",
+      "fix": "Replace with auth.uid() IS NOT NULL and document reference data status",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -93,10 +82,11 @@
       "id": "DB-01",
       "severity": "critical",
       "layer": "L1",
-      "check": "Permissive USING(true) on write policies",
-      "location": "activities, tasks, tags tables",
-      "description": "Write policies allow any authenticated user to modify records",
-      "firstSeen": "2026-01-24",
+      "check": "opportunity_participants missing soft-delete RLS filter",
+      "location": "supabase/migrations/20251029024045_fix_rls_policies_company_isolation.sql",
+      "description": "Deleted records remain queryable",
+      "fix": "Add deleted_at IS NULL to all RLS policies",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -104,32 +94,23 @@
       "id": "DB-02",
       "severity": "critical",
       "layer": "L1",
-      "check": "Missing FK indexes for EXISTS subqueries",
-      "location": "Junction tables",
-      "description": "Foreign key columns lack indexes causing slow EXISTS queries",
-      "firstSeen": "2026-01-24",
+      "check": "interaction_participants missing soft-delete in RLS",
+      "location": "RLS policies",
+      "description": "Soft-deleted records not hidden at database layer",
+      "fix": "Add soft-delete filtering to all 4 CRUD policies",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
-      "source_audit": "stale-state",
-      "id": "SS-01",
+      "source_audit": "db-hardening",
+      "id": "DB-03",
       "severity": "critical",
       "layer": "L1",
-      "check": "contact_organizations cache invalidation gap",
-      "location": "Junction table",
-      "description": "Mutations don't invalidate related caches",
-      "firstSeen": "2026-01-24",
-      "status": "open"
-    },
-    {
-      "source_audit": "stale-state",
-      "id": "SS-02",
-      "severity": "critical",
-      "layer": "L1",
-      "check": "opportunity_contacts cache invalidation gap",
-      "location": "Junction table",
-      "description": "Mutations don't invalidate related caches",
-      "firstSeen": "2026-01-24",
+      "check": "notification_participants table never created",
+      "location": "Multiple migrations",
+      "description": "Orphaned foreign key references in migrations",
+      "fix": "Audit all migrations for dangling references",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -140,7 +121,8 @@
       "check": "Console logging instead of structured logger",
       "location": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:102-127",
       "description": "Uses console.error instead of structured logger service",
-      "firstSeen": "2026-01-24",
+      "fix": "Replace with logger service for Sentry integration",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -151,7 +133,8 @@
       "check": "Missing server-side win/loss validation RPC",
       "location": "Provider layer",
       "description": "Win/loss reason validation only exists client-side",
-      "firstSeen": "2026-01-24",
+      "fix": "Implement server-side RPC validation",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -159,10 +142,11 @@
       "id": "SS-03",
       "severity": "critical",
       "layer": "L5",
-      "check": "Missing refetch after opportunity product link",
-      "location": "src/atomic-crm/opportunities/OpportunityProductsTab.tsx",
-      "description": "Product links not refreshed after mutation",
-      "firstSeen": "2026-01-24",
+      "check": "AddProductExceptionDialog missing cache invalidation",
+      "location": "src/atomic-crm/opportunities/AddProductExceptionDialog.tsx",
+      "description": "Product exceptions don't appear without refresh",
+      "fix": "Add queryClient.invalidateQueries after mutation",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -170,10 +154,11 @@
       "id": "SS-04",
       "severity": "critical",
       "layer": "L5",
-      "check": "Stale state after contact unlink",
-      "location": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
-      "description": "Contact list shows stale data after unlink",
-      "firstSeen": "2026-01-24",
+      "check": "AddPrincipalDialog missing cache invalidation",
+      "location": "src/atomic-crm/opportunities/AddPrincipalDialog.tsx",
+      "description": "New authorizations invisible without refresh",
+      "fix": "Add cache invalidation after mutation",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -181,10 +166,59 @@
       "id": "SS-05",
       "severity": "critical",
       "layer": "L5",
+      "check": "TagCreateModal no cache invalidation",
+      "location": "src/atomic-crm/tags/TagCreateModal.tsx",
+      "description": "New tags don't appear in selectors",
+      "fix": "Add queryClient.invalidateQueries",
+      "firstSeen": "2026-01-25",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-06",
+      "severity": "critical",
+      "layer": "L5",
+      "check": "OpportunityProductsTab stale product counts",
+      "location": "src/atomic-crm/opportunities/OpportunityProductsTab.tsx",
+      "description": "Product counts go stale after sync mutation",
+      "fix": "Invalidate product caches after mutation",
+      "firstSeen": "2026-01-25",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-07",
+      "severity": "critical",
+      "layer": "L5",
+      "check": "UnlinkConfirmDialog incomplete invalidation",
+      "location": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
+      "description": "Only invalidates junction table, missing parent caches",
+      "fix": "Add parent opportunity/contact detail invalidation",
+      "firstSeen": "2026-01-25",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-08",
+      "severity": "critical",
+      "layer": "L5",
       "check": "LinkOpportunityModal cache coherence gap",
       "location": "src/atomic-crm/opportunities/LinkOpportunityModal.tsx",
       "description": "Modal doesn't invalidate caches after linking",
-      "firstSeen": "2026-01-24",
+      "fix": "Add cache invalidation after successful link",
+      "firstSeen": "2026-01-25",
+      "status": "open"
+    },
+    {
+      "source_audit": "stale-state",
+      "id": "SS-09",
+      "severity": "critical",
+      "layer": "L5",
+      "check": "ProductExceptionsSection hardcoded query keys",
+      "location": "src/atomic-crm/products/ProductExceptionsSection.tsx",
+      "description": "Uses hardcoded string instead of constants, risk of cache desync",
+      "fix": "Use constants from query key factory",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -192,10 +226,11 @@
       "id": "PERF-01",
       "severity": "critical",
       "layer": "L5",
-      "check": "N+1 queries (3 sequential useGetOne)",
-      "location": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:413-428",
-      "description": "3 sequential useGetOne calls that could be combined",
-      "firstSeen": "2026-01-24",
+      "check": "Cascading fetch chain in useEntityData",
+      "location": "src/atomic-crm/dashboard/useEntityData.ts:104-237",
+      "description": "6 parallel queries fetching 300+ records, 2-3s dashboard load time",
+      "fix": "Add staleTime: 5*60*1000, batch fallback queries, reduce perPage: 100→25",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -203,10 +238,11 @@
       "id": "PERF-02",
       "severity": "critical",
       "layer": "L5",
-      "check": "Unbounded list (1000 records, no pagination)",
-      "location": "src/atomic-crm/opportunities/OpportunityArchivedList.tsx:24-28",
-      "description": "Fetches 1000 records without pagination",
-      "firstSeen": "2026-01-24",
+      "check": "N+1 query pattern in RelatedOpportunitiesSection",
+      "location": "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx:20-31",
+      "description": "useGetOne + useGetList with no cache strategy",
+      "fix": "Add staleTime, reduce perPage: 100→25",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -214,10 +250,11 @@
       "id": "PERF-03",
       "severity": "critical",
       "layer": "L5",
-      "check": "Client-side filtering of 500 orgs",
-      "location": "src/atomic-crm/opportunities/QuickAddForm.tsx:326-332",
-      "description": "Fetches 500 organizations for client-side filtering",
-      "firstSeen": "2026-01-24",
+      "check": "Unbounded pagination across 43 files",
+      "location": "Multiple list components",
+      "description": "perPage: 100 without pagination UI, 1-2MB JSON per page",
+      "fix": "Bulk find-replace perPage: 100→25",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -227,8 +264,9 @@
       "layer": "L5",
       "check": "File over 600 lines (673)",
       "location": "src/atomic-crm/providers/supabase/filterRegistry.ts",
-      "description": "Large file needs splitting",
-      "firstSeen": "2026-01-24",
+      "description": "Large file needs splitting by domain",
+      "fix": "Split into separate files per resource",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -238,8 +276,9 @@
       "layer": "L5",
       "check": "File over 600 lines (663)",
       "location": "src/atomic-crm/opportunities/QuickAddForm.tsx",
-      "description": "Large file needs splitting",
-      "firstSeen": "2026-01-24",
+      "description": "Large file needs splitting - extract hooks",
+      "fix": "Extract custom hooks and helper functions",
+      "firstSeen": "2026-01-25",
       "status": "open"
     },
     {
@@ -249,88 +288,45 @@
       "layer": "L5",
       "check": "File over 600 lines (655)",
       "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
-      "description": "Large file needs splitting",
-      "firstSeen": "2026-01-24",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-04",
-      "severity": "critical",
-      "layer": "L5",
-      "check": "File over 600 lines (648)",
-      "location": "src/atomic-crm/opportunities/OpportunityList.tsx",
-      "description": "Large file needs splitting",
-      "firstSeen": "2026-01-24",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-05",
-      "severity": "critical",
-      "layer": "L5",
-      "check": "File over 600 lines (628)",
-      "location": "src/atomic-crm/contacts/ContactCompactForm.tsx",
-      "description": "Large file needs splitting",
-      "firstSeen": "2026-01-24",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-06",
-      "severity": "critical",
-      "layer": "L5",
-      "check": "File over 600 lines (620)",
-      "location": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
-      "description": "Large file needs splitting",
-      "firstSeen": "2026-01-24",
-      "status": "open"
-    },
-    {
-      "source_audit": "code-quality",
-      "id": "CQ-07",
-      "severity": "critical",
-      "layer": "L5",
-      "check": "File over 600 lines (608)",
-      "location": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-      "description": "Large file needs splitting",
-      "firstSeen": "2026-01-24",
+      "description": "Large file needs splitting - extract components",
+      "fix": "Split into smaller focused components",
+      "firstSeen": "2026-01-25",
       "status": "open"
     }
   ],
   "strangler_fig_status": {
     "unifiedDataProvider_lines": 0,
     "composedDataProvider_lines": 260,
-    "handler_count": 19,
+    "handler_count": 24,
     "status": "COMPLETED"
   },
   "excellence_areas": [
-    "Accessibility: A+ Grade - 100% WCAG 2.1 AA compliance",
-    "TypeScript: A+ Grade - Excellent type safety, minimal casting",
-    "Strangler Fig: 100% COMPLETE - 19 composed handlers, 0 monolith lines",
-    "Architecture: 90% compliance - Clean 3-tier separation",
-    "RLS Coverage: 22/22 tables (100%)",
-    "Form Validation: onSubmit/onBlur mode enforced",
-    "Design System: No color violations - semantic OKLCH tokens"
+    "Accessibility: 92% WCAG 2.1 AA compliance - 100% semantic colors, all touch targets 44-48px",
+    "TypeScript: Excellent type safety - strict mode, 30+ z.infer derived types",
+    "Strangler Fig: 100% COMPLETE - 24 composed handlers, 0 monolith lines",
+    "Architecture: 92% compliance - 0 direct Supabase imports in features",
+    "RLS Coverage: 31/31 tables (100%) have RLS enabled",
+    "Form Validation: onSubmit/onBlur mode enforced throughout",
+    "Design System: Perfect compliance - semantic OKLCH tokens only"
   ],
   "trend": {
-    "direction": "IMPROVED",
-    "note": "Critical issues reduced 45% (44→24), total issues reduced 40% (370→222). Accessibility issues resolved. Major improvements in L4 UI Foundation layer.",
-    "previous_critical": 44,
-    "current_critical": 24,
-    "previous_high": 52,
-    "current_high": 65,
-    "previous_medium": 274,
-    "current_medium": 133,
+    "direction": "IMPROVING",
+    "note": "Total issues reduced 34% (220→146). High issues down 15% (65→55). Medium issues cut in half (-48%). Critical stable at 22 with some resolved as false positives, new cache invalidation issues found.",
+    "previous_critical": 22,
+    "current_critical": 22,
+    "previous_high": 65,
+    "current_high": 55,
+    "previous_medium": 133,
+    "current_medium": 69,
     "delta": {
-      "critical_change": -20,
-      "critical_percent": "-45%",
-      "high_change": 13,
-      "high_percent": "+25%",
-      "medium_change": -141,
-      "medium_percent": "-51%",
-      "total_change": -148,
-      "total_percent": "-40%"
+      "critical_change": 0,
+      "critical_percent": "±0%",
+      "high_change": -10,
+      "high_percent": "-15%",
+      "medium_change": -64,
+      "medium_percent": "-48%",
+      "total_change": -74,
+      "total_percent": "-34%"
     }
   }
 }
