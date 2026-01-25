@@ -283,7 +283,7 @@ ORDER BY table_name, column_name;
 **Severity:** High
 **Risk:** Unbounded storage, potential DoS
 
-### 3.5 Tables Without Soft Delete
+### 3.6 Tables Without Soft Delete
 ```sql
 -- mcp__supabase__execute_sql
 SELECT table_name
@@ -301,7 +301,7 @@ AND NOT EXISTS (
 **Severity:** Medium
 **Risk:** Data safety (hard deletes)
 
-### 3.6 Tables Without Updated_at Trigger
+### 3.7 Tables Without Updated_at Trigger
 ```sql
 -- mcp__supabase__execute_sql
 SELECT t.table_name

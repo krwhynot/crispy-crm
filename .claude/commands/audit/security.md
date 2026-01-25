@@ -349,7 +349,22 @@ const { data } = await supabase
 |----|-------|---------|----------|
 | C1 | Missing Zod .max() | `z.string()` without `.max(` | Critical |
 | C2 | Direct Supabase imports | `from "@supabase/supabase-js"` | Critical |
-| ... | ... | ... | ... |
+| C3 | XSS vulnerabilities | `dangerouslySetInnerHTML` | Critical |
+| C4 | z.object without .strict() | `z.object()` without `.strict()` or `z.strictObject` | Critical |
+| C5 | Hardcoded secrets | `sk_live|pk_live|password =` | Critical |
+| C6 | eval() usage | `eval()` | Critical |
+| C7 | Exposed API keys | `api_key =` | Critical |
+| C8 | z.any() escape hatch | `z.any()` | Critical |
+| H1 | SQL injection patterns | `.rpc()` with `${` | High |
+| H2 | Template literal in SQL | `supabase.*` with `${` | High |
+| H3 | Missing auth hooks | Page components without `useGetIdentity` | High |
+| H4 | Deprecated company_id | `company_id` usage | High |
+| H5 | Deprecated archived_at | `archived_at` usage | High |
+| H6 | Hard DELETE statements | `DELETE FROM` | High |
+| H7 | Frontend deleted_at filtering | `.is('deleted_at', null)` or `.filter(...deleted_at)` | High |
+| M1 | Console.log with data | `console.log/debug/info()` | Medium |
+| M2 | Missing z.coerce | `z.number/date/boolean()` without `.coerce` | Medium |
+| M3 | Inline styles | `style={{` | Medium |
 
 ---
 

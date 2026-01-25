@@ -177,7 +177,7 @@ import { debounce, throttle } from 'lodash-es';
 import { format, parseISO } from 'date-fns';
 ```
 
-#### 1.5 N+1 Query Patterns
+#### 1.7 N+1 Query Patterns
 ```bash
 # Find multiple sequential fetches
 rg "await.*fetch|useQuery.*\{" --type tsx -n -A 5
@@ -190,7 +190,7 @@ rg "await.*fetch|useQuery.*\{" --type tsx -n -A 5
 
 **Risk:** Slow page load - N+1 queries multiply request count
 
-#### 1.6 Missing useCallback for Event Handlers
+#### 1.8 Missing useCallback for Event Handlers
 ```bash
 # Find inline arrow function handlers
 rg "onClick=\{\(\)" --type tsx -n

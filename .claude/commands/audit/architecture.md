@@ -312,6 +312,7 @@ Issues that indicate technical debt or inconsistency.
 | H005 | Form-level validation | `zodResolver` | Wrong validation boundary |
 | H006 | Tier 1 imports in features | `@/components/ui/` | Bypasses Tier 2 wrappers |
 | H007 | Manual interfaces in validation | `export interface` | Use z.infer for type derivation |
+| H7 | Wrapper composition order violation | `with(Validation\|LifecycleCallbacks)\(\s*withErrorLogging` | Errors bypass logging |
 
 ### Medium Checks
 | ID | Name | Description | Why Medium |
@@ -320,6 +321,7 @@ Issues that indicate technical debt or inconsistency.
 | M002 | Large files | >500 lines | Maintainability |
 | M003 | Circular dependencies | Import cycles | Build issues |
 | M004 | Missing index exports | No index.tsx | Inconsistent structure |
+| M5 | Business logic in handlers | Loops >10 lines, >3 branches, RPC calls | Should be in Service layer |
 
 ---
 

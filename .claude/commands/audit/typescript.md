@@ -351,6 +351,55 @@ catch (error: unknown) {
 
 ---
 
+#### [H9] Type Casts in Test Files
+
+**Files Affected:**
+- `src/atomic-crm/contacts/__tests__/ContactList.test.tsx:45` - `as any`
+
+**Risk:** Type casts in tests bypass TypeScript's type checking, allowing tests to pass with invalid data shapes that will fail in production:
+- Tests use incomplete mock data
+- Missing required fields go undetected
+- Type changes don't trigger test failures
+- False sense of test coverage
+
+**Fix:** Use properly typed test data from Zod schemas or typed mock factories.
+
+```typescript
+// WRONG: Type cast bypasses validation
+const mockContact = {
+  id: 1,
+  first_name: "John",
+} as any; // Missing required fields!
+
+vi.mocked(useGetList).mockReturnValue({
+  data: [mockContact],
+  total: 1,
+} as any); // Could pass with wrong data shape
+
+// CORRECT: Use typed test data
+import type { Contact } from '@/atomic-crm/validation/contact';
+
+const testContact: Contact = {
+  id: 1,
+  first_name: "John",
+  last_name: "Doe",
+  email: "john@example.com",
+  // ... all required fields - TypeScript enforces completeness
+};
+
+// Use generic typed factory
+import { mockUseGetListReturn } from '@/tests/utils/typed-mocks';
+
+vi.mocked(useGetList<Contact>).mockReturnValue(
+  mockUseGetListReturn<Contact>({
+    data: [testContact],
+    total: 1
+  })
+);
+```
+
+---
+
 ### Medium (Best Practices)
 
 #### [M1] useState without type
@@ -369,6 +418,48 @@ const [data, setData] = useState();
 // CORRECT
 const [data, setData] = useState<Contact | null>(null);
 ```
+
+---
+
+#### [M7] Missing Typed Mock Factories
+
+**Files Affected:**
+- `src/atomic-crm/opportunities/__tests__/OpportunitiesList.test.tsx:67`
+
+**Risk:** Manually mocking React Admin hooks without generic factories leads to:
+- Inconsistent mock data across tests
+- Repeated type casts (as any)
+- Missing required hook return properties
+- Tests that don't match production types
+
+**Fix:** Use generic typed factories from `src/tests/utils/typed-mocks.ts`.
+
+```typescript
+// WRONG: Manual mock with type cast
+vi.mocked(useGetList).mockReturnValue({
+  data: [mockOpportunity],
+  total: 1,
+} as any); // Missing isLoading, error, etc.
+
+// CORRECT: Generic typed factory
+import { mockUseGetListReturn } from '@/tests/utils/typed-mocks';
+import type { Opportunity } from '@/atomic-crm/validation/opportunity';
+
+vi.mocked(useGetList<Opportunity>).mockReturnValue(
+  mockUseGetListReturn<Opportunity>({
+    data: [testOpportunity],
+    total: 1
+    // Factory provides all required properties with correct types
+  })
+);
+```
+
+**Available Factories:**
+- `mockUseGetListReturn<T>()` - For useGetList hooks
+- `mockUseGetOneReturn<T>()` - For useGetOne hooks
+- `mockUseGetManyReturn<T>()` - For useGetMany hooks
+
+**Location:** `src/tests/utils/typed-mocks.ts`
 
 ---
 

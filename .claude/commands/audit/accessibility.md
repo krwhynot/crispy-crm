@@ -593,6 +593,8 @@ const fieldId = useId()
 | A12 | Buttons without name | Button without text or aria-label | Medium |
 | A13 | Links without href | `<a>` without `href` attribute | Medium |
 | A14 | Missing form labels | Input without label or aria-label | Medium |
+| UI-M001 | Missing React.forwardRef | Tier 1 component without ref forwarding | Medium |
+| UI-M002 | Missing CSS variables | :root missing semantic color definitions | Medium |
 
 ---
 
