@@ -472,4 +472,91 @@ describe("useBulkActionsState - Parallel Execution", () => {
     // Verify no activity creation for status changes
     expect(mockDataProvider.create).not.toHaveBeenCalled();
   });
+
+  test("should create activity records for successful bulk archive", async () => {
+    mockDataProvider.deleteMany.mockResolvedValue({ data: [] });
+    mockDataProvider.create.mockResolvedValue({ data: { id: 999 } });
+
+    const { result } = renderHook(
+      () =>
+        useBulkActionsState({
+          selectedIds: [1, 2],
+          opportunities: mockOpportunities.slice(0, 2),
+          onUnselectItems: mockOnUnselectItems,
+          resource: "opportunities",
+        }),
+      { wrapper }
+    );
+
+    // Execute bulk archive
+    await act(async () => {
+      await result.current.handleBulkArchive();
+    });
+
+    // Wait for async activity creation (fire-and-forget)
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Verify deleteMany was called
+    expect(mockDataProvider.deleteMany).toHaveBeenCalledWith("opportunities", {
+      ids: [1, 2],
+    });
+
+    // Verify activity creation was called for each archived opportunity
+    expect(mockDataProvider.create).toHaveBeenCalledTimes(2);
+
+    // Verify activity data structure for first opportunity
+    expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+      data: expect.objectContaining({
+        activity_type: "interaction",
+        type: "note",
+        subject: "Opportunity archived (bulk update)",
+        opportunity_id: 1,
+        organization_id: mockOpportunities[0].customer_organization_id,
+      }),
+    });
+
+    // Verify activity data structure for second opportunity
+    expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+      data: expect.objectContaining({
+        activity_type: "interaction",
+        type: "note",
+        subject: "Opportunity archived (bulk update)",
+        opportunity_id: 2,
+        organization_id: mockOpportunities[1].customer_organization_id,
+      }),
+    });
+  });
+
+  test("should not block archive if activity logging fails", async () => {
+    mockDataProvider.deleteMany.mockResolvedValue({ data: [] });
+    mockDataProvider.create.mockRejectedValue(new Error("Activity creation failed"));
+
+    const { result } = renderHook(
+      () =>
+        useBulkActionsState({
+          selectedIds: [1, 2],
+          opportunities: mockOpportunities.slice(0, 2),
+          onUnselectItems: mockOnUnselectItems,
+          resource: "opportunities",
+        }),
+      { wrapper }
+    );
+
+    // Execute bulk archive
+    await act(async () => {
+      await result.current.handleBulkArchive();
+    });
+
+    // Wait for async activity creation attempts
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Verify archive succeeded
+    expect(mockDataProvider.deleteMany).toHaveBeenCalledTimes(1);
+    expect(mockNotify).toHaveBeenCalledWith("Successfully archived 2 opportunities", {
+      type: "success",
+    });
+
+    // Activity creation was attempted but failed (logged, not thrown)
+    expect(mockDataProvider.create).toHaveBeenCalled();
+  });
 });

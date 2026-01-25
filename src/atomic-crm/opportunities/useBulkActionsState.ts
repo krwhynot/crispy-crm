@@ -185,6 +185,37 @@ export function useBulkActionsState({
     try {
       await dataProvider.deleteMany(resource, { ids: selectedIds });
 
+      // Create activity records for successful bulk archive
+      if (selectedIds.length > 0) {
+        const activityPromises = selectedIds.map(async (id) => {
+          const opportunity = opportunities.find((opp) => opp.id === id);
+          if (!opportunity) return;
+
+          try {
+            await dataProvider.create("activities", {
+              data: {
+                activity_type: "interaction",
+                type: "note",
+                subject: "Opportunity archived (bulk update)",
+                activity_date: new Date().toISOString(),
+                opportunity_id: id,
+                organization_id: opportunity.customer_organization_id,
+              },
+            });
+          } catch (error: unknown) {
+            logger.warn("Activity logging failed for bulk archive", {
+              feature: "useBulkActionsState",
+              opportunityId: id,
+              error: error instanceof Error ? error.message : String(error),
+            });
+            // Don't block the archive if activity logging fails
+          }
+        });
+
+        // Fire-and-forget activity creation (don't block UI)
+        void Promise.allSettled(activityPromises);
+      }
+
       notify(
         `Successfully archived ${selectedIds.length} opportunit${selectedIds.length === 1 ? "y" : "ies"}`,
         { type: "success" }
@@ -206,6 +237,7 @@ export function useBulkActionsState({
     selectedIds,
     resource,
     dataProvider,
+    opportunities,
     notify,
     queryClient,
     refresh,
