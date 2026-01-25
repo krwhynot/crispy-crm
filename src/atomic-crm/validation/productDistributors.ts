@@ -60,23 +60,6 @@ export const updateProductDistributorSchema = productDistributorSchema.partial()
   created_at: true,
 });
 
-// ===== COMPOSITE ID HELPERS =====
-// React Admin expects string IDs, but we have composite BIGINT keys
-
-export const parseCompositeId = (id: string): { product_id: number; distributor_id: number } => {
-  const [product_id, distributor_id] = id.split("_").map(Number);
-  if (isNaN(product_id) || isNaN(distributor_id)) {
-    throw new Error(
-      `Invalid composite ID format: ${id}. Expected format: product_id_distributor_id`
-    );
-  }
-  return { product_id, distributor_id };
-};
-
-export const createCompositeId = (product_id: number, distributor_id: number): string => {
-  return `${product_id}_${distributor_id}`;
-};
-
 // ===== VALIDATION FUNCTIONS =====
 // Following existing pattern from other validation files
 
