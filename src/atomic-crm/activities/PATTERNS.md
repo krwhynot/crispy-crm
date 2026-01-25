@@ -287,7 +287,7 @@ export function isValidTransition(from: SampleStatus, to: SampleStatus): boolean
   activityId={123}
   interactive
   showStepper
-  onStatusChange={(s) => console.log('Updated to:', s)}
+  onStatusChange={(s) => logger.info('Updated to', { status: s })}
 />
 ```
 

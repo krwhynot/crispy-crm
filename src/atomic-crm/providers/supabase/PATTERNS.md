@@ -12,8 +12,8 @@ Standard patterns for the Supabase DataProvider subsystem in Crispy CRM. This is
                                    │
                                    ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                      UNIFIED DATA PROVIDER (Entry Point)                     │
-│                    unifiedDataProvider.ts + extensions                       │
+│                  EXTENDED DATA PROVIDER (Entry Point)                        │
+│               extendWithCustomMethods(composedProvider)                      │
 │         ┌─────────────────┬─────────────────┬─────────────────┐             │
 │         │  Custom Methods │  Storage Ops    │  RPC/Edge Func  │             │
 │         │  (30 methods)   │  (4 methods)    │  (2 methods)    │             │

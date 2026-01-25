@@ -1,6 +1,6 @@
-# Dashboard V3 Patterns
+# Dashboard Patterns
 
-Standard patterns for the Principal Dashboard V3 in Crispy CRM.
+Standard patterns for the Principal Dashboard in Crispy CRM.
 
 ## Component & Provider Hierarchy
 

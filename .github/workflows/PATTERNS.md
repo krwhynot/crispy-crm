@@ -128,6 +128,12 @@ deploy:
 
 Different trigger types serve different purposes.
 
+**Discovery Freshness Check:**
+
+The project uses pre-computed discovery files (`.claude/state/`) for codebase inventory. When the codebase structure changes, these files become stale and should be refreshed before committing.
+
+Currently, discovery freshness is verified manually via the `discovery-first` skill and verified in code reviews. Future workflow integration could automate this check during CI.
+
 **Multi-trigger Workflow:**
 ```yaml
 # .github/workflows/security.yml

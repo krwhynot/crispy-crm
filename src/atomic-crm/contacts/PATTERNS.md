@@ -367,12 +367,12 @@ export function LinkOpportunityModal({
           </ReferenceInput>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+            <AdminButton type="button" variant="outline" onClick={onClose}>
               Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading}>
+            </AdminButton>
+            <AdminButton type="submit" disabled={isLoading}>
               {isLoading ? "Linking..." : "Link Opportunity"}
-            </Button>
+            </AdminButton>
           </DialogFooter>
         </Form>
       </DialogContent>

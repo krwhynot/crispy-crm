@@ -389,10 +389,11 @@ export class ActivitiesService {
     try {
       return await getActivityLog(this.dataProvider, organizationId, salesId);
     } catch (error: unknown) {
-      console.error(`[ActivitiesService] Failed to get activity log`, {
+      logger.error('Failed to get activity log', {
         organizationId,
         salesId,
-        error,
+        error: error instanceof Error ? error.message : String(error),
+        operation: 'ActivitiesService.getActivityLog',
       });
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       throw new Error(`Get activity log failed: ${errorMessage}`);
