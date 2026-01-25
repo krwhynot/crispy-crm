@@ -246,6 +246,7 @@ function isReactAdminValidationError(error: unknown): boolean {
 /**
  * Log success for sensitive operations
  * Provides audit trail for critical operations without exposing sensitive data
+ * Uses structured logger to create breadcrumbs in Sentry
  *
  * @param method - The DataProvider method that succeeded
  * @param resource - The resource being operated on
@@ -263,11 +264,13 @@ function logSuccess(
 
   if (SENSITIVE_OPERATIONS.includes(method) || SENSITIVE_RESOURCES.includes(resource)) {
     const resultData = result as { data?: { id?: Identifier } };
-    console.info("[DataProvider Audit]", {
+    const recordId = params?.id || params?.ids || resultData?.data?.id;
+
+    logger.info("DataProvider audit: sensitive operation succeeded", {
       method,
       resource,
-      recordId: params?.id || params?.ids || resultData?.data?.id,
-      timestamp: new Date().toISOString(),
+      operation: `DataProvider.${method}`,
+      recordId,
     });
   }
 }
