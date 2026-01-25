@@ -3,14 +3,16 @@
 -- ============================================================================
 -- Business Rules:
 --   WF-H1-002: Interaction activities MUST have an opportunity_id
---   WF-H1-003: Every activity MUST link to contact_id OR organization_id
+--   WF-H1-003: Activities MUST link to contact_id OR organization_id
+--              EXCEPTION: Tasks can exist without entity relationships
 --
--- Context: These constraints already exist but were modified to exempt tasks.
--- This migration removes task exemptions to align database constraints with
--- Zod validation schemas (src/atomic-crm/validation/activities/schemas.ts:102-109)
+-- Context: Tasks are standalone to-do items that don't always relate to
+-- specific contacts or organizations (e.g., "CRM w/Kyle", "Follow up on proposal").
+-- This migration aligns database constraints with updated Zod validation
+-- (src/atomic-crm/validation/activities/schemas.ts:104)
 --
--- IMPORTANT: This enforces stricter validation at the database layer to prevent
--- orphaned activities from direct Supabase API calls bypassing Zod validation.
+-- IMPORTANT: Enforces validation at database layer to prevent orphaned
+-- interaction/engagement activities from bypassing Zod validation.
 -- ============================================================================
 
 -- ============================================================================
@@ -32,17 +34,19 @@ BEGIN
   END IF;
 END $$;
 
--- Verify no activities exist without contact_id AND organization_id
+-- Verify no NON-TASK activities exist without contact_id AND organization_id
+-- Tasks are exempted from this requirement (standalone to-dos)
 DO $$
 BEGIN
   IF EXISTS (
     SELECT 1 FROM activities
-    WHERE contact_id IS NULL
+    WHERE activity_type != 'task'
+    AND contact_id IS NULL
     AND organization_id IS NULL
     AND deleted_at IS NULL
   ) THEN
-    RAISE EXCEPTION 'Cannot add constraint: % activities have both contact_id and organization_id as NULL',
-      (SELECT COUNT(*) FROM activities WHERE contact_id IS NULL AND organization_id IS NULL AND deleted_at IS NULL);
+    RAISE EXCEPTION 'Cannot add constraint: % non-task activities have both contact_id and organization_id as NULL',
+      (SELECT COUNT(*) FROM activities WHERE activity_type != 'task' AND contact_id IS NULL AND organization_id IS NULL AND deleted_at IS NULL);
   END IF;
 END $$;
 
@@ -69,16 +73,18 @@ CHECK (
 COMMENT ON CONSTRAINT interactions_require_opportunity_check ON activities IS
   'Business rule WF-H1-002: Interaction activities must be linked to an opportunity.';
 
--- Constraint 2: All activities MUST have contact_id OR organization_id
+-- Constraint 2: Activities MUST have contact_id OR organization_id (EXCEPT tasks)
+-- Tasks are standalone to-do items that don't require entity relationships
 ALTER TABLE activities
 ADD CONSTRAINT activities_require_entity_check
 CHECK (
-  contact_id IS NOT NULL
+  activity_type = 'task'
+  OR contact_id IS NOT NULL
   OR organization_id IS NOT NULL
 );
 
 COMMENT ON CONSTRAINT activities_require_entity_check ON activities IS
-  'Business rule WF-H1-003: Every activity must be linked to either a contact OR organization.';
+  'Business rule WF-H1-003: Activities must be linked to contact OR organization. Exception: Tasks can exist independently as standalone to-do items.';
 
 -- ============================================================================
 -- STEP 4: Verification
