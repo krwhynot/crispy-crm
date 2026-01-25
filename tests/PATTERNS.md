@@ -14,13 +14,17 @@ tests/
 │   ├── auth-flow.test.ts    # Auth integration tests
 │   ├── rls-policies.test.ts # RLS policy verification
 │   ├── csv-import.test.ts   # Import with sanitization
-│   └── RLS-TEST-FINDINGS.md # Test findings documentation
+│   └── RLS-TEST-FINDINGS.md # Test findings documentation (📍 Key: RLS policy conflicts discovered)
 ├── fixtures/
 │   ├── contacts-valid.csv       # Happy path data
 │   ├── contacts-invalid.csv     # Edge cases
 │   └── contacts-formula-injection.csv  # Security tests
-├── screenshots/
-│   └── {feature}-{viewport}.png # Visual regression
+├── screenshots/                 # 📍 Location: tests/screenshots/
+│   ├── dashboard-*.png          # Dashboard UI captures
+│   ├── widget-*.png             # Component-level captures
+│   ├── pipeline-chart.png       # Visualization captures
+│   ├── metrics-grid.png         # Layout captures
+│   └── search-org.png           # Feature-specific captures
 └── ui-prototypes/
     └── trade-show-data-entry.html  # UX mockups
 ```
@@ -534,11 +538,41 @@ VITE_USE_COMPOSED_PROVIDER=true
 
 ## File Reference
 
-| Pattern | Primary Files |
-|---------|---------------|
-| **A: Smoke Test** | `simple-smoke-test.sh` |
-| **B: Integration Harness** | `integration/supabase-harness.ts`, `integration/setup.ts` |
-| **C: Security Fixtures** | `fixtures/contacts-formula-injection.csv`, `integration/csv-import.test.ts` |
-| **D: Screenshots** | `screenshots/*.png` |
-| **RLS Testing** | `integration/rls-policies.test.ts`, `integration/RLS-TEST-FINDINGS.md` |
-| **Auth Testing** | `integration/auth-flow.test.ts` |
+| Pattern | Primary Files | Status |
+|---------|---------------|--------|
+| **A: Smoke Test** | `simple-smoke-test.sh` | ✅ Implemented |
+| **B: Integration Harness** | `integration/supabase-harness.ts`, `integration/setup.ts` | ✅ Implemented |
+| **C: Security Fixtures** | `fixtures/contacts-formula-injection.csv`, `integration/csv-import.test.ts` | ✅ Implemented |
+| **D: Screenshots** | `screenshots/*.png` (located at `tests/screenshots/`) | ✅ 10 screenshots captured |
+| **RLS Testing** | `integration/rls-policies.test.ts`, `integration/RLS-TEST-FINDINGS.md` | ⚠️ Policy conflicts found |
+| **Auth Testing** | `integration/auth-flow.test.ts` | ✅ Implemented |
+
+### RLS Testing - Critical Security Findings
+
+**Location**: `tests/integration/RLS-TEST-FINDINGS.md`
+
+**Key Finding**: As of 2025-11-16, RLS policies have conflicting permissive policies (UPDATE with `USING (true)`) that override admin-only restrictions. PostgreSQL OR-logic combines policies, so if ANY policy allows access, the operation succeeds.
+
+**Affected Resources**:
+- Contacts: Non-admin users CAN update (should be admin-only)
+- Organizations: Non-admin users CAN update (should be admin-only)
+- Opportunities: Non-admin users CAN update (should be admin-only)
+- Tasks: SELECT shows all records (should show only user's own tasks)
+
+**Root Cause**: Migration `20251111121526_add_role_based_permissions.sql` added permissive UPDATE policies.
+
+**Resolution**: Drop permissive policies from migration or update CLAUDE.md if new behavior is intentional.
+
+### Screenshots Directory
+
+**Location**: `tests/screenshots/`
+
+**Current Captures** (10 files):
+- Dashboard: fullpage (2 viewports), viewport (2 sizes), iPad, full view
+- Components: widget-my-open-opps, pipeline-chart, metrics-grid
+- Features: search-org
+
+**Naming Convention**: `{feature}-{type}-{viewport}.png`
+- `{feature}`: dashboard, widget, component name
+- `{type}`: viewport, fullpage (optional for simple captures)
+- `{viewport}`: 1280x720, 768x1024 (optional)

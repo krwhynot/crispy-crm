@@ -435,32 +435,32 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
         {/* Related Organization */}
         {record.organization_id && (
           <SidepaneSection label="Related Organization">
-            <Card>
-              <CardContent className="p-4">
+            <SectionCard>
+              <div className="p-4">
                 <div className="flex items-center gap-2">
                   <Building2 className="size-5 text-muted-foreground" />
                   <ReferenceField source="organization_id" reference="organizations" link="show">
                     <TextField source="name" className="font-medium" />
                   </ReferenceField>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </SectionCard>
           </SidepaneSection>
         )}
 
         {/* Related Contact */}
         {record.contact_id && (
           <SidepaneSection label="Related Contact">
-            <Card>
-              <CardContent className="p-4">
+            <SectionCard>
+              <div className="p-4">
                 <div className="flex items-center gap-2">
                   <UserCircle className="size-5 text-muted-foreground" />
                   <ReferenceField source="contact_id" reference="contacts_summary" link="show">
                     <TextField source={contactOptionText} className="font-medium" />
                   </ReferenceField>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </SectionCard>
           </SidepaneSection>
         )}
 

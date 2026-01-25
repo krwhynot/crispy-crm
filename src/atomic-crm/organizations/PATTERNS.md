@@ -331,10 +331,10 @@ export function AuthorizationsTab({
         <p className="text-sm text-muted-foreground">
           {authorizations?.length || 0} authorized principals
         </p>
-        <Button variant="outline" size="sm" onClick={() => setAddDialogOpen(true)} className="h-11">
+        <AdminButton variant="outline" size="sm" onClick={() => setAddDialogOpen(true)} className="h-11">
           <Plus className="h-4 w-4 mr-1" />
           Add Principal
-        </Button>
+        </AdminButton>
       </div>
 
       {authorizations?.map((auth) => (
@@ -560,12 +560,12 @@ export function QuickCreatePopover({ name, organizationType, onCreated, onCancel
         <form onSubmit={handleSubmit} className="space-y-3">
           {/* Name, Type, Priority, City, State fields */}
           <div className="flex justify-between pt-2">
-            <Button type="button" variant="ghost" onClick={handleQuickCreate}>
+            <AdminButton type="button" variant="ghost" onClick={handleQuickCreate}>
               Just use name
-            </Button>
+            </AdminButton>
             <div className="flex gap-2">
-              <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
-              <Button type="submit">Create</Button>
+              <AdminButton type="button" variant="outline" onClick={onCancel}>Cancel</AdminButton>
+              <AdminButton type="submit">Create</AdminButton>
             </div>
           </div>
         </form>

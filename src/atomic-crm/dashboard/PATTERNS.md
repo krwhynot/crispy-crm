@@ -261,7 +261,7 @@ export function QuickLogForm({
 - Form mode: `onSubmit` (not `onChange`) per Constitution performance guidelines
 - Uses `useWatch()` for isolated re-renders instead of `watch()`
 
-**Example:** `src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx`
+**Example:** `src/atomic-crm/dashboard/QuickLogForm.tsx`
 
 ---
 
@@ -350,7 +350,7 @@ export function SnoozePopover({ taskSubject, onSnooze, disabled }: SnoozePopover
 - Back button preserves popover context (no re-open needed)
 - 44px touch targets per WCAG AA compliance
 
-**Example:** `src/atomic-crm/dashboard/v3/components/SnoozePopover.tsx`
+**Example:** `src/atomic-crm/dashboard/SnoozePopover.tsx`
 
 ---
 
@@ -444,7 +444,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
 - Per-stage stale thresholds (7-21 days) calculated client-side
 - Stable `DEFAULT_METRICS` object prevents reference changes
 
-**Example:** `src/atomic-crm/dashboard/v3/hooks/useKPIMetrics.ts`
+**Example:** `src/atomic-crm/dashboard/useKPIMetrics.ts` (if file exists as separate hook)
 
 ---
 
@@ -543,7 +543,7 @@ export function TasksKanbanPanel() {
 - ARIA announcements for screen readers during drag operations
 - Responsive: vertical stack on mobile, horizontal on desktop
 
-**Example:** `src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx`
+**Example:** `src/atomic-crm/dashboard/TasksKanbanPanel.tsx` (or similar component name)
 
 ---
 
@@ -623,7 +623,7 @@ export function useHybridSearch<T>({
 - 5-minute staleTime reduces refetches
 - `placeholderData` keeps previous results visible during loading
 
-**Example:** `src/atomic-crm/dashboard/v3/hooks/useHybridSearch.ts`
+**Example:** `src/atomic-crm/dashboard/useHybridSearch.ts` (if file exists as separate hook)
 
 ---
 
