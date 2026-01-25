@@ -24,6 +24,7 @@
 import { useGetList } from "ra-core";
 import { FilterableColumnHeader, type FilterChoice } from "@/components/ra-wrappers/column-filters";
 import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 /**
  * Product status choices - matches ProductListFilter.tsx
@@ -59,7 +60,7 @@ export function ProductCategoryHeader() {
   const { data: categories } = useGetList<{ id: string; name: string }>(
     "distinct_product_categories",
     {
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
     },
     {

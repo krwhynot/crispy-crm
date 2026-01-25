@@ -6,6 +6,7 @@ import { DateField } from "@/components/ra-wrappers/date-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { AsideSection } from "@/components/ui";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface Product {
   id: number;
@@ -36,7 +37,7 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
     "opportunity_products",
     {
       filter: { product_id_reference: record.id },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "created_at", order: "DESC" },
     }
   );

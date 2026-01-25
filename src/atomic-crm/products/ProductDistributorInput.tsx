@@ -3,6 +3,7 @@ import { useGetList } from "react-admin";
 import { ReferenceArrayInput } from "@/components/ra-wrappers/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { TextInput } from "@/components/ra-wrappers/text-input";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 /**
  * Multi-distributor selection with per-distributor DOT# inputs.
@@ -22,7 +23,7 @@ export function ProductDistributorInput() {
     "organizations",
     {
       filter: { id: selectedIds, organization_type: "distributor" },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     },
     { enabled: selectedIds.length > 0 }
   );

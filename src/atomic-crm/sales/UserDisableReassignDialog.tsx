@@ -38,6 +38,7 @@ import {
 import { AlertTriangle, User, Building2, Briefcase, CheckSquare } from "lucide-react";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface AffectedRecordCounts {
   opportunities: number;
@@ -141,7 +142,7 @@ export function UserDisableReassignDialog({
 
   // Fetch active sales reps for reassignment target (exclude the user being disabled)
   const { data: salesList, isPending: isSalesLoading } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
     sort: { field: "last_name", order: "ASC" },
     filter: {
       "disabled@neq": true,
