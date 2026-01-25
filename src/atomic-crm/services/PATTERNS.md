@@ -461,11 +461,7 @@ export function extendWithCustomMethods({
       return services.activities.getActivityLog(organizationId, salesId);
     },
 
-    async getContactOrganizations(contactId: Identifier) {
-      return services.junctions.getContactOrganizations(contactId);
-    },
-
-    // ... 13+ junction methods delegated to services.junctions
+    // ... 9+ junction methods delegated to services.junctions (opportunity-participant, opportunity-contact)
   };
 }
 ```
@@ -827,7 +823,7 @@ Quick reference for all services (✅ registered in ServiceContainer, 🚧 imple
 | **SalesService** | ✅ | Account manager CRUD via Edge Functions | `salesCreate()`, `salesUpdate()`, `salesDelete()` |
 | **OpportunitiesService** | ✅ | Product sync, archive/unarchive workflows | `archiveOpportunity()`, `syncOpportunityWithProducts()` |
 | **ActivitiesService** | ✅ | Activity log aggregation via RPC | `getActivityLog()` |
-| **JunctionsService** | ✅ | Many-to-many relationship management | `getContactOrganizations()`, `addOpportunityParticipant()`, `setPrimaryOrganization()` |
+| **JunctionsService** | ✅ | Many-to-many relationship management for opportunities | `addOpportunityParticipant()`, `addOpportunityContact()`, `getOpportunityParticipants()` |
 | **SegmentsService** | ✅ | Get-or-create pattern for segment tagging | `getOrCreateSegment()` |
 | **ProductsService** | 🚧 | Product CRUD with distributor relationships, soft delete via RPC (not yet registered) | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |
 | **ProductDistributorsService** | 🚧 | Composite key junction table operations (not yet registered) | `getOne()`, `create()`, `update()`, `delete()`, `getDistributorsForProduct()` |

@@ -148,11 +148,8 @@ describe("extendWithCustomMethods", () => {
       // Activities methods (1)
       expect(extendedProvider.getActivityLog).toBeTypeOf("function");
 
-      // Junction methods (13)
-      expect(extendedProvider.getContactOrganizations).toBeTypeOf("function");
-      expect(extendedProvider.addContactToOrganization).toBeTypeOf("function");
-      expect(extendedProvider.removeContactFromOrganization).toBeTypeOf("function");
-      expect(extendedProvider.setPrimaryOrganization).toBeTypeOf("function");
+      // Junction methods (9)
+      // Opportunity junction methods are tested below
 
       // RPC, Storage, Edge Functions (11)
       expect(extendedProvider.rpc).toBeTypeOf("function");
@@ -289,67 +286,6 @@ describe("extendWithCustomMethods", () => {
       await extendedProvider.getActivityLog();
 
       expect(mockServices.activities.getActivityLog).toHaveBeenCalledWith(undefined, undefined);
-    });
-  });
-
-  describe("Contact-Organization Junction Methods (JunctionsService Delegation)", () => {
-    it("should delegate getContactOrganizations to JunctionsService", async () => {
-      const extendedProvider = extendWithCustomMethods(config);
-      const expectedResult = { data: [] as ContactOrganization[] };
-
-      vi.mocked(mockServices.junctions.getContactOrganizations).mockResolvedValue(expectedResult);
-
-      const result = await extendedProvider.getContactOrganizations(1);
-
-      expect(mockServices.junctions.getContactOrganizations).toHaveBeenCalledWith(1);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it("should delegate addContactToOrganization with junction params", async () => {
-      const extendedProvider = extendWithCustomMethods(config);
-      const params = { is_primary: true, role: "CEO" };
-      const expectedResult = {
-        data: {
-          id: 1,
-          contact_id: 1,
-          organization_id: 2,
-          is_primary: true,
-          role: "CEO",
-        } as ContactOrganization,
-      };
-
-      vi.mocked(mockServices.junctions.addContactToOrganization).mockResolvedValue(expectedResult);
-
-      const result = await extendedProvider.addContactToOrganization(1, 2, params);
-
-      expect(mockServices.junctions.addContactToOrganization).toHaveBeenCalledWith(1, 2, params);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it("should delegate removeContactFromOrganization", async () => {
-      const extendedProvider = extendWithCustomMethods(config);
-      const expectedResult = { data: { id: "1" } };
-
-      vi.mocked(mockServices.junctions.removeContactFromOrganization).mockResolvedValue(
-        expectedResult
-      );
-
-      const result = await extendedProvider.removeContactFromOrganization(1, 2);
-
-      expect(mockServices.junctions.removeContactFromOrganization).toHaveBeenCalledWith(1, 2);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it("should delegate setPrimaryOrganization", async () => {
-      const extendedProvider = extendWithCustomMethods(config);
-      const expectedResult = { data: { success: true } };
-
-      vi.mocked(mockServices.junctions.setPrimaryOrganization).mockResolvedValue(expectedResult);
-
-      const result = await extendedProvider.setPrimaryOrganization(1, 2);
-
-      expect(mockServices.junctions.setPrimaryOrganization).toHaveBeenCalledWith(1, 2);
-      expect(result).toEqual(expectedResult);
     });
   });
 

@@ -73,7 +73,9 @@ These patterns DIRECTLY VIOLATE the fail-fast principle and must be removed.
 | C6 | Graceful fallbacks (return null) | `rg "catch.*return.*null" --type ts -n $SCOPE` | Silent failures (null) |
 | C7 | Graceful fallbacks (return cache) | `rg "catch.*return.*cache\|catch.*\.cache" --type ts -n $SCOPE` | Silent failures (stale data) |
 | C8 | Graceful fallbacks (default value) | `rg "catch.*return.*default\|catch.*return.*fallback" --type ts -n $SCOPE` | Silent failures |
-| C9 | Raw Supabase outside providers | `rg "supabase\." --type ts -n src/atomic-crm/ --glob '!**/providers/**'` | Bypasses error transformation |
+| C9 | Fire-and-forget void without catch | `rg "void [a-zA-Z_]+\([^)]*\);?\s*$" src/atomic-crm/providers/ --type ts -n` | Side-effects fail silently, no logging, orphaned resources |
+| C10 | Unawaited async in lifecycle hooks | `rg "async function (before\|after)(Create\|Update\|Delete)" src/atomic-crm/providers/supabase/callbacks/ -A 5 --type ts \| rg "^\s+[a-zA-Z_]+\(" \| rg -v "await\|void"` | Race conditions, operations complete out of order |
+| C11 | Raw Supabase outside providers | `rg "supabase\." --type ts -n src/atomic-crm/ --glob '!**/providers/**'` | Bypasses error transformation |
 
 ### High Severity (Error Swallowing)
 
@@ -308,7 +310,91 @@ async function getContacts() {
 
 ---
 
-#### [C9] Raw Supabase Outside Providers - Bypassed Error Handling
+#### [C9] Fire-and-Forget Void Without Catch - Silent Side-Effect Failures
+
+**Files Affected:**
+- `src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:45` - `void deleteStorageFiles(filePaths);`
+
+**Risk:** Side-effects are fired without error handling. When they fail:
+- No error logging occurs
+- Developers are unaware of the failure
+- Resources may be orphaned (storage files, webhooks not sent)
+- Silent data inconsistencies accumulate
+
+**Fix:** Add explicit error handling with structured logging for non-critical side-effects.
+
+```typescript
+// WRONG: Fire-and-forget - errors vanish
+if (filePaths.length > 0) {
+  void deleteStorageFiles(filePaths);
+}
+
+// CORRECT: Explicit error handling with logging
+if (filePaths.length > 0) {
+  void deleteStorageFiles(filePaths).catch((err: unknown) => {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    logger.warn('Storage cleanup failed after organization archive', {
+      organizationId: params.id,
+      fileCount: filePaths.length,
+      error: errorMessage,
+      operation: 'organizationsBeforeDelete',
+      note: 'Archive succeeded - orphaned files can be cleaned up later',
+    });
+  });
+}
+```
+
+---
+
+#### [C10] Unawaited Async in Lifecycle Hooks - Race Conditions
+
+**Files Affected:**
+- `src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:78` - `sendNotification(params.id);` (missing await)
+
+**Risk:** Async operations in lifecycle hooks that aren't awaited cause:
+- Race conditions (operation completes after function returns)
+- Unpredictable order of operations
+- Silent failures if the promise rejects
+- Incorrect assumptions about operation completion
+
+**Fix:** Either await critical operations or explicitly void with error handling for non-critical side-effects.
+
+```typescript
+// WRONG: Unawaited promise - may not complete before return
+async function beforeDelete(params: DeleteParams) {
+  deleteStorageFiles(params.id); // Missing await - caller doesn't know it failed
+  return params;
+}
+
+// CORRECT Option 1: Await critical operations
+async function beforeDelete(params: DeleteParams) {
+  // Critical: Must succeed before returning
+  await supabase.rpc('archive_organization_with_relations', { org_id: params.id });
+
+  // Non-critical cleanup: Log failures but don't block
+  void cleanupStorage(params.id).catch(logError);
+
+  return params;
+}
+
+// CORRECT Option 2: Fire-and-forget ONLY for non-critical, with error handling
+async function afterCreate(record: RaRecord, dataProvider: DataProvider) {
+  // Non-critical: Send email in background, log failures
+  void sendWelcomeEmail(record.email).catch((err: unknown) => {
+    logger.warn('Welcome email failed', {
+      userId: record.id,
+      email: record.email,
+      error: err instanceof Error ? err.message : String(err),
+      note: 'User created successfully - email can be resent manually',
+    });
+  });
+  return record;
+}
+```
+
+---
+
+#### [C11] Raw Supabase Outside Providers - Bypassed Error Handling
 
 **Files Affected:**
 - `src/atomic-crm/contacts/ContactList.tsx:42` - `supabase.from('contacts').select()`
