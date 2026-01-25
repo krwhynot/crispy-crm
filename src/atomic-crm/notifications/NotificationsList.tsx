@@ -132,7 +132,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
       {
         onSuccess: () => {
           notify("Notification marked as read", { type: "success" });
-          queryClient.invalidateQueries({ queryKey: ["notifications"] });
+          queryClient.invalidateQueries({ queryKey: notificationKeys.all });
         },
         onError: () => {
           notify("Error marking notification as read", { type: "error" });
