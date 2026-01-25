@@ -9,15 +9,18 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 import type { Contact, Organization, Opportunity } from "../types";
-import { safeJsonParse } from "@/atomic-crm/utils/safeJsonParse";
-import {
-  activityDraftSchema,
-  type ActivityDraft,
-} from "@/atomic-crm/activities/activityDraftSchema";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
+import {
+  loadDraft,
+  saveDraft,
+  clearDraft,
+  DEFAULT_DRAFT_STORAGE_KEY,
+  DRAFT_SAVE_DEBOUNCE_MS,
+} from "./utils/activityDraftStorage";
+import { QuickLogFormSkeleton } from "./components/QuickLogFormSkeleton";
+import { LockedEntityDisplay } from "./components/LockedEntityDisplay";
 
 // Lazy load QuickLogForm - saves ~15-20KB from initial chunk
 const QuickLogForm = lazy(() =>

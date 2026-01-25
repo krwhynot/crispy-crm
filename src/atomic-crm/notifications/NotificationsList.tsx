@@ -233,7 +233,7 @@ const NotificationsBulkActions = () => {
         notify("Failed to mark notifications as read", { type: "error" });
       }
 
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      queryClient.invalidateQueries({ queryKey: notificationKeys.all });
     } catch {
       notify("Error marking notifications as read", { type: "error" });
     }
