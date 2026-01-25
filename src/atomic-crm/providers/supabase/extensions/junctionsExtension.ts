@@ -14,32 +14,12 @@
 import type { Identifier } from "ra-core";
 import type { ServiceContainer } from "../services";
 import type { JunctionParams } from "./types";
-import type {
-  ContactOrganization,
-  OpportunityParticipant,
-  OpportunityContact,
-} from "../../../types";
+import type { OpportunityParticipant, OpportunityContact } from "../../../types";
 
 /**
  * Junctions extension methods interface
  */
 export interface JunctionsExtension {
-  // Contact-Organization junction methods
-  getContactOrganizations(contactId: Identifier): Promise<{ data: ContactOrganization[] }>;
-  addContactToOrganization(
-    contactId: Identifier,
-    organizationId: Identifier,
-    params: JunctionParams
-  ): Promise<{ data: ContactOrganization }>;
-  removeContactFromOrganization(
-    contactId: Identifier,
-    organizationId: Identifier
-  ): Promise<{ data: { id: string } }>;
-  setPrimaryOrganization(
-    contactId: Identifier,
-    organizationId: Identifier
-  ): Promise<{ data: { success: boolean } }>;
-
   // Opportunity-Participant junction methods
   getOpportunityParticipants(
     opportunityId: Identifier
@@ -88,70 +68,6 @@ export interface JunctionsExtension {
  */
 export function createJunctionsExtension(services: ServiceContainer): JunctionsExtension {
   return {
-    // ========================================================================
-    // CONTACT-ORGANIZATION JUNCTION METHODS (4 methods)
-    // ========================================================================
-
-    /**
-     * Get all organizations linked to a contact
-     * Delegates to JunctionsService
-     *
-     * @param contactId - Contact record ID
-     * @returns Wrapped array of contact-organization junction records
-     */
-    getContactOrganizations: async (
-      contactId: Identifier
-    ): Promise<{ data: ContactOrganization[] }> => {
-      return services.junctions.getContactOrganizations(contactId);
-    },
-
-    /**
-     * Link contact to organization
-     * Delegates to JunctionsService
-     *
-     * @param contactId - Contact record ID
-     * @param organizationId - Organization record ID
-     * @param params - Junction metadata (is_primary, role, notes)
-     * @returns Wrapped contact-organization junction record
-     */
-    addContactToOrganization: async (
-      contactId: Identifier,
-      organizationId: Identifier,
-      params: JunctionParams
-    ): Promise<{ data: ContactOrganization }> => {
-      return services.junctions.addContactToOrganization(contactId, organizationId, params);
-    },
-
-    /**
-     * Unlink contact from organization
-     * Delegates to JunctionsService
-     *
-     * @param contactId - Contact record ID
-     * @param organizationId - Organization record ID
-     * @returns Wrapped success response with junction ID
-     */
-    removeContactFromOrganization: async (
-      contactId: Identifier,
-      organizationId: Identifier
-    ): Promise<{ data: { id: string } }> => {
-      return services.junctions.removeContactFromOrganization(contactId, organizationId);
-    },
-
-    /**
-     * Set primary organization for contact via RPC
-     * Delegates to JunctionsService which calls set_primary_organization RPC
-     *
-     * @param contactId - Contact record ID
-     * @param organizationId - Organization record ID to set as primary
-     * @returns Wrapped success response
-     */
-    setPrimaryOrganization: async (
-      contactId: Identifier,
-      organizationId: Identifier
-    ): Promise<{ data: { success: boolean } }> => {
-      return services.junctions.setPrimaryOrganization(contactId, organizationId);
-    },
-
     // ========================================================================
     // OPPORTUNITY PARTICIPANT JUNCTION METHODS (3 methods)
     // ========================================================================

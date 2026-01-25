@@ -8,7 +8,6 @@
  * - Sales: 3 methods (salesCreate, salesUpdate, updatePassword)
  * - Opportunities: 2 methods (archive, unarchive)
  * - Activities: 1 method (getActivityLog)
- * - Contact-Org Junction: 4 methods
  * - Opportunity Participant Junction: 3 methods
  * - Opportunity Contact Junction: 6 methods
  * - RPC: 1 method
@@ -16,7 +15,7 @@
  * - Edge Functions: 1 method (invoke)
  * - Specialized: 1 method (createBoothVisitor)
  *
- * Total: 30 custom methods beyond base DataProvider (9 CRUD methods)
+ * Total: 26 custom methods beyond base DataProvider (9 CRUD methods)
  *
  * Engineering Constitution:
  * - Single composable entry point (unified interface)
@@ -33,7 +32,6 @@ import type {
   Sale,
   Opportunity,
   OpportunityParticipant,
-  ContactOrganization,
   OpportunityContact,
   Activity,
 } from "../../../types";
@@ -207,86 +205,6 @@ export interface ExtendedDataProvider extends DataProvider {
    * ```
    */
   getActivityLog(companyId?: Identifier, salesId?: Identifier): Promise<Activity[]>;
-
-  // ==================== Contact-Organization Junction ====================
-  // Delegate to JunctionsService
-
-  /**
-   * Get all organizations for a contact
-   *
-   * @param contactId - Contact ID
-   * @returns Array of contact-organization relationships
-   * @throws Error if query fails
-   *
-   * @example
-   * ```typescript
-   * const { data } = await dataProvider.getContactOrganizations(123);
-   * // data: [{ id, contact_id, organization_id, is_primary, role, notes }]
-   * ```
-   */
-  getContactOrganizations(contactId: Identifier): Promise<{ data: ContactOrganization[] }>;
-
-  /**
-   * Link contact to organization
-   *
-   * @param contactId - Contact ID
-   * @param organizationId - Organization ID
-   * @param params - Junction metadata (is_primary, role, notes)
-   * @returns Created junction record
-   * @throws Error if already linked or constraint violation
-   *
-   * @example
-   * ```typescript
-   * const { data } = await dataProvider.addContactToOrganization(123, 456, {
-   *   is_primary: true,
-   *   role: "Decision Maker",
-   * });
-   * ```
-   */
-  addContactToOrganization(
-    contactId: Identifier,
-    organizationId: Identifier,
-    params?: JunctionParams
-  ): Promise<{ data: ContactOrganization }>;
-
-  /**
-   * Unlink contact from organization
-   *
-   * @param contactId - Contact ID
-   * @param organizationId - Organization ID
-   * @returns Deleted junction record ID
-   * @throws Error if not linked or constraint violation
-   *
-   * @example
-   * ```typescript
-   * await dataProvider.removeContactFromOrganization(123, 456);
-   * ```
-   */
-  removeContactFromOrganization(
-    contactId: Identifier,
-    organizationId: Identifier
-  ): Promise<{ data: { id: string } }>;
-
-  /**
-   * Set primary organization for contact
-   *
-   * Marks one organization as the primary contact point.
-   * Automatically unmarks other organizations as primary.
-   *
-   * @param contactId - Contact ID
-   * @param organizationId - Organization ID to set as primary
-   * @returns Success status
-   * @throws Error if RPC fails or contact not linked to organization
-   *
-   * @example
-   * ```typescript
-   * await dataProvider.setPrimaryOrganization(123, 456);
-   * ```
-   */
-  setPrimaryOrganization(
-    contactId: Identifier,
-    organizationId: Identifier
-  ): Promise<{ data: { success: boolean } }>;
 
   // ==================== Opportunity Participant Junction ====================
   // Delegate to JunctionsService
