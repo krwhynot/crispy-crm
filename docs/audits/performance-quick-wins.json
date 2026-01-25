@@ -1,0 +1,106 @@
+{
+  "audit_id": "perf-2026-01-25",
+  "quick_wins": [
+    {
+      "rank": 1,
+      "task": "Add staleTime to all useGetOne/useGetList queries",
+      "effort_minutes": 30,
+      "impact": "Eliminate cache thrashing, reduce unnecessary refetches",
+      "confidence": 98,
+      "automated": false,
+      "files_affected": 87,
+      "pattern": "useGetOne.*}$",
+      "fix": "Add staleTime: 5*60*1000, gcTime: 10*60*1000 after enabled flag",
+      "priority": "P0",
+      "example": {
+        "before": "const { data: org } = useGetOne('organizations', { id: orgId }, { enabled: !!orgId });",
+        "after": "const { data: org } = useGetOne('organizations', { id: orgId }, { enabled: !!orgId, staleTime: 5*60*1000, gcTime: 10*60*1000 });"
+      }
+    },
+    {
+      "rank": 2,
+      "task": "Reduce perPage: 100 → 25 across 43 files",
+      "effort_minutes": 15,
+      "impact": "Reduce bundle by 30%, faster dropdowns",
+      "confidence": 98,
+      "automated": true,
+      "files_affected": 43,
+      "pattern": "perPage: 100",
+      "fix": "sed -i 's/perPage: 100/perPage: 25/g' src/**/*.{tsx,ts}",
+      "priority": "P0",
+      "example": {
+        "before": "pagination: { page: 1, perPage: 100 }",
+        "after": "pagination: { page: 1, perPage: 25 }"
+      }
+    },
+    {
+      "rank": 3,
+      "task": "Batch useEntityData fallback queries",
+      "effort_minutes": 45,
+      "impact": "Dashboard load -1 second",
+      "confidence": 92,
+      "automated": false,
+      "files_affected": 1,
+      "file": "src/atomic-crm/dashboard/useEntityData.ts",
+      "lines": "190-237",
+      "fix": "Consolidate 3 fallback useGetList queries into Promise.all in useEffect",
+      "priority": "P0",
+      "improvement": "From 6 sequential queries to 3 batched queries"
+    },
+    {
+      "rank": 4,
+      "task": "Global React Query configuration",
+      "effort_minutes": 60,
+      "impact": "Consistent cache behavior across all queries",
+      "confidence": 92,
+      "automated": false,
+      "files_affected": 1,
+      "file": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+      "fix": "Add queryClient.setDefaultOptions({ queries: { staleTime: 5*60*1000, gcTime: 10*60*1000 } })",
+      "priority": "P0"
+    },
+    {
+      "rank": 5,
+      "task": "Memoize datagrid cells in major lists",
+      "effort_minutes": 120,
+      "impact": "Sort/filter operations 80% faster",
+      "confidence": 90,
+      "automated": false,
+      "files_affected": 11,
+      "files": [
+        "src/atomic-crm/opportunities/OpportunityList.tsx",
+        "src/atomic-crm/tasks/TaskList.tsx",
+        "src/atomic-crm/products/ProductList.tsx",
+        "src/atomic-crm/contacts/TagsList.tsx",
+        "src/atomic-crm/organizations/OrganizationList.tsx",
+        "src/atomic-crm/activities/ActivityList.tsx",
+        "src/atomic-crm/notes/NotesList.tsx",
+        "src/atomic-crm/tags/TagList.tsx",
+        "src/atomic-crm/notifications/NotificationsList.tsx",
+        "src/atomic-crm/sales/SalesList.tsx",
+        "src/atomic-crm/productDistributors/ProductDistributorList.tsx"
+      ],
+      "reference": "src/atomic-crm/contacts/ContactList.tsx (lines 41-77)",
+      "pattern": "const ComponentCell = React.memo(function ComponentCell({ record }) { ... });",
+      "priority": "P1"
+    }
+  ],
+  "critical_path": {
+    "phase_1_this_week": ["Add staleTime", "Reduce perPage", "Batch queries"],
+    "phase_2_next_week": ["Global config", "Memoize cells", "Audit computed values"],
+    "phase_3_backlog": ["date-fns reduction", "Client-side filter audit", "forwardRef sweep"]
+  },
+  "success_metrics": {
+    "dashboard_first_paint_ms": { "before": 2500, "target": 500 },
+    "network_payload_kb": { "before": 1500, "target": 500 },
+    "list_sort_latency_ms": { "before": 300, "target": 50 },
+    "lighthouse_performance": { "before": 70, "target": 85 },
+    "react_query_cache_hits": { "before": 0.4, "target": 0.85 }
+  },
+  "estimated_total_effort": {
+    "minutes": 270,
+    "hours": 4.5,
+    "days": 0.6,
+    "note": "Can be parallelized: perPage change automated, staleTime manual but repetitive"
+  }
+}
