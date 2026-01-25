@@ -15,14 +15,17 @@ import { getOpportunityStageLabel } from "./constants";
 import { parseDateSafely } from "@/lib/date-utils";
 import { ucFirst } from "../utils";
 
+const ITEMS_PER_PAGE = 25;
+
 export const OpportunityArchivedList = () => {
   const { data: identity } = useGetIdentity();
+  const [currentPage, setCurrentPage] = useState(1);
   const {
     data: archivedLists,
     total,
     isPending,
   } = useGetList("opportunities", {
-    pagination: { page: 1, perPage: 1000 },
+    pagination: { page: currentPage, perPage: ITEMS_PER_PAGE },
     sort: { field: "deleted_at", order: "DESC" },
     filter: { "deleted_at@not.is": null },
   });
@@ -35,8 +38,8 @@ export const OpportunityArchivedList = () => {
   }, [isPending, total]);
 
   useEffect(() => {
-    setOpenDialog(false);
-  }, [archivedLists]);
+    setCurrentPage(1);
+  }, [openDialog]);
 
   if (!identity || isPending || !total || !archivedLists) return null;
 
@@ -106,6 +109,20 @@ export const OpportunityArchivedList = () => {
               </div>
             ))}
           </div>
+          <div className="flex flex-col gap-4 border-t pt-4 mt-4">
+            <div className="text-sm text-muted-foreground">
+              Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–
+              {Math.min(currentPage * ITEMS_PER_PAGE, total)} of {total} archived opportunities
+            </div>
+            {currentPage * ITEMS_PER_PAGE < total && (
+              <AdminButton
+                onClick={() => setCurrentPage(currentPage + 1)}
+                variant="outline"
+                disabled={isPending}
+              >
+                {isPending ? "Loading..." : "Load More"}
+              </AdminButton>
+            )}
         </DialogContent>
       </Dialog>
     </div>

@@ -409,25 +409,42 @@ export function QuickLogActivityDialog({
   }, []);
 
   // ═══════════════════════════════════════════════════════════════════
-  // Entity data fetching for locked fields
+  // Entity data fetching for locked fields (parallel queries)
   // ═══════════════════════════════════════════════════════════════════
-  const { data: contact, isLoading: contactLoading } = useGetOne<Contact>(
-    "contacts",
-    { id: entityContext?.contactId ?? 0 },
-    { enabled: !!entityContext?.contactId }
-  );
+  const dataProvider = useDataProvider();
 
-  const { data: organization, isLoading: organizationLoading } = useGetOne<Organization>(
-    "organizations",
-    { id: entityContext?.organizationId ?? 0 },
-    { enabled: !!entityContext?.organizationId }
-  );
+  const queryResults = useQueries({
+    queries: [
+      {
+        queryKey: ["contacts", "getOne", { id: entityContext?.contactId ?? 0 }],
+        queryFn: () => dataProvider.getOne<Contact>("contacts", { id: entityContext!.contactId! }),
+        enabled: !!entityContext?.contactId,
+      },
+      {
+        queryKey: ["organizations", "getOne", { id: entityContext?.organizationId ?? 0 }],
+        queryFn: () =>
+          dataProvider.getOne<Organization>("organizations", {
+            id: entityContext!.organizationId!,
+          }),
+        enabled: !!entityContext?.organizationId,
+      },
+      {
+        queryKey: ["opportunities", "getOne", { id: entityContext?.opportunityId ?? 0 }],
+        queryFn: () =>
+          dataProvider.getOne<Opportunity>("opportunities", { id: entityContext!.opportunityId! }),
+        enabled: !!entityContext?.opportunityId,
+      },
+    ],
+  });
 
-  const { data: opportunity, isLoading: opportunityLoading } = useGetOne<Opportunity>(
-    "opportunities",
-    { id: entityContext?.opportunityId ?? 0 },
-    { enabled: !!entityContext?.opportunityId }
-  );
+  // Extract data from parallel query results
+  const [contactResult, organizationResult, opportunityResult] = queryResults;
+  const contact = contactResult.data?.data;
+  const organization = organizationResult.data?.data;
+  const opportunity = opportunityResult.data?.data;
+  const contactLoading = contactResult.isLoading;
+  const organizationLoading = organizationResult.isLoading;
+  const opportunityLoading = opportunityResult.isLoading;
 
   // ═══════════════════════════════════════════════════════════════════
   // Build initial form data from entity context

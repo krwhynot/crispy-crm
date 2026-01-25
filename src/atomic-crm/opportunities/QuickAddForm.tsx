@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { quickAddBaseSchema, quickAddSchema } from "@/atomic-crm/validation/quickAdd";
@@ -320,34 +320,21 @@ const QuickAddFormContent = ({
   // Track whether user has interacted with Account Manager field
   const [shouldLoadSales, setShouldLoadSales] = useState(false);
 
-  // PERFORMANCE OPTIMIZATION: Combine principals + customers/prospects into single query
-  // Reduces initial mount from 2 queries → 1 query (both hit same table with different filters)
-  // Trade-off: Fetch ~300 records total vs 100+200 in separate queries
-  const { data: allOrganizationsList, isLoading: organizationsLoading } = useGetList(
-    "organizations",
-    {
-      filter: {}, // Fetch all organization types, filter client-side
-      pagination: { page: 1, perPage: 500 }, // Increased to accommodate all types
-      sort: { field: "name", order: "ASC" },
-    }
-  );
+  // PERFORMANCE: Server-side filtering - fetch only needed organization types
+  // Principals query: ~100 records with organization_type = 'principal'
+  const { data: principalsList, isLoading: principalsLoading } = useGetList("organizations", {
+    filter: { organization_type: "principal" },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+  });
 
-  // Client-side filtering - negligible performance impact for ~300 records
-  const principalsList = useMemo(
-    () => allOrganizationsList?.filter((org) => org.organization_type === "principal") ?? [],
-    [allOrganizationsList]
-  );
-
-  const organizationsList = useMemo(
-    () =>
-      allOrganizationsList?.filter(
-        (org) => org.organization_type === "customer" || org.organization_type === "prospect"
-      ) ?? [],
-    [allOrganizationsList]
-  );
-
-  // Both lists share same loading state since they come from single query
-  const principalsLoading = organizationsLoading;
+  // Customer/Prospect organizations query: ~200 records
+  // React Admin data provider handles OR condition via filter array
+  const { data: organizationsList, isLoading: organizationsLoading } = useGetList("organizations", {
+    filter: { organization_type: ["customer", "prospect"] },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+  });
 
   // Defer sales list until user interacts with Account Manager field
   // Most users never change this (auto-populated from identity)
