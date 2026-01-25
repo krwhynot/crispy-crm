@@ -60,7 +60,9 @@
       "location": "Multiple migrations",
       "description": "Hard delete function exists that bypasses soft-delete pattern",
       "firstSeen": "2026-01-24",
-      "status": "open"
+      "status": "false_positive",
+      "resolvedDate": "2026-01-24",
+      "resolution": "Functions never existed in codebase - verified via grep of all migrations, psql query of pg_proc, and codebase search. No CREATE/DROP statements found."
     },
     {
       "source_audit": "data-integrity",
@@ -71,7 +73,9 @@
       "location": "Multiple migrations",
       "description": "Hard delete function exists that bypasses soft-delete pattern",
       "firstSeen": "2026-01-24",
-      "status": "open"
+      "status": "false_positive",
+      "resolvedDate": "2026-01-24",
+      "resolution": "Functions never existed in codebase - verified via grep of all migrations, psql query of pg_proc, and codebase search. No CREATE/DROP statements found."
     },
     {
       "source_audit": "data-integrity",
