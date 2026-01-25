@@ -17,6 +17,7 @@ import {
   type Transform,
 } from "./createResourceCallbacks";
 import type { DataProvider, UpdateParams } from "ra-core";
+import { logger } from "@/lib/logger";
 
 /**
  * Computed fields from tasks view and priority_tasks view (must be stripped before save)

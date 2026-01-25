@@ -18,6 +18,7 @@
 import { useEffect, useState } from "react";
 import { useDataProvider, type Identifier } from "react-admin";
 import type { RelatedRecordCount } from "@/components/ra-wrappers/delete-confirm-dialog";
+import { logger } from "@/lib/logger";
 
 /**
  * Relationship definitions for cascade counting
@@ -156,8 +157,9 @@ export function useRelatedRecordCounts({
             r.reason instanceof Error ? r.reason.message : String(r.reason)
           );
 
-          console.error("[useRelatedRecordCounts] Partial failures detected:", {
+          logger.warn("Partial failures detected in related record counts", {
             resource,
+            operation: "useRelatedRecordCounts",
             totalQueries: promises.length,
             succeeded: fulfilled.length,
             failed: rejected.length,
