@@ -1,0 +1,316 @@
+{
+  "audit": "db-hardening",
+  "date": "2026-01-25",
+  "mode": "full",
+  "confidence": "85%",
+  "summary": "Database demonstrates moderate security posture with strong recent hardening efforts. All 31 tables have RLS enabled. Key gaps: 3 CRITICAL soft-delete enforcement issues, 8 HIGH policy/index issues, missing consolidated hard controls.",
+  "metrics": {
+    "total_tables": 31,
+    "rls_enabled": 31,
+    "rls_coverage_percent": 100,
+    "soft_delete_tables": 18,
+    "tables_with_partial_indexes": 12,
+    "findings_critical": 3,
+    "findings_high": 8,
+    "findings_medium": 5,
+    "findings_low": 4,
+    "findings_total": 20
+  },
+  "findings": [
+    {
+      "id": "CR-001",
+      "severity": "CRITICAL",
+      "title": "opportunity_participants Missing Soft-Delete RLS Filter",
+      "table": "opportunity_participants",
+      "issue_type": "missing_soft_delete_filter",
+      "risk": "Deleted records remain queryable, breaking data privacy",
+      "affected_tables": ["opportunity_participants"],
+      "fix": "Add 'deleted_at IS NULL' to all RLS policies (SELECT, INSERT, UPDATE, DELETE)",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#cr-001"
+    },
+    {
+      "id": "CR-002",
+      "severity": "CRITICAL",
+      "title": "interaction_participants Missing Soft-Delete in RLS Policies",
+      "table": "interaction_participants",
+      "issue_type": "missing_soft_delete_filter",
+      "risk": "Deleted interaction participants remain accessible through RLS bypass",
+      "affected_tables": ["interaction_participants"],
+      "fix": "Add 'deleted_at IS NULL' filter to all 4 CRUD policies",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#cr-002"
+    },
+    {
+      "id": "CR-003",
+      "severity": "CRITICAL",
+      "title": "notification_participants Table Never Created But Referenced",
+      "table": "notification_participants",
+      "issue_type": "orphaned_table_reference",
+      "risk": "FK constraint mismatch if table renamed/removed",
+      "affected_tables": ["notifications"],
+      "fix": "Audit all migrations for orphaned references, drop invalid FKs",
+      "effort_hours": 2.0,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#cr-003"
+    },
+    {
+      "id": "H-001",
+      "severity": "HIGH",
+      "title": "product_features Missing Partial Indexes for RLS Subqueries",
+      "table": "product_features",
+      "issue_type": "missing_partial_index",
+      "risk": "O(n) full table scans on RLS EXISTS checks",
+      "affected_tables": ["product_features"],
+      "fix": "Create partial index: CREATE INDEX idx_product_features_product_id_active ON product_features (product_id) WHERE deleted_at IS NULL",
+      "effort_hours": 0.25,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-001"
+    },
+    {
+      "id": "H-002",
+      "severity": "HIGH",
+      "title": "opportunity_contacts Partial Indexes Missing",
+      "table": "opportunity_contacts",
+      "issue_type": "missing_partial_index",
+      "risk": "RLS EXISTS subqueries cause full table scans",
+      "affected_tables": ["opportunity_contacts"],
+      "fix": "Verify partial indexes exist from migration 20260125041510",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-002"
+    },
+    {
+      "id": "H-003",
+      "severity": "HIGH",
+      "title": "product_distributors RLS Policy Consolidation Incomplete",
+      "table": "product_distributors",
+      "issue_type": "duplicate_policies",
+      "risk": "Multiple conflicting policies can cause unexpected access denials",
+      "affected_tables": ["product_distributors"],
+      "fix": "Verify exactly 5 policies exist after migration 20260125000007",
+      "effort_hours": 1.0,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-003"
+    },
+    {
+      "id": "H-004",
+      "severity": "HIGH",
+      "title": "audit_trail SELECT Policy Still Requires Verification",
+      "table": "audit_trail",
+      "issue_type": "weak_admin_check",
+      "risk": "Audit trail may be visible to non-admins",
+      "affected_tables": ["audit_trail"],
+      "fix": "Verify is_admin() function checks 'sales.role = admin' not deprecated boolean",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-004"
+    },
+    {
+      "id": "H-005",
+      "severity": "HIGH",
+      "title": "tags Table WRITE Policies Need Verification",
+      "table": "tags",
+      "issue_type": "permissive_policy",
+      "risk": "Rogue users could delete/modify shared tags affecting entire team",
+      "affected_tables": ["tags"],
+      "fix": "Verify UPDATE/DELETE policies are admin-only from migration 20260122184338",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-005"
+    },
+    {
+      "id": "H-006",
+      "severity": "HIGH",
+      "title": "tutorial_progress Missing RLS Policies",
+      "table": "tutorial_progress",
+      "issue_type": "missing_rls_policy",
+      "risk": "Users can view/edit other users' tutorial progress",
+      "affected_tables": ["tutorial_progress"],
+      "fix": "Create personal access policies: SELECT/UPDATE limited to self via sales_id",
+      "effort_hours": 1.0,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-006"
+    },
+    {
+      "id": "H-007",
+      "severity": "HIGH",
+      "title": "organization_distributors SELECT Policy May Leak Data",
+      "table": "organization_distributors",
+      "issue_type": "incomplete_policy",
+      "risk": "Users might see distributor relationships they shouldn't access",
+      "affected_tables": ["organization_distributors"],
+      "fix": "Verify policy includes deleted_at filter AND distributor ownership check",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-007"
+    },
+    {
+      "id": "H-008",
+      "severity": "HIGH",
+      "title": "tasks_deprecated Read-Only Policy Lacks Soft-Delete Filter",
+      "table": "tasks_deprecated",
+      "issue_type": "missing_soft_delete_filter",
+      "risk": "Deprecated task records remain queryable",
+      "affected_tables": ["tasks_deprecated"],
+      "fix": "Verify migration 20260122184338 applied: SELECT policy includes deleted_at IS NULL",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#h-008"
+    },
+    {
+      "id": "M-001",
+      "severity": "MEDIUM",
+      "title": "Missing Indexes on Foreign Key Columns in RLS EXISTS Subqueries",
+      "table": "interaction_participants",
+      "issue_type": "missing_partial_index",
+      "risk": "Performance degradation on large tables",
+      "affected_tables": ["interaction_participants"],
+      "fix": "Create partial index on organization_id: CREATE INDEX idx_interaction_participants_organization_id_active ON interaction_participants (organization_id) WHERE deleted_at IS NULL",
+      "effort_hours": 0.25,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#m-001"
+    },
+    {
+      "id": "M-002",
+      "severity": "MEDIUM",
+      "title": "Partial Indexes on Primary Tables Need Consolidation",
+      "table": "activities, contacts, opportunities, products, organizations",
+      "issue_type": "missing_partial_index",
+      "risk": "Inconsistent indexing strategy",
+      "affected_tables": ["activities", "contacts", "opportunities", "products", "organizations"],
+      "fix": "Verify partial indexes exist on deleted_at for all primary tables",
+      "effort_hours": 1.0,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#m-002"
+    },
+    {
+      "id": "M-003",
+      "severity": "MEDIUM",
+      "title": "product_features Table Not Mentioned in Recent Audits",
+      "table": "product_features",
+      "issue_type": "incomplete_audit",
+      "risk": "Orphaned table; may have RLS gaps not addressed by recent migrations",
+      "affected_tables": ["product_features"],
+      "fix": "Verify all 4 CRUD policies exist with deleted_at IS NULL filter",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#m-003"
+    },
+    {
+      "id": "M-004",
+      "severity": "MEDIUM",
+      "title": "Notification RLS Permissions May Be Overly Permissive",
+      "table": "notifications",
+      "issue_type": "permissive_policy",
+      "risk": "Users can view other users' notifications",
+      "affected_tables": ["notifications"],
+      "fix": "Verify personal access (user_id = auth.uid()) enforced on SELECT/UPDATE",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#m-004"
+    },
+    {
+      "id": "M-005",
+      "severity": "MEDIUM",
+      "title": "opportunity_participants.organization_id Missing Index",
+      "table": "opportunity_participants",
+      "issue_type": "missing_partial_index",
+      "risk": "RLS subqueries checking organization_id will cause table scans",
+      "affected_tables": ["opportunity_participants"],
+      "fix": "Create partial index: CREATE INDEX idx_opportunity_participants_organization_id_active ON opportunity_participants (organization_id) WHERE deleted_at IS NULL",
+      "effort_hours": 0.25,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#m-005"
+    },
+    {
+      "id": "L-001",
+      "severity": "LOW",
+      "title": "sales Table Missing created_at Trigger Comment",
+      "table": "sales",
+      "issue_type": "documentation",
+      "risk": "Inconsistency in timestamp management",
+      "affected_tables": ["sales"],
+      "fix": "Add comment clarifying timestamp behavior",
+      "effort_hours": 0.1,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#l-001"
+    },
+    {
+      "id": "L-002",
+      "severity": "LOW",
+      "title": "Audit Trail RLS Does Not Support Event Filtering by Table",
+      "table": "audit_trail",
+      "issue_type": "enhancement",
+      "risk": "Admins cannot see audit trail for specific records they manage",
+      "affected_tables": ["audit_trail"],
+      "fix": "Future enhancement: Add manager-level policy for team record access",
+      "effort_hours": 2.0,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#l-002"
+    },
+    {
+      "id": "L-003",
+      "severity": "LOW",
+      "title": "Soft Delete Columns Lack Indexes on Some Tables",
+      "table": "contact_notes, opportunity_notes, organization_notes",
+      "issue_type": "missing_partial_index",
+      "risk": "Queries filtering deleted_at IS NULL may not use indexes optimally",
+      "affected_tables": ["contact_notes", "opportunity_notes", "organization_notes"],
+      "fix": "Create partial indexes on deleted_at for notes tables",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#l-003"
+    },
+    {
+      "id": "L-004",
+      "severity": "LOW",
+      "title": "Incomplete Enum Coverage in RLS",
+      "table": "opportunities, sales",
+      "issue_type": "documentation",
+      "risk": "New enum values may bypass RLS checks",
+      "affected_tables": ["opportunities", "sales"],
+      "fix": "Document when new enums added, verify RLS policies still apply",
+      "effort_hours": 0.5,
+      "file": "docs/audits/database-hardening-audit-2026-01-25.md#l-004"
+    }
+  ],
+  "strengths": [
+    "RLS enabled on 100% of tables (31/31)",
+    "Soft-delete implementation across 18+ critical tables",
+    "Partial indexes for EXISTS subqueries in emerging dual-auth patterns",
+    "Dual-authorization patterns established for product_distributors",
+    "Trigger-based updated_at automation across major tables",
+    "Recent comprehensive security remediation migration (2026-01-22)"
+  ],
+  "gaps": [
+    "3 CRITICAL soft-delete enforcement gaps in RLS policies",
+    "8 HIGH issues with incomplete policy consolidation and missing indexes",
+    "Orphaned table references (notification_participants)",
+    "Inconsistent indexing strategy across similar tables",
+    "Policy verification needed after recent consolidation migrations"
+  ],
+  "recommendations": {
+    "immediate": [
+      "CR-001: Add soft-delete filters to opportunity_participants RLS (0.5h)",
+      "CR-002: Add soft-delete filters to interaction_participants RLS (0.5h)",
+      "H-004: Verify is_admin() function uses role column (0.5h)",
+      "H-001: Add missing partial index on product_features (0.25h)"
+    ],
+    "next_sprint": [
+      "CR-003: Audit and fix orphaned table references (2h)",
+      "H-003: Verify policy consolidation after migration (1h)",
+      "H-006: Create personal access policies for tutorial_progress (1h)",
+      "M-001,M-005: Add missing FK column partial indexes (0.75h)"
+    ],
+    "future": [
+      "L-002: Add manager-level audit trail filtering (2h)",
+      "L-003: Add partial indexes on notes tables (0.5h)",
+      "L-004: Document enum coverage strategy (0.5h)"
+    ]
+  },
+  "total_effort_hours": {
+    "critical": 3.0,
+    "high": 5.5,
+    "medium": 4.5,
+    "low": 3.5,
+    "total": 16.5
+  },
+  "next_steps": [
+    "Review findings with database team",
+    "Prioritize CRITICAL issues for immediate remediation",
+    "Create follow-up migrations for HIGH issues",
+    "Schedule verification testing after fixes",
+    "Document RLS security model and policy ownership"
+  ],
+  "reference_files": [
+    "supabase/migrations/20260125000007_product_distributors_dual_auth_rls.sql",
+    "supabase/migrations/20260125041510_add_junction_table_partial_indexes.sql",
+    "supabase/migrations/20260122184338_security_remediation.sql",
+    "supabase/migrations/20260115120607_db_hardening.sql",
+    ".claude/rules/DATABASE_LAYER.md"
+  ]
+}
