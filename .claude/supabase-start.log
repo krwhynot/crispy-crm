@@ -1,16 +1,16 @@
 WARN: no SMS provider is enabled. Disabling phone login
 WARNING: You are running different service versions locally than your linked project:
-supabase/storage-api:v1.33.5 => v1.33.0
 supabase/gotrue:v2.183.0 => v2.185.0
+supabase/storage-api:v1.33.5 => v1.33.0
 Run supabase link to update them.
- api Skipped - Image is already present locally 
- auth Skipped - Image is already present locally 
  realtime Skipped - Image is already present locally 
  edgeRuntime Skipped - Image is already present locally 
  studio Skipped - Image is already present locally 
  pgmeta Skipped - Image is already present locally 
  db Skipped - Image is already present locally 
  gateway Skipped - Image is already present locally 
+ api Skipped - Image is already present locally 
+ auth Skipped - Image is already present locally 
 Starting database...
 Initialising schema...
 Seeding globals from roles.sql...
@@ -214,6 +214,375 @@ Applying migration 20251117011028_fix_tasks_select_policy.sql...
 NOTICE (00000): policy "select_tasks" for relation "tasks" does not exist, skipping
 Applying migration 20251117020743_seed_opportunities_for_tasks.sql...
 Applying migration 20251117032253_fix_referential_integrity.sql...
+NOTICE (00000): Concurrent update detected for opportunity 1: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 2: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 3: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 4: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 5: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 6: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 7: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 8: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 9: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 10: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 11: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 12: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 13: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 14: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 15: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 16: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 17: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 18: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 19: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 20: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 21: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 22: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 23: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 24: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 25: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 26: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 27: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 28: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 29: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 30: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 31: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 32: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 33: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 34: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 35: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 36: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 37: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 38: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 39: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 40: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 41: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 42: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 43: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 44: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 45: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 46: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 47: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 48: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 49: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 50: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 51: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 52: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 53: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 54: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 55: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 56: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 57: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 58: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 59: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 60: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 61: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 62: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 63: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 64: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 65: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 66: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 67: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 68: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 69: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 70: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 71: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 72: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 73: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 74: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 75: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 76: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 77: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 78: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 79: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 80: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 81: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 82: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 83: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 84: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 85: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 86: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 87: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 88: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 89: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 90: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 91: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 92: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 93: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 94: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 95: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 96: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 97: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 98: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 99: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 100: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 101: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 102: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 103: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 104: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 105: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 106: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 107: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 108: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 109: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 110: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 111: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 112: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 113: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 114: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 115: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 116: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 117: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 118: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 119: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 120: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 121: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 122: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 123: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 124: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 125: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 126: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 127: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 128: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 129: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 130: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 131: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 132: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 133: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 134: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 135: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 136: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 137: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 138: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 139: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 140: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 141: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 142: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 143: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 144: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 219: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 145: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 146: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 147: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 148: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 149: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 150: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 151: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 152: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 153: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 154: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 155: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 156: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 157: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 158: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 159: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 160: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 161: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 162: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 163: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 164: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 165: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 166: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 167: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 168: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 169: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 170: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 171: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 172: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 173: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 174: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 175: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 176: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 177: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 178: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 179: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 180: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 181: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 182: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 183: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 184: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 185: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 186: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 187: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 188: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 189: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 190: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 191: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 192: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 193: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 194: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 195: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 196: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 197: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 198: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 199: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 200: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 201: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 202: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 203: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 204: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 205: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 206: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 207: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 208: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 209: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 210: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 211: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 212: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 213: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 214: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 215: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 216: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 217: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 218: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 220: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 221: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 222: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 223: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 224: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 225: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 226: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 227: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 228: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 229: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 230: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 231: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 232: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 233: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 234: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 235: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 236: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 237: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 238: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 239: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 240: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 241: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 242: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 243: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 244: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 245: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 246: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 247: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 248: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 249: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 250: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 251: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 252: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 253: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 254: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 255: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 256: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 257: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 258: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 259: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 260: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 261: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 262: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 263: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 264: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 265: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 266: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 267: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 268: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 269: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 270: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 271: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 272: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 273: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 274: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 275: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 276: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 277: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 278: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 279: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 280: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 281: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 282: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 283: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 284: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 285: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 286: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 287: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 288: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 289: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 290: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 291: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 292: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 293: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 294: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 295: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 296: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 297: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 298: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 299: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 300: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 301: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 302: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 303: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 304: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 305: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 306: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 307: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 308: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 309: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 310: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 311: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 312: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 313: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 314: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 315: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 316: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 317: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 318: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 319: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 320: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 321: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 322: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 323: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 324: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 325: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 326: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 327: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 328: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 329: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 330: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 331: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 332: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 333: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 334: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 335: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 336: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 337: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 338: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 339: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 340: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 341: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 342: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 343: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 344: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 345: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 346: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 347: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 348: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 349: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 350: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 351: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 352: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 353: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 354: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 355: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 356: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 357: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 358: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 359: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 360: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 361: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 362: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 363: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 364: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 365: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 366: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 367: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 368: last updated by <NULL>, now updating
+NOTICE (00000): Concurrent update detected for opportunity 369: last updated by <NULL>, now updating
 NOTICE (00000): constraint "activities_organization_id_fkey" of relation "activities" does not exist, skipping
 Applying migration 20251117105523_add_organization_cycle_protection.sql...
 Applying migration 20251117112343_organization_hierarchy_phase1_cleanup.sql...
@@ -662,7 +1031,7 @@ NOTICE (00000): Total Tasks: 0
 NOTICE (00000): --------------------------------------------
 NOTICE (00000): ============================================
 Applying migration 20251202055500_add_sue_martinez.sql...
-NOTICE (00000): Created auth user for sue@mfbroker.com: 6df44d7b-13e9-45b2-ad4a-2f2c4a4834bb
+NOTICE (00000): Created auth user for sue@mfbroker.com: 5ad07f23-8b43-47ee-bfbf-c6b250272694
 NOTICE (00000): Sue Martinez already exists in sales table
 Applying migration 20251202055600_verify_team.sql...
 NOTICE (00000): ============================================
@@ -903,7 +1272,7 @@ Applying migration 20260103162502_add_missing_cols_to_organizations_summary.sql.
 Applying migration 20260103180000_add_pg_trgm_search_indexes.sql...
 Applying migration 20260104113431_fix_user_favorites_update_rls.sql...
 Applying migration 20260104132335_add_brent_ramsy.sql...
-NOTICE (00000): Created auth user for bramsy@masterfoodbokers.com: 9266be57-bb5b-4a7d-823b-c476c2bce268
+NOTICE (00000): Created auth user for bramsy@masterfoodbokers.com: 7083757e-32d2-4d40-b9da-0f3322668459
 NOTICE (00000): Brent Ramsy already exists in sales table
 Applying migration 20260105172343_consolidate_rls_policies.sql...
 NOTICE (00000): policy "select_product_distributors" for relation "product_distributors" does not exist, skipping
@@ -940,7 +1309,7 @@ NOTICE (00000): SUCCESS: Only soft-delete merge_duplicate_contacts(INTEGER, INTE
 Applying migration 20260111120000_add_audit_columns_product_distributors.sql...
 Applying migration 20260111130000_fix_segments_created_by.sql...
 NOTICE (00000): Segments: 39 total, 39 with NULL created_by
-NOTICE (00000): Backfilled 39 segment(s) with created_by = 6df44d7b-13e9-45b2-ad4a-2f2c4a4834bb
+NOTICE (00000): Backfilled 39 segment(s) with created_by = 5ad07f23-8b43-47ee-bfbf-c6b250272694
 NOTICE (00000): Added NOT NULL constraint to segments.created_by
 Applying migration 20260111130100_add_user_favorites_audit.sql...
 Applying migration 20260111130200_add_missing_audit_triggers.sql...

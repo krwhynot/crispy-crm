@@ -250,8 +250,19 @@ ON CONFLICT (id) DO NOTHING;
 -- ============================================================================
 -- ORGANIZATIONS (2023 records)
 -- ============================================================================
--- Pre-step: Soft-delete any organizations from migrations that have names
--- matching our seed data. This ensures our explicit IDs are used for FK refs.
+-- Pre-step: Soft-delete any opportunities and organizations from migrations
+-- that have names matching our seed data. Must archive opportunities FIRST
+-- due to hybrid_soft_delete_cascade constraint that blocks org archival
+-- when active opportunities exist.
+
+-- Archive opportunities linked to organizations we're about to soft-delete
+UPDATE opportunities SET deleted_at = NOW()
+WHERE deleted_at IS NULL
+  AND (
+    customer_organization_id IN (SELECT id FROM organizations WHERE deleted_at IS NULL)
+    OR principal_organization_id IN (SELECT id FROM organizations WHERE deleted_at IS NULL)
+    OR distributor_organization_id IN (SELECT id FROM organizations WHERE deleted_at IS NULL)
+  );
 
 -- Soft-delete batch 1/11
 UPDATE organizations SET deleted_at = NOW()
