@@ -299,7 +299,7 @@ describe("QuickLogActivityDialog", () => {
 
     it("updates dialog description for contact context", () => {
       mockContactData = {
-        data: { id: 123, first_name: "Jane", last_name: "Smith" },
+        data: { data: { id: 123, first_name: "Jane", last_name: "Smith" } },
         isLoading: false,
         error: null,
       };
@@ -313,7 +313,7 @@ describe("QuickLogActivityDialog", () => {
 
     it("updates dialog description for organization context", () => {
       mockOrgData = {
-        data: { id: 456, name: "TechCorp" },
+        data: { data: { id: 456, name: "TechCorp" } },
         isLoading: false,
         error: null,
       };
@@ -327,7 +327,7 @@ describe("QuickLogActivityDialog", () => {
 
     it("updates dialog description for opportunity context", () => {
       mockOppData = {
-        data: { id: 789, name: "Enterprise Deal" },
+        data: { data: { id: 789, name: "Enterprise Deal" } },
         isLoading: false,
         error: null,
       };

@@ -63,11 +63,16 @@ export function LinkOpportunityModal({
         },
         {
           onSuccess: async () => {
+            // Invalidate caches immediately after successful link
+            queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+            queryClient.invalidateQueries({ queryKey: contactKeys.all });
+            queryClient.invalidateQueries({ queryKey: opportunityContactKeys.all });
+
             notify("Opportunity linked successfully", { type: "success" });
             onSuccess();
             onClose();
 
-            // Log activity after successful link
+            // Log activity after successful link (non-blocking)
             try {
               // Fetch opportunity details for activity log
               const { data: opportunity } = await dataProvider.getOne<Opportunity>(
@@ -86,8 +91,6 @@ export function LinkOpportunityModal({
                 },
               });
               queryClient.invalidateQueries({ queryKey: activityKeys.all });
-              queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-              queryClient.invalidateQueries({ queryKey: contactKeys.all });
             } catch (activityError) {
               logger.error("Failed to log contact link activity", activityError, {
                 feature: "LinkOpportunityModal",
