@@ -184,33 +184,42 @@ Deno.serve(async (req: Request) => {
 
 ### Helper Functions
 
-Two additional helper functions are exported for debugging and custom validation:
+Additional utility functions are available in `cors-config.ts`:
 
 ```ts
 // supabase/functions/_shared/cors-config.ts
 
 /**
- * Check if an origin is in the allowlist.
- * Used internally by createCorsHeaders() but exported for custom validation.
+ * Get the full list of allowed origins for debugging/logging purposes.
+ * Combines DEVELOPMENT_ORIGINS, PRODUCTION_ORIGINS, and ALLOWED_ORIGINS env var.
+ *
+ * @returns Array of all allowed origins currently configured
  */
-function isOriginAllowed(origin: string | null, allowedOrigins: string[]): boolean {
-  if (!origin) return false;
-  return allowedOrigins.includes(origin);
+export function getAllowedOrigins(): string[] {
+  return getAllAllowedOrigins(); // Merges all configured origins
 }
 
 /**
- * Get the full list of allowed origins for debugging/logging.
- * Combines DEVELOPMENT_ORIGINS, PRODUCTION_ORIGINS, and ALLOWED_ORIGINS env var.
+ * Legacy/Deprecated: Direct CORS headers object
+ *
+ * @deprecated Use createCorsHeaders() instead for dynamic origin validation
+ * Maintained for backward compatibility with older Edge Functions
  */
-export function getAllowedOrigins(): string[] {
-  return getAllAllowedOrigins(); // Internal function that builds the list
-}
+export const corsHeaders = createCorsHeaders();
 ```
+
+**Exported Functions:**
+
+| Function | Purpose | Use Case |
+|----------|---------|----------|
+| `createCorsHeaders(requestOrigin?)` | Generate dynamic CORS headers with origin validation | All user-facing Edge Functions |
+| `getAllowedOrigins()` | Get list of configured allowed origins | Debugging CORS configuration, logging |
+| `corsHeaders` | Static CORS headers object (deprecated) | Legacy functions only - don't use in new code |
 
 **When to use**:
 
 - `getAllowedOrigins()`: Debugging CORS issues, logging which origins are configured
-- `isOriginAllowed()`: Custom validation logic outside of `createCorsHeaders()`
+- `createCorsHeaders()`: All user-facing Edge Functions that accept browser requests
 
 **Example: Debugging CORS configuration**:
 

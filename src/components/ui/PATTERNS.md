@@ -418,24 +418,26 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
 ### Card with Action Button
 
 ```tsx
-// src/components/ui/card.tsx
-<Card>
-  <CardHeader>
-    <CardTitle>Contact Details</CardTitle>
-    <CardDescription>Last updated 2 days ago</CardDescription>
-    <CardAction>
-      <Button variant="ghost" size="icon">
+// src/components/ra-wrappers/section-card.tsx and admin-button.tsx
+<SectionCard>
+  <div>
+    <div className="flex items-center justify-between">
+      <div>
+        <h3>Contact Details</h3>
+        <p className="text-sm text-muted-foreground">Last updated 2 days ago</p>
+      </div>
+      <AdminButton variant="ghost" size="icon">
         <MoreHorizontal />
-      </Button>
-    </CardAction>
-  </CardHeader>
-  <CardContent>
+      </AdminButton>
+    </div>
+  </div>
+  <div className="space-y-4">
     {/* Content here */}
-  </CardContent>
-  <CardFooter>
-    <Button>Save Changes</Button>
-  </CardFooter>
-</Card>
+  </div>
+  <div className="flex justify-end gap-2">
+    <AdminButton>Save Changes</AdminButton>
+  </div>
+</SectionCard>
 ```
 
 **CardHeader uses container queries for responsive layouts:**
@@ -589,8 +591,8 @@ size: {
 ### Combobox with ARIA Roles
 
 ```tsx
-// src/components/ui/combobox.tsx
-<Button
+// src/components/ra-wrappers/admin-button.tsx
+<AdminButton
   id={id}
   variant="outline"
   role="combobox"           // Announces as combobox to screen readers
@@ -600,7 +602,7 @@ size: {
 >
   {selectedOption ? selectedOption.label : placeholder}
   <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-</Button>
+</AdminButton>
 ```
 
 ### Screen Reader Text

@@ -25,8 +25,8 @@
     "architecture": { "critical": 0, "high": 1, "medium": 2 },
     "typescript": { "critical": 0, "high": 2, "medium": 3 },
     "accessibility": { "critical": 0, "high": 2, "medium": 4 },
-    "performance": { "critical": 3, "high": 8, "medium": 17 },
-    "code-quality": { "critical": 4, "high": 12, "medium": 18 }
+    "performance": { "critical": 2, "high": 8, "medium": 17 },
+    "code-quality": { "critical": 1, "high": 12, "medium": 18 }
   },
   "critical_findings": [
     {
