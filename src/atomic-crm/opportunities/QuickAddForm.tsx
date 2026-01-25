@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { quickAddBaseSchema, quickAddSchema } from "@/atomic-crm/validation/quickAdd";

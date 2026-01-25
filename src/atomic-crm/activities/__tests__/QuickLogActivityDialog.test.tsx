@@ -115,7 +115,7 @@ describe("QuickLogActivityDialog", () => {
   // Test wrapper that provides QueryClient
   const renderWithQueryClient = (ui: ReactNode) => {
     const queryClient = createTestQueryClient();
-    return renderWithQueryClient(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+    return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
   };
 
   beforeEach(() => {
@@ -165,7 +165,9 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />
+      );
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -178,7 +180,9 @@ describe("QuickLogActivityDialog", () => {
     });
 
     it("pre-fills organizationId in initialDraft", async () => {
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />
+      );
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -191,7 +195,9 @@ describe("QuickLogActivityDialog", () => {
     });
 
     it("pre-fills opportunityId in initialDraft", async () => {
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />
+      );
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -229,12 +235,14 @@ describe("QuickLogActivityDialog", () => {
 
     it("displays locked contact field when contactId provided", () => {
       mockContactData = {
-        data: { id: 123, first_name: "John", last_name: "Doe" },
+        data: { data: { id: 123, first_name: "John", last_name: "Doe" } },
         isLoading: false,
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />
+      );
 
       expect(screen.getByText("Contact")).toBeInTheDocument();
       expect(screen.getByText("John Doe")).toBeInTheDocument();
@@ -243,12 +251,14 @@ describe("QuickLogActivityDialog", () => {
 
     it("displays locked organization field when organizationId provided", () => {
       mockOrgData = {
-        data: { id: 456, name: "Acme Corp" },
+        data: { data: { id: 456, name: "Acme Corp" } },
         isLoading: false,
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />
+      );
 
       expect(screen.getByText("Organization")).toBeInTheDocument();
       expect(screen.getByText("Acme Corp")).toBeInTheDocument();
@@ -256,12 +266,14 @@ describe("QuickLogActivityDialog", () => {
 
     it("displays locked opportunity field when opportunityId provided", () => {
       mockOppData = {
-        data: { id: 789, name: "Big Deal Q1" },
+        data: { data: { id: 789, name: "Big Deal Q1" } },
         isLoading: false,
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />
+      );
 
       expect(screen.getByText("Opportunity")).toBeInTheDocument();
       expect(screen.getByText("Big Deal Q1")).toBeInTheDocument();
@@ -274,7 +286,9 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />
+      );
 
       // The LockedEntityDisplay shows a skeleton when loading
       expect(screen.getByText("Contact")).toBeInTheDocument();
@@ -290,7 +304,9 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />
+      );
 
       expect(screen.getByText("Log activity for contact: Jane Smith")).toBeInTheDocument();
     });
@@ -302,7 +318,9 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />
+      );
 
       expect(screen.getByText("Log activity for organization: TechCorp")).toBeInTheDocument();
     });
@@ -314,7 +332,9 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />
+      );
 
       expect(screen.getByText("Log activity for opportunity: Enterprise Deal")).toBeInTheDocument();
     });
@@ -322,7 +342,9 @@ describe("QuickLogActivityDialog", () => {
 
   describe("Activity Type Preset", () => {
     it("pre-fills activityType from config", async () => {
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} config={{ activityType: "Call" }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} config={{ activityType: "Call" }} />
+      );
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -356,7 +378,9 @@ describe("QuickLogActivityDialog", () => {
       const onOpenChange = vi.fn();
       const user = userEvent.setup();
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} onOpenChange={onOpenChange} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} onOpenChange={onOpenChange} />
+      );
 
       // Wait for lazy-loaded form
       await waitFor(() => {
@@ -444,7 +468,9 @@ describe("QuickLogActivityDialog", () => {
       };
       localStorageMock.getItem.mockReturnValue(JSON.stringify(savedDraft));
 
-      renderWithQueryClient(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
+      renderWithQueryClient(
+        <QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />
+      );
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
